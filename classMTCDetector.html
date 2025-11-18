@@ -507,13 +507,13 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00806">806</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  814</span>{</div>
-<div class="line"><span class="lineno">  815</span>    TClonesArray&amp; clref = *fMTCDetectorPointCollection;</div>
-<div class="line"><span class="lineno">  816</span>    Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  817</span> </div>
-<div class="line"><span class="lineno">  818</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classMTCDetPoint.html">MTCDetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  819</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00804">804</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  812</span>{</div>
+<div class="line"><span class="lineno">  813</span>    TClonesArray&amp; clref = *fMTCDetectorPointCollection;</div>
+<div class="line"><span class="lineno">  814</span>    Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  815</span> </div>
+<div class="line"><span class="lineno">  816</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classMTCDetPoint.html">MTCDetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  817</span>}</div>
 <div class="ttc" id="aclassMTCDetPoint_html"><div class="ttname"><a href="classMTCDetPoint.html">MTCDetPoint</a></div><div class="ttdef"><b>Definition</b> <a href="MTCDetPoint_8h_source.html#l00008">MTCDetPoint.h:9</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -543,68 +543,66 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00363">363</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  364</span>{</div>
-<div class="line"><span class="lineno">  365</span>    <span class="comment">// Initialize media (using FairROOT’s interface)</span></div>
+<div class="line"><span class="lineno">  365</span>    <span class="comment">// Initialize media (using FairROOT&#39;s interface)</span></div>
 <div class="line"><span class="lineno">  366</span>    InitMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  367</span>    TGeoMedium* SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  368</span>    InitMedium(<span class="stringliteral">&quot;Epoxy&quot;</span>);</div>
-<div class="line"><span class="lineno">  369</span>    TGeoMedium* Epoxy = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Epoxy&quot;</span>);</div>
-<div class="line"><span class="lineno">  370</span>    InitMedium(<span class="stringliteral">&quot;air&quot;</span>);</div>
-<div class="line"><span class="lineno">  371</span>    TGeoMedium* air = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;air&quot;</span>);</div>
-<div class="line"><span class="lineno">  372</span>    TGeoMedium* ironMed = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><span class="lineno">  373</span>    <span class="comment">// For the scintillator, you may use the same medium as SciFiMat or another if defined.</span></div>
-<div class="line"><span class="lineno">  374</span>    TGeoMedium* scintMed = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  375</span>    InitMedium(<span class="stringliteral">&quot;silicon&quot;</span>);</div>
-<div class="line"><span class="lineno">  376</span> </div>
-<div class="line"><span class="lineno">  377</span>    <span class="comment">// Define the module spacing based on three sublayers:</span></div>
-<div class="line"><span class="lineno">  378</span>    <span class="comment">//   fIronThick (outer iron), fSciFiThick (SciFi module/fiber module), fScintThick (scintillator)</span></div>
-<div class="line"><span class="lineno">  379</span>    Double_t moduleSpacing = fIronThick + fSciFiThick + fScintThick;</div>
-<div class="line"><span class="lineno">  380</span>    Double_t totalLength = fLayers * moduleSpacing;</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>    <span class="comment">// --- Create an envelope volume for the detector (green, semi-transparent) ---</span></div>
-<div class="line"><span class="lineno">  383</span>    <span class="keyword">auto</span> envBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;MTC_env&quot;</span>, fWidth / 2, fHeight / 2, totalLength / 2);</div>
-<div class="line"><span class="lineno">  384</span>    <span class="keyword">auto</span> envVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MTC&quot;</span>, envBox, air);</div>
-<div class="line"><span class="lineno">  385</span>    envVol-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  386</span>    envVol-&gt;SetTransparency(50);</div>
-<div class="line"><span class="lineno">  387</span> </div>
-<div class="line"><span class="lineno">  388</span>    <span class="comment">// --- Outer Iron Layer (gray) ---</span></div>
-<div class="line"><span class="lineno">  389</span>    <span class="keyword">auto</span> ironBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;MTC_iron&quot;</span>, fWidth / 2, fHeight / 2, fIronThick / 2);</div>
-<div class="line"><span class="lineno">  390</span>    <span class="keyword">auto</span> ironVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MTC_iron&quot;</span>, ironBox, ironMed);</div>
-<div class="line"><span class="lineno">  391</span>    ironVol-&gt;SetLineColor(kGray + 1);</div>
-<div class="line"><span class="lineno">  392</span>    ironVol-&gt;SetTransparency(20);</div>
-<div class="line"><span class="lineno">  393</span>    <span class="comment">// Enable the field in the iron volume</span></div>
-<div class="line"><span class="lineno">  394</span>    <span class="keywordflow">if</span> (fFieldY != 0)</div>
-<div class="line"><span class="lineno">  395</span>        ironVol-&gt;SetField(<span class="keyword">new</span> TGeoUniformMagField(0, fFieldY, 0));</div>
-<div class="line"><span class="lineno">  396</span> </div>
-<div class="line"><span class="lineno">  397</span>    <span class="comment">// --- Assemble the layers into the envelope ---</span></div>
-<div class="line"><span class="lineno">  398</span>    TGeoVolumeAssembly* sensitiveModule = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;MTC_layer&quot;</span>);</div>
-<div class="line"><span class="lineno">  399</span>    <span class="comment">// Define a layer for the SciFi module</span></div>
-<div class="line"><span class="lineno">  400</span>    CreateSciFiModule(<span class="stringliteral">&quot;MTC&quot;</span>, sensitiveModule, fWidth, fHeight, fSciFiThick, 1);</div>
-<div class="line"><span class="lineno">  401</span>    CreateScintModule(<span class="stringliteral">&quot;MTC&quot;</span>,</div>
-<div class="line"><span class="lineno">  402</span>                      sensitiveModule,</div>
-<div class="line"><span class="lineno">  403</span>                      fSciFiThick / 2 + fScintThick / 2,</div>
-<div class="line"><span class="lineno">  404</span>                      fWidth,</div>
-<div class="line"><span class="lineno">  405</span>                      fHeight,</div>
-<div class="line"><span class="lineno">  406</span>                      fScintThick,</div>
-<div class="line"><span class="lineno">  407</span>                      1.0,</div>
-<div class="line"><span class="lineno">  408</span>                      1.0,</div>
-<div class="line"><span class="lineno">  409</span>                      scintMed,</div>
-<div class="line"><span class="lineno">  410</span>                      kAzure + 7,</div>
-<div class="line"><span class="lineno">  411</span>                      30,</div>
-<div class="line"><span class="lineno">  412</span>                      1);</div>
-<div class="line"><span class="lineno">  413</span> </div>
-<div class="line"><span class="lineno">  414</span>    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; fLayers; i++) {</div>
-<div class="line"><span class="lineno">  415</span>        <span class="comment">// Compute the center position (z) for the current module</span></div>
-<div class="line"><span class="lineno">  416</span>        Double_t zPos = -totalLength / 2 + i * moduleSpacing;</div>
-<div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>        <span class="comment">// Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)</span></div>
-<div class="line"><span class="lineno">  419</span>        envVol-&gt;AddNode(ironVol, i, <span class="keyword">new</span> TGeoTranslation(0, 0, zPos + fIronThick / 2));</div>
-<div class="line"><span class="lineno">  420</span>        <span class="comment">// Place the sensitive module (SciFi + Scintillator) at the correct z position</span></div>
-<div class="line"><span class="lineno">  421</span>        envVol-&gt;AddNode(sensitiveModule, i, <span class="keyword">new</span> TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick / 2));</div>
-<div class="line"><span class="lineno">  422</span>    }</div>
-<div class="line"><span class="lineno">  423</span> </div>
-<div class="line"><span class="lineno">  424</span>    <span class="comment">// Finally, add the envelope to the top volume with the global z offset fZCenter</span></div>
-<div class="line"><span class="lineno">  425</span>    gGeoManager-&gt;GetTopVolume()-&gt;AddNode(envVol, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, fZCenter));</div>
-<div class="line"><span class="lineno">  426</span>}</div>
+<div class="line"><span class="lineno">  367</span>    InitMedium(<span class="stringliteral">&quot;Epoxy&quot;</span>);</div>
+<div class="line"><span class="lineno">  368</span>    InitMedium(<span class="stringliteral">&quot;air&quot;</span>);</div>
+<div class="line"><span class="lineno">  369</span>    TGeoMedium* air = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;air&quot;</span>);</div>
+<div class="line"><span class="lineno">  370</span>    TGeoMedium* ironMed = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
+<div class="line"><span class="lineno">  371</span>    <span class="comment">// For the scintillator, you may use the same medium as SciFiMat or another if defined.</span></div>
+<div class="line"><span class="lineno">  372</span>    TGeoMedium* scintMed = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><span class="lineno">  373</span>    InitMedium(<span class="stringliteral">&quot;silicon&quot;</span>);</div>
+<div class="line"><span class="lineno">  374</span> </div>
+<div class="line"><span class="lineno">  375</span>    <span class="comment">// Define the module spacing based on three sublayers:</span></div>
+<div class="line"><span class="lineno">  376</span>    <span class="comment">//   fIronThick (outer iron), fSciFiThick (SciFi module/fiber module), fScintThick (scintillator)</span></div>
+<div class="line"><span class="lineno">  377</span>    Double_t moduleSpacing = fIronThick + fSciFiThick + fScintThick;</div>
+<div class="line"><span class="lineno">  378</span>    Double_t totalLength = fLayers * moduleSpacing;</div>
+<div class="line"><span class="lineno">  379</span> </div>
+<div class="line"><span class="lineno">  380</span>    <span class="comment">// --- Create an envelope volume for the detector (green, semi-transparent) ---</span></div>
+<div class="line"><span class="lineno">  381</span>    <span class="keyword">auto</span> envBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;MTC_env&quot;</span>, fWidth / 2, fHeight / 2, totalLength / 2);</div>
+<div class="line"><span class="lineno">  382</span>    <span class="keyword">auto</span> envVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MTC&quot;</span>, envBox, air);</div>
+<div class="line"><span class="lineno">  383</span>    envVol-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  384</span>    envVol-&gt;SetTransparency(50);</div>
+<div class="line"><span class="lineno">  385</span> </div>
+<div class="line"><span class="lineno">  386</span>    <span class="comment">// --- Outer Iron Layer (gray) ---</span></div>
+<div class="line"><span class="lineno">  387</span>    <span class="keyword">auto</span> ironBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;MTC_iron&quot;</span>, fWidth / 2, fHeight / 2, fIronThick / 2);</div>
+<div class="line"><span class="lineno">  388</span>    <span class="keyword">auto</span> ironVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MTC_iron&quot;</span>, ironBox, ironMed);</div>
+<div class="line"><span class="lineno">  389</span>    ironVol-&gt;SetLineColor(kGray + 1);</div>
+<div class="line"><span class="lineno">  390</span>    ironVol-&gt;SetTransparency(20);</div>
+<div class="line"><span class="lineno">  391</span>    <span class="comment">// Enable the field in the iron volume</span></div>
+<div class="line"><span class="lineno">  392</span>    <span class="keywordflow">if</span> (fFieldY != 0)</div>
+<div class="line"><span class="lineno">  393</span>        ironVol-&gt;SetField(<span class="keyword">new</span> TGeoUniformMagField(0, fFieldY, 0));</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>    <span class="comment">// --- Assemble the layers into the envelope ---</span></div>
+<div class="line"><span class="lineno">  396</span>    TGeoVolumeAssembly* sensitiveModule = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;MTC_layer&quot;</span>);</div>
+<div class="line"><span class="lineno">  397</span>    <span class="comment">// Define a layer for the SciFi module</span></div>
+<div class="line"><span class="lineno">  398</span>    CreateSciFiModule(<span class="stringliteral">&quot;MTC&quot;</span>, sensitiveModule, fWidth, fHeight, fSciFiThick, 1);</div>
+<div class="line"><span class="lineno">  399</span>    CreateScintModule(<span class="stringliteral">&quot;MTC&quot;</span>,</div>
+<div class="line"><span class="lineno">  400</span>                      sensitiveModule,</div>
+<div class="line"><span class="lineno">  401</span>                      fSciFiThick / 2 + fScintThick / 2,</div>
+<div class="line"><span class="lineno">  402</span>                      fWidth,</div>
+<div class="line"><span class="lineno">  403</span>                      fHeight,</div>
+<div class="line"><span class="lineno">  404</span>                      fScintThick,</div>
+<div class="line"><span class="lineno">  405</span>                      1.0,</div>
+<div class="line"><span class="lineno">  406</span>                      1.0,</div>
+<div class="line"><span class="lineno">  407</span>                      scintMed,</div>
+<div class="line"><span class="lineno">  408</span>                      kAzure + 7,</div>
+<div class="line"><span class="lineno">  409</span>                      30,</div>
+<div class="line"><span class="lineno">  410</span>                      1);</div>
+<div class="line"><span class="lineno">  411</span> </div>
+<div class="line"><span class="lineno">  412</span>    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; fLayers; i++) {</div>
+<div class="line"><span class="lineno">  413</span>        <span class="comment">// Compute the center position (z) for the current module</span></div>
+<div class="line"><span class="lineno">  414</span>        Double_t zPos = -totalLength / 2 + i * moduleSpacing;</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>        <span class="comment">// Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)</span></div>
+<div class="line"><span class="lineno">  417</span>        envVol-&gt;AddNode(ironVol, i, <span class="keyword">new</span> TGeoTranslation(0, 0, zPos + fIronThick / 2));</div>
+<div class="line"><span class="lineno">  418</span>        <span class="comment">// Place the sensitive module (SciFi + Scintillator) at the correct z position</span></div>
+<div class="line"><span class="lineno">  419</span>        envVol-&gt;AddNode(sensitiveModule, i, <span class="keyword">new</span> TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick / 2));</div>
+<div class="line"><span class="lineno">  420</span>    }</div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>    <span class="comment">// Finally, add the envelope to the top volume with the global z offset fZCenter</span></div>
+<div class="line"><span class="lineno">  423</span>    gGeoManager-&gt;GetTopVolume()-&gt;AddNode(envVol, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, fZCenter));</div>
+<div class="line"><span class="lineno">  424</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -914,10 +912,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00801">801</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  802</span>{</div>
-<div class="line"><span class="lineno">  803</span>    fMTCDetectorPointCollection-&gt;Clear();</div>
-<div class="line"><span class="lineno">  804</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00799">799</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  800</span>{</div>
+<div class="line"><span class="lineno">  801</span>    fMTCDetectorPointCollection-&gt;Clear();</div>
+<div class="line"><span class="lineno">  802</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1001,14 +999,14 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00787">787</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  788</span>{</div>
-<div class="line"><span class="lineno">  789</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
-<div class="line"><span class="lineno">  790</span>        <span class="keywordflow">return</span> fMTCDetectorPointCollection;</div>
-<div class="line"><span class="lineno">  791</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  792</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  793</span>    }</div>
-<div class="line"><span class="lineno">  794</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00785">785</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  786</span>{</div>
+<div class="line"><span class="lineno">  787</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
+<div class="line"><span class="lineno">  788</span>        <span class="keywordflow">return</span> fMTCDetectorPointCollection;</div>
+<div class="line"><span class="lineno">  789</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  790</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  791</span>    }</div>
+<div class="line"><span class="lineno">  792</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1095,25 +1093,25 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Transform global position to local position in plane </p>
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00609">609</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  610</span>{</div>
-<div class="line"><span class="lineno">  611</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  612</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><span class="lineno">  613</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
-<div class="line"><span class="lineno">  614</span> </div>
-<div class="line"><span class="lineno">  615</span>    TString sID, stationID;</div>
-<div class="line"><span class="lineno">  616</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
-<div class="line"><span class="lineno">  617</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
-<div class="line"><span class="lineno">  618</span>    <span class="comment">// Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187</span></div>
-<div class="line"><span class="lineno">  619</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0&quot;</span> : <span class="stringliteral">&quot;/MTC_scifi_V_0&quot;</span>);</div>
-<div class="line"><span class="lineno">  620</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  621</span>    nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  622</span>    Double_t aglob[3];</div>
-<div class="line"><span class="lineno">  623</span>    Double_t aloc[3];</div>
-<div class="line"><span class="lineno">  624</span>    glob-&gt;GetXYZ(aglob);</div>
-<div class="line"><span class="lineno">  625</span>    nav-&gt;MasterToLocal(aglob, aloc);</div>
-<div class="line"><span class="lineno">  626</span>    <span class="keywordflow">return</span> TVector3(aloc[0], aloc[1], aloc[2]);</div>
-<div class="line"><span class="lineno">  627</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00607">607</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  608</span>{</div>
+<div class="line"><span class="lineno">  609</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  610</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  611</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
+<div class="line"><span class="lineno">  612</span> </div>
+<div class="line"><span class="lineno">  613</span>    TString sID, stationID;</div>
+<div class="line"><span class="lineno">  614</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
+<div class="line"><span class="lineno">  615</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
+<div class="line"><span class="lineno">  616</span>    <span class="comment">// Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187</span></div>
+<div class="line"><span class="lineno">  617</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0&quot;</span> : <span class="stringliteral">&quot;/MTC_scifi_V_0&quot;</span>);</div>
+<div class="line"><span class="lineno">  618</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  619</span>    nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  620</span>    Double_t aglob[3];</div>
+<div class="line"><span class="lineno">  621</span>    Double_t aloc[3];</div>
+<div class="line"><span class="lineno">  622</span>    glob-&gt;GetXYZ(aglob);</div>
+<div class="line"><span class="lineno">  623</span>    nav-&gt;MasterToLocal(aglob, aloc);</div>
+<div class="line"><span class="lineno">  624</span>    <span class="keywordflow">return</span> TVector3(aloc[0], aloc[1], aloc[2]);</div>
+<div class="line"><span class="lineno">  625</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1150,49 +1148,49 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get position of single fibre in global coordinate system </p>
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00565">565</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  566</span>{</div>
-<div class="line"><span class="lineno">  567</span>    <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  568</span><span class="comment">      Example of fiberID: 123051820, where:</span></div>
-<div class="line"><span class="lineno">  569</span><span class="comment">        - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  570</span><span class="comment">        - 23: layer number</span></div>
-<div class="line"><span class="lineno">  571</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
-<div class="line"><span class="lineno">  572</span><span class="comment">        - 5: z-layer number (0-5)</span></div>
-<div class="line"><span class="lineno">  573</span><span class="comment">        - 1820: local fibre ID within the station</span></div>
-<div class="line"><span class="lineno">  574</span><span class="comment">      Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
-<div class="line"><span class="lineno">  575</span><span class="comment">        - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  576</span><span class="comment">        - 23: layer number</span></div>
-<div class="line"><span class="lineno">  577</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
-<div class="line"><span class="lineno">  578</span><span class="comment">        - 0: mat number (only 0 by June 2025)</span></div>
-<div class="line"><span class="lineno">  579</span><span class="comment">        - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
-<div class="line"><span class="lineno">  580</span><span class="comment">        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
-<div class="line"><span class="lineno">  581</span><span class="comment">    */</span></div>
-<div class="line"><span class="lineno">  582</span> </div>
-<div class="line"><span class="lineno">  583</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  584</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><span class="lineno">  585</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
-<div class="line"><span class="lineno">  586</span> </div>
-<div class="line"><span class="lineno">  587</span>    TString sID, stationID;</div>
-<div class="line"><span class="lineno">  588</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
-<div class="line"><span class="lineno">  589</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
-<div class="line"><span class="lineno">  590</span>    <span class="comment">// Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187</span></div>
-<div class="line"><span class="lineno">  591</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID</div>
-<div class="line"><span class="lineno">  592</span>                   + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0/MTC_epoxyMat_0/FiberVol_1010&quot;</span></div>
-<div class="line"><span class="lineno">  593</span>                                        : <span class="stringliteral">&quot;/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011&quot;</span>);</div>
-<div class="line"><span class="lineno">  594</span>    path += sID(4, 5);</div>
-<div class="line"><span class="lineno">  595</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  596</span>    nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  597</span>    TGeoNode* W = nav-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  598</span>    TGeoBBox* S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  599</span> </div>
-<div class="line"><span class="lineno">  600</span>    Double_t top[3] = {0, 0, (S-&gt;GetDZ())};</div>
-<div class="line"><span class="lineno">  601</span>    Double_t bot[3] = {0, 0, -(S-&gt;GetDZ())};</div>
-<div class="line"><span class="lineno">  602</span>    Double_t Gtop[3], Gbot[3];</div>
-<div class="line"><span class="lineno">  603</span>    nav-&gt;LocalToMaster(top, Gtop);</div>
-<div class="line"><span class="lineno">  604</span>    nav-&gt;LocalToMaster(bot, Gbot);</div>
-<div class="line"><span class="lineno">  605</span>    <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a>.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
-<div class="line"><span class="lineno">  606</span>    B.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
-<div class="line"><span class="lineno">  607</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00563">563</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  564</span>{</div>
+<div class="line"><span class="lineno">  565</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  566</span><span class="comment">      Example of fiberID: 123051820, where:</span></div>
+<div class="line"><span class="lineno">  567</span><span class="comment">        - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  568</span><span class="comment">        - 23: layer number</span></div>
+<div class="line"><span class="lineno">  569</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
+<div class="line"><span class="lineno">  570</span><span class="comment">        - 5: z-layer number (0-5)</span></div>
+<div class="line"><span class="lineno">  571</span><span class="comment">        - 1820: local fibre ID within the station</span></div>
+<div class="line"><span class="lineno">  572</span><span class="comment">      Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
+<div class="line"><span class="lineno">  573</span><span class="comment">        - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  574</span><span class="comment">        - 23: layer number</span></div>
+<div class="line"><span class="lineno">  575</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
+<div class="line"><span class="lineno">  576</span><span class="comment">        - 0: mat number (only 0 by June 2025)</span></div>
+<div class="line"><span class="lineno">  577</span><span class="comment">        - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
+<div class="line"><span class="lineno">  578</span><span class="comment">        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
+<div class="line"><span class="lineno">  579</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">  580</span> </div>
+<div class="line"><span class="lineno">  581</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  582</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  583</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
+<div class="line"><span class="lineno">  584</span> </div>
+<div class="line"><span class="lineno">  585</span>    TString sID, stationID;</div>
+<div class="line"><span class="lineno">  586</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
+<div class="line"><span class="lineno">  587</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
+<div class="line"><span class="lineno">  588</span>    <span class="comment">// Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187</span></div>
+<div class="line"><span class="lineno">  589</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID</div>
+<div class="line"><span class="lineno">  590</span>                   + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0/MTC_epoxyMat_0/FiberVol_1010&quot;</span></div>
+<div class="line"><span class="lineno">  591</span>                                        : <span class="stringliteral">&quot;/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011&quot;</span>);</div>
+<div class="line"><span class="lineno">  592</span>    path += sID(4, 5);</div>
+<div class="line"><span class="lineno">  593</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  594</span>    nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  595</span>    TGeoNode* W = nav-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  596</span>    TGeoBBox* S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  597</span> </div>
+<div class="line"><span class="lineno">  598</span>    Double_t top[3] = {0, 0, (S-&gt;GetDZ())};</div>
+<div class="line"><span class="lineno">  599</span>    Double_t bot[3] = {0, 0, -(S-&gt;GetDZ())};</div>
+<div class="line"><span class="lineno">  600</span>    Double_t Gtop[3], Gbot[3];</div>
+<div class="line"><span class="lineno">  601</span>    nav-&gt;LocalToMaster(top, Gtop);</div>
+<div class="line"><span class="lineno">  602</span>    nav-&gt;LocalToMaster(bot, Gbot);</div>
+<div class="line"><span class="lineno">  603</span>    <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a>.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
+<div class="line"><span class="lineno">  604</span>    B.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
+<div class="line"><span class="lineno">  605</span>}</div>
 <div class="ttc" id="anamespacerunPythia8_html_a527266378c7f0299bad9b3c32d02d15b"><div class="ttname"><a href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">runPythia8.A</a></div><div class="ttdeci">dict A</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00122">runPythia8.py:122</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1342,48 +1340,48 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>mean position of fibre2 associated with SiPM channel </p>
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00629">629</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  630</span>{</div>
-<div class="line"><span class="lineno">  631</span>    <span class="comment">/* STMRFFF</span></div>
-<div class="line"><span class="lineno">  632</span><span class="comment">        Example of fiberID: 123051820, where:</span></div>
-<div class="line"><span class="lineno">  633</span><span class="comment">          - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  634</span><span class="comment">          - 23: layer number</span></div>
-<div class="line"><span class="lineno">  635</span><span class="comment">          - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
-<div class="line"><span class="lineno">  636</span><span class="comment">          - 5: z-layer number (0-5)</span></div>
-<div class="line"><span class="lineno">  637</span><span class="comment">          - 1820: local fibre ID within the station</span></div>
-<div class="line"><span class="lineno">  638</span><span class="comment">        Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
-<div class="line"><span class="lineno">  639</span><span class="comment">          - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  640</span><span class="comment">          - 23: layer number</span></div>
-<div class="line"><span class="lineno">  641</span><span class="comment">          - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
-<div class="line"><span class="lineno">  642</span><span class="comment">          - 0: mat number (only 0 by June 2025)</span></div>
-<div class="line"><span class="lineno">  643</span><span class="comment">          - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
-<div class="line"><span class="lineno">  644</span><span class="comment">          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
-<div class="line"><span class="lineno">  645</span><span class="comment">    */</span></div>
-<div class="line"><span class="lineno">  646</span>    Int_t locNumber = SiPMChan % 1000000;</div>
-<div class="line"><span class="lineno">  647</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  648</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><span class="lineno">  649</span>    Float_t locPosition;</div>
-<div class="line"><span class="lineno">  650</span>    locPosition = (plane_type == 0 ? SiPMPos_U : SiPMPos_V)[locNumber];   <span class="comment">// local position in U/V plane</span></div>
-<div class="line"><span class="lineno">  651</span>    TString stationID;</div>
-<div class="line"><span class="lineno">  652</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
-<div class="line"><span class="lineno">  653</span> </div>
-<div class="line"><span class="lineno">  654</span>    Double_t loc[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  655</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID</div>
-<div class="line"><span class="lineno">  656</span>                   + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0/MTC_epoxyMat_0&quot;</span> : <span class="stringliteral">&quot;/MTC_scifi_V_0/MTC_epoxyMat_0&quot;</span>);</div>
-<div class="line"><span class="lineno">  657</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  658</span>    Double_t glob[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  659</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
-<div class="line"><span class="lineno">  660</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = -<a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
-<div class="line"><span class="lineno">  661</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;</div>
-<div class="line"><span class="lineno">  662</span>    nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  663</span>    nav-&gt;LocalToMaster(loc, glob);</div>
-<div class="line"><span class="lineno">  664</span>    <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a>.SetXYZ(glob[0], glob[1], glob[2]);</div>
-<div class="line"><span class="lineno">  665</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
-<div class="line"><span class="lineno">  666</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = <a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
-<div class="line"><span class="lineno">  667</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;   <span class="comment">// hardcoded for now, for some reason required to get the correct local position</span></div>
-<div class="line"><span class="lineno">  668</span>    nav-&gt;LocalToMaster(loc, glob);</div>
-<div class="line"><span class="lineno">  669</span>    B.SetXYZ(glob[0], glob[1], glob[2]);</div>
-<div class="line"><span class="lineno">  670</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00627">627</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  628</span>{</div>
+<div class="line"><span class="lineno">  629</span>    <span class="comment">/* STMRFFF</span></div>
+<div class="line"><span class="lineno">  630</span><span class="comment">        Example of fiberID: 123051820, where:</span></div>
+<div class="line"><span class="lineno">  631</span><span class="comment">          - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  632</span><span class="comment">          - 23: layer number</span></div>
+<div class="line"><span class="lineno">  633</span><span class="comment">          - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
+<div class="line"><span class="lineno">  634</span><span class="comment">          - 5: z-layer number (0-5)</span></div>
+<div class="line"><span class="lineno">  635</span><span class="comment">          - 1820: local fibre ID within the station</span></div>
+<div class="line"><span class="lineno">  636</span><span class="comment">        Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
+<div class="line"><span class="lineno">  637</span><span class="comment">          - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  638</span><span class="comment">          - 23: layer number</span></div>
+<div class="line"><span class="lineno">  639</span><span class="comment">          - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
+<div class="line"><span class="lineno">  640</span><span class="comment">          - 0: mat number (only 0 by June 2025)</span></div>
+<div class="line"><span class="lineno">  641</span><span class="comment">          - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
+<div class="line"><span class="lineno">  642</span><span class="comment">          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
+<div class="line"><span class="lineno">  643</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">  644</span>    Int_t locNumber = SiPMChan % 1000000;</div>
+<div class="line"><span class="lineno">  645</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  646</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  647</span>    Float_t locPosition;</div>
+<div class="line"><span class="lineno">  648</span>    locPosition = (plane_type == 0 ? SiPMPos_U : SiPMPos_V)[locNumber];   <span class="comment">// local position in U/V plane</span></div>
+<div class="line"><span class="lineno">  649</span>    TString stationID;</div>
+<div class="line"><span class="lineno">  650</span>    stationID.Form(<span class="stringliteral">&quot;%i&quot;</span>, station_number);</div>
+<div class="line"><span class="lineno">  651</span> </div>
+<div class="line"><span class="lineno">  652</span>    Double_t loc[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">  653</span>    TString path = <span class="stringliteral">&quot;/cave/MTC_1/MTC_layer_&quot;</span> + stationID</div>
+<div class="line"><span class="lineno">  654</span>                   + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0/MTC_epoxyMat_0&quot;</span> : <span class="stringliteral">&quot;/MTC_scifi_V_0/MTC_epoxyMat_0&quot;</span>);</div>
+<div class="line"><span class="lineno">  655</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  656</span>    Double_t glob[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">  657</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
+<div class="line"><span class="lineno">  658</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = -<a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
+<div class="line"><span class="lineno">  659</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;</div>
+<div class="line"><span class="lineno">  660</span>    nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  661</span>    nav-&gt;LocalToMaster(loc, glob);</div>
+<div class="line"><span class="lineno">  662</span>    <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a>.SetXYZ(glob[0], glob[1], glob[2]);</div>
+<div class="line"><span class="lineno">  663</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
+<div class="line"><span class="lineno">  664</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = <a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
+<div class="line"><span class="lineno">  665</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;   <span class="comment">// hardcoded for now, for some reason required to get the correct local position</span></div>
+<div class="line"><span class="lineno">  666</span>    nav-&gt;LocalToMaster(loc, glob);</div>
+<div class="line"><span class="lineno">  667</span>    B.SetXYZ(glob[0], glob[1], glob[2]);</div>
+<div class="line"><span class="lineno">  668</span>}</div>
 <div class="ttc" id="aclassMTCDetector_html_a29a4732663c57c4f147a75c834910ae4"><div class="ttname"><a href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">MTCDetector::fFiberLength</a></div><div class="ttdeci">Double_t fFiberLength</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00115">MTCDetector.h:115</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_a176fad3f209836920c35b3af3f4178d4"><div class="ttname"><a href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">TTCluster.loc</a></div><div class="ttdeci">loc</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00732">TTCluster.py:732</a></div></div>
 </div><!-- fragment -->
@@ -1412,10 +1410,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00428">428</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  429</span>{</div>
-<div class="line"><span class="lineno">  430</span>    FairDetector::Initialize();</div>
-<div class="line"><span class="lineno">  431</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00426">426</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  427</span>{</div>
+<div class="line"><span class="lineno">  428</span>    FairDetector::Initialize();</div>
+<div class="line"><span class="lineno">  429</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1515,66 +1513,66 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00433">433</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  434</span>{</div>
-<div class="line"><span class="lineno">  436</span>    <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">if</span> (gMC-&gt;IsTrackEntering()) {</div>
-<div class="line"><span class="lineno">  438</span>        fELoss = 0.;</div>
-<div class="line"><span class="lineno">  439</span>        fTime = gMC-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  440</span>        fLength = gMC-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  441</span>        gMC-&gt;TrackPosition(fPos);</div>
-<div class="line"><span class="lineno">  442</span>        gMC-&gt;TrackMomentum(fMom);</div>
-<div class="line"><span class="lineno">  443</span>        TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  444</span>        Int_t vol_local_id = nav-&gt;GetCurrentNode()-&gt;GetNumber() % 1000000;   <span class="comment">// Local ID within the mat or scint.</span></div>
-<div class="line"><span class="lineno">  445</span>        Int_t layer_id = nav-&gt;GetMother(3)-&gt;GetNumber();                     <span class="comment">// Get layer ID.</span></div>
-<div class="line"><span class="lineno">  446</span>        fVolumeID = 100000000 + layer_id * 1000000 + vol_local_id;           <span class="comment">// 1e8 + layer_id * 1e6 + fibre_local_id;</span></div>
-<div class="line"><span class="lineno">  447</span>    }</div>
-<div class="line"><span class="lineno">  448</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  449</span>    fELoss += gMC-&gt;Edep();</div>
-<div class="line"><span class="lineno">  450</span> </div>
-<div class="line"><span class="lineno">  451</span>    <span class="comment">// Create vetoPoint when exiting active volume</span></div>
-<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">if</span> (gMC-&gt;IsTrackExiting() || gMC-&gt;IsTrackStop() || gMC-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">  453</span> </div>
-<div class="line"><span class="lineno">  454</span>        <span class="keywordflow">if</span> (fELoss == 0.) {</div>
-<div class="line"><span class="lineno">  455</span>            <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  456</span>        }   <span class="comment">// if you do not want hits with zero eloss</span></div>
-<div class="line"><span class="lineno">  457</span> </div>
-<div class="line"><span class="lineno">  458</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  459</span>        <a class="code hl_variable" href="classMTCDetector.html#a0bdde4aeffd4c4b02b84a941e0b23c92">fTrackID</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  460</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  461</span>        TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">  462</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">  463</span>        TLorentzVector Mom;</div>
-<div class="line"><span class="lineno">  464</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(Mom);</div>
-<div class="line"><span class="lineno">  465</span>        Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a>, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>, <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
-<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">if</span> (fVolumeID / 100000 == 3) {</div>
-<div class="line"><span class="lineno">  467</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.X() + Pos.X()) / 2.;</div>
-<div class="line"><span class="lineno">  468</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Y() + Pos.Y()) / 2.;</div>
-<div class="line"><span class="lineno">  469</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Z() + Pos.Z()) / 2.;</div>
-<div class="line"><span class="lineno">  470</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  471</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a> = <a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.X();</div>
-<div class="line"><span class="lineno">  472</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = <a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Y();</div>
-<div class="line"><span class="lineno">  473</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Z() + Pos.Z()) / 2.;</div>
-<div class="line"><span class="lineno">  474</span>        }</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>        <span class="keyword">auto</span> hit = <a class="code hl_function" href="classMTCDetector.html#ad30f725809b061545a6c7c880a25150e">AddHit</a>(fTrackID,</div>
-<div class="line"><span class="lineno">  477</span>                          fVolumeID,</div>
-<div class="line"><span class="lineno">  478</span>                          TVector3(x, y, z),</div>
-<div class="line"><span class="lineno">  479</span>                          TVector3(<a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Px(), <a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Py(), <a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Pz()),   <span class="comment">// entrance momentum</span></div>
-<div class="line"><span class="lineno">  480</span>                          fTime,</div>
-<div class="line"><span class="lineno">  481</span>                          fLength,</div>
-<div class="line"><span class="lineno">  482</span>                          fELoss,</div>
-<div class="line"><span class="lineno">  483</span>                          pdgCode);</div>
-<div class="line"><span class="lineno">  484</span>        <span class="comment">// hit-&gt;Print();</span></div>
-<div class="line"><span class="lineno">  485</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  486</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afc4e911879e9aed19f2cf5d201eab4b0">kMTC</a>);</div>
-<div class="line"><span class="lineno">  487</span>    }</div>
-<div class="line"><span class="lineno">  488</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  489</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00431">431</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  434</span>    <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> (gMC-&gt;IsTrackEntering()) {</div>
+<div class="line"><span class="lineno">  436</span>        fELoss = 0.;</div>
+<div class="line"><span class="lineno">  437</span>        fTime = gMC-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  438</span>        fLength = gMC-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  439</span>        gMC-&gt;TrackPosition(fPos);</div>
+<div class="line"><span class="lineno">  440</span>        gMC-&gt;TrackMomentum(fMom);</div>
+<div class="line"><span class="lineno">  441</span>        TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  442</span>        Int_t vol_local_id = nav-&gt;GetCurrentNode()-&gt;GetNumber() % 1000000;   <span class="comment">// Local ID within the mat or scint.</span></div>
+<div class="line"><span class="lineno">  443</span>        Int_t layer_id = nav-&gt;GetMother(3)-&gt;GetNumber();                     <span class="comment">// Get layer ID.</span></div>
+<div class="line"><span class="lineno">  444</span>        fVolumeID = 100000000 + layer_id * 1000000 + vol_local_id;           <span class="comment">// 1e8 + layer_id * 1e6 + fibre_local_id;</span></div>
+<div class="line"><span class="lineno">  445</span>    }</div>
+<div class="line"><span class="lineno">  446</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  447</span>    fELoss += gMC-&gt;Edep();</div>
+<div class="line"><span class="lineno">  448</span> </div>
+<div class="line"><span class="lineno">  449</span>    <span class="comment">// Create vetoPoint when exiting active volume</span></div>
+<div class="line"><span class="lineno">  450</span>    <span class="keywordflow">if</span> (gMC-&gt;IsTrackExiting() || gMC-&gt;IsTrackStop() || gMC-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>        <span class="keywordflow">if</span> (fELoss == 0.) {</div>
+<div class="line"><span class="lineno">  453</span>            <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  454</span>        }   <span class="comment">// if you do not want hits with zero eloss</span></div>
+<div class="line"><span class="lineno">  455</span> </div>
+<div class="line"><span class="lineno">  456</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  457</span>        <a class="code hl_variable" href="classMTCDetector.html#a0bdde4aeffd4c4b02b84a941e0b23c92">fTrackID</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  458</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  459</span>        TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">  460</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">  461</span>        TLorentzVector Mom;</div>
+<div class="line"><span class="lineno">  462</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(Mom);</div>
+<div class="line"><span class="lineno">  463</span>        Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a>, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>, <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
+<div class="line"><span class="lineno">  464</span>        <span class="keywordflow">if</span> (fVolumeID / 100000 == 3) {</div>
+<div class="line"><span class="lineno">  465</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.X() + Pos.X()) / 2.;</div>
+<div class="line"><span class="lineno">  466</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Y() + Pos.Y()) / 2.;</div>
+<div class="line"><span class="lineno">  467</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  468</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  469</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33">x</a> = <a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.X();</div>
+<div class="line"><span class="lineno">  470</span>            <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = <a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Y();</div>
+<div class="line"><span class="lineno">  471</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (<a class="code hl_variable" href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  472</span>        }</div>
+<div class="line"><span class="lineno">  473</span> </div>
+<div class="line"><span class="lineno">  474</span>        <span class="keyword">auto</span> hit = <a class="code hl_function" href="classMTCDetector.html#ad30f725809b061545a6c7c880a25150e">AddHit</a>(fTrackID,</div>
+<div class="line"><span class="lineno">  475</span>                          fVolumeID,</div>
+<div class="line"><span class="lineno">  476</span>                          TVector3(x, y, z),</div>
+<div class="line"><span class="lineno">  477</span>                          TVector3(<a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Px(), <a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Py(), <a class="code hl_variable" href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">fMom</a>.Pz()),   <span class="comment">// entrance momentum</span></div>
+<div class="line"><span class="lineno">  478</span>                          fTime,</div>
+<div class="line"><span class="lineno">  479</span>                          fLength,</div>
+<div class="line"><span class="lineno">  480</span>                          fELoss,</div>
+<div class="line"><span class="lineno">  481</span>                          pdgCode);</div>
+<div class="line"><span class="lineno">  482</span>        <span class="comment">// hit-&gt;Print();</span></div>
+<div class="line"><span class="lineno">  483</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  484</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afc4e911879e9aed19f2cf5d201eab4b0">kMTC</a>);</div>
+<div class="line"><span class="lineno">  485</span>    }</div>
+<div class="line"><span class="lineno">  486</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  487</span>}</div>
 <div class="ttc" id="aclassMTCDetector_html_a0bdde4aeffd4c4b02b84a941e0b23c92"><div class="ttname"><a href="classMTCDetector.html#a0bdde4aeffd4c4b02b84a941e0b23c92">MTCDetector::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00094">MTCDetector.h:94</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_a1fefc597f19f3ed233fcd8056f4c7d77"><div class="ttname"><a href="classMTCDetector.html#a1fefc597f19f3ed233fcd8056f4c7d77">MTCDetector::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00097">MTCDetector.h:97</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_a90dcb00ba7217e71b74b34da9bbc8d94"><div class="ttname"><a href="classMTCDetector.html#a90dcb00ba7217e71b74b34da9bbc8d94">MTCDetector::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00098">MTCDetector.h:98</a></div></div>
-<div class="ttc" id="aclassMTCDetector_html_ad30f725809b061545a6c7c880a25150e"><div class="ttname"><a href="classMTCDetector.html#ad30f725809b061545a6c7c880a25150e">MTCDetector::AddHit</a></div><div class="ttdeci">MTCDetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8cxx_source.html#l00806">MTCDetector.cxx:806</a></div></div>
+<div class="ttc" id="aclassMTCDetector_html_ad30f725809b061545a6c7c880a25150e"><div class="ttname"><a href="classMTCDetector.html#ad30f725809b061545a6c7c880a25150e">MTCDetector::AddHit</a></div><div class="ttdeci">MTCDetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8cxx_source.html#l00804">MTCDetector.cxx:804</a></div></div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00249">makeCascade.py:249</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
@@ -1608,13 +1606,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00779">779</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  780</span>{</div>
-<div class="line"><span class="lineno">  781</span>    TString name = <span class="stringliteral">&quot;MTCDetPoint&quot;</span>;</div>
-<div class="line"><span class="lineno">  782</span>    TString title = <span class="stringliteral">&quot;MTC&quot;</span>;</div>
-<div class="line"><span class="lineno">  783</span>    FairRootManager::Instance()-&gt;Register(name, title, fMTCDetectorPointCollection, kTRUE);</div>
-<div class="line"><span class="lineno">  784</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; this-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, Register() says: registered &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; collection&quot;</span>;</div>
-<div class="line"><span class="lineno">  785</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00777">777</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  778</span>{</div>
+<div class="line"><span class="lineno">  779</span>    TString name = <span class="stringliteral">&quot;MTCDetPoint&quot;</span>;</div>
+<div class="line"><span class="lineno">  780</span>    TString title = <span class="stringliteral">&quot;MTC&quot;</span>;</div>
+<div class="line"><span class="lineno">  781</span>    FairRootManager::Instance()-&gt;Register(name, title, fMTCDetectorPointCollection, kTRUE);</div>
+<div class="line"><span class="lineno">  782</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; this-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, Register() says: registered &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; collection&quot;</span>;</div>
+<div class="line"><span class="lineno">  783</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1642,10 +1640,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00796">796</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  797</span>{</div>
-<div class="line"><span class="lineno">  798</span>    fMTCDetectorPointCollection-&gt;Clear();</div>
-<div class="line"><span class="lineno">  799</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00794">794</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  795</span>{</div>
+<div class="line"><span class="lineno">  796</span>    fMTCDetectorPointCollection-&gt;Clear();</div>
+<div class="line"><span class="lineno">  797</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1756,112 +1754,112 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00672">672</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  673</span>{</div>
-<div class="line"><span class="lineno">  674</span>    <span class="comment">// check if containers are already filled</span></div>
-<div class="line"><span class="lineno">  675</span>    <span class="keywordflow">if</span> (!fibresSiPM_U.empty() || !fibresSiPM_V.empty() || !SiPMPos_U.empty() || !SiPMPos_V.empty()) {</div>
-<div class="line"><span class="lineno">  676</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;SiPM mapping already done, skipping.&quot;</span>;</div>
-<div class="line"><span class="lineno">  677</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  678</span>    }</div>
-<div class="line"><span class="lineno">  679</span>    Float_t fibresRadius = -1;</div>
-<div class="line"><span class="lineno">  680</span>    Float_t dSiPM = -1;</div>
-<div class="line"><span class="lineno">  681</span>    TGeoNode* vol;</div>
-<div class="line"><span class="lineno">  682</span>    TGeoNode* fibre;</div>
-<div class="line"><span class="lineno">  683</span>    SiPMOverlap();</div>
-<div class="line"><span class="lineno">  684</span>    <span class="comment">// Loop over both U and V planes</span></div>
-<div class="line"><span class="lineno">  685</span>    std::vector&lt;std::pair&lt;const char*, const char*&gt;&gt; sipm_planes = {{<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>, <span class="stringliteral">&quot;MTC_scifi_U&quot;</span>},</div>
-<div class="line"><span class="lineno">  686</span>                                                                    {<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>, <span class="stringliteral">&quot;MTC_scifi_V&quot;</span>}};</div>
-<div class="line"><span class="lineno">  687</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [sipm_vol, scifi_vol] : sipm_planes) {</div>
-<div class="line"><span class="lineno">  688</span>        <span class="keyword">auto</span> sipm = gGeoManager-&gt;FindVolumeFast(sipm_vol);</div>
-<div class="line"><span class="lineno">  689</span>        <span class="keywordflow">if</span> (!sipm)</div>
-<div class="line"><span class="lineno">  690</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  691</span>        TObjArray* Nodes = sipm-&gt;GetNodes();</div>
-<div class="line"><span class="lineno">  692</span>        <span class="keyword">auto</span> plane = gGeoManager-&gt;FindVolumeFast(scifi_vol);</div>
-<div class="line"><span class="lineno">  693</span>        <span class="keywordflow">if</span> (!plane)</div>
-<div class="line"><span class="lineno">  694</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  695</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> imat = 0; imat &lt; plane-&gt;GetNodes()-&gt;GetEntries(); imat++) {</div>
-<div class="line"><span class="lineno">  696</span>            <span class="keyword">auto</span> mat = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(plane-&gt;GetNodes()-&gt;At(imat));</div>
-<div class="line"><span class="lineno">  697</span>            Float_t <a class="code hl_variable" href="namespaceg4Ex.html#afd27be4af37c94678ccdccb2c39e7f62">t1</a> = mat-&gt;GetMatrix()-&gt;GetTranslation()[0];</div>
-<div class="line"><span class="lineno">  698</span>            <span class="keyword">auto</span> vmat = mat-&gt;GetVolume();</div>
-<div class="line"><span class="lineno">  699</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ifibre = 0; ifibre &lt; vmat-&gt;GetNodes()-&gt;GetEntriesFast(); ifibre++) {</div>
-<div class="line"><span class="lineno">  700</span>                fibre = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(vmat-&gt;GetNodes()-&gt;At(ifibre));</div>
-<div class="line"><span class="lineno">  701</span>                <span class="keywordflow">if</span> (fibresRadius &lt; 0) {</div>
-<div class="line"><span class="lineno">  702</span>                    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> = fibre-&gt;GetVolume()-&gt;GetShape();</div>
-<div class="line"><span class="lineno">  703</span>                    <span class="keyword">auto</span> S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>);</div>
-<div class="line"><span class="lineno">  704</span>                    fibresRadius = S-&gt;GetDX();</div>
-<div class="line"><span class="lineno">  705</span>                }</div>
-<div class="line"><span class="lineno">  706</span>                Int_t fID =</div>
-<div class="line"><span class="lineno">  707</span>                    fibre-&gt;GetNumber() % 1000000 + imat * 1e4;   <span class="comment">// local fibre number, global fibre number = SO+fID</span></div>
-<div class="line"><span class="lineno">  708</span>                TVector3 Atop, Bbot;</div>
-<div class="line"><span class="lineno">  709</span>                <a class="code hl_function" href="classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6">GetPosition</a>(fibre-&gt;GetNumber(), Atop, Bbot);</div>
-<div class="line"><span class="lineno">  710</span>                Float_t a = Bbot[0];</div>
-<div class="line"><span class="lineno">  711</span> </div>
-<div class="line"><span class="lineno">  712</span>                <span class="comment">//  check for overlap with any of the SiPM channels in the same mat</span></div>
-<div class="line"><span class="lineno">  713</span>                <span class="keywordflow">for</span> (Int_t nChan = 0; nChan &lt; Nodes-&gt;GetEntriesFast(); nChan++) {   <span class="comment">// 7 SiPMs total times 128 channels</span></div>
-<div class="line"><span class="lineno">  714</span>                    vol = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(Nodes-&gt;At(nChan));</div>
-<div class="line"><span class="lineno">  715</span>                    Int_t N = vol-&gt;GetNumber();</div>
-<div class="line"><span class="lineno">  716</span>                    Float_t xcentre = vol-&gt;GetMatrix()-&gt;GetTranslation()[0];</div>
-<div class="line"><span class="lineno">  717</span>                    <span class="keywordflow">if</span> (dSiPM &lt; 0) {</div>
-<div class="line"><span class="lineno">  718</span>                        TGeoBBox* B = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(vol-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  719</span>                        dSiPM = B-&gt;GetDX();</div>
-<div class="line"><span class="lineno">  720</span>                    }</div>
-<div class="line"><span class="lineno">  721</span> </div>
-<div class="line"><span class="lineno">  722</span>                    <span class="keywordflow">if</span> (TMath::Abs(xcentre - a) &gt; 3 * dSiPM / 2) {</div>
-<div class="line"><span class="lineno">  723</span>                        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  724</span>                    }   <span class="comment">// no need to check further</span></div>
-<div class="line"><span class="lineno">  725</span>                    Float_t W = area(a, fibresRadius, xcentre - dSiPM, xcentre + dSiPM);</div>
-<div class="line"><span class="lineno">  726</span>                    <span class="keywordflow">if</span> (W &lt; 0) {</div>
-<div class="line"><span class="lineno">  727</span>                        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  728</span>                    }</div>
-<div class="line"><span class="lineno">  729</span>                    std::array&lt;float, 2&gt; Wa;</div>
-<div class="line"><span class="lineno">  730</span>                    Wa[0] = W;</div>
-<div class="line"><span class="lineno">  731</span>                    Wa[1] = a;</div>
-<div class="line"><span class="lineno">  732</span> </div>
-<div class="line"><span class="lineno">  733</span>                    <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  734</span>                        <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>[N][fID] = Wa;</div>
-<div class="line"><span class="lineno">  735</span>                    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  736</span>                        <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>[N][fID] = Wa;</div>
-<div class="line"><span class="lineno">  737</span>                    }</div>
-<div class="line"><span class="lineno">  738</span>                }</div>
-<div class="line"><span class="lineno">  739</span>            }</div>
-<div class="line"><span class="lineno">  740</span>        }</div>
-<div class="line"><span class="lineno">  741</span>        <span class="comment">// calculate also local SiPM positions based on fibre positions and their fraction</span></div>
-<div class="line"><span class="lineno">  742</span>        <span class="comment">// probably an overkill, maximum difference between weighted average and central position &lt; 6 micron.</span></div>
-<div class="line"><span class="lineno">  743</span>        <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  744</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
-<div class="line"><span class="lineno">  745</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
-<div class="line"><span class="lineno">  746</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
-<div class="line"><span class="lineno">  747</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
-<div class="line"><span class="lineno">  748</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
-<div class="line"><span class="lineno">  749</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
-<div class="line"><span class="lineno">  750</span>                }</div>
-<div class="line"><span class="lineno">  751</span>                <a class="code hl_variable" href="classMTCDetector.html#ac63835d2de4b1f8247c44dee5015612d">SiPMPos_U</a>[N] = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>;</div>
-<div class="line"><span class="lineno">  752</span>            }</div>
-<div class="line"><span class="lineno">  753</span>            <span class="comment">// make inverse mapping, which fibre is associated to which SiPMs</span></div>
-<div class="line"><span class="lineno">  754</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
-<div class="line"><span class="lineno">  755</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [nfibre, Wa] : it) {</div>
-<div class="line"><span class="lineno">  756</span>                    <a class="code hl_variable" href="classMTCDetector.html#afa87dfe0b28157190f0c7267c3a6c3fb">siPMFibres_U</a>[nfibre][N] = Wa;</div>
-<div class="line"><span class="lineno">  757</span>                }</div>
-<div class="line"><span class="lineno">  758</span>            }</div>
-<div class="line"><span class="lineno">  759</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  760</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
-<div class="line"><span class="lineno">  761</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
-<div class="line"><span class="lineno">  762</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
-<div class="line"><span class="lineno">  763</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
-<div class="line"><span class="lineno">  764</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
-<div class="line"><span class="lineno">  765</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
-<div class="line"><span class="lineno">  766</span>                }</div>
-<div class="line"><span class="lineno">  767</span>                <a class="code hl_variable" href="classMTCDetector.html#af0d5aa1a1f53c4078c281a29ce620818">SiPMPos_V</a>[N] = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>;</div>
-<div class="line"><span class="lineno">  768</span>            }</div>
-<div class="line"><span class="lineno">  769</span>            <span class="comment">// make inverse mapping, which fibre is associated to which SiPMs</span></div>
-<div class="line"><span class="lineno">  770</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
-<div class="line"><span class="lineno">  771</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [nfibre, Wa] : it) {</div>
-<div class="line"><span class="lineno">  772</span>                    <a class="code hl_variable" href="classMTCDetector.html#a06eab0e3e5352a6e8cacadd128e93c25">siPMFibres_V</a>[nfibre][N] = Wa;</div>
-<div class="line"><span class="lineno">  773</span>                }</div>
-<div class="line"><span class="lineno">  774</span>            }</div>
-<div class="line"><span class="lineno">  775</span>        }</div>
-<div class="line"><span class="lineno">  776</span>    }</div>
-<div class="line"><span class="lineno">  777</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00670">670</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  671</span>{</div>
+<div class="line"><span class="lineno">  672</span>    <span class="comment">// check if containers are already filled</span></div>
+<div class="line"><span class="lineno">  673</span>    <span class="keywordflow">if</span> (!fibresSiPM_U.empty() || !fibresSiPM_V.empty() || !SiPMPos_U.empty() || !SiPMPos_V.empty()) {</div>
+<div class="line"><span class="lineno">  674</span>        LOG(warning) &lt;&lt; <span class="stringliteral">&quot;SiPM mapping already done, skipping.&quot;</span>;</div>
+<div class="line"><span class="lineno">  675</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  676</span>    }</div>
+<div class="line"><span class="lineno">  677</span>    Float_t fibresRadius = -1;</div>
+<div class="line"><span class="lineno">  678</span>    Float_t dSiPM = -1;</div>
+<div class="line"><span class="lineno">  679</span>    TGeoNode* vol;</div>
+<div class="line"><span class="lineno">  680</span>    TGeoNode* fibre;</div>
+<div class="line"><span class="lineno">  681</span>    SiPMOverlap();</div>
+<div class="line"><span class="lineno">  682</span>    <span class="comment">// Loop over both U and V planes</span></div>
+<div class="line"><span class="lineno">  683</span>    std::vector&lt;std::pair&lt;const char*, const char*&gt;&gt; sipm_planes = {{<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>, <span class="stringliteral">&quot;MTC_scifi_U&quot;</span>},</div>
+<div class="line"><span class="lineno">  684</span>                                                                    {<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>, <span class="stringliteral">&quot;MTC_scifi_V&quot;</span>}};</div>
+<div class="line"><span class="lineno">  685</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [sipm_vol, scifi_vol] : sipm_planes) {</div>
+<div class="line"><span class="lineno">  686</span>        <span class="keyword">auto</span> sipm = gGeoManager-&gt;FindVolumeFast(sipm_vol);</div>
+<div class="line"><span class="lineno">  687</span>        <span class="keywordflow">if</span> (!sipm)</div>
+<div class="line"><span class="lineno">  688</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  689</span>        TObjArray* Nodes = sipm-&gt;GetNodes();</div>
+<div class="line"><span class="lineno">  690</span>        <span class="keyword">auto</span> plane = gGeoManager-&gt;FindVolumeFast(scifi_vol);</div>
+<div class="line"><span class="lineno">  691</span>        <span class="keywordflow">if</span> (!plane)</div>
+<div class="line"><span class="lineno">  692</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  693</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> imat = 0; imat &lt; plane-&gt;GetNodes()-&gt;GetEntries(); imat++) {</div>
+<div class="line"><span class="lineno">  694</span>            <span class="keyword">auto</span> mat = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(plane-&gt;GetNodes()-&gt;At(imat));</div>
+<div class="line"><span class="lineno">  695</span>            Float_t <a class="code hl_variable" href="namespaceg4Ex.html#afd27be4af37c94678ccdccb2c39e7f62">t1</a> = mat-&gt;GetMatrix()-&gt;GetTranslation()[0];</div>
+<div class="line"><span class="lineno">  696</span>            <span class="keyword">auto</span> vmat = mat-&gt;GetVolume();</div>
+<div class="line"><span class="lineno">  697</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ifibre = 0; ifibre &lt; vmat-&gt;GetNodes()-&gt;GetEntriesFast(); ifibre++) {</div>
+<div class="line"><span class="lineno">  698</span>                fibre = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(vmat-&gt;GetNodes()-&gt;At(ifibre));</div>
+<div class="line"><span class="lineno">  699</span>                <span class="keywordflow">if</span> (fibresRadius &lt; 0) {</div>
+<div class="line"><span class="lineno">  700</span>                    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> = fibre-&gt;GetVolume()-&gt;GetShape();</div>
+<div class="line"><span class="lineno">  701</span>                    <span class="keyword">auto</span> S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>);</div>
+<div class="line"><span class="lineno">  702</span>                    fibresRadius = S-&gt;GetDX();</div>
+<div class="line"><span class="lineno">  703</span>                }</div>
+<div class="line"><span class="lineno">  704</span>                Int_t fID =</div>
+<div class="line"><span class="lineno">  705</span>                    fibre-&gt;GetNumber() % 1000000 + imat * 1e4;   <span class="comment">// local fibre number, global fibre number = SO+fID</span></div>
+<div class="line"><span class="lineno">  706</span>                TVector3 Atop, Bbot;</div>
+<div class="line"><span class="lineno">  707</span>                <a class="code hl_function" href="classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6">GetPosition</a>(fibre-&gt;GetNumber(), Atop, Bbot);</div>
+<div class="line"><span class="lineno">  708</span>                Float_t a = Bbot[0];</div>
+<div class="line"><span class="lineno">  709</span> </div>
+<div class="line"><span class="lineno">  710</span>                <span class="comment">//  check for overlap with any of the SiPM channels in the same mat</span></div>
+<div class="line"><span class="lineno">  711</span>                <span class="keywordflow">for</span> (Int_t nChan = 0; nChan &lt; Nodes-&gt;GetEntriesFast(); nChan++) {   <span class="comment">// 7 SiPMs total times 128 channels</span></div>
+<div class="line"><span class="lineno">  712</span>                    vol = <span class="keyword">static_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(Nodes-&gt;At(nChan));</div>
+<div class="line"><span class="lineno">  713</span>                    Int_t N = vol-&gt;GetNumber();</div>
+<div class="line"><span class="lineno">  714</span>                    Float_t xcentre = vol-&gt;GetMatrix()-&gt;GetTranslation()[0];</div>
+<div class="line"><span class="lineno">  715</span>                    <span class="keywordflow">if</span> (dSiPM &lt; 0) {</div>
+<div class="line"><span class="lineno">  716</span>                        TGeoBBox* B = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(vol-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  717</span>                        dSiPM = B-&gt;GetDX();</div>
+<div class="line"><span class="lineno">  718</span>                    }</div>
+<div class="line"><span class="lineno">  719</span> </div>
+<div class="line"><span class="lineno">  720</span>                    <span class="keywordflow">if</span> (TMath::Abs(xcentre - a) &gt; 3 * dSiPM / 2) {</div>
+<div class="line"><span class="lineno">  721</span>                        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  722</span>                    }   <span class="comment">// no need to check further</span></div>
+<div class="line"><span class="lineno">  723</span>                    Float_t W = area(a, fibresRadius, xcentre - dSiPM, xcentre + dSiPM);</div>
+<div class="line"><span class="lineno">  724</span>                    <span class="keywordflow">if</span> (W &lt; 0) {</div>
+<div class="line"><span class="lineno">  725</span>                        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  726</span>                    }</div>
+<div class="line"><span class="lineno">  727</span>                    std::array&lt;float, 2&gt; Wa;</div>
+<div class="line"><span class="lineno">  728</span>                    Wa[0] = W;</div>
+<div class="line"><span class="lineno">  729</span>                    Wa[1] = a;</div>
+<div class="line"><span class="lineno">  730</span> </div>
+<div class="line"><span class="lineno">  731</span>                    <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  732</span>                        <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>[N][fID] = Wa;</div>
+<div class="line"><span class="lineno">  733</span>                    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  734</span>                        <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>[N][fID] = Wa;</div>
+<div class="line"><span class="lineno">  735</span>                    }</div>
+<div class="line"><span class="lineno">  736</span>                }</div>
+<div class="line"><span class="lineno">  737</span>            }</div>
+<div class="line"><span class="lineno">  738</span>        }</div>
+<div class="line"><span class="lineno">  739</span>        <span class="comment">// calculate also local SiPM positions based on fibre positions and their fraction</span></div>
+<div class="line"><span class="lineno">  740</span>        <span class="comment">// probably an overkill, maximum difference between weighted average and central position &lt; 6 micron.</span></div>
+<div class="line"><span class="lineno">  741</span>        <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  742</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
+<div class="line"><span class="lineno">  743</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
+<div class="line"><span class="lineno">  744</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
+<div class="line"><span class="lineno">  745</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  746</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
+<div class="line"><span class="lineno">  747</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
+<div class="line"><span class="lineno">  748</span>                }</div>
+<div class="line"><span class="lineno">  749</span>                <a class="code hl_variable" href="classMTCDetector.html#ac63835d2de4b1f8247c44dee5015612d">SiPMPos_U</a>[N] = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>;</div>
+<div class="line"><span class="lineno">  750</span>            }</div>
+<div class="line"><span class="lineno">  751</span>            <span class="comment">// make inverse mapping, which fibre is associated to which SiPMs</span></div>
+<div class="line"><span class="lineno">  752</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
+<div class="line"><span class="lineno">  753</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [nfibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  754</span>                    <a class="code hl_variable" href="classMTCDetector.html#afa87dfe0b28157190f0c7267c3a6c3fb">siPMFibres_U</a>[nfibre][N] = Wa;</div>
+<div class="line"><span class="lineno">  755</span>                }</div>
+<div class="line"><span class="lineno">  756</span>            }</div>
+<div class="line"><span class="lineno">  757</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sipm_vol == std::string(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  758</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
+<div class="line"><span class="lineno">  759</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
+<div class="line"><span class="lineno">  760</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
+<div class="line"><span class="lineno">  761</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  762</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
+<div class="line"><span class="lineno">  763</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
+<div class="line"><span class="lineno">  764</span>                }</div>
+<div class="line"><span class="lineno">  765</span>                <a class="code hl_variable" href="classMTCDetector.html#af0d5aa1a1f53c4078c281a29ce620818">SiPMPos_V</a>[N] = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>;</div>
+<div class="line"><span class="lineno">  766</span>            }</div>
+<div class="line"><span class="lineno">  767</span>            <span class="comment">// make inverse mapping, which fibre is associated to which SiPMs</span></div>
+<div class="line"><span class="lineno">  768</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
+<div class="line"><span class="lineno">  769</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [nfibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  770</span>                    <a class="code hl_variable" href="classMTCDetector.html#a06eab0e3e5352a6e8cacadd128e93c25">siPMFibres_V</a>[nfibre][N] = Wa;</div>
+<div class="line"><span class="lineno">  771</span>                }</div>
+<div class="line"><span class="lineno">  772</span>            }</div>
+<div class="line"><span class="lineno">  773</span>        }</div>
+<div class="line"><span class="lineno">  774</span>    }</div>
+<div class="line"><span class="lineno">  775</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_a06eab0e3e5352a6e8cacadd128e93c25"><div class="ttname"><a href="classMTCDetector.html#a06eab0e3e5352a6e8cacadd128e93c25">MTCDetector::siPMFibres_V</a></div><div class="ttdeci">std::map&lt; Int_t, std::map&lt; Int_t, std::array&lt; float, 2 &gt; &gt; &gt; siPMFibres_V</div><div class="ttdoc">mapping of fibres to SiPM channels</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00138">MTCDetector.h:138</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_a07c34fbe4b71130bd2a9b2808539455d"><div class="ttname"><a href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">MTCDetector::fibresSiPM_V</a></div><div class="ttdeci">std::map&lt; Int_t, std::map&lt; Int_t, std::array&lt; float, 2 &gt; &gt; &gt; fibresSiPM_V</div><div class="ttdoc">inverse mapping</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00137">MTCDetector.h:137</a></div></div>
@@ -1869,7 +1867,7 @@ Static Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassMTCDetector_html_ac63835d2de4b1f8247c44dee5015612d"><div class="ttname"><a href="classMTCDetector.html#ac63835d2de4b1f8247c44dee5015612d">MTCDetector::SiPMPos_U</a></div><div class="ttdeci">std::map&lt; Int_t, float &gt; SiPMPos_U</div><div class="ttdoc">inverse mapping</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00139">MTCDetector.h:139</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_af0d5aa1a1f53c4078c281a29ce620818"><div class="ttname"><a href="classMTCDetector.html#af0d5aa1a1f53c4078c281a29ce620818">MTCDetector::SiPMPos_V</a></div><div class="ttdeci">std::map&lt; Int_t, float &gt; SiPMPos_V</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00139">MTCDetector.h:139</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_afa87dfe0b28157190f0c7267c3a6c3fb"><div class="ttname"><a href="classMTCDetector.html#afa87dfe0b28157190f0c7267c3a6c3fb">MTCDetector::siPMFibres_U</a></div><div class="ttdeci">std::map&lt; Int_t, std::map&lt; Int_t, std::array&lt; float, 2 &gt; &gt; &gt; siPMFibres_U</div><div class="ttdoc">mapping of fibres to SiPM channels</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00136">MTCDetector.h:136</a></div></div>
-<div class="ttc" id="aclassMTCDetector_html_afd86dacd0abbb9628d302fa9e1bfb1f6"><div class="ttname"><a href="classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6">MTCDetector::GetPosition</a></div><div class="ttdeci">void GetPosition(Int_t fDetectorID, TVector3 &amp;vLeft, TVector3 &amp;vRight)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8cxx_source.html#l00565">MTCDetector.cxx:565</a></div></div>
+<div class="ttc" id="aclassMTCDetector_html_afd86dacd0abbb9628d302fa9e1bfb1f6"><div class="ttname"><a href="classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6">MTCDetector::GetPosition</a></div><div class="ttdeci">void GetPosition(Int_t fDetectorID, TVector3 &amp;vLeft, TVector3 &amp;vRight)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8cxx_source.html#l00563">MTCDetector.cxx:563</a></div></div>
 <div class="ttc" id="anamespaceg4Ex_html_afd27be4af37c94678ccdccb2c39e7f62"><div class="ttname"><a href="namespaceg4Ex.html#afd27be4af37c94678ccdccb2c39e7f62">g4Ex.t1</a></div><div class="ttdeci">t1</div><div class="ttdef"><b>Definition</b> <a href="g4Ex_8py_source.html#l00301">g4Ex.py:301</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00357">makeCascade.py:357</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a31069c861ee6564962a537e94c422254"><div class="ttname"><a href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">makeMuonDIS.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00078">makeMuonDIS.py:78</a></div></div>
@@ -1899,79 +1897,79 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00491">491</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  492</span>{</div>
-<div class="line"><span class="lineno">  493</span>    <span class="keywordflow">if</span> (gGeoManager-&gt;FindVolumeFast(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>) || gGeoManager-&gt;FindVolumeFast(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  494</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  495</span>    }</div>
-<div class="line"><span class="lineno">  496</span>    Double_t fLengthScifiMat = fSciFiActiveY;</div>
-<div class="line"><span class="lineno">  497</span>    Double_t fWidthChannel = fFiberPitch * fChannelAggregated;</div>
-<div class="line"><span class="lineno">  498</span>    fNSiPMChan = std::ceil(fWidth / fWidthChannel);</div>
-<div class="line"><span class="lineno">  499</span>    <span class="keywordflow">if</span> (fNSiPMChan &gt; kMaxChannelsPerSiPM) {</div>
-<div class="line"><span class="lineno">  500</span>        LOG(warn) &lt;&lt; <span class="stringliteral">&quot;Number of SiPM channels (&quot;</span> &lt;&lt; fNSiPMChan &lt;&lt; <span class="stringliteral">&quot;) exceeds maximum per SiPM (&quot;</span> &lt;&lt; kMaxChannelsPerSiPM</div>
-<div class="line"><span class="lineno">  501</span>                  &lt;&lt; <span class="stringliteral">&quot;), redistributing across multiple SiPMs&quot;</span>;</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00489">489</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  490</span>{</div>
+<div class="line"><span class="lineno">  491</span>    <span class="keywordflow">if</span> (gGeoManager-&gt;FindVolumeFast(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>) || gGeoManager-&gt;FindVolumeFast(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  493</span>    }</div>
+<div class="line"><span class="lineno">  494</span>    Double_t fLengthScifiMat = fSciFiActiveY;</div>
+<div class="line"><span class="lineno">  495</span>    Double_t fWidthChannel = fFiberPitch * fChannelAggregated;</div>
+<div class="line"><span class="lineno">  496</span>    fNSiPMChan = std::ceil(fWidth / fWidthChannel);</div>
+<div class="line"><span class="lineno">  497</span>    <span class="keywordflow">if</span> (fNSiPMChan &gt; kMaxChannelsPerSiPM) {</div>
+<div class="line"><span class="lineno">  498</span>        LOG(warn) &lt;&lt; <span class="stringliteral">&quot;Number of SiPM channels (&quot;</span> &lt;&lt; fNSiPMChan &lt;&lt; <span class="stringliteral">&quot;) exceeds maximum per SiPM (&quot;</span> &lt;&lt; kMaxChannelsPerSiPM</div>
+<div class="line"><span class="lineno">  499</span>                  &lt;&lt; <span class="stringliteral">&quot;), redistributing across multiple SiPMs&quot;</span>;</div>
+<div class="line"><span class="lineno">  500</span> </div>
+<div class="line"><span class="lineno">  501</span>        fNSiPMs = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(fNSiPMChan) / kMaxChannelsPerSiPM));</div>
 <div class="line"><span class="lineno">  502</span> </div>
-<div class="line"><span class="lineno">  503</span>        fNSiPMs = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(fNSiPMChan) / kMaxChannelsPerSiPM));</div>
+<div class="line"><span class="lineno">  503</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Increasing number of SiPMs up to &quot;</span> &lt;&lt; fNSiPMs;</div>
 <div class="line"><span class="lineno">  504</span> </div>
-<div class="line"><span class="lineno">  505</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Increasing number of SiPMs up to &quot;</span> &lt;&lt; fNSiPMs;</div>
-<div class="line"><span class="lineno">  506</span> </div>
-<div class="line"><span class="lineno">  507</span>        <span class="comment">// define redistribution of channels among SiPMs</span></div>
-<div class="line"><span class="lineno">  508</span>        fNSiPMChan = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(fNSiPMChan / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(fNSiPMs)));</div>
-<div class="line"><span class="lineno">  509</span> </div>
-<div class="line"><span class="lineno">  510</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;New fNSiPMChan = &quot;</span> &lt;&lt; fNSiPMChan;</div>
-<div class="line"><span class="lineno">  511</span>    }</div>
-<div class="line"><span class="lineno">  512</span>    Double_t fEdge = (<a class="code hl_variable" href="classMTCDetector.html#a3ce22627f57de074bf209dbf6d37c5c6">fWidth</a> - <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a> * <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a> * fWidthChannel) / 2;</div>
-<div class="line"><span class="lineno">  513</span>    Double_t firstChannelX = -<a class="code hl_variable" href="classMTCDetector.html#a3ce22627f57de074bf209dbf6d37c5c6">fWidth</a> / 2;</div>
-<div class="line"><span class="lineno">  514</span> </div>
-<div class="line"><span class="lineno">  515</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;SiPM Overlap parameters:\n&quot;</span></div>
-<div class="line"><span class="lineno">  516</span>              &lt;&lt; <span class="stringliteral">&quot;  fLengthScifiMat = &quot;</span> &lt;&lt; fLengthScifiMat &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
-<div class="line"><span class="lineno">  517</span>              &lt;&lt; <span class="stringliteral">&quot;  fWidthChannel = &quot;</span> &lt;&lt; fWidthChannel &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
-<div class="line"><span class="lineno">  518</span>              &lt;&lt; <span class="stringliteral">&quot;  fFiberPitch = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#adcc7760f14e93249a4ee30be53b2f7c2">fFiberPitch</a> &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
-<div class="line"><span class="lineno">  519</span>              &lt;&lt; <span class="stringliteral">&quot;  fChannelAggregated = &quot;</span> &lt;&lt; fChannelAggregated &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><span class="lineno">  520</span>              &lt;&lt; <span class="stringliteral">&quot;  fNSiPMChan = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><span class="lineno">  521</span>              &lt;&lt; <span class="stringliteral">&quot;  fNSiPMs = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><span class="lineno">  522</span>              &lt;&lt; <span class="stringliteral">&quot;  fNMats = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><span class="lineno">  523</span>              &lt;&lt; <span class="stringliteral">&quot;  fEdge = &quot;</span> &lt;&lt; fEdge &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
-<div class="line"><span class="lineno">  524</span>              &lt;&lt; <span class="stringliteral">&quot;  firstChannelX = &quot;</span> &lt;&lt; firstChannelX &lt;&lt; <span class="stringliteral">&quot; cm&quot;</span>;</div>
-<div class="line"><span class="lineno">  525</span>    <span class="comment">// Contains all plane SiPMs, defined for horizontal fiber plane</span></div>
-<div class="line"><span class="lineno">  526</span>    <span class="comment">// To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z</span></div>
-<div class="line"><span class="lineno">  527</span>    TGeoVolumeAssembly* SiPMmapVolU = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>);</div>
-<div class="line"><span class="lineno">  528</span>    TGeoVolumeAssembly* SiPMmapVolV = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>);</div>
-<div class="line"><span class="lineno">  529</span> </div>
-<div class="line"><span class="lineno">  530</span>    TGeoBBox* ChannelVol_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;ChannelVol&quot;</span>, fWidthChannel / 2, fLengthScifiMat / 2, fiberMatThick / 2);</div>
-<div class="line"><span class="lineno">  531</span>    TGeoVolume* ChannelVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;ChannelVol&quot;</span>, ChannelVol_box, gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;silicon&quot;</span>));</div>
-<div class="line"><span class="lineno">  532</span>    <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  533</span><span class="comment">      Example of fiberID: 123051820, where:</span></div>
-<div class="line"><span class="lineno">  534</span><span class="comment">        - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  535</span><span class="comment">        - 23: layer number</span></div>
-<div class="line"><span class="lineno">  536</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
-<div class="line"><span class="lineno">  537</span><span class="comment">        - 5: z-layer number (0-5)</span></div>
-<div class="line"><span class="lineno">  538</span><span class="comment">        - 1820: local fibre ID within the station</span></div>
-<div class="line"><span class="lineno">  539</span><span class="comment">      Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
-<div class="line"><span class="lineno">  540</span><span class="comment">        - 1: MTC unique ID</span></div>
-<div class="line"><span class="lineno">  541</span><span class="comment">        - 23: layer number</span></div>
-<div class="line"><span class="lineno">  542</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
-<div class="line"><span class="lineno">  543</span><span class="comment">        - 0: mat number (only 0 by June 2025)</span></div>
-<div class="line"><span class="lineno">  544</span><span class="comment">        - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
-<div class="line"><span class="lineno">  545</span><span class="comment">        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
-<div class="line"><span class="lineno">  546</span><span class="comment">    */</span></div>
-<div class="line"><span class="lineno">  547</span> </div>
-<div class="line"><span class="lineno">  548</span>    <span class="keywordtype">int</span> N = <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a> == 1 ? 1 : 0;</div>
-<div class="line"><span class="lineno">  549</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = fEdge + firstChannelX;</div>
-<div class="line"><span class="lineno">  550</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> imat = 0; imat &lt; <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a>; imat++) {</div>
-<div class="line"><span class="lineno">  551</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> isipms = 0; isipms &lt; <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a>; isipms++) {</div>
-<div class="line"><span class="lineno">  552</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ichannel = 0; ichannel &lt; <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a>; ichannel++) {</div>
-<div class="line"><span class="lineno">  553</span>                <span class="comment">// +5 degrees</span></div>
-<div class="line"><span class="lineno">  554</span>                SiPMmapVolU-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  555</span>                    ChannelVol, 100000 * 0 + imat * 10000 + isipms * 1000 + ichannel, <span class="keyword">new</span> TGeoTranslation(pos, 0, 0));</div>
-<div class="line"><span class="lineno">  556</span>                <span class="comment">// -5 degrees</span></div>
-<div class="line"><span class="lineno">  557</span>                SiPMmapVolV-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  558</span>                    ChannelVol, 100000 * 1 + imat * 10000 + isipms * 1000 + ichannel, <span class="keyword">new</span> TGeoTranslation(-pos, 0, 0));</div>
-<div class="line"><span class="lineno">  559</span>                <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> += fWidthChannel;</div>
-<div class="line"><span class="lineno">  560</span>            }</div>
-<div class="line"><span class="lineno">  561</span>        }</div>
-<div class="line"><span class="lineno">  562</span>    }</div>
-<div class="line"><span class="lineno">  563</span>}</div>
+<div class="line"><span class="lineno">  505</span>        <span class="comment">// define redistribution of channels among SiPMs</span></div>
+<div class="line"><span class="lineno">  506</span>        fNSiPMChan = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(fNSiPMChan / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(fNSiPMs)));</div>
+<div class="line"><span class="lineno">  507</span> </div>
+<div class="line"><span class="lineno">  508</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;New fNSiPMChan = &quot;</span> &lt;&lt; fNSiPMChan;</div>
+<div class="line"><span class="lineno">  509</span>    }</div>
+<div class="line"><span class="lineno">  510</span>    Double_t fEdge = (<a class="code hl_variable" href="classMTCDetector.html#a3ce22627f57de074bf209dbf6d37c5c6">fWidth</a> - <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a> * <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a> * fWidthChannel) / 2;</div>
+<div class="line"><span class="lineno">  511</span>    Double_t firstChannelX = -<a class="code hl_variable" href="classMTCDetector.html#a3ce22627f57de074bf209dbf6d37c5c6">fWidth</a> / 2;</div>
+<div class="line"><span class="lineno">  512</span> </div>
+<div class="line"><span class="lineno">  513</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;SiPM Overlap parameters:\n&quot;</span></div>
+<div class="line"><span class="lineno">  514</span>              &lt;&lt; <span class="stringliteral">&quot;  fLengthScifiMat = &quot;</span> &lt;&lt; fLengthScifiMat &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
+<div class="line"><span class="lineno">  515</span>              &lt;&lt; <span class="stringliteral">&quot;  fWidthChannel = &quot;</span> &lt;&lt; fWidthChannel &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
+<div class="line"><span class="lineno">  516</span>              &lt;&lt; <span class="stringliteral">&quot;  fFiberPitch = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#adcc7760f14e93249a4ee30be53b2f7c2">fFiberPitch</a> &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
+<div class="line"><span class="lineno">  517</span>              &lt;&lt; <span class="stringliteral">&quot;  fChannelAggregated = &quot;</span> &lt;&lt; fChannelAggregated &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><span class="lineno">  518</span>              &lt;&lt; <span class="stringliteral">&quot;  fNSiPMChan = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><span class="lineno">  519</span>              &lt;&lt; <span class="stringliteral">&quot;  fNSiPMs = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><span class="lineno">  520</span>              &lt;&lt; <span class="stringliteral">&quot;  fNMats = &quot;</span> &lt;&lt; <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><span class="lineno">  521</span>              &lt;&lt; <span class="stringliteral">&quot;  fEdge = &quot;</span> &lt;&lt; fEdge &lt;&lt; <span class="stringliteral">&quot; cm\n&quot;</span></div>
+<div class="line"><span class="lineno">  522</span>              &lt;&lt; <span class="stringliteral">&quot;  firstChannelX = &quot;</span> &lt;&lt; firstChannelX &lt;&lt; <span class="stringliteral">&quot; cm&quot;</span>;</div>
+<div class="line"><span class="lineno">  523</span>    <span class="comment">// Contains all plane SiPMs, defined for horizontal fiber plane</span></div>
+<div class="line"><span class="lineno">  524</span>    <span class="comment">// To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z</span></div>
+<div class="line"><span class="lineno">  525</span>    TGeoVolumeAssembly* SiPMmapVolU = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SiPMmapVolU&quot;</span>);</div>
+<div class="line"><span class="lineno">  526</span>    TGeoVolumeAssembly* SiPMmapVolV = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SiPMmapVolV&quot;</span>);</div>
+<div class="line"><span class="lineno">  527</span> </div>
+<div class="line"><span class="lineno">  528</span>    TGeoBBox* ChannelVol_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;ChannelVol&quot;</span>, fWidthChannel / 2, fLengthScifiMat / 2, fiberMatThick / 2);</div>
+<div class="line"><span class="lineno">  529</span>    TGeoVolume* ChannelVol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;ChannelVol&quot;</span>, ChannelVol_box, gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;silicon&quot;</span>));</div>
+<div class="line"><span class="lineno">  530</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  531</span><span class="comment">      Example of fiberID: 123051820, where:</span></div>
+<div class="line"><span class="lineno">  532</span><span class="comment">        - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  533</span><span class="comment">        - 23: layer number</span></div>
+<div class="line"><span class="lineno">  534</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
+<div class="line"><span class="lineno">  535</span><span class="comment">        - 5: z-layer number (0-5)</span></div>
+<div class="line"><span class="lineno">  536</span><span class="comment">        - 1820: local fibre ID within the station</span></div>
+<div class="line"><span class="lineno">  537</span><span class="comment">      Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
+<div class="line"><span class="lineno">  538</span><span class="comment">        - 1: MTC unique ID</span></div>
+<div class="line"><span class="lineno">  539</span><span class="comment">        - 23: layer number</span></div>
+<div class="line"><span class="lineno">  540</span><span class="comment">        - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
+<div class="line"><span class="lineno">  541</span><span class="comment">        - 0: mat number (only 0 by June 2025)</span></div>
+<div class="line"><span class="lineno">  542</span><span class="comment">        - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
+<div class="line"><span class="lineno">  543</span><span class="comment">        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
+<div class="line"><span class="lineno">  544</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">  545</span> </div>
+<div class="line"><span class="lineno">  546</span>    <span class="keywordtype">int</span> N = <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a> == 1 ? 1 : 0;</div>
+<div class="line"><span class="lineno">  547</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = fEdge + firstChannelX;</div>
+<div class="line"><span class="lineno">  548</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> imat = 0; imat &lt; <a class="code hl_variable" href="classMTCDetector.html#ae0f7bee1407849c002c93c94d9890f00">fNMats</a>; imat++) {</div>
+<div class="line"><span class="lineno">  549</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> isipms = 0; isipms &lt; <a class="code hl_variable" href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">fNSiPMs</a>; isipms++) {</div>
+<div class="line"><span class="lineno">  550</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ichannel = 0; ichannel &lt; <a class="code hl_variable" href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">fNSiPMChan</a>; ichannel++) {</div>
+<div class="line"><span class="lineno">  551</span>                <span class="comment">// +5 degrees</span></div>
+<div class="line"><span class="lineno">  552</span>                SiPMmapVolU-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  553</span>                    ChannelVol, 100000 * 0 + imat * 10000 + isipms * 1000 + ichannel, <span class="keyword">new</span> TGeoTranslation(pos, 0, 0));</div>
+<div class="line"><span class="lineno">  554</span>                <span class="comment">// -5 degrees</span></div>
+<div class="line"><span class="lineno">  555</span>                SiPMmapVolV-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  556</span>                    ChannelVol, 100000 * 1 + imat * 10000 + isipms * 1000 + ichannel, <span class="keyword">new</span> TGeoTranslation(-pos, 0, 0));</div>
+<div class="line"><span class="lineno">  557</span>                <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> += fWidthChannel;</div>
+<div class="line"><span class="lineno">  558</span>            }</div>
+<div class="line"><span class="lineno">  559</span>        }</div>
+<div class="line"><span class="lineno">  560</span>    }</div>
+<div class="line"><span class="lineno">  561</span>}</div>
 <div class="ttc" id="aclassMTCDetector_html_a3ce22627f57de074bf209dbf6d37c5c6"><div class="ttname"><a href="classMTCDetector.html#a3ce22627f57de074bf209dbf6d37c5c6">MTCDetector::fWidth</a></div><div class="ttdeci">Double_t fWidth</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00102">MTCDetector.h:102</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_a85fc55033507e00b239468905a477efe"><div class="ttname"><a href="classMTCDetector.html#a85fc55033507e00b239468905a477efe">MTCDetector::fNSiPMs</a></div><div class="ttdeci">Int_t fNSiPMs</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00131">MTCDetector.h:131</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_ad8011c83995deba0bdf3c5d7ac1904bc"><div class="ttname"><a href="classMTCDetector.html#ad8011c83995deba0bdf3c5d7ac1904bc">MTCDetector::fNSiPMChan</a></div><div class="ttdeci">Int_t fNSiPMChan</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00129">MTCDetector.h:129</a></div></div>

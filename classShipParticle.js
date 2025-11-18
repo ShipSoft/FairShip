@@ -5,7 +5,7 @@ var classShipParticle =
     [ "ShipParticle", "classShipParticle.html#a0c0d50d9c61c8d5dd2912b546fb0c663", null ],
     [ "~ShipParticle", "classShipParticle.html#a22c7907654f82fdf649429e8f0c09b9b", null ],
     [ "ShipParticle", "classShipParticle.html#abe73f205786dec0fa0d81b93af10b329", null ],
-    [ "ClassDef", "classShipParticle.html#a5ed943bc3cedbc26c89cd5d3154bd0cc", null ],
+    [ "ClassDefOverride", "classShipParticle.html#ad39a937e512d76cd5386bea4f467d962", null ],
     [ "Energy", "classShipParticle.html#aaa06488834844ce1d270100e7f515dd2", null ],
     [ "GetCovP", "classShipParticle.html#a860894a1ba37a94487364d915cd29356", null ],
     [ "GetCovV", "classShipParticle.html#a04fa706b9617d0037f69da46590bca88", null ],

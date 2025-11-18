@@ -601,7 +601,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>    Double_t y0 = std::atof(inputLine[4].c_str());</div>
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>    Double_t z0 = std::atof(inputLine[5].c_str());</div>
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span> </div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>    Double_t phi(0.0), theta(0.0), psi(0.0), scale(1.0);</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>        Double_t phi(0.0), theta(0.0), psi(0.0);</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>        phi = std::atof(inputLine[6].c_str());</div>
@@ -1442,174 +1442,170 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l01283" name="l01283"></a><span class="lineno"> 1283</span>    theHist[icomponent].SetYTitle(<span class="stringliteral">&quot;y (cm)&quot;</span>);</div>
 <div class="line"><a id="l01284" name="l01284"></a><span class="lineno"> 1284</span>      }</div>
 <div class="line"><a id="l01285" name="l01285"></a><span class="lineno"> 1285</span>    }</div>
-<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span>    <span class="comment">// Get list of volumes (to check for local fields)</span></div>
-<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span>    TObjArray* theVolumes = gGeoManager-&gt;GetListOfVolumes();</div>
-<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>    Int_t nVol(0);</div>
-<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span>    <span class="keywordflow">if</span> (theVolumes) {nVol = theVolumes-&gt;GetSize();}</div>
-<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span> </div>
-<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span>    <span class="comment">// Loop over &quot;x&quot; axis</span></div>
-<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"> 1292</span>    <span class="keywordflow">for</span> (Int_t ix = 0; ix &lt; Nx; ix++) {</div>
-<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span> </div>
-<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span>    Double_t x = dx*ix + xMin;</div>
-<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span> </div>
-<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span>    <span class="comment">// Loop over &quot;y&quot; axis</span></div>
-<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>    <span class="keywordflow">for</span> (Int_t iy = 0; iy &lt; Ny; iy++) {</div>
-<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span> </div>
-<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span>        Double_t y = dy*iy + yMin;</div>
-<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span> </div>
-<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>        <span class="comment">// Initialise the B field array to zero</span></div>
-<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>        Double_t B[ncoordinates] = {0.0, 0.0, 0.0};</div>
-<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span> </div>
-<div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>        <span class="comment">// Initialise the position array to zero</span></div>
-<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>        Double_t position[ncoordinates] = {0.0, 0.0, 0.0};</div>
-<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>        <span class="keywordflow">if</span> (type == 0) {</div>
-<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span>        <span class="comment">// x-y</span></div>
-<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>            position[0] = x, position[1] = y;</div>
-<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == 1) {</div>
-<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>        <span class="comment">// z-x</span></div>
-<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>        position[0] = y, position[2] = x;</div>
-<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == 2) {</div>
-<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>        <span class="comment">// z-y</span></div>
-<div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>        position[1] = y; position[2] = x;</div>
-<div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span>        }</div>
-<div class="line"><a id="l01316" name="l01316"></a><span class="lineno"> 1316</span> </div>
-<div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span>        <span class="comment">// Find out if the point is inside one of the geometry volumes</span></div>
-<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"> 1318</span>        Bool_t inside(kFALSE);</div>
-<div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span> </div>
-<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>            <span class="comment">// Find the geometry node (volume path)</span></div>
-<div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>            TGeoNode* theNode = gGeoManager-&gt;FindNode(position[0], position[1], position[2]);</div>
-<div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span> </div>
-<div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span>        <span class="keywordflow">if</span> (theNode) {</div>
-<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span> </div>
-<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span>        <span class="comment">// Get the volume</span></div>
-<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>        TGeoVolume* theVol = theNode-&gt;GetVolume();</div>
-<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span> </div>
-<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span>        <span class="keywordflow">if</span> (theVol) {</div>
-<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span> </div>
-<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span>            <span class="comment">// Get the magnetic field</span></div>
-<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"> 1331</span>            TVirtualMagField* theField = <span class="keyword">dynamic_cast&lt;</span>TVirtualMagField*<span class="keyword">&gt;</span>(theVol-&gt;GetField());</div>
-<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span> </div>
-<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>            <span class="keywordflow">if</span> (theField) {</div>
+<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span> </div>
+<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span>    <span class="comment">// Loop over &quot;x&quot; axis</span></div>
+<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>    <span class="keywordflow">for</span> (Int_t ix = 0; ix &lt; Nx; ix++) {</div>
+<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span> </div>
+<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span>    Double_t x = dx*ix + xMin;</div>
+<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span> </div>
+<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"> 1292</span>    <span class="comment">// Loop over &quot;y&quot; axis</span></div>
+<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span>    <span class="keywordflow">for</span> (Int_t iy = 0; iy &lt; Ny; iy++) {</div>
+<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span> </div>
+<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span>        Double_t y = dy*iy + yMin;</div>
+<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span> </div>
+<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>        <span class="comment">// Initialise the B field array to zero</span></div>
+<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span>        Double_t B[ncoordinates] = {0.0, 0.0, 0.0};</div>
+<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span> </div>
+<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span>        <span class="comment">// Initialise the position array to zero</span></div>
+<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>        Double_t position[ncoordinates] = {0.0, 0.0, 0.0};</div>
+<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>        <span class="keywordflow">if</span> (type == 0) {</div>
+<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span>        <span class="comment">// x-y</span></div>
+<div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>            position[0] = x, position[1] = y;</div>
+<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == 1) {</div>
+<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>        <span class="comment">// z-x</span></div>
+<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span>        position[0] = y, position[2] = x;</div>
+<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == 2) {</div>
+<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>        <span class="comment">// z-y</span></div>
+<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>        position[1] = y; position[2] = x;</div>
+<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>        }</div>
+<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span> </div>
+<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>        <span class="comment">// Find out if the point is inside one of the geometry volumes</span></div>
+<div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>        Bool_t inside(kFALSE);</div>
+<div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span> </div>
+<div class="line"><a id="l01316" name="l01316"></a><span class="lineno"> 1316</span>            <span class="comment">// Find the geometry node (volume path)</span></div>
+<div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span>            TGeoNode* theNode = gGeoManager-&gt;FindNode(position[0], position[1], position[2]);</div>
+<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"> 1318</span> </div>
+<div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span>        <span class="keywordflow">if</span> (theNode) {</div>
+<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span> </div>
+<div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>        <span class="comment">// Get the volume</span></div>
+<div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span>        TGeoVolume* theVol = theNode-&gt;GetVolume();</div>
+<div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span> </div>
+<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span>        <span class="keywordflow">if</span> (theVol) {</div>
+<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span> </div>
+<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>            <span class="comment">// Get the magnetic field</span></div>
+<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span>            TVirtualMagField* theField = <span class="keyword">dynamic_cast&lt;</span>TVirtualMagField*<span class="keyword">&gt;</span>(theVol-&gt;GetField());</div>
+<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span> </div>
+<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span>            <span class="keywordflow">if</span> (theField) {</div>
+<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span> </div>
+<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"> 1331</span>            <span class="comment">// Find the &quot;local&quot; field inside the volume (using global co-ords)</span></div>
+<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span>            theField-&gt;Field(position, B);</div>
+<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>            inside = kTRUE;</div>
 <div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span> </div>
-<div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span>            <span class="comment">// Find the &quot;local&quot; field inside the volume (using global co-ords)</span></div>
-<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span>            theField-&gt;Field(position, B);</div>
-<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>            inside = kTRUE;</div>
+<div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span>            } <span class="comment">// theField</span></div>
+<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span> </div>
+<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>        } <span class="comment">// volume</span></div>
 <div class="line"><a id="l01338" name="l01338"></a><span class="lineno"> 1338</span> </div>
-<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>            } <span class="comment">// theField</span></div>
+<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>        } <span class="comment">// node</span></div>
 <div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span> </div>
-<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>        } <span class="comment">// volume</span></div>
-<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span> </div>
-<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span>        } <span class="comment">// node</span></div>
-<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span> </div>
-<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span>        <span class="comment">// If no local volumes found, use global field if it exists</span></div>
-<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>        <span class="keywordflow">if</span> (inside == kFALSE &amp;&amp; <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>) {</div>
-<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>        <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(position, B);</div>
-<div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span>        }</div>
-<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span> </div>
-<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>        <span class="comment">// Divide by the Tesla_ factor, since we want to plot Tesla_ not kGauss (VMC/FairRoot units)</span></div>
-<div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> icomponent = 0; icomponent&lt;ncoordinates; icomponent++){</div>
-<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span>          theHist[icomponent].Fill(x,y, B[icomponent]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>);</div>
-<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>        }</div>
-<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span>        Double_t BMag = sqrt(B[0]*B[0] + B[1]*B[1] + B[2]*B[2])/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
-<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>        theHist[3].Fill(x, y, BMag);</div>
+<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>        <span class="comment">// If no local volumes found, use global field if it exists</span></div>
+<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span>        <span class="keywordflow">if</span> (inside == kFALSE &amp;&amp; <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>) {</div>
+<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span>        <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(position, B);</div>
+<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span>        }</div>
+<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span> </div>
+<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>        <span class="comment">// Divide by the Tesla_ factor, since we want to plot Tesla_ not kGauss (VMC/FairRoot units)</span></div>
+<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> icomponent = 0; icomponent&lt;ncoordinates; icomponent++){</div>
+<div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span>          theHist[icomponent].Fill(x,y, B[icomponent]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>);</div>
+<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span>        }</div>
+<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>        Double_t BMag = sqrt(B[0]*B[0] + B[1]*B[1] + B[2]*B[2])/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>        theHist[3].Fill(x, y, BMag);</div>
+<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span> </div>
+<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>    } <span class="comment">// &quot;y&quot; axis</span></div>
+<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span> </div>
+<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>    } <span class="comment">// &quot;x&quot; axis</span></div>
 <div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span> </div>
-<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>    } <span class="comment">// &quot;y&quot; axis</span></div>
-<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span> </div>
-<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>    } <span class="comment">// &quot;x&quot; axis</span></div>
-<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span> </div>
-<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>    Bool_t wasBatch = gROOT-&gt;IsBatch();</div>
-<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>    <span class="comment">// Disable pop-up windows</span></div>
-<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>    gROOT-&gt;SetBatch(kTRUE);</div>
-<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    TCanvas theCanvas(<span class="stringliteral">&quot;theCanvas&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 900, 700);</div>
-<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>    gROOT-&gt;SetStyle(<span class="stringliteral">&quot;Plain&quot;</span>);</div>
-<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>    gStyle-&gt;SetOptStat(0);</div>
-<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>    <span class="comment">// Set colour style</span></div>
-<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>    gStyle-&gt;SetPalette(kBird);</div>
-<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>    theCanvas.UseCurrentStyle();</div>
-<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span> </div>
-<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>    theCanvas.Divide(2,2);</div>
-<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> icomponent = 0; icomponent &lt; nhistograms; icomponent++){</div>
-<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>        theCanvas.cd(icomponent+1);</div>
-<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>        theHist[icomponent].Draw(<span class="stringliteral">&quot;colz&quot;</span>);</div>
-<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>    }</div>
-<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>    theCanvas.Print(plotFile.c_str());</div>
-<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span> </div>
-<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>    <span class="comment">// Reset the batch boolean</span></div>
-<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>    <span class="keywordflow">if</span> (wasBatch == kFALSE) {gROOT-&gt;SetBatch(kFALSE);}</div>
-<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span> </div>
-<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>}</div>
+<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>    Bool_t wasBatch = gROOT-&gt;IsBatch();</div>
+<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>    <span class="comment">// Disable pop-up windows</span></div>
+<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>    gROOT-&gt;SetBatch(kTRUE);</div>
+<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>    TCanvas theCanvas(<span class="stringliteral">&quot;theCanvas&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 900, 700);</div>
+<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>    gROOT-&gt;SetStyle(<span class="stringliteral">&quot;Plain&quot;</span>);</div>
+<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>    gStyle-&gt;SetOptStat(0);</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>    <span class="comment">// Set colour style</span></div>
+<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    gStyle-&gt;SetPalette(kBird);</div>
+<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>    theCanvas.UseCurrentStyle();</div>
+<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span> </div>
+<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>    theCanvas.Divide(2,2);</div>
+<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> icomponent = 0; icomponent &lt; nhistograms; icomponent++){</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>        theCanvas.cd(icomponent+1);</div>
+<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>        theHist[icomponent].Draw(<span class="stringliteral">&quot;colz&quot;</span>);</div>
+<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>    }</div>
+<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>    theCanvas.Print(plotFile.c_str());</div>
+<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span> </div>
+<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>    <span class="comment">// Reset the batch boolean</span></div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>    <span class="keywordflow">if</span> (wasBatch == kFALSE) {gROOT-&gt;SetBatch(kFALSE);}</div>
+<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span> </div>
+<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>}</div>
 </div>
-<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span> </div>
-<div class="foldopen" id="foldopen01383" data-start="{" data-end="}">
-<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe"> 1383</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe">ShipFieldMaker::generateFieldMap</a>(TString fileName, <span class="keyword">const</span> <span class="keywordtype">float</span> step, <span class="keyword">const</span> <span class="keywordtype">float</span> xRange, <span class="keyword">const</span> <span class="keywordtype">float</span> yRange, <span class="keyword">const</span> <span class="keywordtype">float</span> zRange, <span class="keyword">const</span> <span class="keywordtype">float</span> zShift){</div>
-<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>        std::ofstream myfile;</div>
-<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>        myfile.open (fileName);</div>
-<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>        <span class="keywordtype">int</span> xSteps = ceil(xRange/step) + 1;   <span class="comment">//field map has X range from 0 to xMax</span></div>
-<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>        <span class="keywordtype">int</span> ySteps = ceil(yRange/step) + 1;   <span class="comment">//from 0 up to yMax</span></div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>        <span class="keywordtype">int</span> zSteps = ceil(zRange*2./step) + 1;<span class="comment">//from -zMax up to zMax</span></div>
-<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>        Double_t position[3] = {0.0, 0.0, 0.0};</div>
-<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>        myfile&lt;&lt;xSteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;ySteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;zSteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;step&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;xRange&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;yRange&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;zRange&lt;&lt;std::endl;</div>
-<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i =0 ; i &lt; xSteps; i++){</div>
-<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k=0;  k&lt;ySteps;k++){</div>
-<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>=0; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>&lt;zSteps; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>++){</div>
-<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>                                Double_t B[3] = {0.0, 0.0, 0.0};</div>
-<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>                                Double_t x = step*i;</div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>                                Double_t y = step * k;</div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>                                Double_t z = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> * step - zRange + zShift;</div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>                                position[0] = x;</div>
-<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>                                position[1] = y;</div>
-<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>                                position[2] = z;</div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>                                Bool_t inside(kFALSE);</div>
-<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>                                TGeoNode* theNode = gGeoManager-&gt;FindNode(position[0], position[1], position[2]);</div>
-<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>                                <span class="keywordflow">if</span> (theNode) {</div>
-<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>                                        TGeoVolume* theVol = theNode-&gt;GetVolume();</div>
-<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>                                        <span class="keywordflow">if</span> (theVol) {</div>
-<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>                                                TVirtualMagField* theField = <span class="keyword">dynamic_cast&lt;</span>TVirtualMagField*<span class="keyword">&gt;</span>(theVol-&gt;GetField());</div>
-<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>                                                <span class="keywordflow">if</span> (theField) {</div>
-<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>                                                    theField-&gt;Field(position, B);</div>
-<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>                                                    inside = kTRUE;</div>
-<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>                                                }</div>
-<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>                                        }</div>
-<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>                                }</div>
-<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>                                <span class="keywordflow">if</span> (inside == kFALSE &amp;&amp; <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>) {</div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>                                        <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(position, B);</div>
-<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>                                }</div>
-<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>                                myfile&lt;&lt;x&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;y&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;z&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[0]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[1]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[2]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>                        }</div>
-<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>                }</div>
-<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>        }</div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>        myfile.close();</div>
-<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>}</div>
+<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span> </div>
+<div class="foldopen" id="foldopen01379" data-start="{" data-end="}">
+<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe"> 1379</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe">ShipFieldMaker::generateFieldMap</a>(TString fileName, <span class="keyword">const</span> <span class="keywordtype">float</span> step, <span class="keyword">const</span> <span class="keywordtype">float</span> xRange, <span class="keyword">const</span> <span class="keywordtype">float</span> yRange, <span class="keyword">const</span> <span class="keywordtype">float</span> zRange, <span class="keyword">const</span> <span class="keywordtype">float</span> zShift){</div>
+<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>        std::ofstream myfile;</div>
+<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>        myfile.open (fileName);</div>
+<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span>        <span class="keywordtype">int</span> xSteps = ceil(xRange/step) + 1;   <span class="comment">//field map has X range from 0 to xMax</span></div>
+<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>        <span class="keywordtype">int</span> ySteps = ceil(yRange/step) + 1;   <span class="comment">//from 0 up to yMax</span></div>
+<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>        <span class="keywordtype">int</span> zSteps = ceil(zRange*2./step) + 1;<span class="comment">//from -zMax up to zMax</span></div>
+<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>        Double_t position[3] = {0.0, 0.0, 0.0};</div>
+<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>        myfile&lt;&lt;xSteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;ySteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;zSteps&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;step&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;xRange&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;yRange&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;zRange&lt;&lt;std::endl;</div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i =0 ; i &lt; xSteps; i++){</div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k=0;  k&lt;ySteps;k++){</div>
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>=0; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>&lt;zSteps; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>++){</div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>                                Double_t B[3] = {0.0, 0.0, 0.0};</div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>                                Double_t x = step*i;</div>
+<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>                                Double_t y = step * k;</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>                                Double_t z = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> * step - zRange + zShift;</div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>                                position[0] = x;</div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>                                position[1] = y;</div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>                                position[2] = z;</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>                                Bool_t inside(kFALSE);</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>                                TGeoNode* theNode = gGeoManager-&gt;FindNode(position[0], position[1], position[2]);</div>
+<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>                                <span class="keywordflow">if</span> (theNode) {</div>
+<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>                                        TGeoVolume* theVol = theNode-&gt;GetVolume();</div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>                                        <span class="keywordflow">if</span> (theVol) {</div>
+<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>                                                TVirtualMagField* theField = <span class="keyword">dynamic_cast&lt;</span>TVirtualMagField*<span class="keyword">&gt;</span>(theVol-&gt;GetField());</div>
+<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>                                                <span class="keywordflow">if</span> (theField) {</div>
+<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>                                                    theField-&gt;Field(position, B);</div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>                                                    inside = kTRUE;</div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>                                                }</div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>                                        }</div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>                                }</div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>                                <span class="keywordflow">if</span> (inside == kFALSE &amp;&amp; <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>) {</div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>                                        <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(position, B);</div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>                                }</div>
+<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>                                myfile&lt;&lt;x&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;y&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;z&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[0]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[1]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[2]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;std::endl;</div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>                        }</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>                }</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>        }</div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>        myfile.close();</div>
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>}</div>
 </div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span> </div>
-<div class="foldopen" id="foldopen01423" data-start="{" data-end="}">
-<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353"> 1423</a></span><a class="code hl_typedef" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">ShipFieldMaker::stringVect</a> <a class="code hl_function" href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353">ShipFieldMaker::splitString</a>(std::string&amp; theString,</div>
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>                               std::string&amp; splitter)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span> </div>
-<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>    <span class="comment">// Code from STLplus</span></div>
-<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>    <a class="code hl_typedef" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">stringVect</a> result;</div>
+<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span> </div>
+<div class="foldopen" id="foldopen01419" data-start="{" data-end="}">
+<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353"> 1419</a></span><a class="code hl_typedef" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">ShipFieldMaker::stringVect</a> <a class="code hl_function" href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353">ShipFieldMaker::splitString</a>(std::string&amp; theString,</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>                               std::string&amp; splitter)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span> </div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>    <span class="comment">// Code from STLplus</span></div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>    <a class="code hl_typedef" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">stringVect</a> result;</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span> </div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>    <span class="keywordflow">if</span> (!theString.empty() &amp;&amp; !splitter.empty()) {</div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span> </div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>    <span class="keywordflow">for</span> (std::string::size_type offset = 0;;) {</div>
 <div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span> </div>
-<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>    <span class="keywordflow">if</span> (!theString.empty() &amp;&amp; !splitter.empty()) {</div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>        std::string::size_type found = theString.find(splitter, offset);</div>
 <div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span> </div>
-<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span>    <span class="keywordflow">for</span> (std::string::size_type offset = 0;;) {</div>
-<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span> </div>
-<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>        std::string::size_type found = theString.find(splitter, offset);</div>
-<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span> </div>
-<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>        <span class="keywordflow">if</span> (found != std::string::npos) {</div>
-<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span>        std::string tmpString = theString.substr(offset, found-offset);</div>
+<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span>        <span class="keywordflow">if</span> (found != std::string::npos) {</div>
+<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>        std::string tmpString = theString.substr(offset, found-offset);</div>
+<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {result.push_back(tmpString);}</div>
+<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>        offset = found + splitter.size();</div>
+<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span>        std::string tmpString = theString.substr(offset, theString.size()-offset);</div>
 <div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span>        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {result.push_back(tmpString);}</div>
-<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>        offset = found + splitter.size();</div>
-<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>        std::string tmpString = theString.substr(offset, theString.size()-offset);</div>
-<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {result.push_back(tmpString);}</div>
-<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>        }</div>
-<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>    }</div>
-<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>    }</div>
-<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span> </div>
-<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span> </div>
-<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span>}</div>
+<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>        }</div>
+<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>    }</div>
+<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>    }</div>
+<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span> </div>
+<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span> </div>
+<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>}</div>
 </div>
 <div class="ttc" id="aShipBFieldMap_8h_html"><div class="ttname"><a href="ShipBFieldMap_8h.html">ShipBFieldMap.h</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
@@ -1660,11 +1656,11 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="ttc" id="aclassShipFieldMaker_html_ad4378f3a215dff42795254e8ae6a5c8e"><div class="ttname"><a href="classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e">ShipFieldMaker::defineBell</a></div><div class="ttdeci">void defineBell(const TString &amp;name, Double_t BPeak, Double_t zMiddle, Int_t orient=1, Double_t tubeR=500.0, Double_t xy=0.0, Double_t z=0.0, Double_t L=0.0)</div><div class="ttdoc">Define a Bell field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00358">ShipFieldMaker.cxx:358</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_ad7bda3f864f4850aeff421b72693531a"><div class="ttname"><a href="classShipFieldMaker.html#ad7bda3f864f4850aeff421b72693531a">ShipFieldMaker::defineFieldMapCopy</a></div><div class="ttdeci">void defineFieldMapCopy(const TString &amp;name, const TString &amp;mapNameToCopy, const TVector3 &amp;translation, const TVector3 &amp;eulerAngles=TVector3(0.0, 0.0, 0.0))</div><div class="ttdoc">Define a copy of a field map with a coordinate translation and optional rotation.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00513">ShipFieldMaker.cxx:513</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_ae11b9703aa051c2cb86ef40aed49d19a"><div class="ttname"><a href="classShipFieldMaker.html#ae11b9703aa051c2cb86ef40aed49d19a">ShipFieldMaker::defineConstant</a></div><div class="ttdeci">void defineConstant(const TString &amp;name, const TVector2 &amp;xRange, const TVector2 &amp;yRange, const TVector2 &amp;zRange, const TVector3 &amp;BVector)</div><div class="ttdoc">Define a constant field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00289">ShipFieldMaker.cxx:289</a></div></div>
-<div class="ttc" id="aclassShipFieldMaker_html_ae27cc8750c597b88d37e30278179c353"><div class="ttname"><a href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353">ShipFieldMaker::splitString</a></div><div class="ttdeci">stringVect splitString(std::string &amp;theString, std::string &amp;splitter) const</div><div class="ttdoc">Split a string.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01423">ShipFieldMaker.cxx:1423</a></div></div>
+<div class="ttc" id="aclassShipFieldMaker_html_ae27cc8750c597b88d37e30278179c353"><div class="ttname"><a href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353">ShipFieldMaker::splitString</a></div><div class="ttdeci">stringVect splitString(std::string &amp;theString, std::string &amp;splitter) const</div><div class="ttdoc">Split a string.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01419">ShipFieldMaker.cxx:1419</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_aea890712c5e87cf4a778197ae31e165c"><div class="ttname"><a href="classShipFieldMaker.html#aea890712c5e87cf4a778197ae31e165c">ShipFieldMaker::checkLocalFieldMap</a></div><div class="ttdeci">void checkLocalFieldMap(TVirtualMagField *&amp;localField, const TString &amp;volName, Double_t scale)</div><div class="ttdoc">Check if we have a local field map and store the volume global transformation.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00951">ShipFieldMaker.cxx:951</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_aeaef20e541cc1c3969a633295e84d07e"><div class="ttname"><a href="classShipFieldMaker.html#aeaef20e541cc1c3969a633295e84d07e">ShipFieldMaker::plotZXField</a></div><div class="ttdeci">void plotZXField(const TVector3 &amp;zAxis, const TVector3 &amp;xAxis, const std::string &amp;plotFile) const</div><div class="ttdoc">Plot the magnetic field in z-x plane.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01231">ShipFieldMaker.cxx:1231</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_aef31f2695b538e04b00db829f7895e57"><div class="ttname"><a href="classShipFieldMaker.html#aef31f2695b538e04b00db829f7895e57">ShipFieldMaker::defineRegionField</a></div><div class="ttdeci">void defineRegionField(const TString &amp;volName, const TString &amp;fieldName, Double_t scale=1.0)</div><div class="ttdoc">Define a regional (local + global) field and volume pairing.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00763">ShipFieldMaker.cxx:763</a></div></div>
-<div class="ttc" id="aclassShipFieldMaker_html_af4163c17204229a088a6c5ae3345f3fe"><div class="ttname"><a href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe">ShipFieldMaker::generateFieldMap</a></div><div class="ttdeci">void generateFieldMap(TString fileName, const float step=2.5, const float xRange=179, const float yRange=317, const float zRange=1515.5, const float zShift=-4996)</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01383">ShipFieldMaker.cxx:1383</a></div></div>
+<div class="ttc" id="aclassShipFieldMaker_html_af4163c17204229a088a6c5ae3345f3fe"><div class="ttname"><a href="classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe">ShipFieldMaker::generateFieldMap</a></div><div class="ttdeci">void generateFieldMap(TString fileName, const float step=2.5, const float xRange=179, const float yRange=317, const float zRange=1515.5, const float zShift=-4996)</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01379">ShipFieldMaker.cxx:1379</a></div></div>
 <div class="ttc" id="astructShipFieldMaker_1_1fieldInfo_html"><div class="ttname"><a href="structShipFieldMaker_1_1fieldInfo.html">ShipFieldMaker::fieldInfo</a></div><div class="ttdoc">Structure to hold volume name, field name and field scaling factor.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8h_source.html#l00053">ShipFieldMaker.h:53</a></div></div>
 <div class="ttc" id="astructShipFieldMaker_1_1fieldInfo_html_a407b5fcdc9d336dba1278cbd1ed75036"><div class="ttname"><a href="structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036">ShipFieldMaker::fieldInfo::fieldName_</a></div><div class="ttdeci">TString fieldName_</div><div class="ttdoc">The name of the field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8h_source.html#l00058">ShipFieldMaker.h:58</a></div></div>
 <div class="ttc" id="astructShipFieldMaker_1_1fieldInfo_html_a4752e530a813faaa66a4eac51a4a39a6"><div class="ttname"><a href="structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6">ShipFieldMaker::fieldInfo::scale_</a></div><div class="ttdeci">Double_t scale_</div><div class="ttdoc">The field scaling factor.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8h_source.html#l00060">ShipFieldMaker.h:60</a></div></div>

@@ -217,13 +217,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00105">105</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>    : FairModule(name, Title)</div>
-<div class="line"><span class="lineno">  107</span>{</div>
-<div class="line"><span class="lineno">  108</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[0] = 0;</div>
-<div class="line"><span class="lineno">  109</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[1] = 0;</div>
-<div class="line"><span class="lineno">  110</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[2] = 0;</div>
-<div class="line"><span class="lineno">  111</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00106">106</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>    : FairModule(name, Title)</div>
+<div class="line"><span class="lineno">  108</span>{</div>
+<div class="line"><span class="lineno">  109</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[0] = 0;</div>
+<div class="line"><span class="lineno">  110</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[1] = 0;</div>
+<div class="line"><span class="lineno">  111</span>    <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[2] = 0;</div>
+<div class="line"><span class="lineno">  112</span>}</div>
 <div class="ttc" id="aclassShipCave_html_a8cbdea1cf52198304407f44a7a21e305"><div class="ttname"><a href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">ShipCave::world</a></div><div class="ttdeci">Double_t world[3]</div><div class="ttdef"><b>Definition</b> <a href="ShipCave_8h_source.html#l00020">ShipCave.h:20</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -243,9 +243,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00100">100</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>    : FairModule()</div>
-<div class="line"><span class="lineno">  102</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00101">101</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>    : FairModule()</div>
+<div class="line"><span class="lineno">  103</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -272,8 +272,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00104">104</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00105">105</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -323,42 +323,43 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>    Double_t Proximity_shield_half_length = 55.36 / 2 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
 <div class="line"><span class="lineno">   62</span>    Double_t zEndOfTarget = <a class="code hl_variable" href="classShipCave.html#a3b0725383ee438c4d0d2726b8ad76675">z_end_of_proximity_shielding</a> - 2 * Proximity_shield_half_length;</div>
 <div class="line"><span class="lineno">   63</span>    Double_t z_transition = 20.52 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keyword">auto</span>* rock = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;rock&quot;</span>, 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span>* muon_shield_cavern = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;muon_shield_cavern&quot;</span>, 4.995 * m, 3.75 * m, TCC8_length / 2.);</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keyword">auto</span>* TCC8_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;TCC8_shift&quot;</span>, 1.435 * m, 2.05 * m, -TCC8_length / 2.);</div>
-<div class="line"><span class="lineno">   67</span>    TCC8_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    <span class="comment">// Create ECN3 cavern around vessel</span></div>
-<div class="line"><span class="lineno">   70</span>    <span class="keyword">auto</span>* experiment_rock = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;experiment_rock&quot;</span>, 20 * m, 20 * m, ECN3_length / 2.);</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keyword">auto</span>* stair_step = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;stair_step&quot;</span>, 7.995 * m, 5.6 * m, stair_step_length / 2.);</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span>* stair_step_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;stair_step_shift&quot;</span>, 3.435 * m, 3.04 * m, stair_step_length / 2.);</div>
-<div class="line"><span class="lineno">   73</span>    stair_step_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keyword">auto</span>* experiment_cavern =</div>
-<div class="line"><span class="lineno">   75</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;experiment_cavern&quot;</span>, 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keyword">auto</span>* ECN3_shift =</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;ECN3_shift&quot;</span>, 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);</div>
-<div class="line"><span class="lineno">   78</span>    ECN3_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span>* yoke_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;yoke_pit&quot;</span>, 4.2 * m, 0.5 * m, 4.5 * m);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keyword">auto</span>* yoke_pit_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;yoke_pit_shift&quot;</span>, 0 * m, -3.86 * m, 89.57 * m - z_transition);</div>
-<div class="line"><span class="lineno">   82</span>    yoke_pit_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">auto</span>* target_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;target_pit&quot;</span>, 2 * m, 0.5 * m, 2 * m);</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keyword">auto</span>* target_pit_shift =</div>
-<div class="line"><span class="lineno">   86</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;target_pit_shift&quot;</span>, 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);</div>
-<div class="line"><span class="lineno">   87</span>    target_pit_shift-&gt;RegisterYourself();</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <span class="keyword">auto</span>* compRock = <span class="keyword">new</span> TGeoCompositeShape(<span class="stringliteral">&quot;compRock&quot;</span>,</div>
-<div class="line"><span class="lineno">   90</span>                                            <span class="stringliteral">&quot;rock - muon_shield_cavern:TCC8_shift&quot;</span></div>
-<div class="line"><span class="lineno">   91</span>                                            <span class="stringliteral">&quot;- experiment_cavern:ECN3_shift&quot;</span></div>
-<div class="line"><span class="lineno">   92</span>                                            <span class="stringliteral">&quot;- stair_step:stair_step_shift&quot;</span></div>
-<div class="line"><span class="lineno">   93</span>                                            <span class="stringliteral">&quot;- yoke_pit:yoke_pit_shift&quot;</span></div>
-<div class="line"><span class="lineno">   94</span>                                            <span class="stringliteral">&quot;- target_pit:target_pit_shift&quot;</span>);</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keyword">auto</span>* Cavern = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Cavern&quot;</span>, compRock, concrete);</div>
-<div class="line"><span class="lineno">   96</span>    Cavern-&gt;SetLineColor(11);   <span class="comment">// grey</span></div>
-<div class="line"><span class="lineno">   97</span>    Cavern-&gt;SetTransparency(50);</div>
-<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(Cavern, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_transition));</div>
-<div class="line"><span class="lineno">   99</span>}</div>
+<div class="line"><span class="lineno">   64</span>    [[maybe_unused]] <span class="keyword">auto</span>* rock = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;rock&quot;</span>, 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);</div>
+<div class="line"><span class="lineno">   65</span>    [[maybe_unused]] <span class="keyword">auto</span>* muon_shield_cavern =</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;muon_shield_cavern&quot;</span>, 4.995 * m, 3.75 * m, TCC8_length / 2.);</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span>* TCC8_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;TCC8_shift&quot;</span>, 1.435 * m, 2.05 * m, -TCC8_length / 2.);</div>
+<div class="line"><span class="lineno">   68</span>    TCC8_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    <span class="comment">// Create ECN3 cavern around vessel</span></div>
+<div class="line"><span class="lineno">   71</span>    [[maybe_unused]] <span class="keyword">auto</span>* experiment_rock = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;experiment_rock&quot;</span>, 20 * m, 20 * m, ECN3_length / 2.);</div>
+<div class="line"><span class="lineno">   72</span>    [[maybe_unused]] <span class="keyword">auto</span>* stair_step = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;stair_step&quot;</span>, 7.995 * m, 5.6 * m, stair_step_length / 2.);</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span>* stair_step_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;stair_step_shift&quot;</span>, 3.435 * m, 3.04 * m, stair_step_length / 2.);</div>
+<div class="line"><span class="lineno">   74</span>    stair_step_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">   75</span>    [[maybe_unused]] <span class="keyword">auto</span>* experiment_cavern =</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;experiment_cavern&quot;</span>, 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keyword">auto</span>* ECN3_shift =</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;ECN3_shift&quot;</span>, 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);</div>
+<div class="line"><span class="lineno">   79</span>    ECN3_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    [[maybe_unused]] <span class="keyword">auto</span>* yoke_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;yoke_pit&quot;</span>, 4.2 * m, 0.5 * m, 4.5 * m);</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">auto</span>* yoke_pit_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;yoke_pit_shift&quot;</span>, 0 * m, -3.86 * m, 89.57 * m - z_transition);</div>
+<div class="line"><span class="lineno">   83</span>    yoke_pit_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>    [[maybe_unused]] <span class="keyword">auto</span>* target_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;target_pit&quot;</span>, 2 * m, 0.5 * m, 2 * m);</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keyword">auto</span>* target_pit_shift =</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;target_pit_shift&quot;</span>, 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);</div>
+<div class="line"><span class="lineno">   88</span>    target_pit_shift-&gt;RegisterYourself();</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    <span class="keyword">auto</span>* compRock = <span class="keyword">new</span> TGeoCompositeShape(<span class="stringliteral">&quot;compRock&quot;</span>,</div>
+<div class="line"><span class="lineno">   91</span>                                            <span class="stringliteral">&quot;rock - muon_shield_cavern:TCC8_shift&quot;</span></div>
+<div class="line"><span class="lineno">   92</span>                                            <span class="stringliteral">&quot;- experiment_cavern:ECN3_shift&quot;</span></div>
+<div class="line"><span class="lineno">   93</span>                                            <span class="stringliteral">&quot;- stair_step:stair_step_shift&quot;</span></div>
+<div class="line"><span class="lineno">   94</span>                                            <span class="stringliteral">&quot;- yoke_pit:yoke_pit_shift&quot;</span></div>
+<div class="line"><span class="lineno">   95</span>                                            <span class="stringliteral">&quot;- target_pit:target_pit_shift&quot;</span>);</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keyword">auto</span>* Cavern = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Cavern&quot;</span>, compRock, concrete);</div>
+<div class="line"><span class="lineno">   97</span>    Cavern-&gt;SetLineColor(11);   <span class="comment">// grey</span></div>
+<div class="line"><span class="lineno">   98</span>    Cavern-&gt;SetTransparency(50);</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(Cavern, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_transition));</div>
+<div class="line"><span class="lineno">  100</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a36fc4b47251281f99efceaa80c7877f0"><div class="ttname"><a href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></div><div class="ttdeci">Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00019">ShipBellField.cxx:19</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
 <div class="ttc" id="aclassShipCave_html_a9de999f59cf0ea16e9d85d035060c96c"><div class="ttname"><a href="classShipCave.html#a9de999f59cf0ea16e9d85d035060c96c">ShipCave::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(TString name)</div><div class="ttdef"><b>Definition</b> <a href="ShipCave_8cxx_source.html#l00025">ShipCave.cxx:25</a></div></div>

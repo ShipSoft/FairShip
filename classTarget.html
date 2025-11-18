@@ -554,13 +554,13 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classmuonPoint.html">muonPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00597">597</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  605</span>{</div>
-<div class="line"><span class="lineno">  606</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>;</div>
-<div class="line"><span class="lineno">  607</span>    Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  608</span>    <span class="comment">// cout &lt;&lt; &quot;brick hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  609</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classTargetPoint.html">TargetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  610</span>}</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00588">588</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  596</span>{</div>
+<div class="line"><span class="lineno">  597</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>;</div>
+<div class="line"><span class="lineno">  598</span>    Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  599</span>    <span class="comment">// cout &lt;&lt; &quot;brick hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
+<div class="line"><span class="lineno">  600</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classTargetPoint.html">TargetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  601</span>}</div>
 <div class="ttc" id="aclassTargetPoint_html"><div class="ttname"><a href="classTargetPoint.html">TargetPoint</a></div><div class="ttdef"><b>Definition</b> <a href="TargetPoint_8h_source.html#l00008">TargetPoint.h:9</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -670,136 +670,127 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  297</span> </div>
 <div class="line"><span class="lineno">  298</span>    TGeoMedium* Emufilm = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;EmulsionFilm&quot;</span>, 100, emufilmmixture);</div>
 <div class="line"><span class="lineno">  299</span> </div>
-<div class="line"><span class="lineno">  300</span>    <a class="code hl_function" href="classTarget.html#aae006f9a82fe35d763ae7a0b77e92158">InitMedium</a>(<span class="stringliteral">&quot;lead&quot;</span>);</div>
-<div class="line"><span class="lineno">  301</span>    TGeoMedium* lead = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;lead&quot;</span>);</div>
+<div class="line"><span class="lineno">  300</span>    <a class="code hl_function" href="classTarget.html#aae006f9a82fe35d763ae7a0b77e92158">InitMedium</a>(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
+<div class="line"><span class="lineno">  301</span>    TGeoMedium* tungsten = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
 <div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>    <a class="code hl_function" href="classTarget.html#aae006f9a82fe35d763ae7a0b77e92158">InitMedium</a>(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
-<div class="line"><span class="lineno">  304</span>    TGeoMedium* tungsten = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    <a class="code hl_function" href="classTarget.html#aae006f9a82fe35d763ae7a0b77e92158">InitMedium</a>(<span class="stringliteral">&quot;Concrete&quot;</span>);</div>
-<div class="line"><span class="lineno">  307</span>    TGeoMedium* Conc = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Concrete&quot;</span>);</div>
+<div class="line"><span class="lineno">  303</span>    Int_t NPlates = <a class="code hl_variable" href="classTarget.html#ab16810384e1584876b2d740bed006ac4">number_of_plates</a>;   <span class="comment">// Number of doublets emulsion + Pb</span></div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>    <span class="comment">// Definition of the target box containing emulsion bricks + target trackers (TT)</span></div>
+<div class="line"><span class="lineno">  306</span>    TGeoBBox* TargetBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TargetBox&quot;</span>, <a class="code hl_variable" href="classTarget.html#af11b348af9e539e5fd5c6b36e1177f96">XDimension</a> / 2, <a class="code hl_variable" href="classTarget.html#abc600f1cb78ffac7595bbf362ca151ea">YDimension</a> / 2, <a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> / 2);</div>
+<div class="line"><span class="lineno">  307</span>    TGeoVolume* volTarget = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volTarget&quot;</span>, TargetBox, air);</div>
 <div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>    <a class="code hl_function" href="classTarget.html#aae006f9a82fe35d763ae7a0b77e92158">InitMedium</a>(<span class="stringliteral">&quot;steel&quot;</span>);</div>
-<div class="line"><span class="lineno">  310</span>    TGeoMedium* Steel = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;steel&quot;</span>);</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>    Int_t NPlates = <a class="code hl_variable" href="classTarget.html#ab16810384e1584876b2d740bed006ac4">number_of_plates</a>;   <span class="comment">// Number of doublets emulsion + Pb</span></div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>    <span class="comment">// Definition of the target box containing emulsion bricks + target trackers (TT)</span></div>
-<div class="line"><span class="lineno">  315</span>    TGeoBBox* TargetBox = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TargetBox&quot;</span>, <a class="code hl_variable" href="classTarget.html#af11b348af9e539e5fd5c6b36e1177f96">XDimension</a> / 2, <a class="code hl_variable" href="classTarget.html#abc600f1cb78ffac7595bbf362ca151ea">YDimension</a> / 2, <a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> / 2);</div>
-<div class="line"><span class="lineno">  316</span>    TGeoVolume* volTarget = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volTarget&quot;</span>, TargetBox, air);</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  319</span>    <span class="comment">// Volumes definition</span></div>
-<div class="line"><span class="lineno">  320</span>    <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>    TGeoBBox* Cell = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;cell&quot;</span>, <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#a4bc412b490b190bf07240bafe22f46d1">CellWidth</a> / 2);</div>
-<div class="line"><span class="lineno">  323</span>    TGeoVolume* volCell = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Cell&quot;</span>, Cell, air);</div>
+<div class="line"><span class="lineno">  309</span>    <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  310</span>    <span class="comment">// Volumes definition</span></div>
+<div class="line"><span class="lineno">  311</span>    <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>    [[maybe_unused]] TGeoBBox* Cell = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;cell&quot;</span>, <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#a4bc412b490b190bf07240bafe22f46d1">CellWidth</a> / 2);</div>
+<div class="line"><span class="lineno">  314</span>    [[maybe_unused]] TGeoVolume* volCell = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Cell&quot;</span>, Cell, air);</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>    <span class="comment">// Brick</span></div>
+<div class="line"><span class="lineno">  317</span>    TGeoBBox* Brick = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;brick&quot;</span>, <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2);</div>
+<div class="line"><span class="lineno">  318</span>    TGeoVolume* volBrick = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Brick&quot;</span>, Brick, air);</div>
+<div class="line"><span class="lineno">  319</span>    volBrick-&gt;SetLineColor(kCyan);</div>
+<div class="line"><span class="lineno">  320</span>    volBrick-&gt;SetTransparency(1);</div>
+<div class="line"><span class="lineno">  321</span>    <span class="comment">// need to separate the two cases, now with a ternary operator</span></div>
+<div class="line"><span class="lineno">  322</span>    <span class="keyword">auto</span>* Absorber = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;Absorber&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> / 2);</div>
+<div class="line"><span class="lineno">  323</span>    <span class="keyword">auto</span>* volAbsorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volAbsorber&quot;</span>, Absorber, tungsten);</div>
 <div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>    <span class="comment">// Brick</span></div>
-<div class="line"><span class="lineno">  326</span>    TGeoBBox* Brick = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;brick&quot;</span>, <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2);</div>
-<div class="line"><span class="lineno">  327</span>    TGeoVolume* volBrick = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Brick&quot;</span>, Brick, air);</div>
-<div class="line"><span class="lineno">  328</span>    volBrick-&gt;SetLineColor(kCyan);</div>
-<div class="line"><span class="lineno">  329</span>    volBrick-&gt;SetTransparency(1);</div>
-<div class="line"><span class="lineno">  330</span>    <span class="comment">// need to separate the two cases, now with a ternary operator</span></div>
-<div class="line"><span class="lineno">  331</span>    <span class="keyword">auto</span>* Absorber = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;Absorber&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> / 2);</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keyword">auto</span>* volAbsorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volAbsorber&quot;</span>, Absorber, tungsten);</div>
-<div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>    volAbsorber-&gt;SetTransparency(1);</div>
-<div class="line"><span class="lineno">  335</span>    volAbsorber-&gt;SetLineColor(kGray);</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
-<div class="line"><span class="lineno">  337</span>        volBrick-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  338</span>            volAbsorber,</div>
-<div class="line"><span class="lineno">  339</span>            n,</div>
-<div class="line"><span class="lineno">  340</span>            <span class="keyword">new</span> TGeoTranslation(</div>
-<div class="line"><span class="lineno">  341</span>                0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> + <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
-<div class="line"><span class="lineno">  342</span>    }</div>
-<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ae72c4558c526e39b4242b954483bbddc">fsingleemulsionfilm</a>) {   <span class="comment">// simplified configuration, unique sensitive layer for the whole emulsion plate</span></div>
-<div class="line"><span class="lineno">  344</span>        TGeoBBox* EmulsionFilm = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;EmulsionFilm&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> / 2);</div>
-<div class="line"><span class="lineno">  345</span>        TGeoVolume* volEmulsionFilm = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion&quot;</span>, EmulsionFilm, Emufilm);   <span class="comment">// TOP</span></div>
-<div class="line"><span class="lineno">  346</span>        volEmulsionFilm-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad99b3af0e72861f3ef76849c058a1a9f">fPassive</a> == 0) {</div>
-<div class="line"><span class="lineno">  349</span>            AddSensitiveVolume(volEmulsionFilm);</div>
-<div class="line"><span class="lineno">  350</span>        }</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>        <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates + 1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
-<div class="line"><span class="lineno">  353</span>            volBrick-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  354</span>                volEmulsionFilm,</div>
-<div class="line"><span class="lineno">  355</span>                n,</div>
-<div class="line"><span class="lineno">  356</span>                <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
-<div class="line"><span class="lineno">  357</span>        }</div>
-<div class="line"><span class="lineno">  358</span>    } <span class="keywordflow">else</span> {   <span class="comment">// more accurate configuration, two emulsion films divided by a plastic base</span></div>
-<div class="line"><span class="lineno">  359</span>        TGeoBBox* EmulsionFilm = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;EmulsionFilm&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2);</div>
-<div class="line"><span class="lineno">  360</span>        TGeoVolume* volEmulsionFilm = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion&quot;</span>, EmulsionFilm, NEmu);     <span class="comment">// TOP</span></div>
-<div class="line"><span class="lineno">  361</span>        TGeoVolume* volEmulsionFilm2 = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion2&quot;</span>, EmulsionFilm, NEmu);   <span class="comment">// BOTTOM</span></div>
-<div class="line"><span class="lineno">  362</span>        volEmulsionFilm-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  363</span>        volEmulsionFilm2-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad99b3af0e72861f3ef76849c058a1a9f">fPassive</a> == 0) {</div>
-<div class="line"><span class="lineno">  366</span>            AddSensitiveVolume(volEmulsionFilm);</div>
-<div class="line"><span class="lineno">  367</span>            AddSensitiveVolume(volEmulsionFilm2);</div>
-<div class="line"><span class="lineno">  368</span>        }</div>
-<div class="line"><span class="lineno">  369</span>        TGeoBBox* PlBase = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;PlBase&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> / 2);</div>
-<div class="line"><span class="lineno">  370</span>        TGeoVolume* volPlBase = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;PlasticBase&quot;</span>, PlBase, PBase);</div>
-<div class="line"><span class="lineno">  371</span>        volPlBase-&gt;SetLineColor(kYellow - 4);</div>
-<div class="line"><span class="lineno">  372</span>        <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates + 1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
-<div class="line"><span class="lineno">  373</span>            volBrick-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  374</span>                volEmulsionFilm2,</div>
-<div class="line"><span class="lineno">  375</span>                n,</div>
-<div class="line"><span class="lineno">  376</span>                <span class="keyword">new</span> TGeoTranslation(</div>
-<div class="line"><span class="lineno">  377</span>                    0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// BOTTOM</span></div>
-<div class="line"><span class="lineno">  378</span>            volBrick-&gt;AddNode(volEmulsionFilm,</div>
-<div class="line"><span class="lineno">  379</span>                              n,</div>
-<div class="line"><span class="lineno">  380</span>                              <span class="keyword">new</span> TGeoTranslation(0,</div>
-<div class="line"><span class="lineno">  381</span>                                                  0,</div>
-<div class="line"><span class="lineno">  382</span>                                                  -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + 3 * <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2</div>
-<div class="line"><span class="lineno">  383</span>                                                      + <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// TOP</span></div>
-<div class="line"><span class="lineno">  384</span>            volBrick-&gt;AddNode(volPlBase,</div>
-<div class="line"><span class="lineno">  385</span>                              n,</div>
-<div class="line"><span class="lineno">  386</span>                              <span class="keyword">new</span> TGeoTranslation(0,</div>
-<div class="line"><span class="lineno">  387</span>                                                  0,</div>
-<div class="line"><span class="lineno">  388</span>                                                  -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a></div>
-<div class="line"><span class="lineno">  389</span>                                                      + <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> / 2</div>
-<div class="line"><span class="lineno">  390</span>                                                      + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// PLASTIC BASE</span></div>
-<div class="line"><span class="lineno">  391</span>        }</div>
-<div class="line"><span class="lineno">  392</span>    }</div>
-<div class="line"><span class="lineno">  393</span> </div>
-<div class="line"><span class="lineno">  394</span>    volBrick-&gt;SetVisibility(kTRUE);</div>
-<div class="line"><span class="lineno">  395</span>    TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">  396</span>    TGeoVolumeAssembly* tTauNuDet = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;tTauNuDet&quot;</span>);</div>
-<div class="line"><span class="lineno">  397</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tTauNuDet, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  398</span> </div>
-<div class="line"><span class="lineno">  399</span>    tTauNuDet-&gt;AddNode(volTarget, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classTarget.html#a029a28f73c91ce3bf99d5ace2dd03bca">fCenterZ</a>));</div>
-<div class="line"><span class="lineno">  400</span>    TGeoBBox* Row = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;row&quot;</span>, <a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab">WallZDim</a> / 2);</div>
-<div class="line"><span class="lineno">  401</span>    TGeoVolume* volRow = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Row&quot;</span>, Row, air);</div>
-<div class="line"><span class="lineno">  402</span>    volRow-&gt;SetLineColor(20);</div>
+<div class="line"><span class="lineno">  325</span>    volAbsorber-&gt;SetTransparency(1);</div>
+<div class="line"><span class="lineno">  326</span>    volAbsorber-&gt;SetLineColor(kGray);</div>
+<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
+<div class="line"><span class="lineno">  328</span>        volBrick-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  329</span>            volAbsorber,</div>
+<div class="line"><span class="lineno">  330</span>            n,</div>
+<div class="line"><span class="lineno">  331</span>            <span class="keyword">new</span> TGeoTranslation(</div>
+<div class="line"><span class="lineno">  332</span>                0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> + <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
+<div class="line"><span class="lineno">  333</span>    }</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ae72c4558c526e39b4242b954483bbddc">fsingleemulsionfilm</a>) {   <span class="comment">// simplified configuration, unique sensitive layer for the whole emulsion plate</span></div>
+<div class="line"><span class="lineno">  335</span>        TGeoBBox* EmulsionFilm = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;EmulsionFilm&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> / 2);</div>
+<div class="line"><span class="lineno">  336</span>        TGeoVolume* volEmulsionFilm = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion&quot;</span>, EmulsionFilm, Emufilm);   <span class="comment">// TOP</span></div>
+<div class="line"><span class="lineno">  337</span>        volEmulsionFilm-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad99b3af0e72861f3ef76849c058a1a9f">fPassive</a> == 0) {</div>
+<div class="line"><span class="lineno">  340</span>            AddSensitiveVolume(volEmulsionFilm);</div>
+<div class="line"><span class="lineno">  341</span>        }</div>
+<div class="line"><span class="lineno">  342</span> </div>
+<div class="line"><span class="lineno">  343</span>        <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates + 1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
+<div class="line"><span class="lineno">  344</span>            volBrick-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  345</span>                volEmulsionFilm,</div>
+<div class="line"><span class="lineno">  346</span>                n,</div>
+<div class="line"><span class="lineno">  347</span>                <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
+<div class="line"><span class="lineno">  348</span>        }</div>
+<div class="line"><span class="lineno">  349</span>    } <span class="keywordflow">else</span> {   <span class="comment">// more accurate configuration, two emulsion films divided by a plastic base</span></div>
+<div class="line"><span class="lineno">  350</span>        TGeoBBox* EmulsionFilm = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;EmulsionFilm&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2);</div>
+<div class="line"><span class="lineno">  351</span>        TGeoVolume* volEmulsionFilm = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion&quot;</span>, EmulsionFilm, NEmu);     <span class="comment">// TOP</span></div>
+<div class="line"><span class="lineno">  352</span>        TGeoVolume* volEmulsionFilm2 = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Emulsion2&quot;</span>, EmulsionFilm, NEmu);   <span class="comment">// BOTTOM</span></div>
+<div class="line"><span class="lineno">  353</span>        volEmulsionFilm-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  354</span>        volEmulsionFilm2-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad99b3af0e72861f3ef76849c058a1a9f">fPassive</a> == 0) {</div>
+<div class="line"><span class="lineno">  357</span>            AddSensitiveVolume(volEmulsionFilm);</div>
+<div class="line"><span class="lineno">  358</span>            AddSensitiveVolume(volEmulsionFilm2);</div>
+<div class="line"><span class="lineno">  359</span>        }</div>
+<div class="line"><span class="lineno">  360</span>        TGeoBBox* PlBase = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;PlBase&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> / 2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> / 2, <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> / 2);</div>
+<div class="line"><span class="lineno">  361</span>        TGeoVolume* volPlBase = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;PlasticBase&quot;</span>, PlBase, PBase);</div>
+<div class="line"><span class="lineno">  362</span>        volPlBase-&gt;SetLineColor(kYellow - 4);</div>
+<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">for</span> (Int_t n = 0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt; NPlates + 1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++) {</div>
+<div class="line"><span class="lineno">  364</span>            volBrick-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  365</span>                volEmulsionFilm2,</div>
+<div class="line"><span class="lineno">  366</span>                n,</div>
+<div class="line"><span class="lineno">  367</span>                <span class="keyword">new</span> TGeoTranslation(</div>
+<div class="line"><span class="lineno">  368</span>                    0, 0, -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2 + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// BOTTOM</span></div>
+<div class="line"><span class="lineno">  369</span>            volBrick-&gt;AddNode(volEmulsionFilm,</div>
+<div class="line"><span class="lineno">  370</span>                              n,</div>
+<div class="line"><span class="lineno">  371</span>                              <span class="keyword">new</span> TGeoTranslation(0,</div>
+<div class="line"><span class="lineno">  372</span>                                                  0,</div>
+<div class="line"><span class="lineno">  373</span>                                                  -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + 3 * <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> / 2</div>
+<div class="line"><span class="lineno">  374</span>                                                      + <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// TOP</span></div>
+<div class="line"><span class="lineno">  375</span>            volBrick-&gt;AddNode(volPlBase,</div>
+<div class="line"><span class="lineno">  376</span>                              n,</div>
+<div class="line"><span class="lineno">  377</span>                              <span class="keyword">new</span> TGeoTranslation(0,</div>
+<div class="line"><span class="lineno">  378</span>                                                  0,</div>
+<div class="line"><span class="lineno">  379</span>                                                  -<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> / 2 + <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a></div>
+<div class="line"><span class="lineno">  380</span>                                                      + <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> / 2</div>
+<div class="line"><span class="lineno">  381</span>                                                      + n * <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));   <span class="comment">// PLASTIC BASE</span></div>
+<div class="line"><span class="lineno">  382</span>        }</div>
+<div class="line"><span class="lineno">  383</span>    }</div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span>    volBrick-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  386</span>    TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">  387</span>    TGeoVolumeAssembly* tTauNuDet = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;tTauNuDet&quot;</span>);</div>
+<div class="line"><span class="lineno">  388</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tTauNuDet, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>    tTauNuDet-&gt;AddNode(volTarget, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classTarget.html#a029a28f73c91ce3bf99d5ace2dd03bca">fCenterZ</a>));</div>
+<div class="line"><span class="lineno">  391</span>    TGeoBBox* Row = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;row&quot;</span>, <a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2, <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, <a class="code hl_variable" href="classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab">WallZDim</a> / 2);</div>
+<div class="line"><span class="lineno">  392</span>    TGeoVolume* volRow = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Row&quot;</span>, Row, air);</div>
+<div class="line"><span class="lineno">  393</span>    volRow-&gt;SetLineColor(20);</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>    Double_t d_cl_x = -<a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2;</div>
+<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="classTarget.html#ae54a1435cc46fc76fa4cdf391f4b4819">fNCol</a>; j++) {</div>
+<div class="line"><span class="lineno">  397</span>        volRow-&gt;AddNode(volBrick, j, <span class="keyword">new</span> TGeoTranslation(d_cl_x + <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, 0, 0));</div>
+<div class="line"><span class="lineno">  398</span>        d_cl_x += <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a>;</div>
+<div class="line"><span class="lineno">  399</span>    }</div>
+<div class="line"><span class="lineno">  400</span>    TGeoBBox* Wall = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;wall&quot;</span>, <a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2, <a class="code hl_variable" href="classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7">WallYDim</a> / 2, <a class="code hl_variable" href="classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab">WallZDim</a> / 2);</div>
+<div class="line"><span class="lineno">  401</span>    TGeoVolume* volWall = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Wall&quot;</span>, Wall, air);</div>
+<div class="line"><span class="lineno">  402</span>    volWall-&gt;SetLineColor(kGreen);</div>
 <div class="line"><span class="lineno">  403</span> </div>
-<div class="line"><span class="lineno">  404</span>    Double_t d_cl_x = -<a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2;</div>
-<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="classTarget.html#ae54a1435cc46fc76fa4cdf391f4b4819">fNCol</a>; j++) {</div>
-<div class="line"><span class="lineno">  406</span>        volRow-&gt;AddNode(volBrick, j, <span class="keyword">new</span> TGeoTranslation(d_cl_x + <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> / 2, 0, 0));</div>
-<div class="line"><span class="lineno">  407</span>        d_cl_x += <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a>;</div>
-<div class="line"><span class="lineno">  408</span>    }</div>
-<div class="line"><span class="lineno">  409</span>    TGeoBBox* Wall = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;wall&quot;</span>, <a class="code hl_variable" href="classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc">WallXDim</a> / 2, <a class="code hl_variable" href="classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7">WallYDim</a> / 2, <a class="code hl_variable" href="classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab">WallZDim</a> / 2);</div>
-<div class="line"><span class="lineno">  410</span>    TGeoVolume* volWall = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Wall&quot;</span>, Wall, air);</div>
-<div class="line"><span class="lineno">  411</span>    volWall-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  404</span>    Double_t d_cl_y = -<a class="code hl_variable" href="classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7">WallYDim</a> / 2;</div>
+<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classTarget.html#a0d490ed3b14199318773c974216a3fbc">fNRow</a>; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>++) {</div>
+<div class="line"><span class="lineno">  406</span>        volWall-&gt;AddNode(volRow, k, <span class="keyword">new</span> TGeoTranslation(0, d_cl_y + <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, 0));</div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>        <span class="comment">// 2mm is the distance for the structure that holds the brick</span></div>
+<div class="line"><span class="lineno">  409</span>        d_cl_y += <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> + <a class="code hl_variable" href="classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47">Ydistance</a>;</div>
+<div class="line"><span class="lineno">  410</span>    }</div>
+<div class="line"><span class="lineno">  411</span>    <span class="comment">// Columns</span></div>
 <div class="line"><span class="lineno">  412</span> </div>
-<div class="line"><span class="lineno">  413</span>    Double_t d_cl_y = -<a class="code hl_variable" href="classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7">WallYDim</a> / 2;</div>
-<div class="line"><span class="lineno">  414</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a> &lt; <a class="code hl_variable" href="classTarget.html#a0d490ed3b14199318773c974216a3fbc">fNRow</a>; <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>++) {</div>
-<div class="line"><span class="lineno">  415</span>        volWall-&gt;AddNode(volRow, k, <span class="keyword">new</span> TGeoTranslation(0, d_cl_y + <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> / 2, 0));</div>
+<div class="line"><span class="lineno">  413</span>    Double_t d_cl_z = -<a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> / 2 + <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a>;</div>
+<div class="line"><span class="lineno">  414</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a> &lt; <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>++) {</div>
+<div class="line"><span class="lineno">  415</span>        volTarget-&gt;AddNode(volWall, l, <span class="keyword">new</span> TGeoTranslation(0, 0, d_cl_z + <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2));</div>
 <div class="line"><span class="lineno">  416</span> </div>
-<div class="line"><span class="lineno">  417</span>        <span class="comment">// 2mm is the distance for the structure that holds the brick</span></div>
-<div class="line"><span class="lineno">  418</span>        d_cl_y += <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> + <a class="code hl_variable" href="classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47">Ydistance</a>;</div>
+<div class="line"><span class="lineno">  417</span>        <span class="comment">// 6 cm is the distance between 2 columns of consecutive Target for TT placement</span></div>
+<div class="line"><span class="lineno">  418</span>        d_cl_z += <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> + <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a>;</div>
 <div class="line"><span class="lineno">  419</span>    }</div>
-<div class="line"><span class="lineno">  420</span>    <span class="comment">// Columns</span></div>
-<div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>    Double_t d_cl_z = -<a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> / 2 + <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a>;</div>
-<div class="line"><span class="lineno">  423</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a> &lt; <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>++) {</div>
-<div class="line"><span class="lineno">  424</span>        volTarget-&gt;AddNode(volWall, l, <span class="keyword">new</span> TGeoTranslation(0, 0, d_cl_z + <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> / 2));</div>
-<div class="line"><span class="lineno">  425</span> </div>
-<div class="line"><span class="lineno">  426</span>        <span class="comment">// 6 cm is the distance between 2 columns of consecutive Target for TT placement</span></div>
-<div class="line"><span class="lineno">  427</span>        d_cl_z += <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> + <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a>;</div>
-<div class="line"><span class="lineno">  428</span>    }</div>
-<div class="line"><span class="lineno">  429</span>}   <span class="comment">// end construct geometry</span></div>
+<div class="line"><span class="lineno">  420</span>}   <span class="comment">// end construct geometry</span></div>
 <div class="ttc" id="aclassTarget_html_a029a28f73c91ce3bf99d5ace2dd03bca"><div class="ttname"><a href="classTarget.html#a029a28f73c91ce3bf99d5ace2dd03bca">Target::fCenterZ</a></div><div class="ttdeci">Double_t fCenterZ</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00165">Target.h:165</a></div></div>
 <div class="ttc" id="aclassTarget_html_a0d490ed3b14199318773c974216a3fbc"><div class="ttname"><a href="classTarget.html#a0d490ed3b14199318773c974216a3fbc">Target::fNRow</a></div><div class="ttdeci">Int_t fNRow</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00178">Target.h:178</a></div></div>
 <div class="ttc" id="aclassTarget_html_a10300065b8275b5fb309f97c56797aa5"><div class="ttname"><a href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">Target::BrickY</a></div><div class="ttdeci">Double_t BrickY</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00207">Target.h:207</a></div></div>
@@ -905,32 +896,32 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Decode detectorID into a struct with info about the film position in the target:</p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00538">538</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  539</span>{</div>
-<div class="line"><span class="lineno">  541</span>    <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  542</span><span class="comment">     \param detID detectorID for the TargetPoint</span></div>
-<div class="line"><span class="lineno">  543</span><span class="comment">     \return a struct providing the wall, row, column and plate number (starting from 1),</span></div>
-<div class="line"><span class="lineno">  544</span><span class="comment">        as well as a boolean for top/bottom emulsion layer.</span></div>
-<div class="line"><span class="lineno">  545</span><span class="comment">        Examples:</span></div>
-<div class="line"><span class="lineno">  546</span><span class="comment">         11010031 -&gt; Wall 1, Row 1, Column 1, Plate 3, true;</span></div>
-<div class="line"><span class="lineno">  547</span><span class="comment">         31010150 -&gt; Wall 3, Row 1, Column 1, Plate 15, false;</span></div>
-<div class="line"><span class="lineno">  548</span><span class="comment">    */</span></div>
-<div class="line"><span class="lineno">  549</span>    <span class="keyword">auto</span> divt_E7 = std::div(detID, 1E7);</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00529">529</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  530</span>{</div>
+<div class="line"><span class="lineno">  532</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  533</span><span class="comment">     \param detID detectorID for the TargetPoint</span></div>
+<div class="line"><span class="lineno">  534</span><span class="comment">     \return a struct providing the wall, row, column and plate number (starting from 1),</span></div>
+<div class="line"><span class="lineno">  535</span><span class="comment">        as well as a boolean for top/bottom emulsion layer.</span></div>
+<div class="line"><span class="lineno">  536</span><span class="comment">        Examples:</span></div>
+<div class="line"><span class="lineno">  537</span><span class="comment">         11010031 -&gt; Wall 1, Row 1, Column 1, Plate 3, true;</span></div>
+<div class="line"><span class="lineno">  538</span><span class="comment">         31010150 -&gt; Wall 3, Row 1, Column 1, Plate 15, false;</span></div>
+<div class="line"><span class="lineno">  539</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">  540</span>    <span class="keyword">auto</span> divt_E7 = std::div(detID, 1E7);</div>
+<div class="line"><span class="lineno">  541</span> </div>
+<div class="line"><span class="lineno">  542</span>    Int_t NWall = divt_E7.quot;</div>
+<div class="line"><span class="lineno">  543</span>    <span class="keyword">auto</span> divt_E6 = std::div(divt_E7.rem, 1E6);</div>
+<div class="line"><span class="lineno">  544</span> </div>
+<div class="line"><span class="lineno">  545</span>    Int_t NRow = divt_E6.quot;</div>
+<div class="line"><span class="lineno">  546</span>    <span class="keyword">auto</span> divt_E4 = std::div(divt_E6.rem, 1E4);</div>
+<div class="line"><span class="lineno">  547</span> </div>
+<div class="line"><span class="lineno">  548</span>    Int_t NColumn = divt_E4.quot;</div>
+<div class="line"><span class="lineno">  549</span>    <span class="keyword">auto</span> divt_E1 = std::div(divt_E4.rem, 1E1);</div>
 <div class="line"><span class="lineno">  550</span> </div>
-<div class="line"><span class="lineno">  551</span>    Int_t NWall = divt_E7.quot;</div>
-<div class="line"><span class="lineno">  552</span>    <span class="keyword">auto</span> divt_E6 = std::div(divt_E7.rem, 1E6);</div>
+<div class="line"><span class="lineno">  551</span>    Int_t NPlate = divt_E1.quot;</div>
+<div class="line"><span class="lineno">  552</span>    Bool_t EmTop = <span class="keyword">static_cast&lt;</span>Bool_t<span class="keyword">&gt;</span>(divt_E1.rem);</div>
 <div class="line"><span class="lineno">  553</span> </div>
-<div class="line"><span class="lineno">  554</span>    Int_t NRow = divt_E6.quot;</div>
-<div class="line"><span class="lineno">  555</span>    <span class="keyword">auto</span> divt_E4 = std::div(divt_E6.rem, 1E4);</div>
-<div class="line"><span class="lineno">  556</span> </div>
-<div class="line"><span class="lineno">  557</span>    Int_t NColumn = divt_E4.quot;</div>
-<div class="line"><span class="lineno">  558</span>    <span class="keyword">auto</span> divt_E1 = std::div(divt_E4.rem, 1E1);</div>
-<div class="line"><span class="lineno">  559</span> </div>
-<div class="line"><span class="lineno">  560</span>    Int_t NPlate = divt_E1.quot;</div>
-<div class="line"><span class="lineno">  561</span>    Bool_t EmTop = <span class="keyword">static_cast&lt;</span>Bool_t<span class="keyword">&gt;</span>(divt_E1.rem);</div>
-<div class="line"><span class="lineno">  562</span> </div>
-<div class="line"><span class="lineno">  563</span>    <span class="keywordflow">return</span> std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);</div>
-<div class="line"><span class="lineno">  564</span>}</div>
+<div class="line"><span class="lineno">  554</span>    <span class="keywordflow">return</span> std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);</div>
+<div class="line"><span class="lineno">  555</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -957,10 +948,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00566">566</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  567</span>{</div>
-<div class="line"><span class="lineno">  568</span>    <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  569</span>}</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00557">557</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  558</span>{</div>
+<div class="line"><span class="lineno">  559</span>    <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  560</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1045,14 +1036,14 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00583">583</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  584</span>{</div>
-<div class="line"><span class="lineno">  585</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
-<div class="line"><span class="lineno">  586</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>;</div>
-<div class="line"><span class="lineno">  587</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  588</span>        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><span class="lineno">  589</span>    }</div>
-<div class="line"><span class="lineno">  590</span>}</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00574">574</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  575</span>{</div>
+<div class="line"><span class="lineno">  576</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
+<div class="line"><span class="lineno">  577</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>;</div>
+<div class="line"><span class="lineno">  578</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  579</span>        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><span class="lineno">  580</span>    }</div>
+<div class="line"><span class="lineno">  581</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1279,113 +1270,113 @@ Protected Attributes</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00431">431</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
-<div class="line"><span class="lineno">  434</span>    <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering()) {</div>
-<div class="line"><span class="lineno">  436</span>        <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">  437</span>        <a class="code hl_variable" href="classTarget.html#ac7a91d1b3697043e644f10eae0418441">fTime</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  438</span>        <a class="code hl_variable" href="classTarget.html#a0f22222ea7bc603a0eac5d771ae4254c">fLength</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  439</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>);</div>
-<div class="line"><span class="lineno">  440</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>);</div>
-<div class="line"><span class="lineno">  441</span>    }</div>
-<div class="line"><span class="lineno">  442</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  443</span>    <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">  447</span>        fTrackID = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  448</span>        <span class="comment">// Int_t fTrackID  = gMC-&gt;GetStack()-&gt;GetCurrentTrackNumber();</span></div>
-<div class="line"><span class="lineno">  449</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>);</div>
-<div class="line"><span class="lineno">  450</span>        Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>;</div>
-<div class="line"><span class="lineno">  451</span>        <span class="comment">// gGeoManager-&gt;PrintOverlaps();</span></div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>        <span class="comment">// cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  454</span>        Int_t MaxLevel = gGeoManager-&gt;GetLevel();</div>
-<div class="line"><span class="lineno">  455</span>        <span class="keyword">const</span> Int_t MaxL = MaxLevel;</div>
-<div class="line"><span class="lineno">  456</span>        <span class="comment">// cout &lt;&lt; &quot;MaxLevel = &quot; &lt;&lt; MaxL &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  457</span>        <span class="comment">// cout &lt;&lt; gMC-&gt;CurrentVolPath()&lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  458</span> </div>
-<div class="line"><span class="lineno">  459</span>        Int_t motherV[MaxL];</div>
-<div class="line"><span class="lineno">  460</span>        Bool_t EmTop = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  461</span>        Int_t NPlate = 0;</div>
-<div class="line"><span class="lineno">  462</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>;</div>
-<div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolName();</div>
-<div class="line"><span class="lineno">  465</span>        <span class="comment">// cout &lt;&lt; name &lt;&lt; endl;</span></div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00422">422</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  423</span>{</div>
+<div class="line"><span class="lineno">  425</span>    <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  426</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering()) {</div>
+<div class="line"><span class="lineno">  427</span>        <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">  428</span>        <a class="code hl_variable" href="classTarget.html#ac7a91d1b3697043e644f10eae0418441">fTime</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  429</span>        <a class="code hl_variable" href="classTarget.html#a0f22222ea7bc603a0eac5d771ae4254c">fLength</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  430</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>);</div>
+<div class="line"><span class="lineno">  431</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>);</div>
+<div class="line"><span class="lineno">  432</span>    }</div>
+<div class="line"><span class="lineno">  433</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  434</span>    <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  435</span> </div>
+<div class="line"><span class="lineno">  436</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">  438</span>        fTrackID = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  439</span>        <span class="comment">// Int_t fTrackID  = gMC-&gt;GetStack()-&gt;GetCurrentTrackNumber();</span></div>
+<div class="line"><span class="lineno">  440</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>);</div>
+<div class="line"><span class="lineno">  441</span>        Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>;</div>
+<div class="line"><span class="lineno">  442</span>        <span class="comment">// gGeoManager-&gt;PrintOverlaps();</span></div>
+<div class="line"><span class="lineno">  443</span> </div>
+<div class="line"><span class="lineno">  444</span>        <span class="comment">// cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  445</span>        Int_t MaxLevel = gGeoManager-&gt;GetLevel();</div>
+<div class="line"><span class="lineno">  446</span>        <span class="keyword">const</span> Int_t MaxL = MaxLevel;</div>
+<div class="line"><span class="lineno">  447</span>        <span class="comment">// cout &lt;&lt; &quot;MaxLevel = &quot; &lt;&lt; MaxL &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  448</span>        <span class="comment">// cout &lt;&lt; gMC-&gt;CurrentVolPath()&lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>        Int_t motherV[MaxL];</div>
+<div class="line"><span class="lineno">  451</span>        Bool_t EmTop = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  452</span>        Int_t NPlate = 0;</div>
+<div class="line"><span class="lineno">  453</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>;</div>
+<div class="line"><span class="lineno">  454</span> </div>
+<div class="line"><span class="lineno">  455</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolName();</div>
+<div class="line"><span class="lineno">  456</span>        <span class="comment">// cout &lt;&lt; name &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  457</span> </div>
+<div class="line"><span class="lineno">  458</span>        <span class="keywordflow">if</span> (strcmp(name, <span class="stringliteral">&quot;Emulsion&quot;</span>) == 0) {</div>
+<div class="line"><span class="lineno">  459</span>            NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  460</span>            EmTop = 1;</div>
+<div class="line"><span class="lineno">  461</span>        }</div>
+<div class="line"><span class="lineno">  462</span>        <span class="keywordflow">if</span> (strcmp(name, <span class="stringliteral">&quot;Emulsion2&quot;</span>) == 0) {</div>
+<div class="line"><span class="lineno">  463</span>            NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  464</span>            EmTop = 0;</div>
+<div class="line"><span class="lineno">  465</span>        }</div>
 <div class="line"><span class="lineno">  466</span> </div>
-<div class="line"><span class="lineno">  467</span>        <span class="keywordflow">if</span> (strcmp(name, <span class="stringliteral">&quot;Emulsion&quot;</span>) == 0) {</div>
-<div class="line"><span class="lineno">  468</span>            NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  469</span>            EmTop = 1;</div>
-<div class="line"><span class="lineno">  470</span>        }</div>
-<div class="line"><span class="lineno">  471</span>        <span class="keywordflow">if</span> (strcmp(name, <span class="stringliteral">&quot;Emulsion2&quot;</span>) == 0) {</div>
-<div class="line"><span class="lineno">  472</span>            NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  473</span>            EmTop = 0;</div>
-<div class="line"><span class="lineno">  474</span>        }</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>        Int_t NWall = 0, NColumn = 0, NRow = 0;</div>
-<div class="line"><span class="lineno">  477</span> </div>
-<div class="line"><span class="lineno">  478</span>        <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; MaxL; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  479</span>            motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = gGeoManager-&gt;GetMother(i)-&gt;GetNumber();</div>
-<div class="line"><span class="lineno">  480</span>            <span class="keyword">const</span> <span class="keywordtype">char</span>* mumname = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffName(i);</div>
-<div class="line"><span class="lineno">  481</span>            <span class="keywordflow">if</span> (motherV[0] == 1 &amp;&amp; motherV[0] != detID) {</div>
-<div class="line"><span class="lineno">  482</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Brick&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  483</span>                    NColumn = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  484</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Cell&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  485</span>                    NRow = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  486</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Row&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  487</span>                    NWall = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  488</span>                <span class="keywordflow">if</span> ((strcmp(mumname, <span class="stringliteral">&quot;Wall&quot;</span>) == 0) &amp;&amp; (motherV[i] == 2))</div>
-<div class="line"><span class="lineno">  489</span>                    NWall += <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>;</div>
-<div class="line"><span class="lineno">  490</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Cell&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  493</span>                    NColumn = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  494</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Row&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  495</span>                    NRow = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  496</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Wall&quot;</span>) == 0)</div>
-<div class="line"><span class="lineno">  497</span>                    NWall = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  498</span>                <span class="keywordflow">if</span> ((strcmp(mumname, <span class="stringliteral">&quot;volTarget&quot;</span>) == 0) &amp;&amp; (motherV[i] == 2))</div>
-<div class="line"><span class="lineno">  499</span>                    NWall += <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>;</div>
-<div class="line"><span class="lineno">  500</span>            }</div>
-<div class="line"><span class="lineno">  501</span>            <span class="comment">// cout &lt;&lt; i &lt;&lt; &quot;   &quot; &lt;&lt; motherV[i] &lt;&lt; &quot;    name = &quot; &lt;&lt; mumname &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  502</span>        }</div>
-<div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = (NWall + 1) * 1E7 + (NRow + 1) * 1E6 + (NColumn + 1) * 1E4 + (NPlate + 1) * 1E1 + EmTop;</div>
+<div class="line"><span class="lineno">  467</span>        Int_t NWall = 0, NColumn = 0, NRow = 0;</div>
+<div class="line"><span class="lineno">  468</span> </div>
+<div class="line"><span class="lineno">  469</span>        <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; MaxL; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  470</span>            motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = gGeoManager-&gt;GetMother(i)-&gt;GetNumber();</div>
+<div class="line"><span class="lineno">  471</span>            <span class="keyword">const</span> <span class="keywordtype">char</span>* mumname = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffName(i);</div>
+<div class="line"><span class="lineno">  472</span>            <span class="keywordflow">if</span> (motherV[0] == 1 &amp;&amp; motherV[0] != detID) {</div>
+<div class="line"><span class="lineno">  473</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Brick&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  474</span>                    NColumn = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  475</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Cell&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  476</span>                    NRow = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  477</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Row&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  478</span>                    NWall = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  479</span>                <span class="keywordflow">if</span> ((strcmp(mumname, <span class="stringliteral">&quot;Wall&quot;</span>) == 0) &amp;&amp; (motherV[i] == 2))</div>
+<div class="line"><span class="lineno">  480</span>                    NWall += <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>;</div>
+<div class="line"><span class="lineno">  481</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  482</span> </div>
+<div class="line"><span class="lineno">  483</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Cell&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  484</span>                    NColumn = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  485</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Row&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  486</span>                    NRow = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  487</span>                <span class="keywordflow">if</span> (strcmp(mumname, <span class="stringliteral">&quot;Wall&quot;</span>) == 0)</div>
+<div class="line"><span class="lineno">  488</span>                    NWall = motherV[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  489</span>                <span class="keywordflow">if</span> ((strcmp(mumname, <span class="stringliteral">&quot;volTarget&quot;</span>) == 0) &amp;&amp; (motherV[i] == 2))</div>
+<div class="line"><span class="lineno">  490</span>                    NWall += <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a>;</div>
+<div class="line"><span class="lineno">  491</span>            }</div>
+<div class="line"><span class="lineno">  492</span>            <span class="comment">// cout &lt;&lt; i &lt;&lt; &quot;   &quot; &lt;&lt; motherV[i] &lt;&lt; &quot;    name = &quot; &lt;&lt; mumname &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  493</span>        }</div>
+<div class="line"><span class="lineno">  494</span> </div>
+<div class="line"><span class="lineno">  495</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = (NWall + 1) * 1E7 + (NRow + 1) * 1E6 + (NColumn + 1) * 1E4 + (NPlate + 1) * 1E1 + EmTop;</div>
+<div class="line"><span class="lineno">  496</span> </div>
+<div class="line"><span class="lineno">  497</span>        <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  498</span> </div>
+<div class="line"><span class="lineno">  499</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> == 0.) {</div>
+<div class="line"><span class="lineno">  500</span>            <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  501</span>        }</div>
+<div class="line"><span class="lineno">  502</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  503</span>        <span class="comment">// Int_t MotherID =gMC-&gt;GetStack()-&gt;GetCurrentParentTrackNumber();</span></div>
+<div class="line"><span class="lineno">  504</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
 <div class="line"><span class="lineno">  505</span> </div>
-<div class="line"><span class="lineno">  506</span>        <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> == 0.) {</div>
-<div class="line"><span class="lineno">  509</span>            <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  510</span>        }</div>
-<div class="line"><span class="lineno">  511</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  512</span>        <span class="comment">// Int_t MotherID =gMC-&gt;GetStack()-&gt;GetCurrentParentTrackNumber();</span></div>
-<div class="line"><span class="lineno">  513</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  514</span> </div>
-<div class="line"><span class="lineno">  515</span>        TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">  516</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">  517</span>        Double_t xmean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.X() + Pos.X()) / 2.;</div>
-<div class="line"><span class="lineno">  518</span>        Double_t ymean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.Y() + Pos.Y()) / 2.;</div>
-<div class="line"><span class="lineno">  519</span>        Double_t zmean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  506</span>        TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">  507</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">  508</span>        Double_t xmean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.X() + Pos.X()) / 2.;</div>
+<div class="line"><span class="lineno">  509</span>        Double_t ymean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.Y() + Pos.Y()) / 2.;</div>
+<div class="line"><span class="lineno">  510</span>        Double_t zmean = (<a class="code hl_variable" href="classTarget.html#abeae83141015098251109ad912837066">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  511</span> </div>
+<div class="line"><span class="lineno">  512</span>        <a class="code hl_function" href="classTarget.html#ad28e3e742d75c32839c7749b560a481f">AddHit</a>(fTrackID,</div>
+<div class="line"><span class="lineno">  513</span>               <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>,</div>
+<div class="line"><span class="lineno">  514</span>               TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">  515</span>               TVector3(<a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Px(), <a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Py(), <a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Pz()),</div>
+<div class="line"><span class="lineno">  516</span>               <a class="code hl_variable" href="classTarget.html#ac7a91d1b3697043e644f10eae0418441">fTime</a>,</div>
+<div class="line"><span class="lineno">  517</span>               <a class="code hl_variable" href="classTarget.html#a0f22222ea7bc603a0eac5d771ae4254c">fLength</a>,</div>
+<div class="line"><span class="lineno">  518</span>               <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a>,</div>
+<div class="line"><span class="lineno">  519</span>               pdgCode);</div>
 <div class="line"><span class="lineno">  520</span> </div>
-<div class="line"><span class="lineno">  521</span>        <a class="code hl_function" href="classTarget.html#ad28e3e742d75c32839c7749b560a481f">AddHit</a>(fTrackID,</div>
-<div class="line"><span class="lineno">  522</span>               <a class="code hl_variable" href="classTarget.html#ae687892ad5cb609117f304fde2068a64">fVolumeID</a>,</div>
-<div class="line"><span class="lineno">  523</span>               TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">  524</span>               TVector3(<a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Px(), <a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Py(), <a class="code hl_variable" href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">fMom</a>.Pz()),</div>
-<div class="line"><span class="lineno">  525</span>               <a class="code hl_variable" href="classTarget.html#ac7a91d1b3697043e644f10eae0418441">fTime</a>,</div>
-<div class="line"><span class="lineno">  526</span>               <a class="code hl_variable" href="classTarget.html#a0f22222ea7bc603a0eac5d771ae4254c">fLength</a>,</div>
-<div class="line"><span class="lineno">  527</span>               <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a>,</div>
-<div class="line"><span class="lineno">  528</span>               pdgCode);</div>
-<div class="line"><span class="lineno">  529</span> </div>
-<div class="line"><span class="lineno">  530</span>        <span class="comment">// Increment number of muon det points in TParticle</span></div>
-<div class="line"><span class="lineno">  531</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  532</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018">ktauTarget</a>);</div>
-<div class="line"><span class="lineno">  533</span>    }</div>
-<div class="line"><span class="lineno">  534</span> </div>
-<div class="line"><span class="lineno">  535</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  536</span>}</div>
+<div class="line"><span class="lineno">  521</span>        <span class="comment">// Increment number of muon det points in TParticle</span></div>
+<div class="line"><span class="lineno">  522</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  523</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018">ktauTarget</a>);</div>
+<div class="line"><span class="lineno">  524</span>    }</div>
+<div class="line"><span class="lineno">  525</span> </div>
+<div class="line"><span class="lineno">  526</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  527</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
-<div class="ttc" id="aclassTarget_html_ad28e3e742d75c32839c7749b560a481f"><div class="ttname"><a href="classTarget.html#ad28e3e742d75c32839c7749b560a481f">Target::AddHit</a></div><div class="ttdeci">TargetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="Target_8cxx_source.html#l00597">Target.cxx:597</a></div></div>
+<div class="ttc" id="aclassTarget_html_ad28e3e742d75c32839c7749b560a481f"><div class="ttname"><a href="classTarget.html#ad28e3e742d75c32839c7749b560a481f">Target::AddHit</a></div><div class="ttdeci">TargetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="Target_8cxx_source.html#l00588">Target.cxx:588</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00074">ShipAna.py:74</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00249">makeCascade.py:249</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00174">makeCascade.py:174</a></div></div>
@@ -1421,11 +1412,11 @@ Protected Attributes</h2></td></tr>
  </p>
 <p>This will create a branch in the output tree called <a class="el" href="classTargetPoint.html">TargetPoint</a>, setting the last parameter to kFALSE means: this collection will not be written to the file, it will exist only during the simulation.</p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00571">571</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  572</span>{</div>
-<div class="line"><span class="lineno">  573</span> </div>
-<div class="line"><span class="lineno">  580</span>    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;TargetPoint&quot;</span>, <span class="stringliteral">&quot;Target&quot;</span>, <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  581</span>}</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00562">562</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  563</span>{</div>
+<div class="line"><span class="lineno">  564</span> </div>
+<div class="line"><span class="lineno">  571</span>    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;TargetPoint&quot;</span>, <span class="stringliteral">&quot;Target&quot;</span>, <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  572</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1454,10 +1445,10 @@ Protected Attributes</h2></td></tr>
 <p>has to be called after each event to reset the containers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00592">592</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  593</span>{</div>
-<div class="line"><span class="lineno">  594</span>    <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  595</span>}</div>
+<p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00583">583</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  584</span>{</div>
+<div class="line"><span class="lineno">  585</span>    <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  586</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
