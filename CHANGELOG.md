@@ -12,6 +12,14 @@ it in future.
 
 ## Unreleased
 
+### Changed
+
+* **Migrate detector MC point storage from TClonesArray to std::vector**
+  Ten detector classes now use `std::vector<PointType>` instead of `TClonesArray` for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages `FairRootManager::RegisterAny()` for ROOT I/O. Affected detectors: TimeDet, UpstreamTagger, strawtubes, splitcal, veto, Target, TargetTracker, SiliconTarget, MTCDetector, and simpleTarget.
+
+* **Migrate ShipStack MC track storage from TClonesArray to std::vector**
+  ShipStack now uses `std::vector<ShipMCTrack>` instead of `TClonesArray` for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables `RegisterAny()` for MCTrack I/O.
+
 ### Added
 
 * Add EventId and TrackID for MCTrack and HAPoint #944
