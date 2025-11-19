@@ -82,6 +82,5 @@ def apply_decorators():
     ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
     ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
     ROOT.vetoHit.__repr__ = vetoHitPrintOut
-    ROOT.muonHit.__repr__ = muonHitPrintOut
     ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut
     ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut
