@@ -20,7 +20,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.09
+      version: 25.11
 
     steps:
       - name: Checkout
@@ -57,7 +57,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.09
+      version: 25.11
 
     strategy:
       matrix:
@@ -133,7 +133,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.09
+      version: 25.11
 
     steps:
       - name: Checkout
