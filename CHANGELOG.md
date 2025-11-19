@@ -240,7 +240,6 @@ it in future.
 * Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
 * Remove unused files for FLUKA
 * Remove unused CMake modules
-
 * Remove globalDesigns dictionary from run_simScript.py and create_field_perturbation.py, use inline defaults instead
 * Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)
 * Removed unused class ShipChamber (leftover from TP design)
@@ -249,6 +248,7 @@ it in future.
 * Remove simpleTarget and personal study study_muEloss.py
 * Remove TTCluster.py
 * Remove pid class
+* Remove muon system
 
 ## 25.01
 

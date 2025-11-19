@@ -10,7 +10,6 @@ from array import array
 import sys
 from math import fabs
 from backports import tdirectory634
-from detectors.muonDetector import muonDetector
 from detectors.timeDetector import timeDetector
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
@@ -58,7 +57,6 @@ class ShipDigiReco:
   self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
   self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
-  self.muonDetector = muonDetector("muon", self.sTree, outtree=self.recoTree)
 
   # for the digitizing step
   self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
@@ -120,7 +118,6 @@ class ShipDigiReco:
    self.strawtubes.process()
    self.timeDetector.process()
    self.upstreamTaggerDetector.process()
-   self.muonDetector.process()
    # adding digitization of SND/MTC
    if self.sTree.GetBranch("MTCDetPoint"):
     self.digiMTC.process()
