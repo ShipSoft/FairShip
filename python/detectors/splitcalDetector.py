@@ -6,7 +6,7 @@ from BaseDetector import BaseDetector
 class splitcalDetector(BaseDetector):
     def __init__(self, name, intree):
         # Initialize base class for digitized hits
-        super().__init__(name, intree, 'std.vector', 'Splitcal')
+        super().__init__(name, intree, "std.vector", "Splitcal")
 
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
@@ -35,7 +35,7 @@ class splitcalDetector(BaseDetector):
         # Create one hit per detector cell from all points in that cell
         for detector_id, points in points_by_detID.items():
             # Convert Python list to std::vector for C++
-            point_vector = ROOT.std.vector('splitcalPoint')()
+            point_vector = ROOT.std.vector("splitcalPoint")()
             for point in points:
                 point_vector.push_back(point)
 
@@ -91,8 +91,14 @@ class splitcalDetector(BaseDetector):
             # Compute energy weights from X splitting
             weights_from_x_splitting = {}
             for index_subcluster in list_of_subclusters_x:
-                subcluster_energy_x = self._get_cluster_energy(list_of_subclusters_x[index_subcluster])
-                weight = subcluster_energy_x / cluster_energy_x if cluster_energy_x > 0 else 0
+                subcluster_energy_x = self._get_cluster_energy(
+                    list_of_subclusters_x[index_subcluster]
+                )
+                weight = (
+                    subcluster_energy_x / cluster_energy_x
+                    if cluster_energy_x > 0
+                    else 0
+                )
                 weights_from_x_splitting[index_subcluster] = weight
 
             # Re-cluster in YZ plane
@@ -106,13 +112,21 @@ class splitcalDetector(BaseDetector):
             # Compute energy weights from Y splitting
             weights_from_y_splitting = {}
             for index_subcluster in list_of_subclusters_y:
-                subcluster_energy_y = self._get_cluster_energy(list_of_subclusters_y[index_subcluster])
-                weight = subcluster_energy_y / cluster_energy_y if cluster_energy_y > 0 else 0
+                subcluster_energy_y = self._get_cluster_energy(
+                    list_of_subclusters_y[index_subcluster]
+                )
+                weight = (
+                    subcluster_energy_y / cluster_energy_y
+                    if cluster_energy_y > 0
+                    else 0
+                )
                 weights_from_y_splitting[index_subcluster] = weight
 
             # Build final clusters
             if len(list_of_subclusters_x) == 1 and len(list_of_subclusters_y) == 1:
-                list_final_clusters[index_final_cluster] = [(hit, 1.0) for hit in list_clusters_of_hits[i]]
+                list_final_clusters[index_final_cluster] = [
+                    (hit, 1.0) for hit in list_clusters_of_hits[i]
+                ]
                 index_final_cluster += 1
             else:
                 for ix in list_of_subclusters_x:
@@ -165,21 +179,31 @@ class splitcalDetector(BaseDetector):
             first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]
 
             for index_subcluster in subclusters_indices:
-                first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]
+                first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][
+                    0
+                ]
                 if first_hit_fragment.IsX():
-                    distance = fabs(first_hit_fragment.GetX() - first_hit_subcluster.GetX())
+                    distance = fabs(
+                        first_hit_fragment.GetX() - first_hit_subcluster.GetX()
+                    )
                 else:
-                    distance = fabs(first_hit_fragment.GetY() - first_hit_subcluster.GetY())
+                    distance = fabs(
+                        first_hit_fragment.GetY() - first_hit_subcluster.GetY()
+                    )
 
                 if minDistance < 0 or distance < minDistance:
                     minDistance = distance
                     minIndex = index_subcluster
 
             if minIndex != index_fragment:
-                self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment]
+                self.list_subclusters_of_hits[minIndex] += (
+                    self.list_subclusters_of_hits[index_fragment]
+                )
 
         for counter, index_subcluster in enumerate(subclusters_indices):
-            list_subclusters_excluding_fragments[counter] = self.list_subclusters_of_hits[index_subcluster]
+            list_subclusters_excluding_fragments[counter] = (
+                self.list_subclusters_of_hits[index_subcluster]
+            )
 
         return list_subclusters_excluding_fragments
 
@@ -233,7 +257,7 @@ class splitcalDetector(BaseDetector):
         err_z_1 = hit.GetZError()
 
         # Allow one or more 'missing' hit in x/y
-        max_gap = 2.
+        max_gap = 2.0
         if hit.IsX():
             err_x_1 = err_x_1 * max_gap
         if hit.IsY():
@@ -255,23 +279,35 @@ class splitcalDetector(BaseDetector):
 
                 if self.step == 1:
                     if hit.IsX():
-                        if (Dx <= (err_x_1 + err_x_2) and Dz <= 2 * (err_z_1 + err_z_2) and
-                            ((Dy <= (err_y_1 + err_y_2) and Dz > 0.) or (Dy == 0))):
+                        if (
+                            Dx <= (err_x_1 + err_x_2)
+                            and Dz <= 2 * (err_z_1 + err_z_2)
+                            and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
+                        ):
                             list_neighbours.append(hit2)
                     if hit.IsY():
-                        if (Dy <= (err_y_1 + err_y_2) and Dz <= 2 * (err_z_1 + err_z_2) and
-                            ((Dx <= (err_x_1 + err_x_2) and Dz > 0.) or (Dx == 0))):
+                        if (
+                            Dy <= (err_y_1 + err_y_2)
+                            and Dz <= 2 * (err_z_1 + err_z_2)
+                            and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
+                        ):
                             list_neighbours.append(hit2)
 
                 elif self.step == 2:
                     # Relax z condition for step 2
                     if hit.IsX():
-                        if (Dx <= (err_x_1 + err_x_2) and Dz <= 6 * (err_z_1 + err_z_2) and
-                            ((Dy <= (err_y_1 + err_y_2) and Dz > 0.) or (Dy == 0))):
+                        if (
+                            Dx <= (err_x_1 + err_x_2)
+                            and Dz <= 6 * (err_z_1 + err_z_2)
+                            and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
+                        ):
                             list_neighbours.append(hit2)
                     if hit.IsY():
-                        if (Dy <= (err_y_1 + err_y_2) and Dz <= 6 * (err_z_1 + err_z_2) and
-                            ((Dx <= (err_x_1 + err_x_2) and Dz > 0.) or (Dx == 0))):
+                        if (
+                            Dy <= (err_y_1 + err_y_2)
+                            and Dz <= 6 * (err_z_1 + err_z_2)
+                            and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
+                        ):
                             list_neighbours.append(hit2)
                 else:
                     print("-- _get_neighbours: ERROR: step not defined")

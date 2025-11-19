@@ -3,8 +3,9 @@ import global_variables
 from BaseDetector import BaseDetector
 import SciFiMapping
 
+
 class MTCDetector(BaseDetector):
-    def __init__(self, name, intree, branchType = 'TClonesArray', branchName = None):
+    def __init__(self, name, intree, branchType="TClonesArray", branchName=None):
         super().__init__(name, intree, branchType, branchName, splitLevel=1)
         # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
         # make SiPM to fibre mapping
@@ -14,7 +15,9 @@ class MTCDetector(BaseDetector):
                 lsOfGlobals.Add(global_variables.modules["MTC"])
             mapping = SciFiMapping.SciFiMapping(global_variables.modules)
             mapping.make_mapping()
-            self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
+            self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = (
+                mapping.get_sipm_to_fibre_map()
+            )
 
     def digitize(self):
         """Digitize SND/MTC MC hits.
@@ -39,7 +42,7 @@ class MTCDetector(BaseDetector):
         norm = {}
         for k, mc_point in enumerate(self.intree.MTCDetPoint):
             det_id = mc_point.GetDetectorID()
-            station_type = mc_point.GetStationType() # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
+            station_type = mc_point.GetStationType()  # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
             energy_loss = mc_point.GetEnergyLoss()
 
             if station_type == 0:
@@ -71,7 +74,9 @@ class MTCDetector(BaseDetector):
             loc_fibre_id = det_id % 1_000_000
             if loc_fibre_id not in fibre_map:
                 # If there is no entry for this fibre ID, skip
-                print(f"MTC digitization: no mapping found for fibre ID {loc_fibre_id} in station type {station_type}. Skipping.")
+                print(
+                    f"MTC digitization: no mapping found for fibre ID {loc_fibre_id} in station type {station_type}. Skipping."
+                )
                 continue
 
             for sipm_chan, chan_info in fibre_map[loc_fibre_id].items():
@@ -81,15 +86,15 @@ class MTCDetector(BaseDetector):
                     mc_points[global_channel] = {}
                     norm[global_channel] = 0
 
-                weight = chan_info['weight']
+                weight = chan_info["weight"]
                 hit_container[global_channel].append([mc_point, weight])
                 d_e = energy_loss * weight
                 mc_points[global_channel][k] = d_e
                 norm[global_channel] += d_e
 
         for det_id in hit_container:
-            all_points = ROOT.std.vector('MTCDetPoint*')()
-            all_weights = ROOT.std.vector('Float_t')()
+            all_points = ROOT.std.vector("MTCDetPoint*")()
+            all_weights = ROOT.std.vector("Float_t")()
 
             for entry in hit_container[det_id]:
                 all_points.push_back(entry[0])

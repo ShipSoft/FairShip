@@ -2,9 +2,10 @@ import ROOT
 import global_variables
 from BaseDetector import BaseDetector
 
+
 class timeDetector(BaseDetector):
     def __init__(self, name, intree):
-        super().__init__(name, intree, 'std.vector')
+        super().__init__(name, intree, "std.vector")
 
     def digitize(self):
         """Digitize timing detector MC hits.
