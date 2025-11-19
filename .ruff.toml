@@ -6,4 +6,7 @@ select = [
     "I", # isort
 ]
 
+[lint.pydocstyle]
+convention = "numpy"
+
 # See https://docs.astral.sh/ruff/linter/#rule-selection
