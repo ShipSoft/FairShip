@@ -479,7 +479,7 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
-    # exclusionList = ["Muon","Ecal","Hcal","strawtubes","TargetTrackers","NuTauTarget",\
+    # exclusionList = ["Muon","strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:
