@@ -21,9 +21,9 @@ repos:
   - id: ruff-check
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
-    files: ^(macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
+    files: ^(\.github/scripts/annotate_build\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py|python/experimental/.*\.py)$
   - id: ruff-format
-    files: ^(python/experimental/|python/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
+    files: ^(python/experimental/.*\.py|python/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py)$
 - repo: https://github.com/pre-commit/mirrors-clang-format
   rev: v21.1.5
   hooks:
