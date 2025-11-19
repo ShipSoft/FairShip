@@ -5,7 +5,7 @@ from BaseDetector import BaseDetector
 
 class muonDetector(BaseDetector):
     def __init__(self, name, intree):
-        super().__init__(name, intree, 'std.vector')
+        super().__init__(name, intree, "std.vector")
 
     def digitize(self):
         """Digitize muon detector MC hits.
