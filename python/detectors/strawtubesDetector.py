@@ -35,6 +35,8 @@ class strawtubesDetector(BaseDetector):
         n = 0
         t0 = 0.
         key = -1
+        stop  = ROOT.TVector3()
+        start = ROOT.TVector3()
         SmearedHits = []
         v_drift = global_variables.modules["strawtubes"].StrawVdrift()
         global_variables.modules["strawtubes"].StrawEndPoints(1002001, start, stop)

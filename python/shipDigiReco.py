@@ -14,8 +14,6 @@ from detectors.SBTDetector import SBTDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.splitcalDetector import splitcalDetector
-stop  = ROOT.TVector3()
-start = ROOT.TVector3()
 
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
