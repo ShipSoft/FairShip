@@ -231,6 +231,7 @@ it in future.
 * Removed unused run_simPgun.py
 * Remove ecal and hcal geometry files
 * Remove simpleTarget and personal study study_muEloss.py
+* Remove TTCluster.py
 
 ## 25.01
 
