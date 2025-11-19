@@ -6,7 +6,6 @@ date-released: 2025-01-01
 url: "https://github.com/ShipSoft/FairShip"
 repository-code: "https://github.com/ShipSoft/FairShip"
 type: software
-license: LGPL-3.0-or-later
 authors:
   - name: "The SHiP Collaboration"
 abstract: "FairShip is the software framework for the SHiP (Search for Hidden Particles) experiment, based on FairRoot. It provides simulation, reconstruction, and analysis tools for the SHiP detector."

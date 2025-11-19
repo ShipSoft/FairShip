@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 # Create a library called "libShipGen" which includes the source files given in
 # the array . The extension is already found.  Any number of sources could be
 # listed here.
@@ -66,7 +69,7 @@ set(SRCS
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES Base ShipData veto EvtGen EvtGenExternal
+set(DEPENDENCIES Base ShipData veto EvtGen::EvtGen
                  FairLogger::FairLogger)
 
 generate_library()

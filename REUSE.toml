@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "FairShip"
+SPDX-PackageSupplier = "CERN on behalf of the SHiP Collaboration"
+SPDX-PackageDownloadLocation = "https://github.com/ShipSoft/FairShip"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "CERN on behalf of the SHiP Collaboration"
+SPDX-License-Identifier = "LGPL-3.0-or-later"
