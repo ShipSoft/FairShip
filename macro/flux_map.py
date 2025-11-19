@@ -40,15 +40,6 @@ def main():
                         nplane), 100, -300, +300, 100, -300,
                     300)
     for suffix, title in [('mu', '#mu#pm hits'), ('all', 'All hits')]:
-        ut.bookHist(h, f'muon_tiles_{suffix}',
-                    f'{title};x[cm];y[cm]', 200, -1000, +1000, 90,
-                    -900, 900)
-        ut.bookHist(h, f'muon_bars_x_{suffix}',
-                    f'{title};x[cm];y[cm]', 2, -300, +300, 240, -600,
-                    600)
-        ut.bookHist(h, f'muon_bars_y_{suffix}',
-                    f'{title};x[cm];y[cm]', 120, -300, +300, 4, -600,
-                    600)
         ut.bookHist(h, f'timing_{suffix}',
                     f'{title};x[cm];y[cm]', 3, -252, +252, 167, -501,
                     501)
@@ -239,34 +230,6 @@ def main():
                     h['mu_pt'].Fill(pt, weight)
                     h['mu_ppt'].Fill(P, pt, weight)
                     h['timing_mu'].Fill(x, y, weight)
-        for hit in event.muonPoint:
-            if hit:
-                if not hit.GetEnergyLoss() > 0:
-                    continue
-                trid = hit.GetTrackID()
-                assert trid > 0
-                weight = event.MCTrack[trid].GetWeight()
-                x = hit.GetX()
-                y = hit.GetY()
-                px = hit.GetPx()
-                py = hit.GetPy()
-                pz = hit.GetPz()
-                pt = np.hypot(px, py)
-                P = np.hypot(pz, pt)
-                pid = hit.PdgCode()
-                assert pid not in [12, -12, 14, -14, 16, -16]
-                h['muon_tiles_all'].Fill(x, y, weight)
-                h['muon_bars_x_all'].Fill(x, y, weight)
-                h['muon_bars_y_all'].Fill(x, y, weight)
-                if abs(pid) == 13:
-                    muon = True
-                    muonid = trid
-                    h['mu_p'].Fill(P, weight)
-                    h['mu_pt'].Fill(pt, weight)
-                    h['mu_ppt'].Fill(P, pt, weight)
-                    h['muon_tiles_mu'].Fill(x, y, weight)
-                    h['muon_bars_y_mu'].Fill(x, y, weight)
-                    h['muon_bars_x_mu'].Fill(x, y, weight)
         for hit in event.vetoPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:

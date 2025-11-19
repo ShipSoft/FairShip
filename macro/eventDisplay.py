@@ -423,7 +423,6 @@ class DrawTracks(ROOT.FairTask):
             # loop over all sensitive volumes to find hits
             for P in [
                 "vetoPoint",
-                "muonPoint",
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
@@ -1250,9 +1249,6 @@ else:
     )
     mcHits["StrawPoints"] = ROOT.FairMCPointDraw(
         "strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle
-    )
-    mcHits["MuonPoints"] = ROOT.FairMCPointDraw(
-        "muonPoint", ROOT.kYellow, ROOT.kFullSquare
     )
     mcHits["RpcPoints"] = ROOT.FairMCPointDraw(
         "ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare
