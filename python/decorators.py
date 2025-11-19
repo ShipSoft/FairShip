@@ -22,9 +22,6 @@ def MCTrackPrintOut(x):
 def vetoHitPrintOut(x):
   txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
   return txt
-def muonHitPrintOut(x):
-  txt = '("muonHit") detID:%7i  TDC:%5.2F  isValid:%r'%(x.GetDetectorID(),x.GetDigi(),x.isValid())
-  return txt
 def TimeDetHitPrintOut(x):
   t = x.GetMeasurements()
   txt = '("TimeDetHit") detID:%7i  TDC1:%5.2F TDC2:%5.2F  isValid:%r'%(x.GetDetectorID(),t[0],t[1],x.isValid())
