@@ -29,6 +29,7 @@
 #include "TargetPoint.h"
 #include "TimeDetHit.h"
 #include "TimeDetPoint.h"
+#include "TrackInfo.h"
 #include "Tracklet.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
@@ -161,8 +162,8 @@ int main(int argc, char** argv)
 
     {
         std::vector<vetoHitOnTrack> objects;
-        objects.emplace_back();
-        objects.emplace_back();
+        objects.emplace_back(0, 99999.0f);
+        objects.emplace_back(5, 42.5f);
         total++;
         if (test_rntuple_io("vetoHitOnTrack", objects))
             passed++;
@@ -170,27 +171,25 @@ int main(int argc, char** argv)
 
     {
         std::vector<Tracklet> objects;
-        // Create first tracklet with some hit indices
-        Tracklet tracklet1;
-        tracklet1.setType(1);   // Type 1 = fitted track
-        std::vector<unsigned int>* hits1 = tracklet1.getList();
-        hits1->push_back(10);
-        hits1->push_back(15);
-        hits1->push_back(20);
-        hits1->push_back(25);
-        objects.push_back(tracklet1);
+        // Create first tracklet with some hit indices using modern constructor
+        std::vector<unsigned int> hits1 = {10, 15, 20, 25};
+        objects.emplace_back(1, hits1);   // Type 1 = fitted track
 
         // Create second tracklet with different hit indices
-        Tracklet tracklet2;
-        tracklet2.setType(1);
-        std::vector<unsigned int>* hits2 = tracklet2.getList();
-        hits2->push_back(30);
-        hits2->push_back(35);
-        hits2->push_back(40);
-        objects.push_back(tracklet2);
+        std::vector<unsigned int> hits2 = {30, 35, 40};
+        objects.emplace_back(1, hits2);
 
         total++;
         if (test_rntuple_io("Tracklet", objects))
+            passed++;
+    }
+
+    {
+        std::vector<TrackInfo> objects;
+        objects.emplace_back();
+        objects.emplace_back();
+        total++;
+        if (test_rntuple_io("TrackInfo", objects))
             passed++;
     }
 

@@ -10,7 +10,6 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 foreach(p CMP0028 # double colon for imported and alias targets
           CMP0074 # use _ROOT env variables
           CMP0144 # use <PACKAGENAME>_ROOT variables
-          CMP0167 # FindBoost module removed
 )
   if(POLICY ${p})
     cmake_policy(SET ${p} NEW)
@@ -143,19 +142,9 @@ find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
 
-if(DEFINED ${BOOST_ROOT})
-  set(Boost_NO_SYSTEM_PATHS TRUE)
-  set(Boost_NO_BOOST_CMAKE TRUE)
-endif(DEFINED ${BOOST_ROOT})
-# set(Boost_DEBUG TRUE)
-if(DEFINED ${BOOST_ROOT})
-  set(BOOST_ROOT $ENV{BOOST_ROOT})
-endif(DEFINED ${BOOST_ROOT})
 if(DEFINED $ENV{GSL_ROOT})
   set(GSL_DIR $ENV{GSL_ROOT})
 endif(DEFINED $ENV{GSL_ROOT})
-
-find_package(Boost 1.70 REQUIRED)
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase
