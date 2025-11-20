@@ -25,6 +25,8 @@ ShipMCTrack::ShipMCTrack()
     , fW(1.)
     , fProcID(44)
     , fNPoints(0)
+    , fEventID(0)
+    , fTrackID(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -43,6 +45,8 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode,
                          Double_t z,
                          Double_t t,
                          Int_t nPoints,
+                         Int_t eventID,
+                         Int_t trackID,
                          Double_t w)
     : TObject()
     , fPdgCode(pdgCode)
@@ -58,6 +62,8 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode,
     , fW(w)
     , fProcID(44)
     , fNPoints(nPoints)
+    , fEventID(eventID)
+    , fTrackID(trackID)
 {
 }
 // -------------------------------------------------------------------------
@@ -80,6 +86,8 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
     , fW(track.GetWeight())
     , fProcID(track.GetProcID())
     , fNPoints(track.fNPoints)
+    , fEventID(track.fEventID)
+    , fTrackID(track.fTrackID)
 {
 }
 // -------------------------------------------------------------------------
@@ -102,6 +110,8 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
     , fW(part->GetWeight())
     , fProcID(part->GetUniqueID())
     , fNPoints(0)
+    , fEventID(0)
+    , fTrackID(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -216,5 +226,13 @@ void ShipMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
 
   else LOG(error) << "Unknown detector ID "  << iDet ;
 */
+}
+
+void ShipMCTrack::SetEventID(const Int_t &eventID){
+    fEventID = eventID;
+}
+
+void ShipMCTrack::SetTrackID(const Int_t &trackID){
+    fTrackID = trackID;
 }
 // -------------------------------------------------------------------------

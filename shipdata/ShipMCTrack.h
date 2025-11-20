@@ -36,7 +36,7 @@ class ShipMCTrack : public TObject
     /**  Standard constructor  **/
     explicit ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
                 Double_t pz, Double_t E, Double_t x, Double_t y, Double_t z,
-                Double_t t, Int_t nPoints, Double_t w);
+                Double_t t, Int_t nPoints, Int_t eventID, Int_t trackID, Double_t w);
 
     /**  Copy constructor  **/
     ShipMCTrack(const ShipMCTrack& track);
@@ -87,7 +87,8 @@ class ShipMCTrack : public TObject
     /**  Modifiers  **/
     void SetMotherId(Int_t id) { fMotherId = id; }
     void SetNPoints(Int_t iDet, Int_t np);
-
+    void SetEventID(const Int_t &eventID);
+    void SetTrackID(const Int_t &trackID);
 
 
   private:
@@ -127,6 +128,11 @@ class ShipMCTrack : public TObject
      **/
     Int_t fNPoints;
 
+    /** Index of the event **/
+    Int_t fEventID;
+
+    /** Index of track in the event **/
+    Int_t fTrackID;
 
     ClassDef(ShipMCTrack,8);
 
