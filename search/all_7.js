@@ -53,7 +53,7 @@ var searchData=
   ['detectorbox_50',['DetectorBox',['../classCosmicsGenerator.html#af4ba75dd2c9db32945463ab232a7af9a',1,'CosmicsGenerator']]],
   ['detectorid_51',['DetectorId',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680',1,'ShipDetectorList.h']]],
   ['detectorlist_52',['detectorList',['../namespaceshipDet__conf.html#a0507a6f94174d43157cb96b2984eb98d',1,'shipDet_conf']]],
-  ['detid_53',['detid',['../namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37',1,'make_nTuple_SBT.detID'],['../namespacemake__nTuple__Tr.html#a0b3ed8ea50b97435a9b199f0a4ed216d',1,'make_nTuple_Tr.detID'],['../classTrackInfo.html#a6a890022df03a9cd32f9505728d40811',1,'TrackInfo::detId()']]],
+  ['detid_53',['detid',['../namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37',1,'make_nTuple_SBT.detID'],['../namespacemake__nTuple__Tr.html#a0b3ed8ea50b97435a9b199f0a4ed216d',1,'make_nTuple_Tr.detID'],['../classTrackInfo.html#a1a1058f53c7555354b037015c2110039',1,'TrackInfo::detId()']]],
   ['detidfromxyz_54',['DetIDfromXYZ',['../classmuonHit.html#a5e3d84f8e2dcef4a461a07ce50b2d4ee',1,'muonHit']]],
   ['detlist_55',['detList',['../classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa',1,'shipVeto::Task']]],
   ['detmap_56',['detmap',['../classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8',1,'shipVeto.Task.detMap()'],['../namespaceana__ShipMuon.html#a7c19f0ac702070d2458480d245c643c0',1,'ana_ShipMuon.detMap()']]],

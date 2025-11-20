@@ -1,23 +1,19 @@
 <map id="strawtubes/strawtubesHit.h" name="strawtubes/strawtubesHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="125,5,327,31"/>
-<area shape="rect" id="Node000002" href="$ShipHit_8h.html" title=" " alt="" coords="347,79,428,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,28,350,71,347,75,251,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,159,89,185"/>
-<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="181,33,135,52,113,65,93,80,70,113,56,147,51,145,66,110,89,77,110,60,133,47,179,28"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="249,159,339,185"/>
-<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="234,30,256,78,286,146,281,148,252,80,229,32"/>
-<area shape="rect" id="Node000008" href="$strawtubesPoint_8h.html" title=" " alt="" coords="103,79,242,104"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="219,33,192,69,187,66,215,29"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,102,236,123,101,155,91,158,90,152,100,149,235,118,346,97"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="364,159,443,185"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,104,401,145,396,146,387,105"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="375,106,320,152,317,148,372,102"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="467,152,609,192"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="411,102,491,143,488,148,408,107"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="633,152,776,192"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="429,100,620,147,619,152,428,105"/>
-<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="156,106,79,154,76,150,153,102"/>
-<area shape="poly" id="edge12_Node000008_Node000005" title=" " alt="" coords="192,102,266,150,263,154,189,106"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="113,159,224,185"/>
-<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="175,104,173,146,167,145,169,104"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="124,5,325,31"/>
+<area shape="rect" id="Node000002" href="$ShipHit_8h.html" title=" " alt="" coords="252,79,333,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,29,274,67,270,70,234,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,89,177"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="167,33,120,51,98,64,79,80,61,109,53,139,48,138,56,107,75,77,95,60,118,46,165,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="277,28,316,46,334,60,348,77,353,96,348,114,336,131,322,145,318,141,332,127,343,112,348,96,344,80,330,64,313,51,275,33"/>
+<area shape="rect" id="Node000006" href="$strawtubesPoint_8h.html" title=" " alt="" coords="89,79,227,104"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="216,33,180,70,176,67,212,29"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="254,107,101,151,99,146,253,101"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="364,152,443,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="312,102,375,142,372,147,309,106"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="296,104,296,138,291,139,290,104"/>
+<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="142,106,79,147,76,142,139,102"/>
+<area shape="poly" id="edge10_Node000006_Node000005" title=" " alt="" coords="181,102,261,143,259,148,179,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="113,152,224,177"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="162,104,168,138,162,139,157,105"/>
 </map>

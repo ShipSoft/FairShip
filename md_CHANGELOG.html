@@ -296,10 +296,21 @@ Changed</h2>
 <li>Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.</li>
 <li>Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.</li>
 <li>Placement of <a class="el" href="classSiliconTarget.html">SiliconTarget</a> has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.</li>
+<li>Modernise data classes by removing obsolete BOOST serialisation (<a class="el" href="classTracklet.html">Tracklet</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, <a class="el" href="classShipHit.html">ShipHit</a>, <a class="el" href="classTrackInfo.html">TrackInfo</a>)<ul>
+<li>Replace BOOST serialisation with native ROOT 6 serialisation</li>
+<li>Modernise <a class="el" href="classTracklet.html">Tracklet</a> constructor to accept <code>std::vector&lt;unsigned int&gt;</code> indices</li>
+<li>Update <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a> to use parameterised constructor in Python code</li>
+<li>Add const correctness to <a class="el" href="classTrackInfo.html">TrackInfo</a> accessor methods</li>
+<li>Update Python code in <a class="el" href="shipDigiReco_8py.html">shipDigiReco.py</a> to use modern constructors</li>
+<li>Bump ClassDef versions to 2 for schema evolution</li>
+<li>Add <a class="el" href="classTrackInfo.html">TrackInfo</a> to RNTuple I/O test suite</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
 <ul>
+<li>Remove BOOST dependency from CMake build system - no longer required as ROOT 6 provides native serialisation</li>
 <li>Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)</li>
 <li>fix: Remove unused, unrunnable shipPatRec_prev.py</li>
 <li>feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).</li>
