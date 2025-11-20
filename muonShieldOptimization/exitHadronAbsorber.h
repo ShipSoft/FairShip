@@ -76,8 +76,7 @@ class exitHadronAbsorber: public FairDetector
     inline void SetZposition(Float_t x){fzPos=x;}
     inline void SetVetoPointName(TString nam){fVetoName=nam;}
     inline void SetCylindricalPlane(){fCylindricalPlane=kTRUE;}
-    inline void SetSaveOnlyChargedParticlesInTargetPlane(){fSaveOnlyChargedParticlesInTargetPlane=kTRUE;}
-    inline void SetPositionFromCave(){fSetPosFromCave=kTRUE;}
+    inline void SetUseCaveCoordinates(){fUseCaveCoordinates=kTRUE;}
 
   private:
 
@@ -100,8 +99,7 @@ class exitHadronAbsorber: public FairDetector
     Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
     TString fVetoName; //name to save veto collection
     Bool_t fCylindricalPlane;  //! flag if the sensPlane to be created should be cylindrical (by default it is not)
-    Bool_t fSaveOnlyChargedParticlesInTargetPlane;  //! flag if only charged particles should be saved in the plane
-    Bool_t fSetPosFromCave;  //! set position from cave rather than from muon sheild, default is false
+    Bool_t fUseCaveCoordinates;  //! set position from cave rather than from muon shield, default is false
 
     TFile* fout; //!
     TClonesArray* fElectrons; //!

@@ -152,7 +152,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10 -e 10.0 -r 1
+          python $FAIRSHIP/macro/run_fixedTarget.py -n 10 -e 10.0 -r 1
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4

@@ -51,8 +51,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fzPos(3E8),
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
-    fSaveOnlyChargedParticlesInTargetPlane(kFALSE),
-    fSetPosFromCave(kFALSE),
+    fUseCaveCoordinates(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -71,10 +70,8 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
-    TDatabasePDG* PDG = TDatabasePDG::Instance();
-    Double_t charge = PDG->GetParticle(pdgCode)->Charge();
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13) && !(fSaveOnlyChargedParticlesInTargetPlane && TMath::Abs(charge)>0.1)){
+    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){
      fTime   = gMC->TrackTime() * 1.0e09;
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
@@ -253,7 +250,7 @@ void exitHadronAbsorber::ConstructGeometry()
      TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
      std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
 
-     if (!fSetPosFromCave) {
+     if (!fUseCaveCoordinates) {
         nav->cd("/MuonShieldArea_1/");
      } else {
         Double_t local[3]  = {0, 0, zLoc};
