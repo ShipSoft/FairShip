@@ -29,6 +29,7 @@
 #include "TargetPoint.h"
 #include "TimeDetHit.h"
 #include "TimeDetPoint.h"
+#include "Tracklet.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
 #include "splitcalCluster.h"
@@ -164,6 +165,32 @@ int main(int argc, char** argv)
         objects.emplace_back();
         total++;
         if (test_rntuple_io("vetoHitOnTrack", objects))
+            passed++;
+    }
+
+    {
+        std::vector<Tracklet> objects;
+        // Create first tracklet with some hit indices
+        Tracklet tracklet1;
+        tracklet1.setType(1);   // Type 1 = fitted track
+        std::vector<unsigned int>* hits1 = tracklet1.getList();
+        hits1->push_back(10);
+        hits1->push_back(15);
+        hits1->push_back(20);
+        hits1->push_back(25);
+        objects.push_back(tracklet1);
+
+        // Create second tracklet with different hit indices
+        Tracklet tracklet2;
+        tracklet2.setType(1);
+        std::vector<unsigned int>* hits2 = tracklet2.getList();
+        hits2->push_back(30);
+        hits2->push_back(35);
+        hits2->push_back(40);
+        objects.push_back(tracklet2);
+
+        total++;
+        if (test_rntuple_io("Tracklet", objects))
             passed++;
     }
 

@@ -67,7 +67,7 @@ class ShipDigiReco:
   self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
   self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
   self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
-  self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
+  self.fTrackletsArray = ROOT.std.vector("Tracklet")()
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
   self.strawtubes = strawtubesDetector("strawtubes", self.sTree, 'std.vector')
@@ -156,7 +156,7 @@ class ShipDigiReco:
   fittedtrackids=[]
   listOfIndices  = {}
   self.fGenFitArray.clear()
-  self.fTrackletsArray.Delete()
+  self.fTrackletsArray.clear()
   self.fitTrack2MC.clear()
 
 #
@@ -339,12 +339,12 @@ class ShipDigiReco:
     frac, tmax = self.fracMCsame(track_ids)
     self.fitTrack2MC.push_back(tmax)
     # Save hits indexes of the the fitted tracks
-    nTracks   = self.fTrackletsArray.GetEntries()
-    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-    listOfHits = aTracklet.getList()
+    aTracklet = ROOT.Tracklet()
     aTracklet.setType(1)
+    listOfHits = aTracklet.getList()
     for index in listOfIndices[atrack]:
       listOfHits.push_back(index)
+    self.fTrackletsArray.push_back(aTracklet)
   self.Tracklets.Fill()
   self.fitTracks.Fill()
   self.mcLink.Fill()
