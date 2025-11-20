@@ -278,7 +278,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   67</span>  self.mcLink      = self.sTree.Branch(<span class="stringliteral">&quot;fitTrack2MC&quot;</span>,self.fitTrack2MC,32000,-1)</div>
 <div class="line"><span class="lineno">   68</span>  self.fitTracks   = self.sTree.Branch(<span class="stringliteral">&quot;FitTracks&quot;</span>,  self.fGenFitArray,32000,-1)</div>
 <div class="line"><span class="lineno">   69</span>  self.goodTracksBranch      = self.sTree.Branch(<span class="stringliteral">&quot;goodTracks&quot;</span>,self.goodTracksVect,32000,-1)</div>
-<div class="line"><span class="lineno">   70</span>  self.fTrackletsArray = ROOT.TClonesArray(<span class="stringliteral">&quot;Tracklet&quot;</span>)</div>
+<div class="line"><span class="lineno">   70</span>  self.fTrackletsArray = ROOT.std.vector(<span class="stringliteral">&quot;Tracklet&quot;</span>)()</div>
 <div class="line"><span class="lineno">   71</span>  self.Tracklets   = self.sTree.Branch(<span class="stringliteral">&quot;Tracklets&quot;</span>,  self.fTrackletsArray,32000,-1)</div>
 <div class="line"><span class="lineno">   72</span><span class="comment">#</span></div>
 <div class="line"><span class="lineno">   73</span>  self.strawtubes = <a class="code hl_namespace" href="namespacestrawtubesDetector.html">strawtubesDetector</a>(<span class="stringliteral">&quot;strawtubes&quot;</span>, self.sTree, <span class="stringliteral">&#39;std.vector&#39;</span>)</div>
@@ -430,7 +430,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  156</span>  fittedtrackids=[]</div>
 <div class="line"><span class="lineno">  157</span>  listOfIndices  = {}</div>
 <div class="line"><span class="lineno">  158</span>  self.fGenFitArray.clear()</div>
-<div class="line"><span class="lineno">  159</span>  self.fTrackletsArray.Delete()</div>
+<div class="line"><span class="lineno">  159</span>  self.fTrackletsArray.clear()</div>
 <div class="line"><span class="lineno">  160</span>  self.fitTrack2MC.clear()</div>
 <div class="line"><span class="lineno">  161</span> </div>
 <div class="line"><span class="lineno">  162</span><span class="comment">#</span></div>
@@ -613,12 +613,12 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  339</span>    frac, tmax = self.fracMCsame(track_ids)</div>
 <div class="line"><span class="lineno">  340</span>    self.fitTrack2MC.push_back(tmax)</div>
 <div class="line"><span class="lineno">  341</span>    <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
-<div class="line"><span class="lineno">  342</span>    nTracks   = self.fTrackletsArray.GetEntries()</div>
-<div class="line"><span class="lineno">  343</span>    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)</div>
+<div class="line"><span class="lineno">  342</span>    aTracklet = ROOT.Tracklet()</div>
+<div class="line"><span class="lineno">  343</span>    aTracklet.setType(1)</div>
 <div class="line"><span class="lineno">  344</span>    listOfHits = aTracklet.getList()</div>
-<div class="line"><span class="lineno">  345</span>    aTracklet.setType(1)</div>
-<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
-<div class="line"><span class="lineno">  347</span>      listOfHits.push_back(index)</div>
+<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
+<div class="line"><span class="lineno">  346</span>      listOfHits.push_back(index)</div>
+<div class="line"><span class="lineno">  347</span>    self.fTrackletsArray.push_back(aTracklet)</div>
 <div class="line"><span class="lineno">  348</span>  self.Tracklets.Fill()</div>
 <div class="line"><span class="lineno">  349</span>  self.fitTracks.Fill()</div>
 <div class="line"><span class="lineno">  350</span>  self.mcLink.Fill()</div>
