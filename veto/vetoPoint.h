@@ -53,7 +53,6 @@ class vetoPoint : public FairMCPoint
 
   private:
     Int_t fPdgCode;
-    Int_t fEventID;
     std::array<Double_t, 3> fLpos, fLmom;
 
     ClassDef(vetoPoint, 5)

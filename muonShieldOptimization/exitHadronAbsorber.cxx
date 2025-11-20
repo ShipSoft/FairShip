@@ -40,7 +40,7 @@ Double_t mm  = 0.1*cm;  //  mm
 exitHadronAbsorber::exitHadronAbsorber()
   : FairDetector("exitHadronAbsorber", kTRUE, kVETO),
     fUniqueID(-1),
-    fEventID(-1),
+    fEventId(-1),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -69,8 +69,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
   /** This method is called from the MC stepping */
   if ( gMC->IsTrackEntering() ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fEventID = gMC->CurrentEvent();
-    std::cout<<"event ID: "<<fEventID<<std::endl;
+    fEventId = gMC->CurrentEvent();
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     fUniqueID = p->GetUniqueID();
     Int_t pdgCode = p->GetPdgCode();
@@ -80,7 +79,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
      if ( (fMom.E()-fMom.M() )>EMax) {
-      AddHit(fEventID, fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
+      AddHit(fEventId, fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
       ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());

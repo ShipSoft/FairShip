@@ -83,7 +83,7 @@ class exitHadronAbsorber: public FairDetector
     active volume.
     */
     Int_t          fTrackID;           //!  track index
-    Int_t          fEventID;           //!  event index
+    Int_t          fEventId;           //!  event index
     Int_t          fVolumeID;          //!  volume id
     Int_t          fUniqueID;
     TLorentzVector fPos;               //!  position at entrance
