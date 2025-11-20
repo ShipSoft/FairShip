@@ -23,19 +23,36 @@ docaCut = 2.
 
 parser = ArgumentParser()
 
-parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", required=True)
+parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file (MC simulation)", required=True)
+parser.add_argument("-r", "--recoFile", dest="recoFile", help="Reconstruction file (will be used as friend tree)", required=False)
 parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to analyze", required=False,  default=999999,type=int)
 parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", required=True)
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 options = parser.parse_args()
 
+# Determine reconstruction file
+if not options.recoFile:
+  # Default: replace .root with _rec.root, or if already _rec.root use as-is
+  if options.inputFile.find('_rec.root') > 0:
+    options.recoFile = options.inputFile
+    options.inputFile = options.inputFile.replace('_rec.root', '.root')
+  else:
+    options.recoFile = options.inputFile.replace('.root', '_rec.root')
+
+# Open MC simulation file
 if not options.inputFile.find(',')<0 :
   sTree = ROOT.TChain("cbmsim")
+  recoChain = ROOT.TChain("ship_reco_sim")
   for x in options.inputFile.split(','):
     sTree.AddFile(x)
+  for x in options.recoFile.split(','):
+    recoChain.AddFile(x)
+  sTree.AddFriend(recoChain)
 else:
   f = ROOT.TFile(options.inputFile)
   sTree = f["cbmsim"]
+  # Add reconstruction data as friend tree
+  sTree.AddFriend("ship_reco_sim", options.recoFile)
 
 if not options.geoFile:
  options.geoFile = options.inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
@@ -689,7 +706,11 @@ for n in range(options.nEvents):
  sTree.FitTracks.clear()
 makePlots()
 # output histograms
-hfile = options.inputFile.split(',')[0].replace('_rec','_ana')
+hfile = options.inputFile.split(',')[0]
+if '_rec' in hfile:
+  hfile = hfile.replace('_rec','_ana')
+else:
+  hfile = hfile.replace('.root','_ana.root')
 if "/eos" in hfile or not options.inputFile.find(',')<0:
 # do not write to eos, write to local directory
   tmp = hfile.split('/')

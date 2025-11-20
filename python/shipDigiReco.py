@@ -17,102 +17,77 @@ from detectors.splitcalDetector import splitcalDetector
 
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
- def __init__(self,fout,fgeo):
-  self.fn = ROOT.TFile.Open(fout,'update')
-  self.sTree = self.fn["cbmsim"]
-  if self.sTree.GetBranch("FitTracks"):
-    print("remove RECO branches and rerun reconstruction")
-    self.fn.Close()
-    # make a new file without reco branches
-    f = ROOT.TFile(fout)
-    sTree = f["cbmsim"]
-    if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
-    if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
-    if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
-    if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
-    if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
-    if sTree.GetBranch("Digi_strawtubesHits"): sTree.SetBranchStatus("Digi_strawtubesHits",0)
-    if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
-    if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
-    if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
-    if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
-    if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
+ def __init__(self, finput, fout, fgeo):
+  # Open input file (read-only) and get the MC tree
+  self.inputFile = ROOT.TFile.Open(finput, 'read')
+  self.sTree = self.inputFile["cbmsim"]
 
-    rawFile = fout.replace("_rec.root","_raw.root")
-    recf = ROOT.TFile(rawFile,"recreate")
-    newTree = sTree.CloneTree(0)
-    for n in range(sTree.GetEntries()):
-      sTree.GetEntry(n)
-      rc = newTree.Fill()
-    sTree.Clear()
-    newTree.AutoSave()
-    f.Close()
-    recf.Close()
-    os.system('cp '+rawFile +' '+fout)
-    self.fn = ROOT.TFile(fout,'update')
-    self.sTree = self.fn["cbmsim"]
-#
-  if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
-# prepare for output
-# event header
+  # Create output file and new tree for digi/reco branches only
+  self.outputFile = ROOT.TFile.Open(fout, 'recreate')
+  self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
+
+  # Disable GeoTracks branch if present in input
+  if self.sTree.GetBranch("GeoTracks"):
+    self.sTree.SetBranchStatus("GeoTracks", 0)
+  # prepare for output
+  # event header
   self.header  = ROOT.FairEventHeader()
-  self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
-# fitted tracks
+  self.eventHeader  = self.recoTree.Branch("ShipEventHeader",self.header,32000,-1)
+  # fitted tracks
   # Must use pointer storage: genfit::Track has circular references with TrackPoint
   # requiring stable memory addresses (value storage would invalidate back-pointers on vector resize)
   self.fGenFitArray = ROOT.std.vector("genfit::Track*")()
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.goodTracksVect  = ROOT.std.vector('int')()
-  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
-  self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
+  self.mcLink      = self.recoTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
+  self.fitTracks   = self.recoTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  self.goodTracksBranch      = self.recoTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
   self.fTrackletsArray = ROOT.std.vector("Tracklet")()
-  self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
-#
-  self.strawtubes = strawtubesDetector("strawtubes", self.sTree)
+  self.Tracklets   = self.recoTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
+  #
+  self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
 
-  self.digiMTC = MTCDetector("MTCDet", self.sTree, 'MTC')
-  self.digiSBT = SBTDetector("veto", self.sTree, 'SBT', mcBranchName = "digiSBT2MC")
+  self.digiMTC = MTCDetector("MTCDet", self.sTree, 'MTC', outtree=self.recoTree)
+  self.digiSBT = SBTDetector("veto", self.sTree, 'SBT', mcBranchName="digiSBT2MC", outtree=self.recoTree)
   self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
-  self.vetoHitOnTrackBranch = self.sTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
+  self.vetoHitOnTrackBranch = self.recoTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
 
-  self.timeDetector = timeDetector("TimeDet", self.sTree)
-  self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree)
+  self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
+  self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
-  self.muonDetector = muonDetector("muon", self.sTree)
+  self.muonDetector = muonDetector("muon", self.sTree, outtree=self.recoTree)
 
-# for the digitizing step
+  # for the digitizing step
   self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
-# optional if present, splitcalCluster
+  # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
-   self.splitcalDetector = splitcalDetector("splitcal", self.sTree)
+   self.splitcalDetector = splitcalDetector("splitcal", self.sTree, outtree=self.recoTree)
    # Keep references for backward compatibility
    self.digiSplitcal = self.splitcalDetector.det
    self.recoSplitcal = self.splitcalDetector.reco
 
 
-# prepare vertexing
-  self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
-# setup random number generator
+  # prepare vertexing
+  self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
+  # setup random number generator
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.PDG = ROOT.TDatabasePDG.Instance()
-# access ShipTree
+  # access ShipTree
   self.sTree.GetEvent(0)
-#
-# init geometry and mag. field
+  #
+  # init geometry and mag. field
   gMan  = ROOT.gGeoManager
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
-#
+  #
   self.bfield = ROOT.genfit.FairShipFields()
   self.bfield.setField(global_variables.fieldMaker.getGlobalField())
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
 
- # init fitter, to be done before importing shipPatRec
+   # init fitter, to be done before importing shipPatRec
   #fitter          = ROOT.genfit.KalmanFitter()
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
   self.fitter      = ROOT.genfit.DAF()
@@ -121,7 +96,7 @@ class ShipDigiReco:
     self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
 
-# for 'real' PatRec
+  # for 'real' PatRec
   shipPatRec.initialize(fgeo)
 
  def reconstruct(self):
@@ -350,7 +325,7 @@ class ShipDigiReco:
 # debug
   if global_variables.debug:
    print('save tracklets:')
-   for x in self.sTree.Tracklets:
+   for x in self.recoTree.Tracklets:
     print(x.getType(),x.getList().size())
   return self.fGenFitArray.size()
 
@@ -419,9 +394,11 @@ class ShipDigiReco:
  def finish(self):
   del self.fitter
   print('finished writing tree')
-  self.sTree.Write()
+  self.outputFile.cd()
+  self.recoTree.Write()
   ut.errorSummary()
   ut.writeHists(global_variables.h,"recohists.root")
   if global_variables.realPR:
     shipPatRec.finalize()
-  self.fn.Close()
+  self.outputFile.Close()
+  self.inputFile.Close()

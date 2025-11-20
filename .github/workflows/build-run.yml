@@ -108,13 +108,13 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+          python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 
       - name: Run examples
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/examples/analysis_example.py
+          python $FAIRSHIP/examples/analysis_example.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4

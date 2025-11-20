@@ -3,8 +3,8 @@ from BaseDetector import BaseDetector
 
 
 class muonDetector(BaseDetector):
-    def __init__(self, name, intree):
-        super().__init__(name, intree)
+    def __init__(self, name, intree, outtree=None):
+        super().__init__(name, intree, outtree=outtree)
 
     def digitize(self):
         """Digitize muon detector MC hits.

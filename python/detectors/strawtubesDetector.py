@@ -5,11 +5,12 @@ from BaseDetector import BaseDetector
 
 
 class strawtubesDetector(BaseDetector):
-    def __init__(self, name, intree):
-        super().__init__(name, intree)
+    def __init__(self, name, intree, outtree=None):
+        super().__init__(name, intree, outtree=outtree)
 
     def digitize(self):
         """Digitize strawtube MC hits.
+
         The earliest hit per straw will be marked valid, all later ones invalid.
         """
         earliest_per_det_id = {}
@@ -83,8 +84,6 @@ class strawtubesDetector(BaseDetector):
                 continue
             detID = aDigi.GetDetectorID()
             global_variables.modules["strawtubes"].StrawEndPoints(detID, start, stop)
-            # distance to wire
-            delt1 = (start[2] - z1) / u.speedOfLight
             p = self.intree.strawtubesPoint[key]
             # use true t0  construction:
             #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;

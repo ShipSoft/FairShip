@@ -10,8 +10,9 @@ from array import array
 
 class Task:
  "initialize"
- def __init__(self,hp,sTree):
+ def __init__(self,hp,sTree,mcTree=None):
   self.sTree = sTree
+  self.mcTree = mcTree if mcTree is not None else sTree
   self.fPartArray = ROOT.std.vector("ShipParticle")()
   if not self.sTree.GetBranch("Particles"):
       self.Particles = self.sTree.Branch("Particles", self.fPartArray)
@@ -139,9 +140,9 @@ class Task:
      #print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 #   HNL true
      if  self.sTree.GetBranch("fitTrack2MC"):
-      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-      mctrack2 = self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]
-      mcHNL = self.sTree.MCTrack[mctrack.GetMotherId()]
+      mctrack = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t1]]
+      mctrack2 = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t2]]
+      mcHNL = self.mcTree.MCTrack[mctrack.GetMotherId()]
       #print "true vtx: ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
       #print "reco vtx: ",HNLPos[0],HNLPos[1],HNLPos[2]
       #self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )

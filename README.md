@@ -149,11 +149,15 @@ python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofi
 >> [...]
 >> finished writing tree
 >> Exit normally
+>> (This creates ship.conical.Pythia8-TGeant4_rec.root with digitisation and reconstruction data)
 
-python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finished making plots
 >> Exit normally
 ```
+
+**Note**: ShipReco now creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
+
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
 Simulate MC signal events with EventCalc:
@@ -169,7 +173,7 @@ python $FAIRSHIP/macro/run_simScript.py --evtcalc -n 1 -o test_folder -f test_fo
 Run the event display:
 
 ```bash
-python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 // use SHiP Event Display GUI
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
