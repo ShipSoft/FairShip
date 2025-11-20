@@ -246,7 +246,9 @@ void exitHadronAbsorber::ConstructGeometry()
    TString shapename_prefix(myname); // Use a prefix for shapenames
 
    TGeoVolume *sensPlane;
+   Double_t xLocPlane;
    Double_t yLocPlane;
+   Double_t zLocPlane;
 
    if (!fCylindricalPlane){
      if (fzPos > 1E8) {
@@ -255,17 +257,28 @@ void exitHadronAbsorber::ConstructGeometry()
         nav->cd("/MuonShieldArea_1/");
         sensPlane = sensPlaneHA;
         yLocPlane = 0.0;
+        zLocPlane = zLoc;
+        xLocPlane = 0.0;
+
      } else {
-        TGeoVolume *sensPlaneT = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,0.8*m,1.1355*m,1.*mm);
-        std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 0.8*m,1.1355*m,1.*mm" << std::endl;
-        // nav->cd("/target_vacuum_box_1/");
+        TGeoVolume *sensPlaneT = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1*mm,1.7*m-1*mm,1.*mm);
+        std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1*mm,1.7*m-1*mm,1.*mm" << std::endl;
+
+        Double_t local[3]  = {0, 0, zLoc};
+        Double_t global[3];
+
         nav->cd("/target_vacuum_box_1/TargetArea_1");
+        nav->LocalToMaster(local, global);
+        nav->cd("/cave_1");
         sensPlane=sensPlaneT;
-        yLocPlane = -14.45*cm;
+        yLocPlane = global[1];
+        zLocPlane = global[2];
+        xLocPlane = global[0];
+
      }
      sensPlane->SetLineColor(kBlue - 10);
      //nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, fzPos<250?2:1, new TGeoTranslation(0, 0, zLoc));
-     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, yLocPlane, zLoc));
+     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
      AddSensitiveVolume(sensPlane);
    }
    else {  // add cylindrical sensPlane
