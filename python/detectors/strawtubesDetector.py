@@ -1,13 +1,12 @@
+import global_variables
 import ROOT
-import global_variables
-from BaseDetector import BaseDetector
 import shipunit as u
-import global_variables
+from BaseDetector import BaseDetector
 
 
 class strawtubesDetector(BaseDetector):
-    def __init__(self, name, intree, branchType="std.vector"):
-        super().__init__(name, intree, branchType)
+    def __init__(self, name, intree):
+        super().__init__(name, intree)
 
     def digitize(self):
         """Digitize strawtube MC hits.

@@ -1,12 +1,13 @@
-import ROOT
 from math import fabs
+
+import ROOT
 from BaseDetector import BaseDetector
 
 
 class splitcalDetector(BaseDetector):
     def __init__(self, name, intree):
         # Initialize base class for digitized hits
-        super().__init__(name, intree, "std.vector", "Splitcal")
+        super().__init__(name, intree, "Splitcal")
 
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
