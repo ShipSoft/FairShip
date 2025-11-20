@@ -1,12 +1,12 @@
-import ROOT
 import global_variables
-from BaseDetector import BaseDetector
+import ROOT
 import SciFiMapping
+from BaseDetector import BaseDetector
 
 
 class MTCDetector(BaseDetector):
-    def __init__(self, name, intree, branchType="TClonesArray", branchName=None):
-        super().__init__(name, intree, branchType, branchName, splitLevel=1)
+    def __init__(self, name, intree, branchName=None):
+        super().__init__(name, intree, branchName, splitLevel=1)
         # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
         # make SiPM to fibre mapping
         if intree.GetBranch("MTCDetPoint"):

@@ -1,5 +1,5 @@
-import ROOT
 import global_variables
+import ROOT
 from BaseDetector import BaseDetector
 
 
@@ -12,10 +12,6 @@ class UpstreamTaggerDetector(BaseDetector):
         pos_res = ship_geo.UpstreamTagger.PositionResolution
         time_res = ship_geo.UpstreamTagger.TimeResolution
 
-        index = 0
         for aMCPoint in self.intree.UpstreamTaggerPoint:
             aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, pos_res, time_res)
-            if self.det.GetSize() == index:
-                self.det.Expand(index + 1000)
-            self.det[index] = aHit
-            index += 1
+            self.det.push_back(aHit)

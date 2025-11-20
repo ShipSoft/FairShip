@@ -130,6 +130,7 @@ it in future.
 * Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
 * Complete refactoring of all digitisation to use BaseDetector pattern (MTC, muon, time, SBT, UpstreamTagger, strawtubes, splitcal)
 * Make BaseDetector an abstract base class to enforce interface contract
+* Remove TClonesArray support from digitisation framework. BaseDetector now exclusively uses std::vector, removing branchType parameter
 * Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
 * Complete migration from TClonesArrays to STL vectors for all detectors (timeDetector, muonDetector, vetoHitOnTrack, strawtubes, splitcal)
 * Integrate splitcal cluster reconstruction into splitcalDetector class

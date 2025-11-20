@@ -12,7 +12,6 @@ class BaseDetector(ABC):
         self,
         name,
         intree,
-        branchType="TClonesArray",
         branchName=None,
         mcBranchType=None,
         mcBranchName=None,
@@ -21,8 +20,7 @@ class BaseDetector(ABC):
         """Initialise detector digitisation."""
         self.name = name
         self.intree = intree
-        self.isVector = False
-        self.det = eval(f"ROOT.{branchType}('{name}Hit')")
+        self.det = ROOT.std.vector(f"{name}Hit")()
         self.MCdet = None
         self.mcBranch = None
         if mcBranchName:
@@ -31,9 +29,6 @@ class BaseDetector(ABC):
                 mcBranchName, self.MCdet, 32000, splitLevel
             )
 
-        if "std.vector" in branchType:
-            self.det = self.det()
-            self.isVector = True
         if branchName:
             self.branch = self.intree.Branch(
                 f"Digi_{branchName}Hits", self.det, 32000, splitLevel
@@ -45,11 +40,7 @@ class BaseDetector(ABC):
 
     def delete(self):
         """Clear detector containers."""
-        if self.isVector:
-            self.det.clear()
-        else:
-            self.det.Delete()
-
+        self.det.clear()
         if self.MCdet:
             self.MCdet.clear()
 

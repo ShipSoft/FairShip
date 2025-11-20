@@ -1,5 +1,4 @@
 import ROOT
-import global_variables
 from BaseDetector import BaseDetector
 
 
@@ -8,14 +7,11 @@ class SBTDetector(BaseDetector):
         self,
         name,
         intree,
-        branchType="TClonesArray",
         branchName=None,
         mcBranchType=None,
         mcBranchName="digiSBT2MC",
     ):
-        super().__init__(
-            name, intree, branchType, branchName, mcBranchType, mcBranchName
-        )
+        super().__init__(name, intree, branchName, mcBranchType, mcBranchName)
 
     def digitize(self):
         """Digitize Surrounding Background Tagger MC hits.
