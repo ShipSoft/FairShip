@@ -251,6 +251,7 @@ void ShipStack::FillTrackArray()
         pair<Int_t, Int_t> a(iPart, iDet);
         track->SetNPoints(iDet, fPointsMap[a]);
       }
+      track->SetTrackID(fNTracks);
       fNTracks++;
     } else { fIndexMap[iPart] = -2; }
 
