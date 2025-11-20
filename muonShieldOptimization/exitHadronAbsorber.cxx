@@ -52,7 +52,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
     fSaveOnlyChargedParticlesInTargetPlane(kFALSE),
-    fDoNotSaveElectronsInTargetPlane(kFALSE),
+    fSetPosFromCave(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -74,7 +74,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     TDatabasePDG* PDG = TDatabasePDG::Instance();
     Double_t charge = PDG->GetParticle(pdgCode)->Charge();
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13) && !(fSaveOnlyChargedParticlesInTargetPlane && TMath::Abs(charge)>0.1) && !(fDoNotSaveElectronsInTargetPlane && TMath::Abs(pdgCode)==11)){
+    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13) && !(fSaveOnlyChargedParticlesInTargetPlane && TMath::Abs(charge)>0.1)){
      fTime   = gMC->TrackTime() * 1.0e09;
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
@@ -245,36 +245,25 @@ void exitHadronAbsorber::ConstructGeometry()
    TString myname(this->GetName());
    TString shapename_prefix(myname); // Use a prefix for shapenames
 
-   TGeoVolume *sensPlane;
-   Double_t xLocPlane;
-   Double_t yLocPlane;
-   Double_t zLocPlane;
+   Double_t xLocPlane = 0.0;
+   Double_t yLocPlane = 0.0;
+   Double_t zLocPlane = zLoc;
 
    if (!fCylindricalPlane){
-     if (fzPos > 1E8) {
-        TGeoVolume *sensPlaneHA = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
-        std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
+     TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
+     std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
+
+     if (!fSetPosFromCave) {
         nav->cd("/MuonShieldArea_1/");
-        sensPlane = sensPlaneHA;
-        yLocPlane = 0.0;
-        zLocPlane = zLoc;
-        xLocPlane = 0.0;
-
      } else {
-        TGeoVolume *sensPlaneT = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1*mm,1.7*m-1*mm,1.*mm);
-        std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1*mm,1.7*m-1*mm,1.*mm" << std::endl;
-
         Double_t local[3]  = {0, 0, zLoc};
         Double_t global[3];
-
         nav->cd("/target_vacuum_box_1/TargetArea_1");
         nav->LocalToMaster(local, global);
         nav->cd("/cave_1");
-        sensPlane=sensPlaneT;
         yLocPlane = global[1];
         zLocPlane = global[2];
         xLocPlane = global[0];
-
      }
      sensPlane->SetLineColor(kBlue - 10);
      //nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, fzPos<250?2:1, new TGeoTranslation(0, 0, zLoc));
