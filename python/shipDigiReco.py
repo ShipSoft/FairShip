@@ -70,10 +70,10 @@ class ShipDigiReco:
   self.fTrackletsArray = ROOT.std.vector("Tracklet")()
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
-  self.strawtubes = strawtubesDetector("strawtubes", self.sTree, 'std.vector')
+  self.strawtubes = strawtubesDetector("strawtubes", self.sTree)
 
-  self.digiMTC = MTCDetector("MTCDet", self.sTree, 'std.vector', 'MTC')
-  self.digiSBT = SBTDetector("veto", self.sTree, 'std.vector', 'SBT', mcBranchName = "digiSBT2MC")
+  self.digiMTC = MTCDetector("MTCDet", self.sTree, 'MTC')
+  self.digiSBT = SBTDetector("veto", self.sTree, 'SBT', mcBranchName = "digiSBT2MC")
   self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
   self.vetoHitOnTrackBranch = self.sTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
 
