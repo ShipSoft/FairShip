@@ -65,7 +65,7 @@ class exitHadronAbsorber: public FairDetector
     virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
-    vetoPoint* AddHit(Int_t trackID, Int_t detID,
+    vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
                              TVector3 pos, TVector3 mom,
                              Double_t time, Double_t length,
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
@@ -83,7 +83,9 @@ class exitHadronAbsorber: public FairDetector
     active volume.
     */
     Int_t          fTrackID;           //!  track index
+    Int_t          fEventID;           //!  event index
     Int_t          fVolumeID;          //!  volume id
+    Int_t          fUniqueID;
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
     Double_t     fTime;              //!  time

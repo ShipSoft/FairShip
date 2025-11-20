@@ -35,7 +35,8 @@ class vetoPoint : public FairMCPoint
               Double_t eLoss,
               Int_t pdgCode,
               TVector3 Lpos,
-              TVector3 Lmom);
+              TVector3 Lmom,
+              Int_t eventID = -1);
 
     /** Destructor **/
     virtual ~vetoPoint();
@@ -52,6 +53,7 @@ class vetoPoint : public FairMCPoint
 
   private:
     Int_t fPdgCode;
+    Int_t fEventID;
     std::array<Double_t, 3> fLpos, fLmom;
 
     ClassDef(vetoPoint, 5)
