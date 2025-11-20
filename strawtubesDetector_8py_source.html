@@ -97,144 +97,143 @@ $(document).ready(function(){initNavTree('strawtubesDetector_8py_source.html',''
   <div class="headertitle"><div class="title">strawtubesDetector.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="strawtubesDetector_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacestrawtubesDetector.html">    1</a></span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> global_variables</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> BaseDetector <span class="keyword">import</span> BaseDetector</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> global_variables</div>
+<a href="strawtubesDetector_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacestrawtubesDetector.html">    1</a></span><span class="keyword">import</span> global_variables</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> BaseDetector <span class="keyword">import</span> BaseDetector</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="" data-end="">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classstrawtubesDetector_1_1strawtubesDetector.html">strawtubesDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
 <div class="foldopen" id="foldopen00008" data-start="" data-end="">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classstrawtubesDetector_1_1strawtubesDetector.html">strawtubesDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
-<div class="foldopen" id="foldopen00009" data-start="" data-end="">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#a09b802fddc050447b4145022f4eb16c8">    9</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a09b802fddc050447b4145022f4eb16c8">__init__</a>(self, name, intree, branchType=&quot;std.vector&quot;):</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        super().<a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a09b802fddc050447b4145022f4eb16c8">__init__</a>(name, intree, branchType)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#a147f329c68373847b71660628f3de3d6">    8</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a147f329c68373847b71660628f3de3d6">__init__</a>(self, name, intree):</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        super().<a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a147f329c68373847b71660628f3de3d6">__init__</a>(name, intree)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 </div>
-<div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">   12</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">digitize</a>(self):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize strawtube MC hits.</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">        The earliest hit per straw will be marked valid, all later ones invalid.</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        earliest_per_det_id = {}</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint):</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            hit = ROOT.strawtubesHit(point, self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(hit)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="keywordflow">if</span> hit.isValid():</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                detector_id = hit.GetDetectorID()</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    earliest = earliest_per_det_id[detector_id]</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                    <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].GetTDC() &gt; hit.GetTDC():</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                        <span class="comment"># second hit with smaller tdc</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].setInvalid()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                        earliest_per_det_id[detector_id] = index</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index].setInvalid()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                    earliest_per_det_id[detector_id] = index</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="" data-end="">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">   11</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">digitize</a>(self):</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize strawtube MC hits.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="stringliteral">        The earliest hit per straw will be marked valid, all later ones invalid.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        earliest_per_det_id = {}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint):</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            hit = ROOT.strawtubesHit(point, self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(hit)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">if</span> hit.isValid():</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                detector_id = hit.GetDetectorID()</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    earliest = earliest_per_det_id[detector_id]</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].GetTDC() &gt; hit.GetTDC():</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                        <span class="comment"># second hit with smaller tdc</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].setInvalid()</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                        earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index].setInvalid()</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                    earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 </div>
-<div class="foldopen" id="foldopen00033" data-start="" data-end="">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">   33</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">withT0Estimate</a>(self):</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="comment"># loop over all straw tdcs and make average, correct for ToF</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        n = 0</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        t0 = 0.0</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        key = -1</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        stop = ROOT.TVector3()</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        start = ROOT.TVector3()</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        SmearedHits = []</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        v_drift = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawVdrift()</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        z1 = stop.z()</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            key += 1</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            detID = aDigi.GetDetectorID()</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            delt1 = (start[2] - z1) / u.speedOfLight</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            t0 += aDigi.GetDigi() - delt1</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            SmearedHits.append(</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    <span class="stringliteral">&quot;dist&quot;</span>: aDigi.GetDigi(),</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            )</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            n += 1</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">if</span> n &gt; 0:</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            t0 = t0 / n - 73.2 * u.ns</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">for</span> s <span class="keywordflow">in</span> SmearedHits:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            delt1 = (s[<span class="stringliteral">&quot;z&quot;</span>] - z1) / u.speedOfLight</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            s[<span class="stringliteral">&quot;dist&quot;</span>] = (s[<span class="stringliteral">&quot;dist&quot;</span>] - delt1 - t0) * v_drift</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">return</span> SmearedHits</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="" data-end="">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">   32</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">withT0Estimate</a>(self):</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment"># loop over all straw tdcs and make average, correct for ToF</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        n = 0</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        t0 = 0.0</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        key = -1</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        stop = ROOT.TVector3()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        start = ROOT.TVector3()</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        SmearedHits = []</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        v_drift = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawVdrift()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        z1 = stop.z()</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            key += 1</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            detID = aDigi.GetDetectorID()</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            delt1 = (start[2] - z1) / u.speedOfLight</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            t0 += aDigi.GetDigi() - delt1</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            SmearedHits.append(</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <span class="stringliteral">&quot;dist&quot;</span>: aDigi.GetDigi(),</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            )</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            n += 1</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">if</span> n &gt; 0:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            t0 = t0 / n - 73.2 * u.ns</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">for</span> s <span class="keywordflow">in</span> SmearedHits:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            delt1 = (s[<span class="stringliteral">&quot;z&quot;</span>] - z1) / u.speedOfLight</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            s[<span class="stringliteral">&quot;dist&quot;</span>] = (s[<span class="stringliteral">&quot;dist&quot;</span>] - delt1 - t0) * v_drift</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> SmearedHits</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 </div>
-<div class="foldopen" id="foldopen00072" data-start="" data-end="">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">   72</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">smearHits</a>(self, no_amb=None):</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="comment"># smear strawtube points</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        SmearedHits = []</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        key = -1</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        stop = ROOT.TVector3()</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        start = ROOT.TVector3()</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        v_drift = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawVdrift()</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        z1 = stop.z()</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            key += 1</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            detID = aDigi.GetDetectorID()</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="comment"># distance to wire</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            delt1 = (start[2] - z1) / u.speedOfLight</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            p = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint[key]</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="comment"># use true t0  construction:</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="comment">#     fdigi = t0 + p-&gt;GetTime() + t_drift + ( stop[0]-p-&gt;GetX() )/ speedOfLight;</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            smear = (</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                aDigi.GetDigi()</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                - self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                - p.GetTime()</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                - (stop[0] - p.GetX()) / u.speedOfLight</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            ) * v_drift</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">if</span> no_amb:</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                smear = p.dist2Wire()</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            SmearedHits.append(</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                    <span class="stringliteral">&quot;dist&quot;</span>: smear,</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            )</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="comment"># Note: top.z()==bot.z() unless misaligned, so only add key &#39;z&#39; to smearedHit</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">if</span> abs(stop.y()) == abs(start.y()):</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                global_variables.h[<span class="stringliteral">&quot;disty&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keywordflow">elif</span> abs(stop.y()) &gt; abs(start.y()):</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                global_variables.h[<span class="stringliteral">&quot;distu&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">elif</span> abs(stop.y()) &lt; abs(start.y()):</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                global_variables.h[<span class="stringliteral">&quot;distv&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">return</span> SmearedHits</div>
+<div class="foldopen" id="foldopen00071" data-start="" data-end="">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">   71</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">smearHits</a>(self, no_amb=None):</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="comment"># smear strawtube points</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        SmearedHits = []</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        key = -1</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        stop = ROOT.TVector3()</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        start = ROOT.TVector3()</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        v_drift = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawVdrift()</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        z1 = stop.z()</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            key += 1</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            detID = aDigi.GetDetectorID()</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="comment"># distance to wire</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            delt1 = (start[2] - z1) / u.speedOfLight</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            p = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint[key]</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <span class="comment"># use true t0  construction:</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="comment">#     fdigi = t0 + p-&gt;GetTime() + t_drift + ( stop[0]-p-&gt;GetX() )/ speedOfLight;</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            smear = (</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                aDigi.GetDigi()</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                - self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                - p.GetTime()</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                - (stop[0] - p.GetX()) / u.speedOfLight</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            ) * v_drift</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">if</span> no_amb:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                smear = p.dist2Wire()</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            SmearedHits.append(</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                    <span class="stringliteral">&quot;dist&quot;</span>: smear,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            )</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="comment"># Note: top.z()==bot.z() unless misaligned, so only add key &#39;z&#39; to smearedHit</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">if</span> abs(stop.y()) == abs(start.y()):</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                global_variables.h[<span class="stringliteral">&quot;disty&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <span class="keywordflow">elif</span> abs(stop.y()) &gt; abs(start.y()):</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                global_variables.h[<span class="stringliteral">&quot;distu&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">elif</span> abs(stop.y()) &lt; abs(start.y()):</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                global_variables.h[<span class="stringliteral">&quot;distv&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">return</span> SmearedHits</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00008">BaseDetector.py:8</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a146858d034cb57ffd0f81f4e025f9492"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">BaseDetector.BaseDetector.det</a></div><div class="ttdeci">det</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00025">BaseDetector.py:25</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00023">BaseDetector.py:23</a></div></div>
-<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html">strawtubesDetector.strawtubesDetector</a></div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00008">strawtubesDetector.py:8</a></div></div>
-<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_a09b802fddc050447b4145022f4eb16c8"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#a09b802fddc050447b4145022f4eb16c8">strawtubesDetector.strawtubesDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, branchType=&quot;std.vector&quot;)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00009">strawtubesDetector.py:9</a></div></div>
-<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_a25a791987ab27c1db98f322563a60005"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">strawtubesDetector.strawtubesDetector.smearHits</a></div><div class="ttdeci">smearHits(self, no_amb=None)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00072">strawtubesDetector.py:72</a></div></div>
-<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_ad0f99adb2fcd0d8f20f0ef3b3b07e210"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">strawtubesDetector.strawtubesDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00012">strawtubesDetector.py:12</a></div></div>
-<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_ad153c71176e4929f280b2ea09a35e001"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">strawtubesDetector.strawtubesDetector.withT0Estimate</a></div><div class="ttdeci">withT0Estimate(self)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00033">strawtubesDetector.py:33</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a146858d034cb57ffd0f81f4e025f9492"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">BaseDetector.BaseDetector.det</a></div><div class="ttdeci">det</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00023">BaseDetector.py:23</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00022">BaseDetector.py:22</a></div></div>
+<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html">strawtubesDetector.strawtubesDetector</a></div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00007">strawtubesDetector.py:7</a></div></div>
+<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_a147f329c68373847b71660628f3de3d6"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#a147f329c68373847b71660628f3de3d6">strawtubesDetector.strawtubesDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00008">strawtubesDetector.py:8</a></div></div>
+<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_a25a791987ab27c1db98f322563a60005"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#a25a791987ab27c1db98f322563a60005">strawtubesDetector.strawtubesDetector.smearHits</a></div><div class="ttdeci">smearHits(self, no_amb=None)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00071">strawtubesDetector.py:71</a></div></div>
+<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_ad0f99adb2fcd0d8f20f0ef3b3b07e210"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">strawtubesDetector.strawtubesDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00011">strawtubesDetector.py:11</a></div></div>
+<div class="ttc" id="aclassstrawtubesDetector_1_1strawtubesDetector_html_ad153c71176e4929f280b2ea09a35e001"><div class="ttname"><a href="classstrawtubesDetector_1_1strawtubesDetector.html#ad153c71176e4929f280b2ea09a35e001">strawtubesDetector.strawtubesDetector.withT0Estimate</a></div><div class="ttdeci">withT0Estimate(self)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesDetector_8py_source.html#l00032">strawtubesDetector.py:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

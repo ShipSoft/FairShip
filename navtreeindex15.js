@@ -1,7 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"create__field__perturbation_8py.html#ad1d4ab2e24b1030906e5f58c411190f2":[6,0,5,2,3],
-"create__field__perturbation_8py.html#adc0459d4901422e740446d3f9202e352":[6,0,5,2,7],
 "create__field__perturbation_8py.html#ae83f777214c02831731c7578eba36abd":[6,0,5,2,8],
 "create__field__perturbation_8py_source.html":[6,0,5,2],
 "darkphoton_8py.html":[6,0,10,9],
@@ -222,8 +220,8 @@ var NAVTREEINDEX15 =
 "flux__map_8py.html#a0a534466aad410c85e90044a42a9fa87":[6,0,5,10,1],
 "flux__map_8py.html#a771e745091fb71f923521ce4420f4a8d":[6,0,5,10,0],
 "flux__map_8py_source.html":[6,0,5,10],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_a.html":[5,3,0,1],
 "functions_b.html":[5,3,0,2],
 "functions_c.html":[5,3,0,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "functions_func_o.html":[5,3,1,13],
 "functions_func_p.html":[5,3,1,14],
 "functions_func_q.html":[5,3,1,15],
-"functions_func_r.html":[5,3,1,16]
+"functions_func_r.html":[5,3,1,16],
+"functions_func_s.html":[5,3,1,17],
+"functions_func_t.html":[5,3,1,18]
 };

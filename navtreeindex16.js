@@ -1,7 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"functions_func_s.html":[5,3,1,17],
-"functions_func_t.html":[5,3,1,18],
 "functions_func_u.html":[5,3,1,19],
 "functions_func_v.html":[5,3,1,20],
 "functions_func_w.html":[5,3,1,21],
@@ -249,5 +247,7 @@ var NAVTREEINDEX16 =
 "geomGeant4_8py_source.html":[6,0,10,14],
 "geometry__config_8py.html":[6,0,10,13],
 "geometry__config_8py.html#a4ebc72f6a5c5803cfcc7f6a783c1aaf3":[6,0,10,13,1],
-"geometry__config_8py.html#a75c5d0a5585dd1291f7f73502a80afda":[6,0,10,13,0]
+"geometry__config_8py.html#a75c5d0a5585dd1291f7f73502a80afda":[6,0,10,13,0],
+"geometry__config_8py_source.html":[6,0,10,13],
+"getGeoInformation_8py.html":[6,0,5,11]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"shipStrawTracking_8py.html#a42f7b2c895655a7254fe343ffc57bbf4":[6,0,10,37,3],
-"shipStrawTracking_8py.html#a5999ce65eda12da41dc6c1d663202168":[6,0,10,37,12],
 "shipStrawTracking_8py.html#a6f1c8ab4a8627d83bd87a950231721c6":[6,0,10,37,14],
 "shipStrawTracking_8py.html#a6f8170056fea500eadaec343a3b75173":[6,0,10,37,6],
 "shipStrawTracking_8py.html#a729a81fdf3b076167754cd505e3ea6fb":[6,0,10,37,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX30 =
 "study__GammaConv_8py.html#a887fe9db66201abe1eba740343200efa":[6,0,8,21,17],
 "study__GammaConv_8py.html#a8887cd40f4ca6d25bb7006bb8a3fd140":[6,0,8,21,13],
 "study__GammaConv_8py.html#a93a08957aca4b22c1589883b81af773d":[6,0,8,21,15],
-"study__GammaConv_8py.html#a9f1e7a36fb26b74b912450315ae6935d":[6,0,8,21,18]
+"study__GammaConv_8py.html#a9f1e7a36fb26b74b912450315ae6935d":[6,0,8,21,18],
+"study__GammaConv_8py.html#aa3fb5dea5c4b64fd422444715321fdeb":[6,0,8,21,19],
+"study__GammaConv_8py.html#aaa9e1a6c47e55c6a638ffd566ee5f0ff":[6,0,8,21,35]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc":[4,0,59,4],
-"namespaceproton__bremsstrahlung.html#a3482a5300d8f420ddc9befd32ec770f7":[4,0,59,13],
 "namespaceproton__bremsstrahlung.html#a3779ff27265babd92dc0a1c43321ba08":[4,0,59,11],
 "namespaceproton__bremsstrahlung.html#a47e461cd92265e129840b8b3f5e64edb":[4,0,59,22],
 "namespaceproton__bremsstrahlung.html#a4a7ab8940c1a8fe1f2e16c15c5d57e40":[4,0,59,14],
@@ -249,5 +247,7 @@ var NAVTREEINDEX25 =
 "namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f":[4,0,70,20],
 "namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72":[4,0,70,13],
 "namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb":[4,0,70,7],
-"namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d":[4,0,70,2]
+"namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d":[4,0,70,2],
+"namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227":[4,0,70,6],
+"namespacerun__reco.html#a338da58575286ed585f7232c2604ec38":[4,0,70,4]
 };

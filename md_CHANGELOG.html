@@ -225,6 +225,7 @@ Changed</h2>
 <li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
 <li>Complete refactoring of all digitisation to use <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> pattern (MTC, muon, time, SBT, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal)</li>
 <li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
+<li>Remove TClonesArray support from digitisation framework. <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> now exclusively uses std::vector, removing branchType parameter</li>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
 <li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, <a class="el" href="namespacemuonDetector.html">muonDetector</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
 <li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>

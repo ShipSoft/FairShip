@@ -141,8 +141,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:acf1f438321cfd4d51bee4d1d5a62ab39 inherit pub_attribs_classBaseDetector_1_1BaseDetector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac54365eaaae58490fec19a48f04928b7 inherit pub_attribs_classBaseDetector_1_1BaseDetector" id="r_ac54365eaaae58490fec19a48f04928b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a></td></tr>
 <tr class="separator:ac54365eaaae58490fec19a48f04928b7 inherit pub_attribs_classBaseDetector_1_1BaseDetector"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2591a22695a96b83fadc89f75fa041de inherit pub_attribs_classBaseDetector_1_1BaseDetector" id="r_a2591a22695a96b83fadc89f75fa041de"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a2591a22695a96b83fadc89f75fa041de">isVector</a></td></tr>
-<tr class="separator:a2591a22695a96b83fadc89f75fa041de inherit pub_attribs_classBaseDetector_1_1BaseDetector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a146858d034cb57ffd0f81f4e025f9492 inherit pub_attribs_classBaseDetector_1_1BaseDetector" id="r_a146858d034cb57ffd0f81f4e025f9492"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a></td></tr>
 <tr class="separator:a146858d034cb57ffd0f81f4e025f9492 inherit pub_attribs_classBaseDetector_1_1BaseDetector"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44b08d07048c21b3a72e3f6c5b987950 inherit pub_attribs_classBaseDetector_1_1BaseDetector" id="r_a44b08d07048c21b3a72e3f6c5b987950"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a></td></tr>
@@ -188,7 +186,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Initialise detector digitisation.</pre> 
-<p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a7ae41d5cfca5d038c2bdfc478e5bdd5a">BaseDetector.BaseDetector</a>.</p>
+<p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#adf933f9f393ed83e395b65e038d2ae42">BaseDetector.BaseDetector</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00007">7</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    7</span>    <span class="keyword">def </span>__init__(self, name, intree):</div>
@@ -226,13 +224,9 @@ MC hits into digitized detector responses.
 <div class="line"><span class="lineno">   12</span>        pos_res = ship_geo.UpstreamTagger.PositionResolution</div>
 <div class="line"><span class="lineno">   13</span>        time_res = ship_geo.UpstreamTagger.TimeResolution</div>
 <div class="line"><span class="lineno">   14</span> </div>
-<div class="line"><span class="lineno">   15</span>        index = 0</div>
-<div class="line"><span class="lineno">   16</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.UpstreamTaggerPoint:</div>
-<div class="line"><span class="lineno">   17</span>            aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, pos_res, time_res)</div>
-<div class="line"><span class="lineno">   18</span>            <span class="keywordflow">if</span> self.det.GetSize() == index:</div>
-<div class="line"><span class="lineno">   19</span>                self.det.Expand(index + 1000)</div>
-<div class="line"><span class="lineno">   20</span>            self.det[index] = aHit</div>
-<div class="line"><span class="lineno">   21</span>            index += 1</div>
+<div class="line"><span class="lineno">   15</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.UpstreamTaggerPoint:</div>
+<div class="line"><span class="lineno">   16</span>            aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, pos_res, time_res)</div>
+<div class="line"><span class="lineno">   17</span>            self.det.push_back(aHit)</div>
 </div><!-- fragment -->
 </div>
 </div>
