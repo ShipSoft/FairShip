@@ -228,11 +228,11 @@ void ShipMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
 */
 }
 
-void ShipMCTrack::SetEventID(const Int_t eventID){
+void ShipMCTrack::SetEventID(const Int_t &eventID){
     fEventID = eventID;
 }
 
-void ShipMCTrack::SetTrackID(const Int_t trackID){
+void ShipMCTrack::SetTrackID(const Int_t &trackID){
     fTrackID = trackID;
 }
 // -------------------------------------------------------------------------
