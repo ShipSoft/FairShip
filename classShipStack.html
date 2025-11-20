@@ -389,13 +389,12 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00212">212</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  213</span>{</div>
-<div class="line"><span class="lineno">  214</span>  TClonesArray&amp; <a class="code hl_variable" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a> = *<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>;</div>
-<div class="line"><span class="lineno">  215</span>  TParticle* newPart = <span class="keyword">new</span>(<a class="code hl_variable" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>[<a class="code hl_variable" href="classShipStack.html#a7a9f0917d52861207a590dea00aeff9d">fIndex</a>]) TParticle(*oldPart);</div>
+<div class="line"><span class="lineno">  214</span>  TClonesArray&amp; array = *<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>;</div>
+<div class="line"><span class="lineno">  215</span>  TParticle* newPart = <span class="keyword">new</span>(array[<a class="code hl_variable" href="classShipStack.html#a7a9f0917d52861207a590dea00aeff9d">fIndex</a>]) TParticle(*oldPart);</div>
 <div class="line"><span class="lineno">  216</span>  newPart-&gt;SetWeight(oldPart-&gt;GetWeight());</div>
 <div class="line"><span class="lineno">  217</span>  newPart-&gt;SetUniqueID(oldPart-&gt;GetUniqueID());</div>
 <div class="line"><span class="lineno">  218</span>  <a class="code hl_variable" href="classShipStack.html#a7a9f0917d52861207a590dea00aeff9d">fIndex</a>++;</div>
 <div class="line"><span class="lineno">  219</span>}</div>
-<div class="ttc" id="anamespaceTTCluster_html_a16bc5b13d45537007e0ac7464ff5ea89"><div class="ttname"><a href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">TTCluster.array</a></div><div class="ttdeci">float array</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00038">TTCluster.py:38</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

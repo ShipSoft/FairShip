@@ -27,7 +27,6 @@ var searchData=
   ['trackinfo_2eh_24',['TrackInfo.h',['../TrackInfo_8h.html',1,'']]],
   ['tracklet_2ecxx_25',['Tracklet.cxx',['../Tracklet_8cxx.html',1,'']]],
   ['tracklet_2eh_26',['Tracklet.h',['../Tracklet_8h.html',1,'']]],
-  ['ttcluster_2epy_27',['TTCluster.py',['../TTCluster_8py.html',1,'']]],
-  ['ttpoint_2ecxx_28',['TTPoint.cxx',['../TTPoint_8cxx.html',1,'']]],
-  ['ttpoint_2eh_29',['TTPoint.h',['../TTPoint_8h.html',1,'']]]
+  ['ttpoint_2ecxx_27',['TTPoint.cxx',['../TTPoint_8cxx.html',1,'']]],
+  ['ttpoint_2eh_28',['TTPoint.h',['../TTPoint_8h.html',1,'']]]
 ];

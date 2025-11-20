@@ -42,6 +42,5 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "shipunit.py", "shipunit_8py.html", "shipunit_8py" ],
     [ "shipVertex.py", "shipVertex_8py.html", "shipVertex_8py" ],
     [ "shipVeto.py", "shipVeto_8py.html", "shipVeto_8py" ],
-    [ "TrackExtrapolateTool.py", "TrackExtrapolateTool_8py.html", "TrackExtrapolateTool_8py" ],
-    [ "TTCluster.py", "TTCluster_8py.html", "TTCluster_8py" ]
+    [ "TrackExtrapolateTool.py", "TrackExtrapolateTool_8py.html", "TrackExtrapolateTool_8py" ]
 ];

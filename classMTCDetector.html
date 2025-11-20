@@ -1370,20 +1370,19 @@ Static Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  654</span>                   + ((plane_type == 0) ? <span class="stringliteral">&quot;/MTC_scifi_U_0/MTC_epoxyMat_0&quot;</span> : <span class="stringliteral">&quot;/MTC_scifi_V_0/MTC_epoxyMat_0&quot;</span>);</div>
 <div class="line"><span class="lineno">  655</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
 <div class="line"><span class="lineno">  656</span>    Double_t glob[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  657</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
-<div class="line"><span class="lineno">  658</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = -<a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
-<div class="line"><span class="lineno">  659</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;</div>
+<div class="line"><span class="lineno">  657</span>    loc[0] = locPosition;</div>
+<div class="line"><span class="lineno">  658</span>    loc[1] = -<a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
+<div class="line"><span class="lineno">  659</span>    loc[2] = 7.47;</div>
 <div class="line"><span class="lineno">  660</span>    nav-&gt;cd(path);</div>
 <div class="line"><span class="lineno">  661</span>    nav-&gt;LocalToMaster(loc, glob);</div>
 <div class="line"><span class="lineno">  662</span>    <a class="code hl_variable" href="namespacerunPythia8.html#a527266378c7f0299bad9b3c32d02d15b">A</a>.SetXYZ(glob[0], glob[1], glob[2]);</div>
-<div class="line"><span class="lineno">  663</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[0] = locPosition;</div>
-<div class="line"><span class="lineno">  664</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[1] = <a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
-<div class="line"><span class="lineno">  665</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">loc</a>[2] = 7.47;   <span class="comment">// hardcoded for now, for some reason required to get the correct local position</span></div>
+<div class="line"><span class="lineno">  663</span>    loc[0] = locPosition;</div>
+<div class="line"><span class="lineno">  664</span>    loc[1] = <a class="code hl_variable" href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">fFiberLength</a> / 2;</div>
+<div class="line"><span class="lineno">  665</span>    loc[2] = 7.47;   <span class="comment">// hardcoded for now, for some reason required to get the correct local position</span></div>
 <div class="line"><span class="lineno">  666</span>    nav-&gt;LocalToMaster(loc, glob);</div>
 <div class="line"><span class="lineno">  667</span>    B.SetXYZ(glob[0], glob[1], glob[2]);</div>
 <div class="line"><span class="lineno">  668</span>}</div>
 <div class="ttc" id="aclassMTCDetector_html_a29a4732663c57c4f147a75c834910ae4"><div class="ttname"><a href="classMTCDetector.html#a29a4732663c57c4f147a75c834910ae4">MTCDetector::fFiberLength</a></div><div class="ttdeci">Double_t fFiberLength</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00115">MTCDetector.h:115</a></div></div>
-<div class="ttc" id="anamespaceTTCluster_html_a176fad3f209836920c35b3af3f4178d4"><div class="ttname"><a href="namespaceTTCluster.html#a176fad3f209836920c35b3af3f4178d4">TTCluster.loc</a></div><div class="ttdeci">loc</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00732">TTCluster.py:732</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

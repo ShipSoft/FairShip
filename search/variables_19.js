@@ -16,14 +16,11 @@ var searchData=
   ['yfrac_5f_13',['yFrac_',['../classShipBFieldMap.html#a5c9fa6a8d363355ead8eddb614065083',1,'ShipBFieldMap']]],
   ['ymax_5f_14',['yMax_',['../classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304',1,'ShipBFieldMap']]],
   ['ymin_5f_15',['yMin_',['../classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c',1,'ShipBFieldMap']]],
-  ['yoff_16',['yoff',['../classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0',1,'Pythia8Generator::yOff'],['../classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a',1,'FixedTargetGenerator::yOff']]],
+  ['yoff_16',['yoff',['../classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a',1,'FixedTargetGenerator::yOff'],['../classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0',1,'Pythia8Generator::yOff']]],
   ['yoffset_5f_17',['yOffset_',['../classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91',1,'ShipBFieldMap']]],
   ['yokedepth_18',['YokeDepth',['../classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c',1,'ShipMagnet']]],
   ['yokewidth_19',['YokeWidth',['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet']]],
   ['yrange_5f_20',['yRange_',['../classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1',1,'ShipBFieldMap']]],
-  ['yraw_21',['Yraw',['../classTTCluster_1_1TTCluster.html#a98f2784ef77429233b4d3f2290180dfd',1,'TTCluster::TTCluster']]],
-  ['yrec_22',['Yrec',['../classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca',1,'TTCluster::TTCluster']]],
-  ['yspace_23',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
-  ['yvessel_24',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]],
-  ['yz_5fpoints_25',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
+  ['yspace_21',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
+  ['yvessel_22',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]]
 ];

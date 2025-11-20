@@ -170,7 +170,6 @@ var hierarchy =
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
     [ "ShipFieldMaker::transformInfo", "structShipFieldMaker_1_1transformInfo.html", null ],
-    [ "TTCluster.TTCluster", "classTTCluster_1_1TTCluster.html", null ],
     [ "TVirtualMagField", null, [
       [ "ShipBFieldMap", "classShipBFieldMap.html", null ],
       [ "ShipCompField", "classShipCompField.html", null ]

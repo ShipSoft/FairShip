@@ -731,9 +731,9 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  172</span>  {</div>
 <div class="line"><span class="lineno">  173</span>    Double_t coil_gap,coil_gap2;</div>
 <div class="line"><span class="lineno">  174</span>    Int_t color[4] = {45,31,30,38};</div>
-<div class="line"><span class="lineno">  175</span>    <a class="code hl_variable" href="namespaceTTCluster.html#a42b4435305ad9f3df9bb8ea5c6ceaa45">gap</a> = std::ceil(std::max(100. / dY, gap));</div>
+<div class="line"><span class="lineno">  175</span>    gap = std::ceil(std::max(100. / dY, gap));</div>
 <div class="line"><span class="lineno">  176</span>    gap2 = std::ceil(std::max(100. / dY2, gap2));</div>
-<div class="line"><span class="lineno">  177</span>    coil_gap = <a class="code hl_variable" href="namespaceTTCluster.html#a42b4435305ad9f3df9bb8ea5c6ceaa45">gap</a>;</div>
+<div class="line"><span class="lineno">  177</span>    coil_gap = gap;</div>
 <div class="line"><span class="lineno">  178</span>    coil_gap2 = gap2;</div>
 <div class="line"><span class="lineno">  179</span> </div>
 <div class="line"><span class="lineno">  180</span>    Double_t anti_overlap = 0.1; <span class="comment">// gap between fields in the</span></div>
@@ -778,7 +778,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  219</span>      };</div>
 <div class="line"><span class="lineno">  220</span> </div>
 <div class="line"><span class="lineno">  221</span>      std::array&lt;Double_t, 16&gt; cornersMainSideL = {</div>
-<div class="line"><span class="lineno">  222</span>        dX + middleGap + <a class="code hl_variable" href="namespaceTTCluster.html#a42b4435305ad9f3df9bb8ea5c6ceaa45">gap</a>,</div>
+<div class="line"><span class="lineno">  222</span>        dX + middleGap + gap,</div>
 <div class="line"><span class="lineno">  223</span>        -(dY),</div>
 <div class="line"><span class="lineno">  224</span>        dX + middleGap + gap,</div>
 <div class="line"><span class="lineno">  225</span>        dY,</div>
@@ -826,7 +826,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  267</span>                    dY2};</div>
 <div class="line"><span class="lineno">  268</span> </div>
 <div class="line"><span class="lineno">  269</span>      cornersMainSideL ={</div>
-<div class="line"><span class="lineno">  270</span>      dX + middleGap + <a class="code hl_variable" href="namespaceTTCluster.html#a42b4435305ad9f3df9bb8ea5c6ceaa45">gap</a>, -(dY - anti_overlap),</div>
+<div class="line"><span class="lineno">  270</span>      dX + middleGap + gap, -(dY - anti_overlap),</div>
 <div class="line"><span class="lineno">  271</span>      dX + middleGap + gap, dY - anti_overlap,</div>
 <div class="line"><span class="lineno">  272</span>      4 * dX + middleGap + gap, dY + 3*dX - anti_overlap,</div>
 <div class="line"><span class="lineno">  273</span>      4 * dX + middleGap + gap, -(dY + 3*dX - anti_overlap),</div>
@@ -899,7 +899,6 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aShipMuonShield_8h_html_a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c"><div class="ttname"><a href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a></div><div class="ttdeci">@ up</div></div>
 <div class="ttc" id="aShipMuonShield_8h_html_a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d"><div class="ttname"><a href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a></div><div class="ttdeci">@ down</div></div>
 <div class="ttc" id="aclassShipMuonShield_html_ac3d03b895b44fbf2164d5202fd661287"><div class="ttname"><a href="classShipMuonShield.html#ac3d03b895b44fbf2164d5202fd661287">ShipMuonShield::CreateArb8</a></div><div class="ttdeci">void CreateArb8(TString arbName, TGeoMedium *medium, Double_t dZ, std::array&lt; Double_t, 16 &gt; corners, Int_t color, TGeoUniformMagField *magField, TGeoVolume *top, Double_t x_translation, Double_t y_translation, Double_t z_translation)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00078">ShipMuonShield.cxx:78</a></div></div>
-<div class="ttc" id="anamespaceTTCluster_html_a42b4435305ad9f3df9bb8ea5c6ceaa45"><div class="ttname"><a href="namespaceTTCluster.html#a42b4435305ad9f3df9bb8ea5c6ceaa45">TTCluster.gap</a></div><div class="ttdeci">float gap</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00037">TTCluster.py:37</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

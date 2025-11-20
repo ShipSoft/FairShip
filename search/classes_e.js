@@ -13,6 +13,5 @@ var searchData=
   ['trackinfo_10',['TrackInfo',['../classTrackInfo.html',1,'']]],
   ['tracklet_11',['Tracklet',['../classTracklet.html',1,'']]],
   ['transforminfo_12',['transformInfo',['../structShipFieldMaker_1_1transformInfo.html',1,'ShipFieldMaker']]],
-  ['ttcluster_13',['TTCluster',['../classTTCluster_1_1TTCluster.html',1,'TTCluster']]],
-  ['ttpoint_14',['TTPoint',['../classTTPoint.html',1,'']]]
+  ['ttpoint_13',['TTPoint',['../classTTPoint.html',1,'']]]
 ];

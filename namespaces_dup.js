@@ -1703,6 +1703,5 @@ var namespaces_dup =
       [ "top", "namespaceTrackExtrapolateTool.html#ad1aa89145b6188edd90c6266aebaa095", null ],
       [ "z_ecal", "namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60", null ]
     ] ],
-    [ "TTCluster", "namespaceTTCluster.html", "namespaceTTCluster" ],
     [ "UpstreamTaggerDetector", "namespaceUpstreamTaggerDetector.html", "namespaceUpstreamTaggerDetector" ]
 ];

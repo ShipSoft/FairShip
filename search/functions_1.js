@@ -23,12 +23,11 @@ var searchData=
   ['addrefnodes_20',['addRefNodes',['../classShipGeoCave.html#a00b34eb817aca6d522b9935fbf62ab5d',1,'ShipGeoCave']]],
   ['addruns_21',['addRuns',['../namespacecompactingBackgroundProduction.html#a7bf2ed4dffeb4cff0e376032ba061d85',1,'compactingBackgroundProduction']]],
   ['addvmcfields_22',['addVMCFields',['../namespacegeomGeant4.html#a42125a41d1dc64cb48672d7c60266ae1',1,'geomGeant4']]],
-  ['allowedchannels_23',['allowedchannels',['../classhnl_1_1HNLbranchings.html#aa5145ac4726dd58d3fa567c34978fee9',1,'hnl.HNLbranchings.allowedChannels()'],['../classdarkphoton_1_1DarkPhoton.html#a763bd54ae6b5c8aa971c1044fd3110ba',1,'darkphoton.DarkPhoton.allowedChannels()']]],
+  ['allowedchannels_23',['allowedchannels',['../classdarkphoton_1_1DarkPhoton.html#a763bd54ae6b5c8aa971c1044fd3110ba',1,'darkphoton.DarkPhoton.allowedChannels()'],['../classhnl_1_1HNLbranchings.html#aa5145ac4726dd58d3fa567c34978fee9',1,'hnl.HNLbranchings.allowedChannels()']]],
   ['anaeventloop_24',['AnaEventLoop',['../namespaceana__ShipMuon.html#a9e5d78be22960c716da423367a77c052',1,'ana_ShipMuon']]],
   ['analyzeconcrete_25',['analyzeConcrete',['../namespaceana__ShipMuon.html#aa5474ae4f77bab30c0eedf6af5195512',1,'ana_ShipMuon']]],
   ['apply_5fdecorators_26',['apply_decorators',['../namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704',1,'decorators']]],
-  ['approx_5ffunction_27',['approx_function',['../namespaceTTCluster.html#af98457a9c18f4bd24398e305219408c7',1,'TTCluster']]],
-  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_28',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpat_5frec_5fy_5fview_29',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpattern_5frecognition_30',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]]
+  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_27',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpat_5frec_5fy_5fview_28',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpattern_5frecognition_29',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]]
 ];
