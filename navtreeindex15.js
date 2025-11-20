@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"darkphoton_8py.html#a7be5985c1471ba5ed7310c0b96233e8d":[6,0,10,9,1],
+"darkphoton_8py.html#aa9a7ae7611093f1a0d1188bee9d843df":[6,0,10,9,3],
 "darkphoton_8py_source.html":[6,0,10,9],
 "decorators_8py.html":[6,0,10,10],
 "decorators_8py.html#a1639e2afcc016284ccd45c276539c2ba":[6,0,10,10,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "functions_func_u.html":[5,3,1,19],
 "functions_func_v.html":[5,3,1,20],
 "functions_func_w.html":[5,3,1,21],
-"functions_func_x.html":[5,3,1,22],
-"functions_func_~.html":[5,3,1,23],
-"functions_g.html":[5,3,0,7]
+"functions_func_x.html":[5,3,1,22]
 };

@@ -7,7 +7,7 @@ var searchData=
   ['becquerel_4',['becquerel',['../namespaceshipunit.html#a022888e39661b1b1cdbeed97a9b51fa3',1,'shipunit.becquerel'],['../namespacehepunit.html#a4b7591473803ab19b78ac4bd1e8b7e64',1,'hepunit.becquerel']]],
   ['bench_5',['bench',['../classrpvsusy_1_1RPVSUSYbranchings.html#a991cb187c997bb3d49cd1c048959024b',1,'rpvsusy::RPVSUSYbranchings']]],
   ['beta_6',['beta',['../namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366',1,'makeCascade']]],
-  ['bfield_7',['bfield',['../classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3',1,'shipDigiReco.ShipDigiReco.bfield'],['../namespaceShipGeo.html#a29678f9752710cbda1e31fbf5f86b27c',1,'ShipGeo.Bfield'],['../namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe',1,'ShipAna.bfield'],['../namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61',1,'eventDisplay.bfield']]],
+  ['bfield_7',['bfield',['../classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3',1,'shipDigiReco.ShipDigiReco.bfield'],['../namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe',1,'ShipAna.bfield'],['../namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61',1,'eventDisplay.bfield'],['../namespaceShipGeo.html#a29678f9752710cbda1e31fbf5f86b27c',1,'ShipGeo.Bfield']]],
   ['bina_5f_8',['binA_',['../classShipBFieldMap.html#ad67b10f1fa4750c3310cddb5368cf5db',1,'ShipBFieldMap']]],
   ['binb_5f_9',['binB_',['../classShipBFieldMap.html#a73d5de5d17d95a11c2a0c54e4667386d',1,'ShipBFieldMap']]],
   ['binc_5f_10',['binC_',['../classShipBFieldMap.html#a5dc5ff9081c108ad41ad6a97542cd3e5',1,'ShipBFieldMap']]],
