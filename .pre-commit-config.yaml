@@ -29,7 +29,7 @@ repos:
   hooks:
   - id: clang-format
     types_or: [c++, c, cuda]
-    exclude: LinkDef.h|muon|shipdata|shipgen|pid|passive|TimeDet|UpstreamTagger|gconfig|field|splitcal|strawtubes
+    exclude: LinkDef.h|muon|shipdata|shipgen|passive|TimeDet|UpstreamTagger|gconfig|field|splitcal|strawtubes
 - repo: https://github.com/cpplint/cpplint
   rev: 2.0.2
   hooks:
