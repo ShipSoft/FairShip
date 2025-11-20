@@ -232,6 +232,7 @@ it in future.
 * Remove ecal and hcal geometry files
 * Remove simpleTarget and personal study study_muEloss.py
 * Remove TTCluster.py
+* Remove pid class
 
 ## 25.01
 

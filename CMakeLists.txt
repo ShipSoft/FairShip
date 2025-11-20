@@ -216,7 +216,6 @@ add_subdirectory(strawtubes)
 add_subdirectory(muon)
 add_subdirectory(shipgen)
 add_subdirectory(field)
-add_subdirectory(pid)
 add_subdirectory(muonShieldOptimization)
 add_subdirectory(tests)
 
