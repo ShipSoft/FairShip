@@ -82,23 +82,23 @@ class exitHadronAbsorber: public FairDetector
     /** Track information to be stored until the track leaves the
     active volume.
     */
-    Int_t          fTrackID;           //!  track index
-    Int_t          fEventId;           //!  event index
-    Int_t          fVolumeID;          //!  volume id
     Int_t          fUniqueID;
+    Int_t          fEventId;           //!  event index
+    Int_t          fTrackID;           //!  track index
+    Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
     Double_t     fTime;              //!  time
     Double_t     fLength;            //!  length
+    Bool_t fOnlyMuons;  //! flag if only muons should be stored
+    Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
+    TString fVetoName; //name to save veto collection
     // by default, if fzPos is not set, the positioning is behind the hadron abosorber and the tracks are stopped when they hit the sens plane
     // if fzPos is set and has a reasonable value (below 1E8), then the tracks are not stopped and continue to the last plane after the hadron absorber
     Double_t     fzPos;              //!  zPos, optional
     Bool_t withNtuple;               //! special option for Dark Photon physics studies
     TNtuple* fNtuple;               //!
     Float_t EMax;  //! max energy to transport
-    Bool_t fOnlyMuons;  //! flag if only muons should be stored
-    Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
-    TString fVetoName; //name to save veto collection
     Bool_t fCylindricalPlane;  //! flag if the sensPlane to be created should be cylindrical (by default it is not)
 
     TFile* fout; //!

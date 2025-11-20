@@ -99,12 +99,6 @@ class ShipMCTrack : public TObject
     /**  Index of mother track. -1 for primary particles.  **/
     Int_t  fMotherId;
 
-    /** Index of track in the event **/
-    Int_t fTrackID;
-
-    /** Index of the event **/
-    Int_t fEventID;
-
     /** Momentum components at start vertex [GeV]  **/
     Double32_t fPx, fPy, fPz, fM;
 
@@ -134,6 +128,11 @@ class ShipMCTrack : public TObject
      **/
     Int_t fNPoints;
 
+    /** Index of the event **/
+    Int_t fEventID;
+
+    /** Index of track in the event **/
+    Int_t fTrackID;
 
     ClassDef(ShipMCTrack,8);
 
