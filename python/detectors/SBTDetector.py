@@ -10,8 +10,16 @@ class SBTDetector(BaseDetector):
         branchName=None,
         mcBranchType=None,
         mcBranchName="digiSBT2MC",
+        outtree=None,
     ):
-        super().__init__(name, intree, branchName, mcBranchType, mcBranchName)
+        super().__init__(
+            name,
+            intree,
+            branchName,
+            mcBranchType,
+            mcBranchName,
+            outtree=outtree,
+        )
 
     def digitize(self):
         """Digitize Surrounding Background Tagger MC hits.

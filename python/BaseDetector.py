@@ -16,25 +16,28 @@ class BaseDetector(ABC):
         mcBranchType=None,
         mcBranchName=None,
         splitLevel=99,
+        outtree=None,
     ):
         """Initialise detector digitisation."""
         self.name = name
         self.intree = intree
+        # If outtree provided, use it for output; else intree for compatibility
+        self.outtree = outtree if outtree is not None else intree
         self.det = ROOT.std.vector(f"{name}Hit")()
         self.MCdet = None
         self.mcBranch = None
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mcBranch = self.intree.Branch(
+            self.mcBranch = self.outtree.Branch(
                 mcBranchName, self.MCdet, 32000, splitLevel
             )
 
         if branchName:
-            self.branch = self.intree.Branch(
+            self.branch = self.outtree.Branch(
                 f"Digi_{branchName}Hits", self.det, 32000, splitLevel
             )
         else:
-            self.branch = self.intree.Branch(
+            self.branch = self.outtree.Branch(
                 f"Digi_{name}Hits", self.det, 32000, splitLevel
             )
 

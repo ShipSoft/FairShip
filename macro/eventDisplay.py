@@ -63,7 +63,10 @@ transparentMaterials = {
 parser = ArgumentParser()
 
 parser.add_argument(
-    "-f", "--inputFile", dest="InputFile", help="Input file", required=True
+    "-f", "--inputFile", dest="InputFile", help="Input file (MC simulation)", required=True
+)
+parser.add_argument(
+    "-r", "--recoFile", dest="recoFile", help="Reconstruction file (will be used as friend tree)", required=False
 )
 parser.add_argument(
     "-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True
@@ -102,6 +105,15 @@ parser.add_argument(
 options = parser.parse_args()
 if options.InputFile.find("_D") > 0:
     withGeo = True
+
+# Determine reconstruction file
+if not options.recoFile:
+    # Default: replace .root with _rec.root, or if already _rec.root use as-is
+    if options.InputFile.find('_rec.root') > 0:
+        options.recoFile = options.InputFile
+        options.InputFile = options.InputFile.replace('_rec.root', '.root')
+    else:
+        options.recoFile = options.InputFile.replace('.root', '_rec.root')
 
 
 def printMCTrack(n, MCTrack):
@@ -1183,6 +1195,8 @@ if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
 inFile = ROOT.FairFileSource(options.InputFile)
+# Add reconstruction file as friend tree
+inFile.AddFriend(options.recoFile)
 fRun.SetSource(inFile)
 if options.OutputFile is None:
     options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")

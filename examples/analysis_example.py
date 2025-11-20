@@ -12,15 +12,45 @@ from backports import tdirectory634
 def main():
     """Sample function to analyse the pre-selection parameters."""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--path", help="Path to simulation file", default="./")
+    parser.add_argument("-f", "--simfile", help="MC simulation file", default="ship.conical.Pythia8-TGeant4.root")
+    parser.add_argument("-r", "--recofile", help="Reconstruction file", default="ship.conical.Pythia8-TGeant4_rec.root")
+    parser.add_argument("-g", "--geofile", help="Geometry file", default="geofile_full.conical.Pythia8-TGeant4.root")
     options = parser.parse_args()
 
-    f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
+    # Open MC simulation file
+    f = ROOT.TFile.Open(options.simfile, "read")
+    if not f or f.IsZombie():
+        import os
+        print(f"ERROR: Cannot open MC simulation file: {options.simfile}")
+        print(f"Current working directory: {os.getcwd()}")
+        print(f"Files in current directory:")
+        os.system("ls -lh *.root")
+        raise RuntimeError(f"Cannot open MC simulation file: {options.simfile}")
+
+    # Check what trees are in the file
+    keys = [k.GetName() for k in f.GetListOfKeys()]
+    print(f"Keys in {options.simfile}: {keys}")
+
+    if "cbmsim" not in keys:
+        print(f"ERROR: MC simulation file {options.simfile} does not contain 'cbmsim' tree")
+        print(f"Available keys: {keys}")
+        raise RuntimeError(f"MC simulation file does not contain 'cbmsim' tree")
+
     tree = f["cbmsim"]
 
-    geo_file = ROOT.TFile.Open(
-        options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"
-    )
+    # Add reconstruction data as friend tree
+    reco_f = ROOT.TFile.Open(options.recofile, "read")
+    if not reco_f or reco_f.IsZombie():
+        raise RuntimeError(f"Cannot open reconstruction file: {options.recofile}")
+
+    reco_keys = [k.GetName() for k in reco_f.GetListOfKeys()]
+    print(f"Keys in {options.recofile}: {reco_keys}")
+
+    tree.AddFriend("ship_reco_sim", options.recofile)
+
+    geo_file = ROOT.TFile.Open(options.geofile, "read")
+    if not geo_file or geo_file.IsZombie():
+        raise RuntimeError(f"Cannot open geometry file: {options.geofile}")
 
     selection = analysis_toolkit.selection_check(geo_file)
     inspector = analysis_toolkit.event_inspector()

@@ -33,7 +33,6 @@ parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", 
 parser.add_argument("--noVertexing",     dest="noVertexing", help="switch off vertexing", required=False, action="store_true")
 parser.add_argument("--noStrawSmearing", dest="withNoStrawSmearing", help="no smearing of distance to wire, default on", required=False, action="store_true")
 parser.add_argument("--withT0",          dest="withT0", help="simulate arbitrary T0 and correct for it", required=False, action="store_true")
-parser.add_argument("--saveDisk",        dest="saveDisk", help="if set, will remove input file, only rec file kept", required=False, action="store_true")
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0,type=int)
 parser.add_argument("--realPR",          dest="realPR",  help="Option for pattern recognition without MC truth. \n\
            FH                        : Hough transform.\n\
@@ -59,6 +58,7 @@ if not options.dy:
 print('configured to process ', options.nEvents, ' events from ', options.inputFile,
       ' starting with event ', options.firstEvent, ' with option Yheight = ' ,dy,
       ' with vertexing', vertexing, ' and real pattern reco ', options.realPR)
+# Determine output filename (will contain only digi/reco branches)
 if not options.inputFile.find('_rec.root') < 0:
   outFile   = options.inputFile
   options.inputFile = outFile.replace('_rec.root','.root')
@@ -67,9 +67,6 @@ else:
 # outfile should be in local directory
   tmp = outFile.split('/')
   outFile = tmp[len(tmp)-1]
-  if options.inputFile[:7]=="root://" : os.system('xrdcp '+options.inputFile+' '+outFile)
-  elif options.saveDisk: os.system('mv '+options.inputFile+' '+outFile)
-  else :       os.system('cp '+options.inputFile+' '+outFile)
 
 if not options.geoFile:
  tmp = options.inputFile.replace('ship.','geofile_full.')
@@ -123,7 +120,7 @@ global_variables.iEvent = 0
 # import reco tasks
 import shipDigiReco
 
-SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
+SHiP = shipDigiReco.ShipDigiReco(options.inputFile, outFile, fgeo)
 options.nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
 # main loop
 for global_variables.iEvent in range(options.firstEvent, options.nEvents):
@@ -132,6 +129,7 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
     SHiP.reconstruct()
+    SHiP.recoTree.Fill()
  # memory monitoring
  # mem_monitor()
 # end loop over events

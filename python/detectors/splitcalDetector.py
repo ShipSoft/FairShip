@@ -5,13 +5,15 @@ from BaseDetector import BaseDetector
 
 
 class splitcalDetector(BaseDetector):
-    def __init__(self, name, intree):
+    def __init__(self, name, intree, outtree=None):
         # Initialize base class for digitized hits
-        super().__init__(name, intree, "Splitcal")
+        super().__init__(name, intree, "Splitcal", outtree=outtree)
 
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
-        self.recoBranch = self.intree.Branch("Reco_SplitcalClusters", self.reco)
+        # Use outtree if provided, otherwise intree (backward compatibility)
+        tree_for_output = self.outtree if outtree is not None else intree
+        self.recoBranch = tree_for_output.Branch("Reco_SplitcalClusters", self.reco)
 
     def delete(self):
         # Override to also clear reconstruction branch
