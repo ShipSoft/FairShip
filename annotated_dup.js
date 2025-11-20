@@ -131,7 +131,6 @@ var annotated_dup =
     [ "muonHit", "classmuonHit.html", "classmuonHit" ],
     [ "muonPoint", "classmuonPoint.html", "classmuonPoint" ],
     [ "NtupleGenerator", "classNtupleGenerator.html", "classNtupleGenerator" ],
-    [ "pid", "classpid.html", "classpid" ],
     [ "pyFairModule", "classpyFairModule.html", "classpyFairModule" ],
     [ "Pythia6Generator", "classPythia6Generator.html", "classPythia6Generator" ],
     [ "Pythia8Generator", "classPythia8Generator.html", "classPythia8Generator" ],

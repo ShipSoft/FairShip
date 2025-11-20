@@ -34,7 +34,7 @@ var searchData=
   ['ncores_31',['ncores',['../namespacerun__reco.html#a73cbd0f6d7d8add2128f07b538176260',1,'run_reco']]],
   ['ncpus_32',['ncpus',['../namespacerunCharmHadProd.html#a73723768be756b5d2011a4324d357eeb',1,'runCharmHadProd']]],
   ['ndau_33',['Ndau',['../classEvtCalcGenerator.html#a47f0a9cc2b8176263e6c803f43f0bf7b',1,'EvtCalcGenerator']]],
-  ['ndecaywidth_34',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
+  ['ndecaywidth_34',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
   ['ndof_35',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['ndsprim_36',['ndsprim',['../namespacemakeDecay.html#ad982d83e907e8531920183500c345a9d',1,'makeDecay.nDsprim'],['../classFixedTargetGenerator.html#abe57fd9e95ce8a0d9941e89437a2fe4c',1,'FixedTargetGenerator::nDsprim']]],
   ['nel_37',['nEl',['../namespacestudy__GammaConv.html#a3c26c243703135de75534de37178e554',1,'study_GammaConv']]],

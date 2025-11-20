@@ -165,7 +165,6 @@ var hierarchy =
       [ "ShipParticle", "classShipParticle.html", null ],
       [ "TrackInfo", "classTrackInfo.html", null ],
       [ "Tracklet", "classTracklet.html", null ],
-      [ "pid", "classpid.html", null ],
       [ "splitcalCluster", "classsplitcalCluster.html", null ],
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
