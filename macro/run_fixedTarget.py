@@ -79,6 +79,7 @@ ap.add_argument('--beam-paint', type=float, dest='beam_paint', default=50., help
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
 
 ap.add_argument('--AddCylindricalSensPlane', action='store_true', help="Whether or not to add cylindrical sensitive plane around the target. False by default.")
+ap.add_argument('--AddPostTargetSensPlane', action='store_true', help="Whether or not to add sensitive plane after the target. False by default.")
 
 args = ap.parse_args()
 if args.debug:
@@ -165,6 +166,24 @@ TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        HeT=ship_geo.target.HeT)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)
 run.AddModule(TargetStation)
+
+
+if args.AddPostTargetSensPlane:
+    sensPlanePostT = ROOT.exitHadronAbsorber()
+    sensPlanePostT.SetEnergyCut(args.ecut*u.GeV)
+    sensPlanePostT.SetVetoPointName("PlanePostT")
+    # by default, if the z-position is not set, the positioning is behind the hadron abosorber and the tracks are stopped when they hit the sens plane
+    # if the z-position is set and has a reasonable value (below 1E8), then the tracks are not stopped and continue to the last plane after the hadron absorber
+    sensPlanePostT.SetZposition(ship_geo.target.length + 7.6*u.cm + 300*u.mm)  # target length + vessel shift + shielding length
+    sensPlanePostT.SetUseCaveCoordinates()  # position set from the cave to avoid extrusions since the plane is larger than the target vacuum box
+
+    if args.storeOnlyMuons:
+        sensPlanePostT.SetOnlyMuons()
+    if args.skipNeutrinos:
+        sensPlanePostT.SkipNeutrinos()
+    if args.FourDP:
+        sensPlanePostT.SetOpt4DP()
+    run.AddModule(sensPlanePostT)
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:

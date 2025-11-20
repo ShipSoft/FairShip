@@ -51,6 +51,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fzPos(3E8),
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
+    fUseCaveCoordinates(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -241,20 +242,35 @@ void exitHadronAbsorber::ConstructGeometry()
    TString myname(this->GetName());
    TString shapename_prefix(myname); // Use a prefix for shapenames
 
+   Double_t xLocPlane = 0.0;
+   Double_t yLocPlane = 0.0;
+   Double_t zLocPlane = zLoc;
+
    if (!fCylindricalPlane){
-     TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
+     TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+fVetoName+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
      std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
-     nav->cd("/MuonShieldArea_1/");
-     //else nav->cd("/target_vacuum_box_1");
+
+     if (!fUseCaveCoordinates) {
+        nav->cd("/MuonShieldArea_1/");
+     } else {
+        Double_t local[3]  = {0, 0, zLoc};
+        Double_t global[3];
+        nav->cd("/target_vacuum_box_1/TargetArea_1");
+        nav->LocalToMaster(local, global);
+        nav->cd("/cave_1");
+        yLocPlane = global[1];
+        zLocPlane = global[2];
+        xLocPlane = global[0];
+     }
      sensPlane->SetLineColor(kBlue - 10);
      //nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, fzPos<250?2:1, new TGeoTranslation(0, 0, zLoc));
-     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc));
+     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(xLocPlane, yLocPlane, zLocPlane));
      AddSensitiveVolume(sensPlane);
    }
    else {  // add cylindrical sensPlane
      // if (zLoc < 250*cm){//corresponds to target...
      // Parameters: name, medium, inner radius, outer radius, half-length (Z), phi1, phi2
-     TGeoVolume *sensPlaneCyl = gGeoManager->MakeTube(shapename_prefix+"_tube",vac,12.51*cm,12.52*cm,zLoc/2.);
+     TGeoVolume *sensPlaneCyl = gGeoManager->MakeTube(shapename_prefix+fVetoName+"_tube",vac,12.51*cm,12.52*cm,zLoc/2.);
      std::cout << this->GetName() << ", ConstructGeometry(): Created Tube with dimensions: 12.51*cm,12.52*cm,zLoc/2." << std::endl;
      nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
      nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, 0));
