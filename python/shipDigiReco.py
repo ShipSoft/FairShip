@@ -339,11 +339,10 @@ class ShipDigiReco:
     frac, tmax = self.fracMCsame(track_ids)
     self.fitTrack2MC.push_back(tmax)
     # Save hits indexes of the the fitted tracks
-    aTracklet = ROOT.Tracklet()
-    aTracklet.setType(1)
-    listOfHits = aTracklet.getList()
+    indices = ROOT.std.vector('unsigned int')()
     for index in listOfIndices[atrack]:
-      listOfHits.push_back(index)
+      indices.push_back(index)
+    aTracklet = ROOT.Tracklet(1, indices)
     self.fTrackletsArray.push_back(aTracklet)
   self.Tracklets.Fill()
   self.fitTracks.Fill()
@@ -371,7 +370,7 @@ class ShipDigiReco:
 
  def findVetoHitOnTrack(self,track):
    distMin = 99999.
-   vetoHitOnTrack = ROOT.vetoHitOnTrack()
+   hitID = -1
    xx  = track.getFittedState()
    rep   = ROOT.genfit.RKTrackRep(xx.getPDG())
    state = ROOT.genfit.StateOnPlane(rep)
@@ -389,9 +388,8 @@ class ShipDigiReco:
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:
        distMin = dist
-       vetoHitOnTrack.SetDist(distMin)
-       vetoHitOnTrack.SetHitID(i)
-   return vetoHitOnTrack
+       hitID = i
+   return ROOT.vetoHitOnTrack(hitID, distMin)
 
  def linkVetoOnTracks(self):
    self.vetoHitOnTrackArray.clear()

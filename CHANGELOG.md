@@ -194,9 +194,18 @@ it in future.
 * Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
 * Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
 * Placement of SiliconTarget has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.
+* Modernise data classes by removing obsolete BOOST serialisation (Tracklet, vetoHitOnTrack, ShipHit, TrackInfo)
+  - Replace BOOST serialisation with native ROOT 6 serialisation
+  - Modernise Tracklet constructor to accept `std::vector<unsigned int>` indices
+  - Update vetoHitOnTrack to use parameterised constructor in Python code
+  - Add const correctness to TrackInfo accessor methods
+  - Update Python code in shipDigiReco.py to use modern constructors
+  - Bump ClassDef versions to 2 for schema evolution
+  - Add TrackInfo to RNTuple I/O test suite
 
 ### Removed
 
+* Remove BOOST dependency from CMake build system - no longer required as ROOT 6 provides native serialisation
 * Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)
 * fix: Remove unused, unrunnable shipPatRec_prev.py
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
