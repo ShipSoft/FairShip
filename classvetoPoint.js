@@ -1,7 +1,7 @@
 var classvetoPoint =
 [
     [ "vetoPoint", "classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d", null ],
-    [ "vetoPoint", "classvetoPoint.html#a51fb946eb0e7a376c7f5badb1af1bf40", null ],
+    [ "vetoPoint", "classvetoPoint.html#a814c8a031ff0cbc9c57ede9dc6564d0a", null ],
     [ "~vetoPoint", "classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427", null ],
     [ "vetoPoint", "classvetoPoint.html#a12c3aeae1b9f5498c0726ec4f33cfe93", null ],
     [ "LastMom", "classvetoPoint.html#aae99bcec2c116ae54a33b7fa64fe33b8", null ],

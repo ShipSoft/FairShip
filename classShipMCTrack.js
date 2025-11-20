@@ -1,7 +1,7 @@
 var classShipMCTrack =
 [
     [ "ShipMCTrack", "classShipMCTrack.html#ab2c7dd6d1a627e493381a513c25f1098", null ],
-    [ "ShipMCTrack", "classShipMCTrack.html#aa78591ba20d41466be570dfec80c56da", null ],
+    [ "ShipMCTrack", "classShipMCTrack.html#aeaf81f1380e8375aa228fa69a8f08565", null ],
     [ "ShipMCTrack", "classShipMCTrack.html#a9a290f4eda47b51857e57f443d970e22", null ],
     [ "ShipMCTrack", "classShipMCTrack.html#a9a5adceb8cdb4cbeed66227e68bd6db9", null ],
     [ "~ShipMCTrack", "classShipMCTrack.html#aeaea927f51cd1b823d93704ec0284469", null ],
@@ -29,10 +29,13 @@ var classShipMCTrack =
     [ "GetWeight", "classShipMCTrack.html#a059ad30bfc90c14f4fe8de00f41f0db0", null ],
     [ "MultiplyWeight", "classShipMCTrack.html#a1c7ea6d7427911e1732d5d05dd98aa93", null ],
     [ "Print", "classShipMCTrack.html#a202124a9bba57ab33ac1730c2b75dd21", null ],
+    [ "SetEventID", "classShipMCTrack.html#ab6c87f1d8bf97627aff60721afd3fd86", null ],
     [ "SetMotherId", "classShipMCTrack.html#aed646f8b1bc5dcbebe1f263adc503dae", null ],
     [ "SetNPoints", "classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96", null ],
     [ "SetProcID", "classShipMCTrack.html#abbc425fadc1fd37e84a00fa3654e3a05", null ],
+    [ "SetTrackID", "classShipMCTrack.html#a800226ef95edd8632c964561d971c828", null ],
     [ "SetWeight", "classShipMCTrack.html#a65915331fb3a53345fe464a92fac6185", null ],
+    [ "fEventID", "classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950", null ],
     [ "fM", "classShipMCTrack.html#aaaf9a08283bf2954a3c4970d14026689", null ],
     [ "fMotherId", "classShipMCTrack.html#ad7463e52adca1897421b260e1c562595", null ],
     [ "fNPoints", "classShipMCTrack.html#a34a60e5b3993f16432183b67bf9d0dfa", null ],
@@ -45,5 +48,6 @@ var classShipMCTrack =
     [ "fStartX", "classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab", null ],
     [ "fStartY", "classShipMCTrack.html#aab7748567142d33360a6eab4238513ac", null ],
     [ "fStartZ", "classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176", null ],
+    [ "fTrackID", "classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3", null ],
     [ "fW", "classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47", null ]
 ];

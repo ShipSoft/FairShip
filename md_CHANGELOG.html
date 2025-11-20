@@ -100,6 +100,7 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
 <ul>
+<li>Add EventId and TrackID for MCTrack and HAPoint #944</li>
 <li><b>Data classes now support ROOT RNtuple I/O</b> All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of <a class="el" href="classShipParticle.html">ShipParticle</a> to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.</li>
 <li>Add option for an additional sensitive plane around the target in <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></li>
 <li>Add CI job to run fixed target simulation (<a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a>)</li>
