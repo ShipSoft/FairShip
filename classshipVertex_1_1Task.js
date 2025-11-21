@@ -1,6 +1,6 @@
 var classshipVertex_1_1Task =
 [
-    [ "__init__", "classshipVertex_1_1Task.html#a8026d42790b739bbebb649cacd0509c8", null ],
+    [ "__init__", "classshipVertex_1_1Task.html#abbe8c35724edd26fa3443238835a2d24", null ],
     [ "chi2", "classshipVertex_1_1Task.html#ac68af861c9c137709488fb9461823af6", null ],
     [ "execute", "classshipVertex_1_1Task.html#aea8fd6acbf344aa7d1104f3dd37e318e", null ],
     [ "fcn", "classshipVertex_1_1Task.html#a6e2990195bdca1b65f5aa634f6c86c5e", null ],
@@ -12,6 +12,7 @@ var classshipVertex_1_1Task =
     [ "goodTracksLoc", "classshipVertex_1_1Task.html#a5d42d79fcc4adca8ce45513a32c16f99", null ],
     [ "h", "classshipVertex_1_1Task.html#a4f1b14fe67cab5c3c664b3ad116a5c6b", null ],
     [ "LV", "classshipVertex_1_1Task.html#a3a62019011f72b1a6eef10ff677d177c", null ],
+    [ "mcTree", "classshipVertex_1_1Task.html#a699a9ed45d4bdd3fbe64744a155b769d", null ],
     [ "newPosDir", "classshipVertex_1_1Task.html#a48d187d13d4cb29622188a83429e0432", null ],
     [ "Particles", "classshipVertex_1_1Task.html#adf7b0f6106975263d9ef0ab6215aa1a7", null ],
     [ "PDG", "classshipVertex_1_1Task.html#ab211b231ae71463bed7fd022894cb08d", null ],
