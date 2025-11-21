@@ -16,6 +16,7 @@ target_include_directories(testDataClassIO PRIVATE
     ${CMAKE_SOURCE_DIR}/SND/EmulsionTarget
     ${CMAKE_SOURCE_DIR}/TimeDet
     ${CMAKE_SOURCE_DIR}/UpstreamTagger
+    ${genfit2_INCDIR}
 )
 
 target_link_libraries(testDataClassIO
@@ -57,6 +58,7 @@ if(ROOT_VERSION VERSION_GREATER_EQUAL "6.36")
       ${CMAKE_SOURCE_DIR}/SND/EmulsionTarget
       ${CMAKE_SOURCE_DIR}/TimeDet
       ${CMAKE_SOURCE_DIR}/UpstreamTagger
+      ${genfit2_INCDIR}
   )
 
   target_link_libraries(testRNtupleIO
