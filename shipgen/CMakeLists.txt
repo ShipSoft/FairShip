@@ -69,7 +69,7 @@ set(SRCS
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES Base ShipData veto EvtGen::EvtGen
+set(DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
                  FairLogger::FairLogger)
 
 generate_library()
