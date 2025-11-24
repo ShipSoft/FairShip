@@ -120,22 +120,22 @@ if(EvtGen_FOUND)
   set(EvtGen_INCLUDE_DIRS "${EvtGen_INCLUDE_DIR}")
   set(EvtGen_LIBRARIES "${EvtGen_LIBRARY}" "${EvtGen_External_LIBRARY}")
 
-  # Create imported target for EvtGenExternal (must be created first)
-  if(NOT TARGET EvtGen::EvtGenExternal)
-    add_library(EvtGen::EvtGenExternal UNKNOWN IMPORTED)
-    set_target_properties(EvtGen::EvtGenExternal PROPERTIES
-      IMPORTED_LOCATION "${EvtGen_External_LIBRARY}"
-      INTERFACE_INCLUDE_DIRECTORIES "${EvtGen_INCLUDE_DIR}"
-    )
-  endif()
-
-  # Create imported target for EvtGen
+  # Create imported target for EvtGen core library (must be created first)
   if(NOT TARGET EvtGen::EvtGen)
     add_library(EvtGen::EvtGen UNKNOWN IMPORTED)
     set_target_properties(EvtGen::EvtGen PROPERTIES
       IMPORTED_LOCATION "${EvtGen_LIBRARY}"
       INTERFACE_INCLUDE_DIRECTORIES "${EvtGen_INCLUDE_DIR}"
-      INTERFACE_LINK_LIBRARIES "EvtGen::EvtGenExternal"
+    )
+  endif()
+
+  # Create imported target for EvtGenExternal (depends on EvtGen core)
+  if(NOT TARGET EvtGen::EvtGenExternal)
+    add_library(EvtGen::EvtGenExternal UNKNOWN IMPORTED)
+    set_target_properties(EvtGen::EvtGenExternal PROPERTIES
+      IMPORTED_LOCATION "${EvtGen_External_LIBRARY}"
+      INTERFACE_INCLUDE_DIRECTORIES "${EvtGen_INCLUDE_DIR}"
+      INTERFACE_LINK_LIBRARIES "EvtGen::EvtGen"
     )
   endif()
 
