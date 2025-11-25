@@ -12,7 +12,15 @@ void basiclibs()
   gSystem->Load("libGeomPainter");
   gSystem->Load("libVMC");
   gSystem->Load("libEG");
-  gSystem->Load("libEGPythia6");
+
+  // For ROOT >= 6.32, TPythia6 is not included in ROOT and must be loaded from EGPythia6
+  // For ROOT < 6.32, TPythia6 is built into libEG
+  Int_t rootVersion = gROOT->GetVersionInt();
+  if (rootVersion >= 63200) {
+    // Load external EGPythia6 for ROOT >= 6.32
+    gSystem->Load("libEGPythia6");
+  }
+
   gSystem->Load("libPythia6");
   gSystem->Load("libPhysics");
   gSystem->Load("libNet");

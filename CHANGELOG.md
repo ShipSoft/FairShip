@@ -72,6 +72,7 @@ it in future.
 - Enclose target in steel (316L) cylinder
 * First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.
 * Add visualization methods to SciFiMapping.py to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()
+* Support using TPythia6 provided by ROOTEGPythia6 for ROOT ≥ 6.32
 
 
 ### Fixed
