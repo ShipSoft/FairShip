@@ -144,25 +144,25 @@ Functions</h2></td></tr>
 Call this function after ROOT libraries are fully loaded to enable
 enhanced string representations for ROOT objects.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00073">73</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span><span class="keyword">def </span>apply_decorators():</div>
-<div class="line"><span class="lineno">   74</span>    <span class="stringliteral">&quot;&quot;&quot;Apply custom __repr__ methods to ROOT classes.</span></div>
-<div class="line"><span class="lineno">   75</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   76</span><span class="stringliteral">    Call this function after ROOT libraries are fully loaded to enable</span></div>
-<div class="line"><span class="lineno">   77</span><span class="stringliteral">    enhanced string representations for ROOT objects.</span></div>
-<div class="line"><span class="lineno">   78</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   79</span>    ROOT.FairMCPoint.__repr__ = MCPointPrintOut</div>
-<div class="line"><span class="lineno">   80</span>    ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut</div>
-<div class="line"><span class="lineno">   81</span>    ROOT.genfit.Track.__repr__ = FitTrackPrintOut</div>
-<div class="line"><span class="lineno">   82</span>    ROOT.TClonesArray.Dump = Dump</div>
-<div class="line"><span class="lineno">   83</span>    ROOT.TVector3.__repr__ = TVector3PrintOut</div>
-<div class="line"><span class="lineno">   84</span>    ROOT.TParticle.__repr__ = TParticlePrintOut</div>
-<div class="line"><span class="lineno">   85</span>    ROOT.ShipParticle.__repr__ = ShipParticlePrintOut</div>
-<div class="line"><span class="lineno">   86</span>    ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut</div>
-<div class="line"><span class="lineno">   87</span>    ROOT.vetoHit.__repr__ = vetoHitPrintOut</div>
-<div class="line"><span class="lineno">   88</span>    ROOT.muonHit.__repr__ = muonHitPrintOut</div>
-<div class="line"><span class="lineno">   89</span>    ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut</div>
-<div class="line"><span class="lineno">   90</span>    ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00076">76</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span><span class="keyword">def </span>apply_decorators():</div>
+<div class="line"><span class="lineno">   77</span>    <span class="stringliteral">&quot;&quot;&quot;Apply custom __repr__ methods to ROOT classes.</span></div>
+<div class="line"><span class="lineno">   78</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   79</span><span class="stringliteral">    Call this function after ROOT libraries are fully loaded to enable</span></div>
+<div class="line"><span class="lineno">   80</span><span class="stringliteral">    enhanced string representations for ROOT objects.</span></div>
+<div class="line"><span class="lineno">   81</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   82</span>    ROOT.FairMCPoint.__repr__ = MCPointPrintOut</div>
+<div class="line"><span class="lineno">   83</span>    ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut</div>
+<div class="line"><span class="lineno">   84</span>    ROOT.genfit.Track.__repr__ = FitTrackPrintOut</div>
+<div class="line"><span class="lineno">   85</span>    ROOT.TClonesArray.Dump = Dump</div>
+<div class="line"><span class="lineno">   86</span>    ROOT.TVector3.__repr__ = TVector3PrintOut</div>
+<div class="line"><span class="lineno">   87</span>    ROOT.TParticle.__repr__ = TParticlePrintOut</div>
+<div class="line"><span class="lineno">   88</span>    ROOT.ShipParticle.__repr__ = ShipParticlePrintOut</div>
+<div class="line"><span class="lineno">   89</span>    ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut</div>
+<div class="line"><span class="lineno">   90</span>    ROOT.vetoHit.__repr__ = vetoHitPrintOut</div>
+<div class="line"><span class="lineno">   91</span>    ROOT.muonHit.__repr__ = muonHitPrintOut</div>
+<div class="line"><span class="lineno">   92</span>    ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut</div>
+<div class="line"><span class="lineno">   93</span>    ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -182,13 +182,13 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00048">48</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>Dump(x):</div>
-<div class="line"><span class="lineno">   49</span>  k=0</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">for</span> obj <span class="keywordflow">in</span> x:</div>
-<div class="line"><span class="lineno">   51</span>    print(k,obj.__repr__())</div>
-<div class="line"><span class="lineno">   52</span>    k+=1</div>
-<div class="line"><span class="lineno">   53</span> </div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00051">51</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span><span class="keyword">def </span>Dump(x):</div>
+<div class="line"><span class="lineno">   52</span>  k=0</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span> obj <span class="keywordflow">in</span> x:</div>
+<div class="line"><span class="lineno">   54</span>    print(k,obj.__repr__())</div>
+<div class="line"><span class="lineno">   55</span>    k+=1</div>
+<div class="line"><span class="lineno">   56</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -208,17 +208,17 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00032">32</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>FitTrackPrintOut(x):</div>
-<div class="line"><span class="lineno">   33</span>  st = x.getFitStatus()</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> st.isFitConverged():</div>
-<div class="line"><span class="lineno">   35</span>   chi2DoF = st.getChi2()/st.getNdf()</div>
-<div class="line"><span class="lineno">   36</span>   sta = x.getFittedState()</div>
-<div class="line"><span class="lineno">   37</span>   P = sta.getMomMag()</div>
-<div class="line"><span class="lineno">   38</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i&#39;</span>%(chi2DoF,P,sta.getPDG())</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   40</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) fit not converged&#39;</span></div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00035">35</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span><span class="keyword">def </span>FitTrackPrintOut(x):</div>
+<div class="line"><span class="lineno">   36</span>  st = x.getFitStatus()</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> st.isFitConverged():</div>
+<div class="line"><span class="lineno">   38</span>   chi2DoF = st.getChi2()/st.getNdf()</div>
+<div class="line"><span class="lineno">   39</span>   sta = x.getFittedState()</div>
+<div class="line"><span class="lineno">   40</span>   P = sta.getMomMag()</div>
+<div class="line"><span class="lineno">   41</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i&#39;</span>%(chi2DoF,P,sta.getPDG())</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   43</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) fit not converged&#39;</span></div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -238,14 +238,14 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00007">7</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>MCPointPrintOut(x):</div>
-<div class="line"><span class="lineno">    8</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())</div>
-<div class="line"><span class="lineno">    9</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">   10</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
-<div class="line"><span class="lineno">   11</span>  txt = <span class="stringliteral">&#39;(&quot;%s&quot;) X:%6.3Fcm Y:%6.3Fcm Z:%6.3Fcm dE/dx:%6.2FMeV %s&#39;</span>%(\</div>
-<div class="line"><span class="lineno">   12</span>    x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),x.GetEnergyLoss()/u.MeV,n)</div>
-<div class="line"><span class="lineno">   13</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00010">10</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   10</span><span class="keyword">def </span>MCPointPrintOut(x):</div>
+<div class="line"><span class="lineno">   11</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())</div>
+<div class="line"><span class="lineno">   12</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">   13</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
+<div class="line"><span class="lineno">   14</span>  txt = <span class="stringliteral">&#39;(&quot;%s&quot;) X:%6.3Fcm Y:%6.3Fcm Z:%6.3Fcm dE/dx:%6.2FMeV %s&#39;</span>%(\</div>
+<div class="line"><span class="lineno">   15</span>    x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),x.GetEnergyLoss()/u.MeV,n)</div>
+<div class="line"><span class="lineno">   16</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -265,15 +265,15 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00014">14</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span>MCTrackPrintOut(x):</div>
-<div class="line"><span class="lineno">   15</span>  c = x.GetPdgCode()</div>
-<div class="line"><span class="lineno">   16</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(c)</div>
-<div class="line"><span class="lineno">   17</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
-<div class="line"><span class="lineno">   19</span>  m = x.GetMotherId()</div>
-<div class="line"><span class="lineno">   20</span>  txt = <span class="stringliteral">&#39;(&quot;ShipMCTrack&quot;) pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s&#39;</span>%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00017">17</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span><span class="keyword">def </span>MCTrackPrintOut(x):</div>
+<div class="line"><span class="lineno">   18</span>  c = x.GetPdgCode()</div>
+<div class="line"><span class="lineno">   19</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(c)</div>
+<div class="line"><span class="lineno">   20</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
+<div class="line"><span class="lineno">   22</span>  m = x.GetMotherId()</div>
+<div class="line"><span class="lineno">   23</span>  txt = <span class="stringliteral">&#39;(&quot;ShipMCTrack&quot;) pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s&#39;</span>%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -293,10 +293,10 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00025">25</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span><span class="keyword">def </span>muonHitPrintOut(x):</div>
-<div class="line"><span class="lineno">   26</span>  txt = <span class="stringliteral">&#39;(&quot;muonHit&quot;) detID:%7i  TDC:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),x.GetDigi(),x.isValid())</div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00028">28</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>muonHitPrintOut(x):</div>
+<div class="line"><span class="lineno">   29</span>  txt = <span class="stringliteral">&#39;(&quot;muonHit&quot;) detID:%7i  TDC:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),x.GetDigi(),x.isValid())</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,10 +316,10 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00045">45</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>ShipParticlePrintOut(x):</div>
-<div class="line"><span class="lineno">   46</span>  txt = <span class="stringliteral">&#39;(&quot;ShipParticle&quot;) %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00048">48</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>ShipParticlePrintOut(x):</div>
+<div class="line"><span class="lineno">   49</span>  txt = <span class="stringliteral">&#39;(&quot;ShipParticle&quot;) %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -339,18 +339,18 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00062">62</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span>TEvePointSetPrintOut(P):</div>
-<div class="line"><span class="lineno">   63</span> x, y, z = c_double(), c_double(), c_double()</div>
-<div class="line"><span class="lineno">   64</span> txt = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">   65</span> <span class="keywordflow">if</span> P.GetN()==0: txt = <span class="stringliteral">&#39;&lt;ROOT.TEvePointSet object&gt;&#39;</span></div>
-<div class="line"><span class="lineno">   66</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P.GetN()):</div>
-<div class="line"><span class="lineno">   67</span>  rc = P.GetPoint(n,x,y,z)</div>
-<div class="line"><span class="lineno">   68</span>  txt += f<span class="stringliteral">&#39;{n:6d} {x.value:7.1f}, {y.value:7.1f}, {z.value:9.1f} x, y, z cm\n&#39;</span></div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span> <span class="keywordflow">return</span> txt</div>
-<div class="line"><span class="lineno">   71</span> </div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00065">65</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>TEvePointSetPrintOut(P):</div>
+<div class="line"><span class="lineno">   66</span> x, y, z = c_double(), c_double(), c_double()</div>
+<div class="line"><span class="lineno">   67</span> txt = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">   68</span> <span class="keywordflow">if</span> P.GetN()==0: txt = <span class="stringliteral">&#39;&lt;ROOT.TEvePointSet object&gt;&#39;</span></div>
+<div class="line"><span class="lineno">   69</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P.GetN()):</div>
+<div class="line"><span class="lineno">   70</span>  rc = P.GetPoint(n,x,y,z)</div>
+<div class="line"><span class="lineno">   71</span>  txt += f<span class="stringliteral">&#39;{n:6d} {x.value:7.1f}, {y.value:7.1f}, {z.value:9.1f} x, y, z cm\n&#39;</span></div>
 <div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span> <span class="keywordflow">return</span> txt</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -370,11 +370,11 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00028">28</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>TimeDetHitPrintOut(x):</div>
-<div class="line"><span class="lineno">   29</span>  t = x.GetMeasurements()</div>
-<div class="line"><span class="lineno">   30</span>  txt = <span class="stringliteral">&#39;(&quot;TimeDetHit&quot;) detID:%7i  TDC1:%5.2F TDC2:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),t[0],t[1],x.isValid())</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00031">31</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>TimeDetHitPrintOut(x):</div>
+<div class="line"><span class="lineno">   32</span>  t = x.GetMeasurements()</div>
+<div class="line"><span class="lineno">   33</span>  txt = <span class="stringliteral">&#39;(&quot;TimeDetHit&quot;) detID:%7i  TDC1:%5.2F TDC2:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),t[0],t[1],x.isValid())</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -394,11 +394,11 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00058">58</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span>TLorentzVectorPrintOut(x):</div>
-<div class="line"><span class="lineno">   59</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F,%9.5F,%9.5F&#39;</span>%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> txt</div>
-<div class="line"><span class="lineno">   61</span> </div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00061">61</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>TLorentzVectorPrintOut(x):</div>
+<div class="line"><span class="lineno">   62</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F,%9.5F,%9.5F&#39;</span>%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> txt</div>
+<div class="line"><span class="lineno">   64</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -418,10 +418,10 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00042">42</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>TParticlePrintOut(x):</div>
-<div class="line"><span class="lineno">   43</span>  txt = <span class="stringliteral">&#39;(&quot;TParticle&quot;) %s  P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.P(),x.Vz()/u.m)</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00045">45</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>TParticlePrintOut(x):</div>
+<div class="line"><span class="lineno">   46</span>  txt = <span class="stringliteral">&#39;(&quot;TParticle&quot;) %s  P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.P(),x.Vz()/u.m)</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -441,11 +441,11 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00054">54</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>TVector3PrintOut(x):</div>
-<div class="line"><span class="lineno">   55</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F&#39;</span>%(x.X(),x.Y(),x.Z())</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">return</span> txt</div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00057">57</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span><span class="keyword">def </span>TVector3PrintOut(x):</div>
+<div class="line"><span class="lineno">   58</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F&#39;</span>%(x.X(),x.Y(),x.Z())</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> txt</div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -465,10 +465,10 @@ enhanced string representations for ROOT objects.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00022">22</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span><span class="keyword">def </span>vetoHitPrintOut(x):</div>
-<div class="line"><span class="lineno">   23</span>  txt = <span class="stringliteral">&#39;(&quot;vetoHit&quot;) detID:%7i  ADC:%5.2F TDC:%5.2F&#39;</span>%(x.GetDetectorID(),x.GetADC(),x.GetTDC())</div>
-<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">return</span> txt</div>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00025">25</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span><span class="keyword">def </span>vetoHitPrintOut(x):</div>
+<div class="line"><span class="lineno">   26</span>  txt = <span class="stringliteral">&#39;(&quot;vetoHit&quot;) detID:%7i  ADC:%5.2F TDC:%5.2F&#39;</span>%(x.GetDetectorID(),x.GetADC(),x.GetTDC())</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">return</span> txt</div>
 </div><!-- fragment -->
 </div>
 </div>

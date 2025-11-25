@@ -121,37 +121,37 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00060">60</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span><span class="keyword">def </span>configure(darkphoton=None):</div>
-<div class="line"><span class="lineno">   61</span>   ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;&#39;</span>+os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]+<span class="stringliteral">&#39;/shipdata/ShipGlobals.h&quot;&#39;</span>)</div>
-<div class="line"><span class="lineno">   62</span>   pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><span class="lineno">   63</span>   <span class="comment"># pythia stuff not known to ROOT</span></div>
-<div class="line"><span class="lineno">   64</span>   pdg.AddParticle(<span class="stringliteral">&#39;system&#39;</span>,<span class="stringliteral">&#39;system&#39;</span>,     0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 90)</div>
-<div class="line"><span class="lineno">   65</span>   pdg.AddParticle(<span class="stringliteral">&#39;Pomeron&#39;</span>,<span class="stringliteral">&#39;Pomeron&#39;</span>,   0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;Pomeron&#39;</span>, 990)</div>
-<div class="line"><span class="lineno">   66</span>   pdg.AddParticle(<span class="stringliteral">&#39;p_diffr+&#39;</span>,<span class="stringliteral">&#39;p_diffr+&#39;</span>, 0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 9902210)</div>
-<div class="line"><span class="lineno">   67</span>   pdg.AddParticle(<span class="stringliteral">&#39;n_diffr0&#39;</span>,<span class="stringliteral">&#39;n_diffr0&#39;</span>, 0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 9902110)</div>
-<div class="line"><span class="lineno">   68</span>   pdg.AddParticle(<span class="stringliteral">&quot;C12&quot;</span>, <span class="stringliteral">&quot;Carbon-12&quot;</span>, 12.0, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060120)</div>
-<div class="line"><span class="lineno">   69</span>   pdg.AddParticle(<span class="stringliteral">&quot;C13&quot;</span>, <span class="stringliteral">&quot;Carbon-13&quot;</span>, 13.003355, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060130)</div>
-<div class="line"><span class="lineno">   70</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[3PJ(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[3PJ(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.,      0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9942003)</div>
-<div class="line"><span class="lineno">   71</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[1S0(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[1S0(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.,      0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9941003)</div>
-<div class="line"><span class="lineno">   72</span>   pdg.AddParticle(<span class="stringliteral">&#39;f0(980)&#39;</span>          ,<span class="stringliteral">&#39;f0(980)&#39;</span>          ,1.0,    <span class="keyword">False</span>,0.0,     0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9010221)</div>
-<div class="line"><span class="lineno">   73</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(3770)&#39;</span>        ,<span class="stringliteral">&#39;psi(3770)&#39;</span>        ,3.77315,<span class="keyword">False</span>,0.02720, 0, <span class="stringliteral">&#39;Meson&#39;</span>, 30443)</div>
-<div class="line"><span class="lineno">   74</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(3770)[3PJ(8)]&#39;</span>,<span class="stringliteral">&#39;psi(3770)[3PJ(8)]&#39;</span>,3.97315,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9942033)</div>
-<div class="line"><span class="lineno">   75</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[3S1(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940003)</div>
-<div class="line"><span class="lineno">   76</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_0c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_0c[3S1(8)]&#39;</span>  ,3.61475,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940011)</div>
-<div class="line"><span class="lineno">   77</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[1S0(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[1S0(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9941103)</div>
-<div class="line"><span class="lineno">   78</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[3S1(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[3S1(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940103)</div>
-<div class="line"><span class="lineno">   79</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[3PJ(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[3PJ(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9942103)</div>
-<div class="line"><span class="lineno">   80</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_1c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_1c[3S1(8)]&#39;</span>  ,3.71066,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940023)</div>
-<div class="line"><span class="lineno">   81</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_2c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_2c[3S1(8)]&#39;</span>  ,3.75620,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940005)</div>
-<div class="line"><span class="lineno">   82</span>   pdg.AddParticle(<span class="stringliteral">&#39;Upsilon[3S1(8)]&#39;</span>   ,<span class="stringliteral">&#39;Upsilon[3S1(8)]&#39;</span> ,9.66030,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9950003)</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>   atexit.register(pyExit)</div>
-<div class="line"><span class="lineno">   85</span>   <span class="keywordflow">if</span> darkphoton==0: <span class="keywordflow">return</span> <span class="comment"># will be added by pythia8_conf</span></div>
-<div class="line"><span class="lineno">   86</span>   <span class="keywordflow">if</span> (darkphoton):</div>
-<div class="line"><span class="lineno">   87</span>      addDPtoROOT()</div>
-<div class="line"><span class="lineno">   88</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   89</span>      addHNLtoROOT()</div>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00063">63</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>configure(darkphoton=None):</div>
+<div class="line"><span class="lineno">   64</span>   ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;&#39;</span>+os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]+<span class="stringliteral">&#39;/shipdata/ShipGlobals.h&quot;&#39;</span>)</div>
+<div class="line"><span class="lineno">   65</span>   pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><span class="lineno">   66</span>   <span class="comment"># pythia stuff not known to ROOT</span></div>
+<div class="line"><span class="lineno">   67</span>   pdg.AddParticle(<span class="stringliteral">&#39;system&#39;</span>,<span class="stringliteral">&#39;system&#39;</span>,     0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 90)</div>
+<div class="line"><span class="lineno">   68</span>   pdg.AddParticle(<span class="stringliteral">&#39;Pomeron&#39;</span>,<span class="stringliteral">&#39;Pomeron&#39;</span>,   0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;Pomeron&#39;</span>, 990)</div>
+<div class="line"><span class="lineno">   69</span>   pdg.AddParticle(<span class="stringliteral">&#39;p_diffr+&#39;</span>,<span class="stringliteral">&#39;p_diffr+&#39;</span>, 0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 9902210)</div>
+<div class="line"><span class="lineno">   70</span>   pdg.AddParticle(<span class="stringliteral">&#39;n_diffr0&#39;</span>,<span class="stringliteral">&#39;n_diffr0&#39;</span>, 0., <span class="keyword">False</span>, 0., 0., <span class="stringliteral">&#39;XXX&#39;</span>, 9902110)</div>
+<div class="line"><span class="lineno">   71</span>   pdg.AddParticle(<span class="stringliteral">&quot;C12&quot;</span>, <span class="stringliteral">&quot;Carbon-12&quot;</span>, 12.0, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060120)</div>
+<div class="line"><span class="lineno">   72</span>   pdg.AddParticle(<span class="stringliteral">&quot;C13&quot;</span>, <span class="stringliteral">&quot;Carbon-13&quot;</span>, 13.003355, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060130)</div>
+<div class="line"><span class="lineno">   73</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[3PJ(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[3PJ(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.,      0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9942003)</div>
+<div class="line"><span class="lineno">   74</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[1S0(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[1S0(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.,      0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9941003)</div>
+<div class="line"><span class="lineno">   75</span>   pdg.AddParticle(<span class="stringliteral">&#39;f0(980)&#39;</span>          ,<span class="stringliteral">&#39;f0(980)&#39;</span>          ,1.0,    <span class="keyword">False</span>,0.0,     0.,<span class="stringliteral">&#39;Meson&#39;</span>, 9010221)</div>
+<div class="line"><span class="lineno">   76</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(3770)&#39;</span>        ,<span class="stringliteral">&#39;psi(3770)&#39;</span>        ,3.77315,<span class="keyword">False</span>,0.02720, 0, <span class="stringliteral">&#39;Meson&#39;</span>, 30443)</div>
+<div class="line"><span class="lineno">   77</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(3770)[3PJ(8)]&#39;</span>,<span class="stringliteral">&#39;psi(3770)[3PJ(8)]&#39;</span>,3.97315,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9942033)</div>
+<div class="line"><span class="lineno">   78</span>   pdg.AddParticle(<span class="stringliteral">&#39;J/psi[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;J/psi[3S1(8)]&#39;</span>    ,3.29692,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940003)</div>
+<div class="line"><span class="lineno">   79</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_0c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_0c[3S1(8)]&#39;</span>  ,3.61475,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940011)</div>
+<div class="line"><span class="lineno">   80</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[1S0(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[1S0(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9941103)</div>
+<div class="line"><span class="lineno">   81</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[3S1(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[3S1(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940103)</div>
+<div class="line"><span class="lineno">   82</span>   pdg.AddParticle(<span class="stringliteral">&#39;psi(2S)[3PJ(8)]&#39;</span>   ,<span class="stringliteral">&#39;psi(2S)[3PJ(8)]&#39;</span> ,3.88611,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9942103)</div>
+<div class="line"><span class="lineno">   83</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_1c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_1c[3S1(8)]&#39;</span>  ,3.71066,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940023)</div>
+<div class="line"><span class="lineno">   84</span>   pdg.AddParticle(<span class="stringliteral">&#39;chi_2c[3S1(8)]&#39;</span>    ,<span class="stringliteral">&#39;chi_2c[3S1(8)]&#39;</span>  ,3.75620,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9940005)</div>
+<div class="line"><span class="lineno">   85</span>   pdg.AddParticle(<span class="stringliteral">&#39;Upsilon[3S1(8)]&#39;</span>   ,<span class="stringliteral">&#39;Upsilon[3S1(8)]&#39;</span> ,9.66030,<span class="keyword">False</span>,0.0,     0, <span class="stringliteral">&#39;Meson&#39;</span>, 9950003)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>   atexit.register(pyExit)</div>
+<div class="line"><span class="lineno">   88</span>   <span class="keywordflow">if</span> darkphoton==0: <span class="keywordflow">return</span> <span class="comment"># will be added by pythia8_conf</span></div>
+<div class="line"><span class="lineno">   89</span>   <span class="keywordflow">if</span> (darkphoton):</div>
+<div class="line"><span class="lineno">   90</span>      addDPtoROOT()</div>
+<div class="line"><span class="lineno">   91</span>   <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   92</span>      addHNLtoROOT()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -170,13 +170,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00038">38</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span><span class="keyword">def </span>forReadingOldFile():</div>
-<div class="line"><span class="lineno">   39</span>    ROOT.gInterpreter.ProcessLine(<span class="stringliteral">&#39;typedef double Double32_t&#39;</span>)</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span><span class="comment"># -----prepare python exit-----------------------------------------------</span></div>
-<div class="line"><span class="lineno">   42</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00041">41</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span><span class="keyword">def </span>forReadingOldFile():</div>
+<div class="line"><span class="lineno">   42</span>    ROOT.gInterpreter.ProcessLine(<span class="stringliteral">&#39;typedef double Double32_t&#39;</span>)</div>
 <div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span><span class="comment"># -----prepare python exit-----------------------------------------------</span></div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -195,23 +195,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00044">44</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>pyExit():</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> module <span class="keywordflow">in</span> sys.modules:</div>
-<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;ROOT.genfit&quot;</span> <span class="keywordflow">in</span> module:</div>
-<div class="line"><span class="lineno">   47</span>            x = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]</div>
-<div class="line"><span class="lineno">   48</span>            <span class="keywordflow">if</span> hasattr(x, <span class="stringliteral">&#39;run&#39;</span>):</div>
-<div class="line"><span class="lineno">   49</span>                del x.run</div>
-<div class="line"><span class="lineno">   50</span>                print(</div>
-<div class="line"><span class="lineno">   51</span>                    <span class="stringliteral">&quot;make suicid, until better solution found to ROOT/genfit interference&quot;</span>)</div>
-<div class="line"><span class="lineno">   52</span>                <span class="keywordflow">for</span> f <span class="keywordflow">in</span> ROOT.gROOT.GetListOfFiles():</div>
-<div class="line"><span class="lineno">   53</span>                    <span class="keywordflow">if</span> f.IsWritable() <span class="keywordflow">and</span> f.IsOpen(): f.Close()</div>
-<div class="line"><span class="lineno">   54</span>                os.system(<span class="stringliteral">&#39;kill &#39;</span>+str(os.getpid()))</div>
-<div class="line"><span class="lineno">   55</span>            <span class="keywordflow">if</span> hasattr(x,<span class="stringliteral">&#39;fMan&#39;</span>): del x.fMan</div>
-<div class="line"><span class="lineno">   56</span>            <span class="keywordflow">if</span> hasattr(x,<span class="stringliteral">&#39;fRun&#39;</span>): del x.fRun</div>
-<div class="line"><span class="lineno">   57</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   58</span>    print(<span class="stringliteral">&quot;Exit normally&quot;</span>)</div>
-<div class="line"><span class="lineno">   59</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00047">47</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span><span class="keyword">def </span>pyExit():</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">for</span> module <span class="keywordflow">in</span> sys.modules:</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;ROOT.genfit&quot;</span> <span class="keywordflow">in</span> module:</div>
+<div class="line"><span class="lineno">   50</span>            x = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]</div>
+<div class="line"><span class="lineno">   51</span>            <span class="keywordflow">if</span> hasattr(x, <span class="stringliteral">&#39;run&#39;</span>):</div>
+<div class="line"><span class="lineno">   52</span>                del x.run</div>
+<div class="line"><span class="lineno">   53</span>                print(</div>
+<div class="line"><span class="lineno">   54</span>                    <span class="stringliteral">&quot;make suicid, until better solution found to ROOT/genfit interference&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span>                <span class="keywordflow">for</span> f <span class="keywordflow">in</span> ROOT.gROOT.GetListOfFiles():</div>
+<div class="line"><span class="lineno">   56</span>                    <span class="keywordflow">if</span> f.IsWritable() <span class="keywordflow">and</span> f.IsOpen(): f.Close()</div>
+<div class="line"><span class="lineno">   57</span>                os.system(<span class="stringliteral">&#39;kill &#39;</span>+str(os.getpid()))</div>
+<div class="line"><span class="lineno">   58</span>            <span class="keywordflow">if</span> hasattr(x,<span class="stringliteral">&#39;fMan&#39;</span>): del x.fMan</div>
+<div class="line"><span class="lineno">   59</span>            <span class="keywordflow">if</span> hasattr(x,<span class="stringliteral">&#39;fRun&#39;</span>): del x.fRun</div>
+<div class="line"><span class="lineno">   60</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   61</span>    print(<span class="stringliteral">&quot;Exit normally&quot;</span>)</div>
+<div class="line"><span class="lineno">   62</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

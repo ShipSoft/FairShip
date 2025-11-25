@@ -158,23 +158,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00134">134</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span><span class="keyword">def </span>addAllHistograms():</div>
-<div class="line"><span class="lineno">  135</span> h={}</div>
-<div class="line"><span class="lineno">  136</span> ecut = <span class="stringliteral">&#39;10.0&#39;</span></div>
-<div class="line"><span class="lineno">  137</span> Nmax=45000</div>
-<div class="line"><span class="lineno">  138</span> path = os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+<span class="stringliteral">&quot;/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span></div>
-<div class="line"><span class="lineno">  139</span> ut.bookCanvas(h,key=<span class="stringliteral">&#39;canvas&#39;</span>,title=<span class="stringliteral">&#39;debug&#39;</span>,nx=1600,ny=1200,cx=1,cy=1)</div>
-<div class="line"><span class="lineno">  140</span> h[<span class="stringliteral">&#39;canvas&#39;</span>].SetLogy(1)</div>
-<div class="line"><span class="lineno">  141</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,Nmax,1000):</div>
-<div class="line"><span class="lineno">  142</span>  fname = <span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(i)+<span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><span class="lineno">  143</span>  ut.readHists(h,path+fname)</div>
-<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">if</span> i==0:</div>
-<div class="line"><span class="lineno">  145</span>    h[1012].Draw()</div>
-<div class="line"><span class="lineno">  146</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
-<div class="line"><span class="lineno">  147</span>   <span class="keywordflow">if</span> h[x].GetName().find(<span class="stringliteral">&#39;proj&#39;</span>)&gt;0: rc = h.pop(x)</div>
-<div class="line"><span class="lineno">  148</span> ut.writeHists(h,<span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(Nmax)+<span class="stringliteral">&quot;-histos.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  149</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00137">137</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span><span class="keyword">def </span>addAllHistograms():</div>
+<div class="line"><span class="lineno">  138</span> h={}</div>
+<div class="line"><span class="lineno">  139</span> ecut = <span class="stringliteral">&#39;10.0&#39;</span></div>
+<div class="line"><span class="lineno">  140</span> Nmax=45000</div>
+<div class="line"><span class="lineno">  141</span> path = os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+<span class="stringliteral">&quot;/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span></div>
+<div class="line"><span class="lineno">  142</span> ut.bookCanvas(h,key=<span class="stringliteral">&#39;canvas&#39;</span>,title=<span class="stringliteral">&#39;debug&#39;</span>,nx=1600,ny=1200,cx=1,cy=1)</div>
+<div class="line"><span class="lineno">  143</span> h[<span class="stringliteral">&#39;canvas&#39;</span>].SetLogy(1)</div>
+<div class="line"><span class="lineno">  144</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,Nmax,1000):</div>
+<div class="line"><span class="lineno">  145</span>  fname = <span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(i)+<span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><span class="lineno">  146</span>  ut.readHists(h,path+fname)</div>
+<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">if</span> i==0:</div>
+<div class="line"><span class="lineno">  148</span>    h[1012].Draw()</div>
+<div class="line"><span class="lineno">  149</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
+<div class="line"><span class="lineno">  150</span>   <span class="keywordflow">if</span> h[x].GetName().find(<span class="stringliteral">&#39;proj&#39;</span>)&gt;0: rc = h.pop(x)</div>
+<div class="line"><span class="lineno">  151</span> ut.writeHists(h,<span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(Nmax)+<span class="stringliteral">&quot;-histos.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  152</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -204,25 +204,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00085">85</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span><span class="keyword">def </span>addRuns(goodRuns,Nstart=0):</div>
-<div class="line"><span class="lineno">   86</span> N=0</div>
-<div class="line"><span class="lineno">   87</span> while(1&gt;0):</div>
-<div class="line"><span class="lineno">   88</span>  cmd = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(N,min(N+1000,len(goodRuns))):</div>
-<div class="line"><span class="lineno">   90</span>    cmd += <span class="stringliteral">&quot; $EOSSHIP&quot;</span>+goodRuns[i]</div>
-<div class="line"><span class="lineno">   91</span>  tmpFile = <span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(N+Nstart)+<span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><span class="lineno">   92</span>  rc = os.system(<span class="stringliteral">&quot;hadd -j 10 -O &quot;</span>+tmpFile + <span class="stringliteral">&quot; &quot;</span> +cmd)</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">   94</span>    print(<span class="stringliteral">&quot;hadd failed, stop&quot;</span>,N)</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   96</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+tmpFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+tmpFile)</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">   98</span>    print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,N,N+Nstart)</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  100</span>    rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+tmpFile)</div>
-<div class="line"><span class="lineno">  101</span>  N+=1000</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> N &gt; len(goodRuns): <span class="keywordflow">break</span></div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00088">88</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span><span class="keyword">def </span>addRuns(goodRuns,Nstart=0):</div>
+<div class="line"><span class="lineno">   89</span> N=0</div>
+<div class="line"><span class="lineno">   90</span> while(1&gt;0):</div>
+<div class="line"><span class="lineno">   91</span>  cmd = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(N,min(N+1000,len(goodRuns))):</div>
+<div class="line"><span class="lineno">   93</span>    cmd += <span class="stringliteral">&quot; $EOSSHIP&quot;</span>+goodRuns[i]</div>
+<div class="line"><span class="lineno">   94</span>  tmpFile = <span class="stringliteral">&quot;pythia8_Geant4_&quot;</span>+ecut+<span class="stringliteral">&quot;_c&quot;</span>+str(N+Nstart)+<span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><span class="lineno">   95</span>  rc = os.system(<span class="stringliteral">&quot;hadd -j 10 -O &quot;</span>+tmpFile + <span class="stringliteral">&quot; &quot;</span> +cmd)</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">   97</span>    print(<span class="stringliteral">&quot;hadd failed, stop&quot;</span>,N)</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   99</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+tmpFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+tmpFile)</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  101</span>    print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,N,N+Nstart)</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  103</span>    rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+tmpFile)</div>
+<div class="line"><span class="lineno">  104</span>  N+=1000</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">if</span> N &gt; len(goodRuns): <span class="keywordflow">break</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,27 +241,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00369">369</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  369</span><span class="keyword">def </span>check4DoubleRuns():</div>
-<div class="line"><span class="lineno">  370</span> allRuns = [<span class="stringliteral">&#39;goodAndBadRuns_2018-01-01_2018-02-01.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-01_2018-02-06.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-06_2018-02-12.pkl&#39;</span>,\</div>
-<div class="line"><span class="lineno">  371</span>           <span class="stringliteral">&#39;goodAndBadRuns_2018-02-12_2018-02-15.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-15_2018-02-21.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-21_2018-02-26.pkl&#39;</span>]</div>
-<div class="line"><span class="lineno">  372</span> Nruns=0</div>
-<div class="line"><span class="lineno">  373</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allRuns:</div>
-<div class="line"><span class="lineno">  374</span>  fn = open(x)</div>
-<div class="line"><span class="lineno">  375</span>  dn = pickle.load(fn)</div>
-<div class="line"><span class="lineno">  376</span>  Nruns += len(dn[<span class="stringliteral">&#39;goodruns&#39;</span>])</div>
-<div class="line"><span class="lineno">  377</span> print(<span class="stringliteral">&quot;Total number of runs:&quot;</span>,Nruns)</div>
-<div class="line"><span class="lineno">  378</span> </div>
-<div class="line"><span class="lineno">  379</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range( len(allRuns)-1 ):</div>
-<div class="line"><span class="lineno">  380</span>  fn = open(allRuns[n])</div>
-<div class="line"><span class="lineno">  381</span>  dn = pickle.load(fn)</div>
-<div class="line"><span class="lineno">  382</span>  <span class="keywordflow">for</span> m <span class="keywordflow">in</span> range( n+1, len(allRuns)  ):</div>
-<div class="line"><span class="lineno">  383</span>   fm = open(allRuns[m])</div>
-<div class="line"><span class="lineno">  384</span>   dm = pickle.load(fm)</div>
-<div class="line"><span class="lineno">  385</span>   <span class="keywordflow">for</span> rn <span class="keywordflow">in</span> dn[<span class="stringliteral">&#39;goodruns&#39;</span>]:</div>
-<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">for</span> rm <span class="keywordflow">in</span> dm[<span class="stringliteral">&#39;goodruns&#39;</span>]:</div>
-<div class="line"><span class="lineno">  387</span>     <span class="keywordflow">if</span> rn == rm :</div>
-<div class="line"><span class="lineno">  388</span>       print(<span class="stringliteral">&quot;double entry found&quot;</span>,rn,allRuns[n],allRuns[m])</div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00372">372</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  372</span><span class="keyword">def </span>check4DoubleRuns():</div>
+<div class="line"><span class="lineno">  373</span> allRuns = [<span class="stringliteral">&#39;goodAndBadRuns_2018-01-01_2018-02-01.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-01_2018-02-06.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-06_2018-02-12.pkl&#39;</span>,\</div>
+<div class="line"><span class="lineno">  374</span>           <span class="stringliteral">&#39;goodAndBadRuns_2018-02-12_2018-02-15.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-15_2018-02-21.pkl&#39;</span>,<span class="stringliteral">&#39;goodAndBadRuns_2018-02-21_2018-02-26.pkl&#39;</span>]</div>
+<div class="line"><span class="lineno">  375</span> Nruns=0</div>
+<div class="line"><span class="lineno">  376</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allRuns:</div>
+<div class="line"><span class="lineno">  377</span>  fn = open(x)</div>
+<div class="line"><span class="lineno">  378</span>  dn = pickle.load(fn)</div>
+<div class="line"><span class="lineno">  379</span>  Nruns += len(dn[<span class="stringliteral">&#39;goodruns&#39;</span>])</div>
+<div class="line"><span class="lineno">  380</span> print(<span class="stringliteral">&quot;Total number of runs:&quot;</span>,Nruns)</div>
+<div class="line"><span class="lineno">  381</span> </div>
+<div class="line"><span class="lineno">  382</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range( len(allRuns)-1 ):</div>
+<div class="line"><span class="lineno">  383</span>  fn = open(allRuns[n])</div>
+<div class="line"><span class="lineno">  384</span>  dn = pickle.load(fn)</div>
+<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">for</span> m <span class="keywordflow">in</span> range( n+1, len(allRuns)  ):</div>
+<div class="line"><span class="lineno">  386</span>   fm = open(allRuns[m])</div>
+<div class="line"><span class="lineno">  387</span>   dm = pickle.load(fm)</div>
+<div class="line"><span class="lineno">  388</span>   <span class="keywordflow">for</span> rn <span class="keywordflow">in</span> dn[<span class="stringliteral">&#39;goodruns&#39;</span>]:</div>
+<div class="line"><span class="lineno">  389</span>    <span class="keywordflow">for</span> rm <span class="keywordflow">in</span> dm[<span class="stringliteral">&#39;goodruns&#39;</span>]:</div>
+<div class="line"><span class="lineno">  390</span>     <span class="keywordflow">if</span> rn == rm :</div>
+<div class="line"><span class="lineno">  391</span>       print(<span class="stringliteral">&quot;double entry found&quot;</span>,rn,allRuns[n],allRuns[m])</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -281,76 +281,76 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00183">183</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span><span class="keyword">def </span>compactify(charm):</div>
-<div class="line"><span class="lineno">  184</span> globalPath=<span class="stringliteral">&quot;/afs/cern.ch/project/lbcern/vol2/truf/muonBackground&quot;</span></div>
-<div class="line"><span class="lineno">  185</span> ecut = <span class="stringliteral">&#39;10.0&#39;</span></div>
-<div class="line"><span class="lineno">  186</span> <span class="keywordflow">if</span> charm:</div>
-<div class="line"><span class="lineno">  187</span>  allDirs =  os.listdir(globalPath+<span class="stringliteral">&quot;/charm&quot;</span>)</div>
-<div class="line"><span class="lineno">  188</span>  allFiles = []</div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">for</span> r <span class="keywordflow">in</span> range(int(runMin),int(runMax)+1):</div>
-<div class="line"><span class="lineno">  190</span><span class="comment"># collect the 20 subdirectories connected to a run</span></div>
-<div class="line"><span class="lineno">  191</span>   nr = <span class="stringliteral">&#39;9000&#39;</span>+str(r)</div>
-<div class="line"><span class="lineno">  192</span>   subruns = []</div>
-<div class="line"><span class="lineno">  193</span>   badFiles = []</div>
-<div class="line"><span class="lineno">  194</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allDirs:</div>
-<div class="line"><span class="lineno">  195</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(20):</div>
-<div class="line"><span class="lineno">  196</span>       sr = f<span class="stringliteral">&quot;{k:0&gt;2}&quot;</span></div>
-<div class="line"><span class="lineno">  197</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(nr+sr)&lt;0:</div>
-<div class="line"><span class="lineno">  198</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;log&#39;</span>)&lt;0: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  199</span>         fn = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span>+nr+sr+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><span class="lineno">  200</span>         aFile = globalPath+<span class="stringliteral">&quot;/charm/&quot;</span>+x+<span class="stringliteral">&#39;/&#39;</span>+fn</div>
-<div class="line"><span class="lineno">  201</span>         <span class="keywordflow">if</span> os.path.exists(aFile):</div>
-<div class="line"><span class="lineno">  202</span>          <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  203</span>           t = ROOT.TFile.Open(aFile)</div>
-<div class="line"><span class="lineno">  204</span>           <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
-<div class="line"><span class="lineno">  205</span>            badFiles.append(d)</div>
-<div class="line"><span class="lineno">  206</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  207</span>           <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00186">186</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  186</span><span class="keyword">def </span>compactify(charm):</div>
+<div class="line"><span class="lineno">  187</span> globalPath=<span class="stringliteral">&quot;/afs/cern.ch/project/lbcern/vol2/truf/muonBackground&quot;</span></div>
+<div class="line"><span class="lineno">  188</span> ecut = <span class="stringliteral">&#39;10.0&#39;</span></div>
+<div class="line"><span class="lineno">  189</span> <span class="keywordflow">if</span> charm:</div>
+<div class="line"><span class="lineno">  190</span>  allDirs =  os.listdir(globalPath+<span class="stringliteral">&quot;/charm&quot;</span>)</div>
+<div class="line"><span class="lineno">  191</span>  allFiles = []</div>
+<div class="line"><span class="lineno">  192</span>  <span class="keywordflow">for</span> r <span class="keywordflow">in</span> range(int(runMin),int(runMax)+1):</div>
+<div class="line"><span class="lineno">  193</span><span class="comment"># collect the 20 subdirectories connected to a run</span></div>
+<div class="line"><span class="lineno">  194</span>   nr = <span class="stringliteral">&#39;9000&#39;</span>+str(r)</div>
+<div class="line"><span class="lineno">  195</span>   subruns = []</div>
+<div class="line"><span class="lineno">  196</span>   badFiles = []</div>
+<div class="line"><span class="lineno">  197</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allDirs:</div>
+<div class="line"><span class="lineno">  198</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(20):</div>
+<div class="line"><span class="lineno">  199</span>       sr = f<span class="stringliteral">&quot;{k:0&gt;2}&quot;</span></div>
+<div class="line"><span class="lineno">  200</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(nr+sr)&lt;0:</div>
+<div class="line"><span class="lineno">  201</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;log&#39;</span>)&lt;0: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  202</span>         fn = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span>+nr+sr+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><span class="lineno">  203</span>         aFile = globalPath+<span class="stringliteral">&quot;/charm/&quot;</span>+x+<span class="stringliteral">&#39;/&#39;</span>+fn</div>
+<div class="line"><span class="lineno">  204</span>         <span class="keywordflow">if</span> os.path.exists(aFile):</div>
+<div class="line"><span class="lineno">  205</span>          <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  206</span>           t = ROOT.TFile.Open(aFile)</div>
+<div class="line"><span class="lineno">  207</span>           <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
 <div class="line"><span class="lineno">  208</span>            badFiles.append(d)</div>
 <div class="line"><span class="lineno">  209</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  210</span>           <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
-<div class="line"><span class="lineno">  211</span>            subruns.append(aFile)</div>
-<div class="line"><span class="lineno">  212</span>          <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  213</span>           badFiles.append(aFile)</div>
-<div class="line"><span class="lineno">  214</span>           <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  215</span>   ldir = <span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><span class="lineno">  216</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> subruns: ldir+= (x+<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><span class="lineno">  217</span>   outputr = <span class="stringliteral">&#39;pythia8_Geant4_charm_&#39;</span>+nr+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><span class="lineno">  218</span>   allFiles += (outputr+<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><span class="lineno">  219</span>   os.system(<span class="stringliteral">&#39;hadd &#39;</span> + outputr +<span class="stringliteral">&#39; &#39;</span>+ldir)</div>
-<div class="line"><span class="lineno">  220</span>  output = <span class="stringliteral">&#39;pythia8_Geant4_charm_&#39;</span>+str(runMin)+<span class="stringliteral">&#39;_&#39;</span>+str(runMax)+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><span class="lineno">  221</span>  os.system(<span class="stringliteral">&#39;hadd &#39;</span> + output +<span class="stringliteral">&#39; &#39;</span>+allFiles)</div>
-<div class="line"><span class="lineno">  222</span>  makeHistos(output)</div>
-<div class="line"><span class="lineno">  223</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  224</span>  output = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span>+str(runMin)+<span class="stringliteral">&#39;-&#39;</span>+str(runMax)+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkOnly:</div>
-<div class="line"><span class="lineno">  226</span>   ldir = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">  227</span>   badFiles = []</div>
-<div class="line"><span class="lineno">  228</span>   <span class="keywordflow">for</span> d <span class="keywordflow">in</span> os.listdir(globalPath):</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keywordflow">if</span> d.find( <span class="stringliteral">&#39;run_fixedTarget&#39;</span>) &lt; 0 : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  230</span>    srun = d.split(<span class="stringliteral">&#39;run_fixedTarget_&#39;</span>)[1]</div>
-<div class="line"><span class="lineno">  231</span>    run = int(srun)</div>
-<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> run &gt; runMax <span class="keywordflow">and</span> <span class="keywordflow">not</span> run &lt; runMin:</div>
-<div class="line"><span class="lineno">  233</span>     f =  globalPath+<span class="stringliteral">&#39;/&#39;</span>+d+<span class="stringliteral">&#39;/pythia8_Geant4_&#39;</span>+srun+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root &#39;</span></div>
-<div class="line"><span class="lineno">  234</span>     ftmp = f.replace(<span class="stringliteral">&#39;.root &#39;</span>,<span class="stringliteral">&#39;.roottmp&#39;</span>)</div>
-<div class="line"><span class="lineno">  235</span>     <span class="keywordflow">if</span> os.path.exists(ftmp):f=ftmp+<span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><span class="lineno">  236</span>     <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  237</span>       t = ROOT.TFile.Open(f)</div>
-<div class="line"><span class="lineno">  238</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
-<div class="line"><span class="lineno">  239</span>        badFiles.append(d)</div>
-<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  241</span>       <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
+<div class="line"><span class="lineno">  210</span>           <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
+<div class="line"><span class="lineno">  211</span>            badFiles.append(d)</div>
+<div class="line"><span class="lineno">  212</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  213</span>           <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
+<div class="line"><span class="lineno">  214</span>            subruns.append(aFile)</div>
+<div class="line"><span class="lineno">  215</span>          <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  216</span>           badFiles.append(aFile)</div>
+<div class="line"><span class="lineno">  217</span>           <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  218</span>   ldir = <span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><span class="lineno">  219</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> subruns: ldir+= (x+<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><span class="lineno">  220</span>   outputr = <span class="stringliteral">&#39;pythia8_Geant4_charm_&#39;</span>+nr+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><span class="lineno">  221</span>   allFiles += (outputr+<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><span class="lineno">  222</span>   os.system(<span class="stringliteral">&#39;hadd &#39;</span> + outputr +<span class="stringliteral">&#39; &#39;</span>+ldir)</div>
+<div class="line"><span class="lineno">  223</span>  output = <span class="stringliteral">&#39;pythia8_Geant4_charm_&#39;</span>+str(runMin)+<span class="stringliteral">&#39;_&#39;</span>+str(runMax)+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><span class="lineno">  224</span>  os.system(<span class="stringliteral">&#39;hadd &#39;</span> + output +<span class="stringliteral">&#39; &#39;</span>+allFiles)</div>
+<div class="line"><span class="lineno">  225</span>  makeHistos(output)</div>
+<div class="line"><span class="lineno">  226</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  227</span>  output = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span>+str(runMin)+<span class="stringliteral">&#39;-&#39;</span>+str(runMax)+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkOnly:</div>
+<div class="line"><span class="lineno">  229</span>   ldir = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  230</span>   badFiles = []</div>
+<div class="line"><span class="lineno">  231</span>   <span class="keywordflow">for</span> d <span class="keywordflow">in</span> os.listdir(globalPath):</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> d.find( <span class="stringliteral">&#39;run_fixedTarget&#39;</span>) &lt; 0 : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  233</span>    srun = d.split(<span class="stringliteral">&#39;run_fixedTarget_&#39;</span>)[1]</div>
+<div class="line"><span class="lineno">  234</span>    run = int(srun)</div>
+<div class="line"><span class="lineno">  235</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> run &gt; runMax <span class="keywordflow">and</span> <span class="keywordflow">not</span> run &lt; runMin:</div>
+<div class="line"><span class="lineno">  236</span>     f =  globalPath+<span class="stringliteral">&#39;/&#39;</span>+d+<span class="stringliteral">&#39;/pythia8_Geant4_&#39;</span>+srun+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root &#39;</span></div>
+<div class="line"><span class="lineno">  237</span>     ftmp = f.replace(<span class="stringliteral">&#39;.root &#39;</span>,<span class="stringliteral">&#39;.roottmp&#39;</span>)</div>
+<div class="line"><span class="lineno">  238</span>     <span class="keywordflow">if</span> os.path.exists(ftmp):f=ftmp+<span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><span class="lineno">  239</span>     <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  240</span>       t = ROOT.TFile.Open(f)</div>
+<div class="line"><span class="lineno">  241</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
 <div class="line"><span class="lineno">  242</span>        badFiles.append(d)</div>
 <div class="line"><span class="lineno">  243</span>        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  244</span>       <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
-<div class="line"><span class="lineno">  245</span>         ldir+=f</div>
-<div class="line"><span class="lineno">  246</span>     <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  247</span>       badFiles.append(d)</div>
-<div class="line"><span class="lineno">  248</span>       <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  249</span>   os.system(<span class="stringliteral">&#39;hadd &#39;</span>+output+<span class="stringliteral">&#39; &#39;</span>+ldir)</div>
-<div class="line"><span class="lineno">  250</span>   makeHistos(output)</div>
-<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  244</span>       <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
+<div class="line"><span class="lineno">  245</span>        badFiles.append(d)</div>
+<div class="line"><span class="lineno">  246</span>        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  247</span>       <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
+<div class="line"><span class="lineno">  248</span>         ldir+=f</div>
+<div class="line"><span class="lineno">  249</span>     <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  250</span>       badFiles.append(d)</div>
+<div class="line"><span class="lineno">  251</span>       <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  252</span>   os.system(<span class="stringliteral">&#39;hadd &#39;</span>+output+<span class="stringliteral">&#39; &#39;</span>+ldir)</div>
+<div class="line"><span class="lineno">  253</span>   makeHistos(output)</div>
+<div class="line"><span class="lineno">  254</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -370,40 +370,40 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00150">150</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span><span class="keyword">def </span>compactifyCascade(cycle):</div>
-<div class="line"><span class="lineno">  151</span> ncpus = 20</div>
-<div class="line"><span class="lineno">  152</span> path = <span class="stringliteral">&quot;/afs/cern.ch/project/lbcern/vol1/truf/charm/&quot;</span></div>
-<div class="line"><span class="lineno">  153</span> cmd = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">  154</span> Ntot = 0</div>
-<div class="line"><span class="lineno">  155</span> NperJob = 2000000</div>
-<div class="line"><span class="lineno">  156</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(cycle,cycle+ncpus):</div>
-<div class="line"><span class="lineno">  157</span>   fName = path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/Cascade-run&quot;</span>+str(i)+<span class="stringliteral">&quot;-parp16-MSTP82-1-MSEL4.root&quot;</span></div>
-<div class="line"><span class="lineno">  158</span>   f=open(path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/log&quot;</span>+str(i))</div>
-<div class="line"><span class="lineno">  159</span>   success = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  160</span>   <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished successfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  162</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> success:</div>
-<div class="line"><span class="lineno">  163</span>     print(<span class="stringliteral">&quot;job not finished properly&quot;</span>,fName)</div>
-<div class="line"><span class="lineno">  164</span>     <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  165</span>   cmd += fName +<span class="stringliteral">&quot; &quot;</span></div>
-<div class="line"><span class="lineno">  166</span>   f.close()</div>
-<div class="line"><span class="lineno">  167</span>   Ntot+= NperJob</div>
-<div class="line"><span class="lineno">  168</span> <span class="keywordflow">if</span> cmd.find(<span class="stringliteral">&#39;root&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  169</span>  print(<span class="stringliteral">&#39;no file found, exit&#39;</span>)</div>
-<div class="line"><span class="lineno">  170</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  171</span>  stat = str( int(Ntot/1E6))+<span class="stringliteral">&#39;Mpot&#39;</span></div>
-<div class="line"><span class="lineno">  172</span>  outFile = <span class="stringliteral">&quot;Cascade-run&quot;</span>+str(cycle)+<span class="stringliteral">&quot;-&quot;</span>+str(cycle+ncpus-1)+<span class="stringliteral">&quot;-parp16-MSTP82-1-MSEL4-&quot;</span>+stat+<span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><span class="lineno">  173</span>  rc = os.system(<span class="stringliteral">&quot;hadd -O &quot;</span>+outFile + <span class="stringliteral">&quot; &quot;</span> +cmd)</div>
-<div class="line"><span class="lineno">  174</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+outFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+outFile)</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">  176</span>    print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,outFile)</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  178</span>    rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+outFile)</div>
-<div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span><span class="comment"># some old stuff</span></div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00153">153</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span><span class="keyword">def </span>compactifyCascade(cycle):</div>
+<div class="line"><span class="lineno">  154</span> ncpus = 20</div>
+<div class="line"><span class="lineno">  155</span> path = <span class="stringliteral">&quot;/afs/cern.ch/project/lbcern/vol1/truf/charm/&quot;</span></div>
+<div class="line"><span class="lineno">  156</span> cmd = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  157</span> Ntot = 0</div>
+<div class="line"><span class="lineno">  158</span> NperJob = 2000000</div>
+<div class="line"><span class="lineno">  159</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(cycle,cycle+ncpus):</div>
+<div class="line"><span class="lineno">  160</span>   fName = path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/Cascade-run&quot;</span>+str(i)+<span class="stringliteral">&quot;-parp16-MSTP82-1-MSEL4.root&quot;</span></div>
+<div class="line"><span class="lineno">  161</span>   f=open(path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/log&quot;</span>+str(i))</div>
+<div class="line"><span class="lineno">  162</span>   success = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  163</span>   <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished successfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  165</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> success:</div>
+<div class="line"><span class="lineno">  166</span>     print(<span class="stringliteral">&quot;job not finished properly&quot;</span>,fName)</div>
+<div class="line"><span class="lineno">  167</span>     <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  168</span>   cmd += fName +<span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"><span class="lineno">  169</span>   f.close()</div>
+<div class="line"><span class="lineno">  170</span>   Ntot+= NperJob</div>
+<div class="line"><span class="lineno">  171</span> <span class="keywordflow">if</span> cmd.find(<span class="stringliteral">&#39;root&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  172</span>  print(<span class="stringliteral">&#39;no file found, exit&#39;</span>)</div>
+<div class="line"><span class="lineno">  173</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  174</span>  stat = str( int(Ntot/1E6))+<span class="stringliteral">&#39;Mpot&#39;</span></div>
+<div class="line"><span class="lineno">  175</span>  outFile = <span class="stringliteral">&quot;Cascade-run&quot;</span>+str(cycle)+<span class="stringliteral">&quot;-&quot;</span>+str(cycle+ncpus-1)+<span class="stringliteral">&quot;-parp16-MSTP82-1-MSEL4-&quot;</span>+stat+<span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><span class="lineno">  176</span>  rc = os.system(<span class="stringliteral">&quot;hadd -O &quot;</span>+outFile + <span class="stringliteral">&quot; &quot;</span> +cmd)</div>
+<div class="line"><span class="lineno">  177</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+outFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+outFile)</div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  179</span>    print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,outFile)</div>
+<div class="line"><span class="lineno">  180</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  181</span>    rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+outFile)</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span><span class="comment"># some old stuff</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -433,67 +433,67 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00025">25</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span><span class="keyword">def </span>GetGoodAndBadRuns(startDate,endDate):</div>
-<div class="line"><span class="lineno">   26</span><span class="comment"># find bad runs, try to recover</span></div>
-<div class="line"><span class="lineno">   27</span> goodRuns=[]</div>
-<div class="line"><span class="lineno">   28</span> badRuns=[]</div>
-<div class="line"><span class="lineno">   29</span> fileName = <span class="stringliteral">&quot;pythia8_Geant4_1_&quot;</span>+ecut+<span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><span class="lineno">   30</span> os.system(<span class="stringliteral">&quot;ls -l --full-time &quot;</span>+globalPath+<span class="stringliteral">&quot; &gt;inventory.lst&quot;</span>)</div>
-<div class="line"><span class="lineno">   31</span> f=open(<span class="stringliteral">&quot;inventory.lst&quot;</span>)</div>
-<div class="line"><span class="lineno">   32</span> runs = f.readlines()</div>
-<div class="line"><span class="lineno">   33</span> f.close()</div>
-<div class="line"><span class="lineno">   34</span> N=0</div>
-<div class="line"><span class="lineno">   35</span> <span class="keywordflow">for</span> r <span class="keywordflow">in</span> runs:</div>
-<div class="line"><span class="lineno">   36</span>   tmp = r.split(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">   37</span>   <span class="keywordflow">if</span> len(tmp) != 9:</div>
-<div class="line"><span class="lineno">   38</span>      print(<span class="stringliteral">&quot;wrong format&quot;</span>,tmp)</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   40</span>   date = tmp[5].split(<span class="stringliteral">&#39;-&#39;</span>)</div>
-<div class="line"><span class="lineno">   41</span>   time = tmp[6].split(<span class="stringliteral">&#39;:&#39;</span>)</div>
-<div class="line"><span class="lineno">   42</span>   fileDate = datetime.datetime(int(date[0]),int(date[1]),int(date[2]),int(time[0]),int(time[1]),int(time[2].split(<span class="stringliteral">&#39;.&#39;</span>)[0]))</div>
-<div class="line"><span class="lineno">   43</span>   <span class="keywordflow">if</span> fileDate &lt; startDate <span class="keywordflow">or</span> fileDate&gt;endDate: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   44</span>   theRun = int(tmp[8].replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
-<div class="line"><span class="lineno">   45</span>   test = os.listdir(globalPath+str(theRun))</div>
-<div class="line"><span class="lineno">   46</span>   <span class="keywordflow">if</span> len(test)&lt;2:<span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   47</span>   N+=1</div>
-<div class="line"><span class="lineno">   48</span>   rc = os.system(<span class="stringliteral">&#39;grep -q &quot;Number of events produced with activity after hadron absorber&quot; &#39;</span>+globalPath+str(theRun)+<span class="stringliteral">&quot;/stdout&quot;</span>)</div>
-<div class="line"><span class="lineno">   49</span>   <span class="keywordflow">if</span> rc!=0:</div>
-<div class="line"><span class="lineno">   50</span>    badRuns.append(theRun)</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   52</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> test:</div>
-<div class="line"><span class="lineno">   53</span>     <span class="keywordflow">if</span> x.find(<span class="stringliteral">&#39;run_fixedTarget&#39;</span>)&gt;0:</div>
-<div class="line"><span class="lineno">   54</span>      test2 = os.listdir(globalPath+str(theRun)+<span class="stringliteral">&#39;/&#39;</span>+x)</div>
-<div class="line"><span class="lineno">   55</span>      bad  = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   56</span>      tmpF = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   57</span>      f = globalPath+str(theRun)+<span class="stringliteral">&quot;/&quot;</span>+x+<span class="stringliteral">&quot;/&quot;</span>+fileName</div>
-<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">if</span> fnames+<span class="stringliteral">&quot;tmp&quot;</span> <span class="keywordflow">in</span> test2:</div>
-<div class="line"><span class="lineno">   59</span>        tmpF = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   60</span>        f = f+<span class="stringliteral">&quot;tmp&quot;</span></div>
-<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">elif</span> fnames <span class="keywordflow">in</span> test2:</div>
-<div class="line"><span class="lineno">   62</span>        f = f</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   64</span>        badRuns.append(theRun)</div>
-<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   67</span>         t = ROOT.TFile.Open(os.environ[<span class="stringliteral">&quot;EOSSHIP&quot;</span>]+f)</div>
-<div class="line"><span class="lineno">   68</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
-<div class="line"><span class="lineno">   69</span>           badRuns.append(theRun)</div>
-<div class="line"><span class="lineno">   70</span>           <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   71</span>         <span class="keywordflow">if</span> N%1000 == 0: print(N,t.GetName())</div>
-<div class="line"><span class="lineno">   72</span>         <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
-<div class="line"><span class="lineno">   73</span>           t.Close()</div>
-<div class="line"><span class="lineno">   74</span>           badRuns.append(theRun)</div>
-<div class="line"><span class="lineno">   75</span>           <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   76</span>         <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
-<div class="line"><span class="lineno">   77</span>            bad = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   78</span>            goodRuns.append(f)</div>
-<div class="line"><span class="lineno">   79</span>            t.Close()</div>
-<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">   81</span>         badRuns.append(theRun)</div>
-<div class="line"><span class="lineno">   82</span>         <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   83</span> <span class="keywordflow">return</span> goodRuns,badRuns</div>
-<div class="line"><span class="lineno">   84</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00028">28</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>GetGoodAndBadRuns(startDate,endDate):</div>
+<div class="line"><span class="lineno">   29</span><span class="comment"># find bad runs, try to recover</span></div>
+<div class="line"><span class="lineno">   30</span> goodRuns=[]</div>
+<div class="line"><span class="lineno">   31</span> badRuns=[]</div>
+<div class="line"><span class="lineno">   32</span> fileName = <span class="stringliteral">&quot;pythia8_Geant4_1_&quot;</span>+ecut+<span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><span class="lineno">   33</span> os.system(<span class="stringliteral">&quot;ls -l --full-time &quot;</span>+globalPath+<span class="stringliteral">&quot; &gt;inventory.lst&quot;</span>)</div>
+<div class="line"><span class="lineno">   34</span> f=open(<span class="stringliteral">&quot;inventory.lst&quot;</span>)</div>
+<div class="line"><span class="lineno">   35</span> runs = f.readlines()</div>
+<div class="line"><span class="lineno">   36</span> f.close()</div>
+<div class="line"><span class="lineno">   37</span> N=0</div>
+<div class="line"><span class="lineno">   38</span> <span class="keywordflow">for</span> r <span class="keywordflow">in</span> runs:</div>
+<div class="line"><span class="lineno">   39</span>   tmp = r.split(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><span class="lineno">   40</span>   <span class="keywordflow">if</span> len(tmp) != 9:</div>
+<div class="line"><span class="lineno">   41</span>      print(<span class="stringliteral">&quot;wrong format&quot;</span>,tmp)</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   43</span>   date = tmp[5].split(<span class="stringliteral">&#39;-&#39;</span>)</div>
+<div class="line"><span class="lineno">   44</span>   time = tmp[6].split(<span class="stringliteral">&#39;:&#39;</span>)</div>
+<div class="line"><span class="lineno">   45</span>   fileDate = datetime.datetime(int(date[0]),int(date[1]),int(date[2]),int(time[0]),int(time[1]),int(time[2].split(<span class="stringliteral">&#39;.&#39;</span>)[0]))</div>
+<div class="line"><span class="lineno">   46</span>   <span class="keywordflow">if</span> fileDate &lt; startDate <span class="keywordflow">or</span> fileDate&gt;endDate: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   47</span>   theRun = int(tmp[8].replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
+<div class="line"><span class="lineno">   48</span>   test = os.listdir(globalPath+str(theRun))</div>
+<div class="line"><span class="lineno">   49</span>   <span class="keywordflow">if</span> len(test)&lt;2:<span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   50</span>   N+=1</div>
+<div class="line"><span class="lineno">   51</span>   rc = os.system(<span class="stringliteral">&#39;grep -q &quot;Number of events produced with activity after hadron absorber&quot; &#39;</span>+globalPath+str(theRun)+<span class="stringliteral">&quot;/stdout&quot;</span>)</div>
+<div class="line"><span class="lineno">   52</span>   <span class="keywordflow">if</span> rc!=0:</div>
+<div class="line"><span class="lineno">   53</span>    badRuns.append(theRun)</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   55</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> test:</div>
+<div class="line"><span class="lineno">   56</span>     <span class="keywordflow">if</span> x.find(<span class="stringliteral">&#39;run_fixedTarget&#39;</span>)&gt;0:</div>
+<div class="line"><span class="lineno">   57</span>      test2 = os.listdir(globalPath+str(theRun)+<span class="stringliteral">&#39;/&#39;</span>+x)</div>
+<div class="line"><span class="lineno">   58</span>      bad  = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   59</span>      tmpF = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   60</span>      f = globalPath+str(theRun)+<span class="stringliteral">&quot;/&quot;</span>+x+<span class="stringliteral">&quot;/&quot;</span>+fileName</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">if</span> fnames+<span class="stringliteral">&quot;tmp&quot;</span> <span class="keywordflow">in</span> test2:</div>
+<div class="line"><span class="lineno">   62</span>        tmpF = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   63</span>        f = f+<span class="stringliteral">&quot;tmp&quot;</span></div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">elif</span> fnames <span class="keywordflow">in</span> test2:</div>
+<div class="line"><span class="lineno">   65</span>        f = f</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   67</span>        badRuns.append(theRun)</div>
+<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   70</span>         t = ROOT.TFile.Open(os.environ[<span class="stringliteral">&quot;EOSSHIP&quot;</span>]+f)</div>
+<div class="line"><span class="lineno">   71</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> t:</div>
+<div class="line"><span class="lineno">   72</span>           badRuns.append(theRun)</div>
+<div class="line"><span class="lineno">   73</span>           <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   74</span>         <span class="keywordflow">if</span> N%1000 == 0: print(N,t.GetName())</div>
+<div class="line"><span class="lineno">   75</span>         <span class="keywordflow">if</span> t.ReadKeys()==0:</div>
+<div class="line"><span class="lineno">   76</span>           t.Close()</div>
+<div class="line"><span class="lineno">   77</span>           badRuns.append(theRun)</div>
+<div class="line"><span class="lineno">   78</span>           <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   79</span>         <span class="keywordflow">if</span> t.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
+<div class="line"><span class="lineno">   80</span>            bad = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   81</span>            goodRuns.append(f)</div>
+<div class="line"><span class="lineno">   82</span>            t.Close()</div>
+<div class="line"><span class="lineno">   83</span>      <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">   84</span>         badRuns.append(theRun)</div>
+<div class="line"><span class="lineno">   85</span>         <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   86</span> <span class="keywordflow">return</span> goodRuns,badRuns</div>
+<div class="line"><span class="lineno">   87</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -513,48 +513,48 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00252">252</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>makeHistos(rfile):</div>
-<div class="line"><span class="lineno">  253</span> f=ROOT.TFile.Open(rfile)</div>
-<div class="line"><span class="lineno">  254</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  255</span> nTot = 0</div>
-<div class="line"><span class="lineno">  256</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> f.GetListOfKeys():</div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> k.GetName() == <span class="stringliteral">&#39;FileHeader&#39;</span>:</div>
-<div class="line"><span class="lineno">  258</span>   tmp =  k.GetTitle().split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
-<div class="line"><span class="lineno">  259</span>   tmp2 = tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0]</div>
-<div class="line"><span class="lineno">  260</span>   <span class="keywordflow">if</span> tmp2.find(<span class="stringliteral">&#39;E&#39;</span>)&lt;0: nTot += int(tmp2)</div>
-<div class="line"><span class="lineno">  261</span>   <span class="keywordflow">else</span>: nTot += float(tmp2)</div>
-<div class="line"><span class="lineno">  262</span> print(<span class="stringliteral">&quot;POT = &quot;</span>,nTot,<span class="stringliteral">&quot; number of events:&quot;</span>,sTree.GetEntries())</div>
-<div class="line"><span class="lineno">  263</span><span class="comment"># particle statistics</span></div>
-<div class="line"><span class="lineno">  264</span> h={}</div>
-<div class="line"><span class="lineno">  265</span> ut.bookHist(h,<span class="stringliteral">&#39;pids&#39;</span>,<span class="stringliteral">&#39;pid&#39;</span>,19999,-9999.5,9999.5)</div>
-<div class="line"><span class="lineno">  266</span> ut.bookHist(h,<span class="stringliteral">&#39;test&#39;</span>,<span class="stringliteral">&#39;muon p/pt&#39;</span>,100,0.,400.,100,0.,5.)</div>
-<div class="line"><span class="lineno">  267</span> diMuonDecays = [221, 223, 113, 331, 333]</div>
-<div class="line"><span class="lineno">  268</span> pDict = {}</div>
-<div class="line"><span class="lineno">  269</span> procDict = {}</div>
-<div class="line"><span class="lineno">  270</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><span class="lineno">  271</span>  rc = sTree.GetEvent(n)</div>
-<div class="line"><span class="lineno">  272</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><span class="lineno">  273</span>   t = sTree.MCTrack[p.GetTrackID()]</div>
-<div class="line"><span class="lineno">  274</span>   pid = t.GetPdgCode()</div>
-<div class="line"><span class="lineno">  275</span>   rc = h[<span class="stringliteral">&#39;pids&#39;</span>].Fill(pid)</div>
-<div class="line"><span class="lineno">  276</span>   <span class="keywordflow">if</span> abs(pid)==13:</div>
-<div class="line"><span class="lineno">  277</span>     procID = t.GetProcName().Data()</div>
-<div class="line"><span class="lineno">  278</span>     mother = t.GetMotherId()</div>
-<div class="line"><span class="lineno">  279</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> mother &lt; 0:</div>
-<div class="line"><span class="lineno">  280</span>         moPid = sTree.MCTrack[mother].GetPdgCode()</div>
-<div class="line"><span class="lineno">  281</span>         name = pdg.GetParticle(moPid).GetName()</div>
-<div class="line"><span class="lineno">  282</span>         name = procID+<span class="stringliteral">&#39; &#39;</span>+name</div>
-<div class="line"><span class="lineno">  283</span>         <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:  h[name]=h[<span class="stringliteral">&#39;test&#39;</span>].Clone(name)</div>
-<div class="line"><span class="lineno">  284</span>         rc=h[name].Fill(t.GetP(),t.GetPt())</div>
-<div class="line"><span class="lineno">  285</span>     <span class="keywordflow">if</span> procID <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:  h[procID]=h[<span class="stringliteral">&#39;test&#39;</span>].Clone(procID)</div>
-<div class="line"><span class="lineno">  286</span>     rc=h[procID].Fill(t.GetP(),t.GetPt())</div>
-<div class="line"><span class="lineno">  287</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  288</span>  h[x].Scale(1./nTot)</div>
-<div class="line"><span class="lineno">  289</span> tmp = rfile.split(<span class="stringliteral">&#39;/&#39;</span>)</div>
-<div class="line"><span class="lineno">  290</span> hname = tmp[len(tmp)-1].replace(<span class="stringliteral">&#39;pythia8_Geant4&#39;</span>,<span class="stringliteral">&#39;Histos&#39;</span>)</div>
-<div class="line"><span class="lineno">  291</span> ut.writeHists(h,hname)</div>
-<div class="line"><span class="lineno">  292</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00255">255</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  255</span><span class="keyword">def </span>makeHistos(rfile):</div>
+<div class="line"><span class="lineno">  256</span> f=ROOT.TFile.Open(rfile)</div>
+<div class="line"><span class="lineno">  257</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  258</span> nTot = 0</div>
+<div class="line"><span class="lineno">  259</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> f.GetListOfKeys():</div>
+<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">if</span> k.GetName() == <span class="stringliteral">&#39;FileHeader&#39;</span>:</div>
+<div class="line"><span class="lineno">  261</span>   tmp =  k.GetTitle().split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
+<div class="line"><span class="lineno">  262</span>   tmp2 = tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0]</div>
+<div class="line"><span class="lineno">  263</span>   <span class="keywordflow">if</span> tmp2.find(<span class="stringliteral">&#39;E&#39;</span>)&lt;0: nTot += int(tmp2)</div>
+<div class="line"><span class="lineno">  264</span>   <span class="keywordflow">else</span>: nTot += float(tmp2)</div>
+<div class="line"><span class="lineno">  265</span> print(<span class="stringliteral">&quot;POT = &quot;</span>,nTot,<span class="stringliteral">&quot; number of events:&quot;</span>,sTree.GetEntries())</div>
+<div class="line"><span class="lineno">  266</span><span class="comment"># particle statistics</span></div>
+<div class="line"><span class="lineno">  267</span> h={}</div>
+<div class="line"><span class="lineno">  268</span> ut.bookHist(h,<span class="stringliteral">&#39;pids&#39;</span>,<span class="stringliteral">&#39;pid&#39;</span>,19999,-9999.5,9999.5)</div>
+<div class="line"><span class="lineno">  269</span> ut.bookHist(h,<span class="stringliteral">&#39;test&#39;</span>,<span class="stringliteral">&#39;muon p/pt&#39;</span>,100,0.,400.,100,0.,5.)</div>
+<div class="line"><span class="lineno">  270</span> diMuonDecays = [221, 223, 113, 331, 333]</div>
+<div class="line"><span class="lineno">  271</span> pDict = {}</div>
+<div class="line"><span class="lineno">  272</span> procDict = {}</div>
+<div class="line"><span class="lineno">  273</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><span class="lineno">  274</span>  rc = sTree.GetEvent(n)</div>
+<div class="line"><span class="lineno">  275</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><span class="lineno">  276</span>   t = sTree.MCTrack[p.GetTrackID()]</div>
+<div class="line"><span class="lineno">  277</span>   pid = t.GetPdgCode()</div>
+<div class="line"><span class="lineno">  278</span>   rc = h[<span class="stringliteral">&#39;pids&#39;</span>].Fill(pid)</div>
+<div class="line"><span class="lineno">  279</span>   <span class="keywordflow">if</span> abs(pid)==13:</div>
+<div class="line"><span class="lineno">  280</span>     procID = t.GetProcName().Data()</div>
+<div class="line"><span class="lineno">  281</span>     mother = t.GetMotherId()</div>
+<div class="line"><span class="lineno">  282</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> mother &lt; 0:</div>
+<div class="line"><span class="lineno">  283</span>         moPid = sTree.MCTrack[mother].GetPdgCode()</div>
+<div class="line"><span class="lineno">  284</span>         name = pdg.GetParticle(moPid).GetName()</div>
+<div class="line"><span class="lineno">  285</span>         name = procID+<span class="stringliteral">&#39; &#39;</span>+name</div>
+<div class="line"><span class="lineno">  286</span>         <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:  h[name]=h[<span class="stringliteral">&#39;test&#39;</span>].Clone(name)</div>
+<div class="line"><span class="lineno">  287</span>         rc=h[name].Fill(t.GetP(),t.GetPt())</div>
+<div class="line"><span class="lineno">  288</span>     <span class="keywordflow">if</span> procID <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:  h[procID]=h[<span class="stringliteral">&#39;test&#39;</span>].Clone(procID)</div>
+<div class="line"><span class="lineno">  289</span>     rc=h[procID].Fill(t.GetP(),t.GetPt())</div>
+<div class="line"><span class="lineno">  290</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  291</span>  h[x].Scale(1./nTot)</div>
+<div class="line"><span class="lineno">  292</span> tmp = rfile.split(<span class="stringliteral">&#39;/&#39;</span>)</div>
+<div class="line"><span class="lineno">  293</span> hname = tmp[len(tmp)-1].replace(<span class="stringliteral">&#39;pythia8_Geant4&#39;</span>,<span class="stringliteral">&#39;Histos&#39;</span>)</div>
+<div class="line"><span class="lineno">  294</span> ut.writeHists(h,hname)</div>
+<div class="line"><span class="lineno">  295</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -573,39 +573,39 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00296">296</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  296</span><span class="keyword">def </span>makePrintout():</div>
-<div class="line"><span class="lineno">  297</span> <span class="comment"># Histos_2000000-2001500_10.0.root</span></div>
-<div class="line"><span class="lineno">  298</span> ut.readHists(hunbiased,<span class="stringliteral">&#39;/media/microdisk/HNL/muonBackground/Histos_1000000-1000600_10.0.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  299</span> ut.readHists(hbiased,<span class="stringliteral">&#39;hadded_Histos_1_10.0.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span> unbiased = {}</div>
-<div class="line"><span class="lineno">  302</span> biased = {}</div>
-<div class="line"><span class="lineno">  303</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> hunbiased:</div>
-<div class="line"><span class="lineno">  304</span>  unbiased[l]=hunbiased[l].GetSumOfWeights()</div>
-<div class="line"><span class="lineno">  305</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> hbiased:</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">if</span> l.find(<span class="stringliteral">&#39;proj&#39;</span>) &lt; 0 <span class="keywordflow">and</span> l.find(<span class="stringliteral">&#39;test&#39;</span>) &lt; 0 <span class="keywordflow">and</span> l.find(<span class="stringliteral">&#39;pids&#39;</span>) &lt; 0 : biased[l]=hbiased[l].GetSumOfWeights()</div>
-<div class="line"><span class="lineno">  307</span> p={}</div>
-<div class="line"><span class="lineno">  308</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range( 1,hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetNbinsX() + 1 ):</div>
-<div class="line"><span class="lineno">  309</span>   c = hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetBinContent(i)</div>
-<div class="line"><span class="lineno">  310</span>   <span class="keywordflow">if</span> c&gt;0: p[int(hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetBinCenter(i))]=c</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span> sorted_p = sorted(p.items(), key=operator.itemgetter(1))</div>
-<div class="line"><span class="lineno">  313</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_p:</div>
-<div class="line"><span class="lineno">  314</span>  print(<span class="stringliteral">&quot;%25s : %5.2G&quot;</span>%(pdg.GetParticle(p[0]).GetName(),float(p[1])))</div>
-<div class="line"><span class="lineno">  315</span> sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))</div>
-<div class="line"><span class="lineno">  316</span> print(<span class="stringliteral">&quot;origin of muons&quot;</span>)</div>
-<div class="line"><span class="lineno">  317</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_pr:</div>
-<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> p[0].find(<span class="stringliteral">&#39;Hadronic inelastic&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  319</span>     <span class="keywordflow">if</span> len(p[0])&gt;len( <span class="stringliteral">&#39;Hadronic inelastic&#39;</span> ): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  320</span>  denom = 0</div>
-<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">if</span> p[0] <span class="keywordflow">in</span> unbiased: denom = unbiased[p[0]]</div>
-<div class="line"><span class="lineno">  322</span>  <span class="keywordflow">if</span> denom &gt;0:</div>
-<div class="line"><span class="lineno">  323</span>   fac = float(p[1])/denom</div>
-<div class="line"><span class="lineno">  324</span>   print(<span class="stringliteral">&quot;%40s : %5.2G %5.1F&quot;</span>%(p[0],float(p[1]),fac))</div>
-<div class="line"><span class="lineno">  325</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  326</span>   print(<span class="stringliteral">&quot;%40s : %5.2G &quot;</span>%(p[0],float(p[1])))</div>
-<div class="line"><span class="lineno">  327</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00299">299</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span><span class="keyword">def </span>makePrintout():</div>
+<div class="line"><span class="lineno">  300</span> <span class="comment"># Histos_2000000-2001500_10.0.root</span></div>
+<div class="line"><span class="lineno">  301</span> ut.readHists(hunbiased,<span class="stringliteral">&#39;/media/microdisk/HNL/muonBackground/Histos_1000000-1000600_10.0.root&#39;</span>)</div>
+<div class="line"><span class="lineno">  302</span> ut.readHists(hbiased,<span class="stringliteral">&#39;hadded_Histos_1_10.0.root&#39;</span>)</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span> unbiased = {}</div>
+<div class="line"><span class="lineno">  305</span> biased = {}</div>
+<div class="line"><span class="lineno">  306</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> hunbiased:</div>
+<div class="line"><span class="lineno">  307</span>  unbiased[l]=hunbiased[l].GetSumOfWeights()</div>
+<div class="line"><span class="lineno">  308</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> hbiased:</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">if</span> l.find(<span class="stringliteral">&#39;proj&#39;</span>) &lt; 0 <span class="keywordflow">and</span> l.find(<span class="stringliteral">&#39;test&#39;</span>) &lt; 0 <span class="keywordflow">and</span> l.find(<span class="stringliteral">&#39;pids&#39;</span>) &lt; 0 : biased[l]=hbiased[l].GetSumOfWeights()</div>
+<div class="line"><span class="lineno">  310</span> p={}</div>
+<div class="line"><span class="lineno">  311</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range( 1,hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetNbinsX() + 1 ):</div>
+<div class="line"><span class="lineno">  312</span>   c = hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetBinContent(i)</div>
+<div class="line"><span class="lineno">  313</span>   <span class="keywordflow">if</span> c&gt;0: p[int(hbiased[<span class="stringliteral">&#39;pids&#39;</span>].GetBinCenter(i))]=c</div>
+<div class="line"><span class="lineno">  314</span> </div>
+<div class="line"><span class="lineno">  315</span> sorted_p = sorted(p.items(), key=operator.itemgetter(1))</div>
+<div class="line"><span class="lineno">  316</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_p:</div>
+<div class="line"><span class="lineno">  317</span>  print(<span class="stringliteral">&quot;%25s : %5.2G&quot;</span>%(pdg.GetParticle(p[0]).GetName(),float(p[1])))</div>
+<div class="line"><span class="lineno">  318</span> sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))</div>
+<div class="line"><span class="lineno">  319</span> print(<span class="stringliteral">&quot;origin of muons&quot;</span>)</div>
+<div class="line"><span class="lineno">  320</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_pr:</div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> p[0].find(<span class="stringliteral">&#39;Hadronic inelastic&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  322</span>     <span class="keywordflow">if</span> len(p[0])&gt;len( <span class="stringliteral">&#39;Hadronic inelastic&#39;</span> ): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  323</span>  denom = 0</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">if</span> p[0] <span class="keywordflow">in</span> unbiased: denom = unbiased[p[0]]</div>
+<div class="line"><span class="lineno">  325</span>  <span class="keywordflow">if</span> denom &gt;0:</div>
+<div class="line"><span class="lineno">  326</span>   fac = float(p[1])/denom</div>
+<div class="line"><span class="lineno">  327</span>   print(<span class="stringliteral">&quot;%40s : %5.2G %5.1F&quot;</span>%(p[0],float(p[1]),fac))</div>
+<div class="line"><span class="lineno">  328</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  329</span>   print(<span class="stringliteral">&quot;%40s : %5.2G &quot;</span>%(p[0],float(p[1])))</div>
+<div class="line"><span class="lineno">  330</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -624,15 +624,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00361">361</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  361</span><span class="keyword">def </span>removeStupidFiles():</div>
-<div class="line"><span class="lineno">  362</span> path = <span class="stringliteral">&#39;/eos/experiment/ship/data/Mbias/background-prod-2018&#39;</span></div>
-<div class="line"><span class="lineno">  363</span> <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(path):</div>
-<div class="line"><span class="lineno">  364</span>   ff = path+<span class="stringliteral">&#39;/&#39;</span>+f</div>
-<div class="line"><span class="lineno">  365</span>   x = os.path.getsize(ff)</div>
-<div class="line"><span class="lineno">  366</span>   <span class="keywordflow">if</span> x &lt; 500 : os.remove(ff)</div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00364">364</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  364</span><span class="keyword">def </span>removeStupidFiles():</div>
+<div class="line"><span class="lineno">  365</span> path = <span class="stringliteral">&#39;/eos/experiment/ship/data/Mbias/background-prod-2018&#39;</span></div>
+<div class="line"><span class="lineno">  366</span> <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(path):</div>
+<div class="line"><span class="lineno">  367</span>   ff = path+<span class="stringliteral">&#39;/&#39;</span>+f</div>
+<div class="line"><span class="lineno">  368</span>   x = os.path.getsize(ff)</div>
+<div class="line"><span class="lineno">  369</span>   <span class="keywordflow">if</span> x &lt; 500 : os.remove(ff)</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -651,38 +651,38 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00103">103</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>YandexProd():</div>
-<div class="line"><span class="lineno">  104</span> <span class="comment">#startDate = datetime.datetime(2018, 1, 1, 0, 0)  # N=0</span></div>
-<div class="line"><span class="lineno">  105</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
-<div class="line"><span class="lineno">  106</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 1, 0, 0)  # N=23000</span></div>
-<div class="line"><span class="lineno">  107</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 6, 0, 0)</span></div>
-<div class="line"><span class="lineno">  108</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 6,  0, 0) # N=33000</span></div>
-<div class="line"><span class="lineno">  109</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 12, 0, 0)</span></div>
-<div class="line"><span class="lineno">  110</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 12,  0, 0) # N=45000</span></div>
-<div class="line"><span class="lineno">  111</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 15, 0, 0)</span></div>
-<div class="line"><span class="lineno">  112</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 15,  0, 0) # N=51000</span></div>
-<div class="line"><span class="lineno">  113</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 21, 0, 0)</span></div>
-<div class="line"><span class="lineno">  114</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 21,  0, 0) # N=63000</span></div>
-<div class="line"><span class="lineno">  115</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 2, 0, 0)</span></div>
-<div class="line"><span class="lineno">  116</span> <span class="comment">#startDate = datetime.datetime(2018, 1, 1,  0, 0) #  start with 1 GeV production</span></div>
-<div class="line"><span class="lineno">  117</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 27, 0, 0) # N=0</span></div>
-<div class="line"><span class="lineno">  118</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 27,  0, 0) #</span></div>
-<div class="line"><span class="lineno">  119</span> <span class="comment">#endDate   = datetime.datetime(2018, 3, 6, 0, 0) # N=3000</span></div>
-<div class="line"><span class="lineno">  120</span> <span class="comment">#startDate = datetime.datetime(2018, 3, 6,  0, 0) #</span></div>
-<div class="line"><span class="lineno">  121</span> <span class="comment">#endDate   = datetime.datetime(2018, 3, 12, 0, 0) # N=9000</span></div>
-<div class="line"><span class="lineno">  122</span> goodRuns,badRuns = GetGoodAndBadRuns(startDate,endDate)</div>
-<div class="line"><span class="lineno">  123</span> pName = <span class="stringliteral">&#39;goodAndBadRuns&#39;</span>+prod+<span class="stringliteral">&#39;_&#39;</span>+startDate.__str__().split(<span class="stringliteral">&#39; &#39;</span>)[0]+<span class="stringliteral">&#39;_&#39;</span>+endDate.__str__().split(<span class="stringliteral">&#39; &#39;</span>)[0]+<span class="stringliteral">&#39;.pkl&#39;</span></div>
-<div class="line"><span class="lineno">  124</span> fpi=open(pName,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><span class="lineno">  125</span> database = {}</div>
-<div class="line"><span class="lineno">  126</span> database[<span class="stringliteral">&#39;goodruns&#39;</span>]=goodRuns</div>
-<div class="line"><span class="lineno">  127</span> database[<span class="stringliteral">&#39;badRuns&#39;</span>]=badRuns</div>
-<div class="line"><span class="lineno">  128</span> pickle.dump(database,fpi)</div>
-<div class="line"><span class="lineno">  129</span> fpi.close()</div>
-<div class="line"><span class="lineno">  130</span> fpi=open(pName)</div>
-<div class="line"><span class="lineno">  131</span> database = pickle.load(fpi)</div>
-<div class="line"><span class="lineno">  132</span> addRuns(database[<span class="stringliteral">&#39;goodruns&#39;</span>],20000)  <span class="comment"># next cycle</span></div>
-<div class="line"><span class="lineno">  133</span> </div>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00106">106</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span><span class="keyword">def </span>YandexProd():</div>
+<div class="line"><span class="lineno">  107</span> <span class="comment">#startDate = datetime.datetime(2018, 1, 1, 0, 0)  # N=0</span></div>
+<div class="line"><span class="lineno">  108</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
+<div class="line"><span class="lineno">  109</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 1, 0, 0)  # N=23000</span></div>
+<div class="line"><span class="lineno">  110</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 6, 0, 0)</span></div>
+<div class="line"><span class="lineno">  111</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 6,  0, 0) # N=33000</span></div>
+<div class="line"><span class="lineno">  112</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 12, 0, 0)</span></div>
+<div class="line"><span class="lineno">  113</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 12,  0, 0) # N=45000</span></div>
+<div class="line"><span class="lineno">  114</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 15, 0, 0)</span></div>
+<div class="line"><span class="lineno">  115</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 15,  0, 0) # N=51000</span></div>
+<div class="line"><span class="lineno">  116</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 21, 0, 0)</span></div>
+<div class="line"><span class="lineno">  117</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 21,  0, 0) # N=63000</span></div>
+<div class="line"><span class="lineno">  118</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 2, 0, 0)</span></div>
+<div class="line"><span class="lineno">  119</span> <span class="comment">#startDate = datetime.datetime(2018, 1, 1,  0, 0) #  start with 1 GeV production</span></div>
+<div class="line"><span class="lineno">  120</span> <span class="comment">#endDate   = datetime.datetime(2018, 2, 27, 0, 0) # N=0</span></div>
+<div class="line"><span class="lineno">  121</span> <span class="comment">#startDate = datetime.datetime(2018, 2, 27,  0, 0) #</span></div>
+<div class="line"><span class="lineno">  122</span> <span class="comment">#endDate   = datetime.datetime(2018, 3, 6, 0, 0) # N=3000</span></div>
+<div class="line"><span class="lineno">  123</span> <span class="comment">#startDate = datetime.datetime(2018, 3, 6,  0, 0) #</span></div>
+<div class="line"><span class="lineno">  124</span> <span class="comment">#endDate   = datetime.datetime(2018, 3, 12, 0, 0) # N=9000</span></div>
+<div class="line"><span class="lineno">  125</span> goodRuns,badRuns = GetGoodAndBadRuns(startDate,endDate)</div>
+<div class="line"><span class="lineno">  126</span> pName = <span class="stringliteral">&#39;goodAndBadRuns&#39;</span>+prod+<span class="stringliteral">&#39;_&#39;</span>+startDate.__str__().split(<span class="stringliteral">&#39; &#39;</span>)[0]+<span class="stringliteral">&#39;_&#39;</span>+endDate.__str__().split(<span class="stringliteral">&#39; &#39;</span>)[0]+<span class="stringliteral">&#39;.pkl&#39;</span></div>
+<div class="line"><span class="lineno">  127</span> fpi=open(pName,<span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><span class="lineno">  128</span> database = {}</div>
+<div class="line"><span class="lineno">  129</span> database[<span class="stringliteral">&#39;goodruns&#39;</span>]=goodRuns</div>
+<div class="line"><span class="lineno">  130</span> database[<span class="stringliteral">&#39;badRuns&#39;</span>]=badRuns</div>
+<div class="line"><span class="lineno">  131</span> pickle.dump(database,fpi)</div>
+<div class="line"><span class="lineno">  132</span> fpi.close()</div>
+<div class="line"><span class="lineno">  133</span> fpi=open(pName)</div>
+<div class="line"><span class="lineno">  134</span> database = pickle.load(fpi)</div>
+<div class="line"><span class="lineno">  135</span> addRuns(database[<span class="stringliteral">&#39;goodruns&#39;</span>],20000)  <span class="comment"># next cycle</span></div>
+<div class="line"><span class="lineno">  136</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -699,7 +699,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00005">5</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00008">8</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -715,7 +715,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00023">23</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00026">26</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -731,7 +731,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00022">22</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00025">25</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -747,7 +747,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00021">21</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00024">24</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -763,7 +763,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00294">294</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00297">297</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -779,7 +779,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00293">293</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00296">296</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -795,7 +795,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00004">4</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00007">7</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -811,7 +811,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00020">20</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00023">23</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -827,7 +827,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00330">330</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00333">333</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>
@@ -843,7 +843,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00329">329</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00332">332</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 
 </div>
 </div>

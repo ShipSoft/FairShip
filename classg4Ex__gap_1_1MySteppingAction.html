@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00284">284</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00287">287</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8aaf84d995520342a0949a90e2287bd9" name="a8aaf84d995520342a0949a90e2287bd9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8aaf84d995520342a0949a90e2287bd9">&#9670;&#160;</a></span>UserSteppingAction()</h2>
@@ -151,14 +151,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00287">287</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  287</span>  <span class="keyword">def </span>UserSteppingAction(self, step):</div>
-<div class="line"><span class="lineno">  288</span>    preStepPoint = step.GetPreStepPoint()</div>
-<div class="line"><span class="lineno">  289</span>    touch        = preStepPoint.GetTouchableHandle()</div>
-<div class="line"><span class="lineno">  290</span>    volName      = touch.GetVolume().GetName().__format__(<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">  291</span>    pos    = preStepPoint.GetPosition()</div>
-<div class="line"><span class="lineno">  292</span>    print(<span class="stringliteral">&#39;stepping name, z pos  dedx (MeV): &#39;</span>,volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV)</div>
-<div class="line"><span class="lineno">  293</span><span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00290">290</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  290</span>  <span class="keyword">def </span>UserSteppingAction(self, step):</div>
+<div class="line"><span class="lineno">  291</span>    preStepPoint = step.GetPreStepPoint()</div>
+<div class="line"><span class="lineno">  292</span>    touch        = preStepPoint.GetTouchableHandle()</div>
+<div class="line"><span class="lineno">  293</span>    volName      = touch.GetVolume().GetName().__format__(<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">  294</span>    pos    = preStepPoint.GetPosition()</div>
+<div class="line"><span class="lineno">  295</span>    print(<span class="stringliteral">&#39;stepping name, z pos  dedx (MeV): &#39;</span>,volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV)</div>
+<div class="line"><span class="lineno">  296</span><span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>

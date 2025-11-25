@@ -154,7 +154,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00005">5</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00008">8</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad0819987e76dc55409ead538c25cf7c1" name="ad0819987e76dc55409ead538c25cf7c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0819987e76dc55409ead538c25cf7c1">&#9670;&#160;</a></span>__init__()</h2>
@@ -211,20 +211,20 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initialise detector digitisation.</pre> 
+<pre class="fragment">Initialize the detector digitizer.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a770798bc9f8dc602ddd63f5e8c99d8a6">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00006">6</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>    ):</div>
-<div class="line"><span class="lineno">   15</span>        super().__init__(</div>
-<div class="line"><span class="lineno">   16</span>            name,</div>
-<div class="line"><span class="lineno">   17</span>            intree,</div>
-<div class="line"><span class="lineno">   18</span>            branchName,</div>
-<div class="line"><span class="lineno">   19</span>            mcBranchType,</div>
-<div class="line"><span class="lineno">   20</span>            mcBranchName,</div>
-<div class="line"><span class="lineno">   21</span>            outtree=outtree,</div>
-<div class="line"><span class="lineno">   22</span>        )</div>
-<div class="line"><span class="lineno">   23</span> </div>
+<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00009">9</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span>    ):</div>
+<div class="line"><span class="lineno">   18</span>        super().__init__(</div>
+<div class="line"><span class="lineno">   19</span>            name,</div>
+<div class="line"><span class="lineno">   20</span>            intree,</div>
+<div class="line"><span class="lineno">   21</span>            branchName,</div>
+<div class="line"><span class="lineno">   22</span>            mcBranchType,</div>
+<div class="line"><span class="lineno">   23</span>            mcBranchName,</div>
+<div class="line"><span class="lineno">   24</span>            outtree=outtree,</div>
+<div class="line"><span class="lineno">   25</span>        )</div>
+<div class="line"><span class="lineno">   26</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -250,39 +250,39 @@ TDC defined as the time of the first MC hit in the cell.
 Eloss defined as the cumulative energy deposition of MC hits in the cell.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00024">24</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   24</span>    <span class="keyword">def </span>digitize(self):</div>
-<div class="line"><span class="lineno">   25</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize Surrounding Background Tagger MC hits.</span></div>
-<div class="line"><span class="lineno">   26</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   27</span><span class="stringliteral">        TDC defined as the time of the first MC hit in the cell.</span></div>
-<div class="line"><span class="lineno">   28</span><span class="stringliteral">        Eloss defined as the cumulative energy deposition of MC hits in the cell.</span></div>
+<p class="definition">Definition at line <a class="el" href="SBTDetector_8py_source.html#l00027">27</a> of file <a class="el" href="SBTDetector_8py_source.html">SBTDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>    <span class="keyword">def </span>digitize(self):</div>
+<div class="line"><span class="lineno">   28</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize Surrounding Background Tagger MC hits.</span></div>
 <div class="line"><span class="lineno">   29</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   30</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   31</span>        ElossPerDetId = {}</div>
-<div class="line"><span class="lineno">   32</span>        tOfFlight = {}</div>
-<div class="line"><span class="lineno">   33</span>        listOfVetoPoints = {}</div>
-<div class="line"><span class="lineno">   34</span>        key = -1</div>
-<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.vetoPoint:</div>
-<div class="line"><span class="lineno">   36</span>            key += 1</div>
-<div class="line"><span class="lineno">   37</span>            detID = aMCPoint.GetDetectorID()</div>
-<div class="line"><span class="lineno">   38</span>            Eloss = aMCPoint.GetEnergyLoss()</div>
-<div class="line"><span class="lineno">   39</span>            <span class="keywordflow">if</span> detID <span class="keywordflow">not</span> <span class="keywordflow">in</span> ElossPerDetId:</div>
-<div class="line"><span class="lineno">   40</span>                ElossPerDetId[detID] = 0</div>
-<div class="line"><span class="lineno">   41</span>                listOfVetoPoints[detID] = []</div>
-<div class="line"><span class="lineno">   42</span>                tOfFlight[detID] = []</div>
-<div class="line"><span class="lineno">   43</span>            ElossPerDetId[detID] += Eloss</div>
-<div class="line"><span class="lineno">   44</span>            listOfVetoPoints[detID].append(key)</div>
-<div class="line"><span class="lineno">   45</span>            tOfFlight[detID].append(aMCPoint.GetTime())</div>
-<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">for</span> seg <span class="keywordflow">in</span> ElossPerDetId:</div>
-<div class="line"><span class="lineno">   47</span>            aHit = ROOT.vetoHit(seg, ElossPerDetId[seg])</div>
-<div class="line"><span class="lineno">   48</span>            aHit.SetTDC(min(tOfFlight[seg]) + self.intree.t0)</div>
-<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
-<div class="line"><span class="lineno">   50</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
-<div class="line"><span class="lineno">   51</span>            self.det.push_back(aHit)</div>
-<div class="line"><span class="lineno">   52</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><span class="lineno">   53</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
-<div class="line"><span class="lineno">   54</span>                v.push_back(x)</div>
-<div class="line"><span class="lineno">   55</span>            self.MCdet.push_back(v)</div>
+<div class="line"><span class="lineno">   30</span><span class="stringliteral">        TDC defined as the time of the first MC hit in the cell.</span></div>
+<div class="line"><span class="lineno">   31</span><span class="stringliteral">        Eloss defined as the cumulative energy deposition of MC hits in the cell.</span></div>
+<div class="line"><span class="lineno">   32</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   33</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   34</span>        ElossPerDetId = {}</div>
+<div class="line"><span class="lineno">   35</span>        tOfFlight = {}</div>
+<div class="line"><span class="lineno">   36</span>        listOfVetoPoints = {}</div>
+<div class="line"><span class="lineno">   37</span>        key = -1</div>
+<div class="line"><span class="lineno">   38</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.vetoPoint:</div>
+<div class="line"><span class="lineno">   39</span>            key += 1</div>
+<div class="line"><span class="lineno">   40</span>            detID = aMCPoint.GetDetectorID()</div>
+<div class="line"><span class="lineno">   41</span>            Eloss = aMCPoint.GetEnergyLoss()</div>
+<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">if</span> detID <span class="keywordflow">not</span> <span class="keywordflow">in</span> ElossPerDetId:</div>
+<div class="line"><span class="lineno">   43</span>                ElossPerDetId[detID] = 0</div>
+<div class="line"><span class="lineno">   44</span>                listOfVetoPoints[detID] = []</div>
+<div class="line"><span class="lineno">   45</span>                tOfFlight[detID] = []</div>
+<div class="line"><span class="lineno">   46</span>            ElossPerDetId[detID] += Eloss</div>
+<div class="line"><span class="lineno">   47</span>            listOfVetoPoints[detID].append(key)</div>
+<div class="line"><span class="lineno">   48</span>            tOfFlight[detID].append(aMCPoint.GetTime())</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">for</span> seg <span class="keywordflow">in</span> ElossPerDetId:</div>
+<div class="line"><span class="lineno">   50</span>            aHit = ROOT.vetoHit(seg, ElossPerDetId[seg])</div>
+<div class="line"><span class="lineno">   51</span>            aHit.SetTDC(min(tOfFlight[seg]) + self.intree.t0)</div>
+<div class="line"><span class="lineno">   52</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
+<div class="line"><span class="lineno">   53</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
+<div class="line"><span class="lineno">   54</span>            self.det.push_back(aHit)</div>
+<div class="line"><span class="lineno">   55</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><span class="lineno">   56</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
+<div class="line"><span class="lineno">   57</span>                v.push_back(x)</div>
+<div class="line"><span class="lineno">   58</span>            self.MCdet.push_back(v)</div>
 </div><!-- fragment -->
 </div>
 </div>

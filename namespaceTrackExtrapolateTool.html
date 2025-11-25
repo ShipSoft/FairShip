@@ -141,10 +141,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00004">4</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    4</span><span class="keyword">def </span>cmp(a, b):</div>
-<div class="line"><span class="lineno">    5</span>    <span class="keywordflow">return</span> (a &gt; b) - (a &lt; b)</div>
-<div class="line"><span class="lineno">    6</span> </div>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00007">7</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>cmp(a, b):</div>
+<div class="line"><span class="lineno">    8</span>    <span class="keywordflow">return</span> (a &gt; b) - (a &lt; b)</div>
+<div class="line"><span class="lineno">    9</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -174,37 +174,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00015">15</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span><span class="keyword">def </span>extrapolateToPlane(fT,z):</div>
-<div class="line"><span class="lineno">   16</span><span class="comment"># etrapolate to a plane perpendicular to beam direction (z)</span></div>
-<div class="line"><span class="lineno">   17</span>  rc,pos,mom = <span class="keyword">False</span>,<span class="keywordtype">None</span>,<span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   18</span>  fst = fT.getFitStatus()</div>
-<div class="line"><span class="lineno">   19</span>  <span class="keywordflow">if</span> fst.isFitConverged() <span class="keywordflow">and</span> fst.getNdf() &gt; minNdf:</div>
-<div class="line"><span class="lineno">   20</span><span class="comment"># test for fit status for each point</span></div>
-<div class="line"><span class="lineno">   21</span>   <span class="keywordflow">if</span> fT.getPoint(0).getFitterInfo() <span class="keywordflow">and</span> fT.getPoint(1).getFitterInfo():</div>
-<div class="line"><span class="lineno">   22</span>    fstate0,fstate1 = fT.getFittedState(0),fT.getFittedState(1)</div>
-<div class="line"><span class="lineno">   23</span>    fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()</div>
-<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">if</span> abs(z-fPos0.z()) &lt;  abs(z-fPos1.z()): fstate = fstate0</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">else</span>:                                    fstate = fstate1</div>
-<div class="line"><span class="lineno">   26</span>    zs = min(z,z_ecal)</div>
-<div class="line"><span class="lineno">   27</span>    NewPosition = ROOT.TVector3(0., 0., zs)</div>
-<div class="line"><span class="lineno">   28</span>    rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )</div>
-<div class="line"><span class="lineno">   29</span>    state  = ROOT.genfit.StateOnPlane(rep)</div>
-<div class="line"><span class="lineno">   30</span>    pos,mom = fstate.getPos(),fstate.getMom()</div>
-<div class="line"><span class="lineno">   31</span>    rep.setPosMom(state,pos,mom)</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   33</span>      rep.extrapolateToPlane(state, NewPosition, parallelToZ )</div>
-<div class="line"><span class="lineno">   34</span>      pos,mom = state.getPos(),state.getMom()</div>
-<div class="line"><span class="lineno">   35</span>      rc = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">   37</span>      <span class="comment"># print &#39;error with extrapolation: z=&#39;,z/u.m,&#39;m&#39;,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()</span></div>
-<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc <span class="keywordflow">or</span> z&gt;z_ecal:</div>
-<div class="line"><span class="lineno">   40</span>     <span class="comment"># use linear extrapolation</span></div>
-<div class="line"><span class="lineno">   41</span>     px,py,pz  = mom.X(),mom.Y(),mom.Z()</div>
-<div class="line"><span class="lineno">   42</span>     lam = (z-pos.Z())/pz</div>
-<div class="line"><span class="lineno">   43</span>     pos = ROOT.TVector3( pos.X()+lam*px, pos.Y()+lam*py, z )</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> rc,pos,mom</div>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00018">18</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>extrapolateToPlane(fT,z):</div>
+<div class="line"><span class="lineno">   19</span><span class="comment"># etrapolate to a plane perpendicular to beam direction (z)</span></div>
+<div class="line"><span class="lineno">   20</span>  rc,pos,mom = <span class="keyword">False</span>,<span class="keywordtype">None</span>,<span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   21</span>  fst = fT.getFitStatus()</div>
+<div class="line"><span class="lineno">   22</span>  <span class="keywordflow">if</span> fst.isFitConverged() <span class="keywordflow">and</span> fst.getNdf() &gt; minNdf:</div>
+<div class="line"><span class="lineno">   23</span><span class="comment"># test for fit status for each point</span></div>
+<div class="line"><span class="lineno">   24</span>   <span class="keywordflow">if</span> fT.getPoint(0).getFitterInfo() <span class="keywordflow">and</span> fT.getPoint(1).getFitterInfo():</div>
+<div class="line"><span class="lineno">   25</span>    fstate0,fstate1 = fT.getFittedState(0),fT.getFittedState(1)</div>
+<div class="line"><span class="lineno">   26</span>    fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> abs(z-fPos0.z()) &lt;  abs(z-fPos1.z()): fstate = fstate0</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">else</span>:                                    fstate = fstate1</div>
+<div class="line"><span class="lineno">   29</span>    zs = min(z,z_ecal)</div>
+<div class="line"><span class="lineno">   30</span>    NewPosition = ROOT.TVector3(0., 0., zs)</div>
+<div class="line"><span class="lineno">   31</span>    rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )</div>
+<div class="line"><span class="lineno">   32</span>    state  = ROOT.genfit.StateOnPlane(rep)</div>
+<div class="line"><span class="lineno">   33</span>    pos,mom = fstate.getPos(),fstate.getMom()</div>
+<div class="line"><span class="lineno">   34</span>    rep.setPosMom(state,pos,mom)</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   36</span>      rep.extrapolateToPlane(state, NewPosition, parallelToZ )</div>
+<div class="line"><span class="lineno">   37</span>      pos,mom = state.getPos(),state.getMom()</div>
+<div class="line"><span class="lineno">   38</span>      rc = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">   40</span>      <span class="comment"># print &#39;error with extrapolation: z=&#39;,z/u.m,&#39;m&#39;,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()</span></div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc <span class="keywordflow">or</span> z&gt;z_ecal:</div>
+<div class="line"><span class="lineno">   43</span>     <span class="comment"># use linear extrapolation</span></div>
+<div class="line"><span class="lineno">   44</span>     px,py,pz  = mom.X(),mom.Y(),mom.Z()</div>
+<div class="line"><span class="lineno">   45</span>     lam = (z-pos.Z())/pz</div>
+<div class="line"><span class="lineno">   46</span>     pos = ROOT.TVector3( pos.X()+lam*px, pos.Y()+lam*py, z )</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> rc,pos,mom</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -221,7 +221,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00007">7</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00010">10</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
 
 </div>
 </div>
@@ -237,7 +237,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00008">8</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00011">11</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
 
 </div>
 </div>
@@ -253,7 +253,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00009">9</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00012">12</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
 
 </div>
 </div>
@@ -269,7 +269,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00011">11</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00014">14</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
 
 </div>
 </div>

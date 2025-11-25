@@ -97,22 +97,25 @@ $(document).ready(function(){initNavTree('basiclibs_8py_source.html',''); initRe
   <div class="headertitle"><div class="title">basiclibs.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="basiclibs_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacebasiclibs.html">    1</a></span><span class="comment"># Macro for loading basic libraries used with both Geant3 and Geant4</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> ROOT <span class="keyword">import</span> gSystem</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">#gSystem.Load(&quot;libEventDisplay.so&quot;)</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">#gSystem.Load(&quot;libRIO.so&quot;)</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">#gSystem.Load(&quot;libGeom.so&quot;)</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">#gSystem.Load(&quot;libGeomPainter.so&quot;)</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">#gSystem.Load(&quot;libVMC.so&quot;)</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">#gSystem.Load(&quot;libEG.so&quot;)</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>gSystem.Load(<span class="stringliteral">&quot;libEGPythia6.so&quot;</span>)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>gSystem.Load(<span class="stringliteral">&quot;libPythia6.so&quot;</span>)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">#gSystem.Load(&quot;libPhysics.so&quot;)</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">#gSystem.Load(&quot;libNet.so&quot;)</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">#gSystem.Load(&quot;libTree.so&quot;)</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">#gSystem.Load(&quot;libMinuit.so&quot;)</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">#gSystem.Load(&quot;libMathMore.so&quot;)</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>gSystem.Load(<span class="stringliteral">&quot;libpythia8.so&quot;</span>)</div>
+<a href="basiclibs_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacebasiclibs.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"># Macro for loading basic libraries used with both Geant3 and Geant4</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> ROOT <span class="keyword">import</span> gSystem</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">#gSystem.Load(&quot;libEventDisplay.so&quot;)</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">#gSystem.Load(&quot;libRIO.so&quot;)</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">#gSystem.Load(&quot;libGeom.so&quot;)</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">#gSystem.Load(&quot;libGeomPainter.so&quot;)</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">#gSystem.Load(&quot;libVMC.so&quot;)</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">#gSystem.Load(&quot;libEG.so&quot;)</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>gSystem.Load(<span class="stringliteral">&quot;libEGPythia6.so&quot;</span>)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>gSystem.Load(<span class="stringliteral">&quot;libPythia6.so&quot;</span>)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">#gSystem.Load(&quot;libPhysics.so&quot;)</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">#gSystem.Load(&quot;libNet.so&quot;)</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">#gSystem.Load(&quot;libTree.so&quot;)</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">#gSystem.Load(&quot;libMinuit.so&quot;)</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">#gSystem.Load(&quot;libMathMore.so&quot;)</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>gSystem.Load(<span class="stringliteral">&quot;libpythia8.so&quot;</span>)</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

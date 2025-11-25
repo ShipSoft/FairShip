@@ -118,7 +118,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Store some constants useful for HNL physics
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00076">76</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00079">79</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afb44a397abda2d5d6570c7d2e39ee038" name="afb44a397abda2d5d6570c7d2e39ee038"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb44a397abda2d5d6570c7d2e39ee038">&#9670;&#160;</a></span>__init__()</h2>
@@ -136,25 +136,25 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00080">80</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">   81</span>        self.decayConstant = {<span class="stringliteral">&#39;pi+&#39;</span>:0.130*u.GeV,</div>
-<div class="line"><span class="lineno">   82</span>                            <span class="stringliteral">&#39;pi0&#39;</span>:0.130*u.GeV,</div>
-<div class="line"><span class="lineno">   83</span>                            <span class="stringliteral">&#39;eta&#39;</span>:1.2*0.130*u.GeV,</div>
-<div class="line"><span class="lineno">   84</span>                            <span class="stringliteral">&#39;eta1&#39;</span>:0.152*u.GeV,</div>
-<div class="line"><span class="lineno">   85</span>                            <span class="stringliteral">&#39;eta_c&#39;</span>:0.335*u.GeV,</div>
-<div class="line"><span class="lineno">   86</span>                            <span class="stringliteral">&#39;rho+&#39;</span>:0.209*u.GeV,</div>
-<div class="line"><span class="lineno">   87</span>                            <span class="stringliteral">&#39;rho0&#39;</span>:0.209*u.GeV,</div>
-<div class="line"><span class="lineno">   88</span>                            <span class="stringliteral">&#39;omega&#39;</span>:0.195*u.GeV,</div>
-<div class="line"><span class="lineno">   89</span>                            <span class="stringliteral">&#39;phi&#39;</span>:0.229*u.GeV,</div>
-<div class="line"><span class="lineno">   90</span>                            <span class="stringliteral">&#39;D_s+&#39;</span>:0.249*u.GeV,</div>
-<div class="line"><span class="lineno">   91</span>                            <span class="stringliteral">&#39;D*_s+&#39;</span>:0.315*u.GeV} <span class="comment"># decay constants f_h of pseudoscalar and vector mesons</span></div>
-<div class="line"><span class="lineno">   92</span>        self.GF = 1.166379e-05/(u.GeV*u.GeV) <span class="comment"># Fermi&#39;s constant (GeV^-2)</span></div>
-<div class="line"><span class="lineno">   93</span>        self.s2thetaw = 0.23126 <span class="comment"># square sine of the Weinberg angle</span></div>
-<div class="line"><span class="lineno">   94</span>        self.heV = 6.58211928*pow(10.,-16) <span class="comment"># no units or it messes up!!</span></div>
-<div class="line"><span class="lineno">   95</span>        self.hGeV = self.heV * pow(10.,-9) <span class="comment"># no units or it messes up!!</span></div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span><span class="comment"># Load some useful constants</span></div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00083">83</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">   84</span>        self.decayConstant = {<span class="stringliteral">&#39;pi+&#39;</span>:0.130*u.GeV,</div>
+<div class="line"><span class="lineno">   85</span>                            <span class="stringliteral">&#39;pi0&#39;</span>:0.130*u.GeV,</div>
+<div class="line"><span class="lineno">   86</span>                            <span class="stringliteral">&#39;eta&#39;</span>:1.2*0.130*u.GeV,</div>
+<div class="line"><span class="lineno">   87</span>                            <span class="stringliteral">&#39;eta1&#39;</span>:0.152*u.GeV,</div>
+<div class="line"><span class="lineno">   88</span>                            <span class="stringliteral">&#39;eta_c&#39;</span>:0.335*u.GeV,</div>
+<div class="line"><span class="lineno">   89</span>                            <span class="stringliteral">&#39;rho+&#39;</span>:0.209*u.GeV,</div>
+<div class="line"><span class="lineno">   90</span>                            <span class="stringliteral">&#39;rho0&#39;</span>:0.209*u.GeV,</div>
+<div class="line"><span class="lineno">   91</span>                            <span class="stringliteral">&#39;omega&#39;</span>:0.195*u.GeV,</div>
+<div class="line"><span class="lineno">   92</span>                            <span class="stringliteral">&#39;phi&#39;</span>:0.229*u.GeV,</div>
+<div class="line"><span class="lineno">   93</span>                            <span class="stringliteral">&#39;D_s+&#39;</span>:0.249*u.GeV,</div>
+<div class="line"><span class="lineno">   94</span>                            <span class="stringliteral">&#39;D*_s+&#39;</span>:0.315*u.GeV} <span class="comment"># decay constants f_h of pseudoscalar and vector mesons</span></div>
+<div class="line"><span class="lineno">   95</span>        self.GF = 1.166379e-05/(u.GeV*u.GeV) <span class="comment"># Fermi&#39;s constant (GeV^-2)</span></div>
+<div class="line"><span class="lineno">   96</span>        self.s2thetaw = 0.23126 <span class="comment"># square sine of the Weinberg angle</span></div>
+<div class="line"><span class="lineno">   97</span>        self.heV = 6.58211928*pow(10.,-16) <span class="comment"># no units or it messes up!!</span></div>
+<div class="line"><span class="lineno">   98</span>        self.hGeV = self.heV * pow(10.,-9) <span class="comment"># no units or it messes up!!</span></div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span><span class="comment"># Load some useful constants</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -171,7 +171,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00081">81</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00084">84</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -187,7 +187,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00092">92</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00095">95</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -203,7 +203,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00094">94</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00097">97</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -219,7 +219,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00095">95</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00098">98</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -235,7 +235,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00093">93</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00096">96</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>

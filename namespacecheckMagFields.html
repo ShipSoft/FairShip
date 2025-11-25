@@ -116,70 +116,70 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="checkMagFields_8py_source.html#l00005">5</a> of file <a class="el" href="checkMagFields_8py_source.html">checkMagFields.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>run():</div>
-<div class="line"><span class="lineno">    6</span> fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">    7</span> run = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].run</div>
-<div class="line"><span class="lineno">    8</span> <span class="keywordflow">if</span> hasattr(sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>],<span class="stringliteral">&#39;h&#39;</span>): h =  sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].h</div>
-<div class="line"><span class="lineno">    9</span> <span class="keywordflow">else</span>: h={}</div>
-<div class="line"><span class="lineno">   10</span> grid = 120,100,1500</div>
-<div class="line"><span class="lineno">   11</span> xmin,ymin,zmin = -4*u.m,-5*u.m,-100*u.m</div>
-<div class="line"><span class="lineno">   12</span> xmax,ymax,zmax = 4*u.m,5*u.m,50*u.m</div>
-<div class="line"><span class="lineno">   13</span> dx,dy,dz = (xmax-xmin)/grid[0],(ymax-ymin)/grid[1],(zmax-zmin)/grid[2]</div>
-<div class="line"><span class="lineno">   14</span> ut.bookHist(h,<span class="stringliteral">&#39;Bx-&#39;</span>,<span class="stringliteral">&#39;Bx- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   15</span> ut.bookHist(h,<span class="stringliteral">&#39;By-&#39;</span>,<span class="stringliteral">&#39;By- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   16</span> ut.bookHist(h,<span class="stringliteral">&#39;Bz-&#39;</span>,<span class="stringliteral">&#39;Bz- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   17</span> ut.bookHist(h,<span class="stringliteral">&#39;Bx+&#39;</span>,<span class="stringliteral">&#39;Bx+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   18</span> ut.bookHist(h,<span class="stringliteral">&#39;By+&#39;</span>,<span class="stringliteral">&#39;By+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   19</span> ut.bookHist(h,<span class="stringliteral">&#39;Bz+&#39;</span>,<span class="stringliteral">&#39;Bz+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
-<div class="line"><span class="lineno">   20</span> h[<span class="stringliteral">&#39;Bx-&#39;</span>].SetMarkerColor(ROOT.kGreen-3)</div>
-<div class="line"><span class="lineno">   21</span> h[<span class="stringliteral">&#39;Bx+&#39;</span>].SetMarkerColor(ROOT.kGreen+3)</div>
-<div class="line"><span class="lineno">   22</span> h[<span class="stringliteral">&#39;By-&#39;</span>].SetMarkerColor(ROOT.kBlue-3)</div>
-<div class="line"><span class="lineno">   23</span> h[<span class="stringliteral">&#39;By+&#39;</span>].SetMarkerColor(ROOT.kBlue+3)</div>
-<div class="line"><span class="lineno">   24</span> h[<span class="stringliteral">&#39;Bz-&#39;</span>].SetMarkerColor(ROOT.kCyan-2)</div>
-<div class="line"><span class="lineno">   25</span> h[<span class="stringliteral">&#39;Bz+&#39;</span>].SetMarkerColor(ROOT.kCyan+2)</div>
-<div class="line"><span class="lineno">   26</span> <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> range(grid[0]):</div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> range(grid[1]):</div>
-<div class="line"><span class="lineno">   28</span>   <span class="keywordflow">for</span> iz <span class="keywordflow">in</span> range(grid[2]):</div>
-<div class="line"><span class="lineno">   29</span>    x,y,z = xmin + ix*dx,ymin + iy*dy,zmin + iz*dz</div>
-<div class="line"><span class="lineno">   30</span>    n = fGeo.FindNode(x,y,z)</div>
-<div class="line"><span class="lineno">   31</span>    f = n.GetVolume().GetField()</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> f:</div>
-<div class="line"><span class="lineno">   33</span>      <span class="keywordflow">if</span> f.GetFieldValue()[0]&lt;0:  rc=h[<span class="stringliteral">&#39;Bx-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[0]/u.tesla)</div>
-<div class="line"><span class="lineno">   34</span>      <span class="keywordflow">if</span> f.GetFieldValue()[0]&gt;0:  rc=h[<span class="stringliteral">&#39;Bx+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[0]/u.tesla)</div>
-<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">if</span> f.GetFieldValue()[1]&lt;0:  rc=h[<span class="stringliteral">&#39;By-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[1]/u.tesla)</div>
-<div class="line"><span class="lineno">   36</span>      <span class="keywordflow">if</span> f.GetFieldValue()[1]&gt;0:  rc=h[<span class="stringliteral">&#39;By+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[1]/u.tesla)</div>
-<div class="line"><span class="lineno">   37</span>      <span class="keywordflow">if</span> f.GetFieldValue()[2]&lt;0:  rc=h[<span class="stringliteral">&#39;Bz-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[2]/u.tesla)</div>
-<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">if</span> f.GetFieldValue()[2]&gt;0:  rc=h[<span class="stringliteral">&#39;Bz+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[2]/u.tesla)</div>
-<div class="line"><span class="lineno">   39</span>    f = run.GetField()</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> f.GetBx(x,y,z)&lt;0: rc=h[<span class="stringliteral">&#39;Bx-&#39;</span>].Fill(z,x,y,-f.GetBx(x,y,z)/u.tesla)</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> f.GetBx(x,y,z)&gt;0: rc=h[<span class="stringliteral">&#39;Bx+&#39;</span>].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla)</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> f.GetBy(x,y,z)&lt;0: rc=h[<span class="stringliteral">&#39;By-&#39;</span>].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> f.GetBy(x,y,z)&gt;0: rc=h[<span class="stringliteral">&#39;By+&#39;</span>].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla)</div>
-<div class="line"><span class="lineno">   44</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
-<div class="line"><span class="lineno">   45</span>  hi = h[x]</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> hi.ClassName()==<span class="stringliteral">&#39;TH3F&#39;</span>:</div>
-<div class="line"><span class="lineno">   47</span>   h[x+<span class="stringliteral">&#39;_xz&#39;</span>]=h[x].Project3D(<span class="stringliteral">&#39;xy&#39;</span>)</div>
-<div class="line"><span class="lineno">   48</span>   h[x+<span class="stringliteral">&#39;_xz&#39;</span>].SetTitle(hi.GetTitle()+<span class="stringliteral">&#39; top view&#39;</span>)</div>
-<div class="line"><span class="lineno">   49</span>   h[x+<span class="stringliteral">&#39;_yz&#39;</span>]=h[x].Project3D(<span class="stringliteral">&#39;xz&#39;</span>)</div>
-<div class="line"><span class="lineno">   50</span>   h[x+<span class="stringliteral">&#39;_yz&#39;</span>].SetTitle(hi.GetTitle()+<span class="stringliteral">&#39; side view&#39;</span>)</div>
-<div class="line"><span class="lineno">   51</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">   52</span>  h[x].SetStats(0)</div>
-<div class="line"><span class="lineno">   53</span>  h[x].SetMarkerSize(3)</div>
-<div class="line"><span class="lineno">   54</span> txt = {<span class="stringliteral">&#39;y&#39;</span>:[<span class="stringliteral">&#39; Up&#39;</span>,<span class="stringliteral">&#39; Down&#39;</span>],<span class="stringliteral">&#39;x&#39;</span>:[<span class="stringliteral">&#39; Right&#39;</span>,<span class="stringliteral">&#39; Left&#39;</span>]}</div>
-<div class="line"><span class="lineno">   55</span> <span class="keywordflow">for</span> pol <span class="keywordflow">in</span> [<span class="stringliteral">&#39;y&#39;</span>,<span class="stringliteral">&#39;x&#39;</span>]:</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&#39;_xz&#39;</span>,<span class="stringliteral">&#39;_yz&#39;</span>]:</div>
-<div class="line"><span class="lineno">   57</span>   cn = <span class="stringliteral">&#39;c&#39;</span>+pol+p</div>
-<div class="line"><span class="lineno">   58</span>   ut.bookCanvas(h,key=cn,title=<span class="stringliteral">&#39;field check&#39;</span>,nx=1600,ny=1200,cx=1,cy=1)</div>
-<div class="line"><span class="lineno">   59</span>   h[cn].cd(1)</div>
-<div class="line"><span class="lineno">   60</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;+&#39;</span>+p].Draw()</div>
-<div class="line"><span class="lineno">   61</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;-&#39;</span>+p].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><span class="lineno">   62</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p] = ROOT.TLegend(0.79,0.72,0.91,0.87)</div>
-<div class="line"><span class="lineno">   63</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].AddEntry(h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;+&#39;</span>],<span class="stringliteral">&#39;B&#39;</span>+pol+txt[pol][0],<span class="stringliteral">&#39;PM&#39;</span>)</div>
-<div class="line"><span class="lineno">   64</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].AddEntry(h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;-&#39;</span>],<span class="stringliteral">&#39;B&#39;</span>+pol+txt[pol][1],<span class="stringliteral">&#39;PM&#39;</span>)</div>
-<div class="line"><span class="lineno">   65</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].Draw()</div>
-<div class="line"><span class="lineno">   66</span>   h[cn].Update()</div>
-<div class="line"><span class="lineno">   67</span>   h[cn].Print(<span class="stringliteral">&#39;FieldB&#39;</span>+pol+<span class="stringliteral">&#39;Proj&#39;</span>+p+<span class="stringliteral">&#39;.png&#39;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="checkMagFields_8py_source.html#l00008">8</a> of file <a class="el" href="checkMagFields_8py_source.html">checkMagFields.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span><span class="keyword">def </span>run():</div>
+<div class="line"><span class="lineno">    9</span> fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">   10</span> run = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].run</div>
+<div class="line"><span class="lineno">   11</span> <span class="keywordflow">if</span> hasattr(sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>],<span class="stringliteral">&#39;h&#39;</span>): h =  sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].h</div>
+<div class="line"><span class="lineno">   12</span> <span class="keywordflow">else</span>: h={}</div>
+<div class="line"><span class="lineno">   13</span> grid = 120,100,1500</div>
+<div class="line"><span class="lineno">   14</span> xmin,ymin,zmin = -4*u.m,-5*u.m,-100*u.m</div>
+<div class="line"><span class="lineno">   15</span> xmax,ymax,zmax = 4*u.m,5*u.m,50*u.m</div>
+<div class="line"><span class="lineno">   16</span> dx,dy,dz = (xmax-xmin)/grid[0],(ymax-ymin)/grid[1],(zmax-zmin)/grid[2]</div>
+<div class="line"><span class="lineno">   17</span> ut.bookHist(h,<span class="stringliteral">&#39;Bx-&#39;</span>,<span class="stringliteral">&#39;Bx- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   18</span> ut.bookHist(h,<span class="stringliteral">&#39;By-&#39;</span>,<span class="stringliteral">&#39;By- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   19</span> ut.bookHist(h,<span class="stringliteral">&#39;Bz-&#39;</span>,<span class="stringliteral">&#39;Bz- component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   20</span> ut.bookHist(h,<span class="stringliteral">&#39;Bx+&#39;</span>,<span class="stringliteral">&#39;Bx+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   21</span> ut.bookHist(h,<span class="stringliteral">&#39;By+&#39;</span>,<span class="stringliteral">&#39;By+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   22</span> ut.bookHist(h,<span class="stringliteral">&#39;Bz+&#39;</span>,<span class="stringliteral">&#39;Bz+ component ;z [cm];x [cm];y [cm]&#39;</span>,grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)</div>
+<div class="line"><span class="lineno">   23</span> h[<span class="stringliteral">&#39;Bx-&#39;</span>].SetMarkerColor(ROOT.kGreen-3)</div>
+<div class="line"><span class="lineno">   24</span> h[<span class="stringliteral">&#39;Bx+&#39;</span>].SetMarkerColor(ROOT.kGreen+3)</div>
+<div class="line"><span class="lineno">   25</span> h[<span class="stringliteral">&#39;By-&#39;</span>].SetMarkerColor(ROOT.kBlue-3)</div>
+<div class="line"><span class="lineno">   26</span> h[<span class="stringliteral">&#39;By+&#39;</span>].SetMarkerColor(ROOT.kBlue+3)</div>
+<div class="line"><span class="lineno">   27</span> h[<span class="stringliteral">&#39;Bz-&#39;</span>].SetMarkerColor(ROOT.kCyan-2)</div>
+<div class="line"><span class="lineno">   28</span> h[<span class="stringliteral">&#39;Bz+&#39;</span>].SetMarkerColor(ROOT.kCyan+2)</div>
+<div class="line"><span class="lineno">   29</span> <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> range(grid[0]):</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> range(grid[1]):</div>
+<div class="line"><span class="lineno">   31</span>   <span class="keywordflow">for</span> iz <span class="keywordflow">in</span> range(grid[2]):</div>
+<div class="line"><span class="lineno">   32</span>    x,y,z = xmin + ix*dx,ymin + iy*dy,zmin + iz*dz</div>
+<div class="line"><span class="lineno">   33</span>    n = fGeo.FindNode(x,y,z)</div>
+<div class="line"><span class="lineno">   34</span>    f = n.GetVolume().GetField()</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> f:</div>
+<div class="line"><span class="lineno">   36</span>      <span class="keywordflow">if</span> f.GetFieldValue()[0]&lt;0:  rc=h[<span class="stringliteral">&#39;Bx-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[0]/u.tesla)</div>
+<div class="line"><span class="lineno">   37</span>      <span class="keywordflow">if</span> f.GetFieldValue()[0]&gt;0:  rc=h[<span class="stringliteral">&#39;Bx+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[0]/u.tesla)</div>
+<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">if</span> f.GetFieldValue()[1]&lt;0:  rc=h[<span class="stringliteral">&#39;By-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[1]/u.tesla)</div>
+<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">if</span> f.GetFieldValue()[1]&gt;0:  rc=h[<span class="stringliteral">&#39;By+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[1]/u.tesla)</div>
+<div class="line"><span class="lineno">   40</span>      <span class="keywordflow">if</span> f.GetFieldValue()[2]&lt;0:  rc=h[<span class="stringliteral">&#39;Bz-&#39;</span>].Fill(z,x,y,-f.GetFieldValue()[2]/u.tesla)</div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">if</span> f.GetFieldValue()[2]&gt;0:  rc=h[<span class="stringliteral">&#39;Bz+&#39;</span>].Fill(z,x,y,f.GetFieldValue()[2]/u.tesla)</div>
+<div class="line"><span class="lineno">   42</span>    f = run.GetField()</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> f.GetBx(x,y,z)&lt;0: rc=h[<span class="stringliteral">&#39;Bx-&#39;</span>].Fill(z,x,y,-f.GetBx(x,y,z)/u.tesla)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> f.GetBx(x,y,z)&gt;0: rc=h[<span class="stringliteral">&#39;Bx+&#39;</span>].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla)</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> f.GetBy(x,y,z)&lt;0: rc=h[<span class="stringliteral">&#39;By-&#39;</span>].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> f.GetBy(x,y,z)&gt;0: rc=h[<span class="stringliteral">&#39;By+&#39;</span>].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla)</div>
+<div class="line"><span class="lineno">   47</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
+<div class="line"><span class="lineno">   48</span>  hi = h[x]</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> hi.ClassName()==<span class="stringliteral">&#39;TH3F&#39;</span>:</div>
+<div class="line"><span class="lineno">   50</span>   h[x+<span class="stringliteral">&#39;_xz&#39;</span>]=h[x].Project3D(<span class="stringliteral">&#39;xy&#39;</span>)</div>
+<div class="line"><span class="lineno">   51</span>   h[x+<span class="stringliteral">&#39;_xz&#39;</span>].SetTitle(hi.GetTitle()+<span class="stringliteral">&#39; top view&#39;</span>)</div>
+<div class="line"><span class="lineno">   52</span>   h[x+<span class="stringliteral">&#39;_yz&#39;</span>]=h[x].Project3D(<span class="stringliteral">&#39;xz&#39;</span>)</div>
+<div class="line"><span class="lineno">   53</span>   h[x+<span class="stringliteral">&#39;_yz&#39;</span>].SetTitle(hi.GetTitle()+<span class="stringliteral">&#39; side view&#39;</span>)</div>
+<div class="line"><span class="lineno">   54</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">   55</span>  h[x].SetStats(0)</div>
+<div class="line"><span class="lineno">   56</span>  h[x].SetMarkerSize(3)</div>
+<div class="line"><span class="lineno">   57</span> txt = {<span class="stringliteral">&#39;y&#39;</span>:[<span class="stringliteral">&#39; Up&#39;</span>,<span class="stringliteral">&#39; Down&#39;</span>],<span class="stringliteral">&#39;x&#39;</span>:[<span class="stringliteral">&#39; Right&#39;</span>,<span class="stringliteral">&#39; Left&#39;</span>]}</div>
+<div class="line"><span class="lineno">   58</span> <span class="keywordflow">for</span> pol <span class="keywordflow">in</span> [<span class="stringliteral">&#39;y&#39;</span>,<span class="stringliteral">&#39;x&#39;</span>]:</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&#39;_xz&#39;</span>,<span class="stringliteral">&#39;_yz&#39;</span>]:</div>
+<div class="line"><span class="lineno">   60</span>   cn = <span class="stringliteral">&#39;c&#39;</span>+pol+p</div>
+<div class="line"><span class="lineno">   61</span>   ut.bookCanvas(h,key=cn,title=<span class="stringliteral">&#39;field check&#39;</span>,nx=1600,ny=1200,cx=1,cy=1)</div>
+<div class="line"><span class="lineno">   62</span>   h[cn].cd(1)</div>
+<div class="line"><span class="lineno">   63</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;+&#39;</span>+p].Draw()</div>
+<div class="line"><span class="lineno">   64</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;-&#39;</span>+p].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><span class="lineno">   65</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p] = ROOT.TLegend(0.79,0.72,0.91,0.87)</div>
+<div class="line"><span class="lineno">   66</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].AddEntry(h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;+&#39;</span>],<span class="stringliteral">&#39;B&#39;</span>+pol+txt[pol][0],<span class="stringliteral">&#39;PM&#39;</span>)</div>
+<div class="line"><span class="lineno">   67</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].AddEntry(h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;-&#39;</span>],<span class="stringliteral">&#39;B&#39;</span>+pol+txt[pol][1],<span class="stringliteral">&#39;PM&#39;</span>)</div>
+<div class="line"><span class="lineno">   68</span>   h[<span class="stringliteral">&#39;B&#39;</span>+pol+<span class="stringliteral">&#39;L&#39;</span>+p].Draw()</div>
+<div class="line"><span class="lineno">   69</span>   h[cn].Update()</div>
+<div class="line"><span class="lineno">   70</span>   h[cn].Print(<span class="stringliteral">&#39;FieldB&#39;</span>+pol+<span class="stringliteral">&#39;Proj&#39;</span>+p+<span class="stringliteral">&#39;.png&#39;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>

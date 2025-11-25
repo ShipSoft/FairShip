@@ -166,7 +166,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">SUSY RPV neutralino  physics according to the nuMSM
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00411">411</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00414">414</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac386b1690642a9eb9acce952a69df266" name="ac386b1690642a9eb9acce952a69df266"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac386b1690642a9eb9acce952a69df266">&#9670;&#160;</a></span>__init__()</h2>
@@ -226,18 +226,18 @@ Public Attributes</h2></td></tr>
     which benchmark (integer between 1 and 5 inclusive)</pre> 
 <p>Reimplemented from <a class="el" href="classrpvsusy_1_1RPVSUSYbranchings.html#a187342e4a9b5941dfde4cd9e2cf1a1c8">rpvsusy.RPVSUSYbranchings</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00415">415</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  415</span>    <span class="keyword">def </span>__init__(self, mass, couplings, sfmass, benchmark, debug=False):</div>
-<div class="line"><span class="lineno">  416</span>        <span class="stringliteral">r&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  417</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
-<div class="line"><span class="lineno">  418</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  419</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  420</span><span class="stringliteral">        mass (GeV)</span></div>
-<div class="line"><span class="lineno">  421</span><span class="stringliteral">        couplings (list of [\lambda_{production}^{2}, \lambda_{decay}^{2}])</span></div>
-<div class="line"><span class="lineno">  422</span><span class="stringliteral">        mass of universal sfermion</span></div>
-<div class="line"><span class="lineno">  423</span><span class="stringliteral">        which benchmark (integer between 1 and 5 inclusive)</span></div>
-<div class="line"><span class="lineno">  424</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  425</span>        RPVSUSYbranchings.__init__(self, mass, couplings, sfmass, benchmark, debug)</div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00418">418</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  418</span>    <span class="keyword">def </span>__init__(self, mass, couplings, sfmass, benchmark, debug=False):</div>
+<div class="line"><span class="lineno">  419</span>        <span class="stringliteral">r&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  420</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
+<div class="line"><span class="lineno">  421</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  422</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  423</span><span class="stringliteral">        mass (GeV)</span></div>
+<div class="line"><span class="lineno">  424</span><span class="stringliteral">        couplings (list of [\lambda_{production}^{2}, \lambda_{decay}^{2}])</span></div>
+<div class="line"><span class="lineno">  425</span><span class="stringliteral">        mass of universal sfermion</span></div>
+<div class="line"><span class="lineno">  426</span><span class="stringliteral">        which benchmark (integer between 1 and 5 inclusive)</span></div>
+<div class="line"><span class="lineno">  427</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  428</span>        RPVSUSYbranchings.__init__(self, mass, couplings, sfmass, benchmark, debug)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -272,20 +272,20 @@ Public Attributes</h2></td></tr>
 Inputs:
 - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00426">426</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  426</span>    <span class="keyword">def </span>computeNLifetime(self,system=&quot;SI&quot;):</div>
-<div class="line"><span class="lineno">  427</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  428</span><span class="stringliteral">        Compute the RPV neutralino lifetime</span></div>
-<div class="line"><span class="lineno">  429</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  430</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  431</span><span class="stringliteral">        - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)</span></div>
-<div class="line"><span class="lineno">  432</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  433</span>        decwidth = self.NdecayWidth()</div>
-<div class="line"><span class="lineno">  434</span>        <span class="keywordflow">if</span> decwidth == 0.0:</div>
-<div class="line"><span class="lineno">  435</span>            <span class="keywordflow">return</span> 0.0</div>
-<div class="line"><span class="lineno">  436</span>        self.NLifetime = c.hGeV / decwidth</div>
-<div class="line"><span class="lineno">  437</span>        <span class="keywordflow">if</span> system == <span class="stringliteral">&quot;FairShip&quot;</span>: self.NLifetime *= 1.e9</div>
-<div class="line"><span class="lineno">  438</span>        <span class="keywordflow">return</span> self.NLifetime</div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00429">429</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  429</span>    <span class="keyword">def </span>computeNLifetime(self,system=&quot;SI&quot;):</div>
+<div class="line"><span class="lineno">  430</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  431</span><span class="stringliteral">        Compute the RPV neutralino lifetime</span></div>
+<div class="line"><span class="lineno">  432</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  433</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  434</span><span class="stringliteral">        - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)</span></div>
+<div class="line"><span class="lineno">  435</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  436</span>        decwidth = self.NdecayWidth()</div>
+<div class="line"><span class="lineno">  437</span>        <span class="keywordflow">if</span> decwidth == 0.0:</div>
+<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">return</span> 0.0</div>
+<div class="line"><span class="lineno">  439</span>        self.NLifetime = c.hGeV / decwidth</div>
+<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">if</span> system == <span class="stringliteral">&quot;FairShip&quot;</span>: self.NLifetime *= 1.e9</div>
+<div class="line"><span class="lineno">  441</span>        <span class="keywordflow">return</span> self.NLifetime</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -302,7 +302,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00436">436</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00439">439</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>

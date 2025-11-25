@@ -195,32 +195,32 @@ Returns
 -------
 dict
     The environment dict to pass into ``subprocess.run``.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00062">62</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span>_merge_env(env_vars: Mapping[str, str | <span class="keywordtype">None</span>] | <span class="keywordtype">None</span>) -&gt; dict[str, str]:</div>
-<div class="line"><span class="lineno">   63</span>    <span class="stringliteral">&quot;&quot;&quot;Merge ``env_vars`` with the current environment.</span></div>
-<div class="line"><span class="lineno">   64</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   65</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">   66</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">   67</span><span class="stringliteral">    env_vars:</span></div>
-<div class="line"><span class="lineno">   68</span><span class="stringliteral">        Mapping of KEY -&gt; VALUE to set for the child process. Use ``None`` to</span></div>
-<div class="line"><span class="lineno">   69</span><span class="stringliteral">        **unset** a variable (remove it) for the child environment.</span></div>
-<div class="line"><span class="lineno">   70</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   71</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">   72</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">   73</span><span class="stringliteral">    dict</span></div>
-<div class="line"><span class="lineno">   74</span><span class="stringliteral">        The environment dict to pass into ``subprocess.run``.</span></div>
-<div class="line"><span class="lineno">   75</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   76</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   77</span>    env: dict[str, str] = dict(os.environ)</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> env_vars:</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> env_vars.items():</div>
-<div class="line"><span class="lineno">   80</span>            <span class="keywordflow">if</span> v <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   81</span>                env.pop(k, <span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">   82</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   83</span>                env[k] = str(v)</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> env</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00065">65</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>_merge_env(env_vars: Mapping[str, str | <span class="keywordtype">None</span>] | <span class="keywordtype">None</span>) -&gt; dict[str, str]:</div>
+<div class="line"><span class="lineno">   66</span>    <span class="stringliteral">&quot;&quot;&quot;Merge ``env_vars`` with the current environment.</span></div>
+<div class="line"><span class="lineno">   67</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   68</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">   69</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">   70</span><span class="stringliteral">    env_vars:</span></div>
+<div class="line"><span class="lineno">   71</span><span class="stringliteral">        Mapping of KEY -&gt; VALUE to set for the child process. Use ``None`` to</span></div>
+<div class="line"><span class="lineno">   72</span><span class="stringliteral">        **unset** a variable (remove it) for the child environment.</span></div>
+<div class="line"><span class="lineno">   73</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   74</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">   75</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">   76</span><span class="stringliteral">    dict</span></div>
+<div class="line"><span class="lineno">   77</span><span class="stringliteral">        The environment dict to pass into ``subprocess.run``.</span></div>
+<div class="line"><span class="lineno">   78</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   79</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   80</span>    env: dict[str, str] = dict(os.environ)</div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> env_vars:</div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> env_vars.items():</div>
+<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">if</span> v <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   84</span>                env.pop(k, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   85</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   86</span>                env[k] = str(v)</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> env</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -248,18 +248,18 @@ dict
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Parse ``KEY=VAL`` pairs for ``--env`` CLI flag.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00372">372</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  372</span><span class="keyword">def </span>_parse_env_kv(pairs: Sequence[str]) -&gt; dict[str, str | <span class="keywordtype">None</span>]:</div>
-<div class="line"><span class="lineno">  373</span>    <span class="stringliteral">&quot;&quot;&quot;Parse ``KEY=VAL`` pairs for ``--env`` CLI flag.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  374</span>    out: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pairs:</div>
-<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;=&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> p:</div>
-<div class="line"><span class="lineno">  377</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Expected KEY=VALUE, got &#39;{p}&#39;&quot;</span>)</div>
-<div class="line"><span class="lineno">  378</span>        k, v = p.split(<span class="stringliteral">&quot;=&quot;</span>, 1)</div>
-<div class="line"><span class="lineno">  379</span>        out[k] = v</div>
-<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">return</span> out</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00375">375</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  375</span><span class="keyword">def </span>_parse_env_kv(pairs: Sequence[str]) -&gt; dict[str, str | <span class="keywordtype">None</span>]:</div>
+<div class="line"><span class="lineno">  376</span>    <span class="stringliteral">&quot;&quot;&quot;Parse ``KEY=VAL`` pairs for ``--env`` CLI flag.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  377</span>    out: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
+<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pairs:</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;=&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> p:</div>
+<div class="line"><span class="lineno">  380</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Expected KEY=VALUE, got &#39;{p}&#39;&quot;</span>)</div>
+<div class="line"><span class="lineno">  381</span>        k, v = p.split(<span class="stringliteral">&quot;=&quot;</span>, 1)</div>
+<div class="line"><span class="lineno">  382</span>        out[k] = v</div>
+<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">return</span> out</div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -323,38 +323,38 @@ Raises
 ------
 subprocess.CalledProcessError
     If the command exits with non-zero status and ``check=True``.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00087">87</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>) -&gt; subprocess.CompletedProcess:</div>
-<div class="line"><span class="lineno">   93</span>    <span class="stringliteral">&quot;&quot;&quot;Run a command with optional environment overrides.</span></div>
-<div class="line"><span class="lineno">   94</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   95</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">   96</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">   97</span><span class="stringliteral">    args:</span></div>
-<div class="line"><span class="lineno">   98</span><span class="stringliteral">        Command and arguments, each as a separate list element. (No shell.)</span></div>
-<div class="line"><span class="lineno">   99</span><span class="stringliteral">    env_vars:</span></div>
-<div class="line"><span class="lineno">  100</span><span class="stringliteral">        Optional mapping of KEY -&gt; VALUE to inject into the child environment.</span></div>
-<div class="line"><span class="lineno">  101</span><span class="stringliteral">        Use ``None`` value to **unset** a variable.</span></div>
-<div class="line"><span class="lineno">  102</span><span class="stringliteral">    check:</span></div>
-<div class="line"><span class="lineno">  103</span><span class="stringliteral">        If True (default), raise ``CalledProcessError`` on non-zero exit.</span></div>
-<div class="line"><span class="lineno">  104</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  105</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">  106</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">  107</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
-<div class="line"><span class="lineno">  108</span><span class="stringliteral">        The completed process object.</span></div>
-<div class="line"><span class="lineno">  109</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  110</span><span class="stringliteral">    Raises</span></div>
-<div class="line"><span class="lineno">  111</span><span class="stringliteral">    ------</span></div>
-<div class="line"><span class="lineno">  112</span><span class="stringliteral">    subprocess.CalledProcessError</span></div>
-<div class="line"><span class="lineno">  113</span><span class="stringliteral">        If the command exits with non-zero status and ``check=True``.</span></div>
-<div class="line"><span class="lineno">  114</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  115</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  116</span>    env = _merge_env(env_vars)</div>
-<div class="line"><span class="lineno">  117</span>    cmd_str = shlex.join(args)</div>
-<div class="line"><span class="lineno">  118</span>    logger.info(<span class="stringliteral">&quot;Executing: %s&quot;</span>, cmd_str)</div>
-<div class="line"><span class="lineno">  119</span>    print(<span class="stringliteral">&quot;&gt;&gt;&quot;</span>, cmd_str)</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">return</span> subprocess.run(args, env=env, check=check)</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00090">90</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>) -&gt; subprocess.CompletedProcess:</div>
+<div class="line"><span class="lineno">   96</span>    <span class="stringliteral">&quot;&quot;&quot;Run a command with optional environment overrides.</span></div>
+<div class="line"><span class="lineno">   97</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   98</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">   99</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">  100</span><span class="stringliteral">    args:</span></div>
+<div class="line"><span class="lineno">  101</span><span class="stringliteral">        Command and arguments, each as a separate list element. (No shell.)</span></div>
+<div class="line"><span class="lineno">  102</span><span class="stringliteral">    env_vars:</span></div>
+<div class="line"><span class="lineno">  103</span><span class="stringliteral">        Optional mapping of KEY -&gt; VALUE to inject into the child environment.</span></div>
+<div class="line"><span class="lineno">  104</span><span class="stringliteral">        Use ``None`` value to **unset** a variable.</span></div>
+<div class="line"><span class="lineno">  105</span><span class="stringliteral">    check:</span></div>
+<div class="line"><span class="lineno">  106</span><span class="stringliteral">        If True (default), raise ``CalledProcessError`` on non-zero exit.</span></div>
+<div class="line"><span class="lineno">  107</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  108</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">  109</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">  110</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
+<div class="line"><span class="lineno">  111</span><span class="stringliteral">        The completed process object.</span></div>
+<div class="line"><span class="lineno">  112</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  113</span><span class="stringliteral">    Raises</span></div>
+<div class="line"><span class="lineno">  114</span><span class="stringliteral">    ------</span></div>
+<div class="line"><span class="lineno">  115</span><span class="stringliteral">    subprocess.CalledProcessError</span></div>
+<div class="line"><span class="lineno">  116</span><span class="stringliteral">        If the command exits with non-zero status and ``check=True``.</span></div>
+<div class="line"><span class="lineno">  117</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  118</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  119</span>    env = _merge_env(env_vars)</div>
+<div class="line"><span class="lineno">  120</span>    cmd_str = shlex.join(args)</div>
+<div class="line"><span class="lineno">  121</span>    logger.info(<span class="stringliteral">&quot;Executing: %s&quot;</span>, cmd_str)</div>
+<div class="line"><span class="lineno">  122</span>    print(<span class="stringliteral">&quot;&gt;&gt;&quot;</span>, cmd_str)</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> subprocess.run(args, env=env, check=check)</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -406,51 +406,51 @@ FileNotFoundError
     If the requested histogram is not found in ``inputflux``.
 RuntimeError
     If ROOT fails to open either file.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00328">328</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  328</span><span class="keyword">def </span>add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  329</span>    <span class="stringliteral">&quot;&quot;&quot;Copy the 2D p–pT flux histogram from ``inputflux`` into ``simfile``.</span></div>
-<div class="line"><span class="lineno">  330</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  331</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">  332</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">  333</span><span class="stringliteral">    inputflux:</span></div>
-<div class="line"><span class="lineno">  334</span><span class="stringliteral">        Path to ROOT file containing TH2D flux histograms.</span></div>
-<div class="line"><span class="lineno">  335</span><span class="stringliteral">    simfile:</span></div>
-<div class="line"><span class="lineno">  336</span><span class="stringliteral">        Path to the simulation ROOT file to **update** (opened in &#39;UPDATE&#39; mode).</span></div>
-<div class="line"><span class="lineno">  337</span><span class="stringliteral">    nupdg:</span></div>
-<div class="line"><span class="lineno">  338</span><span class="stringliteral">        Neutrino PDG code used to select the histogram (see ``get_2D_flux_name``).</span></div>
-<div class="line"><span class="lineno">  339</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  340</span><span class="stringliteral">    Raises</span></div>
-<div class="line"><span class="lineno">  341</span><span class="stringliteral">    ------</span></div>
-<div class="line"><span class="lineno">  342</span><span class="stringliteral">    FileNotFoundError</span></div>
-<div class="line"><span class="lineno">  343</span><span class="stringliteral">        If the requested histogram is not found in ``inputflux``.</span></div>
-<div class="line"><span class="lineno">  344</span><span class="stringliteral">    RuntimeError</span></div>
-<div class="line"><span class="lineno">  345</span><span class="stringliteral">        If ROOT fails to open either file.</span></div>
-<div class="line"><span class="lineno">  346</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  347</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  348</span>    infile = ROOT.TFile(str(inputflux), <span class="stringliteral">&quot;READ&quot;</span>)</div>
-<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> infile <span class="keywordflow">or</span> infile.IsZombie():</div>
-<div class="line"><span class="lineno">  350</span>        <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Failed to open input flux file: {inputflux}&quot;</span>)</div>
-<div class="line"><span class="lineno">  351</span>    sfile = ROOT.TFile(str(simfile), <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> sfile <span class="keywordflow">or</span> sfile.IsZombie():</div>
-<div class="line"><span class="lineno">  353</span>        infile.Close()</div>
-<div class="line"><span class="lineno">  354</span>        <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Failed to open simulation file for update: {simfile}&quot;</span>)</div>
-<div class="line"><span class="lineno">  355</span> </div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  357</span>        hname = get_2D_flux_name(nupdg)</div>
-<div class="line"><span class="lineno">  358</span>        obj = infile.Get(hname)</div>
-<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> obj:</div>
-<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Histogram &#39;{hname}&#39; not found in {inputflux}&quot;</span>)</div>
-<div class="line"><span class="lineno">  361</span>        <span class="comment"># Write into the current directory of sfile</span></div>
-<div class="line"><span class="lineno">  362</span>        sfile.cd()</div>
-<div class="line"><span class="lineno">  363</span>        obj.Write()</div>
-<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">finally</span>:</div>
-<div class="line"><span class="lineno">  365</span>        infile.Close()</div>
-<div class="line"><span class="lineno">  366</span>        sfile.Close()</div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span><span class="comment"># --------------------------- CLI ---------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00331">331</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  331</span><span class="keyword">def </span>add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  332</span>    <span class="stringliteral">&quot;&quot;&quot;Copy the 2D p–pT flux histogram from ``inputflux`` into ``simfile``.</span></div>
+<div class="line"><span class="lineno">  333</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  334</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">  335</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">  336</span><span class="stringliteral">    inputflux:</span></div>
+<div class="line"><span class="lineno">  337</span><span class="stringliteral">        Path to ROOT file containing TH2D flux histograms.</span></div>
+<div class="line"><span class="lineno">  338</span><span class="stringliteral">    simfile:</span></div>
+<div class="line"><span class="lineno">  339</span><span class="stringliteral">        Path to the simulation ROOT file to **update** (opened in &#39;UPDATE&#39; mode).</span></div>
+<div class="line"><span class="lineno">  340</span><span class="stringliteral">    nupdg:</span></div>
+<div class="line"><span class="lineno">  341</span><span class="stringliteral">        Neutrino PDG code used to select the histogram (see ``get_2D_flux_name``).</span></div>
+<div class="line"><span class="lineno">  342</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  343</span><span class="stringliteral">    Raises</span></div>
+<div class="line"><span class="lineno">  344</span><span class="stringliteral">    ------</span></div>
+<div class="line"><span class="lineno">  345</span><span class="stringliteral">    FileNotFoundError</span></div>
+<div class="line"><span class="lineno">  346</span><span class="stringliteral">        If the requested histogram is not found in ``inputflux``.</span></div>
+<div class="line"><span class="lineno">  347</span><span class="stringliteral">    RuntimeError</span></div>
+<div class="line"><span class="lineno">  348</span><span class="stringliteral">        If ROOT fails to open either file.</span></div>
+<div class="line"><span class="lineno">  349</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  350</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  351</span>    infile = ROOT.TFile(str(inputflux), <span class="stringliteral">&quot;READ&quot;</span>)</div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> infile <span class="keywordflow">or</span> infile.IsZombie():</div>
+<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Failed to open input flux file: {inputflux}&quot;</span>)</div>
+<div class="line"><span class="lineno">  354</span>    sfile = ROOT.TFile(str(simfile), <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  355</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> sfile <span class="keywordflow">or</span> sfile.IsZombie():</div>
+<div class="line"><span class="lineno">  356</span>        infile.Close()</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Failed to open simulation file for update: {simfile}&quot;</span>)</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  360</span>        hname = get_2D_flux_name(nupdg)</div>
+<div class="line"><span class="lineno">  361</span>        obj = infile.Get(hname)</div>
+<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> obj:</div>
+<div class="line"><span class="lineno">  363</span>            <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Histogram &#39;{hname}&#39; not found in {inputflux}&quot;</span>)</div>
+<div class="line"><span class="lineno">  364</span>        <span class="comment"># Write into the current directory of sfile</span></div>
+<div class="line"><span class="lineno">  365</span>        sfile.cd()</div>
+<div class="line"><span class="lineno">  366</span>        obj.Write()</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">finally</span>:</div>
+<div class="line"><span class="lineno">  368</span>        infile.Close()</div>
+<div class="line"><span class="lineno">  369</span>        sfile.Close()</div>
 <div class="line"><span class="lineno">  370</span> </div>
 <div class="line"><span class="lineno">  371</span> </div>
+<div class="line"><span class="lineno">  372</span><span class="comment"># --------------------------- CLI ---------------------------------------------</span></div>
+<div class="line"><span class="lineno">  373</span> </div>
+<div class="line"><span class="lineno">  374</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -575,88 +575,88 @@ Notes
 If ``GENIE`` is defined in the child environment, this function will try
 to pass ``--message-thresholds $GENIE/config/Messenger_laconic.xml`` if
 the file exists; otherwise that option is omitted.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00208">208</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  222</span>) -&gt; subprocess.CompletedProcess:</div>
-<div class="line"><span class="lineno">  223</span>    <span class="stringliteral">&quot;&quot;&quot;Run GENIE ``gevgen`` to generate events.</span></div>
-<div class="line"><span class="lineno">  224</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  225</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">  226</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">  227</span><span class="stringliteral">    nevents:</span></div>
-<div class="line"><span class="lineno">  228</span><span class="stringliteral">        Number of events to generate.</span></div>
-<div class="line"><span class="lineno">  229</span><span class="stringliteral">    nupdg:</span></div>
-<div class="line"><span class="lineno">  230</span><span class="stringliteral">        Neutrino PDG code (e.g. 12, 14, 16 or negatives for anti-neutrinos).</span></div>
-<div class="line"><span class="lineno">  231</span><span class="stringliteral">    emin, emax:</span></div>
-<div class="line"><span class="lineno">  232</span><span class="stringliteral">        Energy range in GeV (inclusive, inclusive as accepted by GENIE).</span></div>
-<div class="line"><span class="lineno">  233</span><span class="stringliteral">    targetcode:</span></div>
-<div class="line"><span class="lineno">  234</span><span class="stringliteral">        GENIE nuclear target code.</span></div>
-<div class="line"><span class="lineno">  235</span><span class="stringliteral">    inputflux:</span></div>
-<div class="line"><span class="lineno">  236</span><span class="stringliteral">        Path to ROOT file with flux histograms.</span></div>
-<div class="line"><span class="lineno">  237</span><span class="stringliteral">    spline:</span></div>
-<div class="line"><span class="lineno">  238</span><span class="stringliteral">        Path to GENIE cross-section spline XML file.</span></div>
-<div class="line"><span class="lineno">  239</span><span class="stringliteral">    outputfile:</span></div>
-<div class="line"><span class="lineno">  240</span><span class="stringliteral">        Output prefix/file for GENIE (as accepted by ``-o``).</span></div>
-<div class="line"><span class="lineno">  241</span><span class="stringliteral">    process:</span></div>
-<div class="line"><span class="lineno">  242</span><span class="stringliteral">        Optional GENIE generator list (e.g. ``&#39;CCDIS&#39;``, ``&#39;NC&#39;``).</span></div>
-<div class="line"><span class="lineno">  243</span><span class="stringliteral">    seed:</span></div>
-<div class="line"><span class="lineno">  244</span><span class="stringliteral">        Optional RNG seed for reproducibility.</span></div>
-<div class="line"><span class="lineno">  245</span><span class="stringliteral">    irun:</span></div>
-<div class="line"><span class="lineno">  246</span><span class="stringliteral">        Optional integer run number (``--run``).</span></div>
-<div class="line"><span class="lineno">  247</span><span class="stringliteral">    env_vars:</span></div>
-<div class="line"><span class="lineno">  248</span><span class="stringliteral">        Per-call environment overrides (e.g. set/unset ``GXMLPATH``, ``GENIE``).</span></div>
-<div class="line"><span class="lineno">  249</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  250</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">  251</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">  252</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
-<div class="line"><span class="lineno">  253</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  254</span><span class="stringliteral">    Notes</span></div>
-<div class="line"><span class="lineno">  255</span><span class="stringliteral">    -----</span></div>
-<div class="line"><span class="lineno">  256</span><span class="stringliteral">    If ``GENIE`` is defined in the child environment, this function will try</span></div>
-<div class="line"><span class="lineno">  257</span><span class="stringliteral">    to pass ``--message-thresholds $GENIE/config/Messenger_laconic.xml`` if</span></div>
-<div class="line"><span class="lineno">  258</span><span class="stringliteral">    the file exists; otherwise that option is omitted.</span></div>
-<div class="line"><span class="lineno">  259</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  260</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  261</span>    env = _merge_env(env_vars)</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>    msg_xml = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  264</span>    genie_root = env.get(<span class="stringliteral">&quot;GENIE&quot;</span>)</div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">if</span> genie_root:</div>
-<div class="line"><span class="lineno">  266</span>        candidate = os.path.join(genie_root, <span class="stringliteral">&quot;config&quot;</span>, <span class="stringliteral">&quot;Messenger_laconic.xml&quot;</span>)</div>
-<div class="line"><span class="lineno">  267</span>        <span class="keywordflow">if</span> os.path.isfile(candidate):</div>
-<div class="line"><span class="lineno">  268</span>            msg_xml = candidate</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>    args = [</div>
-<div class="line"><span class="lineno">  271</span>        <span class="stringliteral">&quot;gevgen&quot;</span>,</div>
-<div class="line"><span class="lineno">  272</span>        <span class="stringliteral">&quot;-n&quot;</span>,</div>
-<div class="line"><span class="lineno">  273</span>        str(nevents),</div>
-<div class="line"><span class="lineno">  274</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
-<div class="line"><span class="lineno">  275</span>        str(nupdg),</div>
-<div class="line"><span class="lineno">  276</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><span class="lineno">  277</span>        targetcode,</div>
-<div class="line"><span class="lineno">  278</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
-<div class="line"><span class="lineno">  279</span>        f<span class="stringliteral">&quot;{emin},{emax}&quot;</span>,</div>
-<div class="line"><span class="lineno">  280</span>    ]</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">if</span> msg_xml:</div>
-<div class="line"><span class="lineno">  282</span>        args += [<span class="stringliteral">&quot;--message-thresholds&quot;</span>, msg_xml]</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    args += [</div>
-<div class="line"><span class="lineno">  285</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
-<div class="line"><span class="lineno">  286</span>        f<span class="stringliteral">&quot;{inputflux},{get_1D_flux_name(nupdg)}&quot;</span>,</div>
-<div class="line"><span class="lineno">  287</span>        <span class="stringliteral">&quot;--cross-sections&quot;</span>,</div>
-<div class="line"><span class="lineno">  288</span>        str(spline),</div>
-<div class="line"><span class="lineno">  289</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
-<div class="line"><span class="lineno">  290</span>        str(outputfile),</div>
-<div class="line"><span class="lineno">  291</span>    ]</div>
-<div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>    <span class="keywordflow">if</span> process <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  294</span>        args += [<span class="stringliteral">&quot;--event-generator-list&quot;</span>, process]</div>
-<div class="line"><span class="lineno">  295</span>    <span class="keywordflow">if</span> seed <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  296</span>        args += [<span class="stringliteral">&quot;--seed&quot;</span>, str(seed)]</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keywordflow">if</span> irun <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  298</span>        args += [<span class="stringliteral">&quot;--run&quot;</span>, str(irun)]</div>
-<div class="line"><span class="lineno">  299</span> </div>
-<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
-<div class="line"><span class="lineno">  301</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00211">211</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  225</span>) -&gt; subprocess.CompletedProcess:</div>
+<div class="line"><span class="lineno">  226</span>    <span class="stringliteral">&quot;&quot;&quot;Run GENIE ``gevgen`` to generate events.</span></div>
+<div class="line"><span class="lineno">  227</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  228</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">  229</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">  230</span><span class="stringliteral">    nevents:</span></div>
+<div class="line"><span class="lineno">  231</span><span class="stringliteral">        Number of events to generate.</span></div>
+<div class="line"><span class="lineno">  232</span><span class="stringliteral">    nupdg:</span></div>
+<div class="line"><span class="lineno">  233</span><span class="stringliteral">        Neutrino PDG code (e.g. 12, 14, 16 or negatives for anti-neutrinos).</span></div>
+<div class="line"><span class="lineno">  234</span><span class="stringliteral">    emin, emax:</span></div>
+<div class="line"><span class="lineno">  235</span><span class="stringliteral">        Energy range in GeV (inclusive, inclusive as accepted by GENIE).</span></div>
+<div class="line"><span class="lineno">  236</span><span class="stringliteral">    targetcode:</span></div>
+<div class="line"><span class="lineno">  237</span><span class="stringliteral">        GENIE nuclear target code.</span></div>
+<div class="line"><span class="lineno">  238</span><span class="stringliteral">    inputflux:</span></div>
+<div class="line"><span class="lineno">  239</span><span class="stringliteral">        Path to ROOT file with flux histograms.</span></div>
+<div class="line"><span class="lineno">  240</span><span class="stringliteral">    spline:</span></div>
+<div class="line"><span class="lineno">  241</span><span class="stringliteral">        Path to GENIE cross-section spline XML file.</span></div>
+<div class="line"><span class="lineno">  242</span><span class="stringliteral">    outputfile:</span></div>
+<div class="line"><span class="lineno">  243</span><span class="stringliteral">        Output prefix/file for GENIE (as accepted by ``-o``).</span></div>
+<div class="line"><span class="lineno">  244</span><span class="stringliteral">    process:</span></div>
+<div class="line"><span class="lineno">  245</span><span class="stringliteral">        Optional GENIE generator list (e.g. ``&#39;CCDIS&#39;``, ``&#39;NC&#39;``).</span></div>
+<div class="line"><span class="lineno">  246</span><span class="stringliteral">    seed:</span></div>
+<div class="line"><span class="lineno">  247</span><span class="stringliteral">        Optional RNG seed for reproducibility.</span></div>
+<div class="line"><span class="lineno">  248</span><span class="stringliteral">    irun:</span></div>
+<div class="line"><span class="lineno">  249</span><span class="stringliteral">        Optional integer run number (``--run``).</span></div>
+<div class="line"><span class="lineno">  250</span><span class="stringliteral">    env_vars:</span></div>
+<div class="line"><span class="lineno">  251</span><span class="stringliteral">        Per-call environment overrides (e.g. set/unset ``GXMLPATH``, ``GENIE``).</span></div>
+<div class="line"><span class="lineno">  252</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  253</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">  254</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">  255</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
+<div class="line"><span class="lineno">  256</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  257</span><span class="stringliteral">    Notes</span></div>
+<div class="line"><span class="lineno">  258</span><span class="stringliteral">    -----</span></div>
+<div class="line"><span class="lineno">  259</span><span class="stringliteral">    If ``GENIE`` is defined in the child environment, this function will try</span></div>
+<div class="line"><span class="lineno">  260</span><span class="stringliteral">    to pass ``--message-thresholds $GENIE/config/Messenger_laconic.xml`` if</span></div>
+<div class="line"><span class="lineno">  261</span><span class="stringliteral">    the file exists; otherwise that option is omitted.</span></div>
+<div class="line"><span class="lineno">  262</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  263</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  264</span>    env = _merge_env(env_vars)</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    msg_xml = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  267</span>    genie_root = env.get(<span class="stringliteral">&quot;GENIE&quot;</span>)</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">if</span> genie_root:</div>
+<div class="line"><span class="lineno">  269</span>        candidate = os.path.join(genie_root, <span class="stringliteral">&quot;config&quot;</span>, <span class="stringliteral">&quot;Messenger_laconic.xml&quot;</span>)</div>
+<div class="line"><span class="lineno">  270</span>        <span class="keywordflow">if</span> os.path.isfile(candidate):</div>
+<div class="line"><span class="lineno">  271</span>            msg_xml = candidate</div>
+<div class="line"><span class="lineno">  272</span> </div>
+<div class="line"><span class="lineno">  273</span>    args = [</div>
+<div class="line"><span class="lineno">  274</span>        <span class="stringliteral">&quot;gevgen&quot;</span>,</div>
+<div class="line"><span class="lineno">  275</span>        <span class="stringliteral">&quot;-n&quot;</span>,</div>
+<div class="line"><span class="lineno">  276</span>        str(nevents),</div>
+<div class="line"><span class="lineno">  277</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
+<div class="line"><span class="lineno">  278</span>        str(nupdg),</div>
+<div class="line"><span class="lineno">  279</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><span class="lineno">  280</span>        targetcode,</div>
+<div class="line"><span class="lineno">  281</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
+<div class="line"><span class="lineno">  282</span>        f<span class="stringliteral">&quot;{emin},{emax}&quot;</span>,</div>
+<div class="line"><span class="lineno">  283</span>    ]</div>
+<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">if</span> msg_xml:</div>
+<div class="line"><span class="lineno">  285</span>        args += [<span class="stringliteral">&quot;--message-thresholds&quot;</span>, msg_xml]</div>
+<div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span>    args += [</div>
+<div class="line"><span class="lineno">  288</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
+<div class="line"><span class="lineno">  289</span>        f<span class="stringliteral">&quot;{inputflux},{get_1D_flux_name(nupdg)}&quot;</span>,</div>
+<div class="line"><span class="lineno">  290</span>        <span class="stringliteral">&quot;--cross-sections&quot;</span>,</div>
+<div class="line"><span class="lineno">  291</span>        str(spline),</div>
+<div class="line"><span class="lineno">  292</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
+<div class="line"><span class="lineno">  293</span>        str(outputfile),</div>
+<div class="line"><span class="lineno">  294</span>    ]</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">if</span> process <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  297</span>        args += [<span class="stringliteral">&quot;--event-generator-list&quot;</span>, process]</div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">if</span> seed <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  299</span>        args += [<span class="stringliteral">&quot;--seed&quot;</span>, str(seed)]</div>
+<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">if</span> irun <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  301</span>        args += [<span class="stringliteral">&quot;--run&quot;</span>, str(irun)]</div>
 <div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -687,26 +687,26 @@ Examples
 '1012'
 &gt;&gt;&gt; get_1D_flux_name(-12)   # anti-nu_e
 '2012'</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00123">123</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  123</span><span class="keyword">def </span>get_1D_flux_name(nupdg: int) -&gt; str:</div>
-<div class="line"><span class="lineno">  124</span>    <span class="stringliteral">&quot;&quot;&quot;Return the TH1D flux histogram name for a given neutrino PDG.</span></div>
-<div class="line"><span class="lineno">  125</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  126</span><span class="stringliteral">    Naming convention (as used by input flux ROOT files):</span></div>
-<div class="line"><span class="lineno">  127</span><span class="stringliteral">    - Neutrino (PDG &gt; 0):  ``&#39;10&#39; + |pdg|``</span></div>
-<div class="line"><span class="lineno">  128</span><span class="stringliteral">    - Anti-neutrino (PDG &lt; 0): ``&#39;20&#39; + |pdg|``</span></div>
-<div class="line"><span class="lineno">  129</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  130</span><span class="stringliteral">    Examples</span></div>
-<div class="line"><span class="lineno">  131</span><span class="stringliteral">    --------</span></div>
-<div class="line"><span class="lineno">  132</span><span class="stringliteral">    &gt;&gt;&gt; get_1D_flux_name(12)    # nu_e</span></div>
-<div class="line"><span class="lineno">  133</span><span class="stringliteral">    &#39;1012&#39;</span></div>
-<div class="line"><span class="lineno">  134</span><span class="stringliteral">    &gt;&gt;&gt; get_1D_flux_name(-12)   # anti-nu_e</span></div>
-<div class="line"><span class="lineno">  135</span><span class="stringliteral">    &#39;2012&#39;</span></div>
-<div class="line"><span class="lineno">  136</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  137</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  138</span>    x = ROOT.TMath.Abs(nupdg)</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">return</span> (<span class="stringliteral">&quot;10&quot;</span> <span class="keywordflow">if</span> nupdg &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&quot;20&quot;</span>) + str(x)</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00126">126</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span><span class="keyword">def </span>get_1D_flux_name(nupdg: int) -&gt; str:</div>
+<div class="line"><span class="lineno">  127</span>    <span class="stringliteral">&quot;&quot;&quot;Return the TH1D flux histogram name for a given neutrino PDG.</span></div>
+<div class="line"><span class="lineno">  128</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  129</span><span class="stringliteral">    Naming convention (as used by input flux ROOT files):</span></div>
+<div class="line"><span class="lineno">  130</span><span class="stringliteral">    - Neutrino (PDG &gt; 0):  ``&#39;10&#39; + |pdg|``</span></div>
+<div class="line"><span class="lineno">  131</span><span class="stringliteral">    - Anti-neutrino (PDG &lt; 0): ``&#39;20&#39; + |pdg|``</span></div>
+<div class="line"><span class="lineno">  132</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  133</span><span class="stringliteral">    Examples</span></div>
+<div class="line"><span class="lineno">  134</span><span class="stringliteral">    --------</span></div>
+<div class="line"><span class="lineno">  135</span><span class="stringliteral">    &gt;&gt;&gt; get_1D_flux_name(12)    # nu_e</span></div>
+<div class="line"><span class="lineno">  136</span><span class="stringliteral">    &#39;1012&#39;</span></div>
+<div class="line"><span class="lineno">  137</span><span class="stringliteral">    &gt;&gt;&gt; get_1D_flux_name(-12)   # anti-nu_e</span></div>
+<div class="line"><span class="lineno">  138</span><span class="stringliteral">    &#39;2012&#39;</span></div>
+<div class="line"><span class="lineno">  139</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  140</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  141</span>    x = ROOT.TMath.Abs(nupdg)</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">return</span> (<span class="stringliteral">&quot;10&quot;</span> <span class="keywordflow">if</span> nupdg &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&quot;20&quot;</span>) + str(x)</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -737,26 +737,26 @@ Examples
 '1212'
 &gt;&gt;&gt; get_2D_flux_name(-12)   # anti-nu_e
 '2212'</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00142">142</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  142</span><span class="keyword">def </span>get_2D_flux_name(nupdg: int) -&gt; str:</div>
-<div class="line"><span class="lineno">  143</span>    <span class="stringliteral">&quot;&quot;&quot;Return the TH2D p–pT flux histogram name for a given neutrino PDG.</span></div>
-<div class="line"><span class="lineno">  144</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  145</span><span class="stringliteral">    Naming convention (as used by input flux ROOT files):</span></div>
-<div class="line"><span class="lineno">  146</span><span class="stringliteral">    - Neutrino (PDG &gt; 0):  ``&#39;12&#39; + |pdg|``</span></div>
-<div class="line"><span class="lineno">  147</span><span class="stringliteral">    - Anti-neutrino (PDG &lt; 0): ``&#39;22&#39; + |pdg|``</span></div>
-<div class="line"><span class="lineno">  148</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  149</span><span class="stringliteral">    Examples</span></div>
-<div class="line"><span class="lineno">  150</span><span class="stringliteral">    --------</span></div>
-<div class="line"><span class="lineno">  151</span><span class="stringliteral">    &gt;&gt;&gt; get_2D_flux_name(12)    # nu_e</span></div>
-<div class="line"><span class="lineno">  152</span><span class="stringliteral">    &#39;1212&#39;</span></div>
-<div class="line"><span class="lineno">  153</span><span class="stringliteral">    &gt;&gt;&gt; get_2D_flux_name(-12)   # anti-nu_e</span></div>
-<div class="line"><span class="lineno">  154</span><span class="stringliteral">    &#39;2212&#39;</span></div>
-<div class="line"><span class="lineno">  155</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  156</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  157</span>    x = ROOT.TMath.Abs(nupdg)</div>
-<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">return</span> (<span class="stringliteral">&quot;12&quot;</span> <span class="keywordflow">if</span> nupdg &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&quot;22&quot;</span>) + str(x)</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00145">145</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span><span class="keyword">def </span>get_2D_flux_name(nupdg: int) -&gt; str:</div>
+<div class="line"><span class="lineno">  146</span>    <span class="stringliteral">&quot;&quot;&quot;Return the TH2D p–pT flux histogram name for a given neutrino PDG.</span></div>
+<div class="line"><span class="lineno">  147</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  148</span><span class="stringliteral">    Naming convention (as used by input flux ROOT files):</span></div>
+<div class="line"><span class="lineno">  149</span><span class="stringliteral">    - Neutrino (PDG &gt; 0):  ``&#39;12&#39; + |pdg|``</span></div>
+<div class="line"><span class="lineno">  150</span><span class="stringliteral">    - Anti-neutrino (PDG &lt; 0): ``&#39;22&#39; + |pdg|``</span></div>
+<div class="line"><span class="lineno">  151</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  152</span><span class="stringliteral">    Examples</span></div>
+<div class="line"><span class="lineno">  153</span><span class="stringliteral">    --------</span></div>
+<div class="line"><span class="lineno">  154</span><span class="stringliteral">    &gt;&gt;&gt; get_2D_flux_name(12)    # nu_e</span></div>
+<div class="line"><span class="lineno">  155</span><span class="stringliteral">    &#39;1212&#39;</span></div>
+<div class="line"><span class="lineno">  156</span><span class="stringliteral">    &gt;&gt;&gt; get_2D_flux_name(-12)   # anti-nu_e</span></div>
+<div class="line"><span class="lineno">  157</span><span class="stringliteral">    &#39;2212&#39;</span></div>
+<div class="line"><span class="lineno">  158</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  159</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  160</span>    x = ROOT.TMath.Abs(nupdg)</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">return</span> (<span class="stringliteral">&quot;12&quot;</span> <span class="keywordflow">if</span> nupdg &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&quot;22&quot;</span>) + str(x)</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -776,118 +776,118 @@ Examples
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Entry point for the command-line interface.</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00383">383</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  383</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(argv: Sequence[str] | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; int:</div>
-<div class="line"><span class="lineno">  384</span>    <span class="stringliteral">&quot;&quot;&quot;Entry point for the command-line interface.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  385</span>    <span class="keyword">import</span> argparse</div>
-<div class="line"><span class="lineno">  386</span> </div>
-<div class="line"><span class="lineno">  387</span>    parser = argparse.ArgumentParser(</div>
-<div class="line"><span class="lineno">  388</span>        prog=<span class="stringliteral">&quot;genie-utils&quot;</span>, description=<span class="stringliteral">&quot;GENIE helpers with per-call env overrides&quot;</span></div>
-<div class="line"><span class="lineno">  389</span>    )</div>
-<div class="line"><span class="lineno">  390</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  391</span>        <span class="stringliteral">&quot;--env&quot;</span>,</div>
-<div class="line"><span class="lineno">  392</span>        metavar=<span class="stringliteral">&quot;KEY=VALUE&quot;</span>,</div>
-<div class="line"><span class="lineno">  393</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
-<div class="line"><span class="lineno">  394</span>        default=[],</div>
-<div class="line"><span class="lineno">  395</span>        help=<span class="stringliteral">&quot;Set environment variable(s) for the child process (repeatable).&quot;</span>,</div>
-<div class="line"><span class="lineno">  396</span>    )</div>
-<div class="line"><span class="lineno">  397</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  398</span>        <span class="stringliteral">&quot;--unset&quot;</span>,</div>
-<div class="line"><span class="lineno">  399</span>        metavar=<span class="stringliteral">&quot;KEY&quot;</span>,</div>
-<div class="line"><span class="lineno">  400</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
-<div class="line"><span class="lineno">  401</span>        default=[],</div>
-<div class="line"><span class="lineno">  402</span>        help=<span class="stringliteral">&quot;Unset environment variable(s) for the child process (repeatable).&quot;</span>,</div>
-<div class="line"><span class="lineno">  403</span>    )</div>
-<div class="line"><span class="lineno">  404</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  405</span>        <span class="stringliteral">&quot;-v&quot;</span>, <span class="stringliteral">&quot;--verbose&quot;</span>, action=<span class="stringliteral">&quot;count&quot;</span>, default=0, help=<span class="stringliteral">&quot;Increase verbosity.&quot;</span></div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00386">386</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  386</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(argv: Sequence[str] | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; int:</div>
+<div class="line"><span class="lineno">  387</span>    <span class="stringliteral">&quot;&quot;&quot;Entry point for the command-line interface.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  388</span>    <span class="keyword">import</span> argparse</div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>    parser = argparse.ArgumentParser(</div>
+<div class="line"><span class="lineno">  391</span>        prog=<span class="stringliteral">&quot;genie-utils&quot;</span>, description=<span class="stringliteral">&quot;GENIE helpers with per-call env overrides&quot;</span></div>
+<div class="line"><span class="lineno">  392</span>    )</div>
+<div class="line"><span class="lineno">  393</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  394</span>        <span class="stringliteral">&quot;--env&quot;</span>,</div>
+<div class="line"><span class="lineno">  395</span>        metavar=<span class="stringliteral">&quot;KEY=VALUE&quot;</span>,</div>
+<div class="line"><span class="lineno">  396</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
+<div class="line"><span class="lineno">  397</span>        default=[],</div>
+<div class="line"><span class="lineno">  398</span>        help=<span class="stringliteral">&quot;Set environment variable(s) for the child process (repeatable).&quot;</span>,</div>
+<div class="line"><span class="lineno">  399</span>    )</div>
+<div class="line"><span class="lineno">  400</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  401</span>        <span class="stringliteral">&quot;--unset&quot;</span>,</div>
+<div class="line"><span class="lineno">  402</span>        metavar=<span class="stringliteral">&quot;KEY&quot;</span>,</div>
+<div class="line"><span class="lineno">  403</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
+<div class="line"><span class="lineno">  404</span>        default=[],</div>
+<div class="line"><span class="lineno">  405</span>        help=<span class="stringliteral">&quot;Unset environment variable(s) for the child process (repeatable).&quot;</span>,</div>
 <div class="line"><span class="lineno">  406</span>    )</div>
-<div class="line"><span class="lineno">  407</span>    sub = parser.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  408</span> </div>
-<div class="line"><span class="lineno">  409</span>    p_spl = sub.add_parser(<span class="stringliteral">&quot;splines&quot;</span>, help=<span class="stringliteral">&quot;Run gmkspl&quot;</span>)</div>
-<div class="line"><span class="lineno">  410</span>    p_spl.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, nargs=<span class="stringliteral">&quot;+&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  411</span>    p_spl.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  412</span>    p_spl.add_argument(<span class="stringliteral">&quot;-e&quot;</span>, <span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  413</span>    p_spl.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  414</span>    p_spl.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>    p_gen = sub.add_parser(<span class="stringliteral">&quot;generate&quot;</span>, help=<span class="stringliteral">&quot;Run gevgen&quot;</span>)</div>
-<div class="line"><span class="lineno">  417</span>    p_gen.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  418</span>    p_gen.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  419</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  420</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  421</span>    p_gen.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  422</span>    p_gen.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  423</span>    p_gen.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--spline&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  424</span>    p_gen.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  425</span>    p_gen.add_argument(<span class="stringliteral">&quot;--process&quot;</span>, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  426</span>    p_gen.add_argument(<span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  427</span>    p_gen.add_argument(<span class="stringliteral">&quot;--run&quot;</span>, type=int, dest=<span class="stringliteral">&quot;irun&quot;</span>, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  428</span> </div>
-<div class="line"><span class="lineno">  429</span>    p_nt = sub.add_parser(<span class="stringliteral">&quot;ntuples&quot;</span>, help=<span class="stringliteral">&quot;Run gntpc (ghep -&gt; gst)&quot;</span>)</div>
-<div class="line"><span class="lineno">  430</span>    p_nt.add_argument(<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  431</span>    p_nt.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>    p_add = sub.add_parser(<span class="stringliteral">&quot;add-hists&quot;</span>, help=<span class="stringliteral">&quot;Copy 2D flux hist to sim file&quot;</span>)</div>
-<div class="line"><span class="lineno">  434</span>    p_add.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  435</span>    p_add.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--sim&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  436</span>    p_add.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  437</span> </div>
-<div class="line"><span class="lineno">  438</span>    args = parser.parse_args(argv)</div>
-<div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span>    <span class="comment"># logging</span></div>
-<div class="line"><span class="lineno">  441</span>    level = logging.WARNING</div>
-<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
-<div class="line"><span class="lineno">  443</span>        level = logging.INFO</div>
-<div class="line"><span class="lineno">  444</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
-<div class="line"><span class="lineno">  445</span>        level = logging.DEBUG</div>
-<div class="line"><span class="lineno">  446</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
-<div class="line"><span class="lineno">  447</span> </div>
-<div class="line"><span class="lineno">  448</span>    <span class="comment"># env merging for CLI</span></div>
-<div class="line"><span class="lineno">  449</span>    env_vars: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
-<div class="line"><span class="lineno">  450</span>    <span class="keywordflow">if</span> args.env:</div>
-<div class="line"><span class="lineno">  451</span>        env_vars.update(_parse_env_kv(args.env))</div>
-<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> args.unset:</div>
-<div class="line"><span class="lineno">  453</span>        env_vars[key] = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  454</span> </div>
-<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;splines&quot;</span>:</div>
-<div class="line"><span class="lineno">  456</span>        make_splines(</div>
-<div class="line"><span class="lineno">  457</span>            nupdglist=args.pdg,</div>
-<div class="line"><span class="lineno">  458</span>            targetcode=args.target,</div>
-<div class="line"><span class="lineno">  459</span>            emax=args.emax,</div>
-<div class="line"><span class="lineno">  460</span>            nknots=args.nknots,</div>
-<div class="line"><span class="lineno">  461</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  462</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  463</span>        )</div>
-<div class="line"><span class="lineno">  464</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;generate&quot;</span>:</div>
-<div class="line"><span class="lineno">  465</span>        generate_genie_events(</div>
-<div class="line"><span class="lineno">  466</span>            nevents=args.nevents,</div>
-<div class="line"><span class="lineno">  467</span>            nupdg=args.pdg,</div>
-<div class="line"><span class="lineno">  468</span>            emin=args.emin,</div>
-<div class="line"><span class="lineno">  469</span>            emax=args.emax,</div>
-<div class="line"><span class="lineno">  470</span>            targetcode=args.target,</div>
-<div class="line"><span class="lineno">  471</span>            inputflux=args.flux,</div>
-<div class="line"><span class="lineno">  472</span>            spline=args.spline,</div>
-<div class="line"><span class="lineno">  473</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  474</span>            process=args.process,</div>
-<div class="line"><span class="lineno">  475</span>            seed=args.seed,</div>
-<div class="line"><span class="lineno">  476</span>            irun=args.irun,</div>
-<div class="line"><span class="lineno">  477</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  478</span>        )</div>
-<div class="line"><span class="lineno">  479</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;ntuples&quot;</span>:</div>
-<div class="line"><span class="lineno">  480</span>        make_ntuples(</div>
-<div class="line"><span class="lineno">  481</span>            inputfile=args.input,</div>
-<div class="line"><span class="lineno">  482</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  483</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  484</span>        )</div>
-<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;add-hists&quot;</span>:</div>
-<div class="line"><span class="lineno">  486</span>        add_hists(inputflux=args.flux, simfile=args.sim, nupdg=args.pdg)</div>
-<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  488</span>        parser.error(<span class="stringliteral">&quot;Unknown command&quot;</span>)</div>
-<div class="line"><span class="lineno">  489</span> </div>
-<div class="line"><span class="lineno">  490</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  491</span> </div>
+<div class="line"><span class="lineno">  407</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  408</span>        <span class="stringliteral">&quot;-v&quot;</span>, <span class="stringliteral">&quot;--verbose&quot;</span>, action=<span class="stringliteral">&quot;count&quot;</span>, default=0, help=<span class="stringliteral">&quot;Increase verbosity.&quot;</span></div>
+<div class="line"><span class="lineno">  409</span>    )</div>
+<div class="line"><span class="lineno">  410</span>    sub = parser.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  411</span> </div>
+<div class="line"><span class="lineno">  412</span>    p_spl = sub.add_parser(<span class="stringliteral">&quot;splines&quot;</span>, help=<span class="stringliteral">&quot;Run gmkspl&quot;</span>)</div>
+<div class="line"><span class="lineno">  413</span>    p_spl.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, nargs=<span class="stringliteral">&quot;+&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  414</span>    p_spl.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  415</span>    p_spl.add_argument(<span class="stringliteral">&quot;-e&quot;</span>, <span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  416</span>    p_spl.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  417</span>    p_spl.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  418</span> </div>
+<div class="line"><span class="lineno">  419</span>    p_gen = sub.add_parser(<span class="stringliteral">&quot;generate&quot;</span>, help=<span class="stringliteral">&quot;Run gevgen&quot;</span>)</div>
+<div class="line"><span class="lineno">  420</span>    p_gen.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  421</span>    p_gen.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  422</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  423</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  424</span>    p_gen.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  425</span>    p_gen.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  426</span>    p_gen.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--spline&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  427</span>    p_gen.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  428</span>    p_gen.add_argument(<span class="stringliteral">&quot;--process&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  429</span>    p_gen.add_argument(<span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  430</span>    p_gen.add_argument(<span class="stringliteral">&quot;--run&quot;</span>, type=int, dest=<span class="stringliteral">&quot;irun&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>    p_nt = sub.add_parser(<span class="stringliteral">&quot;ntuples&quot;</span>, help=<span class="stringliteral">&quot;Run gntpc (ghep -&gt; gst)&quot;</span>)</div>
+<div class="line"><span class="lineno">  433</span>    p_nt.add_argument(<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  434</span>    p_nt.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  435</span> </div>
+<div class="line"><span class="lineno">  436</span>    p_add = sub.add_parser(<span class="stringliteral">&quot;add-hists&quot;</span>, help=<span class="stringliteral">&quot;Copy 2D flux hist to sim file&quot;</span>)</div>
+<div class="line"><span class="lineno">  437</span>    p_add.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  438</span>    p_add.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--sim&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  439</span>    p_add.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  440</span> </div>
+<div class="line"><span class="lineno">  441</span>    args = parser.parse_args(argv)</div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>    <span class="comment"># logging</span></div>
+<div class="line"><span class="lineno">  444</span>    level = logging.WARNING</div>
+<div class="line"><span class="lineno">  445</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
+<div class="line"><span class="lineno">  446</span>        level = logging.INFO</div>
+<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
+<div class="line"><span class="lineno">  448</span>        level = logging.DEBUG</div>
+<div class="line"><span class="lineno">  449</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
+<div class="line"><span class="lineno">  450</span> </div>
+<div class="line"><span class="lineno">  451</span>    <span class="comment"># env merging for CLI</span></div>
+<div class="line"><span class="lineno">  452</span>    env_vars: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
+<div class="line"><span class="lineno">  453</span>    <span class="keywordflow">if</span> args.env:</div>
+<div class="line"><span class="lineno">  454</span>        env_vars.update(_parse_env_kv(args.env))</div>
+<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> args.unset:</div>
+<div class="line"><span class="lineno">  456</span>        env_vars[key] = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  457</span> </div>
+<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;splines&quot;</span>:</div>
+<div class="line"><span class="lineno">  459</span>        make_splines(</div>
+<div class="line"><span class="lineno">  460</span>            nupdglist=args.pdg,</div>
+<div class="line"><span class="lineno">  461</span>            targetcode=args.target,</div>
+<div class="line"><span class="lineno">  462</span>            emax=args.emax,</div>
+<div class="line"><span class="lineno">  463</span>            nknots=args.nknots,</div>
+<div class="line"><span class="lineno">  464</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  465</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  466</span>        )</div>
+<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;generate&quot;</span>:</div>
+<div class="line"><span class="lineno">  468</span>        generate_genie_events(</div>
+<div class="line"><span class="lineno">  469</span>            nevents=args.nevents,</div>
+<div class="line"><span class="lineno">  470</span>            nupdg=args.pdg,</div>
+<div class="line"><span class="lineno">  471</span>            emin=args.emin,</div>
+<div class="line"><span class="lineno">  472</span>            emax=args.emax,</div>
+<div class="line"><span class="lineno">  473</span>            targetcode=args.target,</div>
+<div class="line"><span class="lineno">  474</span>            inputflux=args.flux,</div>
+<div class="line"><span class="lineno">  475</span>            spline=args.spline,</div>
+<div class="line"><span class="lineno">  476</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  477</span>            process=args.process,</div>
+<div class="line"><span class="lineno">  478</span>            seed=args.seed,</div>
+<div class="line"><span class="lineno">  479</span>            irun=args.irun,</div>
+<div class="line"><span class="lineno">  480</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  481</span>        )</div>
+<div class="line"><span class="lineno">  482</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;ntuples&quot;</span>:</div>
+<div class="line"><span class="lineno">  483</span>        make_ntuples(</div>
+<div class="line"><span class="lineno">  484</span>            inputfile=args.input,</div>
+<div class="line"><span class="lineno">  485</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  486</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  487</span>        )</div>
+<div class="line"><span class="lineno">  488</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;add-hists&quot;</span>:</div>
+<div class="line"><span class="lineno">  489</span>        add_hists(inputflux=args.flux, simfile=args.sim, nupdg=args.pdg)</div>
+<div class="line"><span class="lineno">  490</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  491</span>        parser.error(<span class="stringliteral">&quot;Unknown command&quot;</span>)</div>
 <div class="line"><span class="lineno">  492</span> </div>
-<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
+<div class="line"><span class="lineno">  493</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  494</span> </div>
+<div class="line"><span class="lineno">  495</span> </div>
+<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -936,28 +936,28 @@ env_vars:
 Returns
 -------
 subprocess.CompletedProcess</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00303">303</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  307</span>) -&gt; subprocess.CompletedProcess:</div>
-<div class="line"><span class="lineno">  308</span>    <span class="stringliteral">&quot;&quot;&quot;Convert a GENIE ``.ghep.root`` file to GST via ``gntpc``.</span></div>
-<div class="line"><span class="lineno">  309</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  310</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">  311</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">  312</span><span class="stringliteral">    inputfile:</span></div>
-<div class="line"><span class="lineno">  313</span><span class="stringliteral">        Input GHEP file (e.g. ``gntp.0.ghep.root``).</span></div>
-<div class="line"><span class="lineno">  314</span><span class="stringliteral">    outputfile:</span></div>
-<div class="line"><span class="lineno">  315</span><span class="stringliteral">        Output GST file path.</span></div>
-<div class="line"><span class="lineno">  316</span><span class="stringliteral">    env_vars:</span></div>
-<div class="line"><span class="lineno">  317</span><span class="stringliteral">        Per-call environment overrides.</span></div>
-<div class="line"><span class="lineno">  318</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  319</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">  320</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">  321</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
-<div class="line"><span class="lineno">  322</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  323</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  324</span>    args = [<span class="stringliteral">&quot;gntpc&quot;</span>, <span class="stringliteral">&quot;-i&quot;</span>, str(inputfile), <span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;gst&quot;</span>, <span class="stringliteral">&quot;-o&quot;</span>, str(outputfile)]</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00306">306</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  310</span>) -&gt; subprocess.CompletedProcess:</div>
+<div class="line"><span class="lineno">  311</span>    <span class="stringliteral">&quot;&quot;&quot;Convert a GENIE ``.ghep.root`` file to GST via ``gntpc``.</span></div>
+<div class="line"><span class="lineno">  312</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  313</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">  314</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">  315</span><span class="stringliteral">    inputfile:</span></div>
+<div class="line"><span class="lineno">  316</span><span class="stringliteral">        Input GHEP file (e.g. ``gntp.0.ghep.root``).</span></div>
+<div class="line"><span class="lineno">  317</span><span class="stringliteral">    outputfile:</span></div>
+<div class="line"><span class="lineno">  318</span><span class="stringliteral">        Output GST file path.</span></div>
+<div class="line"><span class="lineno">  319</span><span class="stringliteral">    env_vars:</span></div>
+<div class="line"><span class="lineno">  320</span><span class="stringliteral">        Per-call environment overrides.</span></div>
+<div class="line"><span class="lineno">  321</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  322</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">  323</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">  324</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
+<div class="line"><span class="lineno">  325</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  326</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  327</span>    args = [<span class="stringliteral">&quot;gntpc&quot;</span>, <span class="stringliteral">&quot;-i&quot;</span>, str(inputfile), <span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;gst&quot;</span>, <span class="stringliteral">&quot;-o&quot;</span>, str(outputfile)]</div>
+<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1030,47 +1030,47 @@ env_vars:
 Returns
 -------
 subprocess.CompletedProcess</pre> 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00161">161</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  168</span>) -&gt; subprocess.CompletedProcess:</div>
-<div class="line"><span class="lineno">  169</span>    <span class="stringliteral">&quot;&quot;&quot;Generate GENIE cross-section splines via ``gmkspl``.</span></div>
-<div class="line"><span class="lineno">  170</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  171</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><span class="lineno">  172</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><span class="lineno">  173</span><span class="stringliteral">    nupdglist:</span></div>
-<div class="line"><span class="lineno">  174</span><span class="stringliteral">        Iterable of neutrino PDG codes (e.g. ``[12, 14, 16, -12, -14, -16]``).</span></div>
-<div class="line"><span class="lineno">  175</span><span class="stringliteral">    targetcode:</span></div>
-<div class="line"><span class="lineno">  176</span><span class="stringliteral">        GENIE nuclear target code (e.g. ``&#39;1000080160&#39;`` for O-16).</span></div>
-<div class="line"><span class="lineno">  177</span><span class="stringliteral">    emax:</span></div>
-<div class="line"><span class="lineno">  178</span><span class="stringliteral">        Maximum neutrino energy (GeV).</span></div>
-<div class="line"><span class="lineno">  179</span><span class="stringliteral">    nknots:</span></div>
-<div class="line"><span class="lineno">  180</span><span class="stringliteral">        Number of knots for the spline generation.</span></div>
-<div class="line"><span class="lineno">  181</span><span class="stringliteral">    outputfile:</span></div>
-<div class="line"><span class="lineno">  182</span><span class="stringliteral">        Path to output XML spline file.</span></div>
-<div class="line"><span class="lineno">  183</span><span class="stringliteral">    env_vars:</span></div>
-<div class="line"><span class="lineno">  184</span><span class="stringliteral">        Per-call environment overrides (e.g. set ``GXMLPATH`` or ``GENIE``).</span></div>
-<div class="line"><span class="lineno">  185</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  186</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><span class="lineno">  187</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">  188</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
-<div class="line"><span class="lineno">  189</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  190</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  191</span>    inputnupdg = <span class="stringliteral">&quot;,&quot;</span>.join(str(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> nupdglist)</div>
-<div class="line"><span class="lineno">  192</span>    args = [</div>
-<div class="line"><span class="lineno">  193</span>        <span class="stringliteral">&quot;gmkspl&quot;</span>,</div>
-<div class="line"><span class="lineno">  194</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
-<div class="line"><span class="lineno">  195</span>        inputnupdg,</div>
-<div class="line"><span class="lineno">  196</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><span class="lineno">  197</span>        targetcode,</div>
-<div class="line"><span class="lineno">  198</span>        <span class="stringliteral">&quot;-n&quot;</span>,</div>
-<div class="line"><span class="lineno">  199</span>        str(nknots),</div>
-<div class="line"><span class="lineno">  200</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
-<div class="line"><span class="lineno">  201</span>        str(emax),</div>
-<div class="line"><span class="lineno">  202</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
-<div class="line"><span class="lineno">  203</span>        str(outputfile),</div>
-<div class="line"><span class="lineno">  204</span>    ]</div>
-<div class="line"><span class="lineno">  205</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span> </div>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00164">164</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  171</span>) -&gt; subprocess.CompletedProcess:</div>
+<div class="line"><span class="lineno">  172</span>    <span class="stringliteral">&quot;&quot;&quot;Generate GENIE cross-section splines via ``gmkspl``.</span></div>
+<div class="line"><span class="lineno">  173</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  174</span><span class="stringliteral">    Parameters</span></div>
+<div class="line"><span class="lineno">  175</span><span class="stringliteral">    ----------</span></div>
+<div class="line"><span class="lineno">  176</span><span class="stringliteral">    nupdglist:</span></div>
+<div class="line"><span class="lineno">  177</span><span class="stringliteral">        Iterable of neutrino PDG codes (e.g. ``[12, 14, 16, -12, -14, -16]``).</span></div>
+<div class="line"><span class="lineno">  178</span><span class="stringliteral">    targetcode:</span></div>
+<div class="line"><span class="lineno">  179</span><span class="stringliteral">        GENIE nuclear target code (e.g. ``&#39;1000080160&#39;`` for O-16).</span></div>
+<div class="line"><span class="lineno">  180</span><span class="stringliteral">    emax:</span></div>
+<div class="line"><span class="lineno">  181</span><span class="stringliteral">        Maximum neutrino energy (GeV).</span></div>
+<div class="line"><span class="lineno">  182</span><span class="stringliteral">    nknots:</span></div>
+<div class="line"><span class="lineno">  183</span><span class="stringliteral">        Number of knots for the spline generation.</span></div>
+<div class="line"><span class="lineno">  184</span><span class="stringliteral">    outputfile:</span></div>
+<div class="line"><span class="lineno">  185</span><span class="stringliteral">        Path to output XML spline file.</span></div>
+<div class="line"><span class="lineno">  186</span><span class="stringliteral">    env_vars:</span></div>
+<div class="line"><span class="lineno">  187</span><span class="stringliteral">        Per-call environment overrides (e.g. set ``GXMLPATH`` or ``GENIE``).</span></div>
+<div class="line"><span class="lineno">  188</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  189</span><span class="stringliteral">    Returns</span></div>
+<div class="line"><span class="lineno">  190</span><span class="stringliteral">    -------</span></div>
+<div class="line"><span class="lineno">  191</span><span class="stringliteral">    subprocess.CompletedProcess</span></div>
+<div class="line"><span class="lineno">  192</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  193</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  194</span>    inputnupdg = <span class="stringliteral">&quot;,&quot;</span>.join(str(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> nupdglist)</div>
+<div class="line"><span class="lineno">  195</span>    args = [</div>
+<div class="line"><span class="lineno">  196</span>        <span class="stringliteral">&quot;gmkspl&quot;</span>,</div>
+<div class="line"><span class="lineno">  197</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
+<div class="line"><span class="lineno">  198</span>        inputnupdg,</div>
+<div class="line"><span class="lineno">  199</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><span class="lineno">  200</span>        targetcode,</div>
+<div class="line"><span class="lineno">  201</span>        <span class="stringliteral">&quot;-n&quot;</span>,</div>
+<div class="line"><span class="lineno">  202</span>        str(nknots),</div>
+<div class="line"><span class="lineno">  203</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
+<div class="line"><span class="lineno">  204</span>        str(emax),</div>
+<div class="line"><span class="lineno">  205</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
+<div class="line"><span class="lineno">  206</span>        str(outputfile),</div>
+<div class="line"><span class="lineno">  207</span>    ]</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">return</span> _run(args, env_vars=env_vars)</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1105,7 +1105,7 @@ subprocess.CompletedProcess</pre>
 <div class="line"><span class="lineno">    9</span>    <span class="stringliteral">&quot;main&quot;</span>,</div>
 <div class="line"><span class="lineno">   10</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00044">44</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00047">47</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1129,7 @@ subprocess.CompletedProcess</pre>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00055">55</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00058">58</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1145,7 @@ subprocess.CompletedProcess</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00059">59</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00062">62</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
 
 </div>
 </div>
@@ -1161,7 +1161,7 @@ subprocess.CompletedProcess</pre>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00057">57</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="genie__interface_8py_source.html#l00060">60</a> of file <a class="el" href="genie__interface_8py_source.html">genie_interface.py</a>.</p>
 
 </div>
 </div>

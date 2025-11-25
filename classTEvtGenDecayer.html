@@ -181,7 +181,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00017">17</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00020">20</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a54e4605777a20e532deadf5196f681c4" name="a54e4605777a20e532deadf5196f681c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54e4605777a20e532deadf5196f681c4">&#9670;&#160;</a></span>TEvtGenDecayer()</h2>
@@ -198,26 +198,26 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00030">30</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>    : TVirtualMCDecayer(),</div>
-<div class="line"><span class="lineno">   32</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   33</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   34</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><span class="lineno">   35</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><span class="lineno">   36</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   37</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a>(kFALSE)</div>
-<div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>    <span class="comment">// Default constructor</span></div>
-<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.clear();</div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a> = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;TParticle&quot;</span>);</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a07d1a70e0418c8eec7ca0875c1ed0cd8"><div class="ttname"><a href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">TEvtGenDecayer::fEvtGenParticles</a></div><div class="ttdeci">std::vector&lt; Int_t &gt; fEvtGenParticles</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00051">TEvtGenDecayer.h:51</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a235e1cc1907e4cef68c43ab991649ea4"><div class="ttname"><a href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">TEvtGenDecayer::fHasEvtGenDecay</a></div><div class="ttdeci">Bool_t fHasEvtGenDecay</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00055">TEvtGenDecayer.h:55</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a4aa7b707a4b0b830b6d6cc7ac0054021"><div class="ttname"><a href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">TEvtGenDecayer::fEvtGen</a></div><div class="ttdeci">EvtGen * fEvtGen</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00048">TEvtGenDecayer.h:48</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a534ee6d49850cf9eb77d981a27f31e76"><div class="ttname"><a href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">TEvtGenDecayer::fParticleFile</a></div><div class="ttdeci">TString fParticleFile</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00050">TEvtGenDecayer.h:50</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a65b04ab2b62e5f8b5e797013bee5aa19"><div class="ttname"><a href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">TEvtGenDecayer::fDecayFile</a></div><div class="ttdeci">TString fDecayFile</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00049">TEvtGenDecayer.h:49</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a68413f4a9bfd9c06b72dd38bf26e4a5e"><div class="ttname"><a href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">TEvtGenDecayer::fEvtGenProducts</a></div><div class="ttdeci">TClonesArray * fEvtGenProducts</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00054">TEvtGenDecayer.h:54</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_ada63914977b0191dbb5f36d369d1ba13"><div class="ttname"><a href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">TEvtGenDecayer::fPythia8Decayer</a></div><div class="ttdeci">TPythia8Decayer * fPythia8Decayer</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00047">TEvtGenDecayer.h:47</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00033">33</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>    : TVirtualMCDecayer(),</div>
+<div class="line"><span class="lineno">   35</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   36</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   37</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><span class="lineno">   38</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><span class="lineno">   39</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   40</span>      <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a>(kFALSE)</div>
+<div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>    <span class="comment">// Default constructor</span></div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.clear();</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a> = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;TParticle&quot;</span>);</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a07d1a70e0418c8eec7ca0875c1ed0cd8"><div class="ttname"><a href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">TEvtGenDecayer::fEvtGenParticles</a></div><div class="ttdeci">std::vector&lt; Int_t &gt; fEvtGenParticles</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00054">TEvtGenDecayer.h:54</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a235e1cc1907e4cef68c43ab991649ea4"><div class="ttname"><a href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">TEvtGenDecayer::fHasEvtGenDecay</a></div><div class="ttdeci">Bool_t fHasEvtGenDecay</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00058">TEvtGenDecayer.h:58</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a4aa7b707a4b0b830b6d6cc7ac0054021"><div class="ttname"><a href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">TEvtGenDecayer::fEvtGen</a></div><div class="ttdeci">EvtGen * fEvtGen</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00051">TEvtGenDecayer.h:51</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a534ee6d49850cf9eb77d981a27f31e76"><div class="ttname"><a href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">TEvtGenDecayer::fParticleFile</a></div><div class="ttdeci">TString fParticleFile</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00053">TEvtGenDecayer.h:53</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a65b04ab2b62e5f8b5e797013bee5aa19"><div class="ttname"><a href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">TEvtGenDecayer::fDecayFile</a></div><div class="ttdeci">TString fDecayFile</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00052">TEvtGenDecayer.h:52</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a68413f4a9bfd9c06b72dd38bf26e4a5e"><div class="ttname"><a href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">TEvtGenDecayer::fEvtGenProducts</a></div><div class="ttdeci">TClonesArray * fEvtGenProducts</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00057">TEvtGenDecayer.h:57</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_ada63914977b0191dbb5f36d369d1ba13"><div class="ttname"><a href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">TEvtGenDecayer::fPythia8Decayer</a></div><div class="ttdeci">TPythia8Decayer * fPythia8Decayer</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8h_source.html#l00050">TEvtGenDecayer.h:50</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -244,13 +244,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00045">45</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment">// Destructor</span></div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>;</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>;</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>;</div>
-<div class="line"><span class="lineno">   51</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00048">48</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment">// Destructor</span></div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>;</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>;</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>;</div>
+<div class="line"><span class="lineno">   54</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -271,13 +271,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00306">306</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  307</span>{</div>
-<div class="line"><span class="lineno">  308</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.push_back(pdg);</div>
-<div class="line"><span class="lineno">  309</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Added PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to EvtGen particle list&quot;</span></div>
-<div class="line"><span class="lineno">  310</span>              &lt;&lt; <span class="stringliteral">&quot; (Total: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><span class="lineno">  311</span>}</div>
-<div class="ttc" id="anamespaceeventDisplay_html_a5bba68d8a49d0e499d10871520efe7c5"><div class="ttname"><a href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">eventDisplay.pdg</a></div><div class="ttdeci">pdg</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00034">eventDisplay.py:34</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00309">309</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  310</span>{</div>
+<div class="line"><span class="lineno">  311</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.push_back(pdg);</div>
+<div class="line"><span class="lineno">  312</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Added PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to EvtGen particle list&quot;</span></div>
+<div class="line"><span class="lineno">  313</span>              &lt;&lt; <span class="stringliteral">&quot; (Total: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><span class="lineno">  314</span>}</div>
+<div class="ttc" id="anamespaceeventDisplay_html_a5bba68d8a49d0e499d10871520efe7c5"><div class="ttname"><a href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">eventDisplay.pdg</a></div><div class="ttdeci">pdg</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00042">eventDisplay.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -305,37 +305,37 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00220">220</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>    <span class="comment">// Convert EvtGen decay products to ROOT/GEANT4 format</span></div>
-<div class="line"><span class="lineno">  223</span>    <span class="comment">// Clear previous decay products</span></div>
-<div class="line"><span class="lineno">  224</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  225</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kTRUE;</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordtype">int</span> nDaughters = parent-&gt;getNDaug();</div>
-<div class="line"><span class="lineno">  228</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;ConvertEvtGenDecay: Converting &quot;</span> &lt;&lt; nDaughters &lt;&lt; <span class="stringliteral">&quot; daughter particles&quot;</span>;</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00223">223</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
+<div class="line"><span class="lineno">  225</span>    <span class="comment">// Convert EvtGen decay products to ROOT/GEANT4 format</span></div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment">// Clear previous decay products</span></div>
+<div class="line"><span class="lineno">  227</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  228</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kTRUE;</div>
 <div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    <span class="comment">// Convert each daughter particle to TParticle format</span></div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nDaughters; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  232</span>        EvtParticle* daughter = parent-&gt;getDaug(i);</div>
-<div class="line"><span class="lineno">  233</span>        EvtVector4R p4 = daughter-&gt;getP4();</div>
-<div class="line"><span class="lineno">  234</span>        <span class="keywordtype">int</span> pdgId = EvtPDL::getStdHep(daughter-&gt;getId());</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>        <span class="comment">// Create TParticle (ROOT format)</span></div>
-<div class="line"><span class="lineno">  237</span>        TParticle* particle = <span class="keyword">new</span> ((*fEvtGenProducts)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle();</div>
-<div class="line"><span class="lineno">  238</span>        particle-&gt;SetPdgCode(pdgId);</div>
-<div class="line"><span class="lineno">  239</span>        particle-&gt;SetMomentum(p4.get(1), p4.get(2), p4.get(3), p4.get(0)); <span class="comment">// px, py, pz, E</span></div>
-<div class="line"><span class="lineno">  240</span>        particle-&gt;SetProductionVertex(0, 0, 0, 0); <span class="comment">// Produced at origin</span></div>
-<div class="line"><span class="lineno">  241</span>        particle-&gt;SetStatusCode(1); <span class="comment">// Stable particle</span></div>
-<div class="line"><span class="lineno">  242</span> </div>
-<div class="line"><span class="lineno">  243</span>        LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;  Daughter &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot;: PDG=&quot;</span> &lt;&lt; pdgId</div>
-<div class="line"><span class="lineno">  244</span>                   &lt;&lt; <span class="stringliteral">&quot;, E=&quot;</span> &lt;&lt; p4.get(0) &lt;&lt; <span class="stringliteral">&quot;, px=&quot;</span> &lt;&lt; p4.get(1)</div>
-<div class="line"><span class="lineno">  245</span>                   &lt;&lt; <span class="stringliteral">&quot;, py=&quot;</span> &lt;&lt; p4.get(2) &lt;&lt; <span class="stringliteral">&quot;, pz=&quot;</span> &lt;&lt; p4.get(3);</div>
-<div class="line"><span class="lineno">  246</span>    }</div>
-<div class="line"><span class="lineno">  247</span> </div>
-<div class="line"><span class="lineno">  248</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ConvertEvtGenDecay: Stored &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast() &lt;&lt; <span class="stringliteral">&quot; particles&quot;</span>;</div>
-<div class="line"><span class="lineno">  249</span>}</div>
-<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00091">ShipAna.py:91</a></div></div>
+<div class="line"><span class="lineno">  230</span>    <span class="keywordtype">int</span> nDaughters = parent-&gt;getNDaug();</div>
+<div class="line"><span class="lineno">  231</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;ConvertEvtGenDecay: Converting &quot;</span> &lt;&lt; nDaughters &lt;&lt; <span class="stringliteral">&quot; daughter particles&quot;</span>;</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment">// Convert each daughter particle to TParticle format</span></div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nDaughters; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  235</span>        EvtParticle* daughter = parent-&gt;getDaug(i);</div>
+<div class="line"><span class="lineno">  236</span>        EvtVector4R p4 = daughter-&gt;getP4();</div>
+<div class="line"><span class="lineno">  237</span>        <span class="keywordtype">int</span> pdgId = EvtPDL::getStdHep(daughter-&gt;getId());</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>        <span class="comment">// Create TParticle (ROOT format)</span></div>
+<div class="line"><span class="lineno">  240</span>        TParticle* particle = <span class="keyword">new</span> ((*fEvtGenProducts)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle();</div>
+<div class="line"><span class="lineno">  241</span>        particle-&gt;SetPdgCode(pdgId);</div>
+<div class="line"><span class="lineno">  242</span>        particle-&gt;SetMomentum(p4.get(1), p4.get(2), p4.get(3), p4.get(0)); <span class="comment">// px, py, pz, E</span></div>
+<div class="line"><span class="lineno">  243</span>        particle-&gt;SetProductionVertex(0, 0, 0, 0); <span class="comment">// Produced at origin</span></div>
+<div class="line"><span class="lineno">  244</span>        particle-&gt;SetStatusCode(1); <span class="comment">// Stable particle</span></div>
+<div class="line"><span class="lineno">  245</span> </div>
+<div class="line"><span class="lineno">  246</span>        LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;  Daughter &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt;&lt; <span class="stringliteral">&quot;: PDG=&quot;</span> &lt;&lt; pdgId</div>
+<div class="line"><span class="lineno">  247</span>                   &lt;&lt; <span class="stringliteral">&quot;, E=&quot;</span> &lt;&lt; p4.get(0) &lt;&lt; <span class="stringliteral">&quot;, px=&quot;</span> &lt;&lt; p4.get(1)</div>
+<div class="line"><span class="lineno">  248</span>                   &lt;&lt; <span class="stringliteral">&quot;, py=&quot;</span> &lt;&lt; p4.get(2) &lt;&lt; <span class="stringliteral">&quot;, pz=&quot;</span> &lt;&lt; p4.get(3);</div>
+<div class="line"><span class="lineno">  249</span>    }</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ConvertEvtGenDecay: Stored &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast() &lt;&lt; <span class="stringliteral">&quot; particles&quot;</span>;</div>
+<div class="line"><span class="lineno">  252</span>}</div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00094">ShipAna.py:94</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -373,35 +373,35 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00123">123</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
-<div class="line"><span class="lineno">  125</span>    <span class="comment">// Main decay method - route to EvtGen or Pythia8 based on particle type</span></div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    <span class="comment">// Debug output for decay calls (highest verbosity)</span></div>
-<div class="line"><span class="lineno">  128</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer::Decay called for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a></div>
-<div class="line"><span class="lineno">  129</span>                &lt;&lt; <span class="stringliteral">&quot; (E=&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;E() &lt;&lt; <span class="stringliteral">&quot;, p=&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;P() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>    <span class="comment">// Check if this particle should use EvtGen</span></div>
-<div class="line"><span class="lineno">  133</span>    Bool_t useEvtGen = <a class="code hl_function" href="classTEvtGenDecayer.html#adc267d555e3f6590438dd644bd93dcaf">UseEvtGenForParticle</a>(pdg);</div>
-<div class="line"><span class="lineno">  134</span>    Bool_t evtGenAvailable = (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle(&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot;) = &quot;</span> &lt;&lt; useEvtGen</div>
-<div class="line"><span class="lineno">  137</span>                &lt;&lt; <span class="stringliteral">&quot;, EvtGen available = &quot;</span> &lt;&lt; evtGenAvailable;</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00126">126</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>{</div>
+<div class="line"><span class="lineno">  128</span>    <span class="comment">// Main decay method - route to EvtGen or Pythia8 based on particle type</span></div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment">// Debug output for decay calls (highest verbosity)</span></div>
+<div class="line"><span class="lineno">  131</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer::Decay called for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a></div>
+<div class="line"><span class="lineno">  132</span>                &lt;&lt; <span class="stringliteral">&quot; (E=&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;E() &lt;&lt; <span class="stringliteral">&quot;, p=&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;P() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>    <span class="comment">// Check if this particle should use EvtGen</span></div>
+<div class="line"><span class="lineno">  136</span>    Bool_t useEvtGen = <a class="code hl_function" href="classTEvtGenDecayer.html#adc267d555e3f6590438dd644bd93dcaf">UseEvtGenForParticle</a>(pdg);</div>
+<div class="line"><span class="lineno">  137</span>    Bool_t evtGenAvailable = (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">if</span> (useEvtGen &amp;&amp; evtGenAvailable) {</div>
-<div class="line"><span class="lineno">  140</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Routing PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to EvtGen&quot;</span>;</div>
-<div class="line"><span class="lineno">  141</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#accfbfa3b6d5be8a0d29789263a05a007">DecayWithEvtGen</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  142</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  143</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Routing PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to Pythia8 fallback&quot;</span>;</div>
-<div class="line"><span class="lineno">  144</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  145</span>    }</div>
-<div class="line"><span class="lineno">  146</span>}</div>
-<div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_a4ea7b63d0aac963501c8f8fc0ff89f75"><div class="ttname"><a href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">TEvtGenDecayer::DecayWithPythia8</a></div><div class="ttdeci">void DecayWithPythia8(Int_t pdg, TLorentzVector *p)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00252">TEvtGenDecayer.cxx:252</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_accfbfa3b6d5be8a0d29789263a05a007"><div class="ttname"><a href="classTEvtGenDecayer.html#accfbfa3b6d5be8a0d29789263a05a007">TEvtGenDecayer::DecayWithEvtGen</a></div><div class="ttdeci">void DecayWithEvtGen(Int_t pdg, TLorentzVector *p)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00166">TEvtGenDecayer.cxx:166</a></div></div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_adc267d555e3f6590438dd644bd93dcaf"><div class="ttname"><a href="classTEvtGenDecayer.html#adc267d555e3f6590438dd644bd93dcaf">TEvtGenDecayer::UseEvtGenForParticle</a></div><div class="ttdeci">Bool_t UseEvtGenForParticle(Int_t pdg)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00149">TEvtGenDecayer.cxx:149</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
+<div class="line"><span class="lineno">  139</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle(&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot;) = &quot;</span> &lt;&lt; useEvtGen</div>
+<div class="line"><span class="lineno">  140</span>                &lt;&lt; <span class="stringliteral">&quot;, EvtGen available = &quot;</span> &lt;&lt; evtGenAvailable;</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">if</span> (useEvtGen &amp;&amp; evtGenAvailable) {</div>
+<div class="line"><span class="lineno">  143</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Routing PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to EvtGen&quot;</span>;</div>
+<div class="line"><span class="lineno">  144</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#accfbfa3b6d5be8a0d29789263a05a007">DecayWithEvtGen</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  145</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  146</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Routing PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; to Pythia8 fallback&quot;</span>;</div>
+<div class="line"><span class="lineno">  147</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  148</span>    }</div>
+<div class="line"><span class="lineno">  149</span>}</div>
+<div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00014">DPPythia8Generator.cxx:14</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_a4ea7b63d0aac963501c8f8fc0ff89f75"><div class="ttname"><a href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">TEvtGenDecayer::DecayWithPythia8</a></div><div class="ttdeci">void DecayWithPythia8(Int_t pdg, TLorentzVector *p)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00255">TEvtGenDecayer.cxx:255</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_accfbfa3b6d5be8a0d29789263a05a007"><div class="ttname"><a href="classTEvtGenDecayer.html#accfbfa3b6d5be8a0d29789263a05a007">TEvtGenDecayer::DecayWithEvtGen</a></div><div class="ttdeci">void DecayWithEvtGen(Int_t pdg, TLorentzVector *p)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00169">TEvtGenDecayer.cxx:169</a></div></div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_adc267d555e3f6590438dd644bd93dcaf"><div class="ttname"><a href="classTEvtGenDecayer.html#adc267d555e3f6590438dd644bd93dcaf">TEvtGenDecayer::UseEvtGenForParticle</a></div><div class="ttdeci">Bool_t UseEvtGenForParticle(Int_t pdg)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00152">TEvtGenDecayer.cxx:152</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -439,59 +439,59 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00166">166</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
-<div class="line"><span class="lineno">  168</span>    <span class="comment">// Decay particle using EvtGen</span></div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>) {</div>
-<div class="line"><span class="lineno">  171</span>        <span class="comment">// Fall back to Pythia8 if EvtGen not available</span></div>
-<div class="line"><span class="lineno">  172</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  174</span>    }</div>
-<div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;DecayWithEvtGen: Decaying PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; with EvtGen&quot;</span>;</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  179</span>        <span class="comment">// Convert TLorentzVector to EvtGen format</span></div>
-<div class="line"><span class="lineno">  180</span>        EvtVector4R p4(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;E(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Px(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Py(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Pz());</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>        <span class="comment">// Get EvtGen particle ID from PDG code</span></div>
-<div class="line"><span class="lineno">  183</span>        EvtId evtId = EvtPDL::evtIdFromStdHep(pdg);</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00169">169</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  170</span>{</div>
+<div class="line"><span class="lineno">  171</span>    <span class="comment">// Decay particle using EvtGen</span></div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>) {</div>
+<div class="line"><span class="lineno">  174</span>        <span class="comment">// Fall back to Pythia8 if EvtGen not available</span></div>
+<div class="line"><span class="lineno">  175</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  177</span>    }</div>
+<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;DecayWithEvtGen: Decaying PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; with EvtGen&quot;</span>;</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  182</span>        <span class="comment">// Convert TLorentzVector to EvtGen format</span></div>
+<div class="line"><span class="lineno">  183</span>        EvtVector4R p4(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;E(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Px(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Py(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Pz());</div>
 <div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span>        <span class="comment">// Check if EvtId is valid before creating particle</span></div>
-<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">if</span> (evtId.getId() &lt; 0 || evtId.getId() &gt;= EvtPDL::entries()) {</div>
-<div class="line"><span class="lineno">  187</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Invalid EvtId for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a></div>
-<div class="line"><span class="lineno">  188</span>                        &lt;&lt; <span class="stringliteral">&quot; (EvtId: &quot;</span> &lt;&lt; evtId.getId() &lt;&lt; <span class="stringliteral">&quot;), falling back to Pythia8&quot;</span>;</div>
-<div class="line"><span class="lineno">  189</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  190</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  191</span>        }</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>        <span class="comment">// Create EvtGen particle</span></div>
-<div class="line"><span class="lineno">  194</span>        EvtParticle* parent = EvtParticleFactory::particleFactory(evtId, p4);</div>
+<div class="line"><span class="lineno">  185</span>        <span class="comment">// Get EvtGen particle ID from PDG code</span></div>
+<div class="line"><span class="lineno">  186</span>        EvtId evtId = EvtPDL::evtIdFromStdHep(pdg);</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>        <span class="comment">// Check if EvtId is valid before creating particle</span></div>
+<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (evtId.getId() &lt; 0 || evtId.getId() &gt;= EvtPDL::entries()) {</div>
+<div class="line"><span class="lineno">  190</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Invalid EvtId for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a></div>
+<div class="line"><span class="lineno">  191</span>                        &lt;&lt; <span class="stringliteral">&quot; (EvtId: &quot;</span> &lt;&lt; evtId.getId() &lt;&lt; <span class="stringliteral">&quot;), falling back to Pythia8&quot;</span>;</div>
+<div class="line"><span class="lineno">  192</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  193</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  194</span>        }</div>
 <div class="line"><span class="lineno">  195</span> </div>
-<div class="line"><span class="lineno">  196</span>        <span class="keywordflow">if</span> (parent) {</div>
-<div class="line"><span class="lineno">  197</span>            <span class="comment">// Generate decay</span></div>
-<div class="line"><span class="lineno">  198</span>            <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>-&gt;generateDecay(parent);</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>            <span class="comment">// Convert EvtGen decay products to ROOT format</span></div>
-<div class="line"><span class="lineno">  201</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#ab7a23658b454c2237040b016741320cd">ConvertEvtGenDecay</a>(parent);</div>
+<div class="line"><span class="lineno">  196</span>        <span class="comment">// Create EvtGen particle</span></div>
+<div class="line"><span class="lineno">  197</span>        EvtParticle* parent = EvtParticleFactory::particleFactory(evtId, p4);</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>        <span class="keywordflow">if</span> (parent) {</div>
+<div class="line"><span class="lineno">  200</span>            <span class="comment">// Generate decay</span></div>
+<div class="line"><span class="lineno">  201</span>            <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a>-&gt;generateDecay(parent);</div>
 <div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>            LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen decay products converted and stored&quot;</span>;</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>            <span class="comment">// Clean up</span></div>
-<div class="line"><span class="lineno">  206</span>            parent-&gt;deleteTree();</div>
-<div class="line"><span class="lineno">  207</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  208</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Could not create EvtParticle for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a>;</div>
-<div class="line"><span class="lineno">  209</span>            <span class="comment">// Fall back to Pythia8</span></div>
-<div class="line"><span class="lineno">  210</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  211</span>        }</div>
-<div class="line"><span class="lineno">  212</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
-<div class="line"><span class="lineno">  213</span>        LOG(error) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen exception for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; e.what();</div>
-<div class="line"><span class="lineno">  214</span>        <span class="comment">// Fall back to Pythia8 on any exception</span></div>
-<div class="line"><span class="lineno">  215</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
-<div class="line"><span class="lineno">  216</span>    }</div>
-<div class="line"><span class="lineno">  217</span>}</div>
-<div class="ttc" id="aclassTEvtGenDecayer_html_ab7a23658b454c2237040b016741320cd"><div class="ttname"><a href="classTEvtGenDecayer.html#ab7a23658b454c2237040b016741320cd">TEvtGenDecayer::ConvertEvtGenDecay</a></div><div class="ttdeci">void ConvertEvtGenDecay(EvtParticle *parent)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00220">TEvtGenDecayer.cxx:220</a></div></div>
+<div class="line"><span class="lineno">  203</span>            <span class="comment">// Convert EvtGen decay products to ROOT format</span></div>
+<div class="line"><span class="lineno">  204</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#ab7a23658b454c2237040b016741320cd">ConvertEvtGenDecay</a>(parent);</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>            LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen decay products converted and stored&quot;</span>;</div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>            <span class="comment">// Clean up</span></div>
+<div class="line"><span class="lineno">  209</span>            parent-&gt;deleteTree();</div>
+<div class="line"><span class="lineno">  210</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  211</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Could not create EvtParticle for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a>;</div>
+<div class="line"><span class="lineno">  212</span>            <span class="comment">// Fall back to Pythia8</span></div>
+<div class="line"><span class="lineno">  213</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  214</span>        }</div>
+<div class="line"><span class="lineno">  215</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><span class="lineno">  216</span>        LOG(error) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen exception for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; e.what();</div>
+<div class="line"><span class="lineno">  217</span>        <span class="comment">// Fall back to Pythia8 on any exception</span></div>
+<div class="line"><span class="lineno">  218</span>        <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
+<div class="line"><span class="lineno">  219</span>    }</div>
+<div class="line"><span class="lineno">  220</span>}</div>
+<div class="ttc" id="aclassTEvtGenDecayer_html_ab7a23658b454c2237040b016741320cd"><div class="ttname"><a href="classTEvtGenDecayer.html#ab7a23658b454c2237040b016741320cd">TEvtGenDecayer::ConvertEvtGenDecay</a></div><div class="ttdeci">void ConvertEvtGenDecay(EvtParticle *parent)</div><div class="ttdef"><b>Definition</b> <a href="TEvtGenDecayer_8cxx_source.html#l00223">TEvtGenDecayer.cxx:223</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -529,18 +529,18 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00252">252</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  253</span>{</div>
-<div class="line"><span class="lineno">  254</span>    <span class="comment">// Decay particle using Pythia8 decayer</span></div>
-<div class="line"><span class="lineno">  255</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;DecayWithPythia8: Handling PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; with Pythia8&quot;</span>;</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>    <span class="comment">// Mark that this decay will use Pythia8 products</span></div>
-<div class="line"><span class="lineno">  258</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kFALSE;</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00255">255</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  256</span>{</div>
+<div class="line"><span class="lineno">  257</span>    <span class="comment">// Decay particle using Pythia8 decayer</span></div>
+<div class="line"><span class="lineno">  258</span>    LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;DecayWithPythia8: Handling PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; with Pythia8&quot;</span>;</div>
 <div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) {</div>
-<div class="line"><span class="lineno">  261</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;Decay(pdg, p);</div>
-<div class="line"><span class="lineno">  262</span>    }</div>
-<div class="line"><span class="lineno">  263</span>}</div>
+<div class="line"><span class="lineno">  260</span>    <span class="comment">// Mark that this decay will use Pythia8 products</span></div>
+<div class="line"><span class="lineno">  261</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kFALSE;</div>
+<div class="line"><span class="lineno">  262</span> </div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) {</div>
+<div class="line"><span class="lineno">  264</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;Decay(pdg, p);</div>
+<div class="line"><span class="lineno">  265</span>    }</div>
+<div class="line"><span class="lineno">  266</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -567,10 +567,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00320">320</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  321</span>{</div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ForceDecay();</div>
-<div class="line"><span class="lineno">  323</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00323">323</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  324</span>{</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ForceDecay();</div>
+<div class="line"><span class="lineno">  326</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,11 +598,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00333">333</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  334</span>{</div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;GetLifetime(kf);</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> 0.0;</div>
-<div class="line"><span class="lineno">  337</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00336">336</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  337</span>{</div>
+<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;GetLifetime(kf);</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><span class="lineno">  340</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -630,11 +630,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00326">326</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  327</span>{</div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;GetPartialBranchingRatio(ipart);</div>
-<div class="line"><span class="lineno">  329</span>    <span class="keywordflow">return</span> 0.0;</div>
-<div class="line"><span class="lineno">  330</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00329">329</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  330</span>{</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;GetPartialBranchingRatio(ipart);</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><span class="lineno">  333</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -661,8 +661,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00037">37</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00040">40</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -690,32 +690,32 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00266">266</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  267</span>{</div>
-<div class="line"><span class="lineno">  268</span>    <span class="comment">// Import particles - return EvtGen products if available, otherwise delegate to Pythia8</span></div>
-<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> &amp;&amp; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>) {</div>
-<div class="line"><span class="lineno">  270</span>        LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ImportParticles: Returning &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast() &lt;&lt; <span class="stringliteral">&quot; EvtGen particles&quot;</span>;</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>        <span class="comment">// Copy EvtGen particles to the provided array</span></div>
-<div class="line"><span class="lineno">  273</span>        particles-&gt;Clear();</div>
-<div class="line"><span class="lineno">  274</span>        <span class="keywordtype">int</span> nParticles = <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast();</div>
-<div class="line"><span class="lineno">  275</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nParticles; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  276</span>            TParticle* srcParticle = <span class="keyword">static_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;At(i));</div>
-<div class="line"><span class="lineno">  277</span>            TParticle* destParticle = <span class="keyword">new</span> ((*particles)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle(*srcParticle);</div>
-<div class="line"><span class="lineno">  278</span>        }</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>        <span class="comment">// Reset the flag for next decay</span></div>
-<div class="line"><span class="lineno">  281</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kFALSE;</div>
-<div class="line"><span class="lineno">  282</span>        <span class="keywordflow">return</span> nParticles;</div>
-<div class="line"><span class="lineno">  283</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  284</span>        <span class="comment">// Fall back to Pythia8</span></div>
-<div class="line"><span class="lineno">  285</span>        LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ImportParticles: Delegating to Pythia8&quot;</span>;</div>
-<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) {</div>
-<div class="line"><span class="lineno">  287</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ImportParticles(particles);</div>
-<div class="line"><span class="lineno">  288</span>        }</div>
-<div class="line"><span class="lineno">  289</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  290</span>    }</div>
-<div class="line"><span class="lineno">  291</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00269">269</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  270</span>{</div>
+<div class="line"><span class="lineno">  271</span>    <span class="comment">// Import particles - return EvtGen products if available, otherwise delegate to Pythia8</span></div>
+<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> &amp;&amp; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>) {</div>
+<div class="line"><span class="lineno">  273</span>        LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ImportParticles: Returning &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast() &lt;&lt; <span class="stringliteral">&quot; EvtGen particles&quot;</span>;</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>        <span class="comment">// Copy EvtGen particles to the provided array</span></div>
+<div class="line"><span class="lineno">  276</span>        particles-&gt;Clear();</div>
+<div class="line"><span class="lineno">  277</span>        <span class="keywordtype">int</span> nParticles = <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nParticles; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  279</span>            TParticle* srcParticle = <span class="keyword">static_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;At(i));</div>
+<div class="line"><span class="lineno">  280</span>            TParticle* destParticle = <span class="keyword">new</span> ((*particles)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle(*srcParticle);</div>
+<div class="line"><span class="lineno">  281</span>        }</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>        <span class="comment">// Reset the flag for next decay</span></div>
+<div class="line"><span class="lineno">  284</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4">fHasEvtGenDecay</a> = kFALSE;</div>
+<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">return</span> nParticles;</div>
+<div class="line"><span class="lineno">  286</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  287</span>        <span class="comment">// Fall back to Pythia8</span></div>
+<div class="line"><span class="lineno">  288</span>        LOG(debug1) &lt;&lt; <span class="stringliteral">&quot;ImportParticles: Delegating to Pythia8&quot;</span>;</div>
+<div class="line"><span class="lineno">  289</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) {</div>
+<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ImportParticles(particles);</div>
+<div class="line"><span class="lineno">  291</span>        }</div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  293</span>    }</div>
+<div class="line"><span class="lineno">  294</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -742,74 +742,74 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00054">54</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
-<div class="line"><span class="lineno">   56</span>    <span class="comment">// Initialize both EvtGen and Pythia8 decayers</span></div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment">// Initialize fallback Pythia8 decayer</span></div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a> = <span class="keyword">new</span> TPythia8Decayer();</div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;Init();</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="comment">// Initialize EvtGen if decay files are specified</span></div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a> != <span class="stringliteral">&quot;&quot;</span> &amp;&amp; <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
-<div class="line"><span class="lineno">   64</span>        <span class="comment">// Set up EvtGen random engine with ROOT&#39;s random number generator seed</span></div>
-<div class="line"><span class="lineno">   65</span>        UInt_t seed = gRandom-&gt;GetSeed();</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>        <span class="comment">// Also seed Pythia8 with the same seed for consistency</span></div>
-<div class="line"><span class="lineno">   68</span>        TPythia8* <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a> = TPythia8::Instance();</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">if</span> (pythia8) {</div>
-<div class="line"><span class="lineno">   70</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(Form(<span class="stringliteral">&quot;Random:seed = %u&quot;</span>, seed));</div>
-<div class="line"><span class="lineno">   71</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(<span class="stringliteral">&quot;Random:setSeed = on&quot;</span>);</div>
-<div class="line"><span class="lineno">   72</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;init();  <span class="comment">// Re-initialize with new seed</span></div>
-<div class="line"><span class="lineno">   73</span>            LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Pythia8 RNG seeded with &quot;</span> &lt;&lt; seed;</div>
-<div class="line"><span class="lineno">   74</span>        }</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>        EvtRandomEngine* randomEngine = <span class="keyword">new</span> EvtMTRandomEngine(seed);</div>
-<div class="line"><span class="lineno">   77</span>        EvtRandom::setRandomEngine(randomEngine);</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00057">57</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>    <span class="comment">// Initialize both EvtGen and Pythia8 decayers</span></div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>    <span class="comment">// Initialize fallback Pythia8 decayer</span></div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a> = <span class="keyword">new</span> TPythia8Decayer();</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;Init();</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    <span class="comment">// Initialize EvtGen if decay files are specified</span></div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a> != <span class="stringliteral">&quot;&quot;</span> &amp;&amp; <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><span class="lineno">   67</span>        <span class="comment">// Set up EvtGen random engine with ROOT&#39;s random number generator seed</span></div>
+<div class="line"><span class="lineno">   68</span>        UInt_t seed = gRandom-&gt;GetSeed();</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>        <span class="comment">// Also seed Pythia8 with the same seed for consistency</span></div>
+<div class="line"><span class="lineno">   71</span>        TPythia8* <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a> = TPythia8::Instance();</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">if</span> (pythia8) {</div>
+<div class="line"><span class="lineno">   73</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(Form(<span class="stringliteral">&quot;Random:seed = %u&quot;</span>, seed));</div>
+<div class="line"><span class="lineno">   74</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(<span class="stringliteral">&quot;Random:setSeed = on&quot;</span>);</div>
+<div class="line"><span class="lineno">   75</span>            <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;init();  <span class="comment">// Re-initialize with new seed</span></div>
+<div class="line"><span class="lineno">   76</span>            LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Pythia8 RNG seeded with &quot;</span> &lt;&lt; seed;</div>
+<div class="line"><span class="lineno">   77</span>        }</div>
 <div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Random engine initialized with seed &quot;</span> &lt;&lt; seed;</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>        <span class="comment">// Set up external generators with PHOTOS radiative corrections</span></div>
-<div class="line"><span class="lineno">   82</span>        std::string photonType(<span class="stringliteral">&quot;gamma&quot;</span>);</div>
-<div class="line"><span class="lineno">   83</span>        <span class="keywordtype">bool</span> useEvtGenRandom(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordtype">bool</span> convertPythiaCodes(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   85</span>        std::string pythiaDir(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>        EvtExternalGenList* externalGenList = <span class="keyword">new</span> EvtExternalGenList(convertPythiaCodes, pythiaDir, photonType, useEvtGenRandom);</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>        <span class="comment">// Get the interface to the radiative correction engine (PHOTOS)</span></div>
-<div class="line"><span class="lineno">   90</span>        EvtAbsRadCorr* radCorrEngine = externalGenList-&gt;getPhotosModel();</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">if</span> (radCorrEngine) {</div>
-<div class="line"><span class="lineno">   92</span>            LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: PHOTOS radiative corrections enabled&quot;</span>;</div>
-<div class="line"><span class="lineno">   93</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   94</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: PHOTOS not available, proceeding without radiative corrections&quot;</span>;</div>
-<div class="line"><span class="lineno">   95</span>        }</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>        <span class="comment">// Get the interface to other external generators</span></div>
-<div class="line"><span class="lineno">   98</span>        std::list&lt;EvtDecayBase*&gt; extraModels = externalGenList-&gt;getListOfModels();</div>
+<div class="line"><span class="lineno">   79</span>        EvtRandomEngine* randomEngine = <span class="keyword">new</span> EvtMTRandomEngine(seed);</div>
+<div class="line"><span class="lineno">   80</span>        EvtRandom::setRandomEngine(randomEngine);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Random engine initialized with seed &quot;</span> &lt;&lt; seed;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>        <span class="comment">// Set up external generators with PHOTOS radiative corrections</span></div>
+<div class="line"><span class="lineno">   85</span>        std::string photonType(<span class="stringliteral">&quot;gamma&quot;</span>);</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordtype">bool</span> useEvtGenRandom(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordtype">bool</span> convertPythiaCodes(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   88</span>        std::string pythiaDir(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>        EvtExternalGenList* externalGenList = <span class="keyword">new</span> EvtExternalGenList(convertPythiaCodes, pythiaDir, photonType, useEvtGenRandom);</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>        <span class="comment">// Get the interface to the radiative correction engine (PHOTOS)</span></div>
+<div class="line"><span class="lineno">   93</span>        EvtAbsRadCorr* radCorrEngine = externalGenList-&gt;getPhotosModel();</div>
+<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">if</span> (radCorrEngine) {</div>
+<div class="line"><span class="lineno">   95</span>            LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: PHOTOS radiative corrections enabled&quot;</span>;</div>
+<div class="line"><span class="lineno">   96</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   97</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: PHOTOS not available, proceeding without radiative corrections&quot;</span>;</div>
+<div class="line"><span class="lineno">   98</span>        }</div>
 <div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>        <span class="comment">// Create EvtGen instance</span></div>
-<div class="line"><span class="lineno">  101</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> = <span class="keyword">new</span> EvtGen(<a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>.Data(), <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>.Data(),</div>
-<div class="line"><span class="lineno">  102</span>                            randomEngine, radCorrEngine, &amp;extraModels, 1, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen created with &quot;</span> &lt;&lt; EvtPDL::entries() &lt;&lt; <span class="stringliteral">&quot; particle entries&quot;</span>;</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen initialized with decay file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>.Data()</div>
-<div class="line"><span class="lineno">  107</span>                  &lt;&lt; <span class="stringliteral">&quot;, particle file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>.Data();</div>
-<div class="line"><span class="lineno">  108</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  109</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: No EvtGen files specified, using Pythia8 only&quot;</span>;</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    <span class="comment">// Log summary at end of Init</span></div>
-<div class="line"><span class="lineno">  113</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer initialized - EvtGen: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> ? <span class="stringliteral">&quot;YES&quot;</span> : <span class="stringliteral">&quot;NO&quot;</span>)</div>
-<div class="line"><span class="lineno">  114</span>              &lt;&lt; <span class="stringliteral">&quot;, Pythia8 fallback: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a> ? <span class="stringliteral">&quot;YES&quot;</span> : <span class="stringliteral">&quot;NO&quot;</span>)</div>
-<div class="line"><span class="lineno">  115</span>              &lt;&lt; <span class="stringliteral">&quot;, Particles configured for EvtGen: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size();</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  118</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;  EvtGen particle: PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">  119</span>    }</div>
-<div class="line"><span class="lineno">  120</span>}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a8fb1d87868691be90334fae6651ab73d"><div class="ttname"><a href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">run_simScript.pythia8</a></div><div class="ttdeci">pythia8</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00270">run_simScript.py:270</a></div></div>
+<div class="line"><span class="lineno">  100</span>        <span class="comment">// Get the interface to other external generators</span></div>
+<div class="line"><span class="lineno">  101</span>        std::list&lt;EvtDecayBase*&gt; extraModels = externalGenList-&gt;getListOfModels();</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>        <span class="comment">// Create EvtGen instance</span></div>
+<div class="line"><span class="lineno">  104</span>        <a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> = <span class="keyword">new</span> EvtGen(<a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>.Data(), <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>.Data(),</div>
+<div class="line"><span class="lineno">  105</span>                            randomEngine, radCorrEngine, &amp;extraModels, 1, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen created with &quot;</span> &lt;&lt; EvtPDL::entries() &lt;&lt; <span class="stringliteral">&quot; particle entries&quot;</span>;</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: EvtGen initialized with decay file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a>.Data()</div>
+<div class="line"><span class="lineno">  110</span>                  &lt;&lt; <span class="stringliteral">&quot;, particle file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a>.Data();</div>
+<div class="line"><span class="lineno">  111</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  112</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: No EvtGen files specified, using Pythia8 only&quot;</span>;</div>
+<div class="line"><span class="lineno">  113</span>    }</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="comment">// Log summary at end of Init</span></div>
+<div class="line"><span class="lineno">  116</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer initialized - EvtGen: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021">fEvtGen</a> ? <span class="stringliteral">&quot;YES&quot;</span> : <span class="stringliteral">&quot;NO&quot;</span>)</div>
+<div class="line"><span class="lineno">  117</span>              &lt;&lt; <span class="stringliteral">&quot;, Pythia8 fallback: &quot;</span> &lt;&lt; (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a> ? <span class="stringliteral">&quot;YES&quot;</span> : <span class="stringliteral">&quot;NO&quot;</span>)</div>
+<div class="line"><span class="lineno">  118</span>              &lt;&lt; <span class="stringliteral">&quot;, Particles configured for EvtGen: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size();</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  121</span>        LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;  EvtGen particle: PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">  122</span>    }</div>
+<div class="line"><span class="lineno">  123</span>}</div>
+<div class="ttc" id="anamespacerun__simScript_html_a8fb1d87868691be90334fae6651ab73d"><div class="ttname"><a href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">run_simScript.pythia8</a></div><div class="ttdeci">pythia8</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00273">run_simScript.py:273</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -836,10 +836,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00340">340</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  341</span>{</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ReadDecayTable();</div>
-<div class="line"><span class="lineno">  343</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00343">343</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  344</span>{</div>
+<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;ReadDecayTable();</div>
+<div class="line"><span class="lineno">  346</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -859,10 +859,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00294">294</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span>{</div>
-<div class="line"><span class="lineno">  296</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a> = decayFile;</div>
-<div class="line"><span class="lineno">  297</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00297">297</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  298</span>{</div>
+<div class="line"><span class="lineno">  299</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a> = decayFile;</div>
+<div class="line"><span class="lineno">  300</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -882,10 +882,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00300">300</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  301</span>{</div>
-<div class="line"><span class="lineno">  302</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a> = particleFile;</div>
-<div class="line"><span class="lineno">  303</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00303">303</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
+<div class="line"><span class="lineno">  305</span>    <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a> = particleFile;</div>
+<div class="line"><span class="lineno">  306</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -913,10 +913,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00314">314</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  315</span>{</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;SetForceDecay(type);</div>
-<div class="line"><span class="lineno">  317</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00317">317</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  318</span>{</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>) <a class="code hl_variable" href="classTEvtGenDecayer.html#ada63914977b0191dbb5f36d369d1ba13">fPythia8Decayer</a>-&gt;SetForceDecay(type);</div>
+<div class="line"><span class="lineno">  320</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -944,21 +944,21 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00149">149</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
-<div class="line"><span class="lineno">  151</span>    <span class="comment">// Check if this particle should be handled by EvtGen</span></div>
-<div class="line"><span class="lineno">  152</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: Checking PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; against EvtGen particle list&quot;</span>;</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">for</span> (Int_t evtGenPdg : <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>) {</div>
-<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">if</span> (pdg == evtGenPdg) {</div>
-<div class="line"><span class="lineno">  156</span>            LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: Match found - PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; should use EvtGen&quot;</span>;</div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  158</span>        }</div>
-<div class="line"><span class="lineno">  159</span>    }</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; not in EvtGen particle list, falling back to Pythia8&quot;</span>;</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  163</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8cxx_source.html#l00152">152</a> of file <a class="el" href="TEvtGenDecayer_8cxx_source.html">TEvtGenDecayer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
+<div class="line"><span class="lineno">  154</span>    <span class="comment">// Check if this particle should be handled by EvtGen</span></div>
+<div class="line"><span class="lineno">  155</span>    LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: Checking PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; against EvtGen particle list&quot;</span>;</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">for</span> (Int_t evtGenPdg : <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>) {</div>
+<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">if</span> (pdg == evtGenPdg) {</div>
+<div class="line"><span class="lineno">  159</span>            LOG(debug2) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: Match found - PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; should use EvtGen&quot;</span>;</div>
+<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  161</span>        }</div>
+<div class="line"><span class="lineno">  162</span>    }</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;UseEvtGenForParticle: PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a> &lt;&lt; <span class="stringliteral">&quot; not in EvtGen particle list, falling back to Pythia8&quot;</span>;</div>
+<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  166</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -983,7 +983,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00049">49</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00052">52</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1007,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00048">48</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00051">51</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1031,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00051">51</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00054">54</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1055,7 +1055,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00054">54</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00057">57</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1079,7 +1079,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00055">55</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00058">58</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1103,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00050">50</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00053">53</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1127,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00047">47</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TEvtGenDecayer_8h_source.html#l00050">50</a> of file <a class="el" href="TEvtGenDecayer_8h_source.html">TEvtGenDecayer.h</a>.</p>
 
 </div>
 </div>

@@ -97,74 +97,77 @@ $(document).ready(function(){initNavTree('SBTDetector_8py_source.html',''); init
   <div class="headertitle"><div class="title">SBTDetector.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="SBTDetector_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceSBTDetector.html">    1</a></span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> BaseDetector <span class="keyword">import</span> BaseDetector</div>
+<a href="SBTDetector_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceSBTDetector.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="" data-end="">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html">    5</a></span><span class="keyword">class </span><a class="code hl_class" href="classSBTDetector_1_1SBTDetector.html">SBTDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
-<div class="foldopen" id="foldopen00006" data-start="" data-end="">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">    6</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>        self,</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>        name,</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        intree,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        branchName=None,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        mcBranchType=None,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        mcBranchName=&quot;digiSBT2MC&quot;,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        outtree=None,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    ):</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        super().<a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            name,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            intree,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            branchName,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            mcBranchType,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            mcBranchName,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            outtree=outtree,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        )</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> BaseDetector <span class="keyword">import</span> BaseDetector</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="" data-end="">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classSBTDetector_1_1SBTDetector.html">SBTDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
+<div class="foldopen" id="foldopen00009" data-start="" data-end="">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">    9</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        self,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        name,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        intree,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        branchName=None,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        mcBranchType=None,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        mcBranchName=&quot;digiSBT2MC&quot;,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        outtree=None,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ):</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        super().<a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            name,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            intree,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            branchName,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            mcBranchType,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            mcBranchName,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            outtree=outtree,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        )</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 </div>
-<div class="foldopen" id="foldopen00024" data-start="" data-end="">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">   24</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">digitize</a>(self):</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize Surrounding Background Tagger MC hits.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="stringliteral">        TDC defined as the time of the first MC hit in the cell.</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="stringliteral">        Eloss defined as the cumulative energy deposition of MC hits in the cell.</span></div>
+<div class="foldopen" id="foldopen00027" data-start="" data-end="">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">   27</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">digitize</a>(self):</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize Surrounding Background Tagger MC hits.</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        ElossPerDetId = {}</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        tOfFlight = {}</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        listOfVetoPoints = {}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        key = -1</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.vetoPoint:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            key += 1</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            detID = aMCPoint.GetDetectorID()</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            Eloss = aMCPoint.GetEnergyLoss()</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordflow">if</span> detID <span class="keywordflow">not</span> <span class="keywordflow">in</span> ElossPerDetId:</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                ElossPerDetId[detID] = 0</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                listOfVetoPoints[detID] = []</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                tOfFlight[detID] = []</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            ElossPerDetId[detID] += Eloss</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            listOfVetoPoints[detID].append(key)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            tOfFlight[detID].append(aMCPoint.GetTime())</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">for</span> seg <span class="keywordflow">in</span> ElossPerDetId:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            aHit = ROOT.vetoHit(seg, ElossPerDetId[seg])</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            aHit.SetTDC(min(tOfFlight[seg]) + self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(aHit)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                v.push_back(x)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a>.push_back(v)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral">        TDC defined as the time of the first MC hit in the cell.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="stringliteral">        Eloss defined as the cumulative energy deposition of MC hits in the cell.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        ElossPerDetId = {}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        tOfFlight = {}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        listOfVetoPoints = {}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        key = -1</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.vetoPoint:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            key += 1</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            detID = aMCPoint.GetDetectorID()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            Eloss = aMCPoint.GetEnergyLoss()</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">if</span> detID <span class="keywordflow">not</span> <span class="keywordflow">in</span> ElossPerDetId:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                ElossPerDetId[detID] = 0</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                listOfVetoPoints[detID] = []</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                tOfFlight[detID] = []</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            ElossPerDetId[detID] += Eloss</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            listOfVetoPoints[detID].append(key)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            tOfFlight[detID].append(aMCPoint.GetTime())</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">for</span> seg <span class="keywordflow">in</span> ElossPerDetId:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            aHit = ROOT.vetoHit(seg, ElossPerDetId[seg])</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            aHit.SetTDC(min(tOfFlight[seg]) + self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(aHit)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                v.push_back(x)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a>.push_back(v)</div>
 </div>
 </div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00008">BaseDetector.py:8</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a146858d034cb57ffd0f81f4e025f9492"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">BaseDetector.BaseDetector.det</a></div><div class="ttdeci">det</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00026">BaseDetector.py:26</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a44b08d07048c21b3a72e3f6c5b987950"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">BaseDetector.BaseDetector.MCdet</a></div><div class="ttdeci">MCdet</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00027">BaseDetector.py:27</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00023">BaseDetector.py:23</a></div></div>
-<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html">SBTDetector.SBTDetector</a></div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00005">SBTDetector.py:5</a></div></div>
-<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ad0819987e76dc55409ead538c25cf7c1"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">SBTDetector.SBTDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, branchName=None, mcBranchType=None, mcBranchName=&quot;digiSBT2MC&quot;, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00006">SBTDetector.py:14</a></div></div>
-<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ae6d48310b5a5d3df02fd2ee24ed21d6e"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">SBTDetector.SBTDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00024">SBTDetector.py:24</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a146858d034cb57ffd0f81f4e025f9492"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">BaseDetector.BaseDetector.det</a></div><div class="ttdeci">det</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00029">BaseDetector.py:29</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a44b08d07048c21b3a72e3f6c5b987950"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">BaseDetector.BaseDetector.MCdet</a></div><div class="ttdeci">MCdet</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00030">BaseDetector.py:30</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00026">BaseDetector.py:26</a></div></div>
+<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html">SBTDetector.SBTDetector</a></div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00008">SBTDetector.py:8</a></div></div>
+<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ad0819987e76dc55409ead538c25cf7c1"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">SBTDetector.SBTDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, branchName=None, mcBranchType=None, mcBranchName=&quot;digiSBT2MC&quot;, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00009">SBTDetector.py:17</a></div></div>
+<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ae6d48310b5a5d3df02fd2ee24ed21d6e"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">SBTDetector.SBTDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00027">SBTDetector.py:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

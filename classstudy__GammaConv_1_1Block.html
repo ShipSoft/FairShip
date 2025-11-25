@@ -135,7 +135,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00055">55</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00058">58</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a805980182e0e5def51d0457939a334c8" name="a805980182e0e5def51d0457939a334c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a805980182e0e5def51d0457939a334c8">&#9670;&#160;</a></span>__init__()</h2>
@@ -153,10 +153,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00057">57</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span> <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">   58</span>   ROOT.pyFairModule.__init__(self,self)</div>
-<div class="line"><span class="lineno">   59</span>   self.sensPlane = <span class="keywordtype">None</span></div>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00060">60</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span> <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">   61</span>   ROOT.pyFairModule.__init__(self,self)</div>
+<div class="line"><span class="lineno">   62</span>   self.sensPlane = <span class="keywordtype">None</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -177,22 +177,22 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00060">60</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span> <span class="keyword">def </span>ConstructGeometry(self):</div>
-<div class="line"><span class="lineno">   61</span>    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
-<div class="line"><span class="lineno">   62</span>    top=ROOT.gGeoManager.GetTopVolume()</div>
-<div class="line"><span class="lineno">   63</span>    geoLoad=ROOT.FairGeoLoader.Instance()</div>
-<div class="line"><span class="lineno">   64</span>    geoFace=geoLoad.getGeoInterface()</div>
-<div class="line"><span class="lineno">   65</span>    media=geoFace.getMedia()</div>
-<div class="line"><span class="lineno">   66</span>    geoBuild=geoLoad.getGeoBuilder()</div>
-<div class="line"><span class="lineno">   67</span>    ShipMedium=media.getMedium(material)</div>
-<div class="line"><span class="lineno">   68</span>    W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
-<div class="line"><span class="lineno">   70</span>        rc = geoBuild.createMedium(ShipMedium)</div>
-<div class="line"><span class="lineno">   71</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><span class="lineno">   72</span>    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
-<div class="line"><span class="lineno">   73</span>    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> self.sensPlane: self.sensPlane.AddSensitiveVolume(aBox)</div>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00063">63</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span> <span class="keyword">def </span>ConstructGeometry(self):</div>
+<div class="line"><span class="lineno">   64</span>    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
+<div class="line"><span class="lineno">   65</span>    top=ROOT.gGeoManager.GetTopVolume()</div>
+<div class="line"><span class="lineno">   66</span>    geoLoad=ROOT.FairGeoLoader.Instance()</div>
+<div class="line"><span class="lineno">   67</span>    geoFace=geoLoad.getGeoInterface()</div>
+<div class="line"><span class="lineno">   68</span>    media=geoFace.getMedia()</div>
+<div class="line"><span class="lineno">   69</span>    geoBuild=geoLoad.getGeoBuilder()</div>
+<div class="line"><span class="lineno">   70</span>    ShipMedium=media.getMedium(material)</div>
+<div class="line"><span class="lineno">   71</span>    W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
+<div class="line"><span class="lineno">   73</span>        rc = geoBuild.createMedium(ShipMedium)</div>
+<div class="line"><span class="lineno">   74</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><span class="lineno">   75</span>    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
+<div class="line"><span class="lineno">   76</span>    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> self.sensPlane: self.sensPlane.AddSensitiveVolume(aBox)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -211,9 +211,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00075">75</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span> <span class="keyword">def </span>InitParContainers():</div>
-<div class="line"><span class="lineno">   76</span>    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00078">78</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span> <span class="keyword">def </span>InitParContainers():</div>
+<div class="line"><span class="lineno">   79</span>    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -243,10 +243,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00077">77</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span> <span class="keyword">def </span>makeSensitive(self,sensPlane):</div>
-<div class="line"><span class="lineno">   78</span>    self.sensPlane = sensPlane</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00080">80</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span> <span class="keyword">def </span>makeSensitive(self,sensPlane):</div>
+<div class="line"><span class="lineno">   81</span>    self.sensPlane = sensPlane</div>
+<div class="line"><span class="lineno">   82</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -263,7 +263,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00059">59</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__GammaConv_8py_source.html#l00062">62</a> of file <a class="el" href="study__GammaConv_8py_source.html">study_GammaConv.py</a>.</p>
 
 </div>
 </div>

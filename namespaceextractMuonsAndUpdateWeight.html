@@ -150,20 +150,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00153">153</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  153</span><span class="keyword">def </span>mergeCharm():</div>
-<div class="line"><span class="lineno">  154</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
-<div class="line"><span class="lineno">  155</span> mergedFile = <span class="stringliteral">&quot;pythia8_Geant4_charm_102.2B_10.0_mu.root&quot;</span></div>
-<div class="line"><span class="lineno">  156</span> cmd = <span class="stringliteral">&quot;hadd &quot;</span>+mergedFile</div>
-<div class="line"><span class="lineno">  157</span> <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1]:</div>
-<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
-<div class="line"><span class="lineno">  159</span>   crun = run+cycle*1000</div>
-<div class="line"><span class="lineno">  160</span>   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,str(crun+19))</div>
-<div class="line"><span class="lineno">  161</span>   fmu = <span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  162</span>   cmd += fmu</div>
-<div class="line"><span class="lineno">  163</span> rc = os.system(cmd)</div>
-<div class="line"><span class="lineno">  164</span> rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+mergedFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+mergedFile)</div>
-<div class="line"><span class="lineno">  165</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00156">156</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  156</span><span class="keyword">def </span>mergeCharm():</div>
+<div class="line"><span class="lineno">  157</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
+<div class="line"><span class="lineno">  158</span> mergedFile = <span class="stringliteral">&quot;pythia8_Geant4_charm_102.2B_10.0_mu.root&quot;</span></div>
+<div class="line"><span class="lineno">  159</span> cmd = <span class="stringliteral">&quot;hadd &quot;</span>+mergedFile</div>
+<div class="line"><span class="lineno">  160</span> <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1]:</div>
+<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
+<div class="line"><span class="lineno">  162</span>   crun = run+cycle*1000</div>
+<div class="line"><span class="lineno">  163</span>   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,str(crun+19))</div>
+<div class="line"><span class="lineno">  164</span>   fmu = <span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  165</span>   cmd += fmu</div>
+<div class="line"><span class="lineno">  166</span> rc = os.system(cmd)</div>
+<div class="line"><span class="lineno">  167</span> rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+mergedFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+mergedFile)</div>
+<div class="line"><span class="lineno">  168</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -183,92 +183,92 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00166">166</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  166</span><span class="keyword">def </span>mergeMbiasAndCharm(flavour=&quot;charm&quot;):</div>
-<div class="line"><span class="lineno">  167</span> done = []</div>
-<div class="line"><span class="lineno">  168</span> timer = ROOT.TStopwatch()</div>
-<div class="line"><span class="lineno">  169</span> timer.Start()</div>
-<div class="line"><span class="lineno">  170</span> pp = os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path</div>
-<div class="line"><span class="lineno">  171</span> Rndm=ROOT.TRandom3()</div>
-<div class="line"><span class="lineno">  172</span> Rndm.SetSeed(0)</div>
-<div class="line"><span class="lineno">  173</span> <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
-<div class="line"><span class="lineno">  174</span>   allFiles = {<span class="stringliteral">&#39;charm&#39;</span>:<span class="stringliteral">&quot;pythia8_Geant4_charm_102.2B_10.0_mu.root&quot;</span>}</div>
-<div class="line"><span class="lineno">  175</span>   tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX_mu.root&quot;</span></div>
-<div class="line"><span class="lineno">  176</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  177</span>   allFiles = {<span class="stringliteral">&#39;beauty&#39;</span>:<span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0_mu.root&quot;</span>}</div>
-<div class="line"><span class="lineno">  178</span>   tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_withCharmXX_mu.root&quot;</span></div>
-<div class="line"><span class="lineno">  179</span> <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
-<div class="line"><span class="lineno">  180</span>    allFiles[str(run)] = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run))</div>
-<div class="line"><span class="lineno">  181</span> nEntries = {}</div>
-<div class="line"><span class="lineno">  182</span> Nall = 0</div>
-<div class="line"><span class="lineno">  183</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allFiles:</div>
-<div class="line"><span class="lineno">  184</span>  f=ROOT.TFile.Open(pp+allFiles[x])</div>
-<div class="line"><span class="lineno">  185</span>  nEntries[x]=f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries()</div>
-<div class="line"><span class="lineno">  186</span>  Nall += nEntries[x]</div>
-<div class="line"><span class="lineno">  187</span> nCharm = 0</div>
-<div class="line"><span class="lineno">  188</span> nDone  = 0</div>
-<div class="line"><span class="lineno">  189</span> frac = nEntries[flavour]/float(Nall)</div>
-<div class="line"><span class="lineno">  190</span> print(<span class="stringliteral">&quot;debug&quot;</span>,frac)</div>
-<div class="line"><span class="lineno">  191</span> os.system(<span class="stringliteral">&#39;xrdcp &#39;</span>+pp +allFiles[flavour] +<span class="stringliteral">&#39; &#39;</span>+allFiles[flavour])</div>
-<div class="line"><span class="lineno">  192</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> allFiles:</div>
-<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">if</span> k==flavour: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">if</span> k <span class="keywordflow">in</span> done:  <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  195</span>  os.system(<span class="stringliteral">&#39;xrdcp &#39;</span>+pp +allFiles[k] +<span class="stringliteral">&#39; &#39;</span> +allFiles[k])</div>
-<div class="line"><span class="lineno">  196</span>  os.system(<span class="stringliteral">&#39;hadd -f tmp.root &#39;</span>+ allFiles[flavour] + <span class="stringliteral">&#39; &#39;</span>+ allFiles[k] )</div>
-<div class="line"><span class="lineno">  197</span>  os.system(<span class="stringliteral">&#39;rm &#39;</span>+allFiles[k])</div>
-<div class="line"><span class="lineno">  198</span>  f = ROOT.TFile(<span class="stringliteral">&#39;tmp.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  199</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  200</span>  sTree.LoadBaskets(30000000000)</div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
-<div class="line"><span class="lineno">  202</span>   outFile = tmp.replace(<span class="stringliteral">&#39;cXX&#39;</span>,<span class="stringliteral">&#39;withCharm&#39;</span>+k)</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  204</span>   outFile = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<span class="stringliteral">&#39;andBeauty&#39;</span>+k)</div>
-<div class="line"><span class="lineno">  205</span>  fmu = ROOT.TFile(outFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  206</span>  newTree = sTree.CloneTree(0)</div>
-<div class="line"><span class="lineno">  207</span>  nMbias = 0</div>
-<div class="line"><span class="lineno">  208</span> <span class="comment"># 0 - nEntries[&#39;charm&#39;]-1 , nEntries[&#39;charm&#39;] - nEntries[0]-1, nEntries[0] - nEntries[1000]-1</span></div>
-<div class="line"><span class="lineno">  209</span>  <span class="comment"># randomList = ROOT.TEntryList(chain)</span></div>
-<div class="line"><span class="lineno">  210</span>  myList = []</div>
-<div class="line"><span class="lineno">  211</span>  <span class="keywordflow">while</span> nMbias&lt;nEntries[k]:</div>
-<div class="line"><span class="lineno">  212</span>   copyEvent = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  213</span>   <span class="keywordflow">if</span> Rndm.Rndm() &gt; frac:</div>
-<div class="line"><span class="lineno">  214</span>    <span class="comment"># rc = randomList.Enter(nMbias+nEntries[&#39;charm&#39;])</span></div>
-<div class="line"><span class="lineno">  215</span>    myList.append( nMbias+nEntries[flavour] )</div>
-<div class="line"><span class="lineno">  216</span>    nMbias+=1</div>
-<div class="line"><span class="lineno">  217</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  218</span>    <span class="keywordflow">if</span> nEntries[flavour]&gt;nCharm:</div>
-<div class="line"><span class="lineno">  219</span>     <span class="comment"># rc = randomList.Enter(nCharm)</span></div>
-<div class="line"><span class="lineno">  220</span>     myList.append( nCharm )</div>
-<div class="line"><span class="lineno">  221</span>     nCharm+=1</div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">else</span>: copyEvent = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  223</span>  <span class="comment"># chain.SetEntryList(randomList)</span></div>
-<div class="line"><span class="lineno">  224</span>  <span class="comment"># nev = randomList.GetN()</span></div>
-<div class="line"><span class="lineno">  225</span>  nev = len(myList)</div>
-<div class="line"><span class="lineno">  226</span>  print(<span class="stringliteral">&quot;start:&quot;</span>,outFile,nev)</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(nev) :</div>
-<div class="line"><span class="lineno">  228</span>     rc =sTree.GetEntry(myList[iev])</div>
-<div class="line"><span class="lineno">  229</span>     rc = newTree.Fill()</div>
-<div class="line"><span class="lineno">  230</span>     <span class="keywordflow">if</span> (iev)%100000==0:</div>
-<div class="line"><span class="lineno">  231</span>       timer.Stop()</div>
-<div class="line"><span class="lineno">  232</span>       print(<span class="stringliteral">&quot;status:&quot;</span>,timer.RealTime(),k,iev)</div>
-<div class="line"><span class="lineno">  233</span>       timer.Start()</div>
-<div class="line"><span class="lineno">  234</span>  newTree.AutoSave()</div>
-<div class="line"><span class="lineno">  235</span>  print(<span class="stringliteral">&quot;finished one file&quot;</span>,outFile,nMbias,nCharm)</div>
-<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
-<div class="line"><span class="lineno">  237</span>   ff = f.FileHeader.Clone(<span class="stringliteral">&#39;With Charm Merged Muon Background File&#39;</span>)</div>
-<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  239</span>   ff = f.FileHeader.Clone(<span class="stringliteral">&#39;With Charm and Beauty Merged Muon Background File&#39;</span>)</div>
-<div class="line"><span class="lineno">  240</span>  txt = ff.GetTitle()</div>
-<div class="line"><span class="lineno">  241</span>  fmu.cd()</div>
-<div class="line"><span class="lineno">  242</span>  ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><span class="lineno">  243</span>  fmu.Close()</div>
-<div class="line"><span class="lineno">  244</span>  f.Close()</div>
-<div class="line"><span class="lineno">  245</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+outFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+outFile)</div>
-<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">  247</span>      print(<span class="stringliteral">&quot;copy to EOS failed&quot;</span>,outFile)</div>
-<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  249</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+outFile)</div>
-<div class="line"><span class="lineno">  250</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00169">169</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span><span class="keyword">def </span>mergeMbiasAndCharm(flavour=&quot;charm&quot;):</div>
+<div class="line"><span class="lineno">  170</span> done = []</div>
+<div class="line"><span class="lineno">  171</span> timer = ROOT.TStopwatch()</div>
+<div class="line"><span class="lineno">  172</span> timer.Start()</div>
+<div class="line"><span class="lineno">  173</span> pp = os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path</div>
+<div class="line"><span class="lineno">  174</span> Rndm=ROOT.TRandom3()</div>
+<div class="line"><span class="lineno">  175</span> Rndm.SetSeed(0)</div>
+<div class="line"><span class="lineno">  176</span> <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
+<div class="line"><span class="lineno">  177</span>   allFiles = {<span class="stringliteral">&#39;charm&#39;</span>:<span class="stringliteral">&quot;pythia8_Geant4_charm_102.2B_10.0_mu.root&quot;</span>}</div>
+<div class="line"><span class="lineno">  178</span>   tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX_mu.root&quot;</span></div>
+<div class="line"><span class="lineno">  179</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  180</span>   allFiles = {<span class="stringliteral">&#39;beauty&#39;</span>:<span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0_mu.root&quot;</span>}</div>
+<div class="line"><span class="lineno">  181</span>   tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_withCharmXX_mu.root&quot;</span></div>
+<div class="line"><span class="lineno">  182</span> <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
+<div class="line"><span class="lineno">  183</span>    allFiles[str(run)] = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run))</div>
+<div class="line"><span class="lineno">  184</span> nEntries = {}</div>
+<div class="line"><span class="lineno">  185</span> Nall = 0</div>
+<div class="line"><span class="lineno">  186</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allFiles:</div>
+<div class="line"><span class="lineno">  187</span>  f=ROOT.TFile.Open(pp+allFiles[x])</div>
+<div class="line"><span class="lineno">  188</span>  nEntries[x]=f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries()</div>
+<div class="line"><span class="lineno">  189</span>  Nall += nEntries[x]</div>
+<div class="line"><span class="lineno">  190</span> nCharm = 0</div>
+<div class="line"><span class="lineno">  191</span> nDone  = 0</div>
+<div class="line"><span class="lineno">  192</span> frac = nEntries[flavour]/float(Nall)</div>
+<div class="line"><span class="lineno">  193</span> print(<span class="stringliteral">&quot;debug&quot;</span>,frac)</div>
+<div class="line"><span class="lineno">  194</span> os.system(<span class="stringliteral">&#39;xrdcp &#39;</span>+pp +allFiles[flavour] +<span class="stringliteral">&#39; &#39;</span>+allFiles[flavour])</div>
+<div class="line"><span class="lineno">  195</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> allFiles:</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">if</span> k==flavour: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">if</span> k <span class="keywordflow">in</span> done:  <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  198</span>  os.system(<span class="stringliteral">&#39;xrdcp &#39;</span>+pp +allFiles[k] +<span class="stringliteral">&#39; &#39;</span> +allFiles[k])</div>
+<div class="line"><span class="lineno">  199</span>  os.system(<span class="stringliteral">&#39;hadd -f tmp.root &#39;</span>+ allFiles[flavour] + <span class="stringliteral">&#39; &#39;</span>+ allFiles[k] )</div>
+<div class="line"><span class="lineno">  200</span>  os.system(<span class="stringliteral">&#39;rm &#39;</span>+allFiles[k])</div>
+<div class="line"><span class="lineno">  201</span>  f = ROOT.TFile(<span class="stringliteral">&#39;tmp.root&#39;</span>)</div>
+<div class="line"><span class="lineno">  202</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  203</span>  sTree.LoadBaskets(30000000000)</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
+<div class="line"><span class="lineno">  205</span>   outFile = tmp.replace(<span class="stringliteral">&#39;cXX&#39;</span>,<span class="stringliteral">&#39;withCharm&#39;</span>+k)</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  207</span>   outFile = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<span class="stringliteral">&#39;andBeauty&#39;</span>+k)</div>
+<div class="line"><span class="lineno">  208</span>  fmu = ROOT.TFile(outFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  209</span>  newTree = sTree.CloneTree(0)</div>
+<div class="line"><span class="lineno">  210</span>  nMbias = 0</div>
+<div class="line"><span class="lineno">  211</span> <span class="comment"># 0 - nEntries[&#39;charm&#39;]-1 , nEntries[&#39;charm&#39;] - nEntries[0]-1, nEntries[0] - nEntries[1000]-1</span></div>
+<div class="line"><span class="lineno">  212</span>  <span class="comment"># randomList = ROOT.TEntryList(chain)</span></div>
+<div class="line"><span class="lineno">  213</span>  myList = []</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keywordflow">while</span> nMbias&lt;nEntries[k]:</div>
+<div class="line"><span class="lineno">  215</span>   copyEvent = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  216</span>   <span class="keywordflow">if</span> Rndm.Rndm() &gt; frac:</div>
+<div class="line"><span class="lineno">  217</span>    <span class="comment"># rc = randomList.Enter(nMbias+nEntries[&#39;charm&#39;])</span></div>
+<div class="line"><span class="lineno">  218</span>    myList.append( nMbias+nEntries[flavour] )</div>
+<div class="line"><span class="lineno">  219</span>    nMbias+=1</div>
+<div class="line"><span class="lineno">  220</span>   <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">if</span> nEntries[flavour]&gt;nCharm:</div>
+<div class="line"><span class="lineno">  222</span>     <span class="comment"># rc = randomList.Enter(nCharm)</span></div>
+<div class="line"><span class="lineno">  223</span>     myList.append( nCharm )</div>
+<div class="line"><span class="lineno">  224</span>     nCharm+=1</div>
+<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">else</span>: copyEvent = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  226</span>  <span class="comment"># chain.SetEntryList(randomList)</span></div>
+<div class="line"><span class="lineno">  227</span>  <span class="comment"># nev = randomList.GetN()</span></div>
+<div class="line"><span class="lineno">  228</span>  nev = len(myList)</div>
+<div class="line"><span class="lineno">  229</span>  print(<span class="stringliteral">&quot;start:&quot;</span>,outFile,nev)</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(nev) :</div>
+<div class="line"><span class="lineno">  231</span>     rc =sTree.GetEntry(myList[iev])</div>
+<div class="line"><span class="lineno">  232</span>     rc = newTree.Fill()</div>
+<div class="line"><span class="lineno">  233</span>     <span class="keywordflow">if</span> (iev)%100000==0:</div>
+<div class="line"><span class="lineno">  234</span>       timer.Stop()</div>
+<div class="line"><span class="lineno">  235</span>       print(<span class="stringliteral">&quot;status:&quot;</span>,timer.RealTime(),k,iev)</div>
+<div class="line"><span class="lineno">  236</span>       timer.Start()</div>
+<div class="line"><span class="lineno">  237</span>  newTree.AutoSave()</div>
+<div class="line"><span class="lineno">  238</span>  print(<span class="stringliteral">&quot;finished one file&quot;</span>,outFile,nMbias,nCharm)</div>
+<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
+<div class="line"><span class="lineno">  240</span>   ff = f.FileHeader.Clone(<span class="stringliteral">&#39;With Charm Merged Muon Background File&#39;</span>)</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  242</span>   ff = f.FileHeader.Clone(<span class="stringliteral">&#39;With Charm and Beauty Merged Muon Background File&#39;</span>)</div>
+<div class="line"><span class="lineno">  243</span>  txt = ff.GetTitle()</div>
+<div class="line"><span class="lineno">  244</span>  fmu.cd()</div>
+<div class="line"><span class="lineno">  245</span>  ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><span class="lineno">  246</span>  fmu.Close()</div>
+<div class="line"><span class="lineno">  247</span>  f.Close()</div>
+<div class="line"><span class="lineno">  248</span>  rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+outFile+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+outFile)</div>
+<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  250</span>      print(<span class="stringliteral">&quot;copy to EOS failed&quot;</span>,outFile)</div>
+<div class="line"><span class="lineno">  251</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  252</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+outFile)</div>
+<div class="line"><span class="lineno">  253</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -310,29 +310,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00020">20</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   20</span><span class="keyword">def </span>muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm=True):</div>
-<div class="line"><span class="lineno">   21</span> nMu=0</div>
-<div class="line"><span class="lineno">   22</span> <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><span class="lineno">   23</span>   mu = v.GetTrackID()</div>
-<div class="line"><span class="lineno">   24</span>   t = sTree.MCTrack[mu]</div>
-<div class="line"><span class="lineno">   25</span>   <span class="keywordflow">if</span> abs(t.GetPdgCode())!=13: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   26</span>   moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())</div>
-<div class="line"><span class="lineno">   27</span>   <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> charmExtern <span class="keywordflow">and</span> noCharm: <span class="keywordflow">continue</span>  <span class="comment"># take heavy flavours from separate production</span></div>
-<div class="line"><span class="lineno">   28</span>   nMu+=1</div>
-<div class="line"><span class="lineno">   29</span>   pName = t.GetProcName().Data()</div>
-<div class="line"><span class="lineno">   30</span>   t.SetWeight(weight)</div>
-<div class="line"><span class="lineno">   31</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Hadronic inelastic&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   32</span>     t.MultiplyWeight(1./diMuboost)</div>
-<div class="line"><span class="lineno">   33</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Lepton pair&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   34</span>     t.MultiplyWeight(1./xSecboost)</div>
-<div class="line"><span class="lineno">   35</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Positron annihilation&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   36</span>     t.MultiplyWeight(1./xSecboost)</div>
-<div class="line"><span class="lineno">   37</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Primary particle&#39;</span>)&lt;0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Decay&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   38</span>     <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> muSources.values():</div>
-<div class="line"><span class="lineno">   39</span>       t.MultiplyWeight(1./diMuboost)</div>
-<div class="line"><span class="lineno">   40</span> <span class="keywordflow">return</span> nMu</div>
-<div class="line"><span class="lineno">   41</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00023">23</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span><span class="keyword">def </span>muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm=True):</div>
+<div class="line"><span class="lineno">   24</span> nMu=0</div>
+<div class="line"><span class="lineno">   25</span> <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><span class="lineno">   26</span>   mu = v.GetTrackID()</div>
+<div class="line"><span class="lineno">   27</span>   t = sTree.MCTrack[mu]</div>
+<div class="line"><span class="lineno">   28</span>   <span class="keywordflow">if</span> abs(t.GetPdgCode())!=13: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   29</span>   moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())</div>
+<div class="line"><span class="lineno">   30</span>   <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> charmExtern <span class="keywordflow">and</span> noCharm: <span class="keywordflow">continue</span>  <span class="comment"># take heavy flavours from separate production</span></div>
+<div class="line"><span class="lineno">   31</span>   nMu+=1</div>
+<div class="line"><span class="lineno">   32</span>   pName = t.GetProcName().Data()</div>
+<div class="line"><span class="lineno">   33</span>   t.SetWeight(weight)</div>
+<div class="line"><span class="lineno">   34</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Hadronic inelastic&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   35</span>     t.MultiplyWeight(1./diMuboost)</div>
+<div class="line"><span class="lineno">   36</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Lepton pair&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   37</span>     t.MultiplyWeight(1./xSecboost)</div>
+<div class="line"><span class="lineno">   38</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Positron annihilation&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   39</span>     t.MultiplyWeight(1./xSecboost)</div>
+<div class="line"><span class="lineno">   40</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Primary particle&#39;</span>)&lt;0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> pName.find(<span class="stringliteral">&#39;Decay&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   41</span>     <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> muSources.values():</div>
+<div class="line"><span class="lineno">   42</span>       t.MultiplyWeight(1./diMuboost)</div>
+<div class="line"><span class="lineno">   43</span> <span class="keywordflow">return</span> nMu</div>
+<div class="line"><span class="lineno">   44</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -352,36 +352,36 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00042">42</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>PoT(f):</div>
-<div class="line"><span class="lineno">   43</span> nTot = 0</div>
-<div class="line"><span class="lineno">   44</span> <span class="comment"># POT = 1000000000 with ecut=10.0 diMu100.0 X100.0</span></div>
-<div class="line"><span class="lineno">   45</span> diMuboost = 0.</div>
-<div class="line"><span class="lineno">   46</span> xSecboost = 0.</div>
-<div class="line"><span class="lineno">   47</span> ncycles = 0</div>
-<div class="line"><span class="lineno">   48</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> f.GetListOfKeys():</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> k.GetName() == <span class="stringliteral">&#39;FileHeader&#39;</span>:</div>
-<div class="line"><span class="lineno">   50</span>   txt = k.GetTitle()</div>
-<div class="line"><span class="lineno">   51</span>   tmp = txt.split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
-<div class="line"><span class="lineno">   52</span>   tmp2 = tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0]</div>
-<div class="line"><span class="lineno">   53</span>   <span class="keywordflow">if</span> tmp2.find(<span class="stringliteral">&#39;E&#39;</span>)&lt;0: nTot += int(tmp2)</div>
-<div class="line"><span class="lineno">   54</span>   <span class="keywordflow">else</span>: nTot += float(tmp2)</div>
-<div class="line"><span class="lineno">   55</span>   ncycles+=1</div>
-<div class="line"><span class="lineno">   56</span>   i = txt.find(<span class="stringliteral">&#39;diMu&#39;</span>)</div>
-<div class="line"><span class="lineno">   57</span>   <span class="keywordflow">if</span> i &lt; 0:</div>
-<div class="line"><span class="lineno">   58</span>     diMuboost+=1.</div>
-<div class="line"><span class="lineno">   59</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   60</span>     diMuboost+=float(txt[i+4:].split(<span class="stringliteral">&#39; &#39;</span>)[0])</div>
-<div class="line"><span class="lineno">   61</span>   i = txt.find(<span class="stringliteral">&#39;X&#39;</span>)</div>
-<div class="line"><span class="lineno">   62</span>   <span class="keywordflow">if</span> i &lt; 0:</div>
-<div class="line"><span class="lineno">   63</span>     xSecboost+=1.</div>
-<div class="line"><span class="lineno">   64</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   65</span>     xSecboost+=float(txt[i+1:].split(<span class="stringliteral">&#39; &#39;</span>)[0])</div>
-<div class="line"><span class="lineno">   66</span> diMuboost=diMuboost/float(ncycles)</div>
-<div class="line"><span class="lineno">   67</span> xSecboost=xSecboost/float(ncycles)</div>
-<div class="line"><span class="lineno">   68</span> print(<span class="stringliteral">&quot;POT = &quot;</span> ,nTot, <span class="stringliteral">&quot; number of events:&quot;</span>, f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries(), <span class="stringliteral">&#39; diMuboost=&#39;</span>, diMuboost, <span class="stringliteral">&#39; XsecBoost=&#39;</span>, xSecboost)</div>
-<div class="line"><span class="lineno">   69</span> <span class="keywordflow">return</span> nTot,diMuboost,xSecboost</div>
-<div class="line"><span class="lineno">   70</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00045">45</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>PoT(f):</div>
+<div class="line"><span class="lineno">   46</span> nTot = 0</div>
+<div class="line"><span class="lineno">   47</span> <span class="comment"># POT = 1000000000 with ecut=10.0 diMu100.0 X100.0</span></div>
+<div class="line"><span class="lineno">   48</span> diMuboost = 0.</div>
+<div class="line"><span class="lineno">   49</span> xSecboost = 0.</div>
+<div class="line"><span class="lineno">   50</span> ncycles = 0</div>
+<div class="line"><span class="lineno">   51</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> f.GetListOfKeys():</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> k.GetName() == <span class="stringliteral">&#39;FileHeader&#39;</span>:</div>
+<div class="line"><span class="lineno">   53</span>   txt = k.GetTitle()</div>
+<div class="line"><span class="lineno">   54</span>   tmp = txt.split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
+<div class="line"><span class="lineno">   55</span>   tmp2 = tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0]</div>
+<div class="line"><span class="lineno">   56</span>   <span class="keywordflow">if</span> tmp2.find(<span class="stringliteral">&#39;E&#39;</span>)&lt;0: nTot += int(tmp2)</div>
+<div class="line"><span class="lineno">   57</span>   <span class="keywordflow">else</span>: nTot += float(tmp2)</div>
+<div class="line"><span class="lineno">   58</span>   ncycles+=1</div>
+<div class="line"><span class="lineno">   59</span>   i = txt.find(<span class="stringliteral">&#39;diMu&#39;</span>)</div>
+<div class="line"><span class="lineno">   60</span>   <span class="keywordflow">if</span> i &lt; 0:</div>
+<div class="line"><span class="lineno">   61</span>     diMuboost+=1.</div>
+<div class="line"><span class="lineno">   62</span>   <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   63</span>     diMuboost+=float(txt[i+4:].split(<span class="stringliteral">&#39; &#39;</span>)[0])</div>
+<div class="line"><span class="lineno">   64</span>   i = txt.find(<span class="stringliteral">&#39;X&#39;</span>)</div>
+<div class="line"><span class="lineno">   65</span>   <span class="keywordflow">if</span> i &lt; 0:</div>
+<div class="line"><span class="lineno">   66</span>     xSecboost+=1.</div>
+<div class="line"><span class="lineno">   67</span>   <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   68</span>     xSecboost+=float(txt[i+1:].split(<span class="stringliteral">&#39; &#39;</span>)[0])</div>
+<div class="line"><span class="lineno">   69</span> diMuboost=diMuboost/float(ncycles)</div>
+<div class="line"><span class="lineno">   70</span> xSecboost=xSecboost/float(ncycles)</div>
+<div class="line"><span class="lineno">   71</span> print(<span class="stringliteral">&quot;POT = &quot;</span> ,nTot, <span class="stringliteral">&quot; number of events:&quot;</span>, f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries(), <span class="stringliteral">&#39; diMuboost=&#39;</span>, diMuboost, <span class="stringliteral">&#39; XsecBoost=&#39;</span>, xSecboost)</div>
+<div class="line"><span class="lineno">   72</span> <span class="keywordflow">return</span> nTot,diMuboost,xSecboost</div>
+<div class="line"><span class="lineno">   73</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -411,30 +411,30 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00080">80</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>processFile(fin,noCharm=True):</div>
-<div class="line"><span class="lineno">   81</span>    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
-<div class="line"><span class="lineno">   82</span>    nPot,diMuboost,xSecboost  = PoT(f)</div>
-<div class="line"><span class="lineno">   83</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">   84</span>    outFile = fin.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
-<div class="line"><span class="lineno">   85</span>    fmu = ROOT.TFile(outFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">   86</span>    newTree = sTree.CloneTree(0)</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><span class="lineno">   88</span>      sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">   89</span>      nMu = muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm)</div>
-<div class="line"><span class="lineno">   90</span>      <span class="keywordflow">if</span> nMu&gt;0:</div>
-<div class="line"><span class="lineno">   91</span>       rc = newTree.Fill()</div>
-<div class="line"><span class="lineno">   92</span>    ff = f.FileHeader.Clone(<span class="stringliteral">&#39;Extracted Muon Background File&#39;</span>)</div>
-<div class="line"><span class="lineno">   93</span>    txt = ff.GetTitle()</div>
-<div class="line"><span class="lineno">   94</span>    tmp = txt.split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
-<div class="line"><span class="lineno">   95</span>    newTxt = txt.replace(tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>),str(nPot))</div>
-<div class="line"><span class="lineno">   96</span>    ff.SetTitle(newTxt)</div>
-<div class="line"><span class="lineno">   97</span>    fmu.cd()</div>
-<div class="line"><span class="lineno">   98</span>    ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><span class="lineno">   99</span>    newTree.AutoSave()</div>
-<div class="line"><span class="lineno">  100</span>    fmu.Close()</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  102</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00083">83</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span>processFile(fin,noCharm=True):</div>
+<div class="line"><span class="lineno">   84</span>    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
+<div class="line"><span class="lineno">   85</span>    nPot,diMuboost,xSecboost  = PoT(f)</div>
+<div class="line"><span class="lineno">   86</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">   87</span>    outFile = fin.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
+<div class="line"><span class="lineno">   88</span>    fmu = ROOT.TFile(outFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">   89</span>    newTree = sTree.CloneTree(0)</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><span class="lineno">   91</span>      sTree.GetEntry(n)</div>
+<div class="line"><span class="lineno">   92</span>      nMu = muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm)</div>
+<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">if</span> nMu&gt;0:</div>
+<div class="line"><span class="lineno">   94</span>       rc = newTree.Fill()</div>
+<div class="line"><span class="lineno">   95</span>    ff = f.FileHeader.Clone(<span class="stringliteral">&#39;Extracted Muon Background File&#39;</span>)</div>
+<div class="line"><span class="lineno">   96</span>    txt = ff.GetTitle()</div>
+<div class="line"><span class="lineno">   97</span>    tmp = txt.split(<span class="stringliteral">&#39;=&#39;</span>)[1]</div>
+<div class="line"><span class="lineno">   98</span>    newTxt = txt.replace(tmp.split(<span class="stringliteral">&#39;with&#39;</span>)[0].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>),str(nPot))</div>
+<div class="line"><span class="lineno">   99</span>    ff.SetTitle(newTxt)</div>
+<div class="line"><span class="lineno">  100</span>    fmu.cd()</div>
+<div class="line"><span class="lineno">  101</span>    ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><span class="lineno">  102</span>    newTree.AutoSave()</div>
+<div class="line"><span class="lineno">  103</span>    fmu.Close()</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  105</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -453,22 +453,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00103">103</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>run():</div>
-<div class="line"><span class="lineno">  104</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX.root&quot;</span></div>
-<div class="line"><span class="lineno">  105</span> <span class="keyword">global</span> weight</div>
-<div class="line"><span class="lineno">  106</span> weight = weightMbias</div>
-<div class="line"><span class="lineno">  107</span> <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
-<div class="line"><span class="lineno">  108</span>   rc = processFile(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run)))</div>
-<div class="line"><span class="lineno">  109</span>   <span class="keywordflow">if</span> rc == 0:</div>
-<div class="line"><span class="lineno">  110</span>     fmu = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run)+<span class="stringliteral">&quot;_mu&quot;</span>)</div>
-<div class="line"><span class="lineno">  111</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  112</span>     <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">  113</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
-<div class="line"><span class="lineno">  114</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  115</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00106">106</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span><span class="keyword">def </span>run():</div>
+<div class="line"><span class="lineno">  107</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX.root&quot;</span></div>
+<div class="line"><span class="lineno">  108</span> <span class="keyword">global</span> weight</div>
+<div class="line"><span class="lineno">  109</span> weight = weightMbias</div>
+<div class="line"><span class="lineno">  110</span> <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
+<div class="line"><span class="lineno">  111</span>   rc = processFile(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run)))</div>
+<div class="line"><span class="lineno">  112</span>   <span class="keywordflow">if</span> rc == 0:</div>
+<div class="line"><span class="lineno">  113</span>     fmu = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(run)+<span class="stringliteral">&quot;_mu&quot;</span>)</div>
+<div class="line"><span class="lineno">  114</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
+<div class="line"><span class="lineno">  115</span>     <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  116</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
+<div class="line"><span class="lineno">  117</span>     <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  118</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -487,25 +487,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00135">135</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span>run4beauty():</div>
-<div class="line"><span class="lineno">  136</span> <span class="keyword">global</span> weight</div>
-<div class="line"><span class="lineno">  137</span> weight = weightBeauty</div>
-<div class="line"><span class="lineno">  138</span> fname = <span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0.root&quot;</span></div>
-<div class="line"><span class="lineno">  139</span> rc = processFile(fname,<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  140</span> <span class="keywordflow">if</span> rc == 0:</div>
-<div class="line"><span class="lineno">  141</span>     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  142</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  143</span>     <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">  144</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
-<div class="line"><span class="lineno">  145</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  146</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span><span class="comment"># merge with beauty in a second step</span></div>
-<div class="line"><span class="lineno">  149</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00138">138</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  138</span><span class="keyword">def </span>run4beauty():</div>
+<div class="line"><span class="lineno">  139</span> <span class="keyword">global</span> weight</div>
+<div class="line"><span class="lineno">  140</span> weight = weightBeauty</div>
+<div class="line"><span class="lineno">  141</span> fname = <span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0.root&quot;</span></div>
+<div class="line"><span class="lineno">  142</span> rc = processFile(fname,<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  143</span> <span class="keywordflow">if</span> rc == 0:</div>
+<div class="line"><span class="lineno">  144</span>     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  145</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
+<div class="line"><span class="lineno">  146</span>     <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  147</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
+<div class="line"><span class="lineno">  148</span>     <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  149</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
 <div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span><span class="comment"># finished one file pythia8_Geant4_10.0_withCharm44000_mu.root 2712798 1113638</span></div>
+<div class="line"><span class="lineno">  151</span><span class="comment"># merge with beauty in a second step</span></div>
 <div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span><span class="comment"># finished one file pythia8_Geant4_10.0_withCharm44000_mu.root 2712798 1113638</span></div>
+<div class="line"><span class="lineno">  155</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,24 +524,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00118">118</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span><span class="keyword">def </span>run4Charm():</div>
-<div class="line"><span class="lineno">  119</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
-<div class="line"><span class="lineno">  120</span> <span class="keyword">global</span> weight</div>
-<div class="line"><span class="lineno">  121</span> weight = weightCharm</div>
-<div class="line"><span class="lineno">  122</span> <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1,2]:</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
-<div class="line"><span class="lineno">  124</span>   crun = run+cycle*1000</div>
-<div class="line"><span class="lineno">  125</span>   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,str(crun+19))</div>
-<div class="line"><span class="lineno">  126</span>   rc = processFile(fname,<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  127</span>   <span class="keywordflow">if</span> rc == 0:</div>
-<div class="line"><span class="lineno">  128</span>     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  129</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  130</span>     <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><span class="lineno">  131</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
-<div class="line"><span class="lineno">  132</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  133</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
-<div class="line"><span class="lineno">  134</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00121">121</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span><span class="keyword">def </span>run4Charm():</div>
+<div class="line"><span class="lineno">  122</span> tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
+<div class="line"><span class="lineno">  123</span> <span class="keyword">global</span> weight</div>
+<div class="line"><span class="lineno">  124</span> weight = weightCharm</div>
+<div class="line"><span class="lineno">  125</span> <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1,2]:</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
+<div class="line"><span class="lineno">  127</span>   crun = run+cycle*1000</div>
+<div class="line"><span class="lineno">  128</span>   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,str(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,str(crun+19))</div>
+<div class="line"><span class="lineno">  129</span>   rc = processFile(fname,<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  130</span>   <span class="keywordflow">if</span> rc == 0:</div>
+<div class="line"><span class="lineno">  131</span>     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  132</span>     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
+<div class="line"><span class="lineno">  133</span>     <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><span class="lineno">  134</span>      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
+<div class="line"><span class="lineno">  135</span>     <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  136</span>      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
+<div class="line"><span class="lineno">  137</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -561,20 +561,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00251">251</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  251</span><span class="keyword">def </span>testRatio(fname):</div>
-<div class="line"><span class="lineno">  252</span> f=ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fname)</div>
-<div class="line"><span class="lineno">  253</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  254</span> Nall = sTree.GetEntries()</div>
-<div class="line"><span class="lineno">  255</span> charm = 0</div>
-<div class="line"><span class="lineno">  256</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(Nall):</div>
-<div class="line"><span class="lineno">  257</span>   rc = sTree.GetEvent(n)</div>
-<div class="line"><span class="lineno">  258</span>   <span class="keywordflow">for</span> m <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><span class="lineno">  259</span>    pdgID = abs(m.GetPdgCode())</div>
-<div class="line"><span class="lineno">  260</span>    <span class="keywordflow">if</span> pdgID <span class="keywordflow">in</span> charmExtern:</div>
-<div class="line"><span class="lineno">  261</span>        charm+=1</div>
-<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  263</span> print(<span class="stringliteral">&quot;charm found&quot;</span>,charm,<span class="stringliteral">&quot; ratio &quot;</span>,charm/float(Nall))</div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00254">254</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  254</span><span class="keyword">def </span>testRatio(fname):</div>
+<div class="line"><span class="lineno">  255</span> f=ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fname)</div>
+<div class="line"><span class="lineno">  256</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  257</span> Nall = sTree.GetEntries()</div>
+<div class="line"><span class="lineno">  258</span> charm = 0</div>
+<div class="line"><span class="lineno">  259</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(Nall):</div>
+<div class="line"><span class="lineno">  260</span>   rc = sTree.GetEvent(n)</div>
+<div class="line"><span class="lineno">  261</span>   <span class="keywordflow">for</span> m <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><span class="lineno">  262</span>    pdgID = abs(m.GetPdgCode())</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">if</span> pdgID <span class="keywordflow">in</span> charmExtern:</div>
+<div class="line"><span class="lineno">  264</span>        charm+=1</div>
+<div class="line"><span class="lineno">  265</span>        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  266</span> print(<span class="stringliteral">&quot;charm found&quot;</span>,charm,<span class="stringliteral">&quot; ratio &quot;</span>,charm/float(Nall))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -593,16 +593,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00071">71</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span><span class="keyword">def </span>TotStat():</div>
-<div class="line"><span class="lineno">   72</span> lfiles = os.listdir(path)</div>
-<div class="line"><span class="lineno">   73</span> ntot = 0</div>
-<div class="line"><span class="lineno">   74</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> lfiles:</div>
-<div class="line"><span class="lineno">   75</span>  f=ROOT.TFile(path+fn)</div>
-<div class="line"><span class="lineno">   76</span>  nPot,diMuboost,xSecboost = PoT(f)</div>
-<div class="line"><span class="lineno">   77</span>  ntot += nPot</div>
-<div class="line"><span class="lineno">   78</span> print(<span class="stringliteral">&quot;Total statistics so far&quot;</span>,ntot/1.E9,<span class="stringliteral">&quot; billion&quot;</span>)</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00074">74</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>TotStat():</div>
+<div class="line"><span class="lineno">   75</span> lfiles = os.listdir(path)</div>
+<div class="line"><span class="lineno">   76</span> ntot = 0</div>
+<div class="line"><span class="lineno">   77</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> lfiles:</div>
+<div class="line"><span class="lineno">   78</span>  f=ROOT.TFile(path+fn)</div>
+<div class="line"><span class="lineno">   79</span>  nPot,diMuboost,xSecboost = PoT(f)</div>
+<div class="line"><span class="lineno">   80</span>  ntot += nPot</div>
+<div class="line"><span class="lineno">   81</span> print(<span class="stringliteral">&quot;Total statistics so far&quot;</span>,ntot/1.E9,<span class="stringliteral">&quot; billion&quot;</span>)</div>
+<div class="line"><span class="lineno">   82</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -619,7 +619,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00008">8</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00011">11</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>
@@ -635,7 +635,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00007">7</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00010">10</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>
@@ -651,7 +651,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00003">3</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00006">6</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>
@@ -667,7 +667,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00018">18</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00021">21</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>
@@ -683,7 +683,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00015">15</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00018">18</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>
@@ -699,7 +699,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00011">11</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00014">14</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 
 </div>
 </div>

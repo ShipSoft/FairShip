@@ -136,7 +136,7 @@ Private Attributes</h2></td></tr>
 d['key'] = 1
 assert d.key == 1
 </pre> 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00006">6</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00009">9</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2ec2b049b04f452674ee3e923e93216d" name="a2ec2b049b04f452674ee3e923e93216d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ec2b049b04f452674ee3e923e93216d">&#9670;&#160;</a></span>__init__()</h2>
@@ -172,11 +172,11 @@ assert d.key == 1
 
 <p>Reimplemented in <a class="el" href="classShipGeoConfig_1_1Config.html#a8a67ef72de4239b31612fdb8e2a11f8a">ShipGeoConfig.Config</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00013">13</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>    <span class="keyword">def </span>__init__(self, *args, **kwargs):</div>
-<div class="line"><span class="lineno">   14</span>        super().__init__(*args, **kwargs)</div>
-<div class="line"><span class="lineno">   15</span>        self.__dict__ = self</div>
-<div class="line"><span class="lineno">   16</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00016">16</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>    <span class="keyword">def </span>__init__(self, *args, **kwargs):</div>
+<div class="line"><span class="lineno">   17</span>        super().__init__(*args, **kwargs)</div>
+<div class="line"><span class="lineno">   18</span>        self.__dict__ = self</div>
+<div class="line"><span class="lineno">   19</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,17 +199,17 @@ assert d.key == 1
 
 <p>Reimplemented in <a class="el" href="classShipGeoConfig_1_1Config.html#af97d828baa52f9863ef6523d1a1b1849">ShipGeoConfig.Config</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00017">17</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>    <span class="keyword">def </span>clone(self):</div>
-<div class="line"><span class="lineno">   18</span>        result = AttrDict()</div>
-<div class="line"><span class="lineno">   19</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> self.items():</div>
-<div class="line"><span class="lineno">   20</span>            <span class="keywordflow">if</span> isinstance(v, AttrDict):</div>
-<div class="line"><span class="lineno">   21</span>                result[k] = v.clone()</div>
-<div class="line"><span class="lineno">   22</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   23</span>                result[k] = v</div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">return</span> result</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00020">20</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span>    <span class="keyword">def </span>clone(self):</div>
+<div class="line"><span class="lineno">   21</span>        result = AttrDict()</div>
+<div class="line"><span class="lineno">   22</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> self.items():</div>
+<div class="line"><span class="lineno">   23</span>            <span class="keywordflow">if</span> isinstance(v, AttrDict):</div>
+<div class="line"><span class="lineno">   24</span>                result[k] = v.clone()</div>
+<div class="line"><span class="lineno">   25</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   26</span>                result[k] = v</div>
+<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">return</span> result</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -234,7 +234,7 @@ assert d.key == 1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00015">15</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00018">18</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 
 </div>
 </div>

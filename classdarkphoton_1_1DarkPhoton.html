@@ -143,7 +143,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00018">18</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00021">21</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a92090598832ff2af4db1dcb1d694b88d" name="a92090598832ff2af4db1dcb1d694b88d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92090598832ff2af4db1dcb1d694b88d">&#9670;&#160;</a></span>__init__()</h2>
@@ -177,13 +177,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00021">21</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>    <span class="keyword">def </span>__init__(self, mass, eps):</div>
-<div class="line"><span class="lineno">   22</span>        self.mDarkPhoton = mass</div>
-<div class="line"><span class="lineno">   23</span>        self.epsilon = eps</div>
-<div class="line"><span class="lineno">   24</span>        self.dataEcm,self.dataR = self.readPDGtable()</div>
-<div class="line"><span class="lineno">   25</span>        self.PdgR = self.interpolatePDGtable()</div>
-<div class="line"><span class="lineno">   26</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00024">24</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>    <span class="keyword">def </span>__init__(self, mass, eps):</div>
+<div class="line"><span class="lineno">   25</span>        self.mDarkPhoton = mass</div>
+<div class="line"><span class="lineno">   26</span>        self.epsilon = eps</div>
+<div class="line"><span class="lineno">   27</span>        self.dataEcm,self.dataR = self.readPDGtable()</div>
+<div class="line"><span class="lineno">   28</span>        self.PdgR = self.interpolatePDGtable()</div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -204,23 +204,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00139">139</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  139</span>    <span class="keyword">def </span>allowedChannels(self):</div>
-<div class="line"><span class="lineno">  140</span>        print(<span class="stringliteral">&quot;Allowed channels for dark photon mass = %3.3f&quot;</span>%self.mDarkPhoton)</div>
-<div class="line"><span class="lineno">  141</span>        allowedDecays = {<span class="stringliteral">&#39;A -&gt; hadrons&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>}</div>
-<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  143</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; e- e+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  144</span>            print(<span class="stringliteral">&quot;allowing decay to e&quot;</span>)</div>
-<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  146</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; mu- mu+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  147</span>            print(<span class="stringliteral">&quot;allowing decay to mu&quot;</span>)</div>
-<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
-<div class="line"><span class="lineno">  149</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; tau- tau+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  150</span>            print(<span class="stringliteral">&quot;allowing decay to tau&quot;</span>)</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">return</span> allowedDecays</div>
-<div class="line"><span class="lineno">  153</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00142">142</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>    <span class="keyword">def </span>allowedChannels(self):</div>
+<div class="line"><span class="lineno">  143</span>        print(<span class="stringliteral">&quot;Allowed channels for dark photon mass = %3.3f&quot;</span>%self.mDarkPhoton)</div>
+<div class="line"><span class="lineno">  144</span>        allowedDecays = {<span class="stringliteral">&#39;A -&gt; hadrons&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>}</div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  146</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; e- e+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  147</span>            print(<span class="stringliteral">&quot;allowing decay to e&quot;</span>)</div>
+<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  149</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; mu- mu+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  150</span>            print(<span class="stringliteral">&quot;allowing decay to mu&quot;</span>)</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
+<div class="line"><span class="lineno">  152</span>            allowedDecays.update({<span class="stringliteral">&#39;A -&gt; tau- tau+&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  153</span>            print(<span class="stringliteral">&quot;allowing decay to tau&quot;</span>)</div>
 <div class="line"><span class="lineno">  154</span> </div>
+<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">return</span> allowedDecays</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -240,13 +240,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Dark Photon lifetime in cm</pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00118">118</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>    <span class="keyword">def </span>cTau(self): <span class="comment"># decay length in meters, dark photon mass in GeV</span></div>
-<div class="line"><span class="lineno">  119</span>        <span class="stringliteral">&quot;&quot;&quot; Dark Photon lifetime in cm&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  120</span>        ctau=hGeV*ccm/self.totalDecayWidth()</div>
-<div class="line"><span class="lineno">  121</span>        <span class="comment">#print &quot;ctau dp.py %.3e&quot;%(ctau)</span></div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">return</span> ctau <span class="comment">#GeV/MeV conversion</span></div>
-<div class="line"><span class="lineno">  123</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00121">121</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>    <span class="keyword">def </span>cTau(self): <span class="comment"># decay length in meters, dark photon mass in GeV</span></div>
+<div class="line"><span class="lineno">  122</span>        <span class="stringliteral">&quot;&quot;&quot; Dark Photon lifetime in cm&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  123</span>        ctau=hGeV*ccm/self.totalDecayWidth()</div>
+<div class="line"><span class="lineno">  124</span>        <span class="comment">#print &quot;ctau dp.py %.3e&quot;%(ctau)</span></div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">return</span> ctau <span class="comment">#GeV/MeV conversion</span></div>
+<div class="line"><span class="lineno">  126</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -276,19 +276,19 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00127">127</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>    <span class="keyword">def </span>findBranchingRatio(self,decayString):</div>
-<div class="line"><span class="lineno">  128</span>        br = 0.</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">if</span>   decayString == <span class="stringliteral">&#39;A -&gt; e- e+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;e-&#39;</span>)</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; mu- mu+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;mu-&#39;</span>)</div>
-<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; tau- tau+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;tau-&#39;</span>)</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; hadrons&#39;</span>: br = self.hadronicBranchingRatio()</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  134</span>            print(<span class="stringliteral">&#39;findBranchingRatio ERROR: unknown decay %s&#39;</span>%decayString)</div>
-<div class="line"><span class="lineno">  135</span>            quit()</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  138</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00130">130</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>    <span class="keyword">def </span>findBranchingRatio(self,decayString):</div>
+<div class="line"><span class="lineno">  131</span>        br = 0.</div>
+<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">if</span>   decayString == <span class="stringliteral">&#39;A -&gt; e- e+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;e-&#39;</span>)</div>
+<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; mu- mu+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;mu-&#39;</span>)</div>
+<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; tau- tau+&#39;</span>: br = self.leptonicBranchingRatio(<span class="stringliteral">&#39;tau-&#39;</span>)</div>
+<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">elif</span>   decayString == <span class="stringliteral">&#39;A -&gt; hadrons&#39;</span>: br = self.hadronicBranchingRatio()</div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  137</span>            print(<span class="stringliteral">&#39;findBranchingRatio ERROR: unknown decay %s&#39;</span>%decayString)</div>
+<div class="line"><span class="lineno">  138</span>            quit()</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  141</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -308,10 +308,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00103">103</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>    <span class="keyword">def </span>hadronicBranchingRatio(self):</div>
-<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">return</span> self.hadronicDecayWidth() / self.totalDecayWidth()</div>
-<div class="line"><span class="lineno">  105</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00106">106</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>    <span class="keyword">def </span>hadronicBranchingRatio(self):</div>
+<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">return</span> self.hadronicDecayWidth() / self.totalDecayWidth()</div>
+<div class="line"><span class="lineno">  108</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,15 +331,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Dark photon decay into hadrons </pre><pre class="fragment">(mumu)*R</pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00095">95</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>    <span class="keyword">def </span>hadronicDecayWidth(self):</div>
-<div class="line"><span class="lineno">   96</span>        <span class="stringliteral">&quot;&quot;&quot; Dark photon decay into hadrons &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   97</span>        <span class="stringliteral">&quot;&quot;&quot;(mumu)*R&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   98</span><span class="stringliteral">        gmumu=self.leptonicDecayWidth(&#39;mu-&#39;)</span></div>
-<div class="line"><span class="lineno">   99</span><span class="stringliteral">        tdw=gmumu*self.Ree_interp(self.mDarkPhoton)</span></div>
-<div class="line"><span class="lineno">  100</span><span class="stringliteral">        #print &#39;Hadronic decay width is %.3e&#39;%(tdw)</span></div>
-<div class="line"><span class="lineno">  101</span><span class="stringliteral">        return tdw;</span></div>
-<div class="line"><span class="lineno">  102</span><span class="stringliteral"></span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00098">98</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>    <span class="keyword">def </span>hadronicDecayWidth(self):</div>
+<div class="line"><span class="lineno">   99</span>        <span class="stringliteral">&quot;&quot;&quot; Dark photon decay into hadrons &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  100</span>        <span class="stringliteral">&quot;&quot;&quot;(mumu)*R&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  101</span><span class="stringliteral">        gmumu=self.leptonicDecayWidth(&#39;mu-&#39;)</span></div>
+<div class="line"><span class="lineno">  102</span><span class="stringliteral">        tdw=gmumu*self.Ree_interp(self.mDarkPhoton)</span></div>
+<div class="line"><span class="lineno">  103</span><span class="stringliteral">        #print &#39;Hadronic decay width is %.3e&#39;%(tdw)</span></div>
+<div class="line"><span class="lineno">  104</span><span class="stringliteral">        return tdw;</span></div>
+<div class="line"><span class="lineno">  105</span><span class="stringliteral"></span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -359,13 +359,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Find the best value for R for the given center-of-mass energy </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00055">55</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>    <span class="keyword">def </span>interpolatePDGtable(self):</div>
-<div class="line"><span class="lineno">   56</span>        <span class="stringliteral">&quot;&quot;&quot; Find the best value for R for the given center-of-mass energy &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   57</span>        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)</div>
-<div class="line"><span class="lineno">   58</span>        fun.SetData(self.dataEcm,self.dataR);</div>
-<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> fun</div>
-<div class="line"><span class="lineno">   60</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00058">58</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>    <span class="keyword">def </span>interpolatePDGtable(self):</div>
+<div class="line"><span class="lineno">   59</span>        <span class="stringliteral">&quot;&quot;&quot; Find the best value for R for the given center-of-mass energy &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   60</span>        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)</div>
+<div class="line"><span class="lineno">   61</span>        fun.SetData(self.dataEcm,self.dataR);</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">return</span> fun</div>
+<div class="line"><span class="lineno">   63</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -395,10 +395,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00092">92</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>    <span class="keyword">def </span>leptonicBranchingRatio(self,lepton):</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> self.leptonicDecayWidth(lepton) / self.totalDecayWidth()</div>
-<div class="line"><span class="lineno">   94</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00095">95</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>    <span class="keyword">def </span>leptonicBranchingRatio(self,lepton):</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">return</span> self.leptonicDecayWidth(lepton) / self.totalDecayWidth()</div>
+<div class="line"><span class="lineno">   97</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -428,23 +428,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Dark photon decay width into leptons, in GeV (input short name of lepton family) </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00076">76</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>    <span class="keyword">def </span>leptonicDecayWidth(self,lepton): <span class="comment"># mDarkPhoton in GeV</span></div>
-<div class="line"><span class="lineno">   77</span>        <span class="stringliteral">&quot;&quot;&quot; Dark photon decay width into leptons, in GeV (input short name of lepton family) &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   78</span>        ml = mass(lepton)</div>
-<div class="line"><span class="lineno">   79</span>        <span class="comment">#print &#39;lepton %s mass %.3e&#39;%(lepton,ml)</span></div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>        constant = (1./3.) * alphaQED * self.mDarkPhoton * pow(self.epsilon, 2.)</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">if</span> 2.*ml &lt; self.mDarkPhoton:</div>
-<div class="line"><span class="lineno">   83</span>            rad = math.sqrt( 1. - (4.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton) )</div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   85</span>            rad = 0.</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>        par = 1. + (2.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton)</div>
-<div class="line"><span class="lineno">   88</span>        tdw=math.fabs(constant*rad*par)</div>
-<div class="line"><span class="lineno">   89</span>        <span class="comment">#print &#39;Leptonic decay width to %s is %.3e&#39;%(lepton,tdw)</span></div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">return</span> tdw</div>
-<div class="line"><span class="lineno">   91</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00079">79</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>    <span class="keyword">def </span>leptonicDecayWidth(self,lepton): <span class="comment"># mDarkPhoton in GeV</span></div>
+<div class="line"><span class="lineno">   80</span>        <span class="stringliteral">&quot;&quot;&quot; Dark photon decay width into leptons, in GeV (input short name of lepton family) &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   81</span>        ml = mass(lepton)</div>
+<div class="line"><span class="lineno">   82</span>        <span class="comment">#print &#39;lepton %s mass %.3e&#39;%(lepton,ml)</span></div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>        constant = (1./3.) * alphaQED * self.mDarkPhoton * pow(self.epsilon, 2.)</div>
+<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">if</span> 2.*ml &lt; self.mDarkPhoton:</div>
+<div class="line"><span class="lineno">   86</span>            rad = math.sqrt( 1. - (4.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton) )</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   88</span>            rad = 0.</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>        par = 1. + (2.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton)</div>
+<div class="line"><span class="lineno">   91</span>        tdw=math.fabs(constant*rad*par)</div>
+<div class="line"><span class="lineno">   92</span>        <span class="comment">#print &#39;Leptonic decay width to %s is %.3e&#39;%(lepton,tdw)</span></div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> tdw</div>
+<div class="line"><span class="lineno">   94</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -464,10 +464,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00124">124</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>    <span class="keyword">def </span>lifetime(self):</div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">return</span> self.cTau()/ccm</div>
-<div class="line"><span class="lineno">  126</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00127">127</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>    <span class="keyword">def </span>lifetime(self):</div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">return</span> self.cTau()/ccm</div>
+<div class="line"><span class="lineno">  129</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -487,35 +487,35 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Returns R data from PDG in a easy to use format </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00027">27</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>    <span class="keyword">def </span>readPDGtable(self):</div>
-<div class="line"><span class="lineno">   28</span>        <span class="stringliteral">&quot;&quot;&quot; Returns R data from PDG in a easy to use format &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   29</span>        ecm=r.vector(<span class="stringliteral">&#39;double&#39;</span>)()</div>
-<div class="line"><span class="lineno">   30</span>        ratio=r.vector(<span class="stringliteral">&#39;double&#39;</span>)()</div>
-<div class="line"><span class="lineno">   31</span>        <span class="stringliteral">&quot;&quot;&quot;ecm,ratio = [],[]&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   32</span>        <span class="keyword">with</span> open(os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/input/rpp2012-hadronicrpp_page1001.dat&#39;</span>)) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   33</span>            <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
-<div class="line"><span class="lineno">   34</span>                line = line.split()</div>
-<div class="line"><span class="lineno">   35</span>                <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   36</span>                    numEcm = float(line[0])</div>
-<div class="line"><span class="lineno">   37</span>                    numR = float(line[3])</div>
-<div class="line"><span class="lineno">   38</span>                    strType = line[7]</div>
-<div class="line"><span class="lineno">   39</span>                    strBis = line[8]</div>
-<div class="line"><span class="lineno">   40</span>                    <span class="comment">#if numEcm&lt;2:</span></div>
-<div class="line"><span class="lineno">   41</span>                    <span class="comment">#   print numEcm,numR,strType</span></div>
-<div class="line"><span class="lineno">   42</span>                    <span class="keywordflow">if</span> ((<span class="stringliteral">&#39;EXCLSUM&#39;</span> <span class="keywordflow">in</span> strType) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;EDWARDS&#39;</span> <span class="keywordflow">in</span> strType) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;BLINOV&#39;</span> <span class="keywordflow">in</span> strType)):</div>
-<div class="line"><span class="lineno">   43</span>                        ecm.push_back(numEcm)</div>
-<div class="line"><span class="lineno">   44</span>                        ratio.push_back(numR)</div>
-<div class="line"><span class="lineno">   45</span>                        <span class="comment">#print numEcm,numR,strType</span></div>
-<div class="line"><span class="lineno">   46</span>                    <span class="keywordflow">if</span> <span class="stringliteral">&#39;BAI&#39;</span> <span class="keywordflow">in</span> strType <span class="keywordflow">and</span> <span class="stringliteral">&#39;01&#39;</span> <span class="keywordflow">in</span> strBis:</div>
-<div class="line"><span class="lineno">   47</span>                        ecm.push_back(numEcm)</div>
-<div class="line"><span class="lineno">   48</span>                        ratio.push_back(numR)</div>
-<div class="line"><span class="lineno">   49</span>                        <span class="comment">#print numEcm,numR,strType</span></div>
-<div class="line"><span class="lineno">   50</span>                <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">   51</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">return</span> ecm,ratio</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00030">30</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>    <span class="keyword">def </span>readPDGtable(self):</div>
+<div class="line"><span class="lineno">   31</span>        <span class="stringliteral">&quot;&quot;&quot; Returns R data from PDG in a easy to use format &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   32</span>        ecm=r.vector(<span class="stringliteral">&#39;double&#39;</span>)()</div>
+<div class="line"><span class="lineno">   33</span>        ratio=r.vector(<span class="stringliteral">&#39;double&#39;</span>)()</div>
+<div class="line"><span class="lineno">   34</span>        <span class="stringliteral">&quot;&quot;&quot;ecm,ratio = [],[]&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   35</span>        <span class="keyword">with</span> open(os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/input/rpp2012-hadronicrpp_page1001.dat&#39;</span>)) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   36</span>            <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
+<div class="line"><span class="lineno">   37</span>                line = line.split()</div>
+<div class="line"><span class="lineno">   38</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   39</span>                    numEcm = float(line[0])</div>
+<div class="line"><span class="lineno">   40</span>                    numR = float(line[3])</div>
+<div class="line"><span class="lineno">   41</span>                    strType = line[7]</div>
+<div class="line"><span class="lineno">   42</span>                    strBis = line[8]</div>
+<div class="line"><span class="lineno">   43</span>                    <span class="comment">#if numEcm&lt;2:</span></div>
+<div class="line"><span class="lineno">   44</span>                    <span class="comment">#   print numEcm,numR,strType</span></div>
+<div class="line"><span class="lineno">   45</span>                    <span class="keywordflow">if</span> ((<span class="stringliteral">&#39;EXCLSUM&#39;</span> <span class="keywordflow">in</span> strType) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;EDWARDS&#39;</span> <span class="keywordflow">in</span> strType) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;BLINOV&#39;</span> <span class="keywordflow">in</span> strType)):</div>
+<div class="line"><span class="lineno">   46</span>                        ecm.push_back(numEcm)</div>
+<div class="line"><span class="lineno">   47</span>                        ratio.push_back(numR)</div>
+<div class="line"><span class="lineno">   48</span>                        <span class="comment">#print numEcm,numR,strType</span></div>
+<div class="line"><span class="lineno">   49</span>                    <span class="keywordflow">if</span> <span class="stringliteral">&#39;BAI&#39;</span> <span class="keywordflow">in</span> strType <span class="keywordflow">and</span> <span class="stringliteral">&#39;01&#39;</span> <span class="keywordflow">in</span> strBis:</div>
+<div class="line"><span class="lineno">   50</span>                        ecm.push_back(numEcm)</div>
+<div class="line"><span class="lineno">   51</span>                        ratio.push_back(numR)</div>
+<div class="line"><span class="lineno">   52</span>                        <span class="comment">#print numEcm,numR,strType</span></div>
+<div class="line"><span class="lineno">   53</span>                <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">   54</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> ecm,ratio</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -545,22 +545,22 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Using PDG values for sigma(e+e- -&gt; hadrons) / sigma(e+e- -&gt; mu+mu-) </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00061">61</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>    <span class="keyword">def </span>Ree_interp(self,s): <span class="comment"># s in GeV</span></div>
-<div class="line"><span class="lineno">   62</span>        <span class="stringliteral">&quot;&quot;&quot; Using PDG values for sigma(e+e- -&gt; hadrons) / sigma(e+e- -&gt; mu+mu-) &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   63</span>        <span class="comment"># Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots</span></div>
-<div class="line"><span class="lineno">   64</span>        <span class="comment">#ecm = math.sqrt(s)</span></div>
-<div class="line"><span class="lineno">   65</span>        ecm = s</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> ecm&gt;=10.29:</div>
-<div class="line"><span class="lineno">   67</span>            print(<span class="stringliteral">&#39;Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV&#39;</span>)</div>
-<div class="line"><span class="lineno">   68</span>            result=float(self.PdgR.Eval(10.29))</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">elif</span> ecm&gt;=self.dataEcm[0]:</div>
-<div class="line"><span class="lineno">   70</span>            result = float(self.PdgR.Eval(ecm))</div>
-<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   72</span>            result=0</div>
-<div class="line"><span class="lineno">   73</span>        <span class="comment">#print &#39;Ree_interp for mass %3.3f is %.3e&#39;%(s,result)</span></div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">return</span> result</div>
-<div class="line"><span class="lineno">   75</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00064">64</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>    <span class="keyword">def </span>Ree_interp(self,s): <span class="comment"># s in GeV</span></div>
+<div class="line"><span class="lineno">   65</span>        <span class="stringliteral">&quot;&quot;&quot; Using PDG values for sigma(e+e- -&gt; hadrons) / sigma(e+e- -&gt; mu+mu-) &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   66</span>        <span class="comment"># Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots</span></div>
+<div class="line"><span class="lineno">   67</span>        <span class="comment">#ecm = math.sqrt(s)</span></div>
+<div class="line"><span class="lineno">   68</span>        ecm = s</div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">if</span> ecm&gt;=10.29:</div>
+<div class="line"><span class="lineno">   70</span>            print(<span class="stringliteral">&#39;Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV&#39;</span>)</div>
+<div class="line"><span class="lineno">   71</span>            result=float(self.PdgR.Eval(10.29))</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">elif</span> ecm&gt;=self.dataEcm[0]:</div>
+<div class="line"><span class="lineno">   73</span>            result = float(self.PdgR.Eval(ecm))</div>
+<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   75</span>            result=0</div>
+<div class="line"><span class="lineno">   76</span>        <span class="comment">#print &#39;Ree_interp for mass %3.3f is %.3e&#39;%(s,result)</span></div>
+<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">return</span> result</div>
+<div class="line"><span class="lineno">   78</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -590,20 +590,20 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Very simple patch to take into account A' -&gt; hadrons </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00155">155</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  155</span>    <span class="keyword">def </span>scaleNEventsIncludingHadrons(self,n):</div>
-<div class="line"><span class="lineno">  156</span>        <span class="stringliteral">&quot;&quot;&quot; Very simple patch to take into account A&#39; -&gt; hadrons &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  157</span>        brh = self.hadronicBranchingRatio()</div>
-<div class="line"><span class="lineno">  158</span>        <span class="comment">#print brh</span></div>
-<div class="line"><span class="lineno">  159</span>        <span class="comment"># if M &gt; m(c cbar):</span></div>
-<div class="line"><span class="lineno">  160</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;c&#39;</span>):</div>
-<div class="line"><span class="lineno">  161</span>            visible_frac = 1.</div>
-<div class="line"><span class="lineno">  162</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  163</span>            visible_frac = 2./3.</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>        increase = brh*visible_frac</div>
-<div class="line"><span class="lineno">  166</span>        <span class="comment">#print increase</span></div>
-<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">return</span> n*(1. + increase)</div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00158">158</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>    <span class="keyword">def </span>scaleNEventsIncludingHadrons(self,n):</div>
+<div class="line"><span class="lineno">  159</span>        <span class="stringliteral">&quot;&quot;&quot; Very simple patch to take into account A&#39; -&gt; hadrons &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  160</span>        brh = self.hadronicBranchingRatio()</div>
+<div class="line"><span class="lineno">  161</span>        <span class="comment">#print brh</span></div>
+<div class="line"><span class="lineno">  162</span>        <span class="comment"># if M &gt; m(c cbar):</span></div>
+<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">if</span> self.mDarkPhoton &gt; 2.*mass(<span class="stringliteral">&#39;c&#39;</span>):</div>
+<div class="line"><span class="lineno">  164</span>            visible_frac = 1.</div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  166</span>            visible_frac = 2./3.</div>
+<div class="line"><span class="lineno">  167</span> </div>
+<div class="line"><span class="lineno">  168</span>        increase = brh*visible_frac</div>
+<div class="line"><span class="lineno">  169</span>        <span class="comment">#print increase</span></div>
+<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">return</span> n*(1. + increase)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -623,19 +623,19 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Total decay width in GeV </pre> 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00106">106</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>    <span class="keyword">def </span>totalDecayWidth(self): <span class="comment"># mDarkPhoton in GeV</span></div>
-<div class="line"><span class="lineno">  107</span>        <span class="stringliteral">&quot;&quot;&quot; Total decay width in GeV &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  108</span>        <span class="comment">#return hGeV*c / cTau(mDarkPhoton, epsilon)</span></div>
-<div class="line"><span class="lineno">  109</span>        tdw = (self.leptonicDecayWidth(<span class="stringliteral">&#39;e-&#39;</span>)</div>
-<div class="line"><span class="lineno">  110</span>               + self.leptonicDecayWidth(<span class="stringliteral">&#39;mu-&#39;</span>)</div>
-<div class="line"><span class="lineno">  111</span>               + self.leptonicDecayWidth(<span class="stringliteral">&#39;tau-&#39;</span>)</div>
-<div class="line"><span class="lineno">  112</span>               + self.hadronicDecayWidth())</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>        <span class="comment">#print &#39;Total decay width %e&#39;%(tdw)</span></div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">return</span> tdw</div>
-<div class="line"><span class="lineno">  117</span> </div>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00109">109</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>    <span class="keyword">def </span>totalDecayWidth(self): <span class="comment"># mDarkPhoton in GeV</span></div>
+<div class="line"><span class="lineno">  110</span>        <span class="stringliteral">&quot;&quot;&quot; Total decay width in GeV &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  111</span>        <span class="comment">#return hGeV*c / cTau(mDarkPhoton, epsilon)</span></div>
+<div class="line"><span class="lineno">  112</span>        tdw = (self.leptonicDecayWidth(<span class="stringliteral">&#39;e-&#39;</span>)</div>
+<div class="line"><span class="lineno">  113</span>               + self.leptonicDecayWidth(<span class="stringliteral">&#39;mu-&#39;</span>)</div>
+<div class="line"><span class="lineno">  114</span>               + self.leptonicDecayWidth(<span class="stringliteral">&#39;tau-&#39;</span>)</div>
+<div class="line"><span class="lineno">  115</span>               + self.hadronicDecayWidth())</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>        <span class="comment">#print &#39;Total decay width %e&#39;%(tdw)</span></div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">return</span> tdw</div>
+<div class="line"><span class="lineno">  120</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -652,7 +652,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00024">24</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00027">27</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 
 </div>
 </div>
@@ -668,7 +668,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00024">24</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00027">27</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 
 </div>
 </div>
@@ -684,7 +684,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00023">23</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00026">26</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 
 </div>
 </div>
@@ -700,7 +700,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00022">22</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00025">25</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 
 </div>
 </div>
@@ -716,7 +716,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00025">25</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00028">28</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 
 </div>
 </div>

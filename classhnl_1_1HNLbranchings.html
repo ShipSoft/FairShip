@@ -168,7 +168,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Lifetime and total and partial decay widths of an HNL
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00100">100</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00103">103</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae11e5d7fb18776fbbdb4a35d1b0012d7" name="ae11e5d7fb18776fbbdb4a35d1b0012d7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae11e5d7fb18776fbbdb4a35d1b0012d7">&#9670;&#160;</a></span>__init__()</h2>
@@ -215,83 +215,83 @@ couplings (list of [U2e, U2mu, U2tau])
 </pre> 
 <p>Reimplemented in <a class="el" href="classhnl_1_1HNL.html#a7da9a558b6f5a61e40530c7ab592ad1a">hnl.HNL</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00104">104</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>    <span class="keyword">def </span>__init__(self, mass, couplings, debug=False):</div>
-<div class="line"><span class="lineno">  105</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  106</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
-<div class="line"><span class="lineno">  107</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  108</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  109</span><span class="stringliteral">        mass (GeV)</span></div>
-<div class="line"><span class="lineno">  110</span><span class="stringliteral">        couplings (list of [U2e, U2mu, U2tau])</span></div>
-<div class="line"><span class="lineno">  111</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  112</span>        self.U2 = couplings</div>
-<div class="line"><span class="lineno">  113</span>        self.U = [math.sqrt(ui) <span class="keywordflow">for</span> ui <span class="keywordflow">in</span> self.U2]</div>
-<div class="line"><span class="lineno">  114</span>        self.MN = mass*u.GeV</div>
-<div class="line"><span class="lineno">  115</span>        self.CKM = CKMmatrix()</div>
-<div class="line"><span class="lineno">  116</span>        self.CKMelemSq = {<span class="stringliteral">&#39;pi+&#39;</span>:self.CKM.Vud**2.,</div>
-<div class="line"><span class="lineno">  117</span>                        <span class="stringliteral">&#39;rho+&#39;</span>:self.CKM.Vud**2.,</div>
-<div class="line"><span class="lineno">  118</span>                        <span class="stringliteral">&#39;D_s+&#39;</span>:self.CKM.Vcs**2.,</div>
-<div class="line"><span class="lineno">  119</span>                        <span class="stringliteral">&#39;D*_s+&#39;</span>:self.CKM.Vcs**2.,</div>
-<div class="line"><span class="lineno">  120</span>                        <span class="stringliteral">&#39;K+&#39;</span>:self.CKM.Vus**2.,</div>
-<div class="line"><span class="lineno">  121</span>                        <span class="comment"># Quarks (up,down)</span></div>
-<div class="line"><span class="lineno">  122</span>                        <span class="comment"># up: 1=u, 2=c, 3=t</span></div>
-<div class="line"><span class="lineno">  123</span>                        <span class="comment"># down: 1=d, 2=s, 3=b</span></div>
-<div class="line"><span class="lineno">  124</span>                        (1,1):self.CKM.Vud**2., (1,2):self.CKM.Vus**2., (1,3):self.CKM.Vub**2.,</div>
-<div class="line"><span class="lineno">  125</span>                        (2,1):self.CKM.Vcd**2., (2,2):self.CKM.Vcs**2., (2,3):self.CKM.Vcb**2.,</div>
-<div class="line"><span class="lineno">  126</span>                        (3,1):self.CKM.Vtd**2., (3,2):self.CKM.Vts**2., (3,3):self.CKM.Vtb**2.}</div>
-<div class="line"><span class="lineno">  127</span>        self.decays = [ <span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span>,</div>
-<div class="line"><span class="lineno">  128</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  129</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  130</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  131</span>                        <span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  132</span>                        <span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  133</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  134</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  135</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  136</span>                        <span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>,</div>
-<div class="line"><span class="lineno">  137</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  138</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  139</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  140</span>                        <span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>,</div>
-<div class="line"><span class="lineno">  141</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  142</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  143</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  144</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  145</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  146</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  147</span>                        <span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>,</div>
-<div class="line"><span class="lineno">  148</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  149</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  150</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  151</span>                        <span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>,</div>
-<div class="line"><span class="lineno">  152</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  153</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  154</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  155</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  156</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  157</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  158</span>                        <span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  159</span>                        <span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  160</span>                        <span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>,</div>
-<div class="line"><span class="lineno">  161</span>                        <span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  162</span>                        <span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>,</div>
-<div class="line"><span class="lineno">  163</span>                        <span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>,</div>
-<div class="line"><span class="lineno">  164</span>                        <span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>,</div>
-<div class="line"><span class="lineno">  165</span>                        <span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>,</div>
-<div class="line"><span class="lineno">  166</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>,</div>
-<div class="line"><span class="lineno">  167</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  168</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span> ]</div>
-<div class="line"><span class="lineno">  169</span>        <span class="keywordflow">if</span> self.MN&gt;=1.:</div>
-<div class="line"><span class="lineno">  170</span>            self.QCD_corr = self.QCD_correction()</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">if</span> debug:</div>
-<div class="line"><span class="lineno">  173</span>            print(<span class="stringliteral">&quot;HNLbranchings instance initialized with couplings:&quot;</span>)</div>
-<div class="line"><span class="lineno">  174</span>            print(<span class="stringliteral">&quot;\tU2e   = %s&quot;</span>%self.U2[0])</div>
-<div class="line"><span class="lineno">  175</span>            print(<span class="stringliteral">&quot;\tU2mu  = %s&quot;</span>%self.U2[1])</div>
-<div class="line"><span class="lineno">  176</span>            print(<span class="stringliteral">&quot;\tU2tau = %s&quot;</span>%self.U2[2])</div>
-<div class="line"><span class="lineno">  177</span>            print(<span class="stringliteral">&quot;and mass:&quot;</span>)</div>
-<div class="line"><span class="lineno">  178</span>            print(<span class="stringliteral">&quot;\tm = %s GeV&quot;</span>%(self.MN))</div>
-<div class="line"><span class="lineno">  179</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00107">107</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>    <span class="keyword">def </span>__init__(self, mass, couplings, debug=False):</div>
+<div class="line"><span class="lineno">  108</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  109</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
+<div class="line"><span class="lineno">  110</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  111</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  112</span><span class="stringliteral">        mass (GeV)</span></div>
+<div class="line"><span class="lineno">  113</span><span class="stringliteral">        couplings (list of [U2e, U2mu, U2tau])</span></div>
+<div class="line"><span class="lineno">  114</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  115</span>        self.U2 = couplings</div>
+<div class="line"><span class="lineno">  116</span>        self.U = [math.sqrt(ui) <span class="keywordflow">for</span> ui <span class="keywordflow">in</span> self.U2]</div>
+<div class="line"><span class="lineno">  117</span>        self.MN = mass*u.GeV</div>
+<div class="line"><span class="lineno">  118</span>        self.CKM = CKMmatrix()</div>
+<div class="line"><span class="lineno">  119</span>        self.CKMelemSq = {<span class="stringliteral">&#39;pi+&#39;</span>:self.CKM.Vud**2.,</div>
+<div class="line"><span class="lineno">  120</span>                        <span class="stringliteral">&#39;rho+&#39;</span>:self.CKM.Vud**2.,</div>
+<div class="line"><span class="lineno">  121</span>                        <span class="stringliteral">&#39;D_s+&#39;</span>:self.CKM.Vcs**2.,</div>
+<div class="line"><span class="lineno">  122</span>                        <span class="stringliteral">&#39;D*_s+&#39;</span>:self.CKM.Vcs**2.,</div>
+<div class="line"><span class="lineno">  123</span>                        <span class="stringliteral">&#39;K+&#39;</span>:self.CKM.Vus**2.,</div>
+<div class="line"><span class="lineno">  124</span>                        <span class="comment"># Quarks (up,down)</span></div>
+<div class="line"><span class="lineno">  125</span>                        <span class="comment"># up: 1=u, 2=c, 3=t</span></div>
+<div class="line"><span class="lineno">  126</span>                        <span class="comment"># down: 1=d, 2=s, 3=b</span></div>
+<div class="line"><span class="lineno">  127</span>                        (1,1):self.CKM.Vud**2., (1,2):self.CKM.Vus**2., (1,3):self.CKM.Vub**2.,</div>
+<div class="line"><span class="lineno">  128</span>                        (2,1):self.CKM.Vcd**2., (2,2):self.CKM.Vcs**2., (2,3):self.CKM.Vcb**2.,</div>
+<div class="line"><span class="lineno">  129</span>                        (3,1):self.CKM.Vtd**2., (3,2):self.CKM.Vts**2., (3,3):self.CKM.Vtb**2.}</div>
+<div class="line"><span class="lineno">  130</span>        self.decays = [ <span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span>,</div>
+<div class="line"><span class="lineno">  131</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  132</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  133</span>                        <span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  134</span>                        <span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  135</span>                        <span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  136</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  137</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  138</span>                        <span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  139</span>                        <span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>,</div>
+<div class="line"><span class="lineno">  140</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  141</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  142</span>                        <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  143</span>                        <span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>,</div>
+<div class="line"><span class="lineno">  144</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  145</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  146</span>                        <span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  147</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  148</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  149</span>                        <span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  150</span>                        <span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>,</div>
+<div class="line"><span class="lineno">  151</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  152</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  153</span>                        <span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  154</span>                        <span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>,</div>
+<div class="line"><span class="lineno">  155</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  156</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  157</span>                        <span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  158</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  159</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  160</span>                        <span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  161</span>                        <span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  162</span>                        <span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  163</span>                        <span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>,</div>
+<div class="line"><span class="lineno">  164</span>                        <span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  165</span>                        <span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>,</div>
+<div class="line"><span class="lineno">  166</span>                        <span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>,</div>
+<div class="line"><span class="lineno">  167</span>                        <span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>,</div>
+<div class="line"><span class="lineno">  168</span>                        <span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>,</div>
+<div class="line"><span class="lineno">  169</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>,</div>
+<div class="line"><span class="lineno">  170</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>,</div>
+<div class="line"><span class="lineno">  171</span>                        <span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span> ]</div>
+<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">if</span> self.MN&gt;=1.:</div>
+<div class="line"><span class="lineno">  173</span>            self.QCD_corr = self.QCD_correction()</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">if</span> debug:</div>
+<div class="line"><span class="lineno">  176</span>            print(<span class="stringliteral">&quot;HNLbranchings instance initialized with couplings:&quot;</span>)</div>
+<div class="line"><span class="lineno">  177</span>            print(<span class="stringliteral">&quot;\tU2e   = %s&quot;</span>%self.U2[0])</div>
+<div class="line"><span class="lineno">  178</span>            print(<span class="stringliteral">&quot;\tU2mu  = %s&quot;</span>%self.U2[1])</div>
+<div class="line"><span class="lineno">  179</span>            print(<span class="stringliteral">&quot;\tU2tau = %s&quot;</span>%self.U2[2])</div>
+<div class="line"><span class="lineno">  180</span>            print(<span class="stringliteral">&quot;and mass:&quot;</span>)</div>
+<div class="line"><span class="lineno">  181</span>            print(<span class="stringliteral">&quot;\tm = %s GeV&quot;</span>%(self.MN))</div>
+<div class="line"><span class="lineno">  182</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,86 +316,86 @@ couplings (list of [U2e, U2mu, U2tau])
 Inputs:
 - decayString is a string describing the decay, in the form 'N -&gt; stuff1 ... stuffN'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00525">525</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  525</span>    <span class="keyword">def </span>allowedChannels(self):</div>
-<div class="line"><span class="lineno">  526</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  527</span><span class="stringliteral">        Returns a dictionary of kinematically allowed decay channels</span></div>
-<div class="line"><span class="lineno">  528</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  529</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  530</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
-<div class="line"><span class="lineno">  531</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  532</span>        m = self.MN</div>
-<div class="line"><span class="lineno">  533</span>        allowedDecays = {<span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>}</div>
-<div class="line"><span class="lineno">  534</span>        <span class="keywordflow">if</span> m &gt; 2.*mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  535</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  536</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  537</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  538</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;e-&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  539</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  540</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  541</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi0&#39;</span>):</div>
-<div class="line"><span class="lineno">  542</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  543</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  544</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  545</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  546</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  547</span>        <span class="keywordflow">if</span> m &gt; 2.*mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  548</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  549</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  550</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  551</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  552</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  553</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta&#39;</span>):</div>
-<div class="line"><span class="lineno">  554</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  555</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  556</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  557</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho0&#39;</span>):</div>
-<div class="line"><span class="lineno">  558</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  559</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  560</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  561</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  562</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  563</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;omega&#39;</span>):</div>
-<div class="line"><span class="lineno">  564</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  565</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  566</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  568</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  569</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta1&#39;</span>):</div>
-<div class="line"><span class="lineno">  570</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  571</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  572</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  573</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;phi&#39;</span>):</div>
-<div class="line"><span class="lineno">  574</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  575</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  576</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  577</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;e-&#39;</span>) + mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
-<div class="line"><span class="lineno">  578</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  579</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  580</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;mu-&#39;</span>) + mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
-<div class="line"><span class="lineno">  581</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  582</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  583</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D_s+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  584</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  585</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D_s+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  586</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  587</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D*_s+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
-<div class="line"><span class="lineno">  588</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  589</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D*_s+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
-<div class="line"><span class="lineno">  590</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  591</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta_c&#39;</span>):</div>
-<div class="line"><span class="lineno">  592</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  593</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  594</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
-<div class="line"><span class="lineno">  595</span> </div>
-<div class="line"><span class="lineno">  596</span>        <span class="keywordflow">for</span> decay <span class="keywordflow">in</span> self.decays:</div>
-<div class="line"><span class="lineno">  597</span>            <span class="keywordflow">if</span> decay <span class="keywordflow">not</span> <span class="keywordflow">in</span> allowedDecays:</div>
-<div class="line"><span class="lineno">  598</span>                allowedDecays.update({decay:<span class="stringliteral">&#39;no&#39;</span>})</div>
-<div class="line"><span class="lineno">  599</span>        <span class="keywordflow">return</span> allowedDecays</div>
-<div class="line"><span class="lineno">  600</span> </div>
-<div class="line"><span class="lineno">  601</span> </div>
-<div class="line"><span class="lineno">  602</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00528">528</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  528</span>    <span class="keyword">def </span>allowedChannels(self):</div>
+<div class="line"><span class="lineno">  529</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  530</span><span class="stringliteral">        Returns a dictionary of kinematically allowed decay channels</span></div>
+<div class="line"><span class="lineno">  531</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  532</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  533</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
+<div class="line"><span class="lineno">  534</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  535</span>        m = self.MN</div>
+<div class="line"><span class="lineno">  536</span>        allowedDecays = {<span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>}</div>
+<div class="line"><span class="lineno">  537</span>        <span class="keywordflow">if</span> m &gt; 2.*mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  538</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  539</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  540</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  541</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;e-&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  542</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  543</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  544</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi0&#39;</span>):</div>
+<div class="line"><span class="lineno">  545</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  546</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  547</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  548</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  549</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  550</span>        <span class="keywordflow">if</span> m &gt; 2.*mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  551</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  552</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  553</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  554</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;pi+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  555</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  556</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta&#39;</span>):</div>
+<div class="line"><span class="lineno">  557</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  558</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  559</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  560</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho0&#39;</span>):</div>
+<div class="line"><span class="lineno">  561</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  562</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  563</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  564</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  565</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  566</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;omega&#39;</span>):</div>
+<div class="line"><span class="lineno">  567</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  568</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  569</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  570</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;rho+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  571</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  572</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta1&#39;</span>):</div>
+<div class="line"><span class="lineno">  573</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  574</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  575</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  576</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;phi&#39;</span>):</div>
+<div class="line"><span class="lineno">  577</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  578</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  579</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  580</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;e-&#39;</span>) + mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
+<div class="line"><span class="lineno">  581</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  582</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  583</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;mu-&#39;</span>) + mass(<span class="stringliteral">&#39;tau-&#39;</span>):</div>
+<div class="line"><span class="lineno">  584</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  585</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  586</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D_s+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  587</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  588</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D_s+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  589</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  590</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D*_s+&#39;</span>) + mass(<span class="stringliteral">&#39;e-&#39;</span>):</div>
+<div class="line"><span class="lineno">  591</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  592</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;D*_s+&#39;</span>) + mass(<span class="stringliteral">&#39;mu-&#39;</span>):</div>
+<div class="line"><span class="lineno">  593</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  594</span>        <span class="keywordflow">if</span> m &gt; mass(<span class="stringliteral">&#39;eta_c&#39;</span>):</div>
+<div class="line"><span class="lineno">  595</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  596</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  597</span>            allowedDecays.update({<span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span>:<span class="stringliteral">&#39;yes&#39;</span>})</div>
+<div class="line"><span class="lineno">  598</span> </div>
+<div class="line"><span class="lineno">  599</span>        <span class="keywordflow">for</span> decay <span class="keywordflow">in</span> self.decays:</div>
+<div class="line"><span class="lineno">  600</span>            <span class="keywordflow">if</span> decay <span class="keywordflow">not</span> <span class="keywordflow">in</span> allowedDecays:</div>
+<div class="line"><span class="lineno">  601</span>                allowedDecays.update({decay:<span class="stringliteral">&#39;no&#39;</span>})</div>
+<div class="line"><span class="lineno">  602</span>        <span class="keywordflow">return</span> allowedDecays</div>
 <div class="line"><span class="lineno">  603</span> </div>
+<div class="line"><span class="lineno">  604</span> </div>
+<div class="line"><span class="lineno">  605</span> </div>
+<div class="line"><span class="lineno">  606</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -429,72 +429,72 @@ Inputs:
 Inputs:
 - decayString is a string describing the decay, in the form 'N -&gt; stuff1 ... stuffN'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00460">460</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>    <span class="keyword">def </span>findBranchingRatio(self, decayString):</div>
-<div class="line"><span class="lineno">  461</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  462</span><span class="stringliteral">        Returns the branching ratio of the selected HNL decay channel</span></div>
-<div class="line"><span class="lineno">  463</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  464</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  465</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
-<div class="line"><span class="lineno">  466</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  467</span>        br = 0.</div>
-<div class="line"><span class="lineno">  468</span>        totalWidth = self.NDecayWidth()</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span>        <span class="keywordflow">if</span> (decayString <span class="keywordflow">not</span> <span class="keywordflow">in</span> self.decays) <span class="keywordflow">and</span> (decayString <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;N -&gt; hadrons&#39;</span>,<span class="stringliteral">&#39;N -&gt; charged hadrons&#39;</span>]):</div>
-<div class="line"><span class="lineno">  471</span>            print(<span class="stringliteral">&#39;findBranchingRatio ERROR: unknown decay %s&#39;</span>%decayString)</div>
-<div class="line"><span class="lineno">  472</span>            quit()</div>
-<div class="line"><span class="lineno">  473</span> </div>
-<div class="line"><span class="lineno">  474</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span> <span class="keywordflow">or</span> decayString == <span class="stringliteral">&#39;N -&gt; 3nu&#39;</span>: br = self.Width_3nu() / totalWidth <span class="comment"># inclusive</span></div>
-<div class="line"><span class="lineno">  475</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>: br = self.Width_nu_f_fbar(1,1) / totalWidth</div>
-<div class="line"><span class="lineno">  476</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>: br = self.Width_nu_f_fbar(2,1) / totalWidth</div>
-<div class="line"><span class="lineno">  477</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>: br = self.Width_nu_f_fbar(3,1) / totalWidth</div>
-<div class="line"><span class="lineno">  478</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>: br = self.Width_l1_l2_nu2(1,2) / totalWidth</div>
-<div class="line"><span class="lineno">  479</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>: br = self.Width_l1_l2_nu2(2,1) / totalWidth</div>
-<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  481</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  482</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  483</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;pi+&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  484</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>: br = self.Width_nu_f_fbar(1,2) / totalWidth</div>
-<div class="line"><span class="lineno">  485</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>: br = self.Width_nu_f_fbar(2,2) / totalWidth</div>
-<div class="line"><span class="lineno">  486</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>: br = self.Width_nu_f_fbar(3,2) / totalWidth</div>
-<div class="line"><span class="lineno">  487</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;pi+&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  489</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  490</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  491</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  493</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  494</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;rho+&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  495</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  496</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  497</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  498</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;rho+&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  499</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  500</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  501</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  502</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  503</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  504</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  505</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>: br = self.Width_l1_l2_nu2(1,3) / totalWidth</div>
-<div class="line"><span class="lineno">  506</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>: br = self.Width_l1_l2_nu2(3,1) / totalWidth</div>
-<div class="line"><span class="lineno">  507</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>: br = self.Width_l1_l2_nu2(2,3) / totalWidth</div>
-<div class="line"><span class="lineno">  508</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>: br = self.Width_l1_l2_nu2(3,2) / totalWidth</div>
-<div class="line"><span class="lineno">  509</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D_s+&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  510</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D_s+&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  511</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D*_s+&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  512</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D*_s+&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  513</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,1) / totalWidth</div>
-<div class="line"><span class="lineno">  514</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,2) / totalWidth</div>
-<div class="line"><span class="lineno">  515</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,3) / totalWidth</div>
-<div class="line"><span class="lineno">  516</span> </div>
-<div class="line"><span class="lineno">  517</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; hadrons&#39;</span>:</div>
-<div class="line"><span class="lineno">  518</span>            mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()</div>
-<div class="line"><span class="lineno">  519</span>            quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()</div>
-<div class="line"><span class="lineno">  520</span>            br = max([mesonWidth, quarkWidth]) / totalWidth</div>
-<div class="line"><span class="lineno">  521</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; charged hadrons&#39;</span>:</div>
-<div class="line"><span class="lineno">  522</span>            br = max([self.Width_charged_mesons(), self.Width_quarks_lepton()]) / totalWidth</div>
-<div class="line"><span class="lineno">  523</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  524</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00463">463</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  463</span>    <span class="keyword">def </span>findBranchingRatio(self, decayString):</div>
+<div class="line"><span class="lineno">  464</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  465</span><span class="stringliteral">        Returns the branching ratio of the selected HNL decay channel</span></div>
+<div class="line"><span class="lineno">  466</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  467</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  468</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
+<div class="line"><span class="lineno">  469</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  470</span>        br = 0.</div>
+<div class="line"><span class="lineno">  471</span>        totalWidth = self.NDecayWidth()</div>
+<div class="line"><span class="lineno">  472</span> </div>
+<div class="line"><span class="lineno">  473</span>        <span class="keywordflow">if</span> (decayString <span class="keywordflow">not</span> <span class="keywordflow">in</span> self.decays) <span class="keywordflow">and</span> (decayString <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;N -&gt; hadrons&#39;</span>,<span class="stringliteral">&#39;N -&gt; charged hadrons&#39;</span>]):</div>
+<div class="line"><span class="lineno">  474</span>            print(<span class="stringliteral">&#39;findBranchingRatio ERROR: unknown decay %s&#39;</span>%decayString)</div>
+<div class="line"><span class="lineno">  475</span>            quit()</div>
+<div class="line"><span class="lineno">  476</span> </div>
+<div class="line"><span class="lineno">  477</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; nu nu nu&#39;</span> <span class="keywordflow">or</span> decayString == <span class="stringliteral">&#39;N -&gt; 3nu&#39;</span>: br = self.Width_3nu() / totalWidth <span class="comment"># inclusive</span></div>
+<div class="line"><span class="lineno">  478</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_e&#39;</span>: br = self.Width_nu_f_fbar(1,1) / totalWidth</div>
+<div class="line"><span class="lineno">  479</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_mu&#39;</span>: br = self.Width_nu_f_fbar(2,1) / totalWidth</div>
+<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- e+ nu_tau&#39;</span>: br = self.Width_nu_f_fbar(3,1) / totalWidth</div>
+<div class="line"><span class="lineno">  481</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- mu+ nu_mu&#39;</span>: br = self.Width_l1_l2_nu2(1,2) / totalWidth</div>
+<div class="line"><span class="lineno">  482</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- e+ nu_e&#39;</span>: br = self.Width_l1_l2_nu2(2,1) / totalWidth</div>
+<div class="line"><span class="lineno">  483</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  484</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  485</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi0 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;pi0&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  486</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;pi+&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  487</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_e&#39;</span>: br = self.Width_nu_f_fbar(1,2) / totalWidth</div>
+<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_mu&#39;</span>: br = self.Width_nu_f_fbar(2,2) / totalWidth</div>
+<div class="line"><span class="lineno">  489</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- mu+ nu_tau&#39;</span>: br = self.Width_nu_f_fbar(3,2) / totalWidth</div>
+<div class="line"><span class="lineno">  490</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; pi+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;pi+&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  491</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  493</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  494</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  495</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  496</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho0 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;rho0&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  497</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;rho+&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  498</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  499</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  500</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; omega nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;omega&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  501</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; rho+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;rho+&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  502</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  503</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  504</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta1 nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta1&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  505</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  506</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  507</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; phi nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;phi&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  508</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; e- tau+ nu_tau&#39;</span>: br = self.Width_l1_l2_nu2(1,3) / totalWidth</div>
+<div class="line"><span class="lineno">  509</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; tau- e+ nu_e&#39;</span>: br = self.Width_l1_l2_nu2(3,1) / totalWidth</div>
+<div class="line"><span class="lineno">  510</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; mu- tau+ nu_tau&#39;</span>: br = self.Width_l1_l2_nu2(2,3) / totalWidth</div>
+<div class="line"><span class="lineno">  511</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; tau- mu+ nu_mu&#39;</span>: br = self.Width_l1_l2_nu2(3,2) / totalWidth</div>
+<div class="line"><span class="lineno">  512</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D_s+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D_s+&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  513</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D_s+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D_s+&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  514</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D*_s+ e-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D*_s+&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  515</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; D*_s+ mu-&#39;</span>: br = self.Width_H_l(<span class="stringliteral">&#39;D*_s+&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  516</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_e&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,1) / totalWidth</div>
+<div class="line"><span class="lineno">  517</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_mu&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,2) / totalWidth</div>
+<div class="line"><span class="lineno">  518</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; eta_c nu_tau&#39;</span>: br = self.Width_H0_nu(<span class="stringliteral">&#39;eta_c&#39;</span>,3) / totalWidth</div>
+<div class="line"><span class="lineno">  519</span> </div>
+<div class="line"><span class="lineno">  520</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; hadrons&#39;</span>:</div>
+<div class="line"><span class="lineno">  521</span>            mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()</div>
+<div class="line"><span class="lineno">  522</span>            quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()</div>
+<div class="line"><span class="lineno">  523</span>            br = max([mesonWidth, quarkWidth]) / totalWidth</div>
+<div class="line"><span class="lineno">  524</span>        <span class="keywordflow">if</span> decayString == <span class="stringliteral">&#39;N -&gt; charged hadrons&#39;</span>:</div>
+<div class="line"><span class="lineno">  525</span>            br = max([self.Width_charged_mesons(), self.Width_quarks_lepton()]) / totalWidth</div>
+<div class="line"><span class="lineno">  526</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  527</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -538,24 +538,24 @@ Inputs:
 <pre class="fragment">Numerical integral needed for 3-body decays through W boson.
 xi = mi/MN
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00271">271</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  271</span>    <span class="keyword">def </span>I(self,x1,x2,x3):</div>
-<div class="line"><span class="lineno">  272</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  273</span><span class="stringliteral">        Numerical integral needed for 3-body decays through W boson.</span></div>
-<div class="line"><span class="lineno">  274</span><span class="stringliteral">        xi = mi/MN</span></div>
-<div class="line"><span class="lineno">  275</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  276</span>        theFunction = self.Integrand</div>
-<div class="line"><span class="lineno">  277</span>        func = ROOT.TF1(<span class="stringliteral">&#39;func&#39;</span>,theFunction,0,1,3) <span class="comment"># Setting function</span></div>
-<div class="line"><span class="lineno">  278</span>        func.SetParameters(x1,x2,x3)</div>
-<div class="line"><span class="lineno">  279</span>        xmin = (x1 + x3)**2</div>
-<div class="line"><span class="lineno">  280</span>        xmax = (1. - x2)**2</div>
-<div class="line"><span class="lineno">  281</span>        wf1 = ROOT.Math.WrappedTF1(func) <span class="comment"># Setting simple Gauss integration method</span></div>
-<div class="line"><span class="lineno">  282</span>        ig = ROOT.Math.GaussIntegrator()</div>
-<div class="line"><span class="lineno">  283</span>        ig.SetFunction(wf1)</div>
-<div class="line"><span class="lineno">  284</span>        ig.SetRelTolerance(0.001)</div>
-<div class="line"><span class="lineno">  285</span>        res = 12. * ig.Integral(xmin,xmax)</div>
-<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">return</span> res</div>
-<div class="line"><span class="lineno">  287</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00274">274</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  274</span>    <span class="keyword">def </span>I(self,x1,x2,x3):</div>
+<div class="line"><span class="lineno">  275</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  276</span><span class="stringliteral">        Numerical integral needed for 3-body decays through W boson.</span></div>
+<div class="line"><span class="lineno">  277</span><span class="stringliteral">        xi = mi/MN</span></div>
+<div class="line"><span class="lineno">  278</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  279</span>        theFunction = self.Integrand</div>
+<div class="line"><span class="lineno">  280</span>        func = ROOT.TF1(<span class="stringliteral">&#39;func&#39;</span>,theFunction,0,1,3) <span class="comment"># Setting function</span></div>
+<div class="line"><span class="lineno">  281</span>        func.SetParameters(x1,x2,x3)</div>
+<div class="line"><span class="lineno">  282</span>        xmin = (x1 + x3)**2</div>
+<div class="line"><span class="lineno">  283</span>        xmax = (1. - x2)**2</div>
+<div class="line"><span class="lineno">  284</span>        wf1 = ROOT.Math.WrappedTF1(func) <span class="comment"># Setting simple Gauss integration method</span></div>
+<div class="line"><span class="lineno">  285</span>        ig = ROOT.Math.GaussIntegrator()</div>
+<div class="line"><span class="lineno">  286</span>        ig.SetFunction(wf1)</div>
+<div class="line"><span class="lineno">  287</span>        ig.SetRelTolerance(0.001)</div>
+<div class="line"><span class="lineno">  288</span>        res = 12. * ig.Integral(xmin,xmax)</div>
+<div class="line"><span class="lineno">  289</span>        <span class="keywordflow">return</span> res</div>
+<div class="line"><span class="lineno">  290</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -593,25 +593,25 @@ xi = mi/MN
 <pre class="fragment">Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays through W boson.
 First argument is a list of 1 number, argument. Second is the list of 3 numbers xi = mi/MN
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00253">253</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  253</span>    <span class="keyword">def </span>Integrand(self,xx,xi):</div>
-<div class="line"><span class="lineno">  254</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  255</span><span class="stringliteral">        Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays through W boson.</span></div>
-<div class="line"><span class="lineno">  256</span><span class="stringliteral">        First argument is a list of 1 number, argument. Second is the list of 3 numbers xi = mi/MN</span></div>
-<div class="line"><span class="lineno">  257</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  258</span>        x = xx[0]</div>
-<div class="line"><span class="lineno">  259</span>        xl2 = xi[0]**2</div>
-<div class="line"><span class="lineno">  260</span>        xu2 = xi[1]**2</div>
-<div class="line"><span class="lineno">  261</span>        xd2 = xi[2]**2</div>
-<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">if</span> x==0: <span class="comment"># Workaround for division by zero</span></div>
-<div class="line"><span class="lineno">  263</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  264</span>        res = 1./x</div>
-<div class="line"><span class="lineno">  265</span>        res *= (x - xl2 - xd2)</div>
-<div class="line"><span class="lineno">  266</span>        res *= (1. + xu2 - x)</div>
-<div class="line"><span class="lineno">  267</span>        res *= self.sqrt_lambda(x,xl2,xd2)</div>
-<div class="line"><span class="lineno">  268</span>        res *= self.sqrt_lambda(1.,x,xu2)</div>
-<div class="line"><span class="lineno">  269</span>        <span class="keywordflow">return</span> res</div>
-<div class="line"><span class="lineno">  270</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00256">256</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  256</span>    <span class="keyword">def </span>Integrand(self,xx,xi):</div>
+<div class="line"><span class="lineno">  257</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  258</span><span class="stringliteral">        Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays through W boson.</span></div>
+<div class="line"><span class="lineno">  259</span><span class="stringliteral">        First argument is a list of 1 number, argument. Second is the list of 3 numbers xi = mi/MN</span></div>
+<div class="line"><span class="lineno">  260</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  261</span>        x = xx[0]</div>
+<div class="line"><span class="lineno">  262</span>        xl2 = xi[0]**2</div>
+<div class="line"><span class="lineno">  263</span>        xu2 = xi[1]**2</div>
+<div class="line"><span class="lineno">  264</span>        xd2 = xi[2]**2</div>
+<div class="line"><span class="lineno">  265</span>        <span class="keywordflow">if</span> x==0: <span class="comment"># Workaround for division by zero</span></div>
+<div class="line"><span class="lineno">  266</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  267</span>        res = 1./x</div>
+<div class="line"><span class="lineno">  268</span>        res *= (x - xl2 - xd2)</div>
+<div class="line"><span class="lineno">  269</span>        res *= (1. + xu2 - x)</div>
+<div class="line"><span class="lineno">  270</span>        res *= self.sqrt_lambda(x,xl2,xd2)</div>
+<div class="line"><span class="lineno">  271</span>        res *= self.sqrt_lambda(1.,x,xu2)</div>
+<div class="line"><span class="lineno">  272</span>        <span class="keywordflow">return</span> res</div>
+<div class="line"><span class="lineno">  273</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -632,17 +632,17 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL decay width
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00450">450</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  450</span>    <span class="keyword">def </span>NDecayWidth(self):</div>
-<div class="line"><span class="lineno">  451</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  452</span><span class="stringliteral">        Returns the total HNL decay width</span></div>
-<div class="line"><span class="lineno">  453</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  454</span>        leptonWidth = self.Width_3nu() + self.Width_charged_leptons()</div>
-<div class="line"><span class="lineno">  455</span>        mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()</div>
-<div class="line"><span class="lineno">  456</span>        quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()</div>
-<div class="line"><span class="lineno">  457</span>        totalWidth = leptonWidth + max([mesonWidth, quarkWidth])</div>
-<div class="line"><span class="lineno">  458</span>        <span class="keywordflow">return</span> totalWidth</div>
-<div class="line"><span class="lineno">  459</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00453">453</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  453</span>    <span class="keyword">def </span>NDecayWidth(self):</div>
+<div class="line"><span class="lineno">  454</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  455</span><span class="stringliteral">        Returns the total HNL decay width</span></div>
+<div class="line"><span class="lineno">  456</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  457</span>        leptonWidth = self.Width_3nu() + self.Width_charged_leptons()</div>
+<div class="line"><span class="lineno">  458</span>        mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()</div>
+<div class="line"><span class="lineno">  459</span>        quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()</div>
+<div class="line"><span class="lineno">  460</span>        totalWidth = leptonWidth + max([mesonWidth, quarkWidth])</div>
+<div class="line"><span class="lineno">  461</span>        <span class="keywordflow">return</span> totalWidth</div>
+<div class="line"><span class="lineno">  462</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -663,18 +663,18 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Returns 3-loops QCD correction to HNL decay width into quarks
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00190">190</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  190</span>    <span class="keyword">def </span>QCD_correction(self):</div>
-<div class="line"><span class="lineno">  191</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  192</span><span class="stringliteral">        Returns 3-loops QCD correction to HNL decay width into quarks</span></div>
-<div class="line"><span class="lineno">  193</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  194</span>        alpha_s = ROOT.TGraph( os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/alpha_s.dat&#39;</span>) )</div>
-<div class="line"><span class="lineno">  195</span>        a_s = alpha_s.Eval(self.MN)</div>
-<div class="line"><span class="lineno">  196</span>        qcd_corr = a_s / math.pi</div>
-<div class="line"><span class="lineno">  197</span>        qcd_corr += 5.2 * (a_s / math.pi)**2.</div>
-<div class="line"><span class="lineno">  198</span>        qcd_corr += 26.4 * (a_s / math.pi)**3.</div>
-<div class="line"><span class="lineno">  199</span>        <span class="keywordflow">return</span> qcd_corr</div>
-<div class="line"><span class="lineno">  200</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00193">193</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  193</span>    <span class="keyword">def </span>QCD_correction(self):</div>
+<div class="line"><span class="lineno">  194</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  195</span><span class="stringliteral">        Returns 3-loops QCD correction to HNL decay width into quarks</span></div>
+<div class="line"><span class="lineno">  196</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  197</span>        alpha_s = ROOT.TGraph( os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/alpha_s.dat&#39;</span>) )</div>
+<div class="line"><span class="lineno">  198</span>        a_s = alpha_s.Eval(self.MN)</div>
+<div class="line"><span class="lineno">  199</span>        qcd_corr = a_s / math.pi</div>
+<div class="line"><span class="lineno">  200</span>        qcd_corr += 5.2 * (a_s / math.pi)**2.</div>
+<div class="line"><span class="lineno">  201</span>        qcd_corr += 26.4 * (a_s / math.pi)**3.</div>
+<div class="line"><span class="lineno">  202</span>        <span class="keywordflow">return</span> qcd_corr</div>
+<div class="line"><span class="lineno">  203</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -717,17 +717,17 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Useful function for decay kinematics. Returns 0 for kinematically forbidden region
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00180">180</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>    <span class="keyword">def </span>sqrt_lambda(self,a,b,c):</div>
-<div class="line"><span class="lineno">  181</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  182</span><span class="stringliteral">        Useful function for decay kinematics. Returns 0 for kinematically forbidden region</span></div>
-<div class="line"><span class="lineno">  183</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  184</span>        l = a**2 + b**2 + c**2 - 2*a*b - 2*b*c - 2*a*c</div>
-<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">if</span> l&lt;0:</div>
-<div class="line"><span class="lineno">  186</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  187</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  188</span>            <span class="keywordflow">return</span> math.sqrt(l)</div>
-<div class="line"><span class="lineno">  189</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00183">183</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>    <span class="keyword">def </span>sqrt_lambda(self,a,b,c):</div>
+<div class="line"><span class="lineno">  184</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  185</span><span class="stringliteral">        Useful function for decay kinematics. Returns 0 for kinematically forbidden region</span></div>
+<div class="line"><span class="lineno">  186</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  187</span>        l = a**2 + b**2 + c**2 - 2*a*b - 2*b*c - 2*a*c</div>
+<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">if</span> l&lt;0:</div>
+<div class="line"><span class="lineno">  189</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  190</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  191</span>            <span class="keywordflow">return</span> math.sqrt(l)</div>
+<div class="line"><span class="lineno">  192</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -748,15 +748,15 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Returns the HNL decay width into three neutrinos
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00201">201</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  201</span>    <span class="keyword">def </span>Width_3nu(self):</div>
-<div class="line"><span class="lineno">  202</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  203</span><span class="stringliteral">        Returns the HNL decay width into three neutrinos</span></div>
-<div class="line"><span class="lineno">  204</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  205</span>        width = (c.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(u.pi**3.))</div>
-<div class="line"><span class="lineno">  206</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  207</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  208</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00204">204</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  204</span>    <span class="keyword">def </span>Width_3nu(self):</div>
+<div class="line"><span class="lineno">  205</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  206</span><span class="stringliteral">        Returns the HNL decay width into three neutrinos</span></div>
+<div class="line"><span class="lineno">  207</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  208</span>        width = (c.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(u.pi**3.))</div>
+<div class="line"><span class="lineno">  209</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  210</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  211</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -777,18 +777,18 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL leptonic decay width with charged leptons in final state
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00390">390</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  390</span>    <span class="keyword">def </span>Width_charged_leptons(self):</div>
-<div class="line"><span class="lineno">  391</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  392</span><span class="stringliteral">        Returns the total HNL leptonic decay width with charged leptons in final state</span></div>
-<div class="line"><span class="lineno">  393</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  394</span>        width = 0.</div>
-<div class="line"><span class="lineno">  395</span>        <span class="keywordflow">for</span> l1 <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  396</span>            <span class="keywordflow">for</span> l2 <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  397</span>                width += self.Width_nu_f_fbar(l1,l2)</div>
-<div class="line"><span class="lineno">  398</span>                width += self.Width_l1_l2_nu2(l1,l2)</div>
-<div class="line"><span class="lineno">  399</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  400</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00393">393</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  393</span>    <span class="keyword">def </span>Width_charged_leptons(self):</div>
+<div class="line"><span class="lineno">  394</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  395</span><span class="stringliteral">        Returns the total HNL leptonic decay width with charged leptons in final state</span></div>
+<div class="line"><span class="lineno">  396</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  397</span>        width = 0.</div>
+<div class="line"><span class="lineno">  398</span>        <span class="keywordflow">for</span> l1 <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  399</span>            <span class="keywordflow">for</span> l2 <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  400</span>                width += self.Width_nu_f_fbar(l1,l2)</div>
+<div class="line"><span class="lineno">  401</span>                width += self.Width_l1_l2_nu2(l1,l2)</div>
+<div class="line"><span class="lineno">  402</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  403</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -809,18 +809,18 @@ First argument is a list of 1 number, argument. Second is the list of 3 numbers 
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL decay width into a charged meson and a charged lepton
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00412">412</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  412</span>    <span class="keyword">def </span>Width_charged_mesons(self):</div>
-<div class="line"><span class="lineno">  413</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  414</span><span class="stringliteral">        Returns the total HNL decay width into a charged meson and a charged lepton</span></div>
-<div class="line"><span class="lineno">  415</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  416</span>        mesons = [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]</div>
-<div class="line"><span class="lineno">  417</span>        width = 0.</div>
-<div class="line"><span class="lineno">  418</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mesons:</div>
-<div class="line"><span class="lineno">  419</span>            <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  420</span>                width += self.Width_H_l(m,l)</div>
-<div class="line"><span class="lineno">  421</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  422</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00415">415</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  415</span>    <span class="keyword">def </span>Width_charged_mesons(self):</div>
+<div class="line"><span class="lineno">  416</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  417</span><span class="stringliteral">        Returns the total HNL decay width into a charged meson and a charged lepton</span></div>
+<div class="line"><span class="lineno">  418</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  419</span>        mesons = [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]</div>
+<div class="line"><span class="lineno">  420</span>        width = 0.</div>
+<div class="line"><span class="lineno">  421</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mesons:</div>
+<div class="line"><span class="lineno">  422</span>            <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  423</span>                width += self.Width_H_l(m,l)</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  425</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -861,35 +861,35 @@ Inputs:
 - H is a string (name of the meson)
 - alpha is a flavour of the nu (1, 2 or 3), determine the mixing angle U_alpha
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00337">337</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  337</span>    <span class="keyword">def </span>Width_H0_nu(self, H, alpha):</div>
-<div class="line"><span class="lineno">  338</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  339</span><span class="stringliteral">        Returns the HNL decay width into neutral meson and neutrino</span></div>
-<div class="line"><span class="lineno">  340</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  341</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  342</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
-<div class="line"><span class="lineno">  343</span><span class="stringliteral">        - alpha is a flavour of the nu (1, 2 or 3), determine the mixing angle U_alpha</span></div>
-<div class="line"><span class="lineno">  344</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">if</span> (H <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]) <span class="keywordflow">or</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
-<div class="line"><span class="lineno">  346</span>            print(<span class="stringliteral">&#39;Width_H0_nu ERROR: unknown channel H0 =&#39;</span>,H,<span class="stringliteral">&#39; alpha =&#39;</span>,alpha)</div>
-<div class="line"><span class="lineno">  347</span>            quit()</div>
-<div class="line"><span class="lineno">  348</span>        x = mass(H)/self.MN</div>
-<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">if</span> x &gt; 1: <span class="comment"># The decay is kinematically forbidden</span></div>
-<div class="line"><span class="lineno">  350</span>            <span class="keywordflow">return</span> 0.</div>
-<div class="line"><span class="lineno">  351</span>        width = (c.GF**2.)*(c.decayConstant[H]**2.)*(self.MN**3.)*self.U2[alpha-1]/(32.*math.pi)</div>
-<div class="line"><span class="lineno">  352</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]: <span class="comment"># pseudoscalar mesons</span></div>
-<div class="line"><span class="lineno">  353</span>            width *= (1 - x**2.)**2.</div>
-<div class="line"><span class="lineno">  354</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>]: <span class="comment"># vector mesons</span></div>
-<div class="line"><span class="lineno">  355</span>            width *= (1. + 2*x**2.)*(1. - x**2.)**2.</div>
-<div class="line"><span class="lineno">  356</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;rho0&#39;</span>:</div>
-<div class="line"><span class="lineno">  357</span>                width *= (1. - 2.*c.s2thetaw)**2.</div>
-<div class="line"><span class="lineno">  358</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;omega&#39;</span>:</div>
-<div class="line"><span class="lineno">  359</span>                width *= (16.*c.s2thetaw**2.)/9.</div>
-<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;phi&#39;</span>:</div>
-<div class="line"><span class="lineno">  361</span>                width *= (1. - 4./3.*c.s2thetaw)**2.</div>
-<div class="line"><span class="lineno">  362</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  364</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00340">340</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  340</span>    <span class="keyword">def </span>Width_H0_nu(self, H, alpha):</div>
+<div class="line"><span class="lineno">  341</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  342</span><span class="stringliteral">        Returns the HNL decay width into neutral meson and neutrino</span></div>
+<div class="line"><span class="lineno">  343</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  344</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  345</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
+<div class="line"><span class="lineno">  346</span><span class="stringliteral">        - alpha is a flavour of the nu (1, 2 or 3), determine the mixing angle U_alpha</span></div>
+<div class="line"><span class="lineno">  347</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  348</span>        <span class="keywordflow">if</span> (H <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]) <span class="keywordflow">or</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
+<div class="line"><span class="lineno">  349</span>            print(<span class="stringliteral">&#39;Width_H0_nu ERROR: unknown channel H0 =&#39;</span>,H,<span class="stringliteral">&#39; alpha =&#39;</span>,alpha)</div>
+<div class="line"><span class="lineno">  350</span>            quit()</div>
+<div class="line"><span class="lineno">  351</span>        x = mass(H)/self.MN</div>
+<div class="line"><span class="lineno">  352</span>        <span class="keywordflow">if</span> x &gt; 1: <span class="comment"># The decay is kinematically forbidden</span></div>
+<div class="line"><span class="lineno">  353</span>            <span class="keywordflow">return</span> 0.</div>
+<div class="line"><span class="lineno">  354</span>        width = (c.GF**2.)*(c.decayConstant[H]**2.)*(self.MN**3.)*self.U2[alpha-1]/(32.*math.pi)</div>
+<div class="line"><span class="lineno">  355</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]: <span class="comment"># pseudoscalar mesons</span></div>
+<div class="line"><span class="lineno">  356</span>            width *= (1 - x**2.)**2.</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>]: <span class="comment"># vector mesons</span></div>
+<div class="line"><span class="lineno">  358</span>            width *= (1. + 2*x**2.)*(1. - x**2.)**2.</div>
+<div class="line"><span class="lineno">  359</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;rho0&#39;</span>:</div>
+<div class="line"><span class="lineno">  360</span>                width *= (1. - 2.*c.s2thetaw)**2.</div>
+<div class="line"><span class="lineno">  361</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;omega&#39;</span>:</div>
+<div class="line"><span class="lineno">  362</span>                width *= (16.*c.s2thetaw**2.)/9.</div>
+<div class="line"><span class="lineno">  363</span>            <span class="keywordflow">if</span> H==<span class="stringliteral">&#39;phi&#39;</span>:</div>
+<div class="line"><span class="lineno">  364</span>                width *= (1. - 4./3.*c.s2thetaw)**2.</div>
+<div class="line"><span class="lineno">  365</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  366</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  367</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -930,32 +930,32 @@ Inputs:
 - H is a string (name of the positively charged meson)
 - alpha is the lepton flavour (1, 2 or 3), determine the mixing angle U_alpha
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00365">365</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  365</span>    <span class="keyword">def </span>Width_H_l(self, H, alpha):</div>
-<div class="line"><span class="lineno">  366</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  367</span><span class="stringliteral">        Returns the HNL decay width into charged meson and lepton</span></div>
-<div class="line"><span class="lineno">  368</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  369</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  370</span><span class="stringliteral">        - H is a string (name of the positively charged meson)</span></div>
-<div class="line"><span class="lineno">  371</span><span class="stringliteral">        - alpha is the lepton flavour (1, 2 or 3), determine the mixing angle U_alpha</span></div>
-<div class="line"><span class="lineno">  372</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">if</span> (H <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]) <span class="keywordflow">or</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
-<div class="line"><span class="lineno">  374</span>            print(<span class="stringliteral">&#39;Width_H_l ERROR: unknown channel H =&#39;</span>,H,<span class="stringliteral">&#39; alpha =&#39;</span>,alpha)</div>
-<div class="line"><span class="lineno">  375</span>            quit()</div>
-<div class="line"><span class="lineno">  376</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
-<div class="line"><span class="lineno">  377</span>        xl = mass(l[alpha])/self.MN</div>
-<div class="line"><span class="lineno">  378</span>        xh = mass(H)/self.MN</div>
-<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">if</span> xl+xh &gt; 1: <span class="comment"># The decay is kinematically forbidden</span></div>
-<div class="line"><span class="lineno">  380</span>            <span class="keywordflow">return</span> 0.</div>
-<div class="line"><span class="lineno">  381</span>        width = (c.GF**2.)*(c.decayConstant[H]**2.)*self.CKMelemSq[H]*(self.MN**3.)*self.U2[alpha-1]/(16.*math.pi)</div>
-<div class="line"><span class="lineno">  382</span>        width *= self.sqrt_lambda(1., xl**2, xh**2)</div>
-<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>]: <span class="comment"># pseudoscalar mesons</span></div>
-<div class="line"><span class="lineno">  384</span>            width *= ( (1. - xl**2.)**2. - xh**2. *(1. + xl**2.) )</div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]: <span class="comment"># vector mesons</span></div>
-<div class="line"><span class="lineno">  386</span>            width *= ( (1. - xl**2.)**2. + xh**2.*(1. + xl**2.) - 2.*xh**4. )</div>
-<div class="line"><span class="lineno">  387</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  389</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00368">368</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  368</span>    <span class="keyword">def </span>Width_H_l(self, H, alpha):</div>
+<div class="line"><span class="lineno">  369</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  370</span><span class="stringliteral">        Returns the HNL decay width into charged meson and lepton</span></div>
+<div class="line"><span class="lineno">  371</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  372</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  373</span><span class="stringliteral">        - H is a string (name of the positively charged meson)</span></div>
+<div class="line"><span class="lineno">  374</span><span class="stringliteral">        - alpha is the lepton flavour (1, 2 or 3), determine the mixing angle U_alpha</span></div>
+<div class="line"><span class="lineno">  375</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">if</span> (H <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]) <span class="keywordflow">or</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
+<div class="line"><span class="lineno">  377</span>            print(<span class="stringliteral">&#39;Width_H_l ERROR: unknown channel H =&#39;</span>,H,<span class="stringliteral">&#39; alpha =&#39;</span>,alpha)</div>
+<div class="line"><span class="lineno">  378</span>            quit()</div>
+<div class="line"><span class="lineno">  379</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
+<div class="line"><span class="lineno">  380</span>        xl = mass(l[alpha])/self.MN</div>
+<div class="line"><span class="lineno">  381</span>        xh = mass(H)/self.MN</div>
+<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">if</span> xl+xh &gt; 1: <span class="comment"># The decay is kinematically forbidden</span></div>
+<div class="line"><span class="lineno">  383</span>            <span class="keywordflow">return</span> 0.</div>
+<div class="line"><span class="lineno">  384</span>        width = (c.GF**2.)*(c.decayConstant[H]**2.)*self.CKMelemSq[H]*(self.MN**3.)*self.U2[alpha-1]/(16.*math.pi)</div>
+<div class="line"><span class="lineno">  385</span>        width *= self.sqrt_lambda(1., xl**2, xh**2)</div>
+<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;pi+&#39;</span>,<span class="stringliteral">&#39;D_s+&#39;</span>]: <span class="comment"># pseudoscalar mesons</span></div>
+<div class="line"><span class="lineno">  387</span>            width *= ( (1. - xl**2.)**2. - xh**2. *(1. + xl**2.) )</div>
+<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">if</span> H <span class="keywordflow">in</span> [<span class="stringliteral">&#39;rho+&#39;</span>,<span class="stringliteral">&#39;D*_s+&#39;</span>]: <span class="comment"># vector mesons</span></div>
+<div class="line"><span class="lineno">  389</span>            width *= ( (1. - xl**2.)**2. + xh**2.*(1. + xl**2.) - 2.*xh**4. )</div>
+<div class="line"><span class="lineno">  390</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  391</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  392</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -996,30 +996,30 @@ Inputs:
 - alpha is a flavour of the first lepton (1,2 or 3), determine the mixing angle U_alpha
 - beta is a flavour of the second lepton and neutrino (1, 2 or 3)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00288">288</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  288</span>    <span class="keyword">def </span>Width_l1_l2_nu2(self, alpha, beta):</div>
-<div class="line"><span class="lineno">  289</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  290</span><span class="stringliteral">        Returns the HNL decay width into two different flavour leptons and a neutrino (decay through W boson)</span></div>
-<div class="line"><span class="lineno">  291</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  292</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  293</span><span class="stringliteral">        - alpha is a flavour of the first lepton (1,2 or 3), determine the mixing angle U_alpha</span></div>
-<div class="line"><span class="lineno">  294</span><span class="stringliteral">        - beta is a flavour of the second lepton and neutrino (1, 2 or 3)</span></div>
-<div class="line"><span class="lineno">  295</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
-<div class="line"><span class="lineno">  297</span>            print(<span class="stringliteral">&#39;Width_l1_l2_nu2 ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta)</div>
-<div class="line"><span class="lineno">  298</span>            quit()</div>
-<div class="line"><span class="lineno">  299</span>        <span class="keywordflow">if</span> alpha==beta: <span class="comment"># The interference case is handled by Width_nu_f_fbar function, workaround for a total width calculation</span></div>
-<div class="line"><span class="lineno">  300</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  301</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
-<div class="line"><span class="lineno">  302</span>        x1 = mass(l[alpha])/self.MN</div>
-<div class="line"><span class="lineno">  303</span>        x2 = mass(l[beta])/self.MN</div>
-<div class="line"><span class="lineno">  304</span>        <span class="keywordflow">if</span> x1+x2&gt;1: <span class="comment"># The decay is kinematically forbidden</span></div>
-<div class="line"><span class="lineno">  305</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  306</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
-<div class="line"><span class="lineno">  307</span>        width = width*self.I(x1,x2,0)</div>
-<div class="line"><span class="lineno">  308</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  309</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  310</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00291">291</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  291</span>    <span class="keyword">def </span>Width_l1_l2_nu2(self, alpha, beta):</div>
+<div class="line"><span class="lineno">  292</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  293</span><span class="stringliteral">        Returns the HNL decay width into two different flavour leptons and a neutrino (decay through W boson)</span></div>
+<div class="line"><span class="lineno">  294</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  295</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  296</span><span class="stringliteral">        - alpha is a flavour of the first lepton (1,2 or 3), determine the mixing angle U_alpha</span></div>
+<div class="line"><span class="lineno">  297</span><span class="stringliteral">        - beta is a flavour of the second lepton and neutrino (1, 2 or 3)</span></div>
+<div class="line"><span class="lineno">  298</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  299</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
+<div class="line"><span class="lineno">  300</span>            print(<span class="stringliteral">&#39;Width_l1_l2_nu2 ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta)</div>
+<div class="line"><span class="lineno">  301</span>            quit()</div>
+<div class="line"><span class="lineno">  302</span>        <span class="keywordflow">if</span> alpha==beta: <span class="comment"># The interference case is handled by Width_nu_f_fbar function, workaround for a total width calculation</span></div>
+<div class="line"><span class="lineno">  303</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  304</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
+<div class="line"><span class="lineno">  305</span>        x1 = mass(l[alpha])/self.MN</div>
+<div class="line"><span class="lineno">  306</span>        x2 = mass(l[beta])/self.MN</div>
+<div class="line"><span class="lineno">  307</span>        <span class="keywordflow">if</span> x1+x2&gt;1: <span class="comment"># The decay is kinematically forbidden</span></div>
+<div class="line"><span class="lineno">  308</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  309</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
+<div class="line"><span class="lineno">  310</span>        width = width*self.I(x1,x2,0)</div>
+<div class="line"><span class="lineno">  311</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  312</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  313</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1067,33 +1067,33 @@ Inputs:
 - beta is the up quark generation (1, 2, 3 for u, c, t)
 - gamma is the down quark generation (1, 2, 3 for d, s, b)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00311">311</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  311</span>    <span class="keyword">def </span>Width_l_u_d(self, alpha, beta, gamma):</div>
-<div class="line"><span class="lineno">  312</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  313</span><span class="stringliteral">        Returns the HNL tree level decay width into a charged lepton, up quark and down quark (decay through W boson)</span></div>
-<div class="line"><span class="lineno">  314</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  315</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  316</span><span class="stringliteral">        - alpha is a flavour of the charged lepton (1,2 or 3), determine the mixing angle U_alpha</span></div>
-<div class="line"><span class="lineno">  317</span><span class="stringliteral">        - beta is the up quark generation (1, 2, 3 for u, c, t)</span></div>
-<div class="line"><span class="lineno">  318</span><span class="stringliteral">        - gamma is the down quark generation (1, 2, 3 for d, s, b)</span></div>
-<div class="line"><span class="lineno">  319</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  320</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (gamma <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
-<div class="line"><span class="lineno">  321</span>            print(<span class="stringliteral">&#39;Width_l_u_d ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta,<span class="stringliteral">&#39; gamma =&#39;</span>,gamma)</div>
-<div class="line"><span class="lineno">  322</span>            quit()</div>
-<div class="line"><span class="lineno">  323</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
-<div class="line"><span class="lineno">  324</span>        u = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>]</div>
-<div class="line"><span class="lineno">  325</span>        d = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>]</div>
-<div class="line"><span class="lineno">  326</span>        xl = mass(l[alpha])/self.MN</div>
-<div class="line"><span class="lineno">  327</span>        xu = mass(u[beta])/self.MN</div>
-<div class="line"><span class="lineno">  328</span>        xd = mass(d[gamma])/self.MN</div>
-<div class="line"><span class="lineno">  329</span>        <span class="keywordflow">if</span> xl+xu+xd&gt;1: <span class="comment"># The decay is kinematically forbidden</span></div>
-<div class="line"><span class="lineno">  330</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  331</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
-<div class="line"><span class="lineno">  332</span>        width *= 3*self.CKMelemSq[(beta, gamma)]</div>
-<div class="line"><span class="lineno">  333</span>        width *= self.I(xl,xu,xd)</div>
-<div class="line"><span class="lineno">  334</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  335</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  336</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00314">314</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  314</span>    <span class="keyword">def </span>Width_l_u_d(self, alpha, beta, gamma):</div>
+<div class="line"><span class="lineno">  315</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  316</span><span class="stringliteral">        Returns the HNL tree level decay width into a charged lepton, up quark and down quark (decay through W boson)</span></div>
+<div class="line"><span class="lineno">  317</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  318</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  319</span><span class="stringliteral">        - alpha is a flavour of the charged lepton (1,2 or 3), determine the mixing angle U_alpha</span></div>
+<div class="line"><span class="lineno">  320</span><span class="stringliteral">        - beta is the up quark generation (1, 2, 3 for u, c, t)</span></div>
+<div class="line"><span class="lineno">  321</span><span class="stringliteral">        - gamma is the down quark generation (1, 2, 3 for d, s, b)</span></div>
+<div class="line"><span class="lineno">  322</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  323</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (gamma <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]):</div>
+<div class="line"><span class="lineno">  324</span>            print(<span class="stringliteral">&#39;Width_l_u_d ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta,<span class="stringliteral">&#39; gamma =&#39;</span>,gamma)</div>
+<div class="line"><span class="lineno">  325</span>            quit()</div>
+<div class="line"><span class="lineno">  326</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>]</div>
+<div class="line"><span class="lineno">  327</span>        u = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>]</div>
+<div class="line"><span class="lineno">  328</span>        d = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>]</div>
+<div class="line"><span class="lineno">  329</span>        xl = mass(l[alpha])/self.MN</div>
+<div class="line"><span class="lineno">  330</span>        xu = mass(u[beta])/self.MN</div>
+<div class="line"><span class="lineno">  331</span>        xd = mass(d[gamma])/self.MN</div>
+<div class="line"><span class="lineno">  332</span>        <span class="keywordflow">if</span> xl+xu+xd&gt;1: <span class="comment"># The decay is kinematically forbidden</span></div>
+<div class="line"><span class="lineno">  333</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  334</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
+<div class="line"><span class="lineno">  335</span>        width *= 3*self.CKMelemSq[(beta, gamma)]</div>
+<div class="line"><span class="lineno">  336</span>        width *= self.I(xl,xu,xd)</div>
+<div class="line"><span class="lineno">  337</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  338</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  339</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1114,18 +1114,18 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL decay width into a neutral meson and a neutrino
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00401">401</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  401</span>    <span class="keyword">def </span>Width_neutral_mesons(self):</div>
-<div class="line"><span class="lineno">  402</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  403</span><span class="stringliteral">        Returns the total HNL decay width into a neutral meson and a neutrino</span></div>
-<div class="line"><span class="lineno">  404</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  405</span>        mesons = [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]</div>
-<div class="line"><span class="lineno">  406</span>        width = 0.</div>
-<div class="line"><span class="lineno">  407</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mesons:</div>
-<div class="line"><span class="lineno">  408</span>            <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  409</span>                width += self.Width_H0_nu(m,l)</div>
-<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  411</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00404">404</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  404</span>    <span class="keyword">def </span>Width_neutral_mesons(self):</div>
+<div class="line"><span class="lineno">  405</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  406</span><span class="stringliteral">        Returns the total HNL decay width into a neutral meson and a neutrino</span></div>
+<div class="line"><span class="lineno">  407</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  408</span>        mesons = [<span class="stringliteral">&#39;pi0&#39;</span>,<span class="stringliteral">&#39;eta&#39;</span>,<span class="stringliteral">&#39;rho0&#39;</span>,<span class="stringliteral">&#39;omega&#39;</span>,<span class="stringliteral">&#39;eta1&#39;</span>,<span class="stringliteral">&#39;phi&#39;</span>,<span class="stringliteral">&#39;eta_c&#39;</span>]</div>
+<div class="line"><span class="lineno">  409</span>        width = 0.</div>
+<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mesons:</div>
+<div class="line"><span class="lineno">  411</span>            <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  412</span>                width += self.Width_H0_nu(m,l)</div>
+<div class="line"><span class="lineno">  413</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  414</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1166,51 +1166,51 @@ Inputs:
 - alpha is a flavour of neutrino (1,2 or 3), determine the mixing angle U_alpha
 - beta is a flavour of the fermions: (1, 2 or 3) for charge leptons or (4, 5, 6, 7, 8, 9) for quarks
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00209">209</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  209</span>    <span class="keyword">def </span>Width_nu_f_fbar(self, alpha, beta):</div>
-<div class="line"><span class="lineno">  210</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  211</span><span class="stringliteral">        Returns the HNL tree level decay width into the fermion-antifermion pair and a neutrino (decay through Z boson or Z and W)</span></div>
-<div class="line"><span class="lineno">  212</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  213</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  214</span><span class="stringliteral">        - alpha is a flavour of neutrino (1,2 or 3), determine the mixing angle U_alpha</span></div>
-<div class="line"><span class="lineno">  215</span><span class="stringliteral">        - beta is a flavour of the fermions: (1, 2 or 3) for charge leptons or (4, 5, 6, 7, 8, 9) for quarks</span></div>
-<div class="line"><span class="lineno">  216</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3,4,5,6,7,8,9]):</div>
-<div class="line"><span class="lineno">  218</span>            print(<span class="stringliteral">&#39;Width_nu_f_fbar ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta)</div>
-<div class="line"><span class="lineno">  219</span>            quit()</div>
-<div class="line"><span class="lineno">  220</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>]</div>
-<div class="line"><span class="lineno">  221</span>        x = mass(l[beta]) / self.MN</div>
-<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">if</span> x &gt; 0.5: <span class="comment"># the decay is kinematically forbidden</span></div>
-<div class="line"><span class="lineno">  223</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  224</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
-<div class="line"><span class="lineno">  225</span>        L = 0.</div>
-<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">if</span> x&gt;0.01:</div>
-<div class="line"><span class="lineno">  227</span>            logContent = (1. - 3.*x**2. - (1.-x**2.)*math.sqrt(1. - 4.*x**2.) ) / ( (x**2.)*(1 + math.sqrt(1. - 4.*x**2.)) )</div>
-<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  229</span>            logContent = x**4 + 4.*x**6 + 14.*x**8</div>
-<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">if</span> logContent &gt; 0:</div>
-<div class="line"><span class="lineno">  231</span>            L = math.log( logContent )</div>
-<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">if</span> beta &lt; 4: <span class="comment"># lepton decay</span></div>
-<div class="line"><span class="lineno">  233</span>            NZ = 1</div>
-<div class="line"><span class="lineno">  234</span>            <span class="keywordflow">if</span> alpha == beta: <span class="comment"># interference case</span></div>
-<div class="line"><span class="lineno">  235</span>                C1 = 0.25*(1. + 4.*c.s2thetaw + 8.*c.s2thetaw**2.)</div>
-<div class="line"><span class="lineno">  236</span>                C2 = 0.5*c.s2thetaw*(2.*c.s2thetaw +1.)</div>
-<div class="line"><span class="lineno">  237</span>            <span class="keywordflow">else</span>: <span class="comment"># no interference</span></div>
-<div class="line"><span class="lineno">  238</span>                C1 = 0.25*(1. - 4.*c.s2thetaw + 8.*c.s2thetaw**2.)</div>
-<div class="line"><span class="lineno">  239</span>                C2 = 0.5*c.s2thetaw*(2.*c.s2thetaw -1.)</div>
-<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">else</span>: <span class="comment"># decay into quarks</span></div>
-<div class="line"><span class="lineno">  241</span>            NZ = 3</div>
-<div class="line"><span class="lineno">  242</span>            <span class="keywordflow">if</span> (beta <span class="keywordflow">in</span> [4,7,9]): <span class="comment"># up quarks</span></div>
-<div class="line"><span class="lineno">  243</span>                C1 = 0.25*(1. - 8./3.*c.s2thetaw + 32./9.*c.s2thetaw**2.)</div>
-<div class="line"><span class="lineno">  244</span>                C2 = 1./3.*c.s2thetaw*(4./3.*c.s2thetaw - 1.)</div>
-<div class="line"><span class="lineno">  245</span>            <span class="keywordflow">if</span> (beta <span class="keywordflow">in</span> [5,6,8]): <span class="comment"># down quarks</span></div>
-<div class="line"><span class="lineno">  246</span>                C1 = 0.25*(1. - 4./3.*c.s2thetaw + 8./9.*c.s2thetaw**2.)</div>
-<div class="line"><span class="lineno">  247</span>                C2 = 1./6.*c.s2thetaw*(2./3.*c.s2thetaw - 1.)</div>
-<div class="line"><span class="lineno">  248</span>        width = width*NZ*( C1*( (1.-14.*x**2. -2.*x**4. -12.*x**6.)*math.sqrt(1-4.*x**2) +12.*x**4. *(-1.+x**4.)*L )</div>
-<div class="line"><span class="lineno">  249</span>                        + 4.*C2*( x**2. *(2.+10.*x**2. -12.*x**4.) * math.sqrt(1.-4.*x**2) + 6.*x**4. *(1.-2.*x**2+2.*x**4)*L ) )</div>
-<div class="line"><span class="lineno">  250</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  251</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  252</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00212">212</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  212</span>    <span class="keyword">def </span>Width_nu_f_fbar(self, alpha, beta):</div>
+<div class="line"><span class="lineno">  213</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  214</span><span class="stringliteral">        Returns the HNL tree level decay width into the fermion-antifermion pair and a neutrino (decay through Z boson or Z and W)</span></div>
+<div class="line"><span class="lineno">  215</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  216</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  217</span><span class="stringliteral">        - alpha is a flavour of neutrino (1,2 or 3), determine the mixing angle U_alpha</span></div>
+<div class="line"><span class="lineno">  218</span><span class="stringliteral">        - beta is a flavour of the fermions: (1, 2 or 3) for charge leptons or (4, 5, 6, 7, 8, 9) for quarks</span></div>
+<div class="line"><span class="lineno">  219</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  220</span>        <span class="keywordflow">if</span> (alpha <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3]) <span class="keywordflow">or</span> (beta <span class="keywordflow">not</span> <span class="keywordflow">in</span> [1,2,3,4,5,6,7,8,9]):</div>
+<div class="line"><span class="lineno">  221</span>            print(<span class="stringliteral">&#39;Width_nu_f_fbar ERROR: unknown channel alpha =&#39;</span>,alpha,<span class="stringliteral">&#39; beta =&#39;</span>,beta)</div>
+<div class="line"><span class="lineno">  222</span>            quit()</div>
+<div class="line"><span class="lineno">  223</span>        l = [<span class="keywordtype">None</span>,<span class="stringliteral">&#39;e-&#39;</span>,<span class="stringliteral">&#39;mu-&#39;</span>,<span class="stringliteral">&#39;tau-&#39;</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>]</div>
+<div class="line"><span class="lineno">  224</span>        x = mass(l[beta]) / self.MN</div>
+<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">if</span> x &gt; 0.5: <span class="comment"># the decay is kinematically forbidden</span></div>
+<div class="line"><span class="lineno">  226</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  227</span>        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))</div>
+<div class="line"><span class="lineno">  228</span>        L = 0.</div>
+<div class="line"><span class="lineno">  229</span>        <span class="keywordflow">if</span> x&gt;0.01:</div>
+<div class="line"><span class="lineno">  230</span>            logContent = (1. - 3.*x**2. - (1.-x**2.)*math.sqrt(1. - 4.*x**2.) ) / ( (x**2.)*(1 + math.sqrt(1. - 4.*x**2.)) )</div>
+<div class="line"><span class="lineno">  231</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  232</span>            logContent = x**4 + 4.*x**6 + 14.*x**8</div>
+<div class="line"><span class="lineno">  233</span>        <span class="keywordflow">if</span> logContent &gt; 0:</div>
+<div class="line"><span class="lineno">  234</span>            L = math.log( logContent )</div>
+<div class="line"><span class="lineno">  235</span>        <span class="keywordflow">if</span> beta &lt; 4: <span class="comment"># lepton decay</span></div>
+<div class="line"><span class="lineno">  236</span>            NZ = 1</div>
+<div class="line"><span class="lineno">  237</span>            <span class="keywordflow">if</span> alpha == beta: <span class="comment"># interference case</span></div>
+<div class="line"><span class="lineno">  238</span>                C1 = 0.25*(1. + 4.*c.s2thetaw + 8.*c.s2thetaw**2.)</div>
+<div class="line"><span class="lineno">  239</span>                C2 = 0.5*c.s2thetaw*(2.*c.s2thetaw +1.)</div>
+<div class="line"><span class="lineno">  240</span>            <span class="keywordflow">else</span>: <span class="comment"># no interference</span></div>
+<div class="line"><span class="lineno">  241</span>                C1 = 0.25*(1. - 4.*c.s2thetaw + 8.*c.s2thetaw**2.)</div>
+<div class="line"><span class="lineno">  242</span>                C2 = 0.5*c.s2thetaw*(2.*c.s2thetaw -1.)</div>
+<div class="line"><span class="lineno">  243</span>        <span class="keywordflow">else</span>: <span class="comment"># decay into quarks</span></div>
+<div class="line"><span class="lineno">  244</span>            NZ = 3</div>
+<div class="line"><span class="lineno">  245</span>            <span class="keywordflow">if</span> (beta <span class="keywordflow">in</span> [4,7,9]): <span class="comment"># up quarks</span></div>
+<div class="line"><span class="lineno">  246</span>                C1 = 0.25*(1. - 8./3.*c.s2thetaw + 32./9.*c.s2thetaw**2.)</div>
+<div class="line"><span class="lineno">  247</span>                C2 = 1./3.*c.s2thetaw*(4./3.*c.s2thetaw - 1.)</div>
+<div class="line"><span class="lineno">  248</span>            <span class="keywordflow">if</span> (beta <span class="keywordflow">in</span> [5,6,8]): <span class="comment"># down quarks</span></div>
+<div class="line"><span class="lineno">  249</span>                C1 = 0.25*(1. - 4./3.*c.s2thetaw + 8./9.*c.s2thetaw**2.)</div>
+<div class="line"><span class="lineno">  250</span>                C2 = 1./6.*c.s2thetaw*(2./3.*c.s2thetaw - 1.)</div>
+<div class="line"><span class="lineno">  251</span>        width = width*NZ*( C1*( (1.-14.*x**2. -2.*x**4. -12.*x**6.)*math.sqrt(1-4.*x**2) +12.*x**4. *(-1.+x**4.)*L )</div>
+<div class="line"><span class="lineno">  252</span>                        + 4.*C2*( x**2. *(2.+10.*x**2. -12.*x**4.) * math.sqrt(1.-4.*x**2) + 6.*x**4. *(1.-2.*x**2+2.*x**4)*L ) )</div>
+<div class="line"><span class="lineno">  253</span>        width = 2.*width <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  254</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  255</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1231,21 +1231,21 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL decay width with quarks and charged lepton in final state. Uses 3-loops alpha_s correction
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00436">436</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  436</span>    <span class="keyword">def </span>Width_quarks_lepton(self):</div>
-<div class="line"><span class="lineno">  437</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  438</span><span class="stringliteral">        Returns the total HNL decay width with quarks and charged lepton in final state. Uses 3-loops alpha_s correction</span></div>
-<div class="line"><span class="lineno">  439</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">if</span> self.MN&lt;1.: <span class="comment"># decay into quarks is not applicable at low HNL mass</span></div>
-<div class="line"><span class="lineno">  441</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  442</span>        width = 0.</div>
-<div class="line"><span class="lineno">  443</span>        <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  444</span>            <span class="keywordflow">for</span> u <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  445</span>                <span class="keywordflow">for</span> d <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  446</span>                    width += self.Width_l_u_d(l,u,d)</div>
-<div class="line"><span class="lineno">  447</span>        width *= (1. + self.QCD_corr)</div>
-<div class="line"><span class="lineno">  448</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  449</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00439">439</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  439</span>    <span class="keyword">def </span>Width_quarks_lepton(self):</div>
+<div class="line"><span class="lineno">  440</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  441</span><span class="stringliteral">        Returns the total HNL decay width with quarks and charged lepton in final state. Uses 3-loops alpha_s correction</span></div>
+<div class="line"><span class="lineno">  442</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  443</span>        <span class="keywordflow">if</span> self.MN&lt;1.: <span class="comment"># decay into quarks is not applicable at low HNL mass</span></div>
+<div class="line"><span class="lineno">  444</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  445</span>        width = 0.</div>
+<div class="line"><span class="lineno">  446</span>        <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  447</span>            <span class="keywordflow">for</span> u <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  448</span>                <span class="keywordflow">for</span> d <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  449</span>                    width += self.Width_l_u_d(l,u,d)</div>
+<div class="line"><span class="lineno">  450</span>        width *= (1. + self.QCD_corr)</div>
+<div class="line"><span class="lineno">  451</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  452</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1266,20 +1266,20 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Returns the total HNL decay width with quarks and neutrino in final state. Uses 3-loops alpha_s correction
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00423">423</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  423</span>    <span class="keyword">def </span>Width_quarks_neutrino(self):</div>
-<div class="line"><span class="lineno">  424</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  425</span><span class="stringliteral">        Returns the total HNL decay width with quarks and neutrino in final state. Uses 3-loops alpha_s correction</span></div>
-<div class="line"><span class="lineno">  426</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  427</span>        <span class="keywordflow">if</span> self.MN&lt;1.: <span class="comment"># decay into quarks is not applicable at low HNL mass</span></div>
-<div class="line"><span class="lineno">  428</span>            <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  429</span>        width = 0.</div>
-<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
-<div class="line"><span class="lineno">  431</span>            <span class="keywordflow">for</span> q <span class="keywordflow">in</span> [4,5,6,7,8,9]:</div>
-<div class="line"><span class="lineno">  432</span>                width += self.Width_nu_f_fbar(l,q)</div>
-<div class="line"><span class="lineno">  433</span>        width *= (1. + self.QCD_corr)</div>
-<div class="line"><span class="lineno">  434</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  435</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00426">426</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  426</span>    <span class="keyword">def </span>Width_quarks_neutrino(self):</div>
+<div class="line"><span class="lineno">  427</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  428</span><span class="stringliteral">        Returns the total HNL decay width with quarks and neutrino in final state. Uses 3-loops alpha_s correction</span></div>
+<div class="line"><span class="lineno">  429</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">if</span> self.MN&lt;1.: <span class="comment"># decay into quarks is not applicable at low HNL mass</span></div>
+<div class="line"><span class="lineno">  431</span>            <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  432</span>        width = 0.</div>
+<div class="line"><span class="lineno">  433</span>        <span class="keywordflow">for</span> l <span class="keywordflow">in</span> [1,2,3]:</div>
+<div class="line"><span class="lineno">  434</span>            <span class="keywordflow">for</span> q <span class="keywordflow">in</span> [4,5,6,7,8,9]:</div>
+<div class="line"><span class="lineno">  435</span>                width += self.Width_nu_f_fbar(l,q)</div>
+<div class="line"><span class="lineno">  436</span>        width *= (1. + self.QCD_corr)</div>
+<div class="line"><span class="lineno">  437</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  438</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1296,7 +1296,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00115">115</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00118">118</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1312,7 +1312,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00116">116</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00119">119</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1328,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00127">127</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00130">130</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1344,7 +1344,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00114">114</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00117">117</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1360,7 +1360,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00170">170</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00173">173</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1376,7 +1376,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00113">113</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00116">116</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1392,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00112">112</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00115">115</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>

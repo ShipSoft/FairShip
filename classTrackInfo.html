@@ -158,7 +158,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00011">11</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00014">14</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9d45c47739d961685eb7b009e603635c" name="a9d45c47739d961685eb7b009e603635c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d45c47739d961685eb7b009e603635c">&#9670;&#160;</a></span>TrackInfo() <span class="overload">[1/3]</span></h2>
@@ -176,10 +176,10 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00007">7</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    8</span>  : TObject()</div>
-<div class="line"><span class="lineno">    9</span>{</div>
-<div class="line"><span class="lineno">   10</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00010">10</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span>  : TObject()</div>
+<div class="line"><span class="lineno">   12</span>{</div>
+<div class="line"><span class="lineno">   13</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -209,30 +209,30 @@ Protected Attributes</h2></td></tr>
 <p>Standard constructor <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00013">13</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>{</div>
-<div class="line"><span class="lineno">   15</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;tr-&gt;getNumPointsWithMeasurement(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+=1) {</div>
-<div class="line"><span class="lineno">   16</span>    genfit::TrackPoint *<a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> = tr-&gt;getPointWithMeasurement(i);</div>
-<div class="line"><span class="lineno">   17</span>    genfit::AbsMeasurement* rawM = <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>-&gt;getRawMeasurement();</div>
-<div class="line"><span class="lineno">   18</span>    genfit::KalmanFitterInfo*  <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a> = <span class="keyword">static_cast&lt;</span>genfit::KalmanFitterInfo*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>-&gt;getFitterInfo());</div>
-<div class="line"><span class="lineno">   19</span>    <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>.push_back(rawM-&gt;getDetId());</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> (info){</div>
-<div class="line"><span class="lineno">   21</span>       <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>.push_back(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a>-&gt;getWeights()[0]);</div>
-<div class="line"><span class="lineno">   22</span>       <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>.push_back(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a>-&gt;getWeights()[1]);</div>
-<div class="line"><span class="lineno">   23</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   24</span>       <span class="comment">// std::cout &lt;&lt; &quot;no info&quot;&lt;&lt;std::endl;</span></div>
-<div class="line"><span class="lineno">   25</span>       <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>.push_back( 0 );</div>
-<div class="line"><span class="lineno">   26</span>       <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>.push_back( 0 );</div>
-<div class="line"><span class="lineno">   27</span>    }</div>
-<div class="line"><span class="lineno">   28</span>    <span class="comment">// std::cout &lt;&lt; &quot;weights &quot; &lt;&lt; ((fWL)[i])&lt;&lt;&quot; &quot;&lt;&lt;((fWR)[i])&lt;&lt;&quot; &quot;&lt;&lt;((fDetIDs)[i])&lt;&lt;std::endl;</span></div>
-<div class="line"><span class="lineno">   29</span>  }</div>
-<div class="line"><span class="lineno">   30</span>}</div>
-<div class="ttc" id="aclassTrackInfo_html_a2d72ee63e8ff1669c6ab1c5e9eaa1f59"><div class="ttname"><a href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">TrackInfo::fWR</a></div><div class="ttdeci">std::vector&lt; float &gt; fWR</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00039">TrackInfo.h:39</a></div></div>
-<div class="ttc" id="aclassTrackInfo_html_a8ddd21583bef44b92730faa183c5756b"><div class="ttname"><a href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">TrackInfo::fWL</a></div><div class="ttdeci">std::vector&lt; float &gt; fWL</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00038">TrackInfo.h:38</a></div></div>
-<div class="ttc" id="aclassTrackInfo_html_ac8039bee43467064def334da83ba7995"><div class="ttname"><a href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">TrackInfo::fDetIDs</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; fDetIDs</div><div class="ttdoc">array of measurements</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00037">TrackInfo.h:37</a></div></div>
-<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00091">ShipAna.py:91</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a7fa96a16bd8cee0441b6cec4aeda8761"><div class="ttname"><a href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">makeCascade.tp</a></div><div class="ttdeci">tp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00061">makeCascade.py:61</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a0e40cbfde3e8a01d177fa46afeeaf5ca"><div class="ttname"><a href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">run_fixedTarget.info</a></div><div class="ttdeci">str info</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00311">run_fixedTarget.py:311</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00016">16</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span>{</div>
+<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;tr-&gt;getNumPointsWithMeasurement(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+=1) {</div>
+<div class="line"><span class="lineno">   19</span>    genfit::TrackPoint *<a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a> = tr-&gt;getPointWithMeasurement(i);</div>
+<div class="line"><span class="lineno">   20</span>    genfit::AbsMeasurement* rawM = <a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>-&gt;getRawMeasurement();</div>
+<div class="line"><span class="lineno">   21</span>    genfit::KalmanFitterInfo*  <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a> = <span class="keyword">static_cast&lt;</span>genfit::KalmanFitterInfo*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">tp</a>-&gt;getFitterInfo());</div>
+<div class="line"><span class="lineno">   22</span>    <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>.push_back(rawM-&gt;getDetId());</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">if</span> (info){</div>
+<div class="line"><span class="lineno">   24</span>       <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>.push_back(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a>-&gt;getWeights()[0]);</div>
+<div class="line"><span class="lineno">   25</span>       <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>.push_back(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">info</a>-&gt;getWeights()[1]);</div>
+<div class="line"><span class="lineno">   26</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   27</span>       <span class="comment">// std::cout &lt;&lt; &quot;no info&quot;&lt;&lt;std::endl;</span></div>
+<div class="line"><span class="lineno">   28</span>       <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>.push_back( 0 );</div>
+<div class="line"><span class="lineno">   29</span>       <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>.push_back( 0 );</div>
+<div class="line"><span class="lineno">   30</span>    }</div>
+<div class="line"><span class="lineno">   31</span>    <span class="comment">// std::cout &lt;&lt; &quot;weights &quot; &lt;&lt; ((fWL)[i])&lt;&lt;&quot; &quot;&lt;&lt;((fWR)[i])&lt;&lt;&quot; &quot;&lt;&lt;((fDetIDs)[i])&lt;&lt;std::endl;</span></div>
+<div class="line"><span class="lineno">   32</span>  }</div>
+<div class="line"><span class="lineno">   33</span>}</div>
+<div class="ttc" id="aclassTrackInfo_html_a2d72ee63e8ff1669c6ab1c5e9eaa1f59"><div class="ttname"><a href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">TrackInfo::fWR</a></div><div class="ttdeci">std::vector&lt; float &gt; fWR</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00042">TrackInfo.h:42</a></div></div>
+<div class="ttc" id="aclassTrackInfo_html_a8ddd21583bef44b92730faa183c5756b"><div class="ttname"><a href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">TrackInfo::fWL</a></div><div class="ttdeci">std::vector&lt; float &gt; fWL</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00041">TrackInfo.h:41</a></div></div>
+<div class="ttc" id="aclassTrackInfo_html_ac8039bee43467064def334da83ba7995"><div class="ttname"><a href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">TrackInfo::fDetIDs</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; fDetIDs</div><div class="ttdoc">array of measurements</div><div class="ttdef"><b>Definition</b> <a href="TrackInfo_8h_source.html#l00040">TrackInfo.h:40</a></div></div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00094">ShipAna.py:94</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a7fa96a16bd8cee0441b6cec4aeda8761"><div class="ttname"><a href="namespacemakeCascade.html#a7fa96a16bd8cee0441b6cec4aeda8761">makeCascade.tp</a></div><div class="ttdeci">tp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00064">makeCascade.py:64</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a0e40cbfde3e8a01d177fa46afeeaf5ca"><div class="ttname"><a href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">run_fixedTarget.info</a></div><div class="ttdeci">str info</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00314">run_fixedTarget.py:314</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,13 +254,13 @@ Protected Attributes</h2></td></tr>
 <p>Copy constructor <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00033">33</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>  : TObject(ti),</div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>),</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>),</div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>)</div>
-<div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00036">36</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>  : TObject(ti),</div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>),</div>
+<div class="line"><span class="lineno">   39</span>    <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>),</div>
+<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>(ti.<a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>)</div>
+<div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -288,8 +288,8 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00041">41</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ }</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8cxx_source.html#l00044">44</a> of file <a class="el" href="TrackInfo_8cxx_source.html">TrackInfo.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -354,9 +354,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00029">29</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
-<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00032">32</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -384,8 +384,8 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Accessors </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00028">28</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>.size();}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00031">31</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#ac8039bee43467064def334da83ba7995">fDetIDs</a>.size();}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -413,8 +413,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00034">34</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00037">37</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -442,8 +442,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00030">30</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00033">33</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#a8ddd21583bef44b92730faa183c5756b">fWL</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -471,8 +471,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00031">31</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00034">34</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTrackInfo.html#a2d72ee63e8ff1669c6ab1c5e9eaa1f59">fWR</a>[<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>];}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -499,7 +499,7 @@ Protected Attributes</h2></td></tr>
 
 <p>array of measurements </p>
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00037">37</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00040">40</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +523,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00038">38</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00041">41</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
 
 </div>
 </div>
@@ -547,7 +547,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00039">39</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackInfo_8h_source.html#l00042">42</a> of file <a class="el" href="TrackInfo_8h_source.html">TrackInfo.h</a>.</p>
 
 </div>
 </div>

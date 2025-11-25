@@ -5,6 +5,7 @@ var files_dup =
     [ "examples", "dir_d28a4824dc47e487b107a5db32ef43c4.html", "dir_d28a4824dc47e487b107a5db32ef43c4" ],
     [ "field", "dir_b53ddcf3c2f78522bad11056100467d8.html", "dir_b53ddcf3c2f78522bad11056100467d8" ],
     [ "geometry", "dir_e3380d2178455503f266746fb14246a5.html", "dir_e3380d2178455503f266746fb14246a5" ],
+    [ "LICENSES", "dir_906962ebe91e1b9fb0ee3193ad487631.html", null ],
     [ "macro", "dir_3b579af105d68949fc87077585f616df.html", "dir_3b579af105d68949fc87077585f616df" ],
     [ "muon", "dir_a0777b3b4da955210ad4fd98e1658d3d.html", "dir_a0777b3b4da955210ad4fd98e1658d3d" ],
     [ "muonDIS", "dir_8361b15a73807c2b11fd6500a4c40777.html", "dir_8361b15a73807c2b11fd6500a4c40777" ],

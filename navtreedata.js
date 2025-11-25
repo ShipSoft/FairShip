@@ -63,7 +63,8 @@ var NAVTREE =
       [ "Docker instructions", "md_README.html#autotoc_md28", null ],
       [ "Troubleshooting information", "md_README.html#autotoc_md29", null ],
       [ "Documentation", "md_README.html#autotoc_md30", null ],
-      [ "Contributing code", "md_README.html#autotoc_md31", null ]
+      [ "License", "md_README.html#autotoc_md31", null ],
+      [ "Contributing code", "md_README.html#autotoc_md32", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -119,22 +120,22 @@ var NAVTREEINDEX =
 "classsplitcal.html#af077f919feb93daf96b733fefb14a4ec",
 "classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717",
 "convertRALMap_8py.html#a5f671477f0f68c291783d295f35fab1d",
-"functions_func_b.html",
-"geomGeant4_8py.html#a0b3a37be8c641c12bb33aa7dabf9d8dc",
-"makeCascade_8py.html#a6740986b9c5adf5151e0cb2001c62333",
-"md_CHANGELOG.html#autotoc_md20",
-"namespaceShipGeo.html#a297e8f3d133236610c284d1c08a447ff",
-"namespaceconvertNoisyMap.html#aea17f538e9c111c7c196c4765c3d029a",
-"namespaceg4Ex__args.html#a43cb6dcda680bf4f89b9939104e450a8",
-"namespacehepunit.html#aa0b20f68fad6c7a8be24b639d4bb0abd",
-"namespacemakeMuonDIS.html#ae6604713bfdf9f671121f945ee4f102f",
-"namespacemergeMbias.html#ac1ba9c5e18f9a604f0c372e588cc6a67",
-"namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4",
-"namespaceshipunit.html#a020b78cceabc2e8d54655a64de9f231d",
-"namespacestudy__thinTarget.html#a87163e57320d77f666a40f70746316b3",
-"run__fixedTarget_8py.html#a6da492a6b2ce007f57e5a1b618fb40e2",
-"shipPatRec_8py.html#ac3ea0f3e8b39de2e6778b74f798568c2",
-"study__GammaConv_8py.html#a0e406399d5b657e9fc43b13fd28cfa09"
+"functions_func_a.html",
+"geomGeant4_8py.html",
+"makeCascade_8py.html#a673c86e792f904671d62107df7f5bd72",
+"md_CHANGELOG.html#autotoc_md2",
+"namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4",
+"namespaceconvertNoisyMap.html",
+"namespaceg4Ex__args.html#a3c631c9f45b0d8fa499702a1edec20c0",
+"namespacehepunit.html#a9d192012f372248b260199d451fd61b7",
+"namespacemakeMuonDIS.html#ae1528563677ebd9f568b17553262cc80",
+"namespacemergeMbias.html#aafa78ee55d809f949885ed280052d9c3",
+"namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79",
+"namespaceship_1_1details.html#acc1c8b1bb1cd5218d0f9c42217adaf73",
+"namespacestudy__thinTarget.html#a7d345676eb518ca2a793ac62d2f5f1aa",
+"run__fixedTarget_8py.html#a6376fe83a15eb0340f4c7576008e11da",
+"shipPatRec_8py.html#ab38d0af63836ca01768aaff4f602ce53",
+"structregression.html#af661759bf72b1d326f90c27cacb26512"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -278,7 +278,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00013">13</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00016">16</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a42d6f9f3e899804d2fdf35e237ded7d9" name="a42d6f9f3e899804d2fdf35e237ded7d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42d6f9f3e899804d2fdf35e237ded7d9">&#9670;&#160;</a></span>splitcal() <span class="overload">[1/3]</span></h2>
@@ -307,27 +307,27 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classsplitcal.html#ab22b93c09bbf38498268560b04fd49ad">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00052">52</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>  : FairDetector(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>),</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>(-1),</div>
-<div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>(-1),</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>(),</div>
-<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>(),</div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>(-1.),</div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>(-1.),</div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>(-1),</div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>(<span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;splitcalPoint&quot;</span>))</div>
-<div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>}</div>
-<div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a></div><div class="ttdeci">@ kSplitCal</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00025">ShipDetectorList.h:25</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a0fd4f766cace0b84f5ca8086b79d4f76"><div class="ttname"><a href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">splitcal::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00107">splitcal.h:107</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a21944f4ca55d8752c445666ad55dd7a8"><div class="ttname"><a href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">splitcal::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00105">splitcal.h:105</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a232518ea0a85e24687831a0ac5350c54"><div class="ttname"><a href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">splitcal::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00104">splitcal.h:104</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a25ba948131f8bca85290eb88c8b376d8"><div class="ttname"><a href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">splitcal::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00108">splitcal.h:108</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a2cab951acf73bdc92959c6e6325a20ad"><div class="ttname"><a href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">splitcal::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00102">splitcal.h:102</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a8f13489fd8bd52fe39db2910465ecf83"><div class="ttname"><a href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">splitcal::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00106">splitcal.h:106</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_abcac5a2dd5708574a18eae34a38d7282"><div class="ttname"><a href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">splitcal::fsplitcalPointCollection</a></div><div class="ttdeci">TClonesArray * fsplitcalPointCollection</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00125">splitcal.h:125</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_add475e8986d444eb1eb6269adea203b0"><div class="ttname"><a href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">splitcal::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00103">splitcal.h:103</a></div></div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00055">55</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>  : FairDetector(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>),</div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>(-1),</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>(-1),</div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>(),</div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>(),</div>
+<div class="line"><span class="lineno">   61</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>(-1.),</div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>(-1.),</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>(-1),</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>(<span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;splitcalPoint&quot;</span>))</div>
+<div class="line"><span class="lineno">   65</span>{</div>
+<div class="line"><span class="lineno">   66</span>}</div>
+<div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a></div><div class="ttdeci">@ kSplitCal</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00028">ShipDetectorList.h:28</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a0fd4f766cace0b84f5ca8086b79d4f76"><div class="ttname"><a href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">splitcal::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00110">splitcal.h:110</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a21944f4ca55d8752c445666ad55dd7a8"><div class="ttname"><a href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">splitcal::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00108">splitcal.h:108</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a232518ea0a85e24687831a0ac5350c54"><div class="ttname"><a href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">splitcal::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00107">splitcal.h:107</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a25ba948131f8bca85290eb88c8b376d8"><div class="ttname"><a href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">splitcal::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00111">splitcal.h:111</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a2cab951acf73bdc92959c6e6325a20ad"><div class="ttname"><a href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">splitcal::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00105">splitcal.h:105</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a8f13489fd8bd52fe39db2910465ecf83"><div class="ttname"><a href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">splitcal::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_abcac5a2dd5708574a18eae34a38d7282"><div class="ttname"><a href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">splitcal::fsplitcalPointCollection</a></div><div class="ttdeci">TClonesArray * fsplitcalPointCollection</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00128">splitcal.h:128</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_add475e8986d444eb1eb6269adea203b0"><div class="ttname"><a href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">splitcal::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00106">splitcal.h:106</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -348,18 +348,18 @@ Private Attributes</h2></td></tr>
 <p>default constructor <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00039">39</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>  : FairDetector(<span class="stringliteral">&quot;splitcal&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>),</div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>(-1),</div>
-<div class="line"><span class="lineno">   42</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>(-1),</div>
-<div class="line"><span class="lineno">   43</span>    <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>(),</div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>(),</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>(-1.),</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>(-1.),</div>
-<div class="line"><span class="lineno">   47</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>(-1),</div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>(<span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;splitcalPoint&quot;</span>))</div>
-<div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00042">42</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>  : FairDetector(<span class="stringliteral">&quot;splitcal&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>),</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>(-1),</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>(-1),</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>(),</div>
+<div class="line"><span class="lineno">   47</span>    <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>(),</div>
+<div class="line"><span class="lineno">   48</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>(-1.),</div>
+<div class="line"><span class="lineno">   49</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>(-1.),</div>
+<div class="line"><span class="lineno">   50</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>(-1),</div>
+<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>(<span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;splitcalPoint&quot;</span>))</div>
+<div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -388,13 +388,13 @@ Private Attributes</h2></td></tr>
 <p>destructor <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00065">65</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>) {</div>
-<div class="line"><span class="lineno">   68</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Delete();</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
-<div class="line"><span class="lineno">   70</span>  }</div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00068">68</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>) {</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Delete();</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -488,15 +488,15 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classsplitcalPoint.html">splitcalPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00456">456</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>{</div>
-<div class="line"><span class="lineno">  461</span>  TClonesArray&amp; clref = *<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
-<div class="line"><span class="lineno">  462</span>  Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  463</span>  <span class="comment">// cout &lt;&lt; &quot;splitcal hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  464</span>  <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classsplitcalPoint.html">splitcalPoint</a>(trackID, detID, pos, mom,</div>
-<div class="line"><span class="lineno">  465</span>         time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  466</span>}</div>
-<div class="ttc" id="aclasssplitcalPoint_html"><div class="ttname"><a href="classsplitcalPoint.html">splitcalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalPoint_8h_source.html#l00010">splitcalPoint.h:11</a></div></div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00459">459</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  463</span>{</div>
+<div class="line"><span class="lineno">  464</span>  TClonesArray&amp; clref = *<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
+<div class="line"><span class="lineno">  465</span>  Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  466</span>  <span class="comment">// cout &lt;&lt; &quot;splitcal hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
+<div class="line"><span class="lineno">  467</span>  <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classsplitcalPoint.html">splitcalPoint</a>(trackID, detID, pos, mom,</div>
+<div class="line"><span class="lineno">  468</span>         time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  469</span>}</div>
+<div class="ttc" id="aclasssplitcalPoint_html"><div class="ttname"><a href="classsplitcalPoint.html">splitcalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalPoint_8h_source.html#l00013">splitcalPoint.h:14</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -523,8 +523,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00094">94</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00097">97</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -551,8 +551,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00091">91</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00094">94</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -574,230 +574,230 @@ Private Attributes</h2></td></tr>
  </p>
 <p>If you are using the standard ASCII input for the geometry just copy this and use it for your detector, otherwise you can implement here you own way of constructing the geometry.</p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00254">254</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  255</span>{</div>
-<div class="line"><span class="lineno">  260</span>    TGeoVolume *<a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>=gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">  261</span>    TGeoVolume *tSplitCal = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SplitCalDetector&quot;</span>);</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><span class="lineno">  264</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;lead&quot;</span>);</div>
-<div class="line"><span class="lineno">  265</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
-<div class="line"><span class="lineno">  266</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;argon&quot;</span>);</div>
-<div class="line"><span class="lineno">  267</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;GEMmixture&quot;</span>);</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>    TGeoMedium *A2 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><span class="lineno">  270</span>    TGeoMedium *A3 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;lead&quot;</span>);</div>
-<div class="line"><span class="lineno">  271</span>    TGeoMedium *A4 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;GEMmixture&quot;</span>);</div>
-<div class="line"><span class="lineno">  272</span>    TGeoMedium *A1 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span>    Double_t zStartSplitCal = <a class="code hl_variable" href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">fZStart</a>;</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00257">257</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  258</span>{</div>
+<div class="line"><span class="lineno">  263</span>    TGeoVolume *<a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>=gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">  264</span>    TGeoVolume *tSplitCal = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;SplitCalDetector&quot;</span>);</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;iron&quot;</span>);</div>
+<div class="line"><span class="lineno">  267</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;lead&quot;</span>);</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
+<div class="line"><span class="lineno">  269</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;argon&quot;</span>);</div>
+<div class="line"><span class="lineno">  270</span>    <a class="code hl_function" href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">InitMedium</a>(<span class="stringliteral">&quot;GEMmixture&quot;</span>);</div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>    TGeoMedium *A2 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
+<div class="line"><span class="lineno">  273</span>    TGeoMedium *A3 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;lead&quot;</span>);</div>
+<div class="line"><span class="lineno">  274</span>    TGeoMedium *A4 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;GEMmixture&quot;</span>);</div>
+<div class="line"><span class="lineno">  275</span>    TGeoMedium *A1 =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
+<div class="line"><span class="lineno">  276</span> </div>
 <div class="line"><span class="lineno">  277</span> </div>
-<div class="line"><span class="lineno">  278</span>    TGeoVolume *newECALfilter_first; <span class="comment">//first layer can have different thickeness</span></div>
-<div class="line"><span class="lineno">  279</span>    TGeoVolume *newECALfilter;</div>
-<div class="line"><span class="lineno">  280</span>    TGeoVolume *newECALdet_gas;</div>
-<div class="line"><span class="lineno">  281</span>    TGeoVolume *stripGivingX;</div>
-<div class="line"><span class="lineno">  282</span>    TGeoVolume *stripGivingY;</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    TGeoVolume *newHCALfilter[100];</div>
-<div class="line"><span class="lineno">  285</span>    TGeoVolume *newHCALdet[100];</div>
-<div class="line"><span class="lineno">  286</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* char_labelHCALfilter[100];</div>
-<div class="line"><span class="lineno">  287</span>    TString labelHCALfilter;</div>
-<div class="line"><span class="lineno">  288</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* char_labelHCALdet[100];</div>
-<div class="line"><span class="lineno">  289</span>    TString labelHCALdet;</div>
-<div class="line"><span class="lineno">  290</span> </div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span>    Double_t z_splitcal=0;</div>
-<div class="line"><span class="lineno">  293</span>    Int_t i_nlayECAL_gas;</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>    Double_t zStartSplitCal = <a class="code hl_variable" href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">fZStart</a>;</div>
+<div class="line"><span class="lineno">  280</span> </div>
+<div class="line"><span class="lineno">  281</span>    TGeoVolume *newECALfilter_first; <span class="comment">//first layer can have different thickeness</span></div>
+<div class="line"><span class="lineno">  282</span>    TGeoVolume *newECALfilter;</div>
+<div class="line"><span class="lineno">  283</span>    TGeoVolume *newECALdet_gas;</div>
+<div class="line"><span class="lineno">  284</span>    TGeoVolume *stripGivingX;</div>
+<div class="line"><span class="lineno">  285</span>    TGeoVolume *stripGivingY;</div>
+<div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span>    TGeoVolume *newHCALfilter[100];</div>
+<div class="line"><span class="lineno">  288</span>    TGeoVolume *newHCALdet[100];</div>
+<div class="line"><span class="lineno">  289</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* char_labelHCALfilter[100];</div>
+<div class="line"><span class="lineno">  290</span>    TString labelHCALfilter;</div>
+<div class="line"><span class="lineno">  291</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* char_labelHCALdet[100];</div>
+<div class="line"><span class="lineno">  292</span>    TString labelHCALdet;</div>
+<div class="line"><span class="lineno">  293</span> </div>
 <div class="line"><span class="lineno">  294</span> </div>
-<div class="line"><span class="lineno">  295</span>    <span class="comment">// logical volume for the absorbing layers</span></div>
-<div class="line"><span class="lineno">  296</span>    <span class="comment">// first absorbing layer can have different thinkens from the others</span></div>
-<div class="line"><span class="lineno">  297</span>    newECALfilter_first = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter_first&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2);</div>
-<div class="line"><span class="lineno">  298</span>    newECALfilter_first-&gt;SetLineColor(kGray);</div>
-<div class="line"><span class="lineno">  299</span>    newECALfilter = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  300</span>    newECALfilter-&gt;SetLineColor(kGray);</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>    stripGivingX = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingX&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  303</span>    stripGivingX-&gt;SetVisibility(kTRUE);</div>
-<div class="line"><span class="lineno">  304</span>    AddSensitiveVolume(stripGivingX);</div>
-<div class="line"><span class="lineno">  305</span>    stripGivingX-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span>    stripGivingY = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingY&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  308</span>    stripGivingY-&gt;SetVisibility(kTRUE);</div>
-<div class="line"><span class="lineno">  309</span>    AddSensitiveVolume(stripGivingY);</div>
-<div class="line"><span class="lineno">  310</span>    stripGivingY-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>    <span class="comment">// logical volume for the high precision sensitive layers</span></div>
-<div class="line"><span class="lineno">  313</span>    newECALdet_gas = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALdet_gas&quot;</span>, A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2);</div>
-<div class="line"><span class="lineno">  314</span>    AddSensitiveVolume(newECALdet_gas);</div>
-<div class="line"><span class="lineno">  315</span>    newECALdet_gas-&gt;SetLineColor(kRed);</div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>    <span class="comment">// now position layer volumes in tSplitCal mother volume</span></div>
-<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">for</span> (Int_t i_nlayECAL=0; i_nlayECAL&lt;<a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>; i_nlayECAL++){</div>
+<div class="line"><span class="lineno">  295</span>    Double_t z_splitcal=0;</div>
+<div class="line"><span class="lineno">  296</span>    Int_t i_nlayECAL_gas;</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span>    <span class="comment">// logical volume for the absorbing layers</span></div>
+<div class="line"><span class="lineno">  299</span>    <span class="comment">// first absorbing layer can have different thinkens from the others</span></div>
+<div class="line"><span class="lineno">  300</span>    newECALfilter_first = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter_first&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2);</div>
+<div class="line"><span class="lineno">  301</span>    newECALfilter_first-&gt;SetLineColor(kGray);</div>
+<div class="line"><span class="lineno">  302</span>    newECALfilter = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  303</span>    newECALfilter-&gt;SetLineColor(kGray);</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>    stripGivingX = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingX&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  306</span>    stripGivingX-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  307</span>    AddSensitiveVolume(stripGivingX);</div>
+<div class="line"><span class="lineno">  308</span>    stripGivingX-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  309</span> </div>
+<div class="line"><span class="lineno">  310</span>    stripGivingY = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingY&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  311</span>    stripGivingY-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  312</span>    AddSensitiveVolume(stripGivingY);</div>
+<div class="line"><span class="lineno">  313</span>    stripGivingY-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  314</span> </div>
+<div class="line"><span class="lineno">  315</span>    <span class="comment">// logical volume for the high precision sensitive layers</span></div>
+<div class="line"><span class="lineno">  316</span>    newECALdet_gas = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALdet_gas&quot;</span>, A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2);</div>
+<div class="line"><span class="lineno">  317</span>    AddSensitiveVolume(newECALdet_gas);</div>
+<div class="line"><span class="lineno">  318</span>    newECALdet_gas-&gt;SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  319</span> </div>
 <div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>      <span class="comment">// position absorber layers</span></div>
-<div class="line"><span class="lineno">  322</span>      <span class="comment">// thinkness of first layer can be different from others</span></div>
-<div class="line"><span class="lineno">  323</span>      <span class="keywordflow">if</span> (i_nlayECAL==0){</div>
-<div class="line"><span class="lineno">  324</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
-<div class="line"><span class="lineno">  325</span>        tSplitCal-&gt;AddNode(newECALfilter_first, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  326</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
-<div class="line"><span class="lineno">  327</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  328</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  329</span>    tSplitCal-&gt;AddNode(newECALfilter, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  330</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  331</span>      }</div>
-<div class="line"><span class="lineno">  332</span>      <span class="comment">// std::cout&lt;&lt; &quot;--- i_nlayECAL*1e5 = &quot;&lt;&lt; i_nlayECAL*1e5 &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>      <span class="keywordflow">if</span>(i_nlayECAL==0) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>; <span class="comment">// space after first layer? set to 0 in the config file? for whar is it for?</span></div>
-<div class="line"><span class="lineno">  335</span>      <span class="keywordflow">if</span>(i_nlayECAL==7) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>;</div>
+<div class="line"><span class="lineno">  321</span>    <span class="comment">// now position layer volumes in tSplitCal mother volume</span></div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">for</span> (Int_t i_nlayECAL=0; i_nlayECAL&lt;<a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>; i_nlayECAL++){</div>
+<div class="line"><span class="lineno">  323</span> </div>
+<div class="line"><span class="lineno">  324</span>      <span class="comment">// position absorber layers</span></div>
+<div class="line"><span class="lineno">  325</span>      <span class="comment">// thinkness of first layer can be different from others</span></div>
+<div class="line"><span class="lineno">  326</span>      <span class="keywordflow">if</span> (i_nlayECAL==0){</div>
+<div class="line"><span class="lineno">  327</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
+<div class="line"><span class="lineno">  328</span>        tSplitCal-&gt;AddNode(newECALfilter_first, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  329</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
+<div class="line"><span class="lineno">  330</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  331</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  332</span>    tSplitCal-&gt;AddNode(newECALfilter, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  333</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  334</span>      }</div>
+<div class="line"><span class="lineno">  335</span>      <span class="comment">// std::cout&lt;&lt; &quot;--- i_nlayECAL*1e5 = &quot;&lt;&lt; i_nlayECAL*1e5 &lt;&lt; std::endl;</span></div>
 <div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>      <span class="comment">// position high precision sensitive layers</span></div>
-<div class="line"><span class="lineno">  338</span>      i_nlayECAL_gas=-1000;</div>
-<div class="line"><span class="lineno">  339</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
-<div class="line"><span class="lineno">  340</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  341</span>    <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=0;</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> ){</div>
-<div class="line"><span class="lineno">  343</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=3;</div>
-<div class="line"><span class="lineno">  344</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=1;</div>
-<div class="line"><span class="lineno">  345</span>    }</div>
-<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
-<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=4;</div>
-<div class="line"><span class="lineno">  348</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=2;</div>
-<div class="line"><span class="lineno">  349</span>    }</div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>    tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  352</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2){</div>
-<div class="line"><span class="lineno">  354</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>;</div>
-<div class="line"><span class="lineno">  355</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  356</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=1;</div>
-<div class="line"><span class="lineno">  357</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a>) i_nlayECAL_gas=3;</div>
-<div class="line"><span class="lineno">  358</span>      tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  359</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  360</span>    }</div>
-<div class="line"><span class="lineno">  361</span>    <span class="comment">// std::cout&lt;&lt; &quot;--- index high precision layer = &quot;&lt;&lt; 1e8+(i_nlayECAL+1)*1e5 &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  362</span>      }</div>
-<div class="line"><span class="lineno">  363</span>      <span class="keywordflow">else</span>{</div>
-<div class="line"><span class="lineno">  364</span>    <span class="comment">// position sensitive layers</span></div>
-<div class="line"><span class="lineno">  365</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">if</span> (i_nlayECAL%2==0) {</div>
-<div class="line"><span class="lineno">  367</span>      <span class="comment">//strips giving x information</span></div>
-<div class="line"><span class="lineno">  368</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
-<div class="line"><span class="lineno">  369</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
-<div class="line"><span class="lineno">  370</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
-<div class="line"><span class="lineno">  371</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
-<div class="line"><span class="lineno">  372</span>        <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*mx + j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (my+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
-<div class="line"><span class="lineno">  374</span>        tSplitCal-&gt;AddNode(stripGivingX, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
-<div class="line"><span class="lineno">  375</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  376</span>          }<span class="comment">//end loop on strips</span></div>
-<div class="line"><span class="lineno">  377</span>        }<span class="comment">//end loop on modules in y</span></div>
-<div class="line"><span class="lineno">  378</span>      }<span class="comment">//end loop on modules in x</span></div>
-<div class="line"><span class="lineno">  379</span>    }<span class="comment">//end layer stripped in X</span></div>
-<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  381</span>      <span class="comment">//strips giving y information</span></div>
-<div class="line"><span class="lineno">  382</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
-<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
-<div class="line"><span class="lineno">  384</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
-<div class="line"><span class="lineno">  386</span>                <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (mx+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
-<div class="line"><span class="lineno">  387</span>                <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*my+ j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
-<div class="line"><span class="lineno">  388</span>                tSplitCal-&gt;AddNode(stripGivingY, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
-<div class="line"><span class="lineno">  389</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  390</span>          }<span class="comment">//end loop on strips</span></div>
-<div class="line"><span class="lineno">  391</span>        }<span class="comment">//end loop on modules in y</span></div>
-<div class="line"><span class="lineno">  392</span>      }<span class="comment">//end loop on modules in x</span></div>
-<div class="line"><span class="lineno">  393</span>    }<span class="comment">//end layer stripped in Y</span></div>
-<div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  396</span>      }<span class="comment">// end loop on sensitive scintillator layers</span></div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">if</span>(i_nlayECAL==0) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>; <span class="comment">// space after first layer? set to 0 in the config file? for whar is it for?</span></div>
+<div class="line"><span class="lineno">  338</span>      <span class="keywordflow">if</span>(i_nlayECAL==7) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>;</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>      <span class="comment">// position high precision sensitive layers</span></div>
+<div class="line"><span class="lineno">  341</span>      i_nlayECAL_gas=-1000;</div>
+<div class="line"><span class="lineno">  342</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
+<div class="line"><span class="lineno">  343</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=0;</div>
+<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> ){</div>
+<div class="line"><span class="lineno">  346</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=3;</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=1;</div>
+<div class="line"><span class="lineno">  348</span>    }</div>
+<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
+<div class="line"><span class="lineno">  350</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=4;</div>
+<div class="line"><span class="lineno">  351</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=2;</div>
+<div class="line"><span class="lineno">  352</span>    }</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>    tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  355</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2){</div>
+<div class="line"><span class="lineno">  357</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>;</div>
+<div class="line"><span class="lineno">  358</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  359</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=1;</div>
+<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a>) i_nlayECAL_gas=3;</div>
+<div class="line"><span class="lineno">  361</span>      tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  362</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  363</span>    }</div>
+<div class="line"><span class="lineno">  364</span>    <span class="comment">// std::cout&lt;&lt; &quot;--- index high precision layer = &quot;&lt;&lt; 1e8+(i_nlayECAL+1)*1e5 &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  365</span>      }</div>
+<div class="line"><span class="lineno">  366</span>      <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">  367</span>    <span class="comment">// position sensitive layers</span></div>
+<div class="line"><span class="lineno">  368</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> (i_nlayECAL%2==0) {</div>
+<div class="line"><span class="lineno">  370</span>      <span class="comment">//strips giving x information</span></div>
+<div class="line"><span class="lineno">  371</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
+<div class="line"><span class="lineno">  372</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
+<div class="line"><span class="lineno">  373</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
+<div class="line"><span class="lineno">  374</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
+<div class="line"><span class="lineno">  375</span>        <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*mx + j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
+<div class="line"><span class="lineno">  376</span>        <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (my+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
+<div class="line"><span class="lineno">  377</span>        tSplitCal-&gt;AddNode(stripGivingX, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
+<div class="line"><span class="lineno">  378</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  379</span>          }<span class="comment">//end loop on strips</span></div>
+<div class="line"><span class="lineno">  380</span>        }<span class="comment">//end loop on modules in y</span></div>
+<div class="line"><span class="lineno">  381</span>      }<span class="comment">//end loop on modules in x</span></div>
+<div class="line"><span class="lineno">  382</span>    }<span class="comment">//end layer stripped in X</span></div>
+<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  384</span>      <span class="comment">//strips giving y information</span></div>
+<div class="line"><span class="lineno">  385</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
+<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
+<div class="line"><span class="lineno">  387</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
+<div class="line"><span class="lineno">  388</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
+<div class="line"><span class="lineno">  389</span>                <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (mx+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
+<div class="line"><span class="lineno">  390</span>                <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*my+ j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
+<div class="line"><span class="lineno">  391</span>                tSplitCal-&gt;AddNode(stripGivingY, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
+<div class="line"><span class="lineno">  392</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  393</span>          }<span class="comment">//end loop on strips</span></div>
+<div class="line"><span class="lineno">  394</span>        }<span class="comment">//end loop on modules in y</span></div>
+<div class="line"><span class="lineno">  395</span>      }<span class="comment">//end loop on modules in x</span></div>
+<div class="line"><span class="lineno">  396</span>    }<span class="comment">//end layer stripped in Y</span></div>
 <div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>    } <span class="comment">//end loop in ecal layers</span></div>
-<div class="line"><span class="lineno">  399</span> </div>
-<div class="line"><span class="lineno">  400</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;1; i_nlayHCAL++){</div>
-<div class="line"><span class="lineno">  401</span>      labelHCALfilter=<span class="stringliteral">&quot;HCALfilter_&quot;</span>;</div>
-<div class="line"><span class="lineno">  402</span>      labelHCALfilter+=i_nlayHCAL;</div>
-<div class="line"><span class="lineno">  403</span>      char_labelHCALfilter[i_nlayHCAL]=labelHCALfilter;</div>
-<div class="line"><span class="lineno">  404</span>      labelHCALdet=<span class="stringliteral">&quot;HCAL_det&quot;</span>;</div>
-<div class="line"><span class="lineno">  405</span>      labelHCALdet+=i_nlayHCAL;</div>
-<div class="line"><span class="lineno">  406</span>      char_labelHCALdet[i_nlayHCAL]=labelHCALdet;</div>
-<div class="line"><span class="lineno">  407</span>      newHCALfilter[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  408</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>){</div>
-<div class="line"><span class="lineno">  409</span>    newHCALdet[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALdet[i_nlayHCAL], A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  410</span> </div>
-<div class="line"><span class="lineno">  411</span>    AddSensitiveVolume(newHCALdet[i_nlayHCAL]);</div>
-<div class="line"><span class="lineno">  412</span> </div>
-<div class="line"><span class="lineno">  413</span>    newHCALdet[i_nlayHCAL]-&gt;SetLineColor(kRed);</div>
-<div class="line"><span class="lineno">  414</span>      }</div>
-<div class="line"><span class="lineno">  415</span>      newHCALfilter[i_nlayHCAL]-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  416</span>    }</div>
-<div class="line"><span class="lineno">  417</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;<a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>; i_nlayHCAL++){</div>
-<div class="line"><span class="lineno">  418</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  419</span>      tSplitCal-&gt;AddNode(newHCALfilter[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  420</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  421</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
-<div class="line"><span class="lineno">  422</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  423</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>) tSplitCal-&gt;AddNode(newHCALdet[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  424</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  425</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span> </div>
-<div class="line"><span class="lineno">  428</span>    }</div>
+<div class="line"><span class="lineno">  398</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  399</span>      }<span class="comment">// end loop on sensitive scintillator layers</span></div>
+<div class="line"><span class="lineno">  400</span> </div>
+<div class="line"><span class="lineno">  401</span>    } <span class="comment">//end loop in ecal layers</span></div>
+<div class="line"><span class="lineno">  402</span> </div>
+<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;1; i_nlayHCAL++){</div>
+<div class="line"><span class="lineno">  404</span>      labelHCALfilter=<span class="stringliteral">&quot;HCALfilter_&quot;</span>;</div>
+<div class="line"><span class="lineno">  405</span>      labelHCALfilter+=i_nlayHCAL;</div>
+<div class="line"><span class="lineno">  406</span>      char_labelHCALfilter[i_nlayHCAL]=labelHCALfilter;</div>
+<div class="line"><span class="lineno">  407</span>      labelHCALdet=<span class="stringliteral">&quot;HCAL_det&quot;</span>;</div>
+<div class="line"><span class="lineno">  408</span>      labelHCALdet+=i_nlayHCAL;</div>
+<div class="line"><span class="lineno">  409</span>      char_labelHCALdet[i_nlayHCAL]=labelHCALdet;</div>
+<div class="line"><span class="lineno">  410</span>      newHCALfilter[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  411</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>){</div>
+<div class="line"><span class="lineno">  412</span>    newHCALdet[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALdet[i_nlayHCAL], A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  413</span> </div>
+<div class="line"><span class="lineno">  414</span>    AddSensitiveVolume(newHCALdet[i_nlayHCAL]);</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>    newHCALdet[i_nlayHCAL]-&gt;SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  417</span>      }</div>
+<div class="line"><span class="lineno">  418</span>      newHCALfilter[i_nlayHCAL]-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  419</span>    }</div>
+<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;<a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>; i_nlayHCAL++){</div>
+<div class="line"><span class="lineno">  421</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  422</span>      tSplitCal-&gt;AddNode(newHCALfilter[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  423</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  424</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
+<div class="line"><span class="lineno">  425</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>) tSplitCal-&gt;AddNode(newHCALdet[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  427</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  428</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
 <div class="line"><span class="lineno">  429</span> </div>
 <div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>    <span class="comment">//finish assembly and position</span></div>
-<div class="line"><span class="lineno">  433</span>    TGeoShapeAssembly* asmb = <span class="keyword">dynamic_cast&lt;</span>TGeoShapeAssembly*<span class="keyword">&gt;</span>(tSplitCal-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  434</span>    Double_t totLength = asmb-&gt;GetDZ();</div>
-<div class="line"><span class="lineno">  435</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tSplitCal, 1, <span class="keyword">new</span> TGeoTranslation(0, 0,zStartSplitCal+totLength));</div>
-<div class="line"><span class="lineno">  436</span> </div>
-<div class="line"><span class="lineno">  437</span> </div>
-<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  431</span>    }</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span> </div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    <span class="comment">//finish assembly and position</span></div>
+<div class="line"><span class="lineno">  436</span>    TGeoShapeAssembly* asmb = <span class="keyword">dynamic_cast&lt;</span>TGeoShapeAssembly*<span class="keyword">&gt;</span>(tSplitCal-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  437</span>    Double_t totLength = asmb-&gt;GetDZ();</div>
+<div class="line"><span class="lineno">  438</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tSplitCal, 1, <span class="keyword">new</span> TGeoTranslation(0, 0,zStartSplitCal+totLength));</div>
 <div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span>    <span class="comment">// //gROOT-&gt;SetBatch(true);</span></div>
+<div class="line"><span class="lineno">  440</span> </div>
 <div class="line"><span class="lineno">  441</span> </div>
-<div class="line"><span class="lineno">  442</span>    <span class="comment">//    TCanvas* c1 = new TCanvas(&quot;splitcalCanvas&quot;, &quot;&quot;, 800, 800);</span></div>
-<div class="line"><span class="lineno">  443</span>    <span class="comment">//    c1-&gt;cd();</span></div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>    <span class="comment">// //gROOT-&gt;SetBatch(true);</span></div>
 <div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">//    TView3D* tview = (TView3D*) TView::CreateView();</span></div>
-<div class="line"><span class="lineno">  446</span>    <span class="comment">//    tview-&gt;SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);</span></div>
-<div class="line"><span class="lineno">  447</span>    <span class="comment">//    tview-&gt;RotateView(0, 90, c1);</span></div>
-<div class="line"><span class="lineno">  448</span> </div>
-<div class="line"><span class="lineno">  449</span>    <span class="comment">//    tSplitCal-&gt;Draw(&quot;ogle&quot;);</span></div>
-<div class="line"><span class="lineno">  450</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.eps&quot;));</span></div>
-<div class="line"><span class="lineno">  451</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.pdf&quot;));</span></div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span> </div>
-<div class="line"><span class="lineno">  454</span>}</div>
-<div class="ttc" id="aclasssplitcal_html_a0a52b109d3101a37adf69374e1ff7c79"><div class="ttname"><a href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">splitcal::fFilterHCALThickness</a></div><div class="ttdeci">Double_t fFilterHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a10e73539932d9757f648a6a8a6b49252"><div class="ttname"><a href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">splitcal::fnum_precision_layers</a></div><div class="ttdeci">Double_t fnum_precision_layers</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a22b1ca6ecccf01f853476b733e403f89"><div class="ttname"><a href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">splitcal::fActiveHCALThickness</a></div><div class="ttdeci">Double_t fActiveHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a2d1e53e1900fe1d7350527c821f029d4"><div class="ttname"><a href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">splitcal::fNModulesInY</a></div><div class="ttdeci">Int_t fNModulesInY</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00119">splitcal.h:119</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a39f8004ff40db02dfe5f37e34bdbdc46"><div class="ttname"><a href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">splitcal::fFilterECALThickness_first</a></div><div class="ttdeci">Double_t fFilterECALThickness_first</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a3baab192e3fc15f0d160e1f975dad547"><div class="ttname"><a href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">splitcal::fActiveECALThickness</a></div><div class="ttdeci">Double_t fActiveECALThickness</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a4d550ce25d29eab8f3b862f6a354ff6c"><div class="ttname"><a href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">splitcal::fthird_precision_layer</a></div><div class="ttdeci">Double_t fthird_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a50bacc663be1e50ac41b8da45ced33d5"><div class="ttname"><a href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">splitcal::fActiveHCAL</a></div><div class="ttdeci">Double_t fActiveHCAL</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00113">splitcal.h:113</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a5d89c92d6b0c4b72e8de015b78b4e5f5"><div class="ttname"><a href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">splitcal::fNStripsPerModule</a></div><div class="ttdeci">Int_t fNStripsPerModule</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00120">splitcal.h:120</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a8ad1e152576510dc3dcd5500d9bdcfc2"><div class="ttname"><a href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">splitcal::fNModulesInX</a></div><div class="ttdeci">Int_t fNModulesInX</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00119">splitcal.h:119</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a8bb277b6b9934291ff7f167b199c617e"><div class="ttname"><a href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">splitcal::fActiveECAL_gas_gap</a></div><div class="ttdeci">Double_t fActiveECAL_gas_gap</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00111">splitcal.h:111</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a8cef7012d60e7ac5533fc340a808051b"><div class="ttname"><a href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">splitcal::fBigGap</a></div><div class="ttdeci">Double_t fBigGap</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00115">splitcal.h:115</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a9a6ed695dd0f86bead82ab820acc4a94"><div class="ttname"><a href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">splitcal::fActiveECAL_gas_Thickness</a></div><div class="ttdeci">Double_t fActiveECAL_gas_Thickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00111">splitcal.h:111</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_aa13f5ddd726364fc8f6b7654b36adaed"><div class="ttname"><a href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">splitcal::fStripHalfLength</a></div><div class="ttdeci">Double_t fStripHalfLength</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_aaa3deb10d20b116daa1d99b5a5ad7c54"><div class="ttname"><a href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">splitcal::fEmpty</a></div><div class="ttdeci">Double_t fEmpty</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00115">splitcal.h:115</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_aadfc3430c227683d07fa9ce748d2e7ac"><div class="ttname"><a href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">splitcal::fZStart</a></div><div class="ttdeci">Double_t fZStart</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00114">splitcal.h:114</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_aae35906587cc2eb7e76f277038195fde"><div class="ttname"><a href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">splitcal::fYMax</a></div><div class="ttdeci">Double_t fYMax</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00117">splitcal.h:117</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_aaf7a62ff903e68d8cf4b0b78551d4a7b"><div class="ttname"><a href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">splitcal::fnHCALSamplings</a></div><div class="ttdeci">Int_t fnHCALSamplings</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_ab60249cb3e04631eac6495be02224fc6"><div class="ttname"><a href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">splitcal::fXMax</a></div><div class="ttdeci">Double_t fXMax</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00116">splitcal.h:116</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_abe9f63a8c4838a38bdcdbe00b3a3eb07"><div class="ttname"><a href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">splitcal::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00080">splitcal.cxx:80</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_ac6c8d7bd252d1cf822f4dc8b2c534198"><div class="ttname"><a href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">splitcal::fsecond_precision_layer</a></div><div class="ttdeci">Double_t fsecond_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_ac9dfe52c8af80a6f236ebe6a76842d3e"><div class="ttname"><a href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">splitcal::ffirst_precision_layer</a></div><div class="ttdeci">Double_t ffirst_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_acd2a5d524e38ed7c5991b247964d5577"><div class="ttname"><a href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">splitcal::fStripHalfWidth</a></div><div class="ttdeci">Double_t fStripHalfWidth</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_acdba7df8698530053fec9ff8839f8b67"><div class="ttname"><a href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">splitcal::fFilterECALThickness</a></div><div class="ttdeci">Double_t fFilterECALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00109">splitcal.h:109</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_ad0b54248e85ece2713c13c730530a6e1"><div class="ttname"><a href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">splitcal::fnECALSamplings</a></div><div class="ttdeci">Int_t fnECALSamplings</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01285">eventDisplay.py:1285</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00303">make_nTuple_SBT.py:303</a></div></div>
+<div class="line"><span class="lineno">  445</span>    <span class="comment">//    TCanvas* c1 = new TCanvas(&quot;splitcalCanvas&quot;, &quot;&quot;, 800, 800);</span></div>
+<div class="line"><span class="lineno">  446</span>    <span class="comment">//    c1-&gt;cd();</span></div>
+<div class="line"><span class="lineno">  447</span> </div>
+<div class="line"><span class="lineno">  448</span>    <span class="comment">//    TView3D* tview = (TView3D*) TView::CreateView();</span></div>
+<div class="line"><span class="lineno">  449</span>    <span class="comment">//    tview-&gt;SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);</span></div>
+<div class="line"><span class="lineno">  450</span>    <span class="comment">//    tview-&gt;RotateView(0, 90, c1);</span></div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>    <span class="comment">//    tSplitCal-&gt;Draw(&quot;ogle&quot;);</span></div>
+<div class="line"><span class="lineno">  453</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.eps&quot;));</span></div>
+<div class="line"><span class="lineno">  454</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.pdf&quot;));</span></div>
+<div class="line"><span class="lineno">  455</span> </div>
+<div class="line"><span class="lineno">  456</span> </div>
+<div class="line"><span class="lineno">  457</span>}</div>
+<div class="ttc" id="aclasssplitcal_html_a0a52b109d3101a37adf69374e1ff7c79"><div class="ttname"><a href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">splitcal::fFilterHCALThickness</a></div><div class="ttdeci">Double_t fFilterHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a10e73539932d9757f648a6a8a6b49252"><div class="ttname"><a href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">splitcal::fnum_precision_layers</a></div><div class="ttdeci">Double_t fnum_precision_layers</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a22b1ca6ecccf01f853476b733e403f89"><div class="ttname"><a href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">splitcal::fActiveHCALThickness</a></div><div class="ttdeci">Double_t fActiveHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a2d1e53e1900fe1d7350527c821f029d4"><div class="ttname"><a href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">splitcal::fNModulesInY</a></div><div class="ttdeci">Int_t fNModulesInY</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00122">splitcal.h:122</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a39f8004ff40db02dfe5f37e34bdbdc46"><div class="ttname"><a href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">splitcal::fFilterECALThickness_first</a></div><div class="ttdeci">Double_t fFilterECALThickness_first</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a3baab192e3fc15f0d160e1f975dad547"><div class="ttname"><a href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">splitcal::fActiveECALThickness</a></div><div class="ttdeci">Double_t fActiveECALThickness</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a4d550ce25d29eab8f3b862f6a354ff6c"><div class="ttname"><a href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">splitcal::fthird_precision_layer</a></div><div class="ttdeci">Double_t fthird_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a50bacc663be1e50ac41b8da45ced33d5"><div class="ttname"><a href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">splitcal::fActiveHCAL</a></div><div class="ttdeci">Double_t fActiveHCAL</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00116">splitcal.h:116</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a5d89c92d6b0c4b72e8de015b78b4e5f5"><div class="ttname"><a href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">splitcal::fNStripsPerModule</a></div><div class="ttdeci">Int_t fNStripsPerModule</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00123">splitcal.h:123</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a8ad1e152576510dc3dcd5500d9bdcfc2"><div class="ttname"><a href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">splitcal::fNModulesInX</a></div><div class="ttdeci">Int_t fNModulesInX</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00122">splitcal.h:122</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a8bb277b6b9934291ff7f167b199c617e"><div class="ttname"><a href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">splitcal::fActiveECAL_gas_gap</a></div><div class="ttdeci">Double_t fActiveECAL_gas_gap</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00114">splitcal.h:114</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a8cef7012d60e7ac5533fc340a808051b"><div class="ttname"><a href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">splitcal::fBigGap</a></div><div class="ttdeci">Double_t fBigGap</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a9a6ed695dd0f86bead82ab820acc4a94"><div class="ttname"><a href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">splitcal::fActiveECAL_gas_Thickness</a></div><div class="ttdeci">Double_t fActiveECAL_gas_Thickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00114">splitcal.h:114</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_aa13f5ddd726364fc8f6b7654b36adaed"><div class="ttname"><a href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">splitcal::fStripHalfLength</a></div><div class="ttdeci">Double_t fStripHalfLength</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00124">splitcal.h:124</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_aaa3deb10d20b116daa1d99b5a5ad7c54"><div class="ttname"><a href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">splitcal::fEmpty</a></div><div class="ttdeci">Double_t fEmpty</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00118">splitcal.h:118</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_aadfc3430c227683d07fa9ce748d2e7ac"><div class="ttname"><a href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">splitcal::fZStart</a></div><div class="ttdeci">Double_t fZStart</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00117">splitcal.h:117</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_aae35906587cc2eb7e76f277038195fde"><div class="ttname"><a href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">splitcal::fYMax</a></div><div class="ttdeci">Double_t fYMax</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00120">splitcal.h:120</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_aaf7a62ff903e68d8cf4b0b78551d4a7b"><div class="ttname"><a href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">splitcal::fnHCALSamplings</a></div><div class="ttdeci">Int_t fnHCALSamplings</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00115">splitcal.h:115</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_ab60249cb3e04631eac6495be02224fc6"><div class="ttname"><a href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">splitcal::fXMax</a></div><div class="ttdeci">Double_t fXMax</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00119">splitcal.h:119</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_abe9f63a8c4838a38bdcdbe00b3a3eb07"><div class="ttname"><a href="classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07">splitcal::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00083">splitcal.cxx:83</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_ac6c8d7bd252d1cf822f4dc8b2c534198"><div class="ttname"><a href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">splitcal::fsecond_precision_layer</a></div><div class="ttdeci">Double_t fsecond_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_ac9dfe52c8af80a6f236ebe6a76842d3e"><div class="ttname"><a href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">splitcal::ffirst_precision_layer</a></div><div class="ttdeci">Double_t ffirst_precision_layer</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_acd2a5d524e38ed7c5991b247964d5577"><div class="ttname"><a href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">splitcal::fStripHalfWidth</a></div><div class="ttdeci">Double_t fStripHalfWidth</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00124">splitcal.h:124</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_acdba7df8698530053fec9ff8839f8b67"><div class="ttname"><a href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">splitcal::fFilterECALThickness</a></div><div class="ttdeci">Double_t fFilterECALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_ad0b54248e85ece2713c13c730530a6e1"><div class="ttname"><a href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">splitcal::fnECALSamplings</a></div><div class="ttdeci">Int_t fnECALSamplings</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00115">splitcal.h:115</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01288">eventDisplay.py:1288</a></div></div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00306">make_nTuple_SBT.py:306</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -842,8 +842,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The following methods can be implemented if you need to make any optional action in your detector during the transport. </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00085">85</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>                                             {;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00088">88</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>                                             {;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -870,12 +870,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00149">149</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>  <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00152">152</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
+<div class="line"><span class="lineno">  154</span> </div>
+<div class="line"><span class="lineno">  155</span>  <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -902,8 +902,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00089">89</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00092">92</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -930,8 +930,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00090">90</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   90</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00093">93</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -960,11 +960,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00173">173</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>; }</div>
-<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
-<div class="line"><span class="lineno">  177</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00176">176</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span>{</div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>; }</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
+<div class="line"><span class="lineno">  180</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -993,12 +993,12 @@ Private Attributes</h2></td></tr>
 <p>Initialization of the detector is done here <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00073">73</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  FairDetector::Initialize();</div>
-<div class="line"><span class="lineno">   76</span><span class="comment">//  FairRuntimeDb* rtdb= FairRun::Instance()-&gt;GetRuntimeDb();</span></div>
-<div class="line"><span class="lineno">   77</span><span class="comment">//  splitcalGeoPar* par=(splitcalGeoPar*)(rtdb-&gt;getContainer(&quot;splitcalGeoPar&quot;));</span></div>
-<div class="line"><span class="lineno">   78</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00076">76</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{</div>
+<div class="line"><span class="lineno">   78</span>  FairDetector::Initialize();</div>
+<div class="line"><span class="lineno">   79</span><span class="comment">//  FairRuntimeDb* rtdb= FairRun::Instance()-&gt;GetRuntimeDb();</span></div>
+<div class="line"><span class="lineno">   80</span><span class="comment">//  splitcalGeoPar* par=(splitcalGeoPar*)(rtdb-&gt;getContainer(&quot;splitcalGeoPar&quot;));</span></div>
+<div class="line"><span class="lineno">   81</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1026,26 +1026,26 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00080">80</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
-<div class="line"><span class="lineno">   82</span>   <span class="keyword">static</span> FairGeoLoader *geoLoad=FairGeoLoader::Instance();</div>
-<div class="line"><span class="lineno">   83</span>   <span class="keyword">static</span> FairGeoInterface *geoFace=geoLoad-&gt;getGeoInterface();</div>
-<div class="line"><span class="lineno">   84</span>   <span class="keyword">static</span> FairGeoMedia *media=geoFace-&gt;getMedia();</div>
-<div class="line"><span class="lineno">   85</span>   <span class="keyword">static</span> FairGeoBuilder *geoBuild=geoLoad-&gt;getGeoBuilder();</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>   FairGeoMedium *ShipMedium=media-&gt;getMedium(name);</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>   <span class="keywordflow">if</span> (!ShipMedium)</div>
-<div class="line"><span class="lineno">   90</span>   {</div>
-<div class="line"><span class="lineno">   91</span>     Fatal(<span class="stringliteral">&quot;InitMedium&quot;</span>,<span class="stringliteral">&quot;Material %s not defined in media file.&quot;</span>, name);</div>
-<div class="line"><span class="lineno">   92</span>     <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">   93</span>   }</div>
-<div class="line"><span class="lineno">   94</span>   TGeoMedium* medium=gGeoManager-&gt;GetMedium(name);</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">if</span> (medium!=NULL)</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
-<div class="line"><span class="lineno">   99</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00083">83</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{</div>
+<div class="line"><span class="lineno">   85</span>   <span class="keyword">static</span> FairGeoLoader *geoLoad=FairGeoLoader::Instance();</div>
+<div class="line"><span class="lineno">   86</span>   <span class="keyword">static</span> FairGeoInterface *geoFace=geoLoad-&gt;getGeoInterface();</div>
+<div class="line"><span class="lineno">   87</span>   <span class="keyword">static</span> FairGeoMedia *media=geoFace-&gt;getMedia();</div>
+<div class="line"><span class="lineno">   88</span>   <span class="keyword">static</span> FairGeoBuilder *geoBuild=geoLoad-&gt;getGeoBuilder();</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>   FairGeoMedium *ShipMedium=media-&gt;getMedium(name);</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>   <span class="keywordflow">if</span> (!ShipMedium)</div>
+<div class="line"><span class="lineno">   93</span>   {</div>
+<div class="line"><span class="lineno">   94</span>     Fatal(<span class="stringliteral">&quot;InitMedium&quot;</span>,<span class="stringliteral">&quot;Material %s not defined in media file.&quot;</span>, name);</div>
+<div class="line"><span class="lineno">   95</span>     <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">   96</span>   }</div>
+<div class="line"><span class="lineno">   97</span>   TGeoMedium* medium=gGeoManager-&gt;GetMedium(name);</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (medium!=NULL)</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
+<div class="line"><span class="lineno">  102</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1098,8 +1098,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00092">92</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00095">95</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1126,8 +1126,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00093">93</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00096">96</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1158,58 +1158,58 @@ Private Attributes</h2></td></tr>
 <p>This method is called from the MC stepping</p>
 <p>fVolumeID = gGeoManager-&gt;FindVolumeFast(vol-&gt;GetName())-&gt;GetNumber();</p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00100">100</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
-<div class="line"><span class="lineno">  103</span>  <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering() ) {</div>
-<div class="line"><span class="lineno">  105</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>  = 0.;</div>
-<div class="line"><span class="lineno">  106</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>   = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  107</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  108</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>);</div>
-<div class="line"><span class="lineno">  109</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>);</div>
-<div class="line"><span class="lineno">  110</span>  }</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  113</span>  <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00103">103</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
+<div class="line"><span class="lineno">  106</span>  <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering() ) {</div>
+<div class="line"><span class="lineno">  108</span>    <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>  = 0.;</div>
+<div class="line"><span class="lineno">  109</span>    <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>   = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  110</span>    <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  111</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>);</div>
+<div class="line"><span class="lineno">  112</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>);</div>
+<div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="comment">// Create splitcalPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting()    ||</div>
-<div class="line"><span class="lineno">  117</span>       <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop()       ||</div>
-<div class="line"><span class="lineno">  118</span>       <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()   ) {</div>
-<div class="line"><span class="lineno">  119</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>  = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  120</span>    <span class="comment">//fVolumeID = vol-&gt;getMCid();</span></div>
-<div class="line"><span class="lineno">  121</span>    <span class="comment">//cout &lt;&lt; &quot;splitcal proc &quot;&lt;&lt; fVolumeID&lt;&lt;&quot; &quot;&lt;&lt;vol-&gt;GetName()&lt;&lt;&quot; &quot;&lt;&lt;vol-&gt;getVolumeId() &lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  122</span>    <span class="comment">//   cout &lt;&lt; &quot; &quot;&lt;&lt; gGeoManager-&gt;FindVolumeFast(vol-&gt;GetName())-&gt;GetNumber()&lt;&lt; &quot;  &quot; &lt;&lt; gMC-&gt;CurrentVolID() &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  124</span>    <span class="comment">//VolumeID = vol-&gt;getMCid();</span></div>
-<div class="line"><span class="lineno">  125</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>=0;</div>
-<div class="line"><span class="lineno">  126</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(detID);</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>    <span class="comment">//if (fVolumeID == detID) {</span></div>
-<div class="line"><span class="lineno">  129</span>    <span class="comment">//  return kTRUE; }</span></div>
-<div class="line"><span class="lineno">  130</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  131</span>    <span class="comment">//    cout &lt;&lt; &quot; &quot;&lt;&lt;fVolumeID &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
-<div class="line"><span class="lineno">  133</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  134</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  135</span>    <span class="comment">//    if(fVolumeID&lt;405 &amp;&amp; fTime&lt;70){</span></div>
-<div class="line"><span class="lineno">  136</span>    <a class="code hl_function" href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">AddHit</a>(<a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>, <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>, TVector3(<a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.X(),  <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.Y(),  <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.Z()),</div>
-<div class="line"><span class="lineno">  137</span>           TVector3(<a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Px(), <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Py(), <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Pz()), <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>, <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>,</div>
-<div class="line"><span class="lineno">  138</span>           <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>,pdgCode);</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>    <span class="comment">// Increment number of splitcal det points in TParticle</span></div>
-<div class="line"><span class="lineno">  141</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  142</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>);</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>  }</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  147</span>}</div>
-<div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a2472a223fb4a41eb2550780d6a6de6c5"><div class="ttname"><a href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">splitcal::AddHit</a></div><div class="ttdeci">splitcalPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00456">splitcal.cxx:456</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00249">makeCascade.py:249</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00252">make_nTuple_SBT.py:252</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00270">run_fixedTarget.py:270</a></div></div>
+<div class="line"><span class="lineno">  115</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span>  <span class="comment">// Create splitcalPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting()    ||</div>
+<div class="line"><span class="lineno">  120</span>       <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop()       ||</div>
+<div class="line"><span class="lineno">  121</span>       <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()   ) {</div>
+<div class="line"><span class="lineno">  122</span>    <a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>  = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  123</span>    <span class="comment">//fVolumeID = vol-&gt;getMCid();</span></div>
+<div class="line"><span class="lineno">  124</span>    <span class="comment">//cout &lt;&lt; &quot;splitcal proc &quot;&lt;&lt; fVolumeID&lt;&lt;&quot; &quot;&lt;&lt;vol-&gt;GetName()&lt;&lt;&quot; &quot;&lt;&lt;vol-&gt;getVolumeId() &lt;&lt;endl;</span></div>
+<div class="line"><span class="lineno">  125</span>    <span class="comment">//   cout &lt;&lt; &quot; &quot;&lt;&lt; gGeoManager-&gt;FindVolumeFast(vol-&gt;GetName())-&gt;GetNumber()&lt;&lt; &quot;  &quot; &lt;&lt; gMC-&gt;CurrentVolID() &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  127</span>    <span class="comment">//VolumeID = vol-&gt;getMCid();</span></div>
+<div class="line"><span class="lineno">  128</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>=0;</div>
+<div class="line"><span class="lineno">  129</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(detID);</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">//if (fVolumeID == detID) {</span></div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">//  return kTRUE; }</span></div>
+<div class="line"><span class="lineno">  133</span>    <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  134</span>    <span class="comment">//    cout &lt;&lt; &quot; &quot;&lt;&lt;fVolumeID &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
+<div class="line"><span class="lineno">  136</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  137</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  138</span>    <span class="comment">//    if(fVolumeID&lt;405 &amp;&amp; fTime&lt;70){</span></div>
+<div class="line"><span class="lineno">  139</span>    <a class="code hl_function" href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">AddHit</a>(<a class="code hl_variable" href="classsplitcal.html#a2cab951acf73bdc92959c6e6325a20ad">fTrackID</a>, <a class="code hl_variable" href="classsplitcal.html#add475e8986d444eb1eb6269adea203b0">fVolumeID</a>, TVector3(<a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.X(),  <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.Y(),  <a class="code hl_variable" href="classsplitcal.html#a232518ea0a85e24687831a0ac5350c54">fPos</a>.Z()),</div>
+<div class="line"><span class="lineno">  140</span>           TVector3(<a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Px(), <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Py(), <a class="code hl_variable" href="classsplitcal.html#a21944f4ca55d8752c445666ad55dd7a8">fMom</a>.Pz()), <a class="code hl_variable" href="classsplitcal.html#a8f13489fd8bd52fe39db2910465ecf83">fTime</a>, <a class="code hl_variable" href="classsplitcal.html#a0fd4f766cace0b84f5ca8086b79d4f76">fLength</a>,</div>
+<div class="line"><span class="lineno">  141</span>           <a class="code hl_variable" href="classsplitcal.html#a25ba948131f8bca85290eb88c8b376d8">fELoss</a>,pdgCode);</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>    <span class="comment">// Increment number of splitcal det points in TParticle</span></div>
+<div class="line"><span class="lineno">  144</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  145</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>);</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>  }</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  150</span>}</div>
+<div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00049">ShipStack.h:50</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a2472a223fb4a41eb2550780d6a6de6c5"><div class="ttname"><a href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">splitcal::AddHit</a></div><div class="ttdeci">splitcalPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00459">splitcal.cxx:459</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00252">makeCascade.py:252</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00255">make_nTuple_SBT.py:255</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00273">run_fixedTarget.py:273</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1239,13 +1239,13 @@ Private Attributes</h2></td></tr>
  </p>
 <p>This will create a branch in the output tree called <a class="el" href="classsplitcalPoint.html">splitcalPoint</a>, setting the last parameter to kFALSE means: this collection will not be written to the file, it will exist only during the simulation.</p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00158">158</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  167</span>  FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;splitcalPoint&quot;</span>, <span class="stringliteral">&quot;splitcal&quot;</span>,</div>
-<div class="line"><span class="lineno">  168</span>                                        <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00161">161</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  170</span>  FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;splitcalPoint&quot;</span>, <span class="stringliteral">&quot;splitcal&quot;</span>,</div>
+<div class="line"><span class="lineno">  171</span>                                        <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1274,10 +1274,10 @@ Private Attributes</h2></td></tr>
 <p>has to be called after each event to reset the containers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00179">179</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
-<div class="line"><span class="lineno">  181</span>  <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  182</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00182">182</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
+<div class="line"><span class="lineno">  184</span>  <a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  185</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1337,18 +1337,18 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00188">188</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>{</div>
-<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>=Empty;</div>
-<div class="line"><span class="lineno">  191</span>  <a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>=BigGap;</div>
-<div class="line"><span class="lineno">  192</span>  <a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>= ActiveECAL_gas_gap;</div>
-<div class="line"><span class="lineno">  193</span>  <a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>=first_precision_layer;</div>
-<div class="line"><span class="lineno">  194</span>  <a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a>=second_precision_layer;</div>
-<div class="line"><span class="lineno">  195</span>  <a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>=third_precision_layer;</div>
-<div class="line"><span class="lineno">  196</span>  <a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>=num_precision_layers;</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00191">191</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>{</div>
+<div class="line"><span class="lineno">  193</span>  <a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>=Empty;</div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>=BigGap;</div>
+<div class="line"><span class="lineno">  195</span>  <a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>= ActiveECAL_gas_gap;</div>
+<div class="line"><span class="lineno">  196</span>  <a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>=first_precision_layer;</div>
+<div class="line"><span class="lineno">  197</span>  <a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a>=second_precision_layer;</div>
+<div class="line"><span class="lineno">  198</span>  <a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>=third_precision_layer;</div>
+<div class="line"><span class="lineno">  199</span>  <a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>=num_precision_layers;</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1390,19 +1390,19 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00212">212</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  213</span>{</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>    <a class="code hl_variable" href="classsplitcal.html#a9b4cfdf6f2876eafff9466b33aa2ee7a">fActiveECALMaterial</a> = ActiveECALMaterial;</div>
-<div class="line"><span class="lineno">  216</span>    <a class="code hl_variable" href="classsplitcal.html#a4a7a5f052bbdb2951c4427a3972cabbe">fActiveHCALMaterial</a> = ActiveHCALMaterial;</div>
-<div class="line"><span class="lineno">  217</span>    <a class="code hl_variable" href="classsplitcal.html#a88d2f846688de080a93dbf4c3e630846">fFilterECALMaterial</a> = FilterECALMaterial;</div>
-<div class="line"><span class="lineno">  218</span>    <a class="code hl_variable" href="classsplitcal.html#a4319e67f80af6de902016361f1fb8c2c">fFilterHCALMaterial</a> = FilterHCALMaterial;</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>}</div>
-<div class="ttc" id="aclasssplitcal_html_a4319e67f80af6de902016361f1fb8c2c"><div class="ttname"><a href="classsplitcal.html#a4319e67f80af6de902016361f1fb8c2c">splitcal::fFilterHCALMaterial</a></div><div class="ttdeci">Double_t fFilterHCALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00110">splitcal.h:110</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a4a7a5f052bbdb2951c4427a3972cabbe"><div class="ttname"><a href="classsplitcal.html#a4a7a5f052bbdb2951c4427a3972cabbe">splitcal::fActiveHCALMaterial</a></div><div class="ttdeci">Double_t fActiveHCALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00110">splitcal.h:110</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a88d2f846688de080a93dbf4c3e630846"><div class="ttname"><a href="classsplitcal.html#a88d2f846688de080a93dbf4c3e630846">splitcal::fFilterECALMaterial</a></div><div class="ttdeci">Double_t fFilterECALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00110">splitcal.h:110</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a9b4cfdf6f2876eafff9466b33aa2ee7a"><div class="ttname"><a href="classsplitcal.html#a9b4cfdf6f2876eafff9466b33aa2ee7a">splitcal::fActiveECALMaterial</a></div><div class="ttdeci">Double_t fActiveECALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00110">splitcal.h:110</a></div></div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00215">215</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>    <a class="code hl_variable" href="classsplitcal.html#a9b4cfdf6f2876eafff9466b33aa2ee7a">fActiveECALMaterial</a> = ActiveECALMaterial;</div>
+<div class="line"><span class="lineno">  219</span>    <a class="code hl_variable" href="classsplitcal.html#a4a7a5f052bbdb2951c4427a3972cabbe">fActiveHCALMaterial</a> = ActiveHCALMaterial;</div>
+<div class="line"><span class="lineno">  220</span>    <a class="code hl_variable" href="classsplitcal.html#a88d2f846688de080a93dbf4c3e630846">fFilterECALMaterial</a> = FilterECALMaterial;</div>
+<div class="line"><span class="lineno">  221</span>    <a class="code hl_variable" href="classsplitcal.html#a4319e67f80af6de902016361f1fb8c2c">fFilterHCALMaterial</a> = FilterHCALMaterial;</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>}</div>
+<div class="ttc" id="aclasssplitcal_html_a4319e67f80af6de902016361f1fb8c2c"><div class="ttname"><a href="classsplitcal.html#a4319e67f80af6de902016361f1fb8c2c">splitcal::fFilterHCALMaterial</a></div><div class="ttdeci">Double_t fFilterHCALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00113">splitcal.h:113</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a4a7a5f052bbdb2951c4427a3972cabbe"><div class="ttname"><a href="classsplitcal.html#a4a7a5f052bbdb2951c4427a3972cabbe">splitcal::fActiveHCALMaterial</a></div><div class="ttdeci">Double_t fActiveHCALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00113">splitcal.h:113</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a88d2f846688de080a93dbf4c3e630846"><div class="ttname"><a href="classsplitcal.html#a88d2f846688de080a93dbf4c3e630846">splitcal::fFilterECALMaterial</a></div><div class="ttdeci">Double_t fFilterECALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00113">splitcal.h:113</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a9b4cfdf6f2876eafff9466b33aa2ee7a"><div class="ttname"><a href="classsplitcal.html#a9b4cfdf6f2876eafff9466b33aa2ee7a">splitcal::fActiveECALMaterial</a></div><div class="ttdeci">Double_t fActiveECALMaterial</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00113">splitcal.h:113</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1432,11 +1432,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00229">229</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
-<div class="line"><span class="lineno">  231</span>  <a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>=nModulesInX;</div>
-<div class="line"><span class="lineno">  232</span>  <a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>=nModulesInY;</div>
-<div class="line"><span class="lineno">  233</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00232">232</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  233</span>{</div>
+<div class="line"><span class="lineno">  234</span>  <a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>=nModulesInX;</div>
+<div class="line"><span class="lineno">  235</span>  <a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>=nModulesInY;</div>
+<div class="line"><span class="lineno">  236</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1472,12 +1472,12 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00222">222</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
-<div class="line"><span class="lineno">  224</span>  <a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>=nHCALSamplings;</div>
-<div class="line"><span class="lineno">  225</span>  <a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>=nECALSamplings;</div>
-<div class="line"><span class="lineno">  226</span>  <a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>=ActiveHCAL;</div>
-<div class="line"><span class="lineno">  227</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00225">225</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
+<div class="line"><span class="lineno">  227</span>  <a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>=nHCALSamplings;</div>
+<div class="line"><span class="lineno">  228</span>  <a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>=nECALSamplings;</div>
+<div class="line"><span class="lineno">  229</span>  <a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>=ActiveHCAL;</div>
+<div class="line"><span class="lineno">  230</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1497,10 +1497,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00235">235</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>=nStrips;</div>
-<div class="line"><span class="lineno">  238</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00238">238</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  239</span>{</div>
+<div class="line"><span class="lineno">  240</span>  <a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>=nStrips;</div>
+<div class="line"><span class="lineno">  241</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1527,8 +1527,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00087">87</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00090">90</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1558,11 +1558,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00240">240</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  241</span>{</div>
-<div class="line"><span class="lineno">  242</span>  <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>=stripHalfWidth;</div>
-<div class="line"><span class="lineno">  243</span>  <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>=stripHalfLength;</div>
-<div class="line"><span class="lineno">  244</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00243">243</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  244</span>{</div>
+<div class="line"><span class="lineno">  245</span>  <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>=stripHalfWidth;</div>
+<div class="line"><span class="lineno">  246</span>  <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>=stripHalfLength;</div>
+<div class="line"><span class="lineno">  247</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1616,17 +1616,17 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00201">201</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  202</span>{</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>    <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a> = ActiveECALThickness;</div>
-<div class="line"><span class="lineno">  205</span>    <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a> = ActiveHCALThickness;</div>
-<div class="line"><span class="lineno">  206</span>    <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a> = FilterECALThickness;</div>
-<div class="line"><span class="lineno">  207</span>    <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a> = FilterECALThickness_first;</div>
-<div class="line"><span class="lineno">  208</span>    <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a> = FilterHCALThickness;</div>
-<div class="line"><span class="lineno">  209</span>    <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>= ActiveECAL_gas_Thickness;</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00204">204</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>    <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a> = ActiveECALThickness;</div>
+<div class="line"><span class="lineno">  208</span>    <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a> = ActiveHCALThickness;</div>
+<div class="line"><span class="lineno">  209</span>    <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a> = FilterECALThickness;</div>
+<div class="line"><span class="lineno">  210</span>    <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a> = FilterECALThickness_first;</div>
+<div class="line"><span class="lineno">  211</span>    <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a> = FilterHCALThickness;</div>
+<div class="line"><span class="lineno">  212</span>    <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>= ActiveECAL_gas_Thickness;</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1646,10 +1646,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00246">246</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  247</span>{</div>
-<div class="line"><span class="lineno">  248</span>  <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>=xMax;</div>
-<div class="line"><span class="lineno">  249</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00249">249</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  250</span>{</div>
+<div class="line"><span class="lineno">  251</span>  <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>=xMax;</div>
+<div class="line"><span class="lineno">  252</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1669,10 +1669,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00250">250</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  251</span>{</div>
-<div class="line"><span class="lineno">  252</span>  <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>=yMax;</div>
-<div class="line"><span class="lineno">  253</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00253">253</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  254</span>{</div>
+<div class="line"><span class="lineno">  255</span>  <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>=yMax;</div>
+<div class="line"><span class="lineno">  256</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1692,10 +1692,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00184">184</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
-<div class="line"><span class="lineno">  186</span>  <a class="code hl_variable" href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">fZStart</a>=ZStart;</div>
-<div class="line"><span class="lineno">  187</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00187">187</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>{</div>
+<div class="line"><span class="lineno">  189</span>  <a class="code hl_variable" href="classsplitcal.html#aadfc3430c227683d07fa9ce748d2e7ac">fZStart</a>=ZStart;</div>
+<div class="line"><span class="lineno">  190</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1720,7 +1720,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00111">111</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00114">114</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1744,7 +1744,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00111">111</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00114">114</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1768,7 +1768,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00110">110</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00113">113</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1794,7 +1794,7 @@ Private Attributes</h2></td></tr>
 
 <p>energy loss </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1818,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00113">113</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00116">116</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1842,7 +1842,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00110">110</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00113">113</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1866,7 +1866,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1890,7 +1890,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00115">115</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1916,7 +1916,7 @@ Private Attributes</h2></td></tr>
 
 <p>length </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00108">108</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00111">111</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1940,7 +1940,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00115">115</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1964,7 +1964,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00110">110</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00113">113</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -1988,7 +1988,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2012,7 +2012,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2036,7 +2036,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00110">110</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00113">113</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2060,7 +2060,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2084,7 +2084,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2110,7 +2110,7 @@ Private Attributes</h2></td></tr>
 
 <p>time </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00107">107</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00110">110</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2136,7 +2136,7 @@ Private Attributes</h2></td></tr>
 
 <p>position at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00105">105</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00108">108</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2160,7 +2160,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00115">115</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2184,7 +2184,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00115">115</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2208,7 +2208,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00119">119</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00122">122</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2232,7 +2232,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00119">119</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00122">122</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2256,7 +2256,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00120">120</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00123">123</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2280,7 +2280,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2306,7 +2306,7 @@ Private Attributes</h2></td></tr>
 
 <p>volume id </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00104">104</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00107">107</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2330,7 +2330,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2355,7 +2355,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>container for data points </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00125">125</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00128">128</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2379,7 +2379,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00124">124</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2403,7 +2403,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00124">124</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2427,7 +2427,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00118">118</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00121">121</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2453,7 +2453,7 @@ Private Attributes</h2></td></tr>
 
 <p>momentum at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00106">106</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2478,7 +2478,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Track information to be stored until the track leaves the active volume. </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00102">102</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00105">105</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2504,7 +2504,7 @@ Private Attributes</h2></td></tr>
 
 <p>track index </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00103">103</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00106">106</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2528,7 +2528,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00116">116</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00119">119</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2552,7 +2552,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00117">117</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00120">120</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2576,7 +2576,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00114">114</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00117">117</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>
@@ -2600,7 +2600,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00109">109</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcal_8h_source.html#l00112">112</a> of file <a class="el" href="splitcal_8h_source.html">splitcal.h</a>.</p>
 
 </div>
 </div>

@@ -172,27 +172,27 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle lifetime from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00082">82</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span><span class="keyword">def </span>lifetime(particle):</div>
-<div class="line"><span class="lineno">   83</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   84</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
-<div class="line"><span class="lineno">   85</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   86</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   87</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> particle==<span class="stringliteral">&quot;D0&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D0bar&quot;</span> :</div>
-<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">return</span> 4.1e-13</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;D+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D-&quot;</span>:</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">return</span> 1.0e-12</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;D_s+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D_s-&quot;</span>:</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> 5.0e-13</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;B0&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;B0bar&quot;</span>:</div>
-<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">return</span> 1.5e-12</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;B+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;B-&quot;</span>:</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">return</span> 1.6e-12</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
-<div class="line"><span class="lineno">  100</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00085">85</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span><span class="keyword">def </span>lifetime(particle):</div>
+<div class="line"><span class="lineno">   86</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   87</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
+<div class="line"><span class="lineno">   88</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   89</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   90</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> particle==<span class="stringliteral">&quot;D0&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D0bar&quot;</span> :</div>
+<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">return</span> 4.1e-13</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;D+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D-&quot;</span>:</div>
+<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">return</span> 1.0e-12</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;D_s+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;D_s-&quot;</span>:</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">return</span> 5.0e-13</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;B0&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;B0bar&quot;</span>:</div>
+<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">return</span> 1.5e-12</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">elif</span> particle==<span class="stringliteral">&quot;B+&quot;</span> <span class="keywordflow">or</span> particle==<span class="stringliteral">&quot;B-&quot;</span>:</div>
+<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">return</span> 1.6e-12</div>
 <div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,15 +213,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle mass from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00066">66</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span><span class="keyword">def </span>mass(particle):</div>
-<div class="line"><span class="lineno">   67</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   68</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
-<div class="line"><span class="lineno">   69</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   70</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   71</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
-<div class="line"><span class="lineno">   73</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00069">69</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span><span class="keyword">def </span>mass(particle):</div>
+<div class="line"><span class="lineno">   70</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   71</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
+<div class="line"><span class="lineno">   72</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   73</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   74</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
+<div class="line"><span class="lineno">   76</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -242,15 +242,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle ID from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00058">58</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span>PDGcode(particle):</div>
-<div class="line"><span class="lineno">   59</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   60</span><span class="stringliteral">    Read particle ID from PDG database</span></div>
-<div class="line"><span class="lineno">   61</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   62</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   63</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
-<div class="line"><span class="lineno">   65</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00061">61</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>PDGcode(particle):</div>
+<div class="line"><span class="lineno">   62</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   63</span><span class="stringliteral">    Read particle ID from PDG database</span></div>
+<div class="line"><span class="lineno">   64</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   66</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
+<div class="line"><span class="lineno">   68</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -271,26 +271,26 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Trim particle name for use with the PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00039">39</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span><span class="keyword">def </span>PDGname(particle):</div>
-<div class="line"><span class="lineno">   40</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   41</span><span class="stringliteral">    Trim particle name for use with the PDG database</span></div>
-<div class="line"><span class="lineno">   42</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;down&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;d&#39;</span></div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;up&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;u&#39;</span></div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;strange&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;s&#39;</span></div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;charm&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;c&#39;</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;bottom&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;b&#39;</span></div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;beauty&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;b&#39;</span></div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;top&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;t&#39;</span></div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;1&#39;</span> <span class="keywordflow">in</span> particle:</div>
-<div class="line"><span class="lineno">   51</span>        particle = particle.replace(<span class="stringliteral">&#39;1&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>)</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> ((<span class="stringliteral">&#39;-&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;+&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;0&#39;</span> <span class="keywordflow">in</span> particle)</div>
-<div class="line"><span class="lineno">   53</span>             <span class="keywordflow">or</span> (<span class="stringliteral">&#39;nu_&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;eta&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;phi&#39;</span> <span class="keywordflow">in</span> particle) )</div>
-<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">and</span> (particle <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>])):</div>
-<div class="line"><span class="lineno">   55</span>        particle += <span class="stringliteral">&#39;+&#39;</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> particle</div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00042">42</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>PDGname(particle):</div>
+<div class="line"><span class="lineno">   43</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   44</span><span class="stringliteral">    Trim particle name for use with the PDG database</span></div>
+<div class="line"><span class="lineno">   45</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;down&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;d&#39;</span></div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;up&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;u&#39;</span></div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;strange&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;s&#39;</span></div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;charm&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;c&#39;</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;bottom&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;b&#39;</span></div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;beauty&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;b&#39;</span></div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;top&#39;</span> <span class="keywordflow">in</span> particle: <span class="keywordflow">return</span> <span class="stringliteral">&#39;t&#39;</span></div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;1&#39;</span> <span class="keywordflow">in</span> particle:</div>
+<div class="line"><span class="lineno">   54</span>        particle = particle.replace(<span class="stringliteral">&#39;1&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> ((<span class="stringliteral">&#39;-&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;+&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;0&#39;</span> <span class="keywordflow">in</span> particle)</div>
+<div class="line"><span class="lineno">   56</span>             <span class="keywordflow">or</span> (<span class="stringliteral">&#39;nu_&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;eta&#39;</span> <span class="keywordflow">in</span> particle) <span class="keywordflow">or</span> (<span class="stringliteral">&#39;phi&#39;</span> <span class="keywordflow">in</span> particle) )</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">and</span> (particle <span class="keywordflow">not</span> <span class="keywordflow">in</span> [<span class="stringliteral">&#39;d&#39;</span>,<span class="stringliteral">&#39;u&#39;</span>,<span class="stringliteral">&#39;s&#39;</span>,<span class="stringliteral">&#39;c&#39;</span>,<span class="stringliteral">&#39;b&#39;</span>,<span class="stringliteral">&#39;t&#39;</span>])):</div>
+<div class="line"><span class="lineno">   58</span>        particle += <span class="stringliteral">&#39;+&#39;</span></div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> particle</div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -311,15 +311,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle width from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00074">74</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>width(particle):</div>
-<div class="line"><span class="lineno">   75</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   76</span><span class="stringliteral">    Read particle width from PDG database</span></div>
-<div class="line"><span class="lineno">   77</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   78</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   79</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">return</span> tPart.Width()</div>
-<div class="line"><span class="lineno">   81</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00077">77</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>width(particle):</div>
+<div class="line"><span class="lineno">   78</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   79</span><span class="stringliteral">    Read particle width from PDG database</span></div>
+<div class="line"><span class="lineno">   80</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   81</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   82</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> tPart.Width()</div>
+<div class="line"><span class="lineno">   84</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -336,7 +336,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00143">143</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00146">146</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -352,7 +352,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00037">37</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00040">40</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>

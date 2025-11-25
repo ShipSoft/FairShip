@@ -189,14 +189,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00073">73</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span><span class="keyword">def </span>bookCanvas(h,key=None,title=&#39;&#39;,nx=900,ny=600,cx=1,cy=1):</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
-<div class="line"><span class="lineno">   75</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">   78</span>    h[key]=TCanvas(key,title,nx,ny)</div>
-<div class="line"><span class="lineno">   79</span>    h[key].Divide(cx,cy)</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00076">76</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span><span class="keyword">def </span>bookCanvas(h,key=None,title=&#39;&#39;,nx=900,ny=600,cx=1,cy=1):</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
+<div class="line"><span class="lineno">   78</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">   81</span>    h[key]=TCanvas(key,title,nx,ny)</div>
+<div class="line"><span class="lineno">   82</span>    h[key].Divide(cx,cy)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -286,17 +286,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00046">46</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>bookHist(h,key=None,title=&#39;&#39;,nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
-<div class="line"><span class="lineno">   48</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   50</span>  rkey = str(key) <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:    h[key].Reset()</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">elif</span> nbinsz &gt;0:       h[key] = TH3D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax)</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">elif</span> nbinsy &gt;0:       h[key] = TH2D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax)</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span>:                 h[key] = TH1D(rkey,title,nbinsx,xmin,xmax)</div>
-<div class="line"><span class="lineno">   55</span>  h[key].SetDirectory(gROOT)</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00049">49</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span>bookHist(h,key=None,title=&#39;&#39;,nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
+<div class="line"><span class="lineno">   51</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   53</span>  rkey = str(key) <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:    h[key].Reset()</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">elif</span> nbinsz &gt;0:       h[key] = TH3D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax)</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">elif</span> nbinsy &gt;0:       h[key] = TH2D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax)</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">else</span>:                 h[key] = TH1D(rkey,title,nbinsx,xmin,xmax)</div>
+<div class="line"><span class="lineno">   58</span>  h[key].SetDirectory(gROOT)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -368,16 +368,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00056">56</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span><span class="keyword">def </span>bookProf(h,key=None,title=&#39;&#39;,nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,option=&quot;&quot;):</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
-<div class="line"><span class="lineno">   58</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   60</span>  rkey = str(key) <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:    h[key].Reset()</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> ymin==<span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax==<span class="keywordtype">None</span>:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,option)</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">else</span>:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,ymin,ymax,option)</div>
-<div class="line"><span class="lineno">   64</span>  h[key].SetDirectory(gROOT)</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00059">59</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span><span class="keyword">def </span>bookProf(h,key=None,title=&#39;&#39;,nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,option=&quot;&quot;):</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> key==<span class="keywordtype">None</span> :</div>
+<div class="line"><span class="lineno">   61</span>    print(<span class="stringliteral">&#39;missing key&#39;</span>)</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   63</span>  rkey = str(key) <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:    h[key].Reset()</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> ymin==<span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax==<span class="keywordtype">None</span>:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,option)</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">else</span>:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,ymin,ymax,option)</div>
+<div class="line"><span class="lineno">   67</span>  h[key].SetDirectory(gROOT)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -397,18 +397,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00181">181</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  181</span><span class="keyword">def </span>checkFileExists(x):</div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">if</span> x[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>: f=gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+x</div>
-<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">else</span>: f=x</div>
-<div class="line"><span class="lineno">  184</span>    test = TFile.Open(f)</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
-<div class="line"><span class="lineno">  186</span>       print(<span class="stringliteral">&quot;input file&quot;</span>,f,<span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
-<div class="line"><span class="lineno">  187</span>       os._exit(1)</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
-<div class="line"><span class="lineno">  189</span>     <span class="keywordflow">return</span> <span class="stringliteral">&#39;tree&#39;</span></div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  191</span>     <span class="keywordflow">return</span> <span class="stringliteral">&#39;ntuple&#39;</span></div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00184">184</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  184</span><span class="keyword">def </span>checkFileExists(x):</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">if</span> x[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>: f=gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+x</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">else</span>: f=x</div>
+<div class="line"><span class="lineno">  187</span>    test = TFile.Open(f)</div>
+<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><span class="lineno">  189</span>       print(<span class="stringliteral">&quot;input file&quot;</span>,f,<span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><span class="lineno">  190</span>       os._exit(1)</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
+<div class="line"><span class="lineno">  192</span>     <span class="keywordflow">return</span> <span class="stringliteral">&#39;tree&#39;</span></div>
+<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  194</span>     <span class="keywordflow">return</span> <span class="stringliteral">&#39;ntuple&#39;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -438,38 +438,38 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00112">112</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span><span class="keyword">def </span>container_sizes(sTree,perEvent=False):</div>
-<div class="line"><span class="lineno">  113</span> counter = {}</div>
-<div class="line"><span class="lineno">  114</span> print(<span class="stringliteral">&quot;name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]&quot;</span>)</div>
-<div class="line"><span class="lineno">  115</span> counter[<span class="stringliteral">&#39;total&#39;</span>]=[0,0,0]</div>
-<div class="line"><span class="lineno">  116</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> sTree.GetListOfLeaves():</div>
-<div class="line"><span class="lineno">  117</span>  b = l.GetBranch()</div>
-<div class="line"><span class="lineno">  118</span>  nm = b.GetName()</div>
-<div class="line"><span class="lineno">  119</span>  print(<span class="stringliteral">&quot;%30s :%8.3F   %8.3F    %8.3F &quot;</span>%(nm,b.GetZipBytes()/1.E6,b.GetTotBytes()/1.E6,b.GetTotalSize()/1.E6))</div>
-<div class="line"><span class="lineno">  120</span>  bnm = nm.split(<span class="stringliteral">&#39;.&#39;</span>)[0]</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">if</span> bnm <span class="keywordflow">not</span> <span class="keywordflow">in</span> counter: counter[bnm]=[0,0,0]</div>
-<div class="line"><span class="lineno">  122</span>  counter[bnm][0]+=b.GetZipBytes()/1.E6</div>
-<div class="line"><span class="lineno">  123</span>  counter[bnm][1]+=b.GetTotBytes()/1.E6</div>
-<div class="line"><span class="lineno">  124</span>  counter[bnm][2]+=b.GetTotalSize()/1.E6</div>
-<div class="line"><span class="lineno">  125</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][0]+=b.GetZipBytes()/1.E6</div>
-<div class="line"><span class="lineno">  126</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][1]+=b.GetTotBytes()/1.E6</div>
-<div class="line"><span class="lineno">  127</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][2]+=b.GetTotalSize()/1.E6</div>
-<div class="line"><span class="lineno">  128</span> print(<span class="stringliteral">&quot;---&gt; SUMMARY &lt;---------------&quot;</span>)</div>
-<div class="line"><span class="lineno">  129</span> N = sTree.GetEntries()/1000.</div>
-<div class="line"><span class="lineno">  130</span> <span class="keywordflow">if</span> perEvent:</div>
-<div class="line"><span class="lineno">  131</span>  print(<span class="stringliteral">&quot;                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev&quot;</span>)</div>
-<div class="line"><span class="lineno">  132</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  133</span>  print(<span class="stringliteral">&quot;                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]&quot;</span>)</div>
-<div class="line"><span class="lineno">  134</span> sorted_c = sorted(counter.items(), key=operator.itemgetter(1))</div>
-<div class="line"><span class="lineno">  135</span> sorted_c.reverse()</div>
-<div class="line"><span class="lineno">  136</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(sorted_c)):</div>
-<div class="line"><span class="lineno">  137</span>  x = sorted_c[i][0]</div>
-<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">if</span> perEvent:</div>
-<div class="line"><span class="lineno">  139</span>   print(<span class="stringliteral">&quot;%30s :%8.3F      %8.3F       %8.3F&quot;</span>%(x,counter[x][0]/N,counter[x][1]/N,counter[x][2]/N))</div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  141</span>   print(<span class="stringliteral">&quot;%30s :%8.3F   %8.3F    %8.3F&quot;</span>%(x,counter[x][0],counter[x][1],counter[x][2]))</div>
-<div class="line"><span class="lineno">  142</span> </div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00115">115</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span><span class="keyword">def </span>container_sizes(sTree,perEvent=False):</div>
+<div class="line"><span class="lineno">  116</span> counter = {}</div>
+<div class="line"><span class="lineno">  117</span> print(<span class="stringliteral">&quot;name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]&quot;</span>)</div>
+<div class="line"><span class="lineno">  118</span> counter[<span class="stringliteral">&#39;total&#39;</span>]=[0,0,0]</div>
+<div class="line"><span class="lineno">  119</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> sTree.GetListOfLeaves():</div>
+<div class="line"><span class="lineno">  120</span>  b = l.GetBranch()</div>
+<div class="line"><span class="lineno">  121</span>  nm = b.GetName()</div>
+<div class="line"><span class="lineno">  122</span>  print(<span class="stringliteral">&quot;%30s :%8.3F   %8.3F    %8.3F &quot;</span>%(nm,b.GetZipBytes()/1.E6,b.GetTotBytes()/1.E6,b.GetTotalSize()/1.E6))</div>
+<div class="line"><span class="lineno">  123</span>  bnm = nm.split(<span class="stringliteral">&#39;.&#39;</span>)[0]</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">if</span> bnm <span class="keywordflow">not</span> <span class="keywordflow">in</span> counter: counter[bnm]=[0,0,0]</div>
+<div class="line"><span class="lineno">  125</span>  counter[bnm][0]+=b.GetZipBytes()/1.E6</div>
+<div class="line"><span class="lineno">  126</span>  counter[bnm][1]+=b.GetTotBytes()/1.E6</div>
+<div class="line"><span class="lineno">  127</span>  counter[bnm][2]+=b.GetTotalSize()/1.E6</div>
+<div class="line"><span class="lineno">  128</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][0]+=b.GetZipBytes()/1.E6</div>
+<div class="line"><span class="lineno">  129</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][1]+=b.GetTotBytes()/1.E6</div>
+<div class="line"><span class="lineno">  130</span>  counter[<span class="stringliteral">&#39;total&#39;</span>][2]+=b.GetTotalSize()/1.E6</div>
+<div class="line"><span class="lineno">  131</span> print(<span class="stringliteral">&quot;---&gt; SUMMARY &lt;---------------&quot;</span>)</div>
+<div class="line"><span class="lineno">  132</span> N = sTree.GetEntries()/1000.</div>
+<div class="line"><span class="lineno">  133</span> <span class="keywordflow">if</span> perEvent:</div>
+<div class="line"><span class="lineno">  134</span>  print(<span class="stringliteral">&quot;                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev&quot;</span>)</div>
+<div class="line"><span class="lineno">  135</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  136</span>  print(<span class="stringliteral">&quot;                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]&quot;</span>)</div>
+<div class="line"><span class="lineno">  137</span> sorted_c = sorted(counter.items(), key=operator.itemgetter(1))</div>
+<div class="line"><span class="lineno">  138</span> sorted_c.reverse()</div>
+<div class="line"><span class="lineno">  139</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(sorted_c)):</div>
+<div class="line"><span class="lineno">  140</span>  x = sorted_c[i][0]</div>
+<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">if</span> perEvent:</div>
+<div class="line"><span class="lineno">  142</span>   print(<span class="stringliteral">&quot;%30s :%8.3F      %8.3F       %8.3F&quot;</span>%(x,counter[x][0]/N,counter[x][1]/N,counter[x][2]/N))</div>
+<div class="line"><span class="lineno">  143</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  144</span>   print(<span class="stringliteral">&quot;%30s :%8.3F   %8.3F    %8.3F&quot;</span>%(x,counter[x][0],counter[x][1],counter[x][2]))</div>
+<div class="line"><span class="lineno">  145</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -488,12 +488,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00084">84</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span><span class="keyword">def </span>errorSummary():</div>
-<div class="line"><span class="lineno">   85</span> l = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].log</div>
-<div class="line"><span class="lineno">   86</span> <span class="keywordflow">if</span> len(l) &gt; 0: <span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span></div>
-<div class="line"><span class="lineno">   87</span> <span class="keywordflow">for</span> e <span class="keywordflow">in</span> l:</div>
-<div class="line"><span class="lineno">   88</span>    print(e,<span class="stringliteral">&#39;:&#39;</span>,l[e])</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00087">87</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span><span class="keyword">def </span>errorSummary():</div>
+<div class="line"><span class="lineno">   88</span> l = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].log</div>
+<div class="line"><span class="lineno">   89</span> <span class="keywordflow">if</span> len(l) &gt; 0: <span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span></div>
+<div class="line"><span class="lineno">   90</span> <span class="keywordflow">for</span> e <span class="keywordflow">in</span> l:</div>
+<div class="line"><span class="lineno">   91</span>    print(e,<span class="stringliteral">&#39;:&#39;</span>,l[e])</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -513,19 +513,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00192">192</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  192</span><span class="keyword">def </span>findMaximumAndMinimum(histo):</div>
-<div class="line"><span class="lineno">  193</span> amin,amax = 1E30, -130</div>
-<div class="line"><span class="lineno">  194</span> nmin,nmax = 0, 0</div>
-<div class="line"><span class="lineno">  195</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(1,histo.GetNbinsX()+1):</div>
-<div class="line"><span class="lineno">  196</span>  c =  histo.GetBinContent(n)</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">if</span> c&gt;amax:</div>
-<div class="line"><span class="lineno">  198</span>    amax = c</div>
-<div class="line"><span class="lineno">  199</span>    nmax = n</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> c&lt;amin:</div>
-<div class="line"><span class="lineno">  201</span>    amin = c</div>
-<div class="line"><span class="lineno">  202</span>    nmin = n</div>
-<div class="line"><span class="lineno">  203</span> <span class="keywordflow">return</span> amin,amax,nmin,nmax</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00195">195</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span><span class="keyword">def </span>findMaximumAndMinimum(histo):</div>
+<div class="line"><span class="lineno">  196</span> amin,amax = 1E30, -130</div>
+<div class="line"><span class="lineno">  197</span> nmin,nmax = 0, 0</div>
+<div class="line"><span class="lineno">  198</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(1,histo.GetNbinsX()+1):</div>
+<div class="line"><span class="lineno">  199</span>  c =  histo.GetBinContent(n)</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> c&gt;amax:</div>
+<div class="line"><span class="lineno">  201</span>    amax = c</div>
+<div class="line"><span class="lineno">  202</span>    nmax = n</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">if</span> c&lt;amin:</div>
+<div class="line"><span class="lineno">  204</span>    amin = c</div>
+<div class="line"><span class="lineno">  205</span>    nmin = n</div>
+<div class="line"><span class="lineno">  206</span> <span class="keywordflow">return</span> amin,amax,nmin,nmax</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -555,14 +555,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00204">204</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  204</span><span class="keyword">def </span>makeIntegralDistrib(h,key):</div>
-<div class="line"><span class="lineno">  205</span> name = <span class="stringliteral">&#39;I-&#39;</span>+key</div>
-<div class="line"><span class="lineno">  206</span> h[name]=h[key].Clone(name)</div>
-<div class="line"><span class="lineno">  207</span> h[name].SetTitle(<span class="stringliteral">&#39;Integral &gt; &#39;</span>+h[key].GetTitle())</div>
-<div class="line"><span class="lineno">  208</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(1,h[key].GetNbinsX()+1):</div>
-<div class="line"><span class="lineno">  209</span>   <span class="keywordflow">if</span> n==1: h[name].SetBinContent(1,h[key].GetSumOfWeights())</div>
-<div class="line"><span class="lineno">  210</span>   <span class="keywordflow">else</span>: h[name].SetBinContent(n,h[name].GetBinContent(n-1)-h[key].GetBinContent(n-1))</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00207">207</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  207</span><span class="keyword">def </span>makeIntegralDistrib(h,key):</div>
+<div class="line"><span class="lineno">  208</span> name = <span class="stringliteral">&#39;I-&#39;</span>+key</div>
+<div class="line"><span class="lineno">  209</span> h[name]=h[key].Clone(name)</div>
+<div class="line"><span class="lineno">  210</span> h[name].SetTitle(<span class="stringliteral">&#39;Integral &gt; &#39;</span>+h[key].GetTitle())</div>
+<div class="line"><span class="lineno">  211</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(1,h[key].GetNbinsX()+1):</div>
+<div class="line"><span class="lineno">  212</span>   <span class="keywordflow">if</span> n==1: h[name].SetBinContent(1,h[key].GetSumOfWeights())</div>
+<div class="line"><span class="lineno">  213</span>   <span class="keywordflow">else</span>: h[name].SetBinContent(n,h[name].GetBinContent(n-1)-h[key].GetBinContent(n-1))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,15 +598,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00089">89</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span><span class="keyword">def </span>printout(atc,name,Work):</div>
-<div class="line"><span class="lineno">   90</span>  atc.Update()</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;.gif&#39;</span>,<span class="stringliteral">&#39;.eps&#39;</span>,<span class="stringliteral">&#39;.jpg&#39;</span>] :</div>
-<div class="line"><span class="lineno">   92</span>    temp = name+x</div>
-<div class="line"><span class="lineno">   93</span>    atc.Print(temp)</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> x!=<span class="stringliteral">&#39;.jpg&#39;</span>:</div>
-<div class="line"><span class="lineno">   95</span>      os.system(<span class="stringliteral">&#39;cp &#39;</span>+temp+<span class="stringliteral">&#39; &#39;</span>+Work)</div>
-<div class="line"><span class="lineno">   96</span> </div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00092">92</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>printout(atc,name,Work):</div>
+<div class="line"><span class="lineno">   93</span>  atc.Update()</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;.gif&#39;</span>,<span class="stringliteral">&#39;.eps&#39;</span>,<span class="stringliteral">&#39;.jpg&#39;</span>] :</div>
+<div class="line"><span class="lineno">   95</span>    temp = name+x</div>
+<div class="line"><span class="lineno">   96</span>    atc.Print(temp)</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> x!=<span class="stringliteral">&#39;.jpg&#39;</span>:</div>
+<div class="line"><span class="lineno">   98</span>      os.system(<span class="stringliteral">&#39;cp &#39;</span>+temp+<span class="stringliteral">&#39; &#39;</span>+Work)</div>
+<div class="line"><span class="lineno">   99</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -642,40 +642,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00013">13</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span><span class="keyword">def </span>readHists(h,fname,wanted=[]):</div>
-<div class="line"><span class="lineno">   14</span>  <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><span class="lineno">   15</span>    eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+fname</div>
-<div class="line"><span class="lineno">   16</span>    f = TFile.Open(eospath)</div>
-<div class="line"><span class="lineno">   17</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   18</span>    f = TFile(fname)</div>
-<div class="line"><span class="lineno">   19</span>  <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
-<div class="line"><span class="lineno">   20</span>    name  =  akey.GetName()</div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">try</span>:     hname = int(name)</div>
-<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">except</span>:  hname = name</div>
-<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">if</span> len(wanted)&gt;0:</div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hname <span class="keywordflow">in</span> wanted: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   25</span>    obj = akey.ReadObj()</div>
-<div class="line"><span class="lineno">   26</span>    cln = obj.Class().GetName()</div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TCanv&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   28</span>       h[hname] =  obj.Clone()</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">if</span> cln.find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> hname <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">   31</span>       rc = h[hname].Add(obj)</div>
-<div class="line"><span class="lineno">   32</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: print(<span class="stringliteral">&quot;Error when adding histogram &quot;</span>,hname)</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   34</span>      h[hname] =  obj.Clone()</div>
-<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">if</span> h[hname].GetSumw2N()==0 : h[hname].Sumw2()</div>
-<div class="line"><span class="lineno">   36</span>    h[hname].SetDirectory(gROOT)</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> cln == <span class="stringliteral">&#39;TH2D&#39;</span> <span class="keywordflow">or</span> cln == <span class="stringliteral">&#39;TH2F&#39;</span>:</div>
-<div class="line"><span class="lineno">   38</span>         <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [ <span class="stringliteral">&#39;_projx&#39;</span>,<span class="stringliteral">&#39;_projy&#39;</span>]:</div>
-<div class="line"><span class="lineno">   39</span>           <span class="keywordflow">if</span> type(hname) == str: projname = hname+p</div>
-<div class="line"><span class="lineno">   40</span>           <span class="keywordflow">else</span>: projname = str(hname)+p</div>
-<div class="line"><span class="lineno">   41</span>           <span class="keywordflow">if</span> p.find(<span class="stringliteral">&#39;x&#39;</span>)&gt;-1: h[projname] = h[hname].ProjectionX()</div>
-<div class="line"><span class="lineno">   42</span>           <span class="keywordflow">else</span>             : h[projname] = h[hname].ProjectionY()</div>
-<div class="line"><span class="lineno">   43</span>           h[projname].SetName(name+p)</div>
-<div class="line"><span class="lineno">   44</span>           h[projname].SetDirectory(gROOT)</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span></div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00016">16</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span><span class="keyword">def </span>readHists(h,fname,wanted=[]):</div>
+<div class="line"><span class="lineno">   17</span>  <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
+<div class="line"><span class="lineno">   18</span>    eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+fname</div>
+<div class="line"><span class="lineno">   19</span>    f = TFile.Open(eospath)</div>
+<div class="line"><span class="lineno">   20</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   21</span>    f = TFile(fname)</div>
+<div class="line"><span class="lineno">   22</span>  <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
+<div class="line"><span class="lineno">   23</span>    name  =  akey.GetName()</div>
+<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">try</span>:     hname = int(name)</div>
+<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">except</span>:  hname = name</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> len(wanted)&gt;0:</div>
+<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hname <span class="keywordflow">in</span> wanted: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   28</span>    obj = akey.ReadObj()</div>
+<div class="line"><span class="lineno">   29</span>    cln = obj.Class().GetName()</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TCanv&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   31</span>       h[hname] =  obj.Clone()</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> cln.find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> hname <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">   34</span>       rc = h[hname].Add(obj)</div>
+<div class="line"><span class="lineno">   35</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: print(<span class="stringliteral">&quot;Error when adding histogram &quot;</span>,hname)</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   37</span>      h[hname] =  obj.Clone()</div>
+<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">if</span> h[hname].GetSumw2N()==0 : h[hname].Sumw2()</div>
+<div class="line"><span class="lineno">   39</span>    h[hname].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> cln == <span class="stringliteral">&#39;TH2D&#39;</span> <span class="keywordflow">or</span> cln == <span class="stringliteral">&#39;TH2F&#39;</span>:</div>
+<div class="line"><span class="lineno">   41</span>         <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [ <span class="stringliteral">&#39;_projx&#39;</span>,<span class="stringliteral">&#39;_projy&#39;</span>]:</div>
+<div class="line"><span class="lineno">   42</span>           <span class="keywordflow">if</span> type(hname) == str: projname = hname+p</div>
+<div class="line"><span class="lineno">   43</span>           <span class="keywordflow">else</span>: projname = str(hname)+p</div>
+<div class="line"><span class="lineno">   44</span>           <span class="keywordflow">if</span> p.find(<span class="stringliteral">&#39;x&#39;</span>)&gt;-1: h[projname] = h[hname].ProjectionX()</div>
+<div class="line"><span class="lineno">   45</span>           <span class="keywordflow">else</span>             : h[projname] = h[hname].ProjectionY()</div>
+<div class="line"><span class="lineno">   46</span>           h[projname].SetName(name+p)</div>
+<div class="line"><span class="lineno">   47</span>           h[projname].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -695,11 +695,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00080">80</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>reportError(s):</div>
-<div class="line"><span class="lineno">   81</span> l = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].log</div>
-<div class="line"><span class="lineno">   82</span> <span class="keywordflow">if</span> s <span class="keywordflow">not</span> <span class="keywordflow">in</span> l: l[s]=0</div>
-<div class="line"><span class="lineno">   83</span> l[s]+=1</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00083">83</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span>reportError(s):</div>
+<div class="line"><span class="lineno">   84</span> l = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].log</div>
+<div class="line"><span class="lineno">   85</span> <span class="keywordflow">if</span> s <span class="keywordflow">not</span> <span class="keywordflow">in</span> l: l[s]=0</div>
+<div class="line"><span class="lineno">   86</span> l[s]+=1</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -735,18 +735,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00097">97</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span><span class="keyword">def </span>setAttributes(pyl,leaves,printout=False):</div>
-<div class="line"><span class="lineno">   98</span>  names = {}</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> printout: print(<span class="stringliteral">&#39;entries&#39;</span>,leaves.GetEntries())</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,leaves.GetEntries() ) :</div>
-<div class="line"><span class="lineno">  101</span>    leaf = leaves.At(i)</div>
-<div class="line"><span class="lineno">  102</span>    name = leaf.GetName()</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> printout: print(name)</div>
-<div class="line"><span class="lineno">  104</span>    names[name]=i</div>
-<div class="line"><span class="lineno">  105</span>    pyl.__setattr__(name,leaf)</div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> names</div>
-<div class="line"><span class="lineno">  107</span><span class="comment"># read back</span></div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00100">100</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span><span class="keyword">def </span>setAttributes(pyl,leaves,printout=False):</div>
+<div class="line"><span class="lineno">  101</span>  names = {}</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> printout: print(<span class="stringliteral">&#39;entries&#39;</span>,leaves.GetEntries())</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,leaves.GetEntries() ) :</div>
+<div class="line"><span class="lineno">  104</span>    leaf = leaves.At(i)</div>
+<div class="line"><span class="lineno">  105</span>    name = leaf.GetName()</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> printout: print(name)</div>
+<div class="line"><span class="lineno">  107</span>    names[name]=i</div>
+<div class="line"><span class="lineno">  108</span>    pyl.__setattr__(name,leaf)</div>
+<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">return</span> names</div>
+<div class="line"><span class="lineno">  110</span><span class="comment"># read back</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -766,45 +766,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00143">143</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span><span class="keyword">def </span>stripOffBranches(fout):</div>
-<div class="line"><span class="lineno">  144</span>    f = TFile(fout)</div>
-<div class="line"><span class="lineno">  145</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  146</span>    nEvents = sTree.GetEntries()</div>
-<div class="line"><span class="lineno">  147</span>    strip = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  148</span>    oldTargetClass = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;SmearedHits&quot;</span>):</div>
-<div class="line"><span class="lineno">  150</span>         sTree.SetBranchStatus(<span class="stringliteral">&quot;SmearedHits&quot;</span>,0)</div>
-<div class="line"><span class="lineno">  151</span>         strip = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;TargetPoint&quot;</span>):</div>
-<div class="line"><span class="lineno">  153</span>         <span class="keywordflow">if</span> sTree.GetLeaf(<span class="stringliteral">&quot;cbmroot.Target.TargetPoint.fEmTop&quot;</span>): oldTargetClass = <span class="keyword">True</span> <span class="comment"># old class</span></div>
-<div class="line"><span class="lineno">  154</span>         <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  155</span>           <span class="keywordflow">for</span> x <span class="keywordflow">in</span> sTree.GetListOfLeaves():</div>
-<div class="line"><span class="lineno">  156</span>              <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.GetName().find(<span class="stringliteral">&quot;TargetPoint&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  157</span>               b = x.GetBranch().GetName()</div>
-<div class="line"><span class="lineno">  158</span>               sTree.SetBranchStatus(b,0)</div>
-<div class="line"><span class="lineno">  159</span>         strip = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> strip: <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  161</span>    sFile = fout.replace(<span class="stringliteral">&quot;_rec.root&quot;</span>,<span class="stringliteral">&quot;_recs.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  162</span>    recf = TFile(sFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> oldTargetClass: newTree = sTree.CloneTree(-1,<span class="stringliteral">&#39;fast&#39;</span>)</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  165</span>     newTree = sTree.CloneTree(0)</div>
-<div class="line"><span class="lineno">  166</span>     <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
-<div class="line"><span class="lineno">  167</span>      sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">  168</span>      <span class="keywordflow">if</span> oldTargetClass: sTree.TargetPoint.Clear()</div>
-<div class="line"><span class="lineno">  169</span>      rc = newTree.Fill()</div>
-<div class="line"><span class="lineno">  170</span>      sTree.FitTracks.Delete() <span class="comment"># stupid ROOT or whoever, otherwise huge memory leak, does not help</span></div>
-<div class="line"><span class="lineno">  171</span>    sTree.Clear()</div>
-<div class="line"><span class="lineno">  172</span>    newTree.AutoSave()</div>
-<div class="line"><span class="lineno">  173</span>    f.Close()</div>
-<div class="line"><span class="lineno">  174</span>    recf.Close()</div>
-<div class="line"><span class="lineno">  175</span>    <span class="comment"># should do some sanity checks before deleting old file</span></div>
-<div class="line"><span class="lineno">  176</span>    f = TFile(sFile)</div>
-<div class="line"><span class="lineno">  177</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">if</span> nEvents == sTree.GetEntries(): print(<span class="stringliteral">&quot;looks ok, could be deleted&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">else</span>:  print(<span class="stringliteral">&quot;stripping failed, keep old file&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
-<div class="line"><span class="lineno">  180</span>    <span class="comment"># os.system(&#39;mv &#39;+sFile +&#39; &#39;+fout)</span></div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00146">146</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  146</span><span class="keyword">def </span>stripOffBranches(fout):</div>
+<div class="line"><span class="lineno">  147</span>    f = TFile(fout)</div>
+<div class="line"><span class="lineno">  148</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  149</span>    nEvents = sTree.GetEntries()</div>
+<div class="line"><span class="lineno">  150</span>    strip = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  151</span>    oldTargetClass = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;SmearedHits&quot;</span>):</div>
+<div class="line"><span class="lineno">  153</span>         sTree.SetBranchStatus(<span class="stringliteral">&quot;SmearedHits&quot;</span>,0)</div>
+<div class="line"><span class="lineno">  154</span>         strip = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;TargetPoint&quot;</span>):</div>
+<div class="line"><span class="lineno">  156</span>         <span class="keywordflow">if</span> sTree.GetLeaf(<span class="stringliteral">&quot;cbmroot.Target.TargetPoint.fEmTop&quot;</span>): oldTargetClass = <span class="keyword">True</span> <span class="comment"># old class</span></div>
+<div class="line"><span class="lineno">  157</span>         <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  158</span>           <span class="keywordflow">for</span> x <span class="keywordflow">in</span> sTree.GetListOfLeaves():</div>
+<div class="line"><span class="lineno">  159</span>              <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.GetName().find(<span class="stringliteral">&quot;TargetPoint&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  160</span>               b = x.GetBranch().GetName()</div>
+<div class="line"><span class="lineno">  161</span>               sTree.SetBranchStatus(b,0)</div>
+<div class="line"><span class="lineno">  162</span>         strip = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> strip: <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  164</span>    sFile = fout.replace(<span class="stringliteral">&quot;_rec.root&quot;</span>,<span class="stringliteral">&quot;_recs.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  165</span>    recf = TFile(sFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> oldTargetClass: newTree = sTree.CloneTree(-1,<span class="stringliteral">&#39;fast&#39;</span>)</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  168</span>     newTree = sTree.CloneTree(0)</div>
+<div class="line"><span class="lineno">  169</span>     <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
+<div class="line"><span class="lineno">  170</span>      sTree.GetEntry(n)</div>
+<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">if</span> oldTargetClass: sTree.TargetPoint.Clear()</div>
+<div class="line"><span class="lineno">  172</span>      rc = newTree.Fill()</div>
+<div class="line"><span class="lineno">  173</span>      sTree.FitTracks.Delete() <span class="comment"># stupid ROOT or whoever, otherwise huge memory leak, does not help</span></div>
+<div class="line"><span class="lineno">  174</span>    sTree.Clear()</div>
+<div class="line"><span class="lineno">  175</span>    newTree.AutoSave()</div>
+<div class="line"><span class="lineno">  176</span>    f.Close()</div>
+<div class="line"><span class="lineno">  177</span>    recf.Close()</div>
+<div class="line"><span class="lineno">  178</span>    <span class="comment"># should do some sanity checks before deleting old file</span></div>
+<div class="line"><span class="lineno">  179</span>    f = TFile(sFile)</div>
+<div class="line"><span class="lineno">  180</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> nEvents == sTree.GetEntries(): print(<span class="stringliteral">&quot;looks ok, could be deleted&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">else</span>:  print(<span class="stringliteral">&quot;stripping failed, keep old file&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
+<div class="line"><span class="lineno">  183</span>    <span class="comment"># os.system(&#39;mv &#39;+sFile +&#39; &#39;+fout)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -840,15 +840,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00065">65</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>writeHists(h,fname,plusCanvas=False):</div>
-<div class="line"><span class="lineno">   66</span>  f = TFile(fname,<span class="stringliteral">&#39;RECREATE&#39;</span>)</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey],<span class="stringliteral">&#39;Class&#39;</span>): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   69</span>    cln = h[akey].Class().GetName()</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TP&#39;</span>)&lt;0:   h[akey].Write()</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> plusCanvas <span class="keywordflow">and</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TC&#39;</span>)&lt;0:   h[akey].Write()</div>
-<div class="line"><span class="lineno">   72</span>  f.Close()</div>
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00068">68</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span><span class="keyword">def </span>writeHists(h,fname,plusCanvas=False):</div>
+<div class="line"><span class="lineno">   69</span>  f = TFile(fname,<span class="stringliteral">&#39;RECREATE&#39;</span>)</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey],<span class="stringliteral">&#39;Class&#39;</span>): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   72</span>    cln = h[akey].Class().GetName()</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TP&#39;</span>)&lt;0:   h[akey].Write()</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> plusCanvas <span class="keywordflow">and</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&#39;TC&#39;</span>)&lt;0:   h[akey].Write()</div>
+<div class="line"><span class="lineno">   75</span>  f.Close()</div>
 </div><!-- fragment -->
 </div>
 </div>

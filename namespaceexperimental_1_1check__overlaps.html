@@ -117,30 +117,30 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Check for overlaps quickly.</pre> 
-<p class="definition">Definition at line <a class="el" href="check__overlaps_8py_source.html#l00009">9</a> of file <a class="el" href="check__overlaps_8py_source.html">check_overlaps.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
-<div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;&quot;&quot;Check for overlaps quickly.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   11</span>    parser = argparse.ArgumentParser(description=__doc__)</div>
-<div class="line"><span class="lineno">   12</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   13</span>        <span class="stringliteral">&quot;-g&quot;</span>,</div>
-<div class="line"><span class="lineno">   14</span>        <span class="stringliteral">&quot;--geofile&quot;</span>,</div>
-<div class="line"><span class="lineno">   15</span>        help=<span class="stringliteral">&quot;&quot;&quot;Geometry file to use.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&quot;&quot;&quot;Supports retrieving files from EOS via the XRootD protocol.&quot;&quot;&quot;</span>,</div>
-<div class="line"><span class="lineno">   17</span>        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">   18</span>    )</div>
-<div class="line"><span class="lineno">   19</span>    args = parser.parse_args()</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keyword">with</span> ROOT.TFile.Open(args.geofile) <span class="keyword">as</span> geofile:</div>
-<div class="line"><span class="lineno">   21</span>        geo_manager = geofile.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
-<div class="line"><span class="lineno">   22</span>        geo_manager.SetNmeshPoints(10000)</div>
-<div class="line"><span class="lineno">   23</span>        geo_manager.CheckOverlaps(0.1)  <span class="comment"># 1 micron takes 5minutes</span></div>
-<div class="line"><span class="lineno">   24</span>        geo_manager.PrintOverlaps()</div>
-<div class="line"><span class="lineno">   25</span>        <span class="comment"># check subsystems in more detail</span></div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">for</span> node <span class="keywordflow">in</span> geo_manager.GetTopNode().GetNodes():</div>
-<div class="line"><span class="lineno">   27</span>            node.CheckOverlaps(0.0001)</div>
-<div class="line"><span class="lineno">   28</span>            geo_manager.PrintOverlaps()</div>
-<div class="line"><span class="lineno">   29</span> </div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
+<p class="definition">Definition at line <a class="el" href="check__overlaps_8py_source.html#l00012">12</a> of file <a class="el" href="check__overlaps_8py_source.html">check_overlaps.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="line"><span class="lineno">   13</span>    <span class="stringliteral">&quot;&quot;&quot;Check for overlaps quickly.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   14</span>    parser = argparse.ArgumentParser(description=__doc__)</div>
+<div class="line"><span class="lineno">   15</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&quot;-g&quot;</span>,</div>
+<div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot;--geofile&quot;</span>,</div>
+<div class="line"><span class="lineno">   18</span>        help=<span class="stringliteral">&quot;&quot;&quot;Geometry file to use.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   19</span>        <span class="stringliteral">&quot;&quot;&quot;Supports retrieving files from EOS via the XRootD protocol.&quot;&quot;&quot;</span>,</div>
+<div class="line"><span class="lineno">   20</span>        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   21</span>    )</div>
+<div class="line"><span class="lineno">   22</span>    args = parser.parse_args()</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keyword">with</span> ROOT.TFile.Open(args.geofile) <span class="keyword">as</span> geofile:</div>
+<div class="line"><span class="lineno">   24</span>        geo_manager = geofile.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
+<div class="line"><span class="lineno">   25</span>        geo_manager.SetNmeshPoints(10000)</div>
+<div class="line"><span class="lineno">   26</span>        geo_manager.CheckOverlaps(0.1)  <span class="comment"># 1 micron takes 5minutes</span></div>
+<div class="line"><span class="lineno">   27</span>        geo_manager.PrintOverlaps()</div>
+<div class="line"><span class="lineno">   28</span>        <span class="comment"># check subsystems in more detail</span></div>
+<div class="line"><span class="lineno">   29</span>        <span class="keywordflow">for</span> node <span class="keywordflow">in</span> geo_manager.GetTopNode().GetNodes():</div>
+<div class="line"><span class="lineno">   30</span>            node.CheckOverlaps(0.0001)</div>
+<div class="line"><span class="lineno">   31</span>            geo_manager.PrintOverlaps()</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

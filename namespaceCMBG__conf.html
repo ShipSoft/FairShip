@@ -127,25 +127,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CMBG__conf_8py_source.html#l00004">4</a> of file <a class="el" href="CMBG__conf_8py_source.html">CMBG_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    4</span><span class="keyword">def </span>configure(CMBG, ship_geo):</div>
-<div class="line"><span class="lineno">    5</span>    <span class="comment">#handles external variables for the Cosmic Muon Background Generator within FairShip</span></div>
-<div class="line"><span class="lineno">    6</span>    Z1 = ship_geo.MuonStation3.z <span class="comment"># 3900</span></div>
-<div class="line"><span class="lineno">    7</span>    Z2 = ship_geo.vetoStation.z <span class="comment"># -1968</span></div>
-<div class="line"><span class="lineno">    8</span>    Z3 = ship_geo.chambers.Tub1length <span class="comment"># 250</span></div>
-<div class="line"><span class="lineno">    9</span>    zmiddle = (Z1 + (Z2-2*Z3))/2 <span class="comment"># 716</span></div>
-<div class="line"><span class="lineno">   10</span> </div>
-<div class="line"><span class="lineno">   11</span>    <span class="comment"># CMBG production area</span></div>
-<div class="line"><span class="lineno">   12</span>    CMBG.xdist = 3000 <span class="comment"># production area size [cm]</span></div>
-<div class="line"><span class="lineno">   13</span>    CMBG.zdist = 9000 <span class="comment"># production area size [cm]</span></div>
-<div class="line"><span class="lineno">   14</span>    <span class="comment"># DetectorBox</span></div>
-<div class="line"><span class="lineno">   15</span>    CMBG.yBox = 600 <span class="comment"># box top layer [cm]</span></div>
-<div class="line"><span class="lineno">   16</span>    CMBG.xBox = 300 <span class="comment"># box side layer [cm]</span></div>
-<div class="line"><span class="lineno">   17</span>    CMBG.zBox = 3650 <span class="comment"># box length [cm]</span></div>
-<div class="line"><span class="lineno">   18</span>    CMBG.z0 = zmiddle <span class="comment"># relative coordinate system [cm] (Z_muonstation + (Z_veto - 2 * Z_Tub1))/2,... Z_veto &lt;0 ! -&gt;z0 = 716, sets the middle of the production area</span></div>
-<div class="line"><span class="lineno">   19</span>    <span class="comment">#setup</span></div>
-<div class="line"><span class="lineno">   20</span>    CMBG.n_EVENTS = 400000; <span class="comment"># #simulated events per &quot;spill&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>    CMBG.minE = 1.0 <span class="comment">#low energy limit for the Low-energy simulation [GeV]</span></div>
+<p class="definition">Definition at line <a class="el" href="CMBG__conf_8py_source.html#l00007">7</a> of file <a class="el" href="CMBG__conf_8py_source.html">CMBG_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>configure(CMBG, ship_geo):</div>
+<div class="line"><span class="lineno">    8</span>    <span class="comment">#handles external variables for the Cosmic Muon Background Generator within FairShip</span></div>
+<div class="line"><span class="lineno">    9</span>    Z1 = ship_geo.MuonStation3.z <span class="comment"># 3900</span></div>
+<div class="line"><span class="lineno">   10</span>    Z2 = ship_geo.vetoStation.z <span class="comment"># -1968</span></div>
+<div class="line"><span class="lineno">   11</span>    Z3 = ship_geo.chambers.Tub1length <span class="comment"># 250</span></div>
+<div class="line"><span class="lineno">   12</span>    zmiddle = (Z1 + (Z2-2*Z3))/2 <span class="comment"># 716</span></div>
+<div class="line"><span class="lineno">   13</span> </div>
+<div class="line"><span class="lineno">   14</span>    <span class="comment"># CMBG production area</span></div>
+<div class="line"><span class="lineno">   15</span>    CMBG.xdist = 3000 <span class="comment"># production area size [cm]</span></div>
+<div class="line"><span class="lineno">   16</span>    CMBG.zdist = 9000 <span class="comment"># production area size [cm]</span></div>
+<div class="line"><span class="lineno">   17</span>    <span class="comment"># DetectorBox</span></div>
+<div class="line"><span class="lineno">   18</span>    CMBG.yBox = 600 <span class="comment"># box top layer [cm]</span></div>
+<div class="line"><span class="lineno">   19</span>    CMBG.xBox = 300 <span class="comment"># box side layer [cm]</span></div>
+<div class="line"><span class="lineno">   20</span>    CMBG.zBox = 3650 <span class="comment"># box length [cm]</span></div>
+<div class="line"><span class="lineno">   21</span>    CMBG.z0 = zmiddle <span class="comment"># relative coordinate system [cm] (Z_muonstation + (Z_veto - 2 * Z_Tub1))/2,... Z_veto &lt;0 ! -&gt;z0 = 716, sets the middle of the production area</span></div>
+<div class="line"><span class="lineno">   22</span>    <span class="comment">#setup</span></div>
+<div class="line"><span class="lineno">   23</span>    CMBG.n_EVENTS = 400000; <span class="comment"># #simulated events per &quot;spill&quot;</span></div>
+<div class="line"><span class="lineno">   24</span>    CMBG.minE = 1.0 <span class="comment">#low energy limit for the Low-energy simulation [GeV]</span></div>
 </div><!-- fragment -->
 </div>
 </div>

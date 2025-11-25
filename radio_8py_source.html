@@ -97,44 +97,47 @@ $(document).ready(function(){initNavTree('radio_8py_source.html',''); initResiza
   <div class="headertitle"><div class="title">radio.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="radio_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceradio.html">    1</a></span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno"><a class="line" href="namespaceradio.html#a185405eec7acfdb148448e1a9c76b5ea">    2</a></span>path = <span class="stringliteral">&quot;./&quot;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespaceradio.html#a92e85d36be1cc38c04f2bbed33a0913f">    3</a></span>fs = [<span class="stringliteral">&#39;ship.10.0.nuRadiography-TGeant4.root&#39;</span>]</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>ROOT.gROOT.cd()</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespaceradio.html#a92830a3bb7c5b570eb1ad004b252acfe">    5</a></span>myHist = ROOT.TH3F(<span class="stringliteral">&#39;myh&#39;</span>,<span class="stringliteral">&#39;radio&#39;</span>,500,-10000,10000,100,-300,300,100,-600,600)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceradio.html#a2173c1232cd54d49a5435ae267c4f764">    6</a></span>myHist2 = ROOT.TH3F(<span class="stringliteral">&#39;myh2&#39;</span>,<span class="stringliteral">&#39;radio&#39;</span>,500,-3000,3000,100,-300,300,100,-600,600)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> fs:</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceradio.html#aaba2c30e22cbd7e66dd5ca45122fb87c">    9</a></span>  fl = ROOT.TFile(path+x)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceradio.html#a21d612c97d4258591273bae6c081de92">   10</a></span>  sTree = fl.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  ROOT.gROOT.cd()</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceradio.html#a28c894dea59a38f01b6fefc7deb3668d">   13</a></span>    rc=sTree.GetEvent(n)</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceradio.html#acee94e200c829ee5b7c9a40f760e602d">   14</a></span>    nu = sTree.MCTrack[0]</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    myHist.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    myHist2.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  fl.Close()</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>myHist.SetStats(0)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>myHist.SetXTitle(<span class="stringliteral">&#39;Z [m]&#39;</span>)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>myHist.SetZTitle(<span class="stringliteral">&#39;Y [m]&#39;</span>)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>myHist.SetYTitle(<span class="stringliteral">&#39;X [m]&#39;</span>)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespaceradio.html#a4fdb86116c516600a808ac90997045df">   23</a></span>c1 = ROOT.gROOT.FindObject(<span class="stringliteral">&#39;c1&#39;</span>)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>myHist.Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>c1.Print(<span class="stringliteral">&#39;radio.png&#39;</span>)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceradio.html#ab7c39f1cdc8e36e629ff6f558d5f6abd">   26</a></span>myHistxy = myHist.Project3D(<span class="stringliteral">&#39;xy&#39;</span>)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespaceradio.html#ab04309b8d7f83e8b3e4344c5e7776c5b">   27</a></span>myHistxz = myHist.Project3D(<span class="stringliteral">&#39;xz&#39;</span>)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceradio.html#a805bb081d220b4620ab31116ca4eb039">   28</a></span>myHistyz = myHist.Project3D(<span class="stringliteral">&#39;yz&#39;</span>)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>myHistxy.SetStats(0)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>myHistxz.SetStats(0)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>myHistyz.SetStats(0)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>myHistxy.SetTitle(<span class="stringliteral">&#39;radio xz projection&#39;</span>)</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>myHistxy.Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>c1.Print(<span class="stringliteral">&#39;radioxz.png&#39;</span>)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>myHistxz.SetTitle(<span class="stringliteral">&#39;radio yz projection&#39;</span>)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>myHistxz.Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>c1.Print(<span class="stringliteral">&#39;radioyz.png&#39;</span>)</div>
+<a href="radio_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceradio.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespaceradio.html#a185405eec7acfdb148448e1a9c76b5ea">    5</a></span>path = <span class="stringliteral">&quot;./&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceradio.html#a92e85d36be1cc38c04f2bbed33a0913f">    6</a></span>fs = [<span class="stringliteral">&#39;ship.10.0.nuRadiography-TGeant4.root&#39;</span>]</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>ROOT.gROOT.cd()</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceradio.html#a92830a3bb7c5b570eb1ad004b252acfe">    8</a></span>myHist = ROOT.TH3F(<span class="stringliteral">&#39;myh&#39;</span>,<span class="stringliteral">&#39;radio&#39;</span>,500,-10000,10000,100,-300,300,100,-600,600)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceradio.html#a2173c1232cd54d49a5435ae267c4f764">    9</a></span>myHist2 = ROOT.TH3F(<span class="stringliteral">&#39;myh2&#39;</span>,<span class="stringliteral">&#39;radio&#39;</span>,500,-3000,3000,100,-300,300,100,-600,600)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> fs:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceradio.html#aaba2c30e22cbd7e66dd5ca45122fb87c">   12</a></span>  fl = ROOT.TFile(path+x)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceradio.html#a21d612c97d4258591273bae6c081de92">   13</a></span>  sTree = fl.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  ROOT.gROOT.cd()</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespaceradio.html#a28c894dea59a38f01b6fefc7deb3668d">   16</a></span>    rc=sTree.GetEvent(n)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespaceradio.html#acee94e200c829ee5b7c9a40f760e602d">   17</a></span>    nu = sTree.MCTrack[0]</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    myHist.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    myHist2.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  fl.Close()</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>myHist.SetStats(0)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>myHist.SetXTitle(<span class="stringliteral">&#39;Z [m]&#39;</span>)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>myHist.SetZTitle(<span class="stringliteral">&#39;Y [m]&#39;</span>)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>myHist.SetYTitle(<span class="stringliteral">&#39;X [m]&#39;</span>)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceradio.html#a4fdb86116c516600a808ac90997045df">   26</a></span>c1 = ROOT.gROOT.FindObject(<span class="stringliteral">&#39;c1&#39;</span>)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>myHist.Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>c1.Print(<span class="stringliteral">&#39;radio.png&#39;</span>)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="namespaceradio.html#ab7c39f1cdc8e36e629ff6f558d5f6abd">   29</a></span>myHistxy = myHist.Project3D(<span class="stringliteral">&#39;xy&#39;</span>)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespaceradio.html#ab04309b8d7f83e8b3e4344c5e7776c5b">   30</a></span>myHistxz = myHist.Project3D(<span class="stringliteral">&#39;xz&#39;</span>)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespaceradio.html#a805bb081d220b4620ab31116ca4eb039">   31</a></span>myHistyz = myHist.Project3D(<span class="stringliteral">&#39;yz&#39;</span>)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>myHistxy.SetStats(0)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>myHistxz.SetStats(0)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>myHistyz.SetStats(0)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>myHistxy.SetTitle(<span class="stringliteral">&#39;radio xz projection&#39;</span>)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>myHistxy.Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>c1.Print(<span class="stringliteral">&#39;radioxz.png&#39;</span>)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>myHistxz.SetTitle(<span class="stringliteral">&#39;radio yz projection&#39;</span>)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>myHistxz.Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>c1.Print(<span class="stringliteral">&#39;radioyz.png&#39;</span>)</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

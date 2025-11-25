@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00256">256</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00259">259</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a959cc710973f2b2e5ceb8f38b87f0259" name="a959cc710973f2b2e5ceb8f38b87f0259"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a959cc710973f2b2e5ceb8f38b87f0259">&#9670;&#160;</a></span>EndOfRunAction()</h2>
@@ -151,15 +151,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00259">259</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  259</span>  <span class="keyword">def </span>EndOfRunAction(self, run):</div>
-<div class="line"><span class="lineno">  260</span>    <span class="keyword">global</span> debug,nevTot</div>
-<div class="line"><span class="lineno">  261</span>    print(<span class="stringliteral">&quot;*** End of Run&quot;</span>)</div>
-<div class="line"><span class="lineno">  262</span>    print(<span class="stringliteral">&quot;- Run summary : (id= %d, #events= %d)&quot;</span> \</div>
-<div class="line"><span class="lineno">  263</span>          % (run.GetRunID(), nevTot))</div>
-<div class="line"><span class="lineno">  264</span>    h[<span class="stringliteral">&#39;ntuple&#39;</span>].Write()</div>
-<div class="line"><span class="lineno">  265</span>    print(<span class="stringliteral">&#39;ecut applied to&#39;</span>,allPart,qedlist,<span class="stringliteral">&#39; range cut for e,gamma:&#39;</span>,rangeCut)</div>
-<div class="line"><span class="lineno">  266</span><span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00262">262</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  262</span>  <span class="keyword">def </span>EndOfRunAction(self, run):</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keyword">global</span> debug,nevTot</div>
+<div class="line"><span class="lineno">  264</span>    print(<span class="stringliteral">&quot;*** End of Run&quot;</span>)</div>
+<div class="line"><span class="lineno">  265</span>    print(<span class="stringliteral">&quot;- Run summary : (id= %d, #events= %d)&quot;</span> \</div>
+<div class="line"><span class="lineno">  266</span>          % (run.GetRunID(), nevTot))</div>
+<div class="line"><span class="lineno">  267</span>    h[<span class="stringliteral">&#39;ntuple&#39;</span>].Write()</div>
+<div class="line"><span class="lineno">  268</span>    print(<span class="stringliteral">&#39;ecut applied to&#39;</span>,allPart,qedlist,<span class="stringliteral">&#39; range cut for e,gamma:&#39;</span>,rangeCut)</div>
+<div class="line"><span class="lineno">  269</span><span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>

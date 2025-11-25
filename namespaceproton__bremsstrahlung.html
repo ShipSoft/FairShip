@@ -187,13 +187,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Differential A' rate per p.o.t. as a function of P and theta </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00124">124</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span><span class="keyword">def </span>dNdPdTheta(p, theta, mDarkPhoton, epsilon):</div>
-<div class="line"><span class="lineno">  125</span>    <span class="stringliteral">&quot;&quot;&quot; Differential A&#39; rate per p.o.t. as a function of P and theta &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  126</span>    diffRate = dNdZdPtSquare(p,mDarkPhoton,theta,epsilon) * dPt2dTheta(p,theta) * dZdP(p,theta)</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> math.fabs(diffRate) <span class="comment"># integrating in (-pi, pi)...</span></div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00127">127</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span><span class="keyword">def </span>dNdPdTheta(p, theta, mDarkPhoton, epsilon):</div>
+<div class="line"><span class="lineno">  128</span>    <span class="stringliteral">&quot;&quot;&quot; Differential A&#39; rate per p.o.t. as a function of P and theta &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  129</span>    diffRate = dNdZdPtSquare(p,mDarkPhoton,theta,epsilon) * dPt2dTheta(p,theta) * dZdP(p,theta)</div>
+<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">return</span> math.fabs(diffRate) <span class="comment"># integrating in (-pi, pi)...</span></div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -235,12 +235,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Differential A' rate per p.o.t. as a function of Z and Pt^2 </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00108">108</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span><span class="keyword">def </span>dNdZdPtSquare(p, mDarkPhoton, theta, epsilon):</div>
-<div class="line"><span class="lineno">  109</span>    <span class="stringliteral">&quot;&quot;&quot; Differential A&#39; rate per p.o.t. as a function of Z and Pt^2 &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">return</span> sigmaRatio(p,mDarkPhoton)*wba(p,theta,mDarkPhoton,epsilon)</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00111">111</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span><span class="keyword">def </span>dNdZdPtSquare(p, mDarkPhoton, theta, epsilon):</div>
+<div class="line"><span class="lineno">  112</span>    <span class="stringliteral">&quot;&quot;&quot; Differential A&#39; rate per p.o.t. as a function of Z and Pt^2 &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">return</span> sigmaRatio(p,mDarkPhoton)*wba(p,theta,mDarkPhoton,epsilon)</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,13 +270,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Jacobian Pt^2-&gt;theta </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00113">113</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span><span class="keyword">def </span>dPt2dTheta(p, theta):</div>
-<div class="line"><span class="lineno">  114</span>    <span class="stringliteral">&quot;&quot;&quot; Jacobian Pt^2-&gt;theta &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  115</span>    z2 = pow(zeta(p,theta),2.)</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> 2.*theta*z2*protonMomentum*protonMomentum</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00116">116</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span><span class="keyword">def </span>dPt2dTheta(p, theta):</div>
+<div class="line"><span class="lineno">  117</span>    <span class="stringliteral">&quot;&quot;&quot; Jacobian Pt^2-&gt;theta &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  118</span>    z2 = pow(zeta(p,theta),2.)</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> 2.*theta*z2*protonMomentum*protonMomentum</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -306,12 +306,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Jacobian z-&gt;p </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00119">119</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span><span class="keyword">def </span>dZdP(p, theta):</div>
-<div class="line"><span class="lineno">  120</span>    <span class="stringliteral">&quot;&quot;&quot; Jacobian z-&gt;p &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> 1./( protonMomentum* math.sqrt(theta*theta+1.) )</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00122">122</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span><span class="keyword">def </span>dZdP(p, theta):</div>
+<div class="line"><span class="lineno">  123</span>    <span class="stringliteral">&quot;&quot;&quot; Jacobian z-&gt;p &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span> 1./( protonMomentum* math.sqrt(theta*theta+1.) )</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -341,11 +341,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Compute energy from momentum and mass </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00033">33</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span><span class="keyword">def </span>energy(p,m):</div>
-<div class="line"><span class="lineno">   34</span>    <span class="stringliteral">&quot;&quot;&quot; Compute energy from momentum and mass &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> math.sqrt(p*p + m*m)</div>
-<div class="line"><span class="lineno">   36</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00036">36</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span><span class="keyword">def </span>energy(p,m):</div>
+<div class="line"><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot; Compute energy from momentum and mass &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> math.sqrt(p*p + m*m)</div>
+<div class="line"><span class="lineno">   39</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -375,12 +375,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> s(p,mA) </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00098">98</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span><span class="keyword">def </span>es(p, mDarkPhoton):</div>
-<div class="line"><span class="lineno">   99</span>    <span class="stringliteral">&quot;&quot;&quot; s(p,mA) &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> 2.*mProton*(energy(protonMomentum,mProton)-energy(p,mDarkPhoton))</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00101">101</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>es(p, mDarkPhoton):</div>
+<div class="line"><span class="lineno">  102</span>    <span class="stringliteral">&quot;&quot;&quot; s(p,mA) &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> 2.*mProton*(energy(protonMomentum,mProton)-energy(p,mDarkPhoton))</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -416,12 +416,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> A kinematic term </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00060">60</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span><span class="keyword">def </span>H(p, theta, mDarkPhoton):</div>
-<div class="line"><span class="lineno">   61</span>    <span class="stringliteral">&quot;&quot;&quot; A kinematic term &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> ptSquare(p,theta) + (1.-zeta(p,theta))*mDarkPhoton*mDarkPhoton + pow(zeta(p,theta),2.)*mProton*mProton</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00063">63</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>H(p, theta, mDarkPhoton):</div>
+<div class="line"><span class="lineno">   64</span>    <span class="stringliteral">&quot;&quot;&quot; A kinematic term &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> ptSquare(p,theta) + (1.-zeta(p,theta))*mDarkPhoton*mDarkPhoton + pow(zeta(p,theta),2.)*mProton*mProton</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -487,45 +487,45 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Histogram of the PDF for A' production in SHIP </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00164">164</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  164</span><span class="keyword">def </span>hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi, suffix=&quot;&quot;):</div>
-<div class="line"><span class="lineno">  165</span>    <span class="stringliteral">&quot;&quot;&quot; Histogram of the PDF for A&#39; production in SHIP &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  166</span>    angles = np.linspace(tmin,tmax,binstheta).tolist()</div>
-<div class="line"><span class="lineno">  167</span>    anglestep = 2.*(tmax - tmin)/binstheta</div>
-<div class="line"><span class="lineno">  168</span>    momentumStep = (pMax(mDarkPhoton)-pMin(mDarkPhoton))/(binsp-1)</div>
-<div class="line"><span class="lineno">  169</span>    momenta = np.linspace(pMin(mDarkPhoton),pMax(mDarkPhoton),binsp,endpoint=<span class="keyword">False</span>).tolist()</div>
-<div class="line"><span class="lineno">  170</span>    hPDF = r.TH2F(<span class="stringliteral">&quot;hPDF_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton) ,<span class="stringliteral">&quot;hPDF_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
-<div class="line"><span class="lineno">  171</span>        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep,</div>
-<div class="line"><span class="lineno">  172</span>        binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)</div>
-<div class="line"><span class="lineno">  173</span>    hPDF.SetTitle(<span class="stringliteral">&quot;PDF for A&#39; production (m_{A&#39;}=%s GeV, #epsilon =%s)&quot;</span>%(mDarkPhoton,epsilon))</div>
-<div class="line"><span class="lineno">  174</span>    hPDF.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  175</span>    hPDF.GetYaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
-<div class="line"><span class="lineno">  176</span>    hPDFtheta = r.TH1F(<span class="stringliteral">&quot;hPDFtheta_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
-<div class="line"><span class="lineno">  177</span>        <span class="stringliteral">&quot;hPDFtheta_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
-<div class="line"><span class="lineno">  178</span>        binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)</div>
-<div class="line"><span class="lineno">  179</span>    hPDFp = r.TH1F(<span class="stringliteral">&quot;hPDFp_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
-<div class="line"><span class="lineno">  180</span>        <span class="stringliteral">&quot;hPDFp_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
-<div class="line"><span class="lineno">  181</span>        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep)</div>
-<div class="line"><span class="lineno">  182</span>    hPDFp.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  183</span>    hPDFtheta.GetXaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">for</span> theta <span class="keywordflow">in</span> angles:</div>
-<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">for</span> p <span class="keywordflow">in</span> momenta:</div>
-<div class="line"><span class="lineno">  186</span>            w = normalisedProductionPDF(p,theta,mDarkPhoton,epsilon,norm)</div>
-<div class="line"><span class="lineno">  187</span>            hPDF.Fill(p,theta,w)</div>
-<div class="line"><span class="lineno">  188</span>            hPDFtheta.Fill(theta,w)</div>
-<div class="line"><span class="lineno">  189</span>            hPDFp.Fill(p,w)</div>
-<div class="line"><span class="lineno">  190</span>    hPdfFilename = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].options.outputDir+<span class="stringliteral">&quot;/ParaPhoton_eps%s_m%s%s.root&quot;</span>%(epsilon,mDarkPhoton,suffix)</div>
-<div class="line"><span class="lineno">  191</span>    outfile = r.TFile(hPdfFilename,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  192</span>    <span class="comment">#weight = hPDF.Integral(&quot;width&quot;)</span></div>
-<div class="line"><span class="lineno">  193</span>    <span class="comment">#print &quot;Weight = %3.3f&quot;%weight</span></div>
-<div class="line"><span class="lineno">  194</span>    <span class="comment">#hPDF.Scale(1./weight)</span></div>
-<div class="line"><span class="lineno">  195</span>    hPDF.Write()</div>
-<div class="line"><span class="lineno">  196</span>    hPDFp.Write()</div>
-<div class="line"><span class="lineno">  197</span>    hPDFtheta.Write()</div>
-<div class="line"><span class="lineno">  198</span>    outfile.Close()</div>
-<div class="line"><span class="lineno">  199</span>    del angles</div>
-<div class="line"><span class="lineno">  200</span>    del momenta</div>
-<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">return</span> hPDF</div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00167">167</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span><span class="keyword">def </span>hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi, suffix=&quot;&quot;):</div>
+<div class="line"><span class="lineno">  168</span>    <span class="stringliteral">&quot;&quot;&quot; Histogram of the PDF for A&#39; production in SHIP &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  169</span>    angles = np.linspace(tmin,tmax,binstheta).tolist()</div>
+<div class="line"><span class="lineno">  170</span>    anglestep = 2.*(tmax - tmin)/binstheta</div>
+<div class="line"><span class="lineno">  171</span>    momentumStep = (pMax(mDarkPhoton)-pMin(mDarkPhoton))/(binsp-1)</div>
+<div class="line"><span class="lineno">  172</span>    momenta = np.linspace(pMin(mDarkPhoton),pMax(mDarkPhoton),binsp,endpoint=<span class="keyword">False</span>).tolist()</div>
+<div class="line"><span class="lineno">  173</span>    hPDF = r.TH2F(<span class="stringliteral">&quot;hPDF_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton) ,<span class="stringliteral">&quot;hPDF_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
+<div class="line"><span class="lineno">  174</span>        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep,</div>
+<div class="line"><span class="lineno">  175</span>        binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)</div>
+<div class="line"><span class="lineno">  176</span>    hPDF.SetTitle(<span class="stringliteral">&quot;PDF for A&#39; production (m_{A&#39;}=%s GeV, #epsilon =%s)&quot;</span>%(mDarkPhoton,epsilon))</div>
+<div class="line"><span class="lineno">  177</span>    hPDF.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  178</span>    hPDF.GetYaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
+<div class="line"><span class="lineno">  179</span>    hPDFtheta = r.TH1F(<span class="stringliteral">&quot;hPDFtheta_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
+<div class="line"><span class="lineno">  180</span>        <span class="stringliteral">&quot;hPDFtheta_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
+<div class="line"><span class="lineno">  181</span>        binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)</div>
+<div class="line"><span class="lineno">  182</span>    hPDFp = r.TH1F(<span class="stringliteral">&quot;hPDFp_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
+<div class="line"><span class="lineno">  183</span>        <span class="stringliteral">&quot;hPDFp_eps%s_m%s&quot;</span>%(epsilon,mDarkPhoton),</div>
+<div class="line"><span class="lineno">  184</span>        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep)</div>
+<div class="line"><span class="lineno">  185</span>    hPDFp.GetXaxis().SetTitle(<span class="stringliteral">&quot;P_{A&#39;} [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  186</span>    hPDFtheta.GetXaxis().SetTitle(<span class="stringliteral">&quot;#theta_{A&#39;} [rad]&quot;</span>)</div>
+<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">for</span> theta <span class="keywordflow">in</span> angles:</div>
+<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">for</span> p <span class="keywordflow">in</span> momenta:</div>
+<div class="line"><span class="lineno">  189</span>            w = normalisedProductionPDF(p,theta,mDarkPhoton,epsilon,norm)</div>
+<div class="line"><span class="lineno">  190</span>            hPDF.Fill(p,theta,w)</div>
+<div class="line"><span class="lineno">  191</span>            hPDFtheta.Fill(theta,w)</div>
+<div class="line"><span class="lineno">  192</span>            hPDFp.Fill(p,w)</div>
+<div class="line"><span class="lineno">  193</span>    hPdfFilename = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].options.outputDir+<span class="stringliteral">&quot;/ParaPhoton_eps%s_m%s%s.root&quot;</span>%(epsilon,mDarkPhoton,suffix)</div>
+<div class="line"><span class="lineno">  194</span>    outfile = r.TFile(hPdfFilename,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  195</span>    <span class="comment">#weight = hPDF.Integral(&quot;width&quot;)</span></div>
+<div class="line"><span class="lineno">  196</span>    <span class="comment">#print &quot;Weight = %3.3f&quot;%weight</span></div>
+<div class="line"><span class="lineno">  197</span>    <span class="comment">#hPDF.Scale(1./weight)</span></div>
+<div class="line"><span class="lineno">  198</span>    hPDF.Write()</div>
+<div class="line"><span class="lineno">  199</span>    hPDFp.Write()</div>
+<div class="line"><span class="lineno">  200</span>    hPDFtheta.Write()</div>
+<div class="line"><span class="lineno">  201</span>    outfile.Close()</div>
+<div class="line"><span class="lineno">  202</span>    del angles</div>
+<div class="line"><span class="lineno">  203</span>    del momenta</div>
+<div class="line"><span class="lineno">  204</span>    <span class="keywordflow">return</span> hPDF</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -573,12 +573,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Probability density function for A' production in SHIP </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00159">159</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span><span class="keyword">def </span>normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):</div>
-<div class="line"><span class="lineno">  160</span>    <span class="stringliteral">&quot;&quot;&quot; Probability density function for A&#39; production in SHIP &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">return</span> (1. / norm) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00162">162</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span><span class="keyword">def </span>normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):</div>
+<div class="line"><span class="lineno">  163</span>    <span class="stringliteral">&quot;&quot;&quot; Probability density function for A&#39; production in SHIP &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">return</span> (1. / norm) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,15 +598,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Penalty factor for high masses - dipole form factor in the proton-A' vertex </pre><pre class="fragment"> m in GeV </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00037">37</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span><span class="keyword">def </span>penaltyFactor(m):</div>
-<div class="line"><span class="lineno">   38</span>    <span class="stringliteral">&quot;&quot;&quot; Penalty factor for high masses - dipole form factor in the proton-A&#39; vertex &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   39</span>    <span class="stringliteral">&quot;&quot;&quot; m in GeV &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> m*m&gt;0.71:</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span> math.pow(m*m/0.71,-4)</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">return</span> 1</div>
-<div class="line"><span class="lineno">   44</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00040">40</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span><span class="keyword">def </span>penaltyFactor(m):</div>
+<div class="line"><span class="lineno">   41</span>    <span class="stringliteral">&quot;&quot;&quot; Penalty factor for high masses - dipole form factor in the proton-A&#39; vertex &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="stringliteral">&quot;&quot;&quot; m in GeV &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> m*m&gt;0.71:</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">return</span> math.pow(m*m/0.71,-4)</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">return</span> 1</div>
+<div class="line"><span class="lineno">   47</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -626,12 +626,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00134">134</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span><span class="keyword">def </span>pMax(mDarkPhoton):</div>
-<div class="line"><span class="lineno">  135</span>    <span class="comment">#return min(0.86*protonMomentum, math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.))</span></div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">return</span> math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.)</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00137">137</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span><span class="keyword">def </span>pMax(mDarkPhoton):</div>
+<div class="line"><span class="lineno">  138</span>    <span class="comment">#return min(0.86*protonMomentum, math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.))</span></div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">return</span> math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.)</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -651,11 +651,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00130">130</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span><span class="keyword">def </span>pMin(mDarkPhoton):</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">return</span> max(0.14*protonMomentum, mDarkPhoton)</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00133">133</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span><span class="keyword">def </span>pMin(mDarkPhoton):</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">return</span> max(0.14*protonMomentum, mDarkPhoton)</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -697,27 +697,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> dNdPdTheta integrated over p and theta </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00139">139</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  139</span><span class="keyword">def </span>prodRate(mDarkPhoton, epsilon, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi):</div>
-<div class="line"><span class="lineno">  140</span>    <span class="stringliteral">&quot;&quot;&quot; dNdPdTheta integrated over p and theta &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  141</span>    integral = dblquad( dNdPdTheta, <span class="comment"># integrand</span></div>
-<div class="line"><span class="lineno">  142</span>                        tmin, tmax, <span class="comment"># theta boundaries (2nd argument of integrand)</span></div>
-<div class="line"><span class="lineno">  143</span>                        <span class="keyword">lambda</span> x: pMin(mDarkPhoton), <span class="keyword">lambda</span> x: pMax(mDarkPhoton), <span class="comment"># p boundaries (1st argument of integrand)</span></div>
-<div class="line"><span class="lineno">  144</span>                        args=(mDarkPhoton, epsilon) ) <span class="comment"># extra parameters to pass to integrand</span></div>
-<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">return</span> integral[0]</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span><span class="comment"># total production rate of A&#39;</span></div>
-<div class="line"><span class="lineno">  148</span><span class="comment">#norm = prodRate(1.1,3.e-7) #mDarkPhoton,epsilon)</span></div>
-<div class="line"><span class="lineno">  149</span><span class="comment"># number of A&#39; produced</span></div>
-<div class="line"><span class="lineno">  150</span><span class="comment"># numDarkPhotons = int(math.floor(norm*protonFlux))</span></div>
-<div class="line"><span class="lineno">  151</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  152</span><span class="comment"># print</span></div>
-<div class="line"><span class="lineno">  153</span><span class="comment"># print &quot;Epsilon \t %s&quot;%epsilon</span></div>
-<div class="line"><span class="lineno">  154</span><span class="comment"># print &quot;mDarkPhoton \t %s&quot;%mDarkPhoton</span></div>
-<div class="line"><span class="lineno">  155</span><span class="comment">#print &quot;A&#39; production rate per p.o.t: \t %.8g&quot;%norm</span></div>
-<div class="line"><span class="lineno">  156</span><span class="comment"># print &quot;Number of A&#39; produced in SHiP: \t %.8g&quot;%numDarkPhotons</span></div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00142">142</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span><span class="keyword">def </span>prodRate(mDarkPhoton, epsilon, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi):</div>
+<div class="line"><span class="lineno">  143</span>    <span class="stringliteral">&quot;&quot;&quot; dNdPdTheta integrated over p and theta &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  144</span>    integral = dblquad( dNdPdTheta, <span class="comment"># integrand</span></div>
+<div class="line"><span class="lineno">  145</span>                        tmin, tmax, <span class="comment"># theta boundaries (2nd argument of integrand)</span></div>
+<div class="line"><span class="lineno">  146</span>                        <span class="keyword">lambda</span> x: pMin(mDarkPhoton), <span class="keyword">lambda</span> x: pMax(mDarkPhoton), <span class="comment"># p boundaries (1st argument of integrand)</span></div>
+<div class="line"><span class="lineno">  147</span>                        args=(mDarkPhoton, epsilon) ) <span class="comment"># extra parameters to pass to integrand</span></div>
+<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">return</span> integral[0]</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span><span class="comment"># total production rate of A&#39;</span></div>
+<div class="line"><span class="lineno">  151</span><span class="comment">#norm = prodRate(1.1,3.e-7) #mDarkPhoton,epsilon)</span></div>
+<div class="line"><span class="lineno">  152</span><span class="comment"># number of A&#39; produced</span></div>
+<div class="line"><span class="lineno">  153</span><span class="comment"># numDarkPhotons = int(math.floor(norm*protonFlux))</span></div>
+<div class="line"><span class="lineno">  154</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  155</span><span class="comment"># print</span></div>
+<div class="line"><span class="lineno">  156</span><span class="comment"># print &quot;Epsilon \t %s&quot;%epsilon</span></div>
+<div class="line"><span class="lineno">  157</span><span class="comment"># print &quot;mDarkPhoton \t %s&quot;%mDarkPhoton</span></div>
+<div class="line"><span class="lineno">  158</span><span class="comment">#print &quot;A&#39; production rate per p.o.t: \t %.8g&quot;%norm</span></div>
+<div class="line"><span class="lineno">  159</span><span class="comment"># print &quot;Number of A&#39; produced in SHiP: \t %.8g&quot;%numDarkPhotons</span></div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -747,12 +747,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Paraphoton transverse momentum in the lab frame </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00050">50</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>pTransverse(p, theta):</div>
-<div class="line"><span class="lineno">   51</span>    <span class="stringliteral">&quot;&quot;&quot; Paraphoton transverse momentum in the lab frame &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> protonMomentum*theta*zeta(p,theta)</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00053">53</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>pTransverse(p, theta):</div>
+<div class="line"><span class="lineno">   54</span>    <span class="stringliteral">&quot;&quot;&quot; Paraphoton transverse momentum in the lab frame &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> protonMomentum*theta*zeta(p,theta)</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -782,12 +782,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Square paraphoton transverse momentum in the lab frame </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00055">55</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span><span class="keyword">def </span>ptSquare(p, theta):</div>
-<div class="line"><span class="lineno">   56</span>    <span class="stringliteral">&quot;&quot;&quot; Square paraphoton transverse momentum in the lab frame &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> pow(pTransverse(p,theta), 2.)</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00058">58</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span>ptSquare(p, theta):</div>
+<div class="line"><span class="lineno">   59</span>    <span class="stringliteral">&quot;&quot;&quot; Square paraphoton transverse momentum in the lab frame &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> pow(pTransverse(p,theta), 2.)</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -807,25 +807,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> From https://arxiv.org/abs/0910.5589 </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00015">15</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span><span class="keyword">def </span>rhoFormFactor(m):</div>
-<div class="line"><span class="lineno">   16</span>     <span class="stringliteral">&quot;&quot;&quot; From https://arxiv.org/abs/0910.5589 &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   17</span>     <span class="comment">#constants from the code from Inar: https://github.com/pgdeniverville/BdNMC/blob/master/src/Proton_Brem_Distribution.cpp</span></div>
-<div class="line"><span class="lineno">   18</span>     f1ra = 0.6165340033101271</div>
-<div class="line"><span class="lineno">   19</span>     f1rb = 0.22320420111672623</div>
-<div class="line"><span class="lineno">   20</span>     f1rc = -0.33973820442685326</div>
-<div class="line"><span class="lineno">   21</span>     f1wa = 1.0117544786579074</div>
-<div class="line"><span class="lineno">   22</span>     f1wb = -0.8816565944110686</div>
-<div class="line"><span class="lineno">   23</span>     f1wc = 0.3699021157531611</div>
-<div class="line"><span class="lineno">   24</span>     f1prho = f1ra*0.77**2/(0.77**2-m**2-0.77*0.15j)</div>
-<div class="line"><span class="lineno">   25</span>     f1prhop = f1rb*1.25**2/(1.25**2-m**2-1.25*0.3j)</div>
-<div class="line"><span class="lineno">   26</span>     f1prhopp = f1rc*1.45**2/(1.45**2-m**2-1.45*0.5j)</div>
-<div class="line"><span class="lineno">   27</span>     f1pomega = f1wa*0.77**2/(0.77**2-m**2-0.77*0.0085j)</div>
-<div class="line"><span class="lineno">   28</span>     f1pomegap = f1wb*1.25**2/(1.25**2-m**2-1.25*0.3j)</div>
-<div class="line"><span class="lineno">   29</span>     f1pomegapp = f1wc*1.45**2/(1.45**2-m**2-1.45*0.5j)</div>
-<div class="line"><span class="lineno">   30</span>     <span class="keywordflow">return</span> abs(f1prho+f1prhop+f1prhopp+f1pomega+f1pomegap+f1pomegapp)</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span><span class="comment"># useful functions</span></div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00018">18</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>rhoFormFactor(m):</div>
+<div class="line"><span class="lineno">   19</span>     <span class="stringliteral">&quot;&quot;&quot; From https://arxiv.org/abs/0910.5589 &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   20</span>     <span class="comment">#constants from the code from Inar: https://github.com/pgdeniverville/BdNMC/blob/master/src/Proton_Brem_Distribution.cpp</span></div>
+<div class="line"><span class="lineno">   21</span>     f1ra = 0.6165340033101271</div>
+<div class="line"><span class="lineno">   22</span>     f1rb = 0.22320420111672623</div>
+<div class="line"><span class="lineno">   23</span>     f1rc = -0.33973820442685326</div>
+<div class="line"><span class="lineno">   24</span>     f1wa = 1.0117544786579074</div>
+<div class="line"><span class="lineno">   25</span>     f1wb = -0.8816565944110686</div>
+<div class="line"><span class="lineno">   26</span>     f1wc = 0.3699021157531611</div>
+<div class="line"><span class="lineno">   27</span>     f1prho = f1ra*0.77**2/(0.77**2-m**2-0.77*0.15j)</div>
+<div class="line"><span class="lineno">   28</span>     f1prhop = f1rb*1.25**2/(1.25**2-m**2-1.25*0.3j)</div>
+<div class="line"><span class="lineno">   29</span>     f1prhopp = f1rc*1.45**2/(1.45**2-m**2-1.45*0.5j)</div>
+<div class="line"><span class="lineno">   30</span>     f1pomega = f1wa*0.77**2/(0.77**2-m**2-0.77*0.0085j)</div>
+<div class="line"><span class="lineno">   31</span>     f1pomegap = f1wb*1.25**2/(1.25**2-m**2-1.25*0.3j)</div>
+<div class="line"><span class="lineno">   32</span>     f1pomegapp = f1wc*1.45**2/(1.45**2-m**2-1.45*0.5j)</div>
+<div class="line"><span class="lineno">   33</span>     <span class="keywordflow">return</span> abs(f1prho+f1prhop+f1prhopp+f1pomega+f1pomegap+f1pomegapp)</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span><span class="comment"># useful functions</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -845,22 +845,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Parametrisation of sigma(s) </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00083">83</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span>sigma(s): <span class="comment"># s in GeV^2 ---&gt; sigma in mb</span></div>
-<div class="line"><span class="lineno">   84</span>    <span class="stringliteral">&quot;&quot;&quot; Parametrisation of sigma(s) &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   85</span>    a1 = 35.45</div>
-<div class="line"><span class="lineno">   86</span>    a2 = 0.308</div>
-<div class="line"><span class="lineno">   87</span>    a3 = 28.94</div>
-<div class="line"><span class="lineno">   88</span>    a4 = 33.34</div>
-<div class="line"><span class="lineno">   89</span>    a5 = 0.545</div>
-<div class="line"><span class="lineno">   90</span>    a6 = 0.458</div>
-<div class="line"><span class="lineno">   91</span>    a7 = 42.53</div>
-<div class="line"><span class="lineno">   92</span>    p1 = a2*pow(math.log(s/a3),2.)</div>
-<div class="line"><span class="lineno">   93</span>    p2 = a4*pow((1./s),a5)</div>
-<div class="line"><span class="lineno">   94</span>    p3 = a7*pow((1./s),a6)</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> a1 + p1 - p2 + p3</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00086">86</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span><span class="keyword">def </span>sigma(s): <span class="comment"># s in GeV^2 ---&gt; sigma in mb</span></div>
+<div class="line"><span class="lineno">   87</span>    <span class="stringliteral">&quot;&quot;&quot; Parametrisation of sigma(s) &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   88</span>    a1 = 35.45</div>
+<div class="line"><span class="lineno">   89</span>    a2 = 0.308</div>
+<div class="line"><span class="lineno">   90</span>    a3 = 28.94</div>
+<div class="line"><span class="lineno">   91</span>    a4 = 33.34</div>
+<div class="line"><span class="lineno">   92</span>    a5 = 0.545</div>
+<div class="line"><span class="lineno">   93</span>    a6 = 0.458</div>
+<div class="line"><span class="lineno">   94</span>    a7 = 42.53</div>
+<div class="line"><span class="lineno">   95</span>    p1 = a2*pow(math.log(s/a3),2.)</div>
+<div class="line"><span class="lineno">   96</span>    p2 = a4*pow((1./s),a5)</div>
+<div class="line"><span class="lineno">   97</span>    p3 = a7*pow((1./s),a6)</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> a1 + p1 - p2 + p3</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -890,12 +890,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> sigma(s') / sigma(s) </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00103">103</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>sigmaRatio(p, mDarkPhoton):</div>
-<div class="line"><span class="lineno">  104</span>    <span class="stringliteral">&quot;&quot;&quot; sigma(s&#39;) / sigma(s) &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> sigma(es(p,mDarkPhoton)) / sigma(2.*mProton*energy(protonMomentum,mProton))</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00106">106</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span><span class="keyword">def </span>sigmaRatio(p, mDarkPhoton):</div>
+<div class="line"><span class="lineno">  107</span>    <span class="stringliteral">&quot;&quot;&quot; sigma(s&#39;) / sigma(s) &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> sigma(es(p,mDarkPhoton)) / sigma(2.*mProton*energy(protonMomentum,mProton))</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -937,25 +937,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Cross section weighting function in the Fermi-Weizsaeker-Williams approximation </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00065">65</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>wba(p, theta, mDarkPhoton, epsilon):</div>
-<div class="line"><span class="lineno">   66</span>    <span class="stringliteral">&quot;&quot;&quot; Cross section weighting function in the Fermi-Weizsaeker-Williams approximation &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   67</span>    const = epsilon*epsilon*alphaQED / (2.*math.pi*H(p,theta,mDarkPhoton))</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    h2 = pow(H(p,theta,mDarkPhoton),2.)</div>
-<div class="line"><span class="lineno">   70</span>    oneMinusZSquare = pow(1.-zeta(p,theta),2.)</div>
-<div class="line"><span class="lineno">   71</span>    mp2 = mProton*mProton</div>
-<div class="line"><span class="lineno">   72</span>    mA2 = mDarkPhoton*mDarkPhoton</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    p1 = (1. + oneMinusZSquare) / zeta(p,theta)</div>
-<div class="line"><span class="lineno">   75</span>    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton)</div>
-<div class="line"><span class="lineno">   76</span>            - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )</div>
-<div class="line"><span class="lineno">   77</span>    <span class="comment">#p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2</span></div>
-<div class="line"><span class="lineno">   78</span>    p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2</div>
-<div class="line"><span class="lineno">   79</span>    p4 = 2.*zeta(p,theta)*oneMinusZSquare*mA2*mA2/h2</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">return</span> const*(p1-p2+p3+p4)</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00068">68</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span><span class="keyword">def </span>wba(p, theta, mDarkPhoton, epsilon):</div>
+<div class="line"><span class="lineno">   69</span>    <span class="stringliteral">&quot;&quot;&quot; Cross section weighting function in the Fermi-Weizsaeker-Williams approximation &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   70</span>    const = epsilon*epsilon*alphaQED / (2.*math.pi*H(p,theta,mDarkPhoton))</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    h2 = pow(H(p,theta,mDarkPhoton),2.)</div>
+<div class="line"><span class="lineno">   73</span>    oneMinusZSquare = pow(1.-zeta(p,theta),2.)</div>
+<div class="line"><span class="lineno">   74</span>    mp2 = mProton*mProton</div>
+<div class="line"><span class="lineno">   75</span>    mA2 = mDarkPhoton*mDarkPhoton</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>    p1 = (1. + oneMinusZSquare) / zeta(p,theta)</div>
+<div class="line"><span class="lineno">   78</span>    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton)</div>
+<div class="line"><span class="lineno">   79</span>            - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )</div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment">#p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2</span></div>
+<div class="line"><span class="lineno">   81</span>    p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2</div>
+<div class="line"><span class="lineno">   82</span>    p4 = 2.*zeta(p,theta)*oneMinusZSquare*mA2*mA2/h2</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> const*(p1-p2+p3+p4)</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -985,12 +985,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment"> Fraction of the proton momentum carried away by the paraphoton in the beam direction </pre> 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00045">45</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>zeta(p, theta):</div>
-<div class="line"><span class="lineno">   46</span>    <span class="stringliteral">&quot;&quot;&quot; Fraction of the proton momentum carried away by the paraphoton in the beam direction &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> p / (protonMomentum * math.sqrt(theta*theta + 1.))</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span> </div>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00048">48</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>zeta(p, theta):</div>
+<div class="line"><span class="lineno">   49</span>    <span class="stringliteral">&quot;&quot;&quot; Fraction of the proton momentum carried away by the paraphoton in the beam direction &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> p / (protonMomentum * math.sqrt(theta*theta + 1.))</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1007,7 +1007,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00010">10</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00013">13</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +1023,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00011">11</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00014">14</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
 
 </div>
 </div>
@@ -1039,7 +1039,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00012">12</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="proton__bremsstrahlung_8py_source.html#l00015">15</a> of file <a class="el" href="proton__bremsstrahlung_8py_source.html">proton_bremsstrahlung.py</a>.</p>
 
 </div>
 </div>

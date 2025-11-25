@@ -184,7 +184,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">HNL physics according to the nuMSM
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00604">604</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00607">607</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7da9a558b6f5a61e40530c7ab592ad1a" name="a7da9a558b6f5a61e40530c7ab592ad1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7da9a558b6f5a61e40530c7ab592ad1a">&#9670;&#160;</a></span>__init__()</h2>
@@ -231,16 +231,16 @@ couplings (list of [U2e, U2mu, U2tau])
 </pre> 
 <p>Reimplemented from <a class="el" href="classhnl_1_1HNLbranchings.html#ae11e5d7fb18776fbbdb4a35d1b0012d7">hnl.HNLbranchings</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00608">608</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  608</span>    <span class="keyword">def </span>__init__(self, mass, couplings, debug=False):</div>
-<div class="line"><span class="lineno">  609</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  610</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
-<div class="line"><span class="lineno">  611</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  612</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  613</span><span class="stringliteral">        mass (GeV)</span></div>
-<div class="line"><span class="lineno">  614</span><span class="stringliteral">        couplings (list of [U2e, U2mu, U2tau])</span></div>
-<div class="line"><span class="lineno">  615</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  616</span>        HNLbranchings.__init__(self, mass, couplings, debug)</div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00611">611</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  611</span>    <span class="keyword">def </span>__init__(self, mass, couplings, debug=False):</div>
+<div class="line"><span class="lineno">  612</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  613</span><span class="stringliteral">        Initialize with mass and couplings of the HNL</span></div>
+<div class="line"><span class="lineno">  614</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  615</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  616</span><span class="stringliteral">        mass (GeV)</span></div>
+<div class="line"><span class="lineno">  617</span><span class="stringliteral">        couplings (list of [U2e, U2mu, U2tau])</span></div>
+<div class="line"><span class="lineno">  618</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  619</span>        HNLbranchings.__init__(self, mass, couplings, debug)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -275,17 +275,17 @@ couplings (list of [U2e, U2mu, U2tau])
 Inputs:
 - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00617">617</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  617</span>    <span class="keyword">def </span>computeNLifetime(self,system=&quot;SI&quot;):</div>
-<div class="line"><span class="lineno">  618</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  619</span><span class="stringliteral">        Compute the HNL lifetime</span></div>
-<div class="line"><span class="lineno">  620</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  621</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  622</span><span class="stringliteral">        - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)</span></div>
-<div class="line"><span class="lineno">  623</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  624</span>        self.NLifetime = c.hGeV / self.NDecayWidth()</div>
-<div class="line"><span class="lineno">  625</span>        <span class="keywordflow">if</span> system == <span class="stringliteral">&quot;FairShip&quot;</span>: self.NLifetime *= 1.e9</div>
-<div class="line"><span class="lineno">  626</span>        <span class="keywordflow">return</span> self.NLifetime</div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00620">620</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  620</span>    <span class="keyword">def </span>computeNLifetime(self,system=&quot;SI&quot;):</div>
+<div class="line"><span class="lineno">  621</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  622</span><span class="stringliteral">        Compute the HNL lifetime</span></div>
+<div class="line"><span class="lineno">  623</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  624</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  625</span><span class="stringliteral">        - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)</span></div>
+<div class="line"><span class="lineno">  626</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  627</span>        self.NLifetime = c.hGeV / self.NDecayWidth()</div>
+<div class="line"><span class="lineno">  628</span>        <span class="keywordflow">if</span> system == <span class="stringliteral">&quot;FairShip&quot;</span>: self.NLifetime *= 1.e9</div>
+<div class="line"><span class="lineno">  629</span>        <span class="keywordflow">return</span> self.NLifetime</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -302,7 +302,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00624">624</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00627">627</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>

@@ -173,59 +173,59 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00232">232</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span><span class="keyword">def </span>checkProd(prefixes,quiet=False):</div>
-<div class="line"><span class="lineno">  233</span> summary = {<span class="stringliteral">&#39;Sim&#39;</span>:{},<span class="stringliteral">&#39;Rec&#39;</span>:{},<span class="stringliteral">&#39;Ana&#39;</span>:{}}</div>
-<div class="line"><span class="lineno">  234</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><span class="lineno">  235</span>  jobs = getJobs(prefix)</div>
-<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/log&#39;</span>)</div>
-<div class="line"><span class="lineno">  238</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  239</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no log file for &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  240</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = -1</div>
-<div class="line"><span class="lineno">  241</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  242</span>    rl = log.readlines()</div>
-<div class="line"><span class="lineno">  243</span>    log.close()</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">if</span> len(rl)&lt;1 :</div>
-<div class="line"><span class="lineno">  245</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed log file 0&quot;</span>,x)</div>
-<div class="line"><span class="lineno">  246</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
-<div class="line"><span class="lineno">  247</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">elif</span> <span class="stringliteral">&quot;Real time&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><span class="lineno">  249</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;simulation step OK &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  250</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 1</div>
-<div class="line"><span class="lineno">  251</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  252</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed &quot;</span>,x)</div>
-<div class="line"><span class="lineno">  253</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
-<div class="line"><span class="lineno">  254</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logRec&#39;</span>)</div>
-<div class="line"><span class="lineno">  256</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  257</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logRec file for &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  258</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = -1</div>
-<div class="line"><span class="lineno">  259</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  260</span>    rl = log.readlines()</div>
-<div class="line"><span class="lineno">  261</span>    log.close()</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><span class="lineno">  263</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;reconstruction step OK &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  264</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 1</div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  266</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;reconstruction failed &quot;</span>,x)</div>
-<div class="line"><span class="lineno">  267</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 0</div>
-<div class="line"><span class="lineno">  268</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logAna&#39;</span>)</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  271</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logAna file for &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  272</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = -1</div>
-<div class="line"><span class="lineno">  273</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  274</span>    rl = log.readlines()</div>
-<div class="line"><span class="lineno">  275</span>    log.close()</div>
-<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finished&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;analysis step OK &#39;</span>,x)</div>
-<div class="line"><span class="lineno">  278</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 1</div>
-<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  280</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;analysis failed &quot;</span>,x)</div>
-<div class="line"><span class="lineno">  281</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 0</div>
-<div class="line"><span class="lineno">  282</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  283</span> <span class="keywordflow">return</span> summary</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00235">235</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  235</span><span class="keyword">def </span>checkProd(prefixes,quiet=False):</div>
+<div class="line"><span class="lineno">  236</span> summary = {<span class="stringliteral">&#39;Sim&#39;</span>:{},<span class="stringliteral">&#39;Rec&#39;</span>:{},<span class="stringliteral">&#39;Ana&#39;</span>:{}}</div>
+<div class="line"><span class="lineno">  237</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><span class="lineno">  238</span>  jobs = getJobs(prefix)</div>
+<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/log&#39;</span>)</div>
+<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  242</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no log file for &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  243</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = -1</div>
+<div class="line"><span class="lineno">  244</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  245</span>    rl = log.readlines()</div>
+<div class="line"><span class="lineno">  246</span>    log.close()</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">if</span> len(rl)&lt;1 :</div>
+<div class="line"><span class="lineno">  248</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed log file 0&quot;</span>,x)</div>
+<div class="line"><span class="lineno">  249</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
+<div class="line"><span class="lineno">  250</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  251</span>    <span class="keywordflow">elif</span> <span class="stringliteral">&quot;Real time&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
+<div class="line"><span class="lineno">  252</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;simulation step OK &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  253</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 1</div>
+<div class="line"><span class="lineno">  254</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  255</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed &quot;</span>,x)</div>
+<div class="line"><span class="lineno">  256</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
+<div class="line"><span class="lineno">  257</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logRec&#39;</span>)</div>
+<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  260</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logRec file for &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  261</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = -1</div>
+<div class="line"><span class="lineno">  262</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  263</span>    rl = log.readlines()</div>
+<div class="line"><span class="lineno">  264</span>    log.close()</div>
+<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
+<div class="line"><span class="lineno">  266</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;reconstruction step OK &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  267</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 1</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  269</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;reconstruction failed &quot;</span>,x)</div>
+<div class="line"><span class="lineno">  270</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 0</div>
+<div class="line"><span class="lineno">  271</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logAna&#39;</span>)</div>
+<div class="line"><span class="lineno">  273</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  274</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logAna file for &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  275</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = -1</div>
+<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  277</span>    rl = log.readlines()</div>
+<div class="line"><span class="lineno">  278</span>    log.close()</div>
+<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finished&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
+<div class="line"><span class="lineno">  280</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;analysis step OK &#39;</span>,x)</div>
+<div class="line"><span class="lineno">  281</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 1</div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  283</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;analysis failed &quot;</span>,x)</div>
+<div class="line"><span class="lineno">  284</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 0</div>
+<div class="line"><span class="lineno">  285</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  286</span> <span class="keywordflow">return</span> summary</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -244,14 +244,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00067">67</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span><span class="keyword">def </span>checkRunningProcesses():</div>
-<div class="line"><span class="lineno">   68</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
-<div class="line"><span class="lineno">   69</span> nproc = 0</div>
-<div class="line"><span class="lineno">   70</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0 <span class="keywordflow">and</span> x.find(<span class="stringliteral">&#39;defunct&#39;</span>)&lt;0 :</div>
-<div class="line"><span class="lineno">   72</span>      nproc+=1</div>
-<div class="line"><span class="lineno">   73</span> <span class="keywordflow">return</span> nproc</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00070">70</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span><span class="keyword">def </span>checkRunningProcesses():</div>
+<div class="line"><span class="lineno">   71</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
+<div class="line"><span class="lineno">   72</span> nproc = 0</div>
+<div class="line"><span class="lineno">   73</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0 <span class="keywordflow">and</span> x.find(<span class="stringliteral">&#39;defunct&#39;</span>)&lt;0 :</div>
+<div class="line"><span class="lineno">   75</span>      nproc+=1</div>
+<div class="line"><span class="lineno">   76</span> <span class="keywordflow">return</span> nproc</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -271,17 +271,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00304">304</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  304</span><span class="keyword">def </span>copyRecoToEos(pl):</div>
-<div class="line"><span class="lineno">  305</span>  result = checkProd(pl,quiet=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  306</span>  eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
-<div class="line"><span class="lineno">  307</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[<span class="stringliteral">&#39;Rec&#39;</span>]:</div>
-<div class="line"><span class="lineno">  308</span>     <span class="keywordflow">if</span> result[<span class="stringliteral">&#39;Rec&#39;</span>][x]&lt;1 : print(<span class="stringliteral">&#39;Reco failed !&#39;</span>,x,result[<span class="stringliteral">&#39;Rec&#39;</span>][x])</div>
-<div class="line"><span class="lineno">  309</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  310</span>      cmd = eos+<span class="stringliteral">&#39; cp -r &#39;</span>+os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+x+<span class="stringliteral">&#39;/ /eos/experiment/ship/data/DAFreco/muonBackground/&#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span></div>
-<div class="line"><span class="lineno">  311</span>      os.system(cmd)</div>
-<div class="line"><span class="lineno">  312</span>      print(<span class="stringliteral">&#39;copied to eos&#39;</span>,x)</div>
-<div class="line"><span class="lineno">  313</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00307">307</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  307</span><span class="keyword">def </span>copyRecoToEos(pl):</div>
+<div class="line"><span class="lineno">  308</span>  result = checkProd(pl,quiet=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  309</span>  eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[<span class="stringliteral">&#39;Rec&#39;</span>]:</div>
+<div class="line"><span class="lineno">  311</span>     <span class="keywordflow">if</span> result[<span class="stringliteral">&#39;Rec&#39;</span>][x]&lt;1 : print(<span class="stringliteral">&#39;Reco failed !&#39;</span>,x,result[<span class="stringliteral">&#39;Rec&#39;</span>][x])</div>
+<div class="line"><span class="lineno">  312</span>     <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  313</span>      cmd = eos+<span class="stringliteral">&#39; cp -r &#39;</span>+os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+x+<span class="stringliteral">&#39;/ /eos/experiment/ship/data/DAFreco/muonBackground/&#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span></div>
+<div class="line"><span class="lineno">  314</span>      os.system(cmd)</div>
+<div class="line"><span class="lineno">  315</span>      print(<span class="stringliteral">&#39;copied to eos&#39;</span>,x)</div>
+<div class="line"><span class="lineno">  316</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -300,11 +300,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00291">291</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  291</span><span class="keyword">def </span>execute():</div>
-<div class="line"><span class="lineno">  292</span> executeSimple(pl,reset=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  293</span> mergeHistosMakePlots(pl)</div>
-<div class="line"><span class="lineno">  294</span> mergeNtuples(pl)</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00294">294</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span><span class="keyword">def </span>execute():</div>
+<div class="line"><span class="lineno">  295</span> executeSimple(pl,reset=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  296</span> mergeHistosMakePlots(pl)</div>
+<div class="line"><span class="lineno">  297</span> mergeNtuples(pl)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -324,35 +324,35 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00032">32</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>execute( ncpu = 4 ):</div>
-<div class="line"><span class="lineno">   33</span>  cpus = {}</div>
-<div class="line"><span class="lineno">   34</span>  log  = {}</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ncpu): cpus[i]={}</div>
-<div class="line"><span class="lineno">   36</span>  jobs = []</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><span class="lineno">   39</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><span class="lineno">   40</span>         jobs.append(x)</div>
-<div class="line"><span class="lineno">   41</span>  k = 0</div>
-<div class="line"><span class="lineno">   42</span>  print(jobs)</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">if</span> k==ncpu: k = 0</div>
-<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">if</span> <span class="stringliteral">&#39;child&#39;</span> <span class="keywordflow">in</span> cpus[k]:</div>
-<div class="line"><span class="lineno">   46</span>        rc = child.communicate()[0]</div>
-<div class="line"><span class="lineno">   47</span>        log[k][<span class="stringliteral">&#39;log&#39;</span>].close()</div>
-<div class="line"><span class="lineno">   48</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,k,x)</div>
-<div class="line"><span class="lineno">   49</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   52</span>          inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><span class="lineno">   53</span>          log[k]  = open(<span class="stringliteral">&quot;logRec&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><span class="lineno">   54</span>          cpus[k] = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmd,<span class="stringliteral">&quot;-n 9999999 -f &quot;</span>+inputfile], stdout=log[k],)</div>
-<div class="line"><span class="lineno">   55</span>          k+=1</div>
-<div class="line"><span class="lineno">   56</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">   57</span>          <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> cpus,log</div>
-<div class="line"><span class="lineno">   59</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00035">35</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span><span class="keyword">def </span>execute( ncpu = 4 ):</div>
+<div class="line"><span class="lineno">   36</span>  cpus = {}</div>
+<div class="line"><span class="lineno">   37</span>  log  = {}</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ncpu): cpus[i]={}</div>
+<div class="line"><span class="lineno">   39</span>  jobs = []</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
+<div class="line"><span class="lineno">   42</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
+<div class="line"><span class="lineno">   43</span>         jobs.append(x)</div>
+<div class="line"><span class="lineno">   44</span>  k = 0</div>
+<div class="line"><span class="lineno">   45</span>  print(jobs)</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">if</span> k==ncpu: k = 0</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">if</span> <span class="stringliteral">&#39;child&#39;</span> <span class="keywordflow">in</span> cpus[k]:</div>
+<div class="line"><span class="lineno">   49</span>        rc = child.communicate()[0]</div>
+<div class="line"><span class="lineno">   50</span>        log[k][<span class="stringliteral">&#39;log&#39;</span>].close()</div>
+<div class="line"><span class="lineno">   51</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,k,x)</div>
+<div class="line"><span class="lineno">   52</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   55</span>          inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><span class="lineno">   56</span>          log[k]  = open(<span class="stringliteral">&quot;logRec&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><span class="lineno">   57</span>          cpus[k] = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmd,<span class="stringliteral">&quot;-n 9999999 -f &quot;</span>+inputfile], stdout=log[k],)</div>
+<div class="line"><span class="lineno">   58</span>          k+=1</div>
+<div class="line"><span class="lineno">   59</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">   60</span>          <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">return</span> cpus,log</div>
+<div class="line"><span class="lineno">   62</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -372,26 +372,26 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00144">144</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span><span class="keyword">def </span>executeAna(prefixes):</div>
-<div class="line"><span class="lineno">  145</span> cpus = {}</div>
-<div class="line"><span class="lineno">  146</span> log  = {}</div>
-<div class="line"><span class="lineno">  147</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><span class="lineno">  148</span>  jobs = getJobs(prefix)</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">  150</span>    print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
-<div class="line"><span class="lineno">  151</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  154</span>        inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><span class="lineno">  155</span>        log[x] = open(<span class="stringliteral">&quot;logAna&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><span class="lineno">  156</span>        process = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmdAna,<span class="stringliteral">&quot;-n 9999999&quot;</span>, <span class="stringliteral">&quot;-f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)], stdout=log[x])</div>
-<div class="line"><span class="lineno">  157</span>        process.wait()</div>
-<div class="line"><span class="lineno">  158</span>        print(<span class="stringliteral">&#39;finished &#39;</span>,process.returncode)</div>
-<div class="line"><span class="lineno">  159</span>        log[x].close()</div>
-<div class="line"><span class="lineno">  160</span>        os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  162</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00147">147</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  147</span><span class="keyword">def </span>executeAna(prefixes):</div>
+<div class="line"><span class="lineno">  148</span> cpus = {}</div>
+<div class="line"><span class="lineno">  149</span> log  = {}</div>
+<div class="line"><span class="lineno">  150</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><span class="lineno">  151</span>  jobs = getJobs(prefix)</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">  153</span>    print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
+<div class="line"><span class="lineno">  154</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  157</span>        inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><span class="lineno">  158</span>        log[x] = open(<span class="stringliteral">&quot;logAna&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><span class="lineno">  159</span>        process = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmdAna,<span class="stringliteral">&quot;-n 9999999&quot;</span>, <span class="stringliteral">&quot;-f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)], stdout=log[x])</div>
+<div class="line"><span class="lineno">  160</span>        process.wait()</div>
+<div class="line"><span class="lineno">  161</span>        print(<span class="stringliteral">&#39;finished &#39;</span>,process.returncode)</div>
+<div class="line"><span class="lineno">  162</span>        log[x].close()</div>
+<div class="line"><span class="lineno">  163</span>        os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  165</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -421,70 +421,70 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00081">81</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span><span class="keyword">def </span>executeSimple(prefixes,reset=False):</div>
-<div class="line"><span class="lineno">   82</span> proc = {}</div>
-<div class="line"><span class="lineno">   83</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><span class="lineno">   84</span>  jobs = getJobs(prefix)</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">   86</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
-<div class="line"><span class="lineno">   87</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><span class="lineno">   88</span>      geofile = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   89</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   91</span>          geofile = f</div>
-<div class="line"><span class="lineno">   92</span>          <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> geofile:</div>
-<div class="line"><span class="lineno">   94</span>         print(<span class="stringliteral">&quot;ERROR: no geofile found&quot;</span>,x)</div>
-<div class="line"><span class="lineno">   95</span>         os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">   96</span>         <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   97</span>      <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   98</span>          inputfile = geofile.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span>          nproc = 100</div>
-<div class="line"><span class="lineno">  100</span>          <span class="keywordflow">while</span> nproc &gt; ncores :</div>
-<div class="line"><span class="lineno">  101</span>            nproc = checkRunningProcesses()</div>
-<div class="line"><span class="lineno">  102</span>            <span class="keywordflow">if</span> nproc &gt; ncores:</div>
-<div class="line"><span class="lineno">  103</span>               print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
-<div class="line"><span class="lineno">  104</span>               time.sleep(100)</div>
-<div class="line"><span class="lineno">  105</span>          print(<span class="stringliteral">&#39;launch reco&#39;</span>,x)</div>
-<div class="line"><span class="lineno">  106</span>          proc[x] = 1</div>
-<div class="line"><span class="lineno">  107</span>          <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logRec&quot;</span>)</div>
-<div class="line"><span class="lineno">  108</span>          <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  109</span>          <span class="keywordflow">if</span> reset: os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; --saveDisk &gt;&gt; logRec &amp;&quot;</span>)</div>
-<div class="line"><span class="lineno">  110</span>          <span class="keywordflow">else</span>:     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; &gt;&gt; logRec &amp;&quot;</span>)</div>
-<div class="line"><span class="lineno">  111</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">  112</span>          time.sleep(10)</div>
-<div class="line"><span class="lineno">  113</span> nJobs = len(proc)</div>
-<div class="line"><span class="lineno">  114</span> <span class="keywordflow">while</span> nJobs &gt; 0:</div>
-<div class="line"><span class="lineno">  115</span>  nJobs = len(proc)</div>
-<div class="line"><span class="lineno">  116</span>  print(<span class="stringliteral">&#39;debug &#39;</span>,nJobs)</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted(proc.keys()):</div>
-<div class="line"><span class="lineno">  118</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+p)</div>
-<div class="line"><span class="lineno">  119</span>    nproc = 100</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">while</span> nproc &gt; ncores :</div>
-<div class="line"><span class="lineno">  121</span>      nproc = checkRunningProcesses()</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">if</span> nproc &gt; ncores:</div>
-<div class="line"><span class="lineno">  123</span>       print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
-<div class="line"><span class="lineno">  124</span>       time.sleep(100)</div>
-<div class="line"><span class="lineno">  125</span>    log = open(<span class="stringliteral">&#39;logRec&#39;</span>)</div>
-<div class="line"><span class="lineno">  126</span>    completed = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  127</span>    rl = log.readlines()</div>
-<div class="line"><span class="lineno">  128</span>    log.close()</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] : completed = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">if</span> completed:</div>
-<div class="line"><span class="lineno">  131</span>     print(<span class="stringliteral">&#39;analyze &#39;</span>,p,nproc)</div>
-<div class="line"><span class="lineno">  132</span>     <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logAna&quot;</span>)</div>
-<div class="line"><span class="lineno">  133</span>     <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  134</span>     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmdAna+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)+ <span class="stringliteral">&quot; &gt;&gt; logAna &amp;&quot;</span>)</div>
-<div class="line"><span class="lineno">  135</span>     rc = proc.pop(p)</div>
-<div class="line"><span class="lineno">  136</span>     time.sleep(10)</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  138</span>     print(<span class="stringliteral">&#39;Rec job not finished yet&#39;</span>,p)</div>
-<div class="line"><span class="lineno">  139</span>     nproc = checkRunningProcesses()</div>
-<div class="line"><span class="lineno">  140</span>     <span class="keywordflow">if</span> nproc == 1 : print(<span class="stringliteral">&quot;rec job probably failed, only when python process running&quot;</span>)</div>
-<div class="line"><span class="lineno">  141</span>     time.sleep(100)</div>
-<div class="line"><span class="lineno">  142</span>    os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">  143</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00084">84</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span><span class="keyword">def </span>executeSimple(prefixes,reset=False):</div>
+<div class="line"><span class="lineno">   85</span> proc = {}</div>
+<div class="line"><span class="lineno">   86</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><span class="lineno">   87</span>  jobs = getJobs(prefix)</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">   89</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
+<div class="line"><span class="lineno">   90</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
+<div class="line"><span class="lineno">   91</span>      geofile = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   92</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   94</span>          geofile = f</div>
+<div class="line"><span class="lineno">   95</span>          <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">   96</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> geofile:</div>
+<div class="line"><span class="lineno">   97</span>         print(<span class="stringliteral">&quot;ERROR: no geofile found&quot;</span>,x)</div>
+<div class="line"><span class="lineno">   98</span>         os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">   99</span>         <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  100</span>      <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  101</span>          inputfile = geofile.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><span class="lineno">  102</span>          nproc = 100</div>
+<div class="line"><span class="lineno">  103</span>          <span class="keywordflow">while</span> nproc &gt; ncores :</div>
+<div class="line"><span class="lineno">  104</span>            nproc = checkRunningProcesses()</div>
+<div class="line"><span class="lineno">  105</span>            <span class="keywordflow">if</span> nproc &gt; ncores:</div>
+<div class="line"><span class="lineno">  106</span>               print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
+<div class="line"><span class="lineno">  107</span>               time.sleep(100)</div>
+<div class="line"><span class="lineno">  108</span>          print(<span class="stringliteral">&#39;launch reco&#39;</span>,x)</div>
+<div class="line"><span class="lineno">  109</span>          proc[x] = 1</div>
+<div class="line"><span class="lineno">  110</span>          <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logRec&quot;</span>)</div>
+<div class="line"><span class="lineno">  111</span>          <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  112</span>          <span class="keywordflow">if</span> reset: os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; --saveDisk &gt;&gt; logRec &amp;&quot;</span>)</div>
+<div class="line"><span class="lineno">  113</span>          <span class="keywordflow">else</span>:     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; &gt;&gt; logRec &amp;&quot;</span>)</div>
+<div class="line"><span class="lineno">  114</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">  115</span>          time.sleep(10)</div>
+<div class="line"><span class="lineno">  116</span> nJobs = len(proc)</div>
+<div class="line"><span class="lineno">  117</span> <span class="keywordflow">while</span> nJobs &gt; 0:</div>
+<div class="line"><span class="lineno">  118</span>  nJobs = len(proc)</div>
+<div class="line"><span class="lineno">  119</span>  print(<span class="stringliteral">&#39;debug &#39;</span>,nJobs)</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted(proc.keys()):</div>
+<div class="line"><span class="lineno">  121</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+p)</div>
+<div class="line"><span class="lineno">  122</span>    nproc = 100</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">while</span> nproc &gt; ncores :</div>
+<div class="line"><span class="lineno">  124</span>      nproc = checkRunningProcesses()</div>
+<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">if</span> nproc &gt; ncores:</div>
+<div class="line"><span class="lineno">  126</span>       print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
+<div class="line"><span class="lineno">  127</span>       time.sleep(100)</div>
+<div class="line"><span class="lineno">  128</span>    log = open(<span class="stringliteral">&#39;logRec&#39;</span>)</div>
+<div class="line"><span class="lineno">  129</span>    completed = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  130</span>    rl = log.readlines()</div>
+<div class="line"><span class="lineno">  131</span>    log.close()</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] : completed = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">if</span> completed:</div>
+<div class="line"><span class="lineno">  134</span>     print(<span class="stringliteral">&#39;analyze &#39;</span>,p,nproc)</div>
+<div class="line"><span class="lineno">  135</span>     <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logAna&quot;</span>)</div>
+<div class="line"><span class="lineno">  136</span>     <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  137</span>     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmdAna+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)+ <span class="stringliteral">&quot; &gt;&gt; logAna &amp;&quot;</span>)</div>
+<div class="line"><span class="lineno">  138</span>     rc = proc.pop(p)</div>
+<div class="line"><span class="lineno">  139</span>     time.sleep(10)</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  141</span>     print(<span class="stringliteral">&#39;Rec job not finished yet&#39;</span>,p)</div>
+<div class="line"><span class="lineno">  142</span>     nproc = checkRunningProcesses()</div>
+<div class="line"><span class="lineno">  143</span>     <span class="keywordflow">if</span> nproc == 1 : print(<span class="stringliteral">&quot;rec job probably failed, only when python process running&quot;</span>)</div>
+<div class="line"><span class="lineno">  144</span>     time.sleep(100)</div>
+<div class="line"><span class="lineno">  145</span>    os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">  146</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -520,28 +520,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00009">9</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>fitSingleGauss(x,ba=None,be=None):</div>
-<div class="line"><span class="lineno">   10</span>    name    = <span class="stringliteral">&#39;myGauss_&#39;</span>+x</div>
-<div class="line"><span class="lineno">   11</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
-<div class="line"><span class="lineno">   12</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
-<div class="line"><span class="lineno">   13</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba : ba = h[x].GetBinCenter(1)</div>
-<div class="line"><span class="lineno">   14</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> be : be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
-<div class="line"><span class="lineno">   15</span>       bw    = h[x].GetBinWidth(1)</div>
-<div class="line"><span class="lineno">   16</span>       mean  = h[x].GetMean()</div>
-<div class="line"><span class="lineno">   17</span>       sigma = h[x].GetRMS()</div>
-<div class="line"><span class="lineno">   18</span>       norm  = h[x].GetEntries()*0.3</div>
-<div class="line"><span class="lineno">   19</span>       myGauss = ROOT.TF1(name,<span class="stringliteral">&#39;[0]*&#39;</span>+str(bw)+<span class="stringliteral">&#39;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&#39;</span>,4)</div>
-<div class="line"><span class="lineno">   20</span>       myGauss.SetParameter(0,norm)</div>
-<div class="line"><span class="lineno">   21</span>       myGauss.SetParameter(1,mean)</div>
-<div class="line"><span class="lineno">   22</span>       myGauss.SetParameter(2,sigma)</div>
-<div class="line"><span class="lineno">   23</span>       myGauss.SetParameter(3,1.)</div>
-<div class="line"><span class="lineno">   24</span>       myGauss.SetParName(0,<span class="stringliteral">&#39;Signal&#39;</span>)</div>
-<div class="line"><span class="lineno">   25</span>       myGauss.SetParName(1,<span class="stringliteral">&#39;Mean&#39;</span>)</div>
-<div class="line"><span class="lineno">   26</span>       myGauss.SetParName(2,<span class="stringliteral">&#39;Sigma&#39;</span>)</div>
-<div class="line"><span class="lineno">   27</span>       myGauss.SetParName(3,<span class="stringliteral">&#39;bckgr&#39;</span>)</div>
-<div class="line"><span class="lineno">   28</span>    h[x].Fit(myGauss,<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,ba,be)</div>
-<div class="line"><span class="lineno">   29</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00012">12</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>fitSingleGauss(x,ba=None,be=None):</div>
+<div class="line"><span class="lineno">   13</span>    name    = <span class="stringliteral">&#39;myGauss_&#39;</span>+x</div>
+<div class="line"><span class="lineno">   14</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
+<div class="line"><span class="lineno">   15</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
+<div class="line"><span class="lineno">   16</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba : ba = h[x].GetBinCenter(1)</div>
+<div class="line"><span class="lineno">   17</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> be : be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
+<div class="line"><span class="lineno">   18</span>       bw    = h[x].GetBinWidth(1)</div>
+<div class="line"><span class="lineno">   19</span>       mean  = h[x].GetMean()</div>
+<div class="line"><span class="lineno">   20</span>       sigma = h[x].GetRMS()</div>
+<div class="line"><span class="lineno">   21</span>       norm  = h[x].GetEntries()*0.3</div>
+<div class="line"><span class="lineno">   22</span>       myGauss = ROOT.TF1(name,<span class="stringliteral">&#39;[0]*&#39;</span>+str(bw)+<span class="stringliteral">&#39;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&#39;</span>,4)</div>
+<div class="line"><span class="lineno">   23</span>       myGauss.SetParameter(0,norm)</div>
+<div class="line"><span class="lineno">   24</span>       myGauss.SetParameter(1,mean)</div>
+<div class="line"><span class="lineno">   25</span>       myGauss.SetParameter(2,sigma)</div>
+<div class="line"><span class="lineno">   26</span>       myGauss.SetParameter(3,1.)</div>
+<div class="line"><span class="lineno">   27</span>       myGauss.SetParName(0,<span class="stringliteral">&#39;Signal&#39;</span>)</div>
+<div class="line"><span class="lineno">   28</span>       myGauss.SetParName(1,<span class="stringliteral">&#39;Mean&#39;</span>)</div>
+<div class="line"><span class="lineno">   29</span>       myGauss.SetParName(2,<span class="stringliteral">&#39;Sigma&#39;</span>)</div>
+<div class="line"><span class="lineno">   30</span>       myGauss.SetParName(3,<span class="stringliteral">&#39;bckgr&#39;</span>)</div>
+<div class="line"><span class="lineno">   31</span>    h[x].Fit(myGauss,<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,ba,be)</div>
+<div class="line"><span class="lineno">   32</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -561,14 +561,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00060">60</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span><span class="keyword">def </span>getJobs(prefix):</div>
-<div class="line"><span class="lineno">   61</span> jobs = []</div>
-<div class="line"><span class="lineno">   62</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><span class="lineno">   64</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><span class="lineno">   65</span>         jobs.append(x)</div>
-<div class="line"><span class="lineno">   66</span> <span class="keywordflow">return</span> jobs</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00063">63</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>getJobs(prefix):</div>
+<div class="line"><span class="lineno">   64</span> jobs = []</div>
+<div class="line"><span class="lineno">   65</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
+<div class="line"><span class="lineno">   67</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
+<div class="line"><span class="lineno">   68</span>         jobs.append(x)</div>
+<div class="line"><span class="lineno">   69</span> <span class="keywordflow">return</span> jobs</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -587,14 +587,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00074">74</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>killAll():</div>
-<div class="line"><span class="lineno">   75</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
-<div class="line"><span class="lineno">   76</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">   78</span>       pid = int(x[:5])</div>
-<div class="line"><span class="lineno">   79</span>       print(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
-<div class="line"><span class="lineno">   80</span>       os.system(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00077">77</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>killAll():</div>
+<div class="line"><span class="lineno">   78</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
+<div class="line"><span class="lineno">   79</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">   81</span>       pid = int(x[:5])</div>
+<div class="line"><span class="lineno">   82</span>       print(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
+<div class="line"><span class="lineno">   83</span>       os.system(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -614,63 +614,63 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00164">164</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  164</span><span class="keyword">def </span>mergeHistosMakePlots(p):</div>
-<div class="line"><span class="lineno">  165</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> type(p)==type([]): pl=[p]</div>
-<div class="line"><span class="lineno">  166</span> <span class="keywordflow">else</span>: pl = p</div>
-<div class="line"><span class="lineno">  167</span> hlist = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">  168</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pl:</div>
-<div class="line"><span class="lineno">  169</span>   prefix = str(p)</div>
-<div class="line"><span class="lineno">  170</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><span class="lineno">  172</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><span class="lineno">  173</span>         hlist += x+<span class="stringliteral">&#39;/ShipAna.root &#39;</span></div>
-<div class="line"><span class="lineno">  174</span> print(<span class="stringliteral">&quot;--&gt;&quot;</span>,hlist)</div>
-<div class="line"><span class="lineno">  175</span> os.system(<span class="stringliteral">&#39;hadd -f ShipAna.root &#39;</span>+hlist)</div>
-<div class="line"><span class="lineno">  176</span> ut.readHists(h,<span class="stringliteral">&quot;ShipAna.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  177</span> print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
-<div class="line"><span class="lineno">  178</span> <span class="keywordflow">if</span> 1&gt;0:</div>
-<div class="line"><span class="lineno">  179</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;strawanalysis&#39;</span>,title=<span class="stringliteral">&#39;Distance to wire and mean nr of hits&#39;</span>,nx=1200,ny=600,cx=2,cy=1)</div>
-<div class="line"><span class="lineno">  180</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  181</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  182</span>   h[<span class="stringliteral">&#39;disty&#39;</span>].DrawCopy()</div>
-<div class="line"><span class="lineno">  183</span>   h[<span class="stringliteral">&#39;distu&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><span class="lineno">  184</span>   h[<span class="stringliteral">&#39;distv&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><span class="lineno">  185</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  186</span>   h[<span class="stringliteral">&#39;meanhits&#39;</span>].DrawCopy()</div>
-<div class="line"><span class="lineno">  187</span>   print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><span class="lineno">  190</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  191</span>   h[<span class="stringliteral">&#39;delPOverP&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><span class="lineno">  192</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  193</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  194</span>   h[<span class="stringliteral">&#39;chi2&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  195</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  196</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  197</span>   ROOT.gStyle.SetOptFit(11111)</div>
-<div class="line"><span class="lineno">  198</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  199</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>)</div>
-<div class="line"><span class="lineno">  200</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  201</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP2&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  202</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  203</span>   fitSingleGauss(<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>)</div>
-<div class="line"><span class="lineno">  204</span>   h[<span class="stringliteral">&#39;fitresults&#39;</span>].Print(<span class="stringliteral">&#39;fitresults.gif&#39;</span>)</div>
-<div class="line"><span class="lineno">  205</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults2&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><span class="lineno">  206</span>   print(<span class="stringliteral">&#39;finished with first canvas&#39;</span>)</div>
-<div class="line"><span class="lineno">  207</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  208</span>   h[<span class="stringliteral">&#39;Doca&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  209</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  210</span>   h[<span class="stringliteral">&#39;IP0&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  211</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  212</span>   h[<span class="stringliteral">&#39;HNL&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  213</span>   fitSingleGauss(<span class="stringliteral">&#39;HNL&#39;</span>,0.,2.)</div>
-<div class="line"><span class="lineno">  214</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  215</span>   h[<span class="stringliteral">&#39;IP0/mass&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><span class="lineno">  216</span>   h[<span class="stringliteral">&#39;fitresults2&#39;</span>].Print(<span class="stringliteral">&#39;fitresults2.gif&#39;</span>)</div>
-<div class="line"><span class="lineno">  217</span>   h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].Print(<span class="stringliteral">&#39;strawanalysis.gif&#39;</span>)</div>
-<div class="line"><span class="lineno">  218</span>   print(<span class="stringliteral">&#39;finished making plots&#39;</span>)</div>
-<div class="line"><span class="lineno">  219</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00167">167</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span><span class="keyword">def </span>mergeHistosMakePlots(p):</div>
+<div class="line"><span class="lineno">  168</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> type(p)==type([]): pl=[p]</div>
+<div class="line"><span class="lineno">  169</span> <span class="keywordflow">else</span>: pl = p</div>
+<div class="line"><span class="lineno">  170</span> hlist = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  171</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pl:</div>
+<div class="line"><span class="lineno">  172</span>   prefix = str(p)</div>
+<div class="line"><span class="lineno">  173</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
+<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
+<div class="line"><span class="lineno">  175</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
+<div class="line"><span class="lineno">  176</span>         hlist += x+<span class="stringliteral">&#39;/ShipAna.root &#39;</span></div>
+<div class="line"><span class="lineno">  177</span> print(<span class="stringliteral">&quot;--&gt;&quot;</span>,hlist)</div>
+<div class="line"><span class="lineno">  178</span> os.system(<span class="stringliteral">&#39;hadd -f ShipAna.root &#39;</span>+hlist)</div>
+<div class="line"><span class="lineno">  179</span> ut.readHists(h,<span class="stringliteral">&quot;ShipAna.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  180</span> print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
+<div class="line"><span class="lineno">  181</span> <span class="keywordflow">if</span> 1&gt;0:</div>
+<div class="line"><span class="lineno">  182</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;strawanalysis&#39;</span>,title=<span class="stringliteral">&#39;Distance to wire and mean nr of hits&#39;</span>,nx=1200,ny=600,cx=2,cy=1)</div>
+<div class="line"><span class="lineno">  183</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  184</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  185</span>   h[<span class="stringliteral">&#39;disty&#39;</span>].DrawCopy()</div>
+<div class="line"><span class="lineno">  186</span>   h[<span class="stringliteral">&#39;distu&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><span class="lineno">  187</span>   h[<span class="stringliteral">&#39;distv&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><span class="lineno">  188</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  189</span>   h[<span class="stringliteral">&#39;meanhits&#39;</span>].DrawCopy()</div>
+<div class="line"><span class="lineno">  190</span>   print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
+<div class="line"><span class="lineno">  193</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  194</span>   h[<span class="stringliteral">&#39;delPOverP&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
+<div class="line"><span class="lineno">  195</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  196</span>   cv.SetLogy(1)</div>
+<div class="line"><span class="lineno">  197</span>   h[<span class="stringliteral">&#39;chi2&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  198</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  199</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  200</span>   ROOT.gStyle.SetOptFit(11111)</div>
+<div class="line"><span class="lineno">  201</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  202</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>)</div>
+<div class="line"><span class="lineno">  203</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(4)</div>
+<div class="line"><span class="lineno">  204</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP2&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  205</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  206</span>   fitSingleGauss(<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>)</div>
+<div class="line"><span class="lineno">  207</span>   h[<span class="stringliteral">&#39;fitresults&#39;</span>].Print(<span class="stringliteral">&#39;fitresults.gif&#39;</span>)</div>
+<div class="line"><span class="lineno">  208</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults2&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
+<div class="line"><span class="lineno">  209</span>   print(<span class="stringliteral">&#39;finished with first canvas&#39;</span>)</div>
+<div class="line"><span class="lineno">  210</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  211</span>   h[<span class="stringliteral">&#39;Doca&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  212</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  213</span>   h[<span class="stringliteral">&#39;IP0&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  214</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  215</span>   h[<span class="stringliteral">&#39;HNL&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  216</span>   fitSingleGauss(<span class="stringliteral">&#39;HNL&#39;</span>,0.,2.)</div>
+<div class="line"><span class="lineno">  217</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(4)</div>
+<div class="line"><span class="lineno">  218</span>   h[<span class="stringliteral">&#39;IP0/mass&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
+<div class="line"><span class="lineno">  219</span>   h[<span class="stringliteral">&#39;fitresults2&#39;</span>].Print(<span class="stringliteral">&#39;fitresults2.gif&#39;</span>)</div>
+<div class="line"><span class="lineno">  220</span>   h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].Print(<span class="stringliteral">&#39;strawanalysis.gif&#39;</span>)</div>
+<div class="line"><span class="lineno">  221</span>   print(<span class="stringliteral">&#39;finished making plots&#39;</span>)</div>
+<div class="line"><span class="lineno">  222</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -690,19 +690,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00220">220</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span><span class="keyword">def </span>mergeNtuples(prefixes):</div>
-<div class="line"><span class="lineno">  221</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><span class="lineno">  222</span>  jobs = getJobs(prefix)</div>
-<div class="line"><span class="lineno">  223</span>  haddCommand = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">  225</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
-<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  227</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  228</span>          haddCommand+= <span class="stringliteral">&#39; &#39;</span>+ x + <span class="stringliteral">&#39;/&#39;</span> + inputfile</div>
-<div class="line"><span class="lineno">  229</span>          <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  230</span>  cmd = <span class="stringliteral">&#39;hadd -f &#39;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_&#39;</span>+prefix+<span class="stringliteral">&#39;.root&#39;</span>) + haddCommand</div>
-<div class="line"><span class="lineno">  231</span>  os.system(cmd)</div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00223">223</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span><span class="keyword">def </span>mergeNtuples(prefixes):</div>
+<div class="line"><span class="lineno">  224</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><span class="lineno">  225</span>  jobs = getJobs(prefix)</div>
+<div class="line"><span class="lineno">  226</span>  haddCommand = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  227</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">  228</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
+<div class="line"><span class="lineno">  229</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  230</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
+<div class="line"><span class="lineno">  231</span>          haddCommand+= <span class="stringliteral">&#39; &#39;</span>+ x + <span class="stringliteral">&#39;/&#39;</span> + inputfile</div>
+<div class="line"><span class="lineno">  232</span>          <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  233</span>  cmd = <span class="stringliteral">&#39;hadd -f &#39;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_&#39;</span>+prefix+<span class="stringliteral">&#39;.root&#39;</span>) + haddCommand</div>
+<div class="line"><span class="lineno">  234</span>  os.system(cmd)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -722,14 +722,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00284">284</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  284</span><span class="keyword">def </span>printFailedJobs(pl):</div>
-<div class="line"><span class="lineno">  285</span>  result = checkProd(pl,quiet=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  286</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> result:</div>
-<div class="line"><span class="lineno">  287</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[p]:</div>
-<div class="line"><span class="lineno">  288</span>     <span class="keywordflow">if</span> result[p][x]&lt;1 : print(p,x,result[p][x])</div>
-<div class="line"><span class="lineno">  289</span> </div>
-<div class="line"><span class="lineno">  290</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00287">287</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  287</span><span class="keyword">def </span>printFailedJobs(pl):</div>
+<div class="line"><span class="lineno">  288</span>  result = checkProd(pl,quiet=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  289</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> result:</div>
+<div class="line"><span class="lineno">  290</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[p]:</div>
+<div class="line"><span class="lineno">  291</span>     <span class="keywordflow">if</span> result[p][x]&lt;1 : print(p,x,result[p][x])</div>
+<div class="line"><span class="lineno">  292</span> </div>
+<div class="line"><span class="lineno">  293</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -749,16 +749,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00295">295</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span><span class="keyword">def </span>removeIntermediateFiles(prefixes):</div>
-<div class="line"><span class="lineno">  296</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><span class="lineno">  297</span>  jobs = getJobs(prefix)</div>
-<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><span class="lineno">  299</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
-<div class="line"><span class="lineno">  300</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><span class="lineno">  301</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  302</span>          os.system(<span class="stringliteral">&#39;rm &#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span> + inputfile )</div>
-<div class="line"><span class="lineno">  303</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00298">298</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  298</span><span class="keyword">def </span>removeIntermediateFiles(prefixes):</div>
+<div class="line"><span class="lineno">  299</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><span class="lineno">  300</span>  jobs = getJobs(prefix)</div>
+<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><span class="lineno">  302</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
+<div class="line"><span class="lineno">  303</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
+<div class="line"><span class="lineno">  304</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
+<div class="line"><span class="lineno">  305</span>          os.system(<span class="stringliteral">&#39;rm &#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span> + inputfile )</div>
+<div class="line"><span class="lineno">  306</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -775,7 +775,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00030">30</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00033">33</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -791,7 +791,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00031">31</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00034">34</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -807,7 +807,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00007">7</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00010">10</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -823,7 +823,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00003">3</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00006">6</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -839,7 +839,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00314">314</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00317">317</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -855,7 +855,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00316">316</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00319">319</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -871,7 +871,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00004">4</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00007">7</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>
@@ -887,7 +887,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00317">317</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__reco_8py_source.html#l00320">320</a> of file <a class="el" href="run__reco_8py_source.html">run_reco.py</a>.</p>
 
 </div>
 </div>

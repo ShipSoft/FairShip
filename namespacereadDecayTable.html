@@ -175,65 +175,65 @@ Inputs:
 - P8gen: an instance of ROOT.HNLPythia8Generator()
 - conffile: a file listing the channels one wishes to activate
 </pre> 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00077">77</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/darkphotonDecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">   78</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   79</span><span class="stringliteral">    Configures the DP decay table in Pythia8</span></div>
-<div class="line"><span class="lineno">   80</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   81</span><span class="stringliteral">    Inputs:</span></div>
-<div class="line"><span class="lineno">   82</span><span class="stringliteral">    - P8gen: an instance of ROOT.HNLPythia8Generator()</span></div>
-<div class="line"><span class="lineno">   83</span><span class="stringliteral">    - conffile: a file listing the channels one wishes to activate</span></div>
-<div class="line"><span class="lineno">   84</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   85</span>    isResonant = (P8gen.GetDPId()==4900023)<span class="comment"># or P8gen.IsPbrem())</span></div>
-<div class="line"><span class="lineno">   86</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
-<div class="line"><span class="lineno">   87</span>    allowed = DP.allowedChannels()</div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
-<div class="line"><span class="lineno">   89</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
-<div class="line"><span class="lineno">   90</span>    <span class="comment"># Add decay channels</span></div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
-<div class="line"><span class="lineno">   92</span>        print(<span class="stringliteral">&#39;channel allowed:&#39;</span>,dec)</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">if</span> dec <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
-<div class="line"><span class="lineno">   94</span>            print(<span class="stringliteral">&#39;addDarkPhotondecayChannels WARNING: channel not configured! Please add also in conf file.\t&#39;</span>, dec)</div>
-<div class="line"><span class="lineno">   95</span>            quit()</div>
-<div class="line"><span class="lineno">   96</span>        print(<span class="stringliteral">&#39;channel wanted:&#39;</span>,dec)</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">if</span> allowed[dec] == <span class="stringliteral">&#39;yes&#39;</span> <span class="keywordflow">and</span> wanted[dec] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>            BR = DP.findBranchingRatio(dec)</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>            meMode = 0</div>
-<div class="line"><span class="lineno">  103</span>            <span class="keywordflow">if</span> isResonant: meMode = 103</div>
-<div class="line"><span class="lineno">  104</span>            <span class="keywordflow">if</span> <span class="stringliteral">&#39;hadrons&#39;</span> <span class="keywordflow">in</span> dec:</div>
-<div class="line"><span class="lineno">  105</span>                <span class="comment">#P8gen.SetDecayToHadrons()</span></div>
-<div class="line"><span class="lineno">  106</span>                print(<span class="stringliteral">&quot;debug readdecay table hadrons BR &quot;</span>,BR)</div>
-<div class="line"><span class="lineno">  107</span>                <span class="comment">#Taking decays from pythia8 Z-&gt;qqbar</span></div>
-<div class="line"><span class="lineno">  108</span>                dpid = P8gen.GetDPId()</div>
-<div class="line"><span class="lineno">  109</span>                <span class="keywordflow">if</span> mDP&lt;3.0:</div>
-<div class="line"><span class="lineno">  110</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 1 -1&quot;</span>\</div>
-<div class="line"><span class="lineno">  111</span>                                        .format(dpid, 0.167*BR, meMode))</div>
-<div class="line"><span class="lineno">  112</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 2 -2&quot;</span>\</div>
-<div class="line"><span class="lineno">  113</span>                                        .format(dpid, 0.666*BR, meMode))</div>
-<div class="line"><span class="lineno">  114</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 3 -3&quot;</span>\</div>
-<div class="line"><span class="lineno">  115</span>                                        .format(dpid, 0.167*BR, meMode))</div>
-<div class="line"><span class="lineno">  116</span>                <span class="keywordflow">if</span> mDP&gt;=3.0:</div>
-<div class="line"><span class="lineno">  117</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 1 -1&quot;</span>\</div>
-<div class="line"><span class="lineno">  118</span>                                        .format(dpid, 0.1*BR, meMode))</div>
-<div class="line"><span class="lineno">  119</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 2 -2&quot;</span>\</div>
-<div class="line"><span class="lineno">  120</span>                                        .format(dpid, 0.4*BR, meMode))</div>
-<div class="line"><span class="lineno">  121</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 3 -3&quot;</span>\</div>
-<div class="line"><span class="lineno">  122</span>                                        .format(dpid, 0.1*BR, meMode))</div>
-<div class="line"><span class="lineno">  123</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 4 -4&quot;</span>\</div>
-<div class="line"><span class="lineno">  124</span>                                        .format(dpid, 0.4*BR, meMode))</div>
-<div class="line"><span class="lineno">  125</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  126</span>                particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&#39;-&gt;&#39;</span>,<span class="stringliteral">&#39; &#39;</span>).split()]</div>
-<div class="line"><span class="lineno">  127</span>                children = particles[1:]</div>
-<div class="line"><span class="lineno">  128</span>                childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
-<div class="line"><span class="lineno">  129</span>                codes = <span class="stringliteral">&#39; &#39;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes)</div>
-<div class="line"><span class="lineno">  130</span>                P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} {}&quot;</span>\</div>
-<div class="line"><span class="lineno">  131</span>                                    .format(P8gen.GetDPId(), BR, meMode, codes))</div>
-<div class="line"><span class="lineno">  132</span>                print(<span class="stringliteral">&quot;debug readdecay table &quot;</span>,particles,children,BR)</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span> </div>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00080">80</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/darkphotonDecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">   81</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   82</span><span class="stringliteral">    Configures the DP decay table in Pythia8</span></div>
+<div class="line"><span class="lineno">   83</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   84</span><span class="stringliteral">    Inputs:</span></div>
+<div class="line"><span class="lineno">   85</span><span class="stringliteral">    - P8gen: an instance of ROOT.HNLPythia8Generator()</span></div>
+<div class="line"><span class="lineno">   86</span><span class="stringliteral">    - conffile: a file listing the channels one wishes to activate</span></div>
+<div class="line"><span class="lineno">   87</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   88</span>    isResonant = (P8gen.GetDPId()==4900023)<span class="comment"># or P8gen.IsPbrem())</span></div>
+<div class="line"><span class="lineno">   89</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
+<div class="line"><span class="lineno">   90</span>    allowed = DP.allowedChannels()</div>
+<div class="line"><span class="lineno">   91</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
+<div class="line"><span class="lineno">   92</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
+<div class="line"><span class="lineno">   93</span>    <span class="comment"># Add decay channels</span></div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
+<div class="line"><span class="lineno">   95</span>        print(<span class="stringliteral">&#39;channel allowed:&#39;</span>,dec)</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">if</span> dec <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
+<div class="line"><span class="lineno">   97</span>            print(<span class="stringliteral">&#39;addDarkPhotondecayChannels WARNING: channel not configured! Please add also in conf file.\t&#39;</span>, dec)</div>
+<div class="line"><span class="lineno">   98</span>            quit()</div>
+<div class="line"><span class="lineno">   99</span>        print(<span class="stringliteral">&#39;channel wanted:&#39;</span>,dec)</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">if</span> allowed[dec] == <span class="stringliteral">&#39;yes&#39;</span> <span class="keywordflow">and</span> wanted[dec] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>            BR = DP.findBranchingRatio(dec)</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>            meMode = 0</div>
+<div class="line"><span class="lineno">  106</span>            <span class="keywordflow">if</span> isResonant: meMode = 103</div>
+<div class="line"><span class="lineno">  107</span>            <span class="keywordflow">if</span> <span class="stringliteral">&#39;hadrons&#39;</span> <span class="keywordflow">in</span> dec:</div>
+<div class="line"><span class="lineno">  108</span>                <span class="comment">#P8gen.SetDecayToHadrons()</span></div>
+<div class="line"><span class="lineno">  109</span>                print(<span class="stringliteral">&quot;debug readdecay table hadrons BR &quot;</span>,BR)</div>
+<div class="line"><span class="lineno">  110</span>                <span class="comment">#Taking decays from pythia8 Z-&gt;qqbar</span></div>
+<div class="line"><span class="lineno">  111</span>                dpid = P8gen.GetDPId()</div>
+<div class="line"><span class="lineno">  112</span>                <span class="keywordflow">if</span> mDP&lt;3.0:</div>
+<div class="line"><span class="lineno">  113</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 1 -1&quot;</span>\</div>
+<div class="line"><span class="lineno">  114</span>                                        .format(dpid, 0.167*BR, meMode))</div>
+<div class="line"><span class="lineno">  115</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 2 -2&quot;</span>\</div>
+<div class="line"><span class="lineno">  116</span>                                        .format(dpid, 0.666*BR, meMode))</div>
+<div class="line"><span class="lineno">  117</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 3 -3&quot;</span>\</div>
+<div class="line"><span class="lineno">  118</span>                                        .format(dpid, 0.167*BR, meMode))</div>
+<div class="line"><span class="lineno">  119</span>                <span class="keywordflow">if</span> mDP&gt;=3.0:</div>
+<div class="line"><span class="lineno">  120</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 1 -1&quot;</span>\</div>
+<div class="line"><span class="lineno">  121</span>                                        .format(dpid, 0.1*BR, meMode))</div>
+<div class="line"><span class="lineno">  122</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 2 -2&quot;</span>\</div>
+<div class="line"><span class="lineno">  123</span>                                        .format(dpid, 0.4*BR, meMode))</div>
+<div class="line"><span class="lineno">  124</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 3 -3&quot;</span>\</div>
+<div class="line"><span class="lineno">  125</span>                                        .format(dpid, 0.1*BR, meMode))</div>
+<div class="line"><span class="lineno">  126</span>                    P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} 4 -4&quot;</span>\</div>
+<div class="line"><span class="lineno">  127</span>                                        .format(dpid, 0.4*BR, meMode))</div>
+<div class="line"><span class="lineno">  128</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  129</span>                particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&#39;-&gt;&#39;</span>,<span class="stringliteral">&#39; &#39;</span>).split()]</div>
+<div class="line"><span class="lineno">  130</span>                children = particles[1:]</div>
+<div class="line"><span class="lineno">  131</span>                childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
+<div class="line"><span class="lineno">  132</span>                codes = <span class="stringliteral">&#39; &#39;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes)</div>
+<div class="line"><span class="lineno">  133</span>                P8gen.SetParameters(<span class="stringliteral">&quot;{}:addChannel =  1 {:.12} {} {}&quot;</span>\</div>
+<div class="line"><span class="lineno">  134</span>                                    .format(P8gen.GetDPId(), BR, meMode, codes))</div>
+<div class="line"><span class="lineno">  135</span>                print(<span class="stringliteral">&quot;debug readdecay table &quot;</span>,particles,children,BR)</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -280,38 +280,38 @@ Inputs:
 - hnl: an instance of hnl.HNL()
 - conffile: a file listing the channels one wishes to activate
 </pre> 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00046">46</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">   47</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   48</span><span class="stringliteral">    Configures the HNL decay table in Pythia8</span></div>
-<div class="line"><span class="lineno">   49</span><span class="stringliteral">    Inputs:</span></div>
-<div class="line"><span class="lineno">   50</span><span class="stringliteral">    - P8Gen: an instance of ROOT.HNLPythia8Generator()</span></div>
-<div class="line"><span class="lineno">   51</span><span class="stringliteral">    - hnl: an instance of hnl.HNL()</span></div>
-<div class="line"><span class="lineno">   52</span><span class="stringliteral">    - conffile: a file listing the channels one wishes to activate</span></div>
-<div class="line"><span class="lineno">   53</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   54</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
-<div class="line"><span class="lineno">   55</span>    allowed = hnl.allowedChannels()</div>
-<div class="line"><span class="lineno">   56</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
-<div class="line"><span class="lineno">   57</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment"># Add decay channels</span></div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
-<div class="line"><span class="lineno">   60</span>        <span class="keywordflow">if</span> dec <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
-<div class="line"><span class="lineno">   61</span>            print(<span class="stringliteral">&#39;addHNLdecayChannels ERROR: channel not configured!\t&#39;</span>, dec)</div>
-<div class="line"><span class="lineno">   62</span>            quit()</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> allowed[dec] == <span class="stringliteral">&#39;yes&#39;</span> <span class="keywordflow">and</span> wanted[dec] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
-<div class="line"><span class="lineno">   64</span>            particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&#39;-&gt;&#39;</span>,<span class="stringliteral">&#39; &#39;</span>).split()]</div>
-<div class="line"><span class="lineno">   65</span>            children = particles[1:]</div>
-<div class="line"><span class="lineno">   66</span>            childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
-<div class="line"><span class="lineno">   67</span>            BR = hnl.findBranchingRatio(dec)</div>
-<div class="line"><span class="lineno">   68</span>            <span class="comment"># Take care of Majorana modes</span></div>
-<div class="line"><span class="lineno">   69</span>            BR = BR/2.</div>
-<div class="line"><span class="lineno">   70</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
-<div class="line"><span class="lineno">   71</span>            P8Gen.SetParameters(f<span class="stringliteral">&#39;9900015:addChannel =  1 {BR:.12} 0 {codes}&#39;</span>)</div>
-<div class="line"><span class="lineno">   72</span>            <span class="comment"># Charge conjugate modes</span></div>
-<div class="line"><span class="lineno">   73</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([(str(-1*code) <span class="keywordflow">if</span> pdg.GetParticle(-code)!=<span class="keywordtype">None</span> <span class="keywordflow">else</span> str(code)) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00049">49</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span>addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">   50</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   51</span><span class="stringliteral">    Configures the HNL decay table in Pythia8</span></div>
+<div class="line"><span class="lineno">   52</span><span class="stringliteral">    Inputs:</span></div>
+<div class="line"><span class="lineno">   53</span><span class="stringliteral">    - P8Gen: an instance of ROOT.HNLPythia8Generator()</span></div>
+<div class="line"><span class="lineno">   54</span><span class="stringliteral">    - hnl: an instance of hnl.HNL()</span></div>
+<div class="line"><span class="lineno">   55</span><span class="stringliteral">    - conffile: a file listing the channels one wishes to activate</span></div>
+<div class="line"><span class="lineno">   56</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   57</span>    <span class="comment"># First fetch the list of kinematically allowed decays</span></div>
+<div class="line"><span class="lineno">   58</span>    allowed = hnl.allowedChannels()</div>
+<div class="line"><span class="lineno">   59</span>    <span class="comment"># Then fetch the list of desired channels to activate</span></div>
+<div class="line"><span class="lineno">   60</span>    wanted = load(conffile=conffile, verbose=verbose)</div>
+<div class="line"><span class="lineno">   61</span>    <span class="comment"># Add decay channels</span></div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> allowed:</div>
+<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> dec <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
+<div class="line"><span class="lineno">   64</span>            print(<span class="stringliteral">&#39;addHNLdecayChannels ERROR: channel not configured!\t&#39;</span>, dec)</div>
+<div class="line"><span class="lineno">   65</span>            quit()</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> allowed[dec] == <span class="stringliteral">&#39;yes&#39;</span> <span class="keywordflow">and</span> wanted[dec] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
+<div class="line"><span class="lineno">   67</span>            particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&#39;-&gt;&#39;</span>,<span class="stringliteral">&#39; &#39;</span>).split()]</div>
+<div class="line"><span class="lineno">   68</span>            children = particles[1:]</div>
+<div class="line"><span class="lineno">   69</span>            childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
+<div class="line"><span class="lineno">   70</span>            BR = hnl.findBranchingRatio(dec)</div>
+<div class="line"><span class="lineno">   71</span>            <span class="comment"># Take care of Majorana modes</span></div>
+<div class="line"><span class="lineno">   72</span>            BR = BR/2.</div>
+<div class="line"><span class="lineno">   73</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
 <div class="line"><span class="lineno">   74</span>            P8Gen.SetParameters(f<span class="stringliteral">&#39;9900015:addChannel =  1 {BR:.12} 0 {codes}&#39;</span>)</div>
-<div class="line"><span class="lineno">   75</span>            <span class="comment"># print &quot;debug readdecay table&quot;,particles,children,BR</span></div>
-<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   75</span>            <span class="comment"># Charge conjugate modes</span></div>
+<div class="line"><span class="lineno">   76</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([(str(-1*code) <span class="keywordflow">if</span> pdg.GetParticle(-code)!=<span class="keywordtype">None</span> <span class="keywordflow">else</span> str(code)) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
+<div class="line"><span class="lineno">   77</span>            P8Gen.SetParameters(f<span class="stringliteral">&#39;9900015:addChannel =  1 {BR:.12} 0 {codes}&#39;</span>)</div>
+<div class="line"><span class="lineno">   78</span>            <span class="comment"># print &quot;debug readdecay table&quot;,particles,children,BR</span></div>
+<div class="line"><span class="lineno">   79</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -341,25 +341,25 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00028">28</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>load(conffile = os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">   29</span>    f = open(conffile)</div>
-<div class="line"><span class="lineno">   30</span>    reader = csv.reader(f, delimiter=<span class="stringliteral">&#39;:&#39;</span>)</div>
-<div class="line"><span class="lineno">   31</span>    configuredDecays = {}</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">for</span> row <span class="keywordflow">in</span> reader:</div>
-<div class="line"><span class="lineno">   33</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> row: <span class="keywordflow">continue</span> <span class="comment"># skip empty lines</span></div>
-<div class="line"><span class="lineno">   34</span>        <span class="keywordflow">if</span> str(row[0]).strip().startswith(<span class="stringliteral">&#39;#&#39;</span>):</div>
-<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">continue</span> <span class="comment"># skip comment / header lines</span></div>
-<div class="line"><span class="lineno">   36</span>        channel = str(row[0]).strip()</div>
-<div class="line"><span class="lineno">   37</span>        flag = str(row[-1]).partition(<span class="stringliteral">&#39;#&#39;</span>)[0].strip() <span class="comment"># skip line comments</span></div>
-<div class="line"><span class="lineno">   38</span>        configuredDecays[channel] = flag</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> verbose:</div>
-<div class="line"><span class="lineno">   40</span>        print(<span class="stringliteral">&#39;Activated decay channels (plus charge conjugates): &#39;</span>)</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">for</span> channel <span class="keywordflow">in</span> configuredDecays.keys():</div>
-<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">if</span> configuredDecays[channel] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
-<div class="line"><span class="lineno">   43</span>                print(<span class="stringliteral">&#39;\t&#39;</span>+channel)</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> configuredDecays</div>
-<div class="line"><span class="lineno">   45</span> </div>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00031">31</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>load(conffile = os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">   32</span>    f = open(conffile)</div>
+<div class="line"><span class="lineno">   33</span>    reader = csv.reader(f, delimiter=<span class="stringliteral">&#39;:&#39;</span>)</div>
+<div class="line"><span class="lineno">   34</span>    configuredDecays = {}</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">for</span> row <span class="keywordflow">in</span> reader:</div>
+<div class="line"><span class="lineno">   36</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> row: <span class="keywordflow">continue</span> <span class="comment"># skip empty lines</span></div>
+<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">if</span> str(row[0]).strip().startswith(<span class="stringliteral">&#39;#&#39;</span>):</div>
+<div class="line"><span class="lineno">   38</span>            <span class="keywordflow">continue</span> <span class="comment"># skip comment / header lines</span></div>
+<div class="line"><span class="lineno">   39</span>        channel = str(row[0]).strip()</div>
+<div class="line"><span class="lineno">   40</span>        flag = str(row[-1]).partition(<span class="stringliteral">&#39;#&#39;</span>)[0].strip() <span class="comment"># skip line comments</span></div>
+<div class="line"><span class="lineno">   41</span>        configuredDecays[channel] = flag</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> verbose:</div>
+<div class="line"><span class="lineno">   43</span>        print(<span class="stringliteral">&#39;Activated decay channels (plus charge conjugates): &#39;</span>)</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">for</span> channel <span class="keywordflow">in</span> configuredDecays.keys():</div>
+<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">if</span> configuredDecays[channel] == <span class="stringliteral">&#39;yes&#39;</span>:</div>
+<div class="line"><span class="lineno">   46</span>                print(<span class="stringliteral">&#39;\t&#39;</span>+channel)</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> configuredDecays</div>
+<div class="line"><span class="lineno">   48</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -380,16 +380,16 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Read particle ID from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00019">19</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span><span class="keyword">def </span>PDGcode(particle):</div>
-<div class="line"><span class="lineno">   20</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   21</span><span class="stringliteral">    Read particle ID from PDG database</span></div>
-<div class="line"><span class="lineno">   22</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   23</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   24</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span> </div>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00022">22</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span><span class="keyword">def </span>PDGcode(particle):</div>
+<div class="line"><span class="lineno">   23</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   24</span><span class="stringliteral">    Read particle ID from PDG database</span></div>
+<div class="line"><span class="lineno">   25</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   26</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   27</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -406,7 +406,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00136">136</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00139">139</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00017">17</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00020">20</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
 
 </div>
 </div>

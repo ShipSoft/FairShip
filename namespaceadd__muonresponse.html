@@ -154,58 +154,58 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Inspecting the produced file for successfully added muon veto points.</pre> 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00040">40</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span><span class="keyword">def </span>inspect_file(inputfile, muonfile, print_table=False):</div>
-<div class="line"><span class="lineno">   41</span>    <span class="stringliteral">&quot;&quot;&quot;Inspecting the produced file for successfully added muon veto points.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   42</span>    input_file = r.TFile.Open(inputfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    input_tree = input_file.cbmsim</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    muon_file = r.TFile.Open(muonfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   46</span>    muon_tree = muon_file.DIS</div>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00043">43</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span>inspect_file(inputfile, muonfile, print_table=False):</div>
+<div class="line"><span class="lineno">   44</span>    <span class="stringliteral">&quot;&quot;&quot;Inspecting the produced file for successfully added muon veto points.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   45</span>    input_file = r.TFile.Open(inputfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   46</span>    input_tree = input_file.cbmsim</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    muons_found = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    table_data = []</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> i, (muon_event, input_event) <span class="keywordflow">in</span> enumerate(zip(muon_tree, input_tree)):</div>
-<div class="line"><span class="lineno">   53</span>        muon_hits = len(muon_event.muon_vetoPoints)</div>
-<div class="line"><span class="lineno">   54</span>        muoncount = 0</div>
-<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">if</span> muon_hits:</div>
-<div class="line"><span class="lineno">   56</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.vetoPoint:</div>
-<div class="line"><span class="lineno">   57</span>                <span class="keywordflow">if</span> hit.GetTrackID() == 0:</div>
-<div class="line"><span class="lineno">   58</span>                    muons_found = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   59</span>                    muoncount += 1</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>        muon_ubthits = len(muon_event.muon_UpstreamTaggerPoints)</div>
-<div class="line"><span class="lineno">   62</span>        muon_ubtcount = 0</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> muon_ubthits:</div>
-<div class="line"><span class="lineno">   64</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.UpstreamTaggerPoint:</div>
-<div class="line"><span class="lineno">   65</span>                <span class="keywordflow">if</span> hit.GetTrackID() == 0:</div>
-<div class="line"><span class="lineno">   66</span>                    muon_ubtcount += 1</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>        table_data.append(</div>
-<div class="line"><span class="lineno">   69</span>            [</div>
-<div class="line"><span class="lineno">   70</span>                i,</div>
-<div class="line"><span class="lineno">   71</span>                muon_hits,</div>
-<div class="line"><span class="lineno">   72</span>                len(input_event.vetoPoint) - muoncount,</div>
-<div class="line"><span class="lineno">   73</span>                muoncount,</div>
-<div class="line"><span class="lineno">   74</span>                len(input_event.vetoPoint),</div>
-<div class="line"><span class="lineno">   75</span>                muon_ubthits,</div>
-<div class="line"><span class="lineno">   76</span>                len(input_event.UpstreamTaggerPoint) - muon_ubtcount,</div>
-<div class="line"><span class="lineno">   77</span>                muon_ubtcount,</div>
-<div class="line"><span class="lineno">   78</span>                len(input_event.UpstreamTaggerPoint),</div>
-<div class="line"><span class="lineno">   79</span>            ]</div>
-<div class="line"><span class="lineno">   80</span>        )</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> print_table:</div>
-<div class="line"><span class="lineno">   83</span>        print(tabulate(table_data, headers=headers, tablefmt=<span class="stringliteral">&quot;grid&quot;</span>))</div>
+<div class="line"><span class="lineno">   48</span>    muon_file = r.TFile.Open(muonfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   49</span>    muon_tree = muon_file.DIS</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    muons_found = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    table_data = []</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> i, (muon_event, input_event) <span class="keywordflow">in</span> enumerate(zip(muon_tree, input_tree)):</div>
+<div class="line"><span class="lineno">   56</span>        muon_hits = len(muon_event.muon_vetoPoints)</div>
+<div class="line"><span class="lineno">   57</span>        muoncount = 0</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">if</span> muon_hits:</div>
+<div class="line"><span class="lineno">   59</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.vetoPoint:</div>
+<div class="line"><span class="lineno">   60</span>                <span class="keywordflow">if</span> hit.GetTrackID() == 0:</div>
+<div class="line"><span class="lineno">   61</span>                    muons_found = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   62</span>                    muoncount += 1</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>        muon_ubthits = len(muon_event.muon_UpstreamTaggerPoints)</div>
+<div class="line"><span class="lineno">   65</span>        muon_ubtcount = 0</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> muon_ubthits:</div>
+<div class="line"><span class="lineno">   67</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.UpstreamTaggerPoint:</div>
+<div class="line"><span class="lineno">   68</span>                <span class="keywordflow">if</span> hit.GetTrackID() == 0:</div>
+<div class="line"><span class="lineno">   69</span>                    muon_ubtcount += 1</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>        table_data.append(</div>
+<div class="line"><span class="lineno">   72</span>            [</div>
+<div class="line"><span class="lineno">   73</span>                i,</div>
+<div class="line"><span class="lineno">   74</span>                muon_hits,</div>
+<div class="line"><span class="lineno">   75</span>                len(input_event.vetoPoint) - muoncount,</div>
+<div class="line"><span class="lineno">   76</span>                muoncount,</div>
+<div class="line"><span class="lineno">   77</span>                len(input_event.vetoPoint),</div>
+<div class="line"><span class="lineno">   78</span>                muon_ubthits,</div>
+<div class="line"><span class="lineno">   79</span>                len(input_event.UpstreamTaggerPoint) - muon_ubtcount,</div>
+<div class="line"><span class="lineno">   80</span>                muon_ubtcount,</div>
+<div class="line"><span class="lineno">   81</span>                len(input_event.UpstreamTaggerPoint),</div>
+<div class="line"><span class="lineno">   82</span>            ]</div>
+<div class="line"><span class="lineno">   83</span>        )</div>
 <div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    input_file.Close()</div>
-<div class="line"><span class="lineno">   86</span>    muon_file.Close()</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">if</span> print_table:</div>
+<div class="line"><span class="lineno">   86</span>        print(tabulate(table_data, headers=headers, tablefmt=<span class="stringliteral">&quot;grid&quot;</span>))</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> muons_found</div>
-<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   88</span>    input_file.Close()</div>
+<div class="line"><span class="lineno">   89</span>    muon_file.Close()</div>
 <div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> muons_found</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -235,116 +235,116 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Add information from original muon to input simulation file.</pre> 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00091">91</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span><span class="keyword">def </span>modify_file(inputfile, muonfile):</div>
-<div class="line"><span class="lineno">   92</span>    <span class="stringliteral">&quot;&quot;&quot;Add information from original muon to input simulation file.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   93</span>    logging.warning(</div>
-<div class="line"><span class="lineno">   94</span>        f<span class="stringliteral">&quot;vetoPoints &amp; UpstreamTaggerPoints from the incoming muon (saved in {muonfile}) will be added to {inputfile}.&quot;</span></div>
-<div class="line"><span class="lineno">   95</span>    )</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    input_file = r.TFile.Open(inputfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   99</span>        input_tree = input_file.cbmsim</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  101</span>        print(f<span class="stringliteral">&quot;Error: {e}&quot;</span>)</div>
-<div class="line"><span class="lineno">  102</span>        input_file.Close()</div>
-<div class="line"><span class="lineno">  103</span>        exit(1)</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>    <span class="comment"># Open the external file with additional vetoPoints</span></div>
-<div class="line"><span class="lineno">  106</span>    muon_file = r.TFile.Open(muonfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  108</span>        muon_tree = muon_file.DIS</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  110</span>        print(f<span class="stringliteral">&quot;Error: {e}&quot;</span>)</div>
-<div class="line"><span class="lineno">  111</span>        muon_file.Close()</div>
-<div class="line"><span class="lineno">  112</span>        exit(1)</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>    temp_filename = inputfile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;.tmp&quot;</span>)</div>
-<div class="line"><span class="lineno">  115</span>    temp_file = r.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  116</span>    output_tree = input_tree.CloneTree(</div>
-<div class="line"><span class="lineno">  117</span>        0</div>
-<div class="line"><span class="lineno">  118</span>    )  <span class="comment"># Clone the structure of the existing tree, but do not copy the entries</span></div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>    combined_vetoPoint = r.TClonesArray(<span class="stringliteral">&quot;vetoPoint&quot;</span>)</div>
-<div class="line"><span class="lineno">  121</span>    output_tree.SetBranchAddress(<span class="stringliteral">&quot;vetoPoint&quot;</span>, combined_vetoPoint)</div>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00094">94</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span><span class="keyword">def </span>modify_file(inputfile, muonfile):</div>
+<div class="line"><span class="lineno">   95</span>    <span class="stringliteral">&quot;&quot;&quot;Add information from original muon to input simulation file.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   96</span>    logging.warning(</div>
+<div class="line"><span class="lineno">   97</span>        f<span class="stringliteral">&quot;vetoPoints &amp; UpstreamTaggerPoints from the incoming muon (saved in {muonfile}) will be added to {inputfile}.&quot;</span></div>
+<div class="line"><span class="lineno">   98</span>    )</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    input_file = r.TFile.Open(inputfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  102</span>        input_tree = input_file.cbmsim</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  104</span>        print(f<span class="stringliteral">&quot;Error: {e}&quot;</span>)</div>
+<div class="line"><span class="lineno">  105</span>        input_file.Close()</div>
+<div class="line"><span class="lineno">  106</span>        exit(1)</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>    <span class="comment"># Open the external file with additional vetoPoints</span></div>
+<div class="line"><span class="lineno">  109</span>    muon_file = r.TFile.Open(muonfile, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  111</span>        muon_tree = muon_file.DIS</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  113</span>        print(f<span class="stringliteral">&quot;Error: {e}&quot;</span>)</div>
+<div class="line"><span class="lineno">  114</span>        muon_file.Close()</div>
+<div class="line"><span class="lineno">  115</span>        exit(1)</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>    temp_filename = inputfile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;.tmp&quot;</span>)</div>
+<div class="line"><span class="lineno">  118</span>    temp_file = r.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  119</span>    output_tree = input_tree.CloneTree(</div>
+<div class="line"><span class="lineno">  120</span>        0</div>
+<div class="line"><span class="lineno">  121</span>    )  <span class="comment"># Clone the structure of the existing tree, but do not copy the entries</span></div>
 <div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    combined_UpstreamTaggerPoint = r.TClonesArray(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>)</div>
-<div class="line"><span class="lineno">  124</span>    output_tree.SetBranchAddress(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>, combined_UpstreamTaggerPoint)</div>
+<div class="line"><span class="lineno">  123</span>    combined_vetoPoint = r.TClonesArray(<span class="stringliteral">&quot;vetoPoint&quot;</span>)</div>
+<div class="line"><span class="lineno">  124</span>    output_tree.SetBranchAddress(<span class="stringliteral">&quot;vetoPoint&quot;</span>, combined_vetoPoint)</div>
 <div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    table_data = []</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">for</span> i, (input_event, muon_event) <span class="keywordflow">in</span> enumerate(zip(input_tree, muon_tree)):</div>
-<div class="line"><span class="lineno">  129</span>        interaction_point = r.TVector3()</div>
-<div class="line"><span class="lineno">  130</span>        input_event.MCTrack[0].GetStartVertex(interaction_point)</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>        combined_vetoPoint.Clear()</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>        index = 0</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.vetoPoint:</div>
-<div class="line"><span class="lineno">  137</span>            <span class="keywordflow">if</span> combined_vetoPoint.GetSize() == index:</div>
-<div class="line"><span class="lineno">  138</span>                combined_vetoPoint.Expand(index + 1)</div>
-<div class="line"><span class="lineno">  139</span>            combined_vetoPoint[index] = hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
-<div class="line"><span class="lineno">  140</span>            index += 1</div>
-<div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span>        muoncount = 0</div>
-<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_event.muon_vetoPoints:</div>
-<div class="line"><span class="lineno">  144</span>            <span class="keywordflow">if</span> hit.GetZ() &lt; interaction_point.Z():</div>
-<div class="line"><span class="lineno">  145</span>                <span class="keywordflow">if</span> combined_vetoPoint.GetSize() == index:</div>
-<div class="line"><span class="lineno">  146</span>                    combined_vetoPoint.Expand(index + 1)</div>
-<div class="line"><span class="lineno">  147</span>                combined_vetoPoint[index] = hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
-<div class="line"><span class="lineno">  148</span>                index += 1</div>
-<div class="line"><span class="lineno">  149</span>                muoncount += 1</div>
-<div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>        combined_UpstreamTaggerPoint.Clear()</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>        ubt_index = 0</div>
-<div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.UpstreamTaggerPoint:</div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">if</span> combined_UpstreamTaggerPoint.GetSize() == ubt_index:</div>
-<div class="line"><span class="lineno">  157</span>                combined_UpstreamTaggerPoint.Expand(ubt_index + 1)</div>
-<div class="line"><span class="lineno">  158</span>            combined_UpstreamTaggerPoint[ubt_index] = (</div>
-<div class="line"><span class="lineno">  159</span>                hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
-<div class="line"><span class="lineno">  160</span>            )</div>
-<div class="line"><span class="lineno">  161</span>            ubt_index += 1</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>        muon_ubtcount = 0</div>
-<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_event.muon_UpstreamTaggerPoints:</div>
-<div class="line"><span class="lineno">  165</span>            <span class="keywordflow">if</span> hit.GetZ() &lt; interaction_point.Z():</div>
-<div class="line"><span class="lineno">  166</span>                <span class="keywordflow">if</span> combined_UpstreamTaggerPoint.GetSize() == ubt_index:</div>
-<div class="line"><span class="lineno">  167</span>                    combined_UpstreamTaggerPoint.Expand(ubt_index + 1)</div>
-<div class="line"><span class="lineno">  168</span>                combined_UpstreamTaggerPoint[ubt_index] = (</div>
-<div class="line"><span class="lineno">  169</span>                    hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
-<div class="line"><span class="lineno">  170</span>                )</div>
-<div class="line"><span class="lineno">  171</span>                ubt_index += 1</div>
-<div class="line"><span class="lineno">  172</span>                muon_ubtcount += 1</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>        table_data.append(</div>
-<div class="line"><span class="lineno">  175</span>            [</div>
-<div class="line"><span class="lineno">  176</span>                i,</div>
-<div class="line"><span class="lineno">  177</span>                len(muon_event.muon_vetoPoints),</div>
-<div class="line"><span class="lineno">  178</span>                len(input_event.vetoPoint),</div>
-<div class="line"><span class="lineno">  179</span>                muoncount,</div>
-<div class="line"><span class="lineno">  180</span>                len(combined_vetoPoint),</div>
-<div class="line"><span class="lineno">  181</span>                len(muon_event.muon_UpstreamTaggerPoints),</div>
-<div class="line"><span class="lineno">  182</span>                len(input_event.UpstreamTaggerPoint),</div>
-<div class="line"><span class="lineno">  183</span>                muon_ubtcount,</div>
-<div class="line"><span class="lineno">  184</span>                len(combined_UpstreamTaggerPoint),</div>
-<div class="line"><span class="lineno">  185</span>            ]</div>
-<div class="line"><span class="lineno">  186</span>        )</div>
-<div class="line"><span class="lineno">  187</span>        output_tree.Fill()</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>    output_tree.Write(<span class="stringliteral">&quot;cbmsim&quot;</span>, r.TObject.kOverwrite)</div>
-<div class="line"><span class="lineno">  190</span>    temp_file.Close()</div>
-<div class="line"><span class="lineno">  191</span>    input_file.Close()</div>
-<div class="line"><span class="lineno">  192</span>    muon_file.Close()</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>    os.remove(inputfile)</div>
-<div class="line"><span class="lineno">  195</span>    os.rename(temp_filename, inputfile)</div>
-<div class="line"><span class="lineno">  196</span>    print(f<span class="stringliteral">&quot;File updated with incoming muon info as {inputfile}&quot;</span>)</div>
-<div class="line"><span class="lineno">  197</span>    print(tabulate(table_data, headers=headers, tablefmt=<span class="stringliteral">&quot;grid&quot;</span>))</div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  126</span>    combined_UpstreamTaggerPoint = r.TClonesArray(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>)</div>
+<div class="line"><span class="lineno">  127</span>    output_tree.SetBranchAddress(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>, combined_UpstreamTaggerPoint)</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>    table_data = []</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">for</span> i, (input_event, muon_event) <span class="keywordflow">in</span> enumerate(zip(input_tree, muon_tree)):</div>
+<div class="line"><span class="lineno">  132</span>        interaction_point = r.TVector3()</div>
+<div class="line"><span class="lineno">  133</span>        input_event.MCTrack[0].GetStartVertex(interaction_point)</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>        combined_vetoPoint.Clear()</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>        index = 0</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.vetoPoint:</div>
+<div class="line"><span class="lineno">  140</span>            <span class="keywordflow">if</span> combined_vetoPoint.GetSize() == index:</div>
+<div class="line"><span class="lineno">  141</span>                combined_vetoPoint.Expand(index + 1)</div>
+<div class="line"><span class="lineno">  142</span>            combined_vetoPoint[index] = hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
+<div class="line"><span class="lineno">  143</span>            index += 1</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>        muoncount = 0</div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_event.muon_vetoPoints:</div>
+<div class="line"><span class="lineno">  147</span>            <span class="keywordflow">if</span> hit.GetZ() &lt; interaction_point.Z():</div>
+<div class="line"><span class="lineno">  148</span>                <span class="keywordflow">if</span> combined_vetoPoint.GetSize() == index:</div>
+<div class="line"><span class="lineno">  149</span>                    combined_vetoPoint.Expand(index + 1)</div>
+<div class="line"><span class="lineno">  150</span>                combined_vetoPoint[index] = hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
+<div class="line"><span class="lineno">  151</span>                index += 1</div>
+<div class="line"><span class="lineno">  152</span>                muoncount += 1</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>        combined_UpstreamTaggerPoint.Clear()</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>        ubt_index = 0</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> input_event.UpstreamTaggerPoint:</div>
+<div class="line"><span class="lineno">  159</span>            <span class="keywordflow">if</span> combined_UpstreamTaggerPoint.GetSize() == ubt_index:</div>
+<div class="line"><span class="lineno">  160</span>                combined_UpstreamTaggerPoint.Expand(ubt_index + 1)</div>
+<div class="line"><span class="lineno">  161</span>            combined_UpstreamTaggerPoint[ubt_index] = (</div>
+<div class="line"><span class="lineno">  162</span>                hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
+<div class="line"><span class="lineno">  163</span>            )</div>
+<div class="line"><span class="lineno">  164</span>            ubt_index += 1</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>        muon_ubtcount = 0</div>
+<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_event.muon_UpstreamTaggerPoints:</div>
+<div class="line"><span class="lineno">  168</span>            <span class="keywordflow">if</span> hit.GetZ() &lt; interaction_point.Z():</div>
+<div class="line"><span class="lineno">  169</span>                <span class="keywordflow">if</span> combined_UpstreamTaggerPoint.GetSize() == ubt_index:</div>
+<div class="line"><span class="lineno">  170</span>                    combined_UpstreamTaggerPoint.Expand(ubt_index + 1)</div>
+<div class="line"><span class="lineno">  171</span>                combined_UpstreamTaggerPoint[ubt_index] = (</div>
+<div class="line"><span class="lineno">  172</span>                    hit  <span class="comment"># pending fix to support ROOT 6.32+</span></div>
+<div class="line"><span class="lineno">  173</span>                )</div>
+<div class="line"><span class="lineno">  174</span>                ubt_index += 1</div>
+<div class="line"><span class="lineno">  175</span>                muon_ubtcount += 1</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>        table_data.append(</div>
+<div class="line"><span class="lineno">  178</span>            [</div>
+<div class="line"><span class="lineno">  179</span>                i,</div>
+<div class="line"><span class="lineno">  180</span>                len(muon_event.muon_vetoPoints),</div>
+<div class="line"><span class="lineno">  181</span>                len(input_event.vetoPoint),</div>
+<div class="line"><span class="lineno">  182</span>                muoncount,</div>
+<div class="line"><span class="lineno">  183</span>                len(combined_vetoPoint),</div>
+<div class="line"><span class="lineno">  184</span>                len(muon_event.muon_UpstreamTaggerPoints),</div>
+<div class="line"><span class="lineno">  185</span>                len(input_event.UpstreamTaggerPoint),</div>
+<div class="line"><span class="lineno">  186</span>                muon_ubtcount,</div>
+<div class="line"><span class="lineno">  187</span>                len(combined_UpstreamTaggerPoint),</div>
+<div class="line"><span class="lineno">  188</span>            ]</div>
+<div class="line"><span class="lineno">  189</span>        )</div>
+<div class="line"><span class="lineno">  190</span>        output_tree.Fill()</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>    output_tree.Write(<span class="stringliteral">&quot;cbmsim&quot;</span>, r.TObject.kOverwrite)</div>
+<div class="line"><span class="lineno">  193</span>    temp_file.Close()</div>
+<div class="line"><span class="lineno">  194</span>    input_file.Close()</div>
+<div class="line"><span class="lineno">  195</span>    muon_file.Close()</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>    os.remove(inputfile)</div>
+<div class="line"><span class="lineno">  198</span>    os.rename(temp_filename, inputfile)</div>
+<div class="line"><span class="lineno">  199</span>    print(f<span class="stringliteral">&quot;File updated with incoming muon info as {inputfile}&quot;</span>)</div>
+<div class="line"><span class="lineno">  200</span>    print(tabulate(table_data, headers=headers, tablefmt=<span class="stringliteral">&quot;grid&quot;</span>))</div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -361,7 +361,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00026">26</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00029">29</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -388,7 +388,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;Combined UBTPoint Count&quot;</span>,</div>
 <div class="line"><span class="lineno">   11</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00027">27</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00030">30</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -404,7 +404,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00018">18</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00021">21</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -420,7 +420,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00011">11</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00014">14</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -436,7 +436,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00200">200</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00203">203</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -452,7 +452,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00013">13</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00016">16</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>
@@ -468,7 +468,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00017">17</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__muonresponse_8py_source.html#l00020">20</a> of file <a class="el" href="add__muonresponse_8py_source.html">add_muonresponse.py</a>.</p>
 
 </div>
 </div>

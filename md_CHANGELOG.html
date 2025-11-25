@@ -140,6 +140,7 @@ Added</h2>
 <li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
 <li>Add enough straws to cover aperture entirely</li>
 <li>Add SST frame option (4 = aluminium, 10 = steel [default])</li>
+<li>Fix EvtGen library linking order for old autotools-based EvtGen installations</li>
 <li>feat: Unified beam smearing implementation across all generators<ul>
 <li>Updated <code><a class="el" href="classHNLPythia8Generator.html">HNLPythia8Generator</a></code> to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation</li>
 <li>Added beam smearing and painting support to <code><a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></code></li>
@@ -288,6 +289,7 @@ Changed</h2>
 <li>Move SST geometry parameters to yaml</li>
 <li>Update strawtubes class</li>
 <li>Change SST gas mixture to Ar/CO2 80%/20% at 1 bar</li>
+<li>FairShip is now licensed under LGPLv3+</li>
 <li>UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via <a class="el" href="geometry__config_8py.html">geometry_config.py</a> instead of hardcoded</li>
 <li>Configuration storage modernized from pickle to JSON<ul>
 <li>Geometry configurations are now saved as JSON strings (using <code>std::string</code>) instead of pickled Python objects in ROOT files</li>
@@ -339,7 +341,9 @@ Removed</h2>
 <li>Remove tankDesign variable, options</li>
 <li>Remove target versions older than CDR</li>
 <li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
-<li>Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
+<li>Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
+<li>Remove unused files for FLUKA</li>
+<li>Remove unused CMake modules</li>
 <li>Remove globalDesigns dictionary from <a class="el" href="run__simScript_8py.html">run_simScript.py</a> and <a class="el" href="create__field__perturbation_8py.html">create_field_perturbation.py</a>, use inline defaults instead</li>
 <li>Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)</li>
 <li>Removed unused class ShipChamber (leftover from TP design)</li>

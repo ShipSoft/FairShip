@@ -133,102 +133,102 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00195">195</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  195</span><span class="keyword">def </span>createRootMap(inFileName, outFileName):</div>
-<div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>    print(f<span class="stringliteral">&#39;Create ROOT map {outFileName} from {inFileName}&#39;</span>)</div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
-<div class="line"><span class="lineno">  200</span>    theFile = ROOT.TFile.Open(outFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00198">198</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  198</span><span class="keyword">def </span>createRootMap(inFileName, outFileName):</div>
+<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  200</span>    print(f<span class="stringliteral">&#39;Create ROOT map {outFileName} from {inFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
-<div class="line"><span class="lineno">  203</span>    rangeTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">  202</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
+<div class="line"><span class="lineno">  203</span>    theFile = ROOT.TFile.Open(outFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
 <div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>    <span class="comment"># Coordinate ranges</span></div>
-<div class="line"><span class="lineno">  206</span>    rStruct = ROOT.rangeStruct()</div>
-<div class="line"><span class="lineno">  207</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  208</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  209</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  210</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  211</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  212</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  213</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  214</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  215</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    dataTree = ROOT.TTree(<span class="stringliteral">&#39;Data&#39;</span>, <span class="stringliteral">&#39;Data&#39;</span>)</div>
-<div class="line"><span class="lineno">  218</span>    dataTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">  205</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
+<div class="line"><span class="lineno">  206</span>    rangeTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>    <span class="comment"># Coordinate ranges</span></div>
+<div class="line"><span class="lineno">  209</span>    rStruct = ROOT.rangeStruct()</div>
+<div class="line"><span class="lineno">  210</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  211</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  212</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  213</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  214</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  215</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  216</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  217</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  218</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>    <span class="comment"># Field components with (x,y,z) coordinate binning ordered such that</span></div>
-<div class="line"><span class="lineno">  221</span>    <span class="comment"># z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),</span></div>
-<div class="line"><span class="lineno">  222</span>    <span class="comment"># the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number</span></div>
-<div class="line"><span class="lineno">  223</span>    <span class="comment"># of y and z bins</span></div>
-<div class="line"><span class="lineno">  224</span>    dStruct = ROOT.dataStruct()</div>
-<div class="line"><span class="lineno">  225</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  226</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  227</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>    <span class="comment"># Open text file and process the information</span></div>
-<div class="line"><span class="lineno">  230</span>    iLine = 0</div>
+<div class="line"><span class="lineno">  220</span>    dataTree = ROOT.TTree(<span class="stringliteral">&#39;Data&#39;</span>, <span class="stringliteral">&#39;Data&#39;</span>)</div>
+<div class="line"><span class="lineno">  221</span>    dataTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>    <span class="comment"># Field components with (x,y,z) coordinate binning ordered such that</span></div>
+<div class="line"><span class="lineno">  224</span>    <span class="comment"># z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),</span></div>
+<div class="line"><span class="lineno">  225</span>    <span class="comment"># the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number</span></div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment"># of y and z bins</span></div>
+<div class="line"><span class="lineno">  227</span>    dStruct = ROOT.dataStruct()</div>
+<div class="line"><span class="lineno">  228</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  229</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  230</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span>    <span class="comment"># Number of bins initialised by reading first line</span></div>
-<div class="line"><span class="lineno">  233</span>    Nx = 0</div>
-<div class="line"><span class="lineno">  234</span>    Ny = 0</div>
-<div class="line"><span class="lineno">  235</span>    Nz = 0</div>
-<div class="line"><span class="lineno">  236</span>    Nzy = 0</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
-<div class="line"><span class="lineno">  241</span>            iLine += 1</div>
-<div class="line"><span class="lineno">  242</span>            sLine = line.split()</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>            <span class="comment"># First line contains ranges</span></div>
-<div class="line"><span class="lineno">  245</span>            <span class="keywordflow">if</span> iLine == 1:</div>
-<div class="line"><span class="lineno">  246</span>                rStruct.xMin = float(sLine[1])</div>
-<div class="line"><span class="lineno">  247</span>                rStruct.xMax = float(sLine[2])</div>
-<div class="line"><span class="lineno">  248</span>                rStruct.dx = float(sLine[3])</div>
-<div class="line"><span class="lineno">  249</span>                rStruct.yMin = float(sLine[4])</div>
-<div class="line"><span class="lineno">  250</span>                rStruct.yMax = float(sLine[5])</div>
-<div class="line"><span class="lineno">  251</span>                rStruct.dy = float(sLine[6])</div>
-<div class="line"><span class="lineno">  252</span>                rStruct.zMin = float(sLine[7])</div>
-<div class="line"><span class="lineno">  253</span>                rStruct.zMax = float(sLine[8])</div>
-<div class="line"><span class="lineno">  254</span>                rStruct.dz = float(sLine[9])</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)</div>
-<div class="line"><span class="lineno">  257</span>                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)</div>
-<div class="line"><span class="lineno">  258</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
-<div class="line"><span class="lineno">  259</span>                Nzy = Nz*Ny</div>
-<div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>                rangeTree.Fill()</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>            <span class="keywordflow">elif</span> iLine &gt; 2:</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>                <span class="comment"># B field components</span></div>
-<div class="line"><span class="lineno">  268</span>                dStruct.Bx = float(sLine[0])</div>
-<div class="line"><span class="lineno">  269</span>                dStruct.By = float(sLine[1])</div>
-<div class="line"><span class="lineno">  270</span>                dStruct.Bz = float(sLine[2])</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>                <span class="comment"># Also store bin centre coordinates.</span></div>
-<div class="line"><span class="lineno">  273</span>                <span class="comment"># Map is ordered in ascending z, y, then x</span></div>
-<div class="line"><span class="lineno">  274</span>                <span class="comment">#iBin = iLine - 3</span></div>
-<div class="line"><span class="lineno">  275</span>                <span class="comment">#zBin = iBin%Nz</span></div>
-<div class="line"><span class="lineno">  276</span>                <span class="comment">#yBin = int((iBin/Nz))%Ny</span></div>
-<div class="line"><span class="lineno">  277</span>                <span class="comment">#xBin = int(iBin/Nzy)</span></div>
-<div class="line"><span class="lineno">  278</span>                <span class="comment">#dStruct.x = rStruct.dx*(xBin + 0.5) + rStruct.xMin</span></div>
-<div class="line"><span class="lineno">  279</span>                <span class="comment">#dStruct.y = rStruct.dy*(yBin + 0.5) + rStruct.yMin</span></div>
-<div class="line"><span class="lineno">  280</span>                <span class="comment">#dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin</span></div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>                dataTree.Fill()</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    theFile.cd()</div>
-<div class="line"><span class="lineno">  285</span>    rangeTree.Write()</div>
-<div class="line"><span class="lineno">  286</span>    dataTree.Write()</div>
-<div class="line"><span class="lineno">  287</span>    theFile.Close()</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  232</span>    <span class="comment"># Open text file and process the information</span></div>
+<div class="line"><span class="lineno">  233</span>    iLine = 0</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>    <span class="comment"># Number of bins initialised by reading first line</span></div>
+<div class="line"><span class="lineno">  236</span>    Nx = 0</div>
+<div class="line"><span class="lineno">  237</span>    Ny = 0</div>
+<div class="line"><span class="lineno">  238</span>    Nz = 0</div>
+<div class="line"><span class="lineno">  239</span>    Nzy = 0</div>
+<div class="line"><span class="lineno">  240</span> </div>
+<div class="line"><span class="lineno">  241</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
+<div class="line"><span class="lineno">  244</span>            iLine += 1</div>
+<div class="line"><span class="lineno">  245</span>            sLine = line.split()</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>            <span class="comment"># First line contains ranges</span></div>
+<div class="line"><span class="lineno">  248</span>            <span class="keywordflow">if</span> iLine == 1:</div>
+<div class="line"><span class="lineno">  249</span>                rStruct.xMin = float(sLine[1])</div>
+<div class="line"><span class="lineno">  250</span>                rStruct.xMax = float(sLine[2])</div>
+<div class="line"><span class="lineno">  251</span>                rStruct.dx = float(sLine[3])</div>
+<div class="line"><span class="lineno">  252</span>                rStruct.yMin = float(sLine[4])</div>
+<div class="line"><span class="lineno">  253</span>                rStruct.yMax = float(sLine[5])</div>
+<div class="line"><span class="lineno">  254</span>                rStruct.dy = float(sLine[6])</div>
+<div class="line"><span class="lineno">  255</span>                rStruct.zMin = float(sLine[7])</div>
+<div class="line"><span class="lineno">  256</span>                rStruct.zMax = float(sLine[8])</div>
+<div class="line"><span class="lineno">  257</span>                rStruct.dz = float(sLine[9])</div>
+<div class="line"><span class="lineno">  258</span> </div>
+<div class="line"><span class="lineno">  259</span>                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)</div>
+<div class="line"><span class="lineno">  260</span>                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)</div>
+<div class="line"><span class="lineno">  261</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
+<div class="line"><span class="lineno">  262</span>                Nzy = Nz*Ny</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>                rangeTree.Fill()</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>            <span class="keywordflow">elif</span> iLine &gt; 2:</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>                <span class="comment"># B field components</span></div>
+<div class="line"><span class="lineno">  271</span>                dStruct.Bx = float(sLine[0])</div>
+<div class="line"><span class="lineno">  272</span>                dStruct.By = float(sLine[1])</div>
+<div class="line"><span class="lineno">  273</span>                dStruct.Bz = float(sLine[2])</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>                <span class="comment"># Also store bin centre coordinates.</span></div>
+<div class="line"><span class="lineno">  276</span>                <span class="comment"># Map is ordered in ascending z, y, then x</span></div>
+<div class="line"><span class="lineno">  277</span>                <span class="comment">#iBin = iLine - 3</span></div>
+<div class="line"><span class="lineno">  278</span>                <span class="comment">#zBin = iBin%Nz</span></div>
+<div class="line"><span class="lineno">  279</span>                <span class="comment">#yBin = int((iBin/Nz))%Ny</span></div>
+<div class="line"><span class="lineno">  280</span>                <span class="comment">#xBin = int(iBin/Nzy)</span></div>
+<div class="line"><span class="lineno">  281</span>                <span class="comment">#dStruct.x = rStruct.dx*(xBin + 0.5) + rStruct.xMin</span></div>
+<div class="line"><span class="lineno">  282</span>                <span class="comment">#dStruct.y = rStruct.dy*(yBin + 0.5) + rStruct.yMin</span></div>
+<div class="line"><span class="lineno">  283</span>                <span class="comment">#dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin</span></div>
+<div class="line"><span class="lineno">  284</span> </div>
+<div class="line"><span class="lineno">  285</span>                dataTree.Fill()</div>
+<div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span>    theFile.cd()</div>
+<div class="line"><span class="lineno">  288</span>    rangeTree.Write()</div>
+<div class="line"><span class="lineno">  289</span>    dataTree.Write()</div>
+<div class="line"><span class="lineno">  290</span>    theFile.Close()</div>
+<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  292</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -258,136 +258,136 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00050">50</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>createTextMap(inFileName, outFileName):</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>    print(f<span class="stringliteral">&#39;Creating text map {outFileName} from {inFileName}&#39;</span>)</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    tmpFileName = <span class="stringliteral">&#39;tmpFile.txt&#39;</span></div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    inFile = open(inFileName)</div>
-<div class="line"><span class="lineno">   57</span>    tmpFile = open(tmpFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00053">53</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>createTextMap(inFileName, outFileName):</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    print(f<span class="stringliteral">&#39;Creating text map {outFileName} from {inFileName}&#39;</span>)</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    tmpFileName = <span class="stringliteral">&#39;tmpFile.txt&#39;</span></div>
 <div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    iLine = 0</div>
-<div class="line"><span class="lineno">   60</span>    xMin = 0.0</div>
-<div class="line"><span class="lineno">   61</span>    xMax = 0.0</div>
-<div class="line"><span class="lineno">   62</span>    dx = 0.0</div>
-<div class="line"><span class="lineno">   63</span>    yMin = 0.0</div>
-<div class="line"><span class="lineno">   64</span>    yMax = 0.0</div>
-<div class="line"><span class="lineno">   65</span>    dy = 0.0</div>
-<div class="line"><span class="lineno">   66</span>    zMin = 0.0</div>
-<div class="line"><span class="lineno">   67</span>    zMax = 0.0</div>
-<div class="line"><span class="lineno">   68</span>    dz = 0.0</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>    <span class="comment"># Offsets (in cm)</span></div>
-<div class="line"><span class="lineno">   71</span>    <span class="comment">#ox = 0.0</span></div>
-<div class="line"><span class="lineno">   72</span>    <span class="comment">#oy = 0.0</span></div>
-<div class="line"><span class="lineno">   73</span>    <span class="comment">#oz = 0.0</span></div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    iLine = 0</div>
-<div class="line"><span class="lineno">   76</span>    <span class="comment"># Convert metres to centimetres</span></div>
-<div class="line"><span class="lineno">   77</span>    m2cm = 100.0</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment"># For finding the delta bin widths</span></div>
-<div class="line"><span class="lineno">   80</span>    xOld = 0.0</div>
-<div class="line"><span class="lineno">   81</span>    yOld = 0.0</div>
-<div class="line"><span class="lineno">   82</span>    zOld = 0.0</div>
-<div class="line"><span class="lineno">   83</span>    gotdx = 0</div>
-<div class="line"><span class="lineno">   84</span>    gotdy = 0</div>
-<div class="line"><span class="lineno">   85</span>    gotdz = 0</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    firstDataLine = 9</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> inLine <span class="keywordflow">in</span> inFile:</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>        iLine += 1</div>
-<div class="line"><span class="lineno">   92</span>        <span class="comment"># Skip the first few lines</span></div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">if</span> iLine &gt;= firstDataLine:</div>
-<div class="line"><span class="lineno">   94</span>            words = inLine.split()</div>
-<div class="line"><span class="lineno">   95</span>            <span class="comment">#print &#39;words = {0}&#39;.format(words)</span></div>
-<div class="line"><span class="lineno">   96</span>            <span class="comment"># Convert the x,y,z co-ords to centimetres</span></div>
-<div class="line"><span class="lineno">   97</span>            x = float(words[0])*m2cm</div>
-<div class="line"><span class="lineno">   98</span>            y = float(words[1])*m2cm</div>
-<div class="line"><span class="lineno">   99</span>            z = float(words[2])*m2cm</div>
-<div class="line"><span class="lineno">  100</span>            Bx = float(words[3])</div>
-<div class="line"><span class="lineno">  101</span>            By = float(words[4])</div>
-<div class="line"><span class="lineno">  102</span>            Bz = float(words[5])</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>            BxWord = formatNumber(Bx)</div>
-<div class="line"><span class="lineno">  105</span>            ByWord = formatNumber(By)</div>
-<div class="line"><span class="lineno">  106</span>            BzWord = formatNumber(Bz)</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>            <span class="comment"># Write out the new line. Just print out the B field components, since we</span></div>
-<div class="line"><span class="lineno">  109</span>            <span class="comment"># can infer x,y,z co-ords from the ordering</span></div>
-<div class="line"><span class="lineno">  110</span>            newLine = f<span class="stringliteral">&#39;{BxWord} {ByWord} {BzWord}\n&#39;</span></div>
-<div class="line"><span class="lineno">  111</span>            <span class="comment">#newLine = &#39;{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n&#39;.format(x,y,z,Bx,By,Bz)</span></div>
-<div class="line"><span class="lineno">  112</span>            tmpFile.write(newLine)</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>            <span class="comment"># Keep track of the min/max values</span></div>
-<div class="line"><span class="lineno">  115</span>            <span class="keywordflow">if</span> iLine == firstDataLine:</div>
-<div class="line"><span class="lineno">  116</span>                xMin = x</div>
-<div class="line"><span class="lineno">  117</span>                xMax = x</div>
-<div class="line"><span class="lineno">  118</span>                xOld = x</div>
-<div class="line"><span class="lineno">  119</span>                yMin = y</div>
-<div class="line"><span class="lineno">  120</span>                yMax = y</div>
-<div class="line"><span class="lineno">  121</span>                yOld = y</div>
-<div class="line"><span class="lineno">  122</span>                zMin = z</div>
-<div class="line"><span class="lineno">  123</span>                zMax = z</div>
-<div class="line"><span class="lineno">  124</span>                zOld = z</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>            <span class="keywordflow">if</span> x &lt; xMin:</div>
-<div class="line"><span class="lineno">  127</span>                xMin = x</div>
-<div class="line"><span class="lineno">  128</span>            <span class="keywordflow">if</span> x &gt; xMax:</div>
-<div class="line"><span class="lineno">  129</span>                xMax = x</div>
-<div class="line"><span class="lineno">  130</span>            <span class="keywordflow">if</span> y &lt; yMin:</div>
-<div class="line"><span class="lineno">  131</span>                yMin = y</div>
-<div class="line"><span class="lineno">  132</span>            <span class="keywordflow">if</span> y &gt; yMax:</div>
-<div class="line"><span class="lineno">  133</span>                yMax = y</div>
-<div class="line"><span class="lineno">  134</span>            <span class="keywordflow">if</span> z &lt; zMin:</div>
-<div class="line"><span class="lineno">  135</span>                zMin = z</div>
-<div class="line"><span class="lineno">  136</span>            <span class="keywordflow">if</span> z &gt; zMax:</div>
-<div class="line"><span class="lineno">  137</span>                zMax = z</div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">if</span> gotdx == 0 <span class="keywordflow">and</span> x != xOld:</div>
-<div class="line"><span class="lineno">  140</span>                dx = x - xOld</div>
-<div class="line"><span class="lineno">  141</span>                gotdx = 1</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">if</span> gotdy == 0 <span class="keywordflow">and</span> y != yOld:</div>
-<div class="line"><span class="lineno">  143</span>                dy = y - yOld</div>
-<div class="line"><span class="lineno">  144</span>                gotdy = 1</div>
-<div class="line"><span class="lineno">  145</span>            <span class="keywordflow">if</span> gotdz == 0 <span class="keywordflow">and</span> z != zOld:</div>
-<div class="line"><span class="lineno">  146</span>                dz = z - zOld</div>
-<div class="line"><span class="lineno">  147</span>                gotdz = 1</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>    print(f<span class="stringliteral">&#39;dx = {dx}, dy = {dy}, dz = {dz}&#39;</span>)</div>
-<div class="line"><span class="lineno">  150</span>    print(f<span class="stringliteral">&#39;x = {xMin} to {xMax}, y = {yMin} to {yMax}, z = {zMin} to {zMax}&#39;</span>)</div>
+<div class="line"><span class="lineno">   59</span>    inFile = open(inFileName)</div>
+<div class="line"><span class="lineno">   60</span>    tmpFile = open(tmpFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    iLine = 0</div>
+<div class="line"><span class="lineno">   63</span>    xMin = 0.0</div>
+<div class="line"><span class="lineno">   64</span>    xMax = 0.0</div>
+<div class="line"><span class="lineno">   65</span>    dx = 0.0</div>
+<div class="line"><span class="lineno">   66</span>    yMin = 0.0</div>
+<div class="line"><span class="lineno">   67</span>    yMax = 0.0</div>
+<div class="line"><span class="lineno">   68</span>    dy = 0.0</div>
+<div class="line"><span class="lineno">   69</span>    zMin = 0.0</div>
+<div class="line"><span class="lineno">   70</span>    zMax = 0.0</div>
+<div class="line"><span class="lineno">   71</span>    dz = 0.0</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>    <span class="comment"># Offsets (in cm)</span></div>
+<div class="line"><span class="lineno">   74</span>    <span class="comment">#ox = 0.0</span></div>
+<div class="line"><span class="lineno">   75</span>    <span class="comment">#oy = 0.0</span></div>
+<div class="line"><span class="lineno">   76</span>    <span class="comment">#oz = 0.0</span></div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    iLine = 0</div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment"># Convert metres to centimetres</span></div>
+<div class="line"><span class="lineno">   80</span>    m2cm = 100.0</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="comment"># For finding the delta bin widths</span></div>
+<div class="line"><span class="lineno">   83</span>    xOld = 0.0</div>
+<div class="line"><span class="lineno">   84</span>    yOld = 0.0</div>
+<div class="line"><span class="lineno">   85</span>    zOld = 0.0</div>
+<div class="line"><span class="lineno">   86</span>    gotdx = 0</div>
+<div class="line"><span class="lineno">   87</span>    gotdy = 0</div>
+<div class="line"><span class="lineno">   88</span>    gotdz = 0</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    firstDataLine = 9</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">for</span> inLine <span class="keywordflow">in</span> inFile:</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>        iLine += 1</div>
+<div class="line"><span class="lineno">   95</span>        <span class="comment"># Skip the first few lines</span></div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">if</span> iLine &gt;= firstDataLine:</div>
+<div class="line"><span class="lineno">   97</span>            words = inLine.split()</div>
+<div class="line"><span class="lineno">   98</span>            <span class="comment">#print &#39;words = {0}&#39;.format(words)</span></div>
+<div class="line"><span class="lineno">   99</span>            <span class="comment"># Convert the x,y,z co-ords to centimetres</span></div>
+<div class="line"><span class="lineno">  100</span>            x = float(words[0])*m2cm</div>
+<div class="line"><span class="lineno">  101</span>            y = float(words[1])*m2cm</div>
+<div class="line"><span class="lineno">  102</span>            z = float(words[2])*m2cm</div>
+<div class="line"><span class="lineno">  103</span>            Bx = float(words[3])</div>
+<div class="line"><span class="lineno">  104</span>            By = float(words[4])</div>
+<div class="line"><span class="lineno">  105</span>            Bz = float(words[5])</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>            BxWord = formatNumber(Bx)</div>
+<div class="line"><span class="lineno">  108</span>            ByWord = formatNumber(By)</div>
+<div class="line"><span class="lineno">  109</span>            BzWord = formatNumber(Bz)</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>            <span class="comment"># Write out the new line. Just print out the B field components, since we</span></div>
+<div class="line"><span class="lineno">  112</span>            <span class="comment"># can infer x,y,z co-ords from the ordering</span></div>
+<div class="line"><span class="lineno">  113</span>            newLine = f<span class="stringliteral">&#39;{BxWord} {ByWord} {BzWord}\n&#39;</span></div>
+<div class="line"><span class="lineno">  114</span>            <span class="comment">#newLine = &#39;{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n&#39;.format(x,y,z,Bx,By,Bz)</span></div>
+<div class="line"><span class="lineno">  115</span>            tmpFile.write(newLine)</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>            <span class="comment"># Keep track of the min/max values</span></div>
+<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">if</span> iLine == firstDataLine:</div>
+<div class="line"><span class="lineno">  119</span>                xMin = x</div>
+<div class="line"><span class="lineno">  120</span>                xMax = x</div>
+<div class="line"><span class="lineno">  121</span>                xOld = x</div>
+<div class="line"><span class="lineno">  122</span>                yMin = y</div>
+<div class="line"><span class="lineno">  123</span>                yMax = y</div>
+<div class="line"><span class="lineno">  124</span>                yOld = y</div>
+<div class="line"><span class="lineno">  125</span>                zMin = z</div>
+<div class="line"><span class="lineno">  126</span>                zMax = z</div>
+<div class="line"><span class="lineno">  127</span>                zOld = z</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">if</span> x &lt; xMin:</div>
+<div class="line"><span class="lineno">  130</span>                xMin = x</div>
+<div class="line"><span class="lineno">  131</span>            <span class="keywordflow">if</span> x &gt; xMax:</div>
+<div class="line"><span class="lineno">  132</span>                xMax = x</div>
+<div class="line"><span class="lineno">  133</span>            <span class="keywordflow">if</span> y &lt; yMin:</div>
+<div class="line"><span class="lineno">  134</span>                yMin = y</div>
+<div class="line"><span class="lineno">  135</span>            <span class="keywordflow">if</span> y &gt; yMax:</div>
+<div class="line"><span class="lineno">  136</span>                yMax = y</div>
+<div class="line"><span class="lineno">  137</span>            <span class="keywordflow">if</span> z &lt; zMin:</div>
+<div class="line"><span class="lineno">  138</span>                zMin = z</div>
+<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">if</span> z &gt; zMax:</div>
+<div class="line"><span class="lineno">  140</span>                zMax = z</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">if</span> gotdx == 0 <span class="keywordflow">and</span> x != xOld:</div>
+<div class="line"><span class="lineno">  143</span>                dx = x - xOld</div>
+<div class="line"><span class="lineno">  144</span>                gotdx = 1</div>
+<div class="line"><span class="lineno">  145</span>            <span class="keywordflow">if</span> gotdy == 0 <span class="keywordflow">and</span> y != yOld:</div>
+<div class="line"><span class="lineno">  146</span>                dy = y - yOld</div>
+<div class="line"><span class="lineno">  147</span>                gotdy = 1</div>
+<div class="line"><span class="lineno">  148</span>            <span class="keywordflow">if</span> gotdz == 0 <span class="keywordflow">and</span> z != zOld:</div>
+<div class="line"><span class="lineno">  149</span>                dz = z - zOld</div>
+<div class="line"><span class="lineno">  150</span>                gotdz = 1</div>
 <div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    tmpFile.close()</div>
-<div class="line"><span class="lineno">  153</span>    inFile.close()</div>
+<div class="line"><span class="lineno">  152</span>    print(f<span class="stringliteral">&#39;dx = {dx}, dy = {dy}, dz = {dz}&#39;</span>)</div>
+<div class="line"><span class="lineno">  153</span>    print(f<span class="stringliteral">&#39;x = {xMin} to {xMax}, y = {yMin} to {yMax}, z = {zMin} to {zMax}&#39;</span>)</div>
 <div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>    <span class="comment"># Write out the map containing the coordinate ranges and offsets etc</span></div>
-<div class="line"><span class="lineno">  156</span>    tmpFile2 = open(tmpFileName)</div>
-<div class="line"><span class="lineno">  157</span>    outFile = open(outFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>    outLine = <span class="stringliteral">&#39;CLimits {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} &#39;</span> \</div>
-<div class="line"><span class="lineno">  160</span>        <span class="stringliteral">&#39;{:.0f} {:.0f} {:.0f}\n&#39;</span>.format(xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz)</div>
-<div class="line"><span class="lineno">  161</span>    outFile.write(outLine)</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>    <span class="comment">#outLine = &#39;Offsets {0:.0f} {1:.0f} {2:.0f}\n&#39;.format(ox, oy, oz)</span></div>
-<div class="line"><span class="lineno">  164</span>    <span class="comment">#outFile.write(outLine)</span></div>
+<div class="line"><span class="lineno">  155</span>    tmpFile.close()</div>
+<div class="line"><span class="lineno">  156</span>    inFile.close()</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>    <span class="comment"># Write out the map containing the coordinate ranges and offsets etc</span></div>
+<div class="line"><span class="lineno">  159</span>    tmpFile2 = open(tmpFileName)</div>
+<div class="line"><span class="lineno">  160</span>    outFile = open(outFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span>    outLine = <span class="stringliteral">&#39;CLimits {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} &#39;</span> \</div>
+<div class="line"><span class="lineno">  163</span>        <span class="stringliteral">&#39;{:.0f} {:.0f} {:.0f}\n&#39;</span>.format(xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz)</div>
+<div class="line"><span class="lineno">  164</span>    outFile.write(outLine)</div>
 <div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>    <span class="comment"># Write a line showing the variable names (for file readability)</span></div>
-<div class="line"><span class="lineno">  167</span>    outLine = <span class="stringliteral">&#39;Bx(T) By(T) Bz(T)\n&#39;</span></div>
-<div class="line"><span class="lineno">  168</span>    <span class="comment">#outLine = &#39;x(cm) y(cm) z(cm) Bx(T) By(T) Bz(T)\n&#39;</span></div>
-<div class="line"><span class="lineno">  169</span>    outFile.write(outLine)</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>    <span class="comment"># Copy the tmp file data</span></div>
-<div class="line"><span class="lineno">  172</span>    <span class="keywordflow">for</span> tLine <span class="keywordflow">in</span> tmpFile2:</div>
+<div class="line"><span class="lineno">  166</span>    <span class="comment">#outLine = &#39;Offsets {0:.0f} {1:.0f} {2:.0f}\n&#39;.format(ox, oy, oz)</span></div>
+<div class="line"><span class="lineno">  167</span>    <span class="comment">#outFile.write(outLine)</span></div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>    <span class="comment"># Write a line showing the variable names (for file readability)</span></div>
+<div class="line"><span class="lineno">  170</span>    outLine = <span class="stringliteral">&#39;Bx(T) By(T) Bz(T)\n&#39;</span></div>
+<div class="line"><span class="lineno">  171</span>    <span class="comment">#outLine = &#39;x(cm) y(cm) z(cm) Bx(T) By(T) Bz(T)\n&#39;</span></div>
+<div class="line"><span class="lineno">  172</span>    outFile.write(outLine)</div>
 <div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>        outFile.write(tLine)</div>
-<div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>    outFile.close()</div>
-<div class="line"><span class="lineno">  177</span>    tmpFile2.close()</div>
+<div class="line"><span class="lineno">  174</span>    <span class="comment"># Copy the tmp file data</span></div>
+<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">for</span> tLine <span class="keywordflow">in</span> tmpFile2:</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>        outFile.write(tLine)</div>
 <div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span>    outFile.close()</div>
+<div class="line"><span class="lineno">  180</span>    tmpFile2.close()</div>
+<div class="line"><span class="lineno">  181</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -407,23 +407,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00179">179</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span><span class="keyword">def </span>formatNumber(x):</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>    <span class="comment"># To save disk space, reduce the precision of the field value</span></div>
-<div class="line"><span class="lineno">  182</span>    <span class="comment"># as we go below various thresholds</span></div>
+<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00182">182</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  182</span><span class="keyword">def </span>formatNumber(x):</div>
 <div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>    <span class="comment"># Let the general precision be 0.01 mT. Anything below this</span></div>
-<div class="line"><span class="lineno">  185</span>    <span class="comment"># is set to zero.</span></div>
-<div class="line"><span class="lineno">  186</span>    xWord = f<span class="stringliteral">&#39;{x:.5f}&#39;</span></div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">if</span> abs(x) &lt; 1e-5:</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>        <span class="comment"># Set to zero</span></div>
-<div class="line"><span class="lineno">  191</span>        xWord = <span class="stringliteral">&#39;0&#39;</span></div>
+<div class="line"><span class="lineno">  184</span>    <span class="comment"># To save disk space, reduce the precision of the field value</span></div>
+<div class="line"><span class="lineno">  185</span>    <span class="comment"># as we go below various thresholds</span></div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>    <span class="comment"># Let the general precision be 0.01 mT. Anything below this</span></div>
+<div class="line"><span class="lineno">  188</span>    <span class="comment"># is set to zero.</span></div>
+<div class="line"><span class="lineno">  189</span>    xWord = f<span class="stringliteral">&#39;{x:.5f}&#39;</span></div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">if</span> abs(x) &lt; 1e-5:</div>
 <div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">return</span> xWord</div>
-<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  193</span>        <span class="comment"># Set to zero</span></div>
+<div class="line"><span class="lineno">  194</span>        xWord = <span class="stringliteral">&#39;0&#39;</span></div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">return</span> xWord</div>
+<div class="line"><span class="lineno">  197</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -453,17 +453,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00039">39</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>        outFileName = <span class="stringliteral">&#39;MuonFilterBFieldMap1.txt&#39;</span>):</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment"># Text format</span></div>
-<div class="line"><span class="lineno">   43</span>    createTextMap(inFileName, outFileName)</div>
+<p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00042">42</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>        outFileName = <span class="stringliteral">&#39;MuonFilterBFieldMap1.txt&#39;</span>):</div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    <span class="comment"># Also create ROOT file based on the restructured text output</span></div>
-<div class="line"><span class="lineno">   46</span>    rootFileName = outFileName.replace(<span class="stringliteral">&#39;.txt&#39;</span>, <span class="stringliteral">&#39;.root&#39;</span>)</div>
-<div class="line"><span class="lineno">   47</span>    createRootMap(outFileName, rootFileName)</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   45</span>    <span class="comment"># Text format</span></div>
+<div class="line"><span class="lineno">   46</span>    createTextMap(inFileName, outFileName)</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    <span class="comment"># Also create ROOT file based on the restructured text output</span></div>
+<div class="line"><span class="lineno">   49</span>    rootFileName = outFileName.replace(<span class="stringliteral">&#39;.txt&#39;</span>, <span class="stringliteral">&#39;.root&#39;</span>)</div>
+<div class="line"><span class="lineno">   50</span>    createRootMap(outFileName, rootFileName)</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -124,19 +124,19 @@ Functions</h2></td></tr>
 <p>makeProd("muon812",10,False,True) # &ndash;&lt; 831 copied back, done 16.3.2015 makeProd("muon822",10,True,True) makeProd("muon821",10,True,True) makeProd("muon822",10,True,True) </p>
 <p>makeProd("muon813",10,False,True) # makeProd("muon823",10,True,True) </p>
 
-<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00214">214</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  214</span><span class="keyword">def </span>copy2EOS():</div>
-<div class="line"><span class="lineno">  215</span> <span class="keyword">import</span> os</div>
-<div class="line"><span class="lineno">  216</span> eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
-<div class="line"><span class="lineno">  217</span> <span class="keywordflow">for</span> prod <span class="keywordflow">in</span> [610,620]:</div>
-<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,10):</div>
-<div class="line"><span class="lineno">  219</span>   prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(prod+run)</div>
-<div class="line"><span class="lineno">  220</span>   <span class="keywordflow">if</span> prod <span class="keywordflow">in</span> [610,620] <span class="keywordflow">and</span> run == 0: prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(int(prod/100))</div>
-<div class="line"><span class="lineno">  221</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,10):</div>
-<div class="line"><span class="lineno">  222</span>   <span class="comment"># requires full path</span></div>
-<div class="line"><span class="lineno">  223</span>    cmd = eos+<span class="stringliteral">&#39; cp -r &#39;</span>+os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/ /eos/experiment/ship/data/muonBackground/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/&#39;</span></div>
-<div class="line"><span class="lineno">  224</span>    print(cmd)</div>
-<div class="line"><span class="lineno">  225</span>    os.system(cmd)</div>
+<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00217">217</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  217</span><span class="keyword">def </span>copy2EOS():</div>
+<div class="line"><span class="lineno">  218</span> <span class="keyword">import</span> os</div>
+<div class="line"><span class="lineno">  219</span> eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
+<div class="line"><span class="lineno">  220</span> <span class="keywordflow">for</span> prod <span class="keywordflow">in</span> [610,620]:</div>
+<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,10):</div>
+<div class="line"><span class="lineno">  222</span>   prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(prod+run)</div>
+<div class="line"><span class="lineno">  223</span>   <span class="keywordflow">if</span> prod <span class="keywordflow">in</span> [610,620] <span class="keywordflow">and</span> run == 0: prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(int(prod/100))</div>
+<div class="line"><span class="lineno">  224</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,10):</div>
+<div class="line"><span class="lineno">  225</span>   <span class="comment"># requires full path</span></div>
+<div class="line"><span class="lineno">  226</span>    cmd = eos+<span class="stringliteral">&#39; cp -r &#39;</span>+os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/ /eos/experiment/ship/data/muonBackground/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/&#39;</span></div>
+<div class="line"><span class="lineno">  227</span>    print(cmd)</div>
+<div class="line"><span class="lineno">  228</span>    os.system(cmd)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -155,19 +155,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00226">226</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span><span class="keyword">def </span>copyFromEOS():</div>
-<div class="line"><span class="lineno">  227</span> <span class="keyword">import</span> os</div>
-<div class="line"><span class="lineno">  228</span> eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
-<div class="line"><span class="lineno">  229</span> <span class="keywordflow">for</span> prod <span class="keywordflow">in</span> [610,620]:</div>
-<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,10):</div>
-<div class="line"><span class="lineno">  231</span>   prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(prod+run)</div>
-<div class="line"><span class="lineno">  232</span>   <span class="keywordflow">if</span> prod <span class="keywordflow">in</span> [610,620] <span class="keywordflow">and</span> run == 0: prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(int(prod/100))</div>
-<div class="line"><span class="lineno">  233</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,10):</div>
-<div class="line"><span class="lineno">  234</span>   <span class="comment"># requires full path</span></div>
-<div class="line"><span class="lineno">  235</span>    cmd = eos+<span class="stringliteral">&#39; cp -r  /eos/experiment/ship/data/muonBackground/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/ &#39;</span> +os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/&#39;</span></div>
-<div class="line"><span class="lineno">  236</span>    print(cmd)</div>
-<div class="line"><span class="lineno">  237</span>    os.system(cmd)</div>
+<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00229">229</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  229</span><span class="keyword">def </span>copyFromEOS():</div>
+<div class="line"><span class="lineno">  230</span> <span class="keyword">import</span> os</div>
+<div class="line"><span class="lineno">  231</span> eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
+<div class="line"><span class="lineno">  232</span> <span class="keywordflow">for</span> prod <span class="keywordflow">in</span> [610,620]:</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,10):</div>
+<div class="line"><span class="lineno">  234</span>   prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(prod+run)</div>
+<div class="line"><span class="lineno">  235</span>   <span class="keywordflow">if</span> prod <span class="keywordflow">in</span> [610,620] <span class="keywordflow">and</span> run == 0: prefix = <span class="stringliteral">&#39;muon&#39;</span>+str(int(prod/100))</div>
+<div class="line"><span class="lineno">  236</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,10):</div>
+<div class="line"><span class="lineno">  237</span>   <span class="comment"># requires full path</span></div>
+<div class="line"><span class="lineno">  238</span>    cmd = eos+<span class="stringliteral">&#39; cp -r  /eos/experiment/ship/data/muonBackground/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/ &#39;</span> +os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+prefix+str(i)+<span class="stringliteral">&#39;/&#39;</span></div>
+<div class="line"><span class="lineno">  239</span>    print(cmd)</div>
+<div class="line"><span class="lineno">  240</span>    os.system(cmd)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -215,159 +215,159 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00002">2</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    2</span><span class="keyword">def </span>makeProd(prefix,DY,y=False,phiRandom=False,X=None):</div>
-<div class="line"><span class="lineno">    3</span>  ncpu = 9</div>
-<div class="line"><span class="lineno">    4</span>  shipsoft = os.environ[<span class="stringliteral">&#39;SHIPSOFT&#39;</span>].replace(<span class="stringliteral">&#39;/dev&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">    5</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> y:</div>
-<div class="line"><span class="lineno">    6</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_onlyMuons.root&#39;</span></div>
-<div class="line"><span class="lineno">    7</span>    cmd  = <span class="stringliteral">&quot;python $FAIRSHIP/macro/run_simScript.py --MuonBack -f &quot;</span> + f + <span class="stringliteral">&quot; -Y &quot;</span>+str(float(DY)) <span class="comment"># --display&quot;</span></div>
-<div class="line"><span class="lineno">    8</span>  <span class="keywordflow">elif</span> y==<span class="stringliteral">&#39;Jpsi&#39;</span>:</div>
-<div class="line"><span class="lineno">    9</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_Jpsi_onlyMuons.root&#39;</span></div>
+<p class="definition">Definition at line <a class="el" href="run__prod_8py_source.html#l00005">5</a> of file <a class="el" href="run__prod_8py_source.html">run_prod.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>makeProd(prefix,DY,y=False,phiRandom=False,X=None):</div>
+<div class="line"><span class="lineno">    6</span>  ncpu = 9</div>
+<div class="line"><span class="lineno">    7</span>  shipsoft = os.environ[<span class="stringliteral">&#39;SHIPSOFT&#39;</span>].replace(<span class="stringliteral">&#39;/dev&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">    8</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> y:</div>
+<div class="line"><span class="lineno">    9</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_onlyMuons.root&#39;</span></div>
 <div class="line"><span class="lineno">   10</span>    cmd  = <span class="stringliteral">&quot;python $FAIRSHIP/macro/run_simScript.py --MuonBack -f &quot;</span> + f + <span class="stringliteral">&quot; -Y &quot;</span>+str(float(DY)) <span class="comment"># --display&quot;</span></div>
-<div class="line"><span class="lineno">   11</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   12</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_Yandex_onlyMuons.root&#39;</span></div>
+<div class="line"><span class="lineno">   11</span>  <span class="keywordflow">elif</span> y==<span class="stringliteral">&#39;Jpsi&#39;</span>:</div>
+<div class="line"><span class="lineno">   12</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_Jpsi_onlyMuons.root&#39;</span></div>
 <div class="line"><span class="lineno">   13</span>    cmd  = <span class="stringliteral">&quot;python $FAIRSHIP/macro/run_simScript.py --MuonBack -f &quot;</span> + f + <span class="stringliteral">&quot; -Y &quot;</span>+str(float(DY)) <span class="comment"># --display&quot;</span></div>
-<div class="line"><span class="lineno">   14</span>  <span class="keywordflow">if</span> phiRandom:  cmd = cmd +<span class="stringliteral">&#39; --phiRandom&#39;</span></div>
-<div class="line"><span class="lineno">   15</span>  fn = ROOT.TFile(f)</div>
-<div class="line"><span class="lineno">   16</span>  sTree = fn.FindObjectAny(<span class="stringliteral">&#39;pythia8-Geant4&#39;</span>)</div>
-<div class="line"><span class="lineno">   17</span>  ntot = sTree.GetEntries()</div>
-<div class="line"><span class="lineno">   18</span>  fn.Close()</div>
-<div class="line"><span class="lineno">   19</span>  ns   = 0</div>
-<div class="line"><span class="lineno">   20</span>  n3   = int(ntot/ncpu)</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,ncpu+1):</div>
-<div class="line"><span class="lineno">   22</span>   d = prefix+str(i)</div>
-<div class="line"><span class="lineno">   23</span>   <span class="keywordflow">if</span> d <span class="keywordflow">not</span> <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>): os.system(<span class="stringliteral">&#39;mkdir &#39;</span>+d)</div>
-<div class="line"><span class="lineno">   24</span>  os.chdir(<span class="stringliteral">&#39;./&#39;</span>+prefix+<span class="stringliteral">&#39;1&#39;</span>)</div>
-<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,ncpu+1):</div>
-<div class="line"><span class="lineno">   26</span>   <span class="keywordflow">if</span> i==ncpu: n3 = ntot - (i-1)*n3</div>
-<div class="line"><span class="lineno">   27</span>   <span class="keywordflow">if</span> X:</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">if</span> X==i:</div>
-<div class="line"><span class="lineno">   29</span>     os.system(<span class="stringliteral">&#39;cp $FAIRSHIP/macro/run_simScript.py .&#39;</span>)</div>
-<div class="line"><span class="lineno">   30</span>     os.system(cmd+<span class="stringliteral">&quot; -n &quot;</span>+str(n3)+<span class="stringliteral">&quot; -i &quot;</span>+str(ns) + <span class="stringliteral">&quot; &gt; log &amp;&quot;</span>)</div>
-<div class="line"><span class="lineno">   31</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   32</span>    os.system(<span class="stringliteral">&#39;cp $FAIRSHIP/macro/run_simScript.py .&#39;</span>)</div>
-<div class="line"><span class="lineno">   33</span>    os.system(cmd+<span class="stringliteral">&quot; -n &quot;</span>+str(n3)+<span class="stringliteral">&quot; -i &quot;</span>+str(ns) + <span class="stringliteral">&quot; &gt; log &amp;&quot;</span>)</div>
-<div class="line"><span class="lineno">   34</span>    time.sleep(5)</div>
-<div class="line"><span class="lineno">   35</span>   <span class="comment">#print &quot; -n &quot;+str(n3)+&quot; -i &quot;+str(ns)</span></div>
-<div class="line"><span class="lineno">   36</span>   ns += n3</div>
-<div class="line"><span class="lineno">   37</span>   <span class="keywordflow">if</span> i==ncpu:</div>
-<div class="line"><span class="lineno">   38</span>      os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   40</span>   os.chdir(<span class="stringliteral">&#39;../&#39;</span>+prefix+str(i+1))</div>
-<div class="line"><span class="lineno">   41</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">   42</span><span class="comment"># 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN</span></div>
-<div class="line"><span class="lineno">   43</span><span class="comment"># 51-59 passive shielding</span></div>
-<div class="line"><span class="lineno">   44</span><span class="comment"># 41-49 fixed field horizontal</span></div>
-<div class="line"><span class="lineno">   45</span><span class="comment"># 61-69  chamber with vacuum</span></div>
-<div class="line"><span class="lineno">   46</span><span class="comment"># 71-79 without field in the wings</span></div>
-<div class="line"><span class="lineno">   47</span><span class="comment"># 81-89 add shielding</span></div>
-<div class="line"><span class="lineno">   48</span><span class="comment"># 91-99 also 111-119 switch off  muBrems, muPair</span></div>
-<div class="line"><span class="lineno">   49</span><span class="comment"># 101-109 vacuum tube as cone, Al-&gt;Steel</span></div>
-<div class="line"><span class="lineno">   50</span><span class="comment"># 121-129 switch off only muIoni</span></div>
-<div class="line"><span class="lineno">   51</span><span class="comment"># 151-159 vacuum tube as cone, Al-&gt;Steel, air in cave</span></div>
-<div class="line"><span class="lineno">   52</span><span class="comment"># 161-169 new geometry</span></div>
-<div class="line"><span class="lineno">   53</span><span class="comment"># 251-259 passive shielding with concrete walls</span></div>
-<div class="line"><span class="lineno">   54</span><span class="comment"># 171-179 new increased Bdl,  2.5m clearance from start, 9m space for tau</span></div>
-<div class="line"><span class="lineno">   55</span><span class="comment"># 181-189 even more field, narrow tunnel around first magnet, add 2m hadron absorber</span></div>
-<div class="line"><span class="lineno">   56</span><span class="comment"># 311-314 change numbering of veto volumes</span></div>
-<div class="line"><span class="lineno">   57</span><span class="comment"># 321-324 1 Teslas</span></div>
-<div class="line"><span class="lineno">   58</span><span class="comment"># 331-339 added TauSensitive, fixed C1, using muons from Yandex</span></div>
-<div class="line"><span class="lineno">   59</span><span class="comment"># 341-349 should be the same as 331-339</span></div>
-<div class="line"><span class="lineno">   60</span><span class="comment"># 351-354 fixed RpcPoints, fixed field !  also - 359 made on t3</span></div>
-<div class="line"><span class="lineno">   61</span><span class="comment"># 361-364 4m high magnets!</span></div>
-<div class="line"><span class="lineno">   62</span><span class="comment"># 371-374 new strawpoints  with magC1 fixed</span></div>
-<div class="line"><span class="lineno">   63</span><span class="comment"># 381-389 yandex file, overwrite with magC1 fixed</span></div>
-<div class="line"><span class="lineno">   64</span><span class="comment"># 391-399 change to dY = 2m</span></div>
-<div class="line"><span class="lineno">   65</span><span class="comment"># 401-409 change to dY = 2m Yandex</span></div>
-<div class="line"><span class="lineno">   66</span><span class="comment"># 411-419 back to dY = 4m, add sensitive plance downstream det2</span></div>
-<div class="line"><span class="lineno">   67</span><span class="comment"># 421-429 reduce size of vaccum tank before veto station, add pdgcode for muonPoint, move det2 closer</span></div>
-<div class="line"><span class="lineno">   68</span><span class="comment"># 431-439 reduce size of vaccum tank before veto station, add pdgcode for muonPoint, move det2 closer Yandex</span></div>
-<div class="line"><span class="lineno">   69</span><span class="comment"># 441-449 try with increased tau mu detector, and reduced height of active muon shield, dy=1m</span></div>
-<div class="line"><span class="lineno">   70</span><span class="comment"># 451-459 try with increased tau mu detector, and reduced height of active muon shield, dy=1m  Yandex</span></div>
-<div class="line"><span class="lineno">   71</span><span class="comment"># 461-469 dy=4m and then 1m, RPC fixed, display on</span></div>
-<div class="line"><span class="lineno">   72</span><span class="comment"># 471-479 dy=4m and then 1m, RPC fixed, Yandex</span></div>
-<div class="line"><span class="lineno">   73</span><span class="comment"># 481-489 dy=4m and then 1m, RPC fixed, display OFF</span></div>
-<div class="line"><span class="lineno">   74</span><span class="comment"># 491-499 back to dy=1m  display on</span></div>
-<div class="line"><span class="lineno">   75</span><span class="comment"># 501-509 dy=4m for last magnet part,  display on</span></div>
-<div class="line"><span class="lineno">   76</span><span class="comment"># 511-519 dy=2,3,4m for last magnet parts,  display on</span></div>
-<div class="line"><span class="lineno">   77</span><span class="comment"># 521-529 removal of almost overlaps</span></div>
-<div class="line"><span class="lineno">   78</span><span class="comment"># 551-554 ultimate slim design</span></div>
-<div class="line"><span class="lineno">   79</span><span class="comment"># 561-564 fixing overlaps hcal and almost overlaps in magnets</span></div>
-<div class="line"><span class="lineno">   80</span><span class="comment"># 571-574 more undetected overlaps fixed</span></div>
-<div class="line"><span class="lineno">   81</span><span class="comment"># 581-584 test with replacing tungsten core with iron</span></div>
-<div class="line"><span class="lineno">   82</span><span class="comment"># reuse the following, minor mod det2 with shielding, different lengths, new fine tuned active shield, no hcal overlap</span></div>
-<div class="line"><span class="lineno">   83</span><span class="comment"># new scaling of L vs Y</span></div>
-<div class="line"><span class="lineno">   84</span><span class="comment"># 591-599 6m height</span></div>
-<div class="line"><span class="lineno">   85</span><span class="comment"># 601-609 6m height, Yandex data</span></div>
-<div class="line"><span class="lineno">   86</span><span class="comment"># 610-619 10m height</span></div>
-<div class="line"><span class="lineno">   87</span><span class="comment"># 620-629 10m height, Yandex data</span></div>
-<div class="line"><span class="lineno">   88</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">   89</span><span class="comment"># 630-639 10m height, change RPC width 4.5-&gt;3.6m</span></div>
-<div class="line"><span class="lineno">   90</span><span class="comment"># 640-649  6m height, change RPC width 4.5-&gt;3.6m</span></div>
-<div class="line"><span class="lineno">   91</span><span class="comment">#makeProd(&quot;muon59&quot;,6,False)  #</span></div>
-<div class="line"><span class="lineno">   92</span><span class="comment">#makeProd(&quot;muon60&quot;,6,True)    #</span></div>
-<div class="line"><span class="lineno">   93</span><span class="comment">#makeProd(&quot;muon61&quot;,10,False)    #</span></div>
-<div class="line"><span class="lineno">   94</span><span class="comment">#makeProd(&quot;muon62&quot;,10,True)     #</span></div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span><span class="comment"># makeProd(&quot;muon63&quot;,10,False)     #</span></div>
-<div class="line"><span class="lineno">   97</span><span class="comment"># makeProd(&quot;muon64&quot;,10,True)     #</span></div>
-<div class="line"><span class="lineno">   98</span><span class="comment"># makeProd(&quot;muon65&quot;,6,False)     #</span></div>
-<div class="line"><span class="lineno">   99</span><span class="comment"># makeProd(&quot;muon66&quot;,6,True)     #</span></div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span><span class="comment"># run more statistics, 61, 62</span></div>
-<div class="line"><span class="lineno">  102</span><span class="comment">#makeProd(&quot;muon611&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  103</span><span class="comment">#makeProd(&quot;muon621&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  104</span><span class="comment">#makeProd(&quot;muon612&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  105</span><span class="comment">#makeProd(&quot;muon622&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  106</span><span class="comment">#makeProd(&quot;muon613&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  107</span><span class="comment">#makeProd(&quot;muon623&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  108</span><span class="comment">#makeProd(&quot;muon614&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  109</span><span class="comment">#makeProd(&quot;muon624&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  110</span><span class="comment">#makeProd(&quot;muon615&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  111</span><span class="comment">#makeProd(&quot;muon625&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  112</span><span class="comment">#makeProd(&quot;muon616&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  113</span><span class="comment">#makeProd(&quot;muon626&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  114</span><span class="comment">#makeProd(&quot;muon617&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  115</span><span class="comment">#makeProd(&quot;muon627&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  116</span><span class="comment">#makeProd(&quot;muon618&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  117</span><span class="comment">#makeProd(&quot;muon628&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  118</span><span class="comment">#makeProd(&quot;muon619&quot;,10,False,True)</span></div>
-<div class="line"><span class="lineno">  119</span><span class="comment">#makeProd(&quot;muon629&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  120</span><span class="comment">#makeProd(&quot;muon700&quot;,10,False,False) # switch off field of active shielding    # prefix,DY,y=False,phiRandom=False,X=None</span></div>
-<div class="line"><span class="lineno">  121</span><span class="comment">#makeProd(&quot;muon710&quot;,10,False,False) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  122</span><span class="comment">#makeProd(&quot;muon720&quot;,10,True,False)</span></div>
-<div class="line"><span class="lineno">  123</span><span class="comment">#makeProd(&quot;muon711&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  124</span><span class="comment">#makeProd(&quot;muon721&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  125</span><span class="comment">#makeProd(&quot;muon712&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  126</span><span class="comment">#makeProd(&quot;muon722&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  127</span><span class="comment">#makeProd(&quot;muon713&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  128</span><span class="comment">#makeProd(&quot;muon723&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  129</span><span class="comment">#makeProd(&quot;muon714&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  130</span><span class="comment">#makeProd(&quot;muon724&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  131</span><span class="comment">#makeProd(&quot;muon715&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  132</span><span class="comment">#makeProd(&quot;muon725&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  133</span><span class="comment">#makeProd(&quot;muon716&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  134</span><span class="comment">#makeProd(&quot;muon726&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  135</span><span class="comment">#makeProd(&quot;muon717&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  136</span><span class="comment">#makeProd(&quot;muon777&quot;,10,False,True) # in case the other one does not work 717</span></div>
-<div class="line"><span class="lineno">  137</span><span class="comment">#makeProd(&quot;muon727&quot;,10,True,True)  # ?</span></div>
-<div class="line"><span class="lineno">  138</span><span class="comment">#makeProd(&quot;muon718&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  139</span><span class="comment">#makeProd(&quot;muon728&quot;,10,True,True)</span></div>
-<div class="line"><span class="lineno">  140</span><span class="comment">#makeProd(&quot;muon719&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
-<div class="line"><span class="lineno">  141</span><span class="comment">#makeProd(&quot;muon729&quot;,10,True,True)     #</span></div>
-<div class="line"><span class="lineno">  142</span><span class="comment">#makeProd(&quot;muon730&quot;,10,&#39;Jpsi&#39;,False)  # made with E50</span></div>
-<div class="line"><span class="lineno">  143</span><span class="comment">#makeProd(&quot;muon731&quot;,10,&#39;Jpsi&#39;,True)   # made with E50</span></div>
-<div class="line"><span class="lineno">  144</span><span class="comment">#makeProd(&quot;muon732&quot;,10,&#39;Jpsi&#39;,True)   # made with E50</span></div>
-<div class="line"><span class="lineno">  145</span><span class="comment">#makeProd(&quot;muon733&quot;,10,&#39;Jpsi&#39;,True)   # back to pencil beam</span></div>
-<div class="line"><span class="lineno">  146</span><span class="comment">#makeProd(&quot;muon630&quot;,10,False,True) # test with new muonShield code, 3cm smearing</span></div>
-<div class="line"><span class="lineno">  147</span><span class="comment">#makeProd(&quot;muon631&quot;,10,False,True) # run with concrete wall enabled as sensitive</span></div>
-<div class="line"><span class="lineno">  148</span><span class="comment">#makeProd(&quot;muon632&quot;,10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed</span></div>
-<div class="line"><span class="lineno">  149</span>                                   <span class="comment"># but wrong geometry</span></div>
-<div class="line"><span class="lineno">  150</span><span class="comment">#makeProd(&quot;muon810&quot;,10,False,False) # start production with latest geometry</span></div>
-<div class="line"><span class="lineno">  151</span><span class="comment">#makeProd(&quot;muon820&quot;,10,True,False)</span></div>
-<div class="line"><span class="lineno">  152</span><span class="comment">#makeProd(&quot;muon811&quot;,10,False,True) #</span></div>
-<div class="line"><span class="lineno">  153</span><span class="comment">#makeProd(&quot;muon821&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">   14</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   15</span>    f = shipsoft+<span class="stringliteral">&#39;/data/pythia8_Geant4_Yandex_onlyMuons.root&#39;</span></div>
+<div class="line"><span class="lineno">   16</span>    cmd  = <span class="stringliteral">&quot;python $FAIRSHIP/macro/run_simScript.py --MuonBack -f &quot;</span> + f + <span class="stringliteral">&quot; -Y &quot;</span>+str(float(DY)) <span class="comment"># --display&quot;</span></div>
+<div class="line"><span class="lineno">   17</span>  <span class="keywordflow">if</span> phiRandom:  cmd = cmd +<span class="stringliteral">&#39; --phiRandom&#39;</span></div>
+<div class="line"><span class="lineno">   18</span>  fn = ROOT.TFile(f)</div>
+<div class="line"><span class="lineno">   19</span>  sTree = fn.FindObjectAny(<span class="stringliteral">&#39;pythia8-Geant4&#39;</span>)</div>
+<div class="line"><span class="lineno">   20</span>  ntot = sTree.GetEntries()</div>
+<div class="line"><span class="lineno">   21</span>  fn.Close()</div>
+<div class="line"><span class="lineno">   22</span>  ns   = 0</div>
+<div class="line"><span class="lineno">   23</span>  n3   = int(ntot/ncpu)</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,ncpu+1):</div>
+<div class="line"><span class="lineno">   25</span>   d = prefix+str(i)</div>
+<div class="line"><span class="lineno">   26</span>   <span class="keywordflow">if</span> d <span class="keywordflow">not</span> <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>): os.system(<span class="stringliteral">&#39;mkdir &#39;</span>+d)</div>
+<div class="line"><span class="lineno">   27</span>  os.chdir(<span class="stringliteral">&#39;./&#39;</span>+prefix+<span class="stringliteral">&#39;1&#39;</span>)</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1,ncpu+1):</div>
+<div class="line"><span class="lineno">   29</span>   <span class="keywordflow">if</span> i==ncpu: n3 = ntot - (i-1)*n3</div>
+<div class="line"><span class="lineno">   30</span>   <span class="keywordflow">if</span> X:</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">if</span> X==i:</div>
+<div class="line"><span class="lineno">   32</span>     os.system(<span class="stringliteral">&#39;cp $FAIRSHIP/macro/run_simScript.py .&#39;</span>)</div>
+<div class="line"><span class="lineno">   33</span>     os.system(cmd+<span class="stringliteral">&quot; -n &quot;</span>+str(n3)+<span class="stringliteral">&quot; -i &quot;</span>+str(ns) + <span class="stringliteral">&quot; &gt; log &amp;&quot;</span>)</div>
+<div class="line"><span class="lineno">   34</span>   <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   35</span>    os.system(<span class="stringliteral">&#39;cp $FAIRSHIP/macro/run_simScript.py .&#39;</span>)</div>
+<div class="line"><span class="lineno">   36</span>    os.system(cmd+<span class="stringliteral">&quot; -n &quot;</span>+str(n3)+<span class="stringliteral">&quot; -i &quot;</span>+str(ns) + <span class="stringliteral">&quot; &gt; log &amp;&quot;</span>)</div>
+<div class="line"><span class="lineno">   37</span>    time.sleep(5)</div>
+<div class="line"><span class="lineno">   38</span>   <span class="comment">#print &quot; -n &quot;+str(n3)+&quot; -i &quot;+str(ns)</span></div>
+<div class="line"><span class="lineno">   39</span>   ns += n3</div>
+<div class="line"><span class="lineno">   40</span>   <span class="keywordflow">if</span> i==ncpu:</div>
+<div class="line"><span class="lineno">   41</span>      os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">   43</span>   os.chdir(<span class="stringliteral">&#39;../&#39;</span>+prefix+str(i+1))</div>
+<div class="line"><span class="lineno">   44</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">   45</span><span class="comment"># 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN</span></div>
+<div class="line"><span class="lineno">   46</span><span class="comment"># 51-59 passive shielding</span></div>
+<div class="line"><span class="lineno">   47</span><span class="comment"># 41-49 fixed field horizontal</span></div>
+<div class="line"><span class="lineno">   48</span><span class="comment"># 61-69  chamber with vacuum</span></div>
+<div class="line"><span class="lineno">   49</span><span class="comment"># 71-79 without field in the wings</span></div>
+<div class="line"><span class="lineno">   50</span><span class="comment"># 81-89 add shielding</span></div>
+<div class="line"><span class="lineno">   51</span><span class="comment"># 91-99 also 111-119 switch off  muBrems, muPair</span></div>
+<div class="line"><span class="lineno">   52</span><span class="comment"># 101-109 vacuum tube as cone, Al-&gt;Steel</span></div>
+<div class="line"><span class="lineno">   53</span><span class="comment"># 121-129 switch off only muIoni</span></div>
+<div class="line"><span class="lineno">   54</span><span class="comment"># 151-159 vacuum tube as cone, Al-&gt;Steel, air in cave</span></div>
+<div class="line"><span class="lineno">   55</span><span class="comment"># 161-169 new geometry</span></div>
+<div class="line"><span class="lineno">   56</span><span class="comment"># 251-259 passive shielding with concrete walls</span></div>
+<div class="line"><span class="lineno">   57</span><span class="comment"># 171-179 new increased Bdl,  2.5m clearance from start, 9m space for tau</span></div>
+<div class="line"><span class="lineno">   58</span><span class="comment"># 181-189 even more field, narrow tunnel around first magnet, add 2m hadron absorber</span></div>
+<div class="line"><span class="lineno">   59</span><span class="comment"># 311-314 change numbering of veto volumes</span></div>
+<div class="line"><span class="lineno">   60</span><span class="comment"># 321-324 1 Teslas</span></div>
+<div class="line"><span class="lineno">   61</span><span class="comment"># 331-339 added TauSensitive, fixed C1, using muons from Yandex</span></div>
+<div class="line"><span class="lineno">   62</span><span class="comment"># 341-349 should be the same as 331-339</span></div>
+<div class="line"><span class="lineno">   63</span><span class="comment"># 351-354 fixed RpcPoints, fixed field !  also - 359 made on t3</span></div>
+<div class="line"><span class="lineno">   64</span><span class="comment"># 361-364 4m high magnets!</span></div>
+<div class="line"><span class="lineno">   65</span><span class="comment"># 371-374 new strawpoints  with magC1 fixed</span></div>
+<div class="line"><span class="lineno">   66</span><span class="comment"># 381-389 yandex file, overwrite with magC1 fixed</span></div>
+<div class="line"><span class="lineno">   67</span><span class="comment"># 391-399 change to dY = 2m</span></div>
+<div class="line"><span class="lineno">   68</span><span class="comment"># 401-409 change to dY = 2m Yandex</span></div>
+<div class="line"><span class="lineno">   69</span><span class="comment"># 411-419 back to dY = 4m, add sensitive plance downstream det2</span></div>
+<div class="line"><span class="lineno">   70</span><span class="comment"># 421-429 reduce size of vaccum tank before veto station, add pdgcode for muonPoint, move det2 closer</span></div>
+<div class="line"><span class="lineno">   71</span><span class="comment"># 431-439 reduce size of vaccum tank before veto station, add pdgcode for muonPoint, move det2 closer Yandex</span></div>
+<div class="line"><span class="lineno">   72</span><span class="comment"># 441-449 try with increased tau mu detector, and reduced height of active muon shield, dy=1m</span></div>
+<div class="line"><span class="lineno">   73</span><span class="comment"># 451-459 try with increased tau mu detector, and reduced height of active muon shield, dy=1m  Yandex</span></div>
+<div class="line"><span class="lineno">   74</span><span class="comment"># 461-469 dy=4m and then 1m, RPC fixed, display on</span></div>
+<div class="line"><span class="lineno">   75</span><span class="comment"># 471-479 dy=4m and then 1m, RPC fixed, Yandex</span></div>
+<div class="line"><span class="lineno">   76</span><span class="comment"># 481-489 dy=4m and then 1m, RPC fixed, display OFF</span></div>
+<div class="line"><span class="lineno">   77</span><span class="comment"># 491-499 back to dy=1m  display on</span></div>
+<div class="line"><span class="lineno">   78</span><span class="comment"># 501-509 dy=4m for last magnet part,  display on</span></div>
+<div class="line"><span class="lineno">   79</span><span class="comment"># 511-519 dy=2,3,4m for last magnet parts,  display on</span></div>
+<div class="line"><span class="lineno">   80</span><span class="comment"># 521-529 removal of almost overlaps</span></div>
+<div class="line"><span class="lineno">   81</span><span class="comment"># 551-554 ultimate slim design</span></div>
+<div class="line"><span class="lineno">   82</span><span class="comment"># 561-564 fixing overlaps hcal and almost overlaps in magnets</span></div>
+<div class="line"><span class="lineno">   83</span><span class="comment"># 571-574 more undetected overlaps fixed</span></div>
+<div class="line"><span class="lineno">   84</span><span class="comment"># 581-584 test with replacing tungsten core with iron</span></div>
+<div class="line"><span class="lineno">   85</span><span class="comment"># reuse the following, minor mod det2 with shielding, different lengths, new fine tuned active shield, no hcal overlap</span></div>
+<div class="line"><span class="lineno">   86</span><span class="comment"># new scaling of L vs Y</span></div>
+<div class="line"><span class="lineno">   87</span><span class="comment"># 591-599 6m height</span></div>
+<div class="line"><span class="lineno">   88</span><span class="comment"># 601-609 6m height, Yandex data</span></div>
+<div class="line"><span class="lineno">   89</span><span class="comment"># 610-619 10m height</span></div>
+<div class="line"><span class="lineno">   90</span><span class="comment"># 620-629 10m height, Yandex data</span></div>
+<div class="line"><span class="lineno">   91</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">   92</span><span class="comment"># 630-639 10m height, change RPC width 4.5-&gt;3.6m</span></div>
+<div class="line"><span class="lineno">   93</span><span class="comment"># 640-649  6m height, change RPC width 4.5-&gt;3.6m</span></div>
+<div class="line"><span class="lineno">   94</span><span class="comment">#makeProd(&quot;muon59&quot;,6,False)  #</span></div>
+<div class="line"><span class="lineno">   95</span><span class="comment">#makeProd(&quot;muon60&quot;,6,True)    #</span></div>
+<div class="line"><span class="lineno">   96</span><span class="comment">#makeProd(&quot;muon61&quot;,10,False)    #</span></div>
+<div class="line"><span class="lineno">   97</span><span class="comment">#makeProd(&quot;muon62&quot;,10,True)     #</span></div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span><span class="comment"># makeProd(&quot;muon63&quot;,10,False)     #</span></div>
+<div class="line"><span class="lineno">  100</span><span class="comment"># makeProd(&quot;muon64&quot;,10,True)     #</span></div>
+<div class="line"><span class="lineno">  101</span><span class="comment"># makeProd(&quot;muon65&quot;,6,False)     #</span></div>
+<div class="line"><span class="lineno">  102</span><span class="comment"># makeProd(&quot;muon66&quot;,6,True)     #</span></div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span><span class="comment"># run more statistics, 61, 62</span></div>
+<div class="line"><span class="lineno">  105</span><span class="comment">#makeProd(&quot;muon611&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  106</span><span class="comment">#makeProd(&quot;muon621&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  107</span><span class="comment">#makeProd(&quot;muon612&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  108</span><span class="comment">#makeProd(&quot;muon622&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  109</span><span class="comment">#makeProd(&quot;muon613&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  110</span><span class="comment">#makeProd(&quot;muon623&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  111</span><span class="comment">#makeProd(&quot;muon614&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  112</span><span class="comment">#makeProd(&quot;muon624&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  113</span><span class="comment">#makeProd(&quot;muon615&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  114</span><span class="comment">#makeProd(&quot;muon625&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  115</span><span class="comment">#makeProd(&quot;muon616&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  116</span><span class="comment">#makeProd(&quot;muon626&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  117</span><span class="comment">#makeProd(&quot;muon617&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  118</span><span class="comment">#makeProd(&quot;muon627&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  119</span><span class="comment">#makeProd(&quot;muon618&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  120</span><span class="comment">#makeProd(&quot;muon628&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  121</span><span class="comment">#makeProd(&quot;muon619&quot;,10,False,True)</span></div>
+<div class="line"><span class="lineno">  122</span><span class="comment">#makeProd(&quot;muon629&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  123</span><span class="comment">#makeProd(&quot;muon700&quot;,10,False,False) # switch off field of active shielding    # prefix,DY,y=False,phiRandom=False,X=None</span></div>
+<div class="line"><span class="lineno">  124</span><span class="comment">#makeProd(&quot;muon710&quot;,10,False,False) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  125</span><span class="comment">#makeProd(&quot;muon720&quot;,10,True,False)</span></div>
+<div class="line"><span class="lineno">  126</span><span class="comment">#makeProd(&quot;muon711&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  127</span><span class="comment">#makeProd(&quot;muon721&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  128</span><span class="comment">#makeProd(&quot;muon712&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  129</span><span class="comment">#makeProd(&quot;muon722&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  130</span><span class="comment">#makeProd(&quot;muon713&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  131</span><span class="comment">#makeProd(&quot;muon723&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  132</span><span class="comment">#makeProd(&quot;muon714&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  133</span><span class="comment">#makeProd(&quot;muon724&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  134</span><span class="comment">#makeProd(&quot;muon715&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  135</span><span class="comment">#makeProd(&quot;muon725&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  136</span><span class="comment">#makeProd(&quot;muon716&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  137</span><span class="comment">#makeProd(&quot;muon726&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  138</span><span class="comment">#makeProd(&quot;muon717&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  139</span><span class="comment">#makeProd(&quot;muon777&quot;,10,False,True) # in case the other one does not work 717</span></div>
+<div class="line"><span class="lineno">  140</span><span class="comment">#makeProd(&quot;muon727&quot;,10,True,True)  # ?</span></div>
+<div class="line"><span class="lineno">  141</span><span class="comment">#makeProd(&quot;muon718&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  142</span><span class="comment">#makeProd(&quot;muon728&quot;,10,True,True)</span></div>
+<div class="line"><span class="lineno">  143</span><span class="comment">#makeProd(&quot;muon719&quot;,10,False,True) # start production with beam smeared on r=3cm disk</span></div>
+<div class="line"><span class="lineno">  144</span><span class="comment">#makeProd(&quot;muon729&quot;,10,True,True)     #</span></div>
+<div class="line"><span class="lineno">  145</span><span class="comment">#makeProd(&quot;muon730&quot;,10,&#39;Jpsi&#39;,False)  # made with E50</span></div>
+<div class="line"><span class="lineno">  146</span><span class="comment">#makeProd(&quot;muon731&quot;,10,&#39;Jpsi&#39;,True)   # made with E50</span></div>
+<div class="line"><span class="lineno">  147</span><span class="comment">#makeProd(&quot;muon732&quot;,10,&#39;Jpsi&#39;,True)   # made with E50</span></div>
+<div class="line"><span class="lineno">  148</span><span class="comment">#makeProd(&quot;muon733&quot;,10,&#39;Jpsi&#39;,True)   # back to pencil beam</span></div>
+<div class="line"><span class="lineno">  149</span><span class="comment">#makeProd(&quot;muon630&quot;,10,False,True) # test with new muonShield code, 3cm smearing</span></div>
+<div class="line"><span class="lineno">  150</span><span class="comment">#makeProd(&quot;muon631&quot;,10,False,True) # run with concrete wall enabled as sensitive</span></div>
+<div class="line"><span class="lineno">  151</span><span class="comment">#makeProd(&quot;muon632&quot;,10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed</span></div>
+<div class="line"><span class="lineno">  152</span>                                   <span class="comment"># but wrong geometry</span></div>
+<div class="line"><span class="lineno">  153</span><span class="comment">#makeProd(&quot;muon810&quot;,10,False,False) # start production with latest geometry</span></div>
+<div class="line"><span class="lineno">  154</span><span class="comment">#makeProd(&quot;muon820&quot;,10,True,False)</span></div>
+<div class="line"><span class="lineno">  155</span><span class="comment">#makeProd(&quot;muon811&quot;,10,False,True) #</span></div>
+<div class="line"><span class="lineno">  156</span><span class="comment">#makeProd(&quot;muon821&quot;,10,True,True)</span></div>
 </div><!-- fragment -->
 </div>
 </div>

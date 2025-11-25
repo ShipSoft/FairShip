@@ -137,20 +137,20 @@ Functions</h2></td></tr>
 
 Parameters:
 nvars, ncols (int or float): The value to be checked. Must be equal.</pre> 
-<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00061">61</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>check_consistency_infile(nvars, ncols):</div>
-<div class="line"><span class="lineno">   62</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   63</span><span class="stringliteral">    Check the consistency between number of columns in the input file (ncols) and variables (nvars).</span></div>
-<div class="line"><span class="lineno">   64</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   65</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><span class="lineno">   66</span><span class="stringliteral">    nvars, ncols (int or float): The value to be checked. Must be equal.</span></div>
+<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00064">64</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span><span class="keyword">def </span>check_consistency_infile(nvars, ncols):</div>
+<div class="line"><span class="lineno">   65</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   66</span><span class="stringliteral">    Check the consistency between number of columns in the input file (ncols) and variables (nvars).</span></div>
 <div class="line"><span class="lineno">   67</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   68</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> nvars != ncols:</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Nr of variables does not match input file.&quot;</span>)</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   68</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><span class="lineno">   69</span><span class="stringliteral">    nvars, ncols (int or float): The value to be checked. Must be equal.</span></div>
+<div class="line"><span class="lineno">   70</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   71</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> nvars != ncols:</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">raise</span> ValueError(<span class="stringliteral">&quot;Nr of variables does not match input file.&quot;</span>)</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,92 +186,92 @@ infile (str): Path to the input text file.
 outdir (str): Name of the output directory, the filename will be the same
               as inputfile with the .dat replaced with .root.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00074">74</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>convert_file(infile, outdir):</div>
-<div class="line"><span class="lineno">   75</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   76</span><span class="stringliteral">    Create a ROOT file with a TTree containing the variables from the parsed input text file.</span></div>
-<div class="line"><span class="lineno">   77</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   78</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><span class="lineno">   79</span><span class="stringliteral">    infile (str): Path to the input text file.</span></div>
-<div class="line"><span class="lineno">   80</span><span class="stringliteral">    outdir (str): Name of the output directory, the filename will be the same</span></div>
-<div class="line"><span class="lineno">   81</span><span class="stringliteral">                  as inputfile with the .dat replaced with .root.</span></div>
-<div class="line"><span class="lineno">   82</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   83</span>    vars_names = [</div>
-<div class="line"><span class="lineno">   84</span>        <span class="stringliteral">&quot;px_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   85</span>        <span class="stringliteral">&quot;py_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   86</span>        <span class="stringliteral">&quot;pz_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   87</span>        <span class="stringliteral">&quot;e_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   88</span>        <span class="stringliteral">&quot;mass_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   89</span>        <span class="stringliteral">&quot;pdg_llp&quot;</span>,</div>
-<div class="line"><span class="lineno">   90</span>        <span class="stringliteral">&quot;decay_prob&quot;</span>,</div>
-<div class="line"><span class="lineno">   91</span>        <span class="stringliteral">&quot;vx&quot;</span>,</div>
-<div class="line"><span class="lineno">   92</span>        <span class="stringliteral">&quot;vy&quot;</span>,</div>
-<div class="line"><span class="lineno">   93</span>        <span class="stringliteral">&quot;vz&quot;</span>,</div>
-<div class="line"><span class="lineno">   94</span>    ]</div>
-<div class="line"><span class="lineno">   95</span>    daughter_vars = [</div>
-<div class="line"><span class="lineno">   96</span>        <span class="stringliteral">&quot;px_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">   97</span>        <span class="stringliteral">&quot;py_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">   98</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">   99</span>        <span class="stringliteral">&quot;e_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">  100</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">  101</span>        <span class="stringliteral">&quot;pdg_prod&quot;</span>,</div>
-<div class="line"><span class="lineno">  102</span>    ]</div>
-<div class="line"><span class="lineno">  103</span>    fname = infile.split(<span class="stringliteral">&quot;/&quot;</span>)[-1]</div>
-<div class="line"><span class="lineno">  104</span>    command = f<span class="stringliteral">&quot;cp {infile} {outdir}/{fname}&quot;</span></div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> os.path.isfile(f<span class="stringliteral">&quot;{outdir}/{fname}&quot;</span>):</div>
-<div class="line"><span class="lineno">  107</span>        print(f<span class="stringliteral">&quot;Warning: The file {outdir}/{fname} already exists.&quot;</span>)</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  109</span>        os.system(command)</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    infile = f<span class="stringliteral">&quot;{outdir}/{fname}&quot;</span></div>
-<div class="line"><span class="lineno">  112</span>    parsed_data = parse_file(infile)</div>
-<div class="line"><span class="lineno">  113</span>    outfile = infile.split(<span class="stringliteral">&quot;.dat&quot;</span>)[0] + <span class="stringliteral">&quot;.root&quot;</span></div>
-<div class="line"><span class="lineno">  114</span>    ncols   = len(parsed_data[0][2])</div>
-<div class="line"><span class="lineno">  115</span>    nvardau = 6  <span class="comment"># qualifiers for each daughter</span></div>
-<div class="line"><span class="lineno">  116</span>    remaining_vars = ncols - len(vars_names)</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (remaining_vars % nvardau)!=0:</div>
-<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;- convertEvtCalc - Error: number of daughters is not exact.&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00077">77</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>convert_file(infile, outdir):</div>
+<div class="line"><span class="lineno">   78</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   79</span><span class="stringliteral">    Create a ROOT file with a TTree containing the variables from the parsed input text file.</span></div>
+<div class="line"><span class="lineno">   80</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   81</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><span class="lineno">   82</span><span class="stringliteral">    infile (str): Path to the input text file.</span></div>
+<div class="line"><span class="lineno">   83</span><span class="stringliteral">    outdir (str): Name of the output directory, the filename will be the same</span></div>
+<div class="line"><span class="lineno">   84</span><span class="stringliteral">                  as inputfile with the .dat replaced with .root.</span></div>
+<div class="line"><span class="lineno">   85</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   86</span>    vars_names = [</div>
+<div class="line"><span class="lineno">   87</span>        <span class="stringliteral">&quot;px_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   88</span>        <span class="stringliteral">&quot;py_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   89</span>        <span class="stringliteral">&quot;pz_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   90</span>        <span class="stringliteral">&quot;e_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   91</span>        <span class="stringliteral">&quot;mass_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   92</span>        <span class="stringliteral">&quot;pdg_llp&quot;</span>,</div>
+<div class="line"><span class="lineno">   93</span>        <span class="stringliteral">&quot;decay_prob&quot;</span>,</div>
+<div class="line"><span class="lineno">   94</span>        <span class="stringliteral">&quot;vx&quot;</span>,</div>
+<div class="line"><span class="lineno">   95</span>        <span class="stringliteral">&quot;vy&quot;</span>,</div>
+<div class="line"><span class="lineno">   96</span>        <span class="stringliteral">&quot;vz&quot;</span>,</div>
+<div class="line"><span class="lineno">   97</span>    ]</div>
+<div class="line"><span class="lineno">   98</span>    daughter_vars = [</div>
+<div class="line"><span class="lineno">   99</span>        <span class="stringliteral">&quot;px_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  100</span>        <span class="stringliteral">&quot;py_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  101</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  102</span>        <span class="stringliteral">&quot;e_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  103</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  104</span>        <span class="stringliteral">&quot;pdg_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  105</span>    ]</div>
+<div class="line"><span class="lineno">  106</span>    fname = infile.split(<span class="stringliteral">&quot;/&quot;</span>)[-1]</div>
+<div class="line"><span class="lineno">  107</span>    command = f<span class="stringliteral">&quot;cp {infile} {outdir}/{fname}&quot;</span></div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">if</span> os.path.isfile(f<span class="stringliteral">&quot;{outdir}/{fname}&quot;</span>):</div>
+<div class="line"><span class="lineno">  110</span>        print(f<span class="stringliteral">&quot;Warning: The file {outdir}/{fname} already exists.&quot;</span>)</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  112</span>        os.system(command)</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    infile = f<span class="stringliteral">&quot;{outdir}/{fname}&quot;</span></div>
+<div class="line"><span class="lineno">  115</span>    parsed_data = parse_file(infile)</div>
+<div class="line"><span class="lineno">  116</span>    outfile = infile.split(<span class="stringliteral">&quot;.dat&quot;</span>)[0] + <span class="stringliteral">&quot;.root&quot;</span></div>
+<div class="line"><span class="lineno">  117</span>    ncols   = len(parsed_data[0][2])</div>
+<div class="line"><span class="lineno">  118</span>    nvardau = 6  <span class="comment"># qualifiers for each daughter</span></div>
+<div class="line"><span class="lineno">  119</span>    remaining_vars = ncols - len(vars_names)</div>
 <div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>    ndau    = remaining_vars // nvardau</div>
-<div class="line"><span class="lineno">  122</span>    print(f<span class="stringliteral">&quot;- convertEvtCalc - Max multiplicity of daughters: {ndau}&quot;</span>)</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> (remaining_vars % nvardau)!=0:</div>
+<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;- convertEvtCalc - Error: number of daughters is not exact.&quot;</span>)</div>
 <div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>    vars_names.extend(</div>
-<div class="line"><span class="lineno">  125</span>        f<span class="stringliteral">&quot;{var}{i}&quot;</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, ndau + 1) <span class="keywordflow">for</span> var <span class="keywordflow">in</span> daughter_vars</div>
-<div class="line"><span class="lineno">  126</span>    )</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  129</span>        check_consistency_infile(nvars=len(vars_names), ncols=ncols)</div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">except</span> ValueError <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  131</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - Error: {e}&quot;</span>)</div>
-<div class="line"><span class="lineno">  132</span>        sys.exit(1)</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>    vars_names += [<span class="stringliteral">&quot;ndau&quot;</span>]</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> parsed_data:</div>
-<div class="line"><span class="lineno">  137</span>        root_file = r.TFile.Open(outfile, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  138</span>        tree = r.TTree(<span class="stringliteral">&quot;LLP_tree&quot;</span>, <span class="stringliteral">&quot;LLP_tree&quot;</span>)</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>        branch_f = {}</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">for</span> var <span class="keywordflow">in</span> vars_names:</div>
-<div class="line"><span class="lineno">  142</span>            branch_f[var] = np.zeros(1, dtype=float)</div>
-<div class="line"><span class="lineno">  143</span>            tree.Branch(var, branch_f[var], f<span class="stringliteral">&quot;{var}/D&quot;</span>)</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">for</span> pt, sp, vars <span class="keywordflow">in</span> parsed_data:</div>
-<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">for</span> row <span class="keywordflow">in</span> zip(*vars):</div>
-<div class="line"><span class="lineno">  147</span>                <span class="keywordflow">for</span> i, value <span class="keywordflow">in</span> enumerate(row):</div>
-<div class="line"><span class="lineno">  148</span>                    <span class="keywordflow">if</span> i &lt; len(vars_names)-1:</div>
-<div class="line"><span class="lineno">  149</span>                        branch_f[vars_names[i]][0] = value</div>
-<div class="line"><span class="lineno">  150</span>                branch_f[<span class="stringliteral">&quot;ndau&quot;</span>][0] = ndau/1.</div>
-<div class="line"><span class="lineno">  151</span>                tree.Fill()</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>        tree.Write()</div>
-<div class="line"><span class="lineno">  154</span>        root_file.Close()</div>
-<div class="line"><span class="lineno">  155</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - ROOT file &#39;{outfile}&#39; created successfully.&quot;</span>)</div>
-<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">return</span> outfile</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  124</span>    ndau    = remaining_vars // nvardau</div>
+<div class="line"><span class="lineno">  125</span>    print(f<span class="stringliteral">&quot;- convertEvtCalc - Max multiplicity of daughters: {ndau}&quot;</span>)</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>    vars_names.extend(</div>
+<div class="line"><span class="lineno">  128</span>        f<span class="stringliteral">&quot;{var}{i}&quot;</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, ndau + 1) <span class="keywordflow">for</span> var <span class="keywordflow">in</span> daughter_vars</div>
+<div class="line"><span class="lineno">  129</span>    )</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  132</span>        check_consistency_infile(nvars=len(vars_names), ncols=ncols)</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">except</span> ValueError <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  134</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - Error: {e}&quot;</span>)</div>
+<div class="line"><span class="lineno">  135</span>        sys.exit(1)</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>    vars_names += [<span class="stringliteral">&quot;ndau&quot;</span>]</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">if</span> parsed_data:</div>
+<div class="line"><span class="lineno">  140</span>        root_file = r.TFile.Open(outfile, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  141</span>        tree = r.TTree(<span class="stringliteral">&quot;LLP_tree&quot;</span>, <span class="stringliteral">&quot;LLP_tree&quot;</span>)</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>        branch_f = {}</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">for</span> var <span class="keywordflow">in</span> vars_names:</div>
+<div class="line"><span class="lineno">  145</span>            branch_f[var] = np.zeros(1, dtype=float)</div>
+<div class="line"><span class="lineno">  146</span>            tree.Branch(var, branch_f[var], f<span class="stringliteral">&quot;{var}/D&quot;</span>)</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">for</span> pt, sp, vars <span class="keywordflow">in</span> parsed_data:</div>
+<div class="line"><span class="lineno">  149</span>            <span class="keywordflow">for</span> row <span class="keywordflow">in</span> zip(*vars):</div>
+<div class="line"><span class="lineno">  150</span>                <span class="keywordflow">for</span> i, value <span class="keywordflow">in</span> enumerate(row):</div>
+<div class="line"><span class="lineno">  151</span>                    <span class="keywordflow">if</span> i &lt; len(vars_names)-1:</div>
+<div class="line"><span class="lineno">  152</span>                        branch_f[vars_names[i]][0] = value</div>
+<div class="line"><span class="lineno">  153</span>                branch_f[<span class="stringliteral">&quot;ndau&quot;</span>][0] = ndau/1.</div>
+<div class="line"><span class="lineno">  154</span>                tree.Fill()</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>        tree.Write()</div>
+<div class="line"><span class="lineno">  157</span>        root_file.Close()</div>
+<div class="line"><span class="lineno">  158</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - ROOT file &#39;{outfile}&#39; created successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">return</span> outfile</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -290,35 +290,35 @@ outdir (str): Name of the output directory, the filename will be the same
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Convert files from EventCalc to ROOT format.</pre> 
-<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00159">159</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
-<div class="line"><span class="lineno">  160</span>    <span class="stringliteral">&quot;&quot;&quot;Convert files from EventCalc to ROOT format.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  161</span>    parser = ArgumentParser(description=__doc__)</div>
-<div class="line"><span class="lineno">  162</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  163</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
-<div class="line"><span class="lineno">  164</span>        <span class="stringliteral">&quot;--inputfile&quot;</span>,</div>
-<div class="line"><span class="lineno">  165</span>        help=<span class="stringliteral">&quot;&quot;&quot;Simulation results to use as input.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  166</span>        <span class="stringliteral">&quot;&quot;&quot;Supports retrieving file from EOS via the XRootD protocol.&quot;&quot;&quot;</span>,</div>
-<div class="line"><span class="lineno">  167</span>        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  168</span>    )</div>
-<div class="line"><span class="lineno">  169</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  170</span>        <span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--outputdir&quot;</span>, help=<span class="stringliteral">&quot;&quot;&quot;Output directory, must exist.&quot;&quot;&quot;</span>, default=<span class="stringliteral">&quot;.&quot;</span></div>
+<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00162">162</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="line"><span class="lineno">  163</span>    <span class="stringliteral">&quot;&quot;&quot;Convert files from EventCalc to ROOT format.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  164</span>    parser = ArgumentParser(description=__doc__)</div>
+<div class="line"><span class="lineno">  165</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  166</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
+<div class="line"><span class="lineno">  167</span>        <span class="stringliteral">&quot;--inputfile&quot;</span>,</div>
+<div class="line"><span class="lineno">  168</span>        help=<span class="stringliteral">&quot;&quot;&quot;Simulation results to use as input.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  169</span>        <span class="stringliteral">&quot;&quot;&quot;Supports retrieving file from EOS via the XRootD protocol.&quot;&quot;&quot;</span>,</div>
+<div class="line"><span class="lineno">  170</span>        required=<span class="keyword">True</span>,</div>
 <div class="line"><span class="lineno">  171</span>    )</div>
-<div class="line"><span class="lineno">  172</span>    args = parser.parse_args()</div>
-<div class="line"><span class="lineno">  173</span>    print(f<span class="stringliteral">&quot;Opening input file for conversion: {args.inputfile}&quot;</span>)</div>
-<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(args.inputfile):</div>
-<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">raise</span> FileNotFoundError(<span class="stringliteral">&quot;EvtCalc: input .dat file does not exist&quot;</span>)</div>
-<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isdir(args.outputdir):</div>
-<div class="line"><span class="lineno">  177</span>        print(</div>
-<div class="line"><span class="lineno">  178</span>            f<span class="stringliteral">&quot;Warning: The specified directory {args.outputdir} does not exist. Creating it now.&quot;</span></div>
-<div class="line"><span class="lineno">  179</span>        )</div>
-<div class="line"><span class="lineno">  180</span>        command = f<span class="stringliteral">&quot;mkdir {args.outputdir}&quot;</span></div>
-<div class="line"><span class="lineno">  181</span>        os.system(command)</div>
-<div class="line"><span class="lineno">  182</span>    outputfile = convert_file(infile=args.inputfile, outdir=args.outputdir)</div>
-<div class="line"><span class="lineno">  183</span>    print(f<span class="stringliteral">&quot;{args.inputfile} successfully converted to {outputfile}.&quot;</span>)</div>
-<div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
+<div class="line"><span class="lineno">  172</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  173</span>        <span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--outputdir&quot;</span>, help=<span class="stringliteral">&quot;&quot;&quot;Output directory, must exist.&quot;&quot;&quot;</span>, default=<span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line"><span class="lineno">  174</span>    )</div>
+<div class="line"><span class="lineno">  175</span>    args = parser.parse_args()</div>
+<div class="line"><span class="lineno">  176</span>    print(f<span class="stringliteral">&quot;Opening input file for conversion: {args.inputfile}&quot;</span>)</div>
+<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(args.inputfile):</div>
+<div class="line"><span class="lineno">  178</span>        <span class="keywordflow">raise</span> FileNotFoundError(<span class="stringliteral">&quot;EvtCalc: input .dat file does not exist&quot;</span>)</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isdir(args.outputdir):</div>
+<div class="line"><span class="lineno">  180</span>        print(</div>
+<div class="line"><span class="lineno">  181</span>            f<span class="stringliteral">&quot;Warning: The specified directory {args.outputdir} does not exist. Creating it now.&quot;</span></div>
+<div class="line"><span class="lineno">  182</span>        )</div>
+<div class="line"><span class="lineno">  183</span>        command = f<span class="stringliteral">&quot;mkdir {args.outputdir}&quot;</span></div>
+<div class="line"><span class="lineno">  184</span>        os.system(command)</div>
+<div class="line"><span class="lineno">  185</span>    outputfile = convert_file(infile=args.inputfile, outdir=args.outputdir)</div>
+<div class="line"><span class="lineno">  186</span>    print(f<span class="stringliteral">&quot;{args.inputfile} successfully converted to {outputfile}.&quot;</span>)</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -345,57 +345,57 @@ infile (str): Path to the input text file.
 Returns:
 tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00011">11</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>parse_file(infile):</div>
-<div class="line"><span class="lineno">   12</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   13</span><span class="stringliteral">    Parse the given text file and extracts process type, sample points, and variables.</span></div>
-<div class="line"><span class="lineno">   14</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   15</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><span class="lineno">   16</span><span class="stringliteral">    infile (str): Path to the input text file.</span></div>
+<p class="definition">Definition at line <a class="el" href="convertEvtCalc_8py_source.html#l00014">14</a> of file <a class="el" href="convertEvtCalc_8py_source.html">convertEvtCalc.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span>parse_file(infile):</div>
+<div class="line"><span class="lineno">   15</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   16</span><span class="stringliteral">    Parse the given text file and extracts process type, sample points, and variables.</span></div>
 <div class="line"><span class="lineno">   17</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">    tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   22</span>        <span class="keyword">with</span> open(infile) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">   23</span>            lines = file.readlines()</div>
-<div class="line"><span class="lineno">   24</span>            lines = lines[2:]</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>        parsed_data = []</div>
-<div class="line"><span class="lineno">   27</span>        current_block = []</div>
-<div class="line"><span class="lineno">   28</span>        process_type = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   29</span>        sampled_points = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines:</div>
-<div class="line"><span class="lineno">   32</span>            <span class="keywordflow">if</span> line.startswith(<span class="stringliteral">&quot;#&lt;&quot;</span>):</div>
-<div class="line"><span class="lineno">   33</span>                <span class="keywordflow">if</span> current_block:</div>
-<div class="line"><span class="lineno">   34</span>                    data = np.loadtxt(current_block)</div>
-<div class="line"><span class="lineno">   35</span>                    variables = [data[:, i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(data.shape[1])]</div>
-<div class="line"><span class="lineno">   36</span>                    current_block = []</div>
-<div class="line"><span class="lineno">   37</span>                    header = line.strip()</div>
-<div class="line"><span class="lineno">   38</span>                    process_type = header.split(<span class="stringliteral">&quot;;&quot;</span>)[0].split(<span class="stringliteral">&quot;=&quot;</span>)[1]</div>
-<div class="line"><span class="lineno">   39</span>                    <span class="comment"># print(f&#39;Process type: {process_type}&#39;)</span></div>
-<div class="line"><span class="lineno">   40</span>                    sampled_points = int(header.split(<span class="stringliteral">&quot;;&quot;</span>)[1].split(<span class="stringliteral">&quot;=&quot;</span>)[1][:-1])</div>
-<div class="line"><span class="lineno">   41</span>                    <span class="comment"># print(f&#39;Sampled points: {sampled_points}&#39;)</span></div>
-<div class="line"><span class="lineno">   42</span>                    parsed_data.append((process_type, sampled_points, variables))</div>
-<div class="line"><span class="lineno">   43</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   44</span>                current_block.append(line.strip())</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">if</span> current_block:</div>
-<div class="line"><span class="lineno">   47</span>            data = np.loadtxt(current_block)</div>
-<div class="line"><span class="lineno">   48</span>            variables = [data[:, i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(data.shape[1])]</div>
-<div class="line"><span class="lineno">   49</span>            parsed_data.append((process_type, sampled_points, variables))</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">return</span> parsed_data</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">except</span> FileNotFoundError:</div>
-<div class="line"><span class="lineno">   54</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - Error: The file {infile} was not found.&quot;</span>)</div>
-<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span>, <span class="keywordtype">None</span>, <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">   57</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - An error occurred: {e}&quot;</span>)</div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral">    infile (str): Path to the input text file.</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">    tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   25</span>        <span class="keyword">with</span> open(infile) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   26</span>            lines = file.readlines()</div>
+<div class="line"><span class="lineno">   27</span>            lines = lines[2:]</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span>        parsed_data = []</div>
+<div class="line"><span class="lineno">   30</span>        current_block = []</div>
+<div class="line"><span class="lineno">   31</span>        process_type = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   32</span>        sampled_points = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines:</div>
+<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">if</span> line.startswith(<span class="stringliteral">&quot;#&lt;&quot;</span>):</div>
+<div class="line"><span class="lineno">   36</span>                <span class="keywordflow">if</span> current_block:</div>
+<div class="line"><span class="lineno">   37</span>                    data = np.loadtxt(current_block)</div>
+<div class="line"><span class="lineno">   38</span>                    variables = [data[:, i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(data.shape[1])]</div>
+<div class="line"><span class="lineno">   39</span>                    current_block = []</div>
+<div class="line"><span class="lineno">   40</span>                    header = line.strip()</div>
+<div class="line"><span class="lineno">   41</span>                    process_type = header.split(<span class="stringliteral">&quot;;&quot;</span>)[0].split(<span class="stringliteral">&quot;=&quot;</span>)[1]</div>
+<div class="line"><span class="lineno">   42</span>                    <span class="comment"># print(f&#39;Process type: {process_type}&#39;)</span></div>
+<div class="line"><span class="lineno">   43</span>                    sampled_points = int(header.split(<span class="stringliteral">&quot;;&quot;</span>)[1].split(<span class="stringliteral">&quot;=&quot;</span>)[1][:-1])</div>
+<div class="line"><span class="lineno">   44</span>                    <span class="comment"># print(f&#39;Sampled points: {sampled_points}&#39;)</span></div>
+<div class="line"><span class="lineno">   45</span>                    parsed_data.append((process_type, sampled_points, variables))</div>
+<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   47</span>                current_block.append(line.strip())</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">if</span> current_block:</div>
+<div class="line"><span class="lineno">   50</span>            data = np.loadtxt(current_block)</div>
+<div class="line"><span class="lineno">   51</span>            variables = [data[:, i] <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(data.shape[1])]</div>
+<div class="line"><span class="lineno">   52</span>            parsed_data.append((process_type, sampled_points, variables))</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">return</span> parsed_data</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">except</span> FileNotFoundError:</div>
+<div class="line"><span class="lineno">   57</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - Error: The file {infile} was not found.&quot;</span>)</div>
 <div class="line"><span class="lineno">   58</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span>, <span class="keywordtype">None</span>, <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">   60</span>        print(f<span class="stringliteral">&quot;- convertEvtCalc - An error occurred: {e}&quot;</span>)</div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span>, <span class="keywordtype">None</span>, <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

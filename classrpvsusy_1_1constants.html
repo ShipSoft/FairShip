@@ -126,7 +126,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Store some constants useful for HNL physics
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00102">102</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00105">105</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7f226210c5bed27d43001dc1b2aa3edd" name="a7f226210c5bed27d43001dc1b2aa3edd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f226210c5bed27d43001dc1b2aa3edd">&#9670;&#160;</a></span>__init__()</h2>
@@ -144,44 +144,44 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00106">106</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">  107</span>        self.decayConstant = {<span class="stringliteral">&#39;K+&#39;</span>:0.156*u.GeV,</div>
-<div class="line"><span class="lineno">  108</span>                              <span class="stringliteral">&#39;K-&#39;</span>:0.156*u.GeV,</div>
-<div class="line"><span class="lineno">  109</span>                              <span class="stringliteral">&#39;K_L0&#39;</span>:0.156/math.sqrt(2)*u.GeV,</div>
-<div class="line"><span class="lineno">  110</span>                              <span class="stringliteral">&#39;K_S0&#39;</span>:0.156/math.sqrt(2)*u.GeV,</div>
-<div class="line"><span class="lineno">  111</span>                              <span class="stringliteral">&#39;K*0&#39;</span>:0.230*u.GeV,</div>
-<div class="line"><span class="lineno">  112</span>                              <span class="stringliteral">&#39;K*0_bar&#39;</span>:0.230*u.GeV,</div>
-<div class="line"><span class="lineno">  113</span>                              <span class="stringliteral">&#39;K*+&#39;</span>:0.230*u.GeV,</div>
-<div class="line"><span class="lineno">  114</span>                              <span class="stringliteral">&#39;K*-&#39;</span>:0.230*u.GeV,</div>
-<div class="line"><span class="lineno">  115</span>                              <span class="stringliteral">&#39;phi&#39;</span>:0.230*u.GeV,</div>
-<div class="line"><span class="lineno">  116</span>                              <span class="stringliteral">&#39;eta&#39;</span>:-0.142*u.GeV,</div>
-<div class="line"><span class="lineno">  117</span>                              <span class="stringliteral">&quot;eta\&#39;&quot;</span>:0.038*u.GeV,</div>
-<div class="line"><span class="lineno">  118</span>                              <span class="stringliteral">&#39;D+&#39;</span>:0.205*u.GeV,<span class="stringliteral">&#39;D*+&#39;</span>:0.205*u.GeV,</div>
-<div class="line"><span class="lineno">  119</span>                              <span class="stringliteral">&#39;D-&#39;</span>:0.205*u.GeV,<span class="stringliteral">&#39;D*-&#39;</span>:0.205*u.GeV,</div>
-<div class="line"><span class="lineno">  120</span>                              <span class="stringliteral">&#39;D_s+&#39;</span>:0.259*u.GeV,<span class="stringliteral">&#39;D*_s+&#39;</span>:0.259*u.GeV,</div>
-<div class="line"><span class="lineno">  121</span>                              <span class="stringliteral">&#39;D_s-&#39;</span>:0.259*u.GeV,<span class="stringliteral">&#39;D*_s-&#39;</span>:0.259*u.GeV,</div>
-<div class="line"><span class="lineno">  122</span>                              <span class="stringliteral">&#39;B+&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B-&#39;</span>:0.191*u.GeV,</div>
-<div class="line"><span class="lineno">  123</span>                              <span class="stringliteral">&#39;B0&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B_s0&#39;</span>:0.228*u.GeV,</div>
-<div class="line"><span class="lineno">  124</span>                              <span class="stringliteral">&#39;B0_bar&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B_s0_bar&#39;</span>:0.228*u.GeV}</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>        self.GF   = 1.166379e-05/(u.GeV*u.GeV)             <span class="comment"># Fermi&#39;s constant (GeV^-2)</span></div>
-<div class="line"><span class="lineno">  127</span>        self.MW   = 80.385*u.GeV</div>
-<div class="line"><span class="lineno">  128</span>        self.gW2  = self.GF/math.sqrt(2)*8*self.MW*self.MW <span class="comment"># SU(2)L gauge coupling squared</span></div>
-<div class="line"><span class="lineno">  129</span>        self.s2thetaw = 0.23126                            <span class="comment"># square sine of the Weinberg angle</span></div>
-<div class="line"><span class="lineno">  130</span>        self.t2thetaw = self.s2thetaw/(1-self.s2thetaw)    <span class="comment"># square tan of the Weinberg angle</span></div>
-<div class="line"><span class="lineno">  131</span>        self.heV = 6.58211928*pow(10.,-16)                 <span class="comment"># no units or it messes up!!</span></div>
-<div class="line"><span class="lineno">  132</span>        self.hGeV = self.heV * pow(10.,-9)                 <span class="comment"># no units or it messes up!!</span></div>
-<div class="line"><span class="lineno">  133</span>        <span class="comment"># defined in Eq (30)--(32) of [1511.07436], but without</span></div>
-<div class="line"><span class="lineno">  134</span>        <span class="comment"># the coupling over sfermion mass, that will come later</span></div>
-<div class="line"><span class="lineno">  135</span>        self.GST2 = {<span class="stringliteral">&#39;slepton&#39;</span>   : self.gW2*self.t2thetaw*9./8.,</div>
-<div class="line"><span class="lineno">  136</span>                     <span class="stringliteral">&#39;sneutrino&#39;</span> : self.gW2*self.t2thetaw*9./8.,</div>
-<div class="line"><span class="lineno">  137</span>                     <span class="stringliteral">&#39;tlepton&#39;</span>   : self.gW2*self.t2thetaw*1./32.,</div>
-<div class="line"><span class="lineno">  138</span>                     <span class="stringliteral">&#39;tneutrino&#39;</span> : self.gW2*self.t2thetaw*1./32.}</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span><span class="comment"># Load some useful constants</span></div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00109">109</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">  110</span>        self.decayConstant = {<span class="stringliteral">&#39;K+&#39;</span>:0.156*u.GeV,</div>
+<div class="line"><span class="lineno">  111</span>                              <span class="stringliteral">&#39;K-&#39;</span>:0.156*u.GeV,</div>
+<div class="line"><span class="lineno">  112</span>                              <span class="stringliteral">&#39;K_L0&#39;</span>:0.156/math.sqrt(2)*u.GeV,</div>
+<div class="line"><span class="lineno">  113</span>                              <span class="stringliteral">&#39;K_S0&#39;</span>:0.156/math.sqrt(2)*u.GeV,</div>
+<div class="line"><span class="lineno">  114</span>                              <span class="stringliteral">&#39;K*0&#39;</span>:0.230*u.GeV,</div>
+<div class="line"><span class="lineno">  115</span>                              <span class="stringliteral">&#39;K*0_bar&#39;</span>:0.230*u.GeV,</div>
+<div class="line"><span class="lineno">  116</span>                              <span class="stringliteral">&#39;K*+&#39;</span>:0.230*u.GeV,</div>
+<div class="line"><span class="lineno">  117</span>                              <span class="stringliteral">&#39;K*-&#39;</span>:0.230*u.GeV,</div>
+<div class="line"><span class="lineno">  118</span>                              <span class="stringliteral">&#39;phi&#39;</span>:0.230*u.GeV,</div>
+<div class="line"><span class="lineno">  119</span>                              <span class="stringliteral">&#39;eta&#39;</span>:-0.142*u.GeV,</div>
+<div class="line"><span class="lineno">  120</span>                              <span class="stringliteral">&quot;eta\&#39;&quot;</span>:0.038*u.GeV,</div>
+<div class="line"><span class="lineno">  121</span>                              <span class="stringliteral">&#39;D+&#39;</span>:0.205*u.GeV,<span class="stringliteral">&#39;D*+&#39;</span>:0.205*u.GeV,</div>
+<div class="line"><span class="lineno">  122</span>                              <span class="stringliteral">&#39;D-&#39;</span>:0.205*u.GeV,<span class="stringliteral">&#39;D*-&#39;</span>:0.205*u.GeV,</div>
+<div class="line"><span class="lineno">  123</span>                              <span class="stringliteral">&#39;D_s+&#39;</span>:0.259*u.GeV,<span class="stringliteral">&#39;D*_s+&#39;</span>:0.259*u.GeV,</div>
+<div class="line"><span class="lineno">  124</span>                              <span class="stringliteral">&#39;D_s-&#39;</span>:0.259*u.GeV,<span class="stringliteral">&#39;D*_s-&#39;</span>:0.259*u.GeV,</div>
+<div class="line"><span class="lineno">  125</span>                              <span class="stringliteral">&#39;B+&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B-&#39;</span>:0.191*u.GeV,</div>
+<div class="line"><span class="lineno">  126</span>                              <span class="stringliteral">&#39;B0&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B_s0&#39;</span>:0.228*u.GeV,</div>
+<div class="line"><span class="lineno">  127</span>                              <span class="stringliteral">&#39;B0_bar&#39;</span>:0.191*u.GeV,<span class="stringliteral">&#39;B_s0_bar&#39;</span>:0.228*u.GeV}</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>        self.GF   = 1.166379e-05/(u.GeV*u.GeV)             <span class="comment"># Fermi&#39;s constant (GeV^-2)</span></div>
+<div class="line"><span class="lineno">  130</span>        self.MW   = 80.385*u.GeV</div>
+<div class="line"><span class="lineno">  131</span>        self.gW2  = self.GF/math.sqrt(2)*8*self.MW*self.MW <span class="comment"># SU(2)L gauge coupling squared</span></div>
+<div class="line"><span class="lineno">  132</span>        self.s2thetaw = 0.23126                            <span class="comment"># square sine of the Weinberg angle</span></div>
+<div class="line"><span class="lineno">  133</span>        self.t2thetaw = self.s2thetaw/(1-self.s2thetaw)    <span class="comment"># square tan of the Weinberg angle</span></div>
+<div class="line"><span class="lineno">  134</span>        self.heV = 6.58211928*pow(10.,-16)                 <span class="comment"># no units or it messes up!!</span></div>
+<div class="line"><span class="lineno">  135</span>        self.hGeV = self.heV * pow(10.,-9)                 <span class="comment"># no units or it messes up!!</span></div>
+<div class="line"><span class="lineno">  136</span>        <span class="comment"># defined in Eq (30)--(32) of [1511.07436], but without</span></div>
+<div class="line"><span class="lineno">  137</span>        <span class="comment"># the coupling over sfermion mass, that will come later</span></div>
+<div class="line"><span class="lineno">  138</span>        self.GST2 = {<span class="stringliteral">&#39;slepton&#39;</span>   : self.gW2*self.t2thetaw*9./8.,</div>
+<div class="line"><span class="lineno">  139</span>                     <span class="stringliteral">&#39;sneutrino&#39;</span> : self.gW2*self.t2thetaw*9./8.,</div>
+<div class="line"><span class="lineno">  140</span>                     <span class="stringliteral">&#39;tlepton&#39;</span>   : self.gW2*self.t2thetaw*1./32.,</div>
+<div class="line"><span class="lineno">  141</span>                     <span class="stringliteral">&#39;tneutrino&#39;</span> : self.gW2*self.t2thetaw*1./32.}</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span><span class="comment"># Load some useful constants</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -198,7 +198,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00107">107</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00110">110</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -214,7 +214,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00126">126</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00129">129</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -230,7 +230,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00135">135</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00138">138</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -246,7 +246,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00128">128</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00131">131</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -262,7 +262,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00131">131</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00134">134</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -278,7 +278,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00132">132</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00135">135</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -294,7 +294,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00127">127</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00130">130</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -310,7 +310,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00129">129</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00132">132</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00130">130</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00133">133</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>

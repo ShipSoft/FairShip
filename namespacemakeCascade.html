@@ -245,27 +245,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00128">128</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span><span class="keyword">def </span>fillp1(hist):</div>
-<div class="line"><span class="lineno">  129</span>    <span class="comment"># scan filled bins in hist, and fill intermediate bins with linear interpolation</span></div>
-<div class="line"><span class="lineno">  130</span>    nb = hist.GetNbinsX()</div>
-<div class="line"><span class="lineno">  131</span>    i1 = hist.FindBin(pbeaml, 0., 0.)</div>
-<div class="line"><span class="lineno">  132</span>    y1 = hist.GetBinContent(i1)</div>
-<div class="line"><span class="lineno">  133</span>    p1 = hist.GetBinCenter(i1)</div>
-<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(i1 + 1, nb + 1):</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">if</span> hist.GetBinContent(i) &gt; 0.:</div>
-<div class="line"><span class="lineno">  136</span>            y2 = hist.GetBinContent(i)</div>
-<div class="line"><span class="lineno">  137</span>            p2 = hist.GetBinCenter(i)</div>
-<div class="line"><span class="lineno">  138</span>            tg = (y2 - y1) / (p2 - p1)</div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">for</span> ib <span class="keywordflow">in</span> range(i1 + 1, i):</div>
-<div class="line"><span class="lineno">  140</span>                px = hist.GetBinCenter(ib)</div>
-<div class="line"><span class="lineno">  141</span>                yx = (px - p1) * tg + y1</div>
-<div class="line"><span class="lineno">  142</span>                hist.Fill(px, yx)</div>
-<div class="line"><span class="lineno">  143</span>                i1 = i</div>
-<div class="line"><span class="lineno">  144</span>                y1 = y2</div>
-<div class="line"><span class="lineno">  145</span>                p1 = p2</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00131">131</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>fillp1(hist):</div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment"># scan filled bins in hist, and fill intermediate bins with linear interpolation</span></div>
+<div class="line"><span class="lineno">  133</span>    nb = hist.GetNbinsX()</div>
+<div class="line"><span class="lineno">  134</span>    i1 = hist.FindBin(pbeaml, 0., 0.)</div>
+<div class="line"><span class="lineno">  135</span>    y1 = hist.GetBinContent(i1)</div>
+<div class="line"><span class="lineno">  136</span>    p1 = hist.GetBinCenter(i1)</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(i1 + 1, nb + 1):</div>
+<div class="line"><span class="lineno">  138</span>        <span class="keywordflow">if</span> hist.GetBinContent(i) &gt; 0.:</div>
+<div class="line"><span class="lineno">  139</span>            y2 = hist.GetBinContent(i)</div>
+<div class="line"><span class="lineno">  140</span>            p2 = hist.GetBinCenter(i)</div>
+<div class="line"><span class="lineno">  141</span>            tg = (y2 - y1) / (p2 - p1)</div>
+<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">for</span> ib <span class="keywordflow">in</span> range(i1 + 1, i):</div>
+<div class="line"><span class="lineno">  143</span>                px = hist.GetBinCenter(ib)</div>
+<div class="line"><span class="lineno">  144</span>                yx = (px - p1) * tg + y1</div>
+<div class="line"><span class="lineno">  145</span>                hist.Fill(px, yx)</div>
+<div class="line"><span class="lineno">  146</span>                i1 = i</div>
+<div class="line"><span class="lineno">  147</span>                y1 = y2</div>
+<div class="line"><span class="lineno">  148</span>                p1 = p2</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -285,43 +285,43 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00092">92</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>LHCb_tune(P6):</div>
-<div class="line"><span class="lineno">   93</span>    <span class="comment"># settings by LHCb for Pythia 6.427</span></div>
-<div class="line"><span class="lineno">   94</span>    <span class="comment"># https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08</span></div>
-<div class="line"><span class="lineno">   95</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">   96</span>    print(<span class="stringliteral">&#39;********** LHCb_tune **********&#39;</span>)</div>
-<div class="line"><span class="lineno">   97</span>    <span class="comment"># P6.SetCKIN(41,3.0)</span></div>
-<div class="line"><span class="lineno">   98</span>    P6.SetMSTP(2,   2)</div>
-<div class="line"><span class="lineno">   99</span>    P6.SetMSTP(33,  3)</div>
-<div class="line"><span class="lineno">  100</span>    <span class="comment"># P6.SetMSTP(128,   2)  # store or not store</span></div>
-<div class="line"><span class="lineno">  101</span>    P6.SetMSTP(81,  21)</div>
-<div class="line"><span class="lineno">  102</span>    P6.SetMSTP(82,  3)</div>
-<div class="line"><span class="lineno">  103</span>    P6.SetMSTP(52,  2)</div>
-<div class="line"><span class="lineno">  104</span>    P6.SetMSTP(51,  10042)  <span class="comment"># (ie CTEQ6 LO fit, with LOrder alpha_S PDF from LHAPDF)</span></div>
-<div class="line"><span class="lineno">  105</span>    P6.SetMSTP(142, 0)  <span class="comment"># do not weigh events</span></div>
-<div class="line"><span class="lineno">  106</span>    P6.SetPARP(67,  1.0)</div>
-<div class="line"><span class="lineno">  107</span>    P6.SetPARP(82,  4.28)</div>
-<div class="line"><span class="lineno">  108</span>    P6.SetPARP(89,  14000)</div>
-<div class="line"><span class="lineno">  109</span>    P6.SetPARP(90,  0.238)</div>
-<div class="line"><span class="lineno">  110</span>    P6.SetPARP(85,  0.33)</div>
-<div class="line"><span class="lineno">  111</span>    P6.SetPARP(86,  0.66)</div>
-<div class="line"><span class="lineno">  112</span>    P6.SetPARP(91,  1.0)</div>
-<div class="line"><span class="lineno">  113</span>    P6.SetPARP(149, 0.02)</div>
-<div class="line"><span class="lineno">  114</span>    P6.SetPARP(150, 0.085)</div>
-<div class="line"><span class="lineno">  115</span>    P6.SetPARJ(11,  0.4)</div>
-<div class="line"><span class="lineno">  116</span>    P6.SetPARJ(12,  0.4)</div>
-<div class="line"><span class="lineno">  117</span>    P6.SetPARJ(13,  0.769)</div>
-<div class="line"><span class="lineno">  118</span>    P6.SetPARJ(14,  0.09)</div>
-<div class="line"><span class="lineno">  119</span>    P6.SetPARJ(15,  0.018)</div>
-<div class="line"><span class="lineno">  120</span>    P6.SetPARJ(16,  0.0815)</div>
-<div class="line"><span class="lineno">  121</span>    P6.SetPARJ(17,  0.0815)</div>
-<div class="line"><span class="lineno">  122</span>    P6.SetMSTJ(26,  0)</div>
-<div class="line"><span class="lineno">  123</span>    P6.SetPARJ(33,  0.4)</div>
-<div class="line"><span class="lineno">  124</span>    print(<span class="stringliteral">&#39;********** LHCb_tune **********&#39;</span>)</div>
-<div class="line"><span class="lineno">  125</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00095">95</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span><span class="keyword">def </span>LHCb_tune(P6):</div>
+<div class="line"><span class="lineno">   96</span>    <span class="comment"># settings by LHCb for Pythia 6.427</span></div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08</span></div>
+<div class="line"><span class="lineno">   98</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><span class="lineno">   99</span>    print(<span class="stringliteral">&#39;********** LHCb_tune **********&#39;</span>)</div>
+<div class="line"><span class="lineno">  100</span>    <span class="comment"># P6.SetCKIN(41,3.0)</span></div>
+<div class="line"><span class="lineno">  101</span>    P6.SetMSTP(2,   2)</div>
+<div class="line"><span class="lineno">  102</span>    P6.SetMSTP(33,  3)</div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment"># P6.SetMSTP(128,   2)  # store or not store</span></div>
+<div class="line"><span class="lineno">  104</span>    P6.SetMSTP(81,  21)</div>
+<div class="line"><span class="lineno">  105</span>    P6.SetMSTP(82,  3)</div>
+<div class="line"><span class="lineno">  106</span>    P6.SetMSTP(52,  2)</div>
+<div class="line"><span class="lineno">  107</span>    P6.SetMSTP(51,  10042)  <span class="comment"># (ie CTEQ6 LO fit, with LOrder alpha_S PDF from LHAPDF)</span></div>
+<div class="line"><span class="lineno">  108</span>    P6.SetMSTP(142, 0)  <span class="comment"># do not weigh events</span></div>
+<div class="line"><span class="lineno">  109</span>    P6.SetPARP(67,  1.0)</div>
+<div class="line"><span class="lineno">  110</span>    P6.SetPARP(82,  4.28)</div>
+<div class="line"><span class="lineno">  111</span>    P6.SetPARP(89,  14000)</div>
+<div class="line"><span class="lineno">  112</span>    P6.SetPARP(90,  0.238)</div>
+<div class="line"><span class="lineno">  113</span>    P6.SetPARP(85,  0.33)</div>
+<div class="line"><span class="lineno">  114</span>    P6.SetPARP(86,  0.66)</div>
+<div class="line"><span class="lineno">  115</span>    P6.SetPARP(91,  1.0)</div>
+<div class="line"><span class="lineno">  116</span>    P6.SetPARP(149, 0.02)</div>
+<div class="line"><span class="lineno">  117</span>    P6.SetPARP(150, 0.085)</div>
+<div class="line"><span class="lineno">  118</span>    P6.SetPARJ(11,  0.4)</div>
+<div class="line"><span class="lineno">  119</span>    P6.SetPARJ(12,  0.4)</div>
+<div class="line"><span class="lineno">  120</span>    P6.SetPARJ(13,  0.769)</div>
+<div class="line"><span class="lineno">  121</span>    P6.SetPARJ(14,  0.09)</div>
+<div class="line"><span class="lineno">  122</span>    P6.SetPARJ(15,  0.018)</div>
+<div class="line"><span class="lineno">  123</span>    P6.SetPARJ(16,  0.0815)</div>
+<div class="line"><span class="lineno">  124</span>    P6.SetPARJ(17,  0.0815)</div>
+<div class="line"><span class="lineno">  125</span>    P6.SetMSTJ(26,  0)</div>
+<div class="line"><span class="lineno">  126</span>    P6.SetPARJ(33,  0.4)</div>
+<div class="line"><span class="lineno">  127</span>    print(<span class="stringliteral">&#39;********** LHCb_tune **********&#39;</span>)</div>
+<div class="line"><span class="lineno">  128</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -341,25 +341,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00074">74</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span><span class="keyword">def </span>PoorE791_tune(P6):</div>
-<div class="line"><span class="lineno">   75</span>    <span class="comment"># settings with default Pythia6 pdf, based on getting &lt;pt&gt; at 500 GeV pi-</span></div>
-<div class="line"><span class="lineno">   76</span>    <span class="comment"># same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf</span></div>
-<div class="line"><span class="lineno">   77</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">   78</span>    print(<span class="stringliteral">&#39;********** PoorE791_tune **********&#39;</span>)</div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment"># change pt of D&#39;s to mimic E791 data.</span></div>
-<div class="line"><span class="lineno">   80</span>    P6.SetPARP(91, 1.6)</div>
-<div class="line"><span class="lineno">   81</span>    print(f<span class="stringliteral">&#39;PARP(91)={P6.GetPARP(91)}&#39;</span>)</div>
-<div class="line"><span class="lineno">   82</span>    <span class="comment"># what PDFs etc.. are being used:</span></div>
-<div class="line"><span class="lineno">   83</span>    print(<span class="stringliteral">&#39;MSTP PDF info, i.e. (51) and (52)=&#39;</span>, P6.GetMSTP(51), P6.GetMSTP(52))</div>
-<div class="line"><span class="lineno">   84</span>    <span class="comment"># set multiple interactions equal to Fortran version, i.e.=1, default=4, and adapt parp(89) accordingly</span></div>
-<div class="line"><span class="lineno">   85</span>    P6.SetMSTP(82, 1)</div>
-<div class="line"><span class="lineno">   86</span>    P6.SetPARP(89, 1000.)</div>
-<div class="line"><span class="lineno">   87</span>    print(<span class="stringliteral">&#39;And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=&#39;</span>, P6.GetMSTP(82), P6.GetPARP(81), P6.GetPARP(89), P6.GetPARP(90))</div>
-<div class="line"><span class="lineno">   88</span>    print(<span class="stringliteral">&#39;********** PoorE791_tune **********&#39;</span>)</div>
-<div class="line"><span class="lineno">   89</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00077">77</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>PoorE791_tune(P6):</div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment"># settings with default Pythia6 pdf, based on getting &lt;pt&gt; at 500 GeV pi-</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment"># same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf</span></div>
+<div class="line"><span class="lineno">   80</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><span class="lineno">   81</span>    print(<span class="stringliteral">&#39;********** PoorE791_tune **********&#39;</span>)</div>
+<div class="line"><span class="lineno">   82</span>    <span class="comment"># change pt of D&#39;s to mimic E791 data.</span></div>
+<div class="line"><span class="lineno">   83</span>    P6.SetPARP(91, 1.6)</div>
+<div class="line"><span class="lineno">   84</span>    print(f<span class="stringliteral">&#39;PARP(91)={P6.GetPARP(91)}&#39;</span>)</div>
+<div class="line"><span class="lineno">   85</span>    <span class="comment"># what PDFs etc.. are being used:</span></div>
+<div class="line"><span class="lineno">   86</span>    print(<span class="stringliteral">&#39;MSTP PDF info, i.e. (51) and (52)=&#39;</span>, P6.GetMSTP(51), P6.GetMSTP(52))</div>
+<div class="line"><span class="lineno">   87</span>    <span class="comment"># set multiple interactions equal to Fortran version, i.e.=1, default=4, and adapt parp(89) accordingly</span></div>
+<div class="line"><span class="lineno">   88</span>    P6.SetMSTP(82, 1)</div>
+<div class="line"><span class="lineno">   89</span>    P6.SetPARP(89, 1000.)</div>
+<div class="line"><span class="lineno">   90</span>    print(<span class="stringliteral">&#39;And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=&#39;</span>, P6.GetMSTP(82), P6.GetPARP(81), P6.GetPARP(89), P6.GetPARP(90))</div>
+<div class="line"><span class="lineno">   91</span>    print(<span class="stringliteral">&#39;********** PoorE791_tune **********&#39;</span>)</div>
+<div class="line"><span class="lineno">   92</span>    print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -376,7 +376,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00016">16</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00019">19</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -392,7 +392,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00343">343</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00346">346</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -408,7 +408,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00010">10</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00013">13</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -424,7 +424,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00026">26</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00029">29</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -440,7 +440,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00311">311</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00314">314</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -456,7 +456,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00016">16</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00019">19</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -472,7 +472,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00279">279</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00282">282</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -488,7 +488,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00212">212</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00215">215</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -504,7 +504,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00015">15</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00018">18</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -520,7 +520,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00371">371</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00374">374</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -536,7 +536,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00011">11</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00014">14</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00016">16</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00019">19</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -568,7 +568,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00014">14</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00017">17</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -584,7 +584,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00028">28</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00031">31</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -600,7 +600,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00041">41</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00044">44</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -616,7 +616,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00235">235</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00238">238</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -632,7 +632,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00312">312</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00315">315</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -648,7 +648,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00161">161</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00164">164</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -664,7 +664,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00011">11</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00014">14</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -680,7 +680,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00267">267</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00270">270</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -696,7 +696,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00216">216</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00219">219</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -712,7 +712,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00190">190</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00193">193</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -728,7 +728,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00341">341</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00344">344</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -744,7 +744,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00165">165</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00168">168</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -760,7 +760,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00281">281</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00284">284</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -776,7 +776,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00185">185</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00188">188</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -792,7 +792,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00177">177</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00180">180</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -808,7 +808,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00034">34</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00037">37</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -824,7 +824,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00168">168</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00171">171</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -840,7 +840,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00263">263</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00266">266</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -856,7 +856,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00051">51</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00054">54</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -872,7 +872,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00172">172</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00175">175</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -888,7 +888,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00011">11</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00014">14</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -904,7 +904,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00242">242</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00245">245</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -920,7 +920,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00060">60</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00063">63</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -936,7 +936,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00174">174</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00177">177</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -952,7 +952,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00166">166</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00169">169</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -968,7 +968,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00252">252</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00255">255</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -984,7 +984,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00293">293</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00296">296</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1003,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">    2</span>       <span class="stringliteral">&quot;id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\</span></div>
 <div class="line"><span class="lineno">    3</span><span class="stringliteral">s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15&quot;</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00236">236</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00239">239</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1019,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00313">313</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00316">316</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1035,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00050">50</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00053">53</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1051,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00188">188</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00191">191</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1067,7 +1067,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00314">314</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00317">317</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1083,7 +1083,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00059">59</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00062">62</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1099,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00260">260</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00263">263</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1115,7 +1115,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00306">306</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00309">309</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1131,7 +1131,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00259">259</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00262">262</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1147,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00370">370</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00373">373</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1163,7 +1163,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00249">249</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00252">252</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1179,7 +1179,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00359">359</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00362">362</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1195,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00344">344</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00347">347</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1211,7 +1211,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00167">167</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00170">170</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1227,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00035">35</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00038">38</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1243,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00007">7</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00010">10</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1259,7 +1259,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00357">357</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00360">360</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1275,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00061">61</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00064">64</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1291,7 +1291,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00011">11</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00014">14</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1307,7 +1307,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00283">283</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00286">286</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1323,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00315">315</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeCascade_8py_source.html#l00318">318</a> of file <a class="el" href="makeCascade_8py_source.html">makeCascade.py</a>.</p>
 
 </div>
 </div>

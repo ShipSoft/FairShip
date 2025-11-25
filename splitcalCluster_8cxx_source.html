@@ -97,256 +97,259 @@ $(document).ready(function(){initNavTree('splitcalCluster_8cxx_source.html','');
   <div class="headertitle"><div class="title">splitcalCluster.cxx</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="splitcalCluster_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="splitcalCluster_8h.html">splitcalCluster.h</a>&quot;</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<a href="splitcalCluster_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;numeric&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// -----   constructor from list/vector of splitcalHit   ------------------------------------------</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// splitcalCluster::splitcalCluster(boost::python::list&amp; l)</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// {</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">//   std::vector&lt;splitcalHit &gt; v;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">//   for(int i=0; i&lt;boost::python::len(l); i++) {</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">//     v.push_back(boost::python::extract&lt;splitcalHit &gt;(l[i]));</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">//   }</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//   SetVectorOfHits(v);</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// }</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">   22</a></span><a class="code hl_function" href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">splitcalCluster::splitcalCluster</a>()</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="splitcalCluster_8h.html">splitcalCluster.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;numeric&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// -----   constructor from list/vector of splitcalHit   ------------------------------------------</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// splitcalCluster::splitcalCluster(boost::python::list&amp; l)</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">//   std::vector&lt;splitcalHit &gt; v;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//   for(int i=0; i&lt;boost::python::len(l); i++) {</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">//     v.push_back(boost::python::extract&lt;splitcalHit &gt;(l[i]));</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">//   }</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">//   SetVectorOfHits(v);</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// }</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">   25</a></span><a class="code hl_function" href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">splitcalCluster::splitcalCluster</a>()</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
 </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">   27</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">splitcalCluster::ComputeEtaPhiE</a>(<span class="keyword">const</span> std::vector&lt;splitcalHit&gt;&amp; hits)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// Compute energy weighted average for hits in the same layer</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// This is in preparation of the linear fit to get the cluster eta and phi</span></div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">   30</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">splitcalCluster::ComputeEtaPhiE</a>(<span class="keyword">const</span> std::vector&lt;splitcalHit&gt;&amp; hits)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// maps to compute the weighted average of all the hits in the same layer</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::map&lt;int, double&gt; mapLayerWeigthedX;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  std::map&lt;int, double&gt; mapLayerWeigthedY;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  std::map&lt;int, double&gt; mapLayerZ1;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  std::map&lt;int, double&gt; mapLayerZ2;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::map&lt;int, double&gt; mapLayerSumWeigthsX;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  std::map&lt;int, double&gt; mapLayerSumWeigthsY;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">double</span> energy = 0.;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">_hitIndices</a>.size(); ++i){</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; hit = hits[<a class="code hl_variable" href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">_hitIndices</a>[i]];</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">double</span> hitEnergy = hit.GetEnergy() * <a class="code hl_variable" href="classsplitcalCluster.html#a668d371cbc5ff4661dfbd9f222bf8c2e">_hitWeights</a>[i];  <span class="comment">// Use weight from cluster</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    energy += hitEnergy;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">int</span> layer = hit.GetLayerNumber();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment">// hits from high precision layers give both x and y coordinates --&gt; use if-if instead of if-else</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">if</span> (hit.IsX()){</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">if</span> (mapLayerWeigthedX.count(layer)==0) { <span class="comment">//if key is not yet in map, initialise element to 0</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    mapLayerWeigthedX[layer] = 0.;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    mapLayerSumWeigthsX[layer] = 0.;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      mapLayerWeigthedX[layer] += hit.GetX() * hitEnergy;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      mapLayerSumWeigthsX[layer] += hitEnergy;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      mapLayerZ1[layer] = hit.GetZ();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (hit.IsY()){</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">if</span> (mapLayerWeigthedY.count(layer)==0) { <span class="comment">//if key is not yet in map, initialise element to 0</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    mapLayerWeigthedY[layer] = 0.;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    mapLayerSumWeigthsY[layer] = 0.;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      mapLayerWeigthedY[layer] += hit.GetY() * hitEnergy;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      mapLayerSumWeigthsY[layer] += hitEnergy;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      mapLayerZ2[layer] = hit.GetZ();</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }<span class="comment">//end loop on hit</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// FIXME: regression fit seems instable --&gt; for the moment commented it out in favour of simple direction from initial and end point</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// Compute energy weighted average for hits in the same layer</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// This is in preparation of the linear fit to get the cluster eta and phi</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// maps to compute the weighted average of all the hits in the same layer</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  std::map&lt;int, double&gt; mapLayerWeigthedX;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::map&lt;int, double&gt; mapLayerWeigthedY;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  std::map&lt;int, double&gt; mapLayerZ1;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  std::map&lt;int, double&gt; mapLayerZ2;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  std::map&lt;int, double&gt; mapLayerSumWeigthsX;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::map&lt;int, double&gt; mapLayerSumWeigthsY;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">double</span> energy = 0.;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">_hitIndices</a>.size(); ++i){</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; hit = hits[<a class="code hl_variable" href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">_hitIndices</a>[i]];</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">double</span> hitEnergy = hit.GetEnergy() * <a class="code hl_variable" href="classsplitcalCluster.html#a668d371cbc5ff4661dfbd9f222bf8c2e">_hitWeights</a>[i];  <span class="comment">// Use weight from cluster</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    energy += hitEnergy;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">int</span> layer = hit.GetLayerNumber();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// hits from high precision layers give both x and y coordinates --&gt; use if-if instead of if-else</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">if</span> (hit.IsX()){</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">if</span> (mapLayerWeigthedX.count(layer)==0) { <span class="comment">//if key is not yet in map, initialise element to 0</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    mapLayerWeigthedX[layer] = 0.;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    mapLayerSumWeigthsX[layer] = 0.;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      mapLayerWeigthedX[layer] += hit.GetX() * hitEnergy;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      mapLayerSumWeigthsX[layer] += hitEnergy;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      mapLayerZ1[layer] = hit.GetZ();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">if</span> (hit.IsY()){</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">if</span> (mapLayerWeigthedY.count(layer)==0) { <span class="comment">//if key is not yet in map, initialise element to 0</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    mapLayerWeigthedY[layer] = 0.;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    mapLayerSumWeigthsY[layer] = 0.;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      mapLayerWeigthedY[layer] += hit.GetY() * hitEnergy;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      mapLayerSumWeigthsY[layer] += hitEnergy;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      mapLayerZ2[layer] = hit.GetZ();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }<span class="comment">//end loop on hit</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; firstElementX = mapLayerWeigthedX.begin();</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">int</span> minLayerX = firstElementX-&gt;first;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">double</span> minX = firstElementX-&gt;second/mapLayerSumWeigthsX[minLayerX];</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">double</span> minZ1 = mapLayerZ1[minLayerX];</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; firstElementY = mapLayerWeigthedY.begin();</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">int</span> minLayerY = firstElementY-&gt;first;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">double</span> minY = firstElementY-&gt;second/mapLayerSumWeigthsY[minLayerY];</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">double</span> minZ2 = mapLayerZ1[minLayerY];</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordtype">double</span> minZ = (minZ1+minZ2)/2.;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_function" href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">SetStartPoint</a>(minX, minY, minZ);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; lastElementX = mapLayerWeigthedX.rbegin();</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordtype">int</span> maxLayerX = lastElementX-&gt;first;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordtype">double</span> maxX = lastElementX-&gt;second/mapLayerSumWeigthsX[maxLayerX];</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordtype">double</span> maxZ1 = mapLayerZ1[maxLayerX];</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; lastElementY = mapLayerWeigthedY.rbegin();</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordtype">int</span> maxLayerY = lastElementY-&gt;first;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordtype">double</span> maxY = lastElementY-&gt;second/mapLayerSumWeigthsY[maxLayerY];</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">double</span> maxZ2 = mapLayerZ1[maxLayerY];</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordtype">double</span> maxZ = (maxZ1+maxZ2)/2.;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <a class="code hl_function" href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">SetEndPoint</a>(maxX, maxY, maxZ);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// get direction vector from end-start vector difference</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  TVector3 start(<a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[0], <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[1], <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[2]);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  TVector3 end(<a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[0], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[1], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[2]);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  TVector3 direction = end - start;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordtype">double</span> eta = direction.Eta();</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">double</span> phi = direction.Phi();</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <a class="code hl_function" href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">SetEtaPhiE</a>(eta, phi, energy);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// // vectors holding the weighted coordinates per layer: x and z for the eta fit, and y and z for the phi fit</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// std::vector&lt;double &gt; x;</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">// std::vector&lt;double &gt; z1;</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// std::vector&lt;double &gt; y;</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// std::vector&lt;double &gt; z2;</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// for (auto const&amp; element : mapLayerWeigthedX){</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">//   int key = element.first;</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">//   x.push_back(element.second/mapLayerSumWeigthsX[key]);</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">//   z1.push_back(mapLayerZ1[key]);</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// }</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// regression resultZX = LinearRegression(z1,x);</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// double alpha = acos(resultZX.slope);</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// FIXME: regression fit seems instable --&gt; for the moment commented it out in favour of simple direction from initial and end point</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; firstElementX = mapLayerWeigthedX.begin();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">int</span> minLayerX = firstElementX-&gt;first;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">double</span> minX = firstElementX-&gt;second/mapLayerSumWeigthsX[minLayerX];</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">double</span> minZ1 = mapLayerZ1[minLayerX];</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; firstElementY = mapLayerWeigthedY.begin();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">int</span> minLayerY = firstElementY-&gt;first;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordtype">double</span> minY = firstElementY-&gt;second/mapLayerSumWeigthsY[minLayerY];</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordtype">double</span> minZ2 = mapLayerZ1[minLayerY];</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">double</span> minZ = (minZ1+minZ2)/2.;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_function" href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">SetStartPoint</a>(minX, minY, minZ);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; lastElementX = mapLayerWeigthedX.rbegin();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordtype">int</span> maxLayerX = lastElementX-&gt;first;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordtype">double</span> maxX = lastElementX-&gt;second/mapLayerSumWeigthsX[maxLayerX];</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordtype">double</span> maxZ1 = mapLayerZ1[maxLayerX];</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">auto</span> <span class="keyword">const</span>&amp; lastElementY = mapLayerWeigthedY.rbegin();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">int</span> maxLayerY = lastElementY-&gt;first;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordtype">double</span> maxY = lastElementY-&gt;second/mapLayerSumWeigthsY[maxLayerY];</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordtype">double</span> maxZ2 = mapLayerZ1[maxLayerY];</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">double</span> maxZ = (maxZ1+maxZ2)/2.;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_function" href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">SetEndPoint</a>(maxX, maxY, maxZ);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// get direction vector from end-start vector difference</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  TVector3 start(<a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[0], <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[1], <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[2]);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  TVector3 end(<a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[0], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[1], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[2]);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  TVector3 direction = end - start;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordtype">double</span> eta = direction.Eta();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordtype">double</span> phi = direction.Phi();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_function" href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">SetEtaPhiE</a>(eta, phi, energy);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// // vectors holding the weighted coordinates per layer: x and z for the eta fit, and y and z for the phi fit</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// std::vector&lt;double &gt; x;</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// std::vector&lt;double &gt; z1;</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// std::vector&lt;double &gt; y;</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">// std::vector&lt;double &gt; z2;</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// for (auto const&amp; element : mapLayerWeigthedX){</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">//   int key = element.first;</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">//   x.push_back(element.second/mapLayerSumWeigthsX[key]);</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">//   z1.push_back(mapLayerZ1[key]);</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// }</span></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// for (auto const&amp; element : mapLayerWeigthedY){</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">//   int key = element.first;</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="comment">//   y.push_back(element.second/mapLayerSumWeigthsY[key]);</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">//   z2.push_back(mapLayerZ2[key]);</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">// }</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// regression resultZY = LinearRegression(z2,y);</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// double eta_check = acos(resultZY.slope);</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// regression resultZX = LinearRegression(z1,x);</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// double alpha = acos(resultZX.slope);</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// for (auto const&amp; element : mapLayerWeigthedY){</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">//   int key = element.first;</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">//   y.push_back(element.second/mapLayerSumWeigthsY[key]);</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">//   z2.push_back(mapLayerZ2[key]);</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// }</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// // regression resultXY = LinearRegression(x,y);</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// // double phi = acos(resultXY.slope);</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="comment">// regression resultZY = LinearRegression(z2,y);</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// double eta_check = acos(resultZY.slope);</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="comment">// std::cout&lt;&lt;&quot; ---- before fit &quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// _start.Print();</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="comment">// _end.Print();</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="comment">// // replace the x and y of start and end points with the re-evaluated values from the corresponding fit</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="comment">// _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept );</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="comment">// _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept );</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept );</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept );</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="comment">// // regression resultXY = LinearRegression(x,y);</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// // double phi = acos(resultXY.slope);</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="comment">// std::cout&lt;&lt;&quot; ---- before fit &quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="comment">// _start.Print();</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="comment">// _end.Print();</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">// // replace the x and y of start and end points with the re-evaluated values from the corresponding fit</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept );</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="comment">// _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept );</span></div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// // get direction vector from end-strat vector difference</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// TVector3 direction;</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="comment">// direction = _end - _start;</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// double eta = direction.Eta();</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// double phi = direction.Phi();</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// std::cout&lt;&lt;&quot; ---- after fit &quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// _start.Print();</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="comment">// _end.Print();</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- eta = &quot;&lt;&lt; eta &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- eta_check = &quot;&lt;&lt; eta_check &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- phi = &quot;&lt;&lt; phi &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- energy = &quot;&lt;&lt; energy &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// SetEtaPhiE(eta, phi, energy);</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// // temporary for test</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// _mZX = resultZX.slope;</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="comment">// _qZX = resultZX.intercept;</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// _mZY = resultZY.slope;</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// _qZY = resultZY.intercept;</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
-</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept );</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept );</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// // get direction vector from end-strat vector difference</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="comment">// TVector3 direction;</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="comment">// direction = _end - _start;</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// double eta = direction.Eta();</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// double phi = direction.Phi();</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="comment">// std::cout&lt;&lt;&quot; ---- after fit &quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// _start.Print();</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="comment">// _end.Print();</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- eta = &quot;&lt;&lt; eta &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- eta_check = &quot;&lt;&lt; eta_check &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- phi = &quot;&lt;&lt; phi &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">// std::cout&lt;&lt;&quot; -- energy = &quot;&lt;&lt; energy &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// SetEtaPhiE(eta, phi, energy);</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// // temporary for test</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// _mZX = resultZX.slope;</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// _qZX = resultZX.intercept;</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="comment">// _mZY = resultZY.slope;</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="comment">// _qZY = resultZY.intercept;</span></div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">  176</a></span><a class="code hl_struct" href="structregression.html">regression</a> <a class="code hl_function" href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">splitcalCluster::LinearRegression</a>(std::vector&lt;double &gt;&amp; x, std::vector&lt;double &gt;&amp; y) {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>}</div>
+</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keyword">const</span> <span class="keyword">auto</span> n    = x.size();</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_x  = std::accumulate(x.begin(), x.end(), 0.);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_y  = std::accumulate(y.begin(), y.end(), 0.);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_xx = std::inner_product(x.begin(), x.end(), x.begin(), 0.);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_xy = std::inner_product(x.begin(), x.end(), y.begin(), 0.);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <a class="code hl_struct" href="structregression.html">regression</a> result;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  result.<a class="code hl_variable" href="structregression.html#addfebfb4bb3557492de61edce69c88c7">slope</a> = (n * s_xy - s_x * s_y) / (n * s_xx - s_x * s_x);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  result.<a class="code hl_variable" href="structregression.html#af661759bf72b1d326f90c27cacb26512">intercept</a> = (s_x * s_x * s_y - s_xy * s_x) / (n * s_xx - s_x * s_x);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">  179</a></span><a class="code hl_struct" href="structregression.html">regression</a> <a class="code hl_function" href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">splitcalCluster::LinearRegression</a>(std::vector&lt;double &gt;&amp; x, std::vector&lt;double &gt;&amp; y) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="keyword">const</span> <span class="keyword">auto</span> n    = x.size();</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_x  = std::accumulate(x.begin(), x.end(), 0.);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_y  = std::accumulate(y.begin(), y.end(), 0.);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_xx = std::inner_product(x.begin(), x.end(), x.begin(), 0.);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">const</span> <span class="keyword">auto</span> s_xy = std::inner_product(x.begin(), x.end(), y.begin(), 0.);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <a class="code hl_struct" href="structregression.html">regression</a> result;</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--- LinearRegression ---&quot;</span> &lt;&lt;std::endl;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--------- slope = &quot;</span> &lt;&lt;  result.<a class="code hl_variable" href="structregression.html#addfebfb4bb3557492de61edce69c88c7">slope</a> &lt;&lt;std::endl;</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--------- intercept = &quot;</span> &lt;&lt;  result.<a class="code hl_variable" href="structregression.html#af661759bf72b1d326f90c27cacb26512">intercept</a> &lt;&lt;std::endl;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>}</div>
-</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  result.<a class="code hl_variable" href="structregression.html#addfebfb4bb3557492de61edce69c88c7">slope</a> = (n * s_xy - s_x * s_y) / (n * s_xx - s_x * s_x);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  result.<a class="code hl_variable" href="structregression.html#af661759bf72b1d326f90c27cacb26512">intercept</a> = (s_x * s_x * s_y - s_xy * s_x) / (n * s_xx - s_x * s_x);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--- LinearRegression ---&quot;</span> &lt;&lt;std::endl;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--------- slope = &quot;</span> &lt;&lt;  result.<a class="code hl_variable" href="structregression.html#addfebfb4bb3557492de61edce69c88c7">slope</a> &lt;&lt;std::endl;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;--------- intercept = &quot;</span> &lt;&lt;  result.<a class="code hl_variable" href="structregression.html#af661759bf72b1d326f90c27cacb26512">intercept</a> &lt;&lt;std::endl;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="keywordflow">return</span> result;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">  201</a></span><a class="code hl_function" href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">splitcalCluster::~splitcalCluster</a>() { }</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">  205</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">splitcalCluster::Print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;-I- splitcalCluster: &quot;</span> &lt;&lt;std::endl;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    (eta,phi,energy) = &quot;</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a992707d157643b796a9ed78c8abb2fd4">_eta</a> &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ae35a37e3f94112eb200dc7c36ccad70f">_energy</a> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    start(x,y,z) = &quot;</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[0] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[1] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[2] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    end(x,y,z) = &quot;</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[0] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[1] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[2] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>   std::cout&lt;&lt; <span class="stringliteral">&quot;------- &quot;</span> &lt;&lt;std::endl;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>}</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>}</div>
 </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a093f86a61b9053b85a4f3559bcadd1c4"><div class="ttname"><a href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">splitcalCluster::_phi</a></div><div class="ttdeci">double _phi</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00083">splitcalCluster.h:83</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a16365bbe7ce6158b6cef17c7d760b4cf"><div class="ttname"><a href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">splitcalCluster::SetStartPoint</a></div><div class="ttdeci">void SetStartPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00045">splitcalCluster.h:45</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a34d6ee9805ed84525f389bf181f9572b"><div class="ttname"><a href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">splitcalCluster::ComputeEtaPhiE</a></div><div class="ttdeci">void ComputeEtaPhiE(const std::vector&lt; splitcalHit &gt; &amp;hits)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00027">splitcalCluster.cxx:27</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a390c6a4ecd9984a299222ec893ff4d08"><div class="ttname"><a href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">splitcalCluster::splitcalCluster</a></div><div class="ttdeci">splitcalCluster()</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00022">splitcalCluster.cxx:22</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a4e08266e6956e29ebf42b86ceb3741b9"><div class="ttname"><a href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">splitcalCluster::SetEndPoint</a></div><div class="ttdeci">void SetEndPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00046">splitcalCluster.h:46</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a630b0e91cbd94e715426299b61af956c"><div class="ttname"><a href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">splitcalCluster::_end</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; _end</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00085">splitcalCluster.h:85</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a668d371cbc5ff4661dfbd9f222bf8c2e"><div class="ttname"><a href="classsplitcalCluster.html#a668d371cbc5ff4661dfbd9f222bf8c2e">splitcalCluster::_hitWeights</a></div><div class="ttdeci">std::vector&lt; double &gt; _hitWeights</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00087">splitcalCluster.h:87</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a8308e91cf36231937c25e43f7ed265a9"><div class="ttname"><a href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">splitcalCluster::_hitIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; _hitIndices</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00086">splitcalCluster.h:86</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a8abd48d84fe3c418e6bae20ce3f665c8"><div class="ttname"><a href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">splitcalCluster::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00205">splitcalCluster.cxx:205</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a8fc5b99da7985dd0c670c55409706170"><div class="ttname"><a href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">splitcalCluster::SetEtaPhiE</a></div><div class="ttdeci">void SetEtaPhiE(double &amp;eta, double &amp;phi, double &amp;e)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00040">splitcalCluster.h:40</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a992707d157643b796a9ed78c8abb2fd4"><div class="ttname"><a href="classsplitcalCluster.html#a992707d157643b796a9ed78c8abb2fd4">splitcalCluster::_eta</a></div><div class="ttdeci">double _eta</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00083">splitcalCluster.h:83</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_a9f333dedc92942a9f13b765ebeb53eda"><div class="ttname"><a href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">splitcalCluster::~splitcalCluster</a></div><div class="ttdeci">virtual ~splitcalCluster()</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00201">splitcalCluster.cxx:201</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_ac338c112622c66ee0c755d16ebeae63f"><div class="ttname"><a href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">splitcalCluster::_start</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; _start</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00084">splitcalCluster.h:84</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_ae35a37e3f94112eb200dc7c36ccad70f"><div class="ttname"><a href="classsplitcalCluster.html#ae35a37e3f94112eb200dc7c36ccad70f">splitcalCluster::_energy</a></div><div class="ttdeci">double _energy</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00083">splitcalCluster.h:83</a></div></div>
-<div class="ttc" id="aclasssplitcalCluster_html_afa5b955621b768291b701b401604e1ab"><div class="ttname"><a href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">splitcalCluster::LinearRegression</a></div><div class="ttdeci">regression LinearRegression(std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00176">splitcalCluster.cxx:176</a></div></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">  204</a></span><a class="code hl_function" href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">splitcalCluster::~splitcalCluster</a>() { }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00208" data-start="{" data-end="}">
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">  208</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">splitcalCluster::Print</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;-I- splitcalCluster: &quot;</span> &lt;&lt;std::endl;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    (eta,phi,energy) = &quot;</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a992707d157643b796a9ed78c8abb2fd4">_eta</a> &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ae35a37e3f94112eb200dc7c36ccad70f">_energy</a> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    start(x,y,z) = &quot;</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[0] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[1] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">_start</a>[2] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  std::cout&lt;&lt; <span class="stringliteral">&quot;    end(x,y,z) = &quot;</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[0] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[1] &lt;&lt; <span class="stringliteral">&quot; ,  &quot;</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>       &lt;&lt; <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[2] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>   std::cout&lt;&lt; <span class="stringliteral">&quot;------- &quot;</span> &lt;&lt;std::endl;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
+</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a093f86a61b9053b85a4f3559bcadd1c4"><div class="ttname"><a href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">splitcalCluster::_phi</a></div><div class="ttdeci">double _phi</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00086">splitcalCluster.h:86</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a16365bbe7ce6158b6cef17c7d760b4cf"><div class="ttname"><a href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">splitcalCluster::SetStartPoint</a></div><div class="ttdeci">void SetStartPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00048">splitcalCluster.h:48</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a34d6ee9805ed84525f389bf181f9572b"><div class="ttname"><a href="classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b">splitcalCluster::ComputeEtaPhiE</a></div><div class="ttdeci">void ComputeEtaPhiE(const std::vector&lt; splitcalHit &gt; &amp;hits)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00030">splitcalCluster.cxx:30</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a390c6a4ecd9984a299222ec893ff4d08"><div class="ttname"><a href="classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08">splitcalCluster::splitcalCluster</a></div><div class="ttdeci">splitcalCluster()</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00025">splitcalCluster.cxx:25</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a4e08266e6956e29ebf42b86ceb3741b9"><div class="ttname"><a href="classsplitcalCluster.html#a4e08266e6956e29ebf42b86ceb3741b9">splitcalCluster::SetEndPoint</a></div><div class="ttdeci">void SetEndPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00049">splitcalCluster.h:49</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a630b0e91cbd94e715426299b61af956c"><div class="ttname"><a href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">splitcalCluster::_end</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; _end</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00088">splitcalCluster.h:88</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a668d371cbc5ff4661dfbd9f222bf8c2e"><div class="ttname"><a href="classsplitcalCluster.html#a668d371cbc5ff4661dfbd9f222bf8c2e">splitcalCluster::_hitWeights</a></div><div class="ttdeci">std::vector&lt; double &gt; _hitWeights</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00090">splitcalCluster.h:90</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a8308e91cf36231937c25e43f7ed265a9"><div class="ttname"><a href="classsplitcalCluster.html#a8308e91cf36231937c25e43f7ed265a9">splitcalCluster::_hitIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; _hitIndices</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00089">splitcalCluster.h:89</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a8abd48d84fe3c418e6bae20ce3f665c8"><div class="ttname"><a href="classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8">splitcalCluster::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00208">splitcalCluster.cxx:208</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a8fc5b99da7985dd0c670c55409706170"><div class="ttname"><a href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">splitcalCluster::SetEtaPhiE</a></div><div class="ttdeci">void SetEtaPhiE(double &amp;eta, double &amp;phi, double &amp;e)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00043">splitcalCluster.h:43</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a992707d157643b796a9ed78c8abb2fd4"><div class="ttname"><a href="classsplitcalCluster.html#a992707d157643b796a9ed78c8abb2fd4">splitcalCluster::_eta</a></div><div class="ttdeci">double _eta</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00086">splitcalCluster.h:86</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_a9f333dedc92942a9f13b765ebeb53eda"><div class="ttname"><a href="classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda">splitcalCluster::~splitcalCluster</a></div><div class="ttdeci">virtual ~splitcalCluster()</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00204">splitcalCluster.cxx:204</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_ac338c112622c66ee0c755d16ebeae63f"><div class="ttname"><a href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">splitcalCluster::_start</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; _start</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00087">splitcalCluster.h:87</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_ae35a37e3f94112eb200dc7c36ccad70f"><div class="ttname"><a href="classsplitcalCluster.html#ae35a37e3f94112eb200dc7c36ccad70f">splitcalCluster::_energy</a></div><div class="ttdeci">double _energy</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00086">splitcalCluster.h:86</a></div></div>
+<div class="ttc" id="aclasssplitcalCluster_html_afa5b955621b768291b701b401604e1ab"><div class="ttname"><a href="classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab">splitcalCluster::LinearRegression</a></div><div class="ttdeci">regression LinearRegression(std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8cxx_source.html#l00179">splitcalCluster.cxx:179</a></div></div>
 <div class="ttc" id="asplitcalCluster_8h_html"><div class="ttname"><a href="splitcalCluster_8h.html">splitcalCluster.h</a></div></div>
-<div class="ttc" id="astructregression_html"><div class="ttname"><a href="structregression.html">regression</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00015">splitcalCluster.h:16</a></div></div>
-<div class="ttc" id="astructregression_html_addfebfb4bb3557492de61edce69c88c7"><div class="ttname"><a href="structregression.html#addfebfb4bb3557492de61edce69c88c7">regression::slope</a></div><div class="ttdeci">double slope</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00018">splitcalCluster.h:18</a></div></div>
-<div class="ttc" id="astructregression_html_af661759bf72b1d326f90c27cacb26512"><div class="ttname"><a href="structregression.html#af661759bf72b1d326f90c27cacb26512">regression::intercept</a></div><div class="ttdeci">double intercept</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00020">splitcalCluster.h:20</a></div></div>
+<div class="ttc" id="astructregression_html"><div class="ttname"><a href="structregression.html">regression</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00018">splitcalCluster.h:19</a></div></div>
+<div class="ttc" id="astructregression_html_addfebfb4bb3557492de61edce69c88c7"><div class="ttname"><a href="structregression.html#addfebfb4bb3557492de61edce69c88c7">regression::slope</a></div><div class="ttdeci">double slope</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00021">splitcalCluster.h:21</a></div></div>
+<div class="ttc" id="astructregression_html_af661759bf72b1d326f90c27cacb26512"><div class="ttname"><a href="structregression.html#af661759bf72b1d326f90c27cacb26512">regression::intercept</a></div><div class="ttdeci">double intercept</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00023">splitcalCluster.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

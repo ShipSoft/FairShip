@@ -145,49 +145,49 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00011">11</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>local2Global(n):</div>
-<div class="line"><span class="lineno">   12</span>    Info={}</div>
-<div class="line"><span class="lineno">   13</span>    nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
-<div class="line"><span class="lineno">   14</span>    nav.cd(n)</div>
-<div class="line"><span class="lineno">   15</span>    Info[<span class="stringliteral">&#39;node&#39;</span>] = nav.GetCurrentNode()</div>
-<div class="line"><span class="lineno">   16</span>    Info[<span class="stringliteral">&#39;path&#39;</span>] = n</div>
-<div class="line"><span class="lineno">   17</span>    tmp = Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().GetShape()</div>
-<div class="line"><span class="lineno">   18</span>    Info[<span class="stringliteral">&#39;material&#39;</span>] = Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().GetMaterial().GetName()</div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">if</span> options.moreInfo:</div>
-<div class="line"><span class="lineno">   20</span>     x = ROOT.gGeoManager.GetVerboseLevel()</div>
-<div class="line"><span class="lineno">   21</span>     ROOT.gGeoManager.SetVerboseLevel(0)</div>
-<div class="line"><span class="lineno">   22</span>     Info[<span class="stringliteral">&#39;weight&#39;</span>]=Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().Weight() <span class="comment"># kg</span></div>
-<div class="line"><span class="lineno">   23</span>     Info[<span class="stringliteral">&#39;cubicmeter&#39;</span>]=Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().Capacity()/1000000. <span class="comment">#</span></div>
-<div class="line"><span class="lineno">   24</span>     ROOT.gGeoManager.SetVerboseLevel(x)</div>
-<div class="line"><span class="lineno">   25</span>    o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]</div>
-<div class="line"><span class="lineno">   26</span>    Info[<span class="stringliteral">&#39;locorign&#39;</span>] = o</div>
-<div class="line"><span class="lineno">   27</span>    local = array(<span class="stringliteral">&#39;d&#39;</span>,o)</div>
-<div class="line"><span class="lineno">   28</span>    globOrigin  = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><span class="lineno">   29</span>    nav.LocalToMaster(local,globOrigin)</div>
-<div class="line"><span class="lineno">   30</span>    Info[<span class="stringliteral">&#39;origin&#39;</span>] = globOrigin</div>
-<div class="line"><span class="lineno">   31</span>    shifts = [ [-tmp.GetDX()+o[0],o[1],o[2]],</div>
-<div class="line"><span class="lineno">   32</span>               [tmp.GetDX()+o[0],o[1],o[2]],</div>
-<div class="line"><span class="lineno">   33</span>               [o[0],-tmp.GetDY()+o[1],o[2]],</div>
-<div class="line"><span class="lineno">   34</span>               [o[0],tmp.GetDY()+o[1],o[2]],</div>
-<div class="line"><span class="lineno">   35</span>               [o[0],o[1],-tmp.GetDZ()+o[2]],[o[0],o[1],tmp.GetDZ()+o[2]]</div>
-<div class="line"><span class="lineno">   36</span>             ]</div>
-<div class="line"><span class="lineno">   37</span>    shifted = []</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">for</span> s <span class="keywordflow">in</span> shifts:</div>
-<div class="line"><span class="lineno">   39</span>     local = array(<span class="stringliteral">&#39;d&#39;</span>,s)</div>
-<div class="line"><span class="lineno">   40</span>     glob  = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><span class="lineno">   41</span>     nav.LocalToMaster(local,glob)</div>
-<div class="line"><span class="lineno">   42</span>     shifted.append([glob[0],glob[1],glob[2]])</div>
-<div class="line"><span class="lineno">   43</span>    Info[<span class="stringliteral">&#39;boundingbox&#39;</span>]={}</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">   45</span>     jmin = 1E30</div>
-<div class="line"><span class="lineno">   46</span>     jmax = -1E30</div>
-<div class="line"><span class="lineno">   47</span>     <span class="keywordflow">for</span> s <span class="keywordflow">in</span> shifted:</div>
-<div class="line"><span class="lineno">   48</span>       <span class="keywordflow">if</span> s[j]&lt;jmin: jmin = s[j]</div>
-<div class="line"><span class="lineno">   49</span>       <span class="keywordflow">if</span> s[j]&gt;jmax: jmax = s[j]</div>
-<div class="line"><span class="lineno">   50</span>     Info[<span class="stringliteral">&#39;boundingbox&#39;</span>][j]=[jmin,jmax]</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> Info</div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00014">14</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span>local2Global(n):</div>
+<div class="line"><span class="lineno">   15</span>    Info={}</div>
+<div class="line"><span class="lineno">   16</span>    nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
+<div class="line"><span class="lineno">   17</span>    nav.cd(n)</div>
+<div class="line"><span class="lineno">   18</span>    Info[<span class="stringliteral">&#39;node&#39;</span>] = nav.GetCurrentNode()</div>
+<div class="line"><span class="lineno">   19</span>    Info[<span class="stringliteral">&#39;path&#39;</span>] = n</div>
+<div class="line"><span class="lineno">   20</span>    tmp = Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().GetShape()</div>
+<div class="line"><span class="lineno">   21</span>    Info[<span class="stringliteral">&#39;material&#39;</span>] = Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().GetMaterial().GetName()</div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span> options.moreInfo:</div>
+<div class="line"><span class="lineno">   23</span>     x = ROOT.gGeoManager.GetVerboseLevel()</div>
+<div class="line"><span class="lineno">   24</span>     ROOT.gGeoManager.SetVerboseLevel(0)</div>
+<div class="line"><span class="lineno">   25</span>     Info[<span class="stringliteral">&#39;weight&#39;</span>]=Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().Weight() <span class="comment"># kg</span></div>
+<div class="line"><span class="lineno">   26</span>     Info[<span class="stringliteral">&#39;cubicmeter&#39;</span>]=Info[<span class="stringliteral">&#39;node&#39;</span>].GetVolume().Capacity()/1000000. <span class="comment">#</span></div>
+<div class="line"><span class="lineno">   27</span>     ROOT.gGeoManager.SetVerboseLevel(x)</div>
+<div class="line"><span class="lineno">   28</span>    o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]</div>
+<div class="line"><span class="lineno">   29</span>    Info[<span class="stringliteral">&#39;locorign&#39;</span>] = o</div>
+<div class="line"><span class="lineno">   30</span>    local = array(<span class="stringliteral">&#39;d&#39;</span>,o)</div>
+<div class="line"><span class="lineno">   31</span>    globOrigin  = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
+<div class="line"><span class="lineno">   32</span>    nav.LocalToMaster(local,globOrigin)</div>
+<div class="line"><span class="lineno">   33</span>    Info[<span class="stringliteral">&#39;origin&#39;</span>] = globOrigin</div>
+<div class="line"><span class="lineno">   34</span>    shifts = [ [-tmp.GetDX()+o[0],o[1],o[2]],</div>
+<div class="line"><span class="lineno">   35</span>               [tmp.GetDX()+o[0],o[1],o[2]],</div>
+<div class="line"><span class="lineno">   36</span>               [o[0],-tmp.GetDY()+o[1],o[2]],</div>
+<div class="line"><span class="lineno">   37</span>               [o[0],tmp.GetDY()+o[1],o[2]],</div>
+<div class="line"><span class="lineno">   38</span>               [o[0],o[1],-tmp.GetDZ()+o[2]],[o[0],o[1],tmp.GetDZ()+o[2]]</div>
+<div class="line"><span class="lineno">   39</span>             ]</div>
+<div class="line"><span class="lineno">   40</span>    shifted = []</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">for</span> s <span class="keywordflow">in</span> shifts:</div>
+<div class="line"><span class="lineno">   42</span>     local = array(<span class="stringliteral">&#39;d&#39;</span>,s)</div>
+<div class="line"><span class="lineno">   43</span>     glob  = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
+<div class="line"><span class="lineno">   44</span>     nav.LocalToMaster(local,glob)</div>
+<div class="line"><span class="lineno">   45</span>     shifted.append([glob[0],glob[1],glob[2]])</div>
+<div class="line"><span class="lineno">   46</span>    Info[<span class="stringliteral">&#39;boundingbox&#39;</span>]={}</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">   48</span>     jmin = 1E30</div>
+<div class="line"><span class="lineno">   49</span>     jmax = -1E30</div>
+<div class="line"><span class="lineno">   50</span>     <span class="keywordflow">for</span> s <span class="keywordflow">in</span> shifted:</div>
+<div class="line"><span class="lineno">   51</span>       <span class="keywordflow">if</span> s[j]&lt;jmin: jmin = s[j]</div>
+<div class="line"><span class="lineno">   52</span>       <span class="keywordflow">if</span> s[j]&gt;jmax: jmax = s[j]</div>
+<div class="line"><span class="lineno">   53</span>     Info[<span class="stringliteral">&#39;boundingbox&#39;</span>][j]=[jmin,jmax]</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> Info</div>
+<div class="line"><span class="lineno">   55</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -235,46 +235,46 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00053">53</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>print_info(path, node, level, currentlevel, print_sub_det_info=False):</div>
-<div class="line"><span class="lineno">   54</span>  sub_nodes = {}</div>
-<div class="line"><span class="lineno">   55</span>  fullInfo = {}</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> subnode <span class="keywordflow">in</span> node.GetNodes():</div>
-<div class="line"><span class="lineno">   57</span>    name = subnode.GetName()</div>
-<div class="line"><span class="lineno">   58</span>    fullInfo[name] = local2Global(path + <span class="stringliteral">&#39;/&#39;</span> + name)</div>
-<div class="line"><span class="lineno">   59</span>    sub_nodes[name] = fullInfo[name][<span class="stringliteral">&#39;origin&#39;</span>][2]</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">for</span> name, _ <span class="keywordflow">in</span> sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):</div>
-<div class="line"><span class="lineno">   62</span>    boundingbox = fullInfo[name][<span class="stringliteral">&#39;boundingbox&#39;</span>]</div>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00056">56</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span><span class="keyword">def </span>print_info(path, node, level, currentlevel, print_sub_det_info=False):</div>
+<div class="line"><span class="lineno">   57</span>  sub_nodes = {}</div>
+<div class="line"><span class="lineno">   58</span>  fullInfo = {}</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">for</span> subnode <span class="keywordflow">in</span> node.GetNodes():</div>
+<div class="line"><span class="lineno">   60</span>    name = subnode.GetName()</div>
+<div class="line"><span class="lineno">   61</span>    fullInfo[name] = local2Global(path + <span class="stringliteral">&#39;/&#39;</span> + name)</div>
+<div class="line"><span class="lineno">   62</span>    sub_nodes[name] = fullInfo[name][<span class="stringliteral">&#39;origin&#39;</span>][2]</div>
 <div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    format_string = <span class="stringliteral">&quot;{:&lt;28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]&quot;</span>+\</div>
-<div class="line"><span class="lineno">   65</span>                    <span class="stringliteral">&quot; dx={:10.4F}cm [{:10.4F}   {:10.4F}] dy={:10.4F}cm [{:10.4F}   {:10.4F}] {:&gt;20s}&quot;</span></div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> name, _ <span class="keywordflow">in</span> sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):</div>
+<div class="line"><span class="lineno">   65</span>    boundingbox = fullInfo[name][<span class="stringliteral">&#39;boundingbox&#39;</span>]</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    format_variable = [<span class="stringliteral">&quot;   &quot;</span> * int(currentlevel) + name, fullInfo[name][<span class="stringliteral">&#39;origin&#39;</span>][2],</div>
-<div class="line"><span class="lineno">   68</span>      abs(boundingbox[2][0]-boundingbox[2][1])/2., boundingbox[2][0],boundingbox[2][1],</div>
-<div class="line"><span class="lineno">   69</span>      abs(boundingbox[0][0]-boundingbox[0][1])/2., boundingbox[0][0],boundingbox[0][1],</div>
-<div class="line"><span class="lineno">   70</span>      abs(boundingbox[1][0]-boundingbox[1][1])/2., boundingbox[1][0],boundingbox[1][1],</div>
-<div class="line"><span class="lineno">   71</span>      fullInfo[name][<span class="stringliteral">&#39;material&#39;</span>]]</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> options.moreInfo:</div>
-<div class="line"><span class="lineno">   74</span>      cubicmeter = fullInfo[name][<span class="stringliteral">&#39;cubicmeter&#39;</span>]</div>
-<div class="line"><span class="lineno">   75</span>      weight = fullInfo[name][<span class="stringliteral">&#39;weight&#39;</span>]</div>
-<div class="line"><span class="lineno">   76</span>      format_string += <span class="stringliteral">&quot; {:10.1F}kg {:10.1F}m3&quot;</span></div>
-<div class="line"><span class="lineno">   77</span>      format_variable.extend([weight, cubicmeter])</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">print</span> (format_string.format(*format_variable))</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> options.volume <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, name]:</div>
-<div class="line"><span class="lineno">   82</span>      print_sub_det_info = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   67</span>    format_string = <span class="stringliteral">&quot;{:&lt;28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]&quot;</span>+\</div>
+<div class="line"><span class="lineno">   68</span>                    <span class="stringliteral">&quot; dx={:10.4F}cm [{:10.4F}   {:10.4F}] dy={:10.4F}cm [{:10.4F}   {:10.4F}] {:&gt;20s}&quot;</span></div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    format_variable = [<span class="stringliteral">&quot;   &quot;</span> * int(currentlevel) + name, fullInfo[name][<span class="stringliteral">&#39;origin&#39;</span>][2],</div>
+<div class="line"><span class="lineno">   71</span>      abs(boundingbox[2][0]-boundingbox[2][1])/2., boundingbox[2][0],boundingbox[2][1],</div>
+<div class="line"><span class="lineno">   72</span>      abs(boundingbox[0][0]-boundingbox[0][1])/2., boundingbox[0][0],boundingbox[0][1],</div>
+<div class="line"><span class="lineno">   73</span>      abs(boundingbox[1][0]-boundingbox[1][1])/2., boundingbox[1][0],boundingbox[1][1],</div>
+<div class="line"><span class="lineno">   74</span>      fullInfo[name][<span class="stringliteral">&#39;material&#39;</span>]]</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> options.moreInfo:</div>
+<div class="line"><span class="lineno">   77</span>      cubicmeter = fullInfo[name][<span class="stringliteral">&#39;cubicmeter&#39;</span>]</div>
+<div class="line"><span class="lineno">   78</span>      weight = fullInfo[name][<span class="stringliteral">&#39;weight&#39;</span>]</div>
+<div class="line"><span class="lineno">   79</span>      format_string += <span class="stringliteral">&quot; {:10.1F}kg {:10.1F}m3&quot;</span></div>
+<div class="line"><span class="lineno">   80</span>      format_variable.extend([weight, cubicmeter])</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">print</span> (format_string.format(*format_variable))</div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> print_sub_det_info <span class="keywordflow">and</span> currentlevel &lt; level <span class="keywordflow">and</span> fullInfo[name][<span class="stringliteral">&#39;node&#39;</span>].GetNodes():</div>
-<div class="line"><span class="lineno">   85</span>      print_info(fullInfo[name][<span class="stringliteral">&#39;path&#39;</span>], fullInfo[name][<span class="stringliteral">&#39;node&#39;</span>], level, currentlevel + 1,</div>
-<div class="line"><span class="lineno">   86</span>                 print_sub_det_info)</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> currentlevel == 0:</div>
-<div class="line"><span class="lineno">   89</span>      print_sub_det_info = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> options.volume <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, name]:</div>
+<div class="line"><span class="lineno">   85</span>      print_sub_det_info = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">if</span> print_sub_det_info <span class="keywordflow">and</span> currentlevel &lt; level <span class="keywordflow">and</span> fullInfo[name][<span class="stringliteral">&#39;node&#39;</span>].GetNodes():</div>
+<div class="line"><span class="lineno">   88</span>      print_info(fullInfo[name][<span class="stringliteral">&#39;path&#39;</span>], fullInfo[name][<span class="stringliteral">&#39;node&#39;</span>], level, currentlevel + 1,</div>
+<div class="line"><span class="lineno">   89</span>                 print_sub_det_info)</div>
 <div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> currentlevel == 0:</div>
+<div class="line"><span class="lineno">   92</span>      print_sub_det_info = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -291,7 +291,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00097">97</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00100">100</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00113">113</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00116">116</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -323,7 +323,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00095">95</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00098">98</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -339,7 +339,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00102">102</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00105">105</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -355,7 +355,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00101">101</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00104">104</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -371,7 +371,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00100">100</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00103">103</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -387,7 +387,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00093">93</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00096">96</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -403,7 +403,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00099">99</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00102">102</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -419,7 +419,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00092">92</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00095">95</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -435,7 +435,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00094">94</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00097">97</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>
@@ -451,7 +451,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00103">103</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00106">106</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
 
 </div>
 </div>

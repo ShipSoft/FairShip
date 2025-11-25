@@ -168,44 +168,44 @@ significance_threshold (float): The significance threshold for the KS test.
 Returns:
 bool: True if the histograms are equal or statistically compatible, False otherwise.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00009">9</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):</div>
-<div class="line"><span class="lineno">   10</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   11</span><span class="stringliteral">    Compare two histograms for equality or statistical compatibility.</span></div>
-<div class="line"><span class="lineno">   12</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   13</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><span class="lineno">   14</span><span class="stringliteral">    hist1 (hist.Hist): The first histogram to compare.</span></div>
-<div class="line"><span class="lineno">   15</span><span class="stringliteral">    hist2 (hist.Hist): The second histogram to compare.</span></div>
-<div class="line"><span class="lineno">   16</span><span class="stringliteral">    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.</span></div>
-<div class="line"><span class="lineno">   17</span><span class="stringliteral">    significance_threshold (float): The significance threshold for the KS test.</span></div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">    bool: True if the histograms are equal or statistically compatible, False otherwise.</span></div>
-<div class="line"><span class="lineno">   21</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   22</span>    <span class="comment"># Check if the histograms are equal</span></div>
-<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hist1 == hist2:</div>
-<div class="line"><span class="lineno">   24</span>        print(</div>
-<div class="line"><span class="lineno">   25</span>            f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are different in terms of bin contents or errors.&quot;</span></div>
-<div class="line"><span class="lineno">   26</span>        )</div>
-<div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">if</span> use_ks_test:</div>
-<div class="line"><span class="lineno">   29</span>            <span class="comment"># Perform the Kolmogorov-Smirnov test</span></div>
-<div class="line"><span class="lineno">   30</span>            ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())</div>
-<div class="line"><span class="lineno">   31</span>            print(f<span class="stringliteral">&quot;KS Statistic: {ks_statistic}, p-value: {p_value}&quot;</span>)</div>
-<div class="line"><span class="lineno">   32</span>            <span class="keywordflow">if</span> p_value.all() &lt; significance_threshold:</div>
-<div class="line"><span class="lineno">   33</span>                print(</div>
-<div class="line"><span class="lineno">   34</span>                    f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are statistically different (p &lt; {significance_threshold}).&quot;</span></div>
-<div class="line"><span class="lineno">   35</span>                )</div>
-<div class="line"><span class="lineno">   36</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   37</span>                print(</div>
-<div class="line"><span class="lineno">   38</span>                    f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are statistically compatible (p &gt;= {significance_threshold}).&quot;</span></div>
-<div class="line"><span class="lineno">   39</span>                )</div>
-<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    print(f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are equal.&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00012">12</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):</div>
+<div class="line"><span class="lineno">   13</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   14</span><span class="stringliteral">    Compare two histograms for equality or statistical compatibility.</span></div>
+<div class="line"><span class="lineno">   15</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   16</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><span class="lineno">   17</span><span class="stringliteral">    hist1 (hist.Hist): The first histogram to compare.</span></div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral">    hist2 (hist.Hist): The second histogram to compare.</span></div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral">    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">    significance_threshold (float): The significance threshold for the KS test.</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">    bool: True if the histograms are equal or statistically compatible, False otherwise.</span></div>
+<div class="line"><span class="lineno">   24</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   25</span>    <span class="comment"># Check if the histograms are equal</span></div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hist1 == hist2:</div>
+<div class="line"><span class="lineno">   27</span>        print(</div>
+<div class="line"><span class="lineno">   28</span>            f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are different in terms of bin contents or errors.&quot;</span></div>
+<div class="line"><span class="lineno">   29</span>        )</div>
+<div class="line"><span class="lineno">   30</span> </div>
+<div class="line"><span class="lineno">   31</span>        <span class="keywordflow">if</span> use_ks_test:</div>
+<div class="line"><span class="lineno">   32</span>            <span class="comment"># Perform the Kolmogorov-Smirnov test</span></div>
+<div class="line"><span class="lineno">   33</span>            ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())</div>
+<div class="line"><span class="lineno">   34</span>            print(f<span class="stringliteral">&quot;KS Statistic: {ks_statistic}, p-value: {p_value}&quot;</span>)</div>
+<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">if</span> p_value.all() &lt; significance_threshold:</div>
+<div class="line"><span class="lineno">   36</span>                print(</div>
+<div class="line"><span class="lineno">   37</span>                    f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are statistically different (p &lt; {significance_threshold}).&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>                )</div>
+<div class="line"><span class="lineno">   39</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   40</span>                print(</div>
+<div class="line"><span class="lineno">   41</span>                    f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are statistically compatible (p &gt;= {significance_threshold}).&quot;</span></div>
+<div class="line"><span class="lineno">   42</span>                )</div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">return</span> <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   45</span>    print(f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are equal.&quot;</span>)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,52 +254,52 @@ file2_path (str): Path to the second ROOT file.
 use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.
 significance_threshold (float): The significance threshold for the KS test.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00046">46</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold):</div>
-<div class="line"><span class="lineno">   47</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   48</span><span class="stringliteral">    Compare histograms in two ROOT files.</span></div>
-<div class="line"><span class="lineno">   49</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   50</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><span class="lineno">   51</span><span class="stringliteral">    file1_path (str): Path to the first ROOT file.</span></div>
-<div class="line"><span class="lineno">   52</span><span class="stringliteral">    file2_path (str): Path to the second ROOT file.</span></div>
-<div class="line"><span class="lineno">   53</span><span class="stringliteral">    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.</span></div>
-<div class="line"><span class="lineno">   54</span><span class="stringliteral">    significance_threshold (float): The significance threshold for the KS test.</span></div>
-<div class="line"><span class="lineno">   55</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   56</span>    files = {1: uproot.open(file1_path), 2: uproot.open(file2_path)}</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment"># Get the list of histogram names from the first file</span></div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">def </span>isuproothist(inkey, fileno):</div>
-<div class="line"><span class="lineno">   61</span>        isHist = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   63</span>            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">except</span> uproot.deserialization.DeserializationError:</div>
-<div class="line"><span class="lineno">   65</span>            isHist = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> isHist</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    histograms1 = {</div>
-<div class="line"><span class="lineno">   69</span>        key: files[1][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[1].keys() <span class="keywordflow">if</span> isuproothist(key, 1)</div>
-<div class="line"><span class="lineno">   70</span>    }</div>
-<div class="line"><span class="lineno">   71</span>    histograms2 = {</div>
-<div class="line"><span class="lineno">   72</span>        key: files[2][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[2].keys() <span class="keywordflow">if</span> isuproothist(key, 2)</div>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00049">49</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold):</div>
+<div class="line"><span class="lineno">   50</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   51</span><span class="stringliteral">    Compare histograms in two ROOT files.</span></div>
+<div class="line"><span class="lineno">   52</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   53</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><span class="lineno">   54</span><span class="stringliteral">    file1_path (str): Path to the first ROOT file.</span></div>
+<div class="line"><span class="lineno">   55</span><span class="stringliteral">    file2_path (str): Path to the second ROOT file.</span></div>
+<div class="line"><span class="lineno">   56</span><span class="stringliteral">    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.</span></div>
+<div class="line"><span class="lineno">   57</span><span class="stringliteral">    significance_threshold (float): The significance threshold for the KS test.</span></div>
+<div class="line"><span class="lineno">   58</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   59</span>    files = {1: uproot.open(file1_path), 2: uproot.open(file2_path)}</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>    <span class="comment"># Get the list of histogram names from the first file</span></div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="keyword">def </span>isuproothist(inkey, fileno):</div>
+<div class="line"><span class="lineno">   64</span>        isHist = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   66</span>            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)</div>
+<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">except</span> uproot.deserialization.DeserializationError:</div>
+<div class="line"><span class="lineno">   68</span>            isHist = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">return</span> isHist</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    histograms1 = {</div>
+<div class="line"><span class="lineno">   72</span>        key: files[1][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[1].keys() <span class="keywordflow">if</span> isuproothist(key, 1)</div>
 <div class="line"><span class="lineno">   73</span>    }</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="comment"># Compare histograms with the same names</span></div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1.keys():</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
-<div class="line"><span class="lineno">   78</span>            hist1 = histograms1[hist_name].to_hist()</div>
-<div class="line"><span class="lineno">   79</span>            hist2 = histograms2[hist_name].to_hist()</div>
-<div class="line"><span class="lineno">   80</span>            compare_histograms(hist1, hist2, use_ks_test, significance_threshold)</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   82</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file2.&quot;</span>)</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    <span class="comment"># Check for histograms in file2 that are not in file1</span></div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2.keys():</div>
-<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> histograms1:</div>
-<div class="line"><span class="lineno">   87</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file1.&quot;</span>)</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
+<div class="line"><span class="lineno">   74</span>    histograms2 = {</div>
+<div class="line"><span class="lineno">   75</span>        key: files[2][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[2].keys() <span class="keywordflow">if</span> isuproothist(key, 2)</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment"># Compare histograms with the same names</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1.keys():</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
+<div class="line"><span class="lineno">   81</span>            hist1 = histograms1[hist_name].to_hist()</div>
+<div class="line"><span class="lineno">   82</span>            hist2 = histograms2[hist_name].to_hist()</div>
+<div class="line"><span class="lineno">   83</span>            compare_histograms(hist1, hist2, use_ks_test, significance_threshold)</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   85</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file2.&quot;</span>)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="comment"># Check for histograms in file2 that are not in file1</span></div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2.keys():</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> histograms1:</div>
+<div class="line"><span class="lineno">   90</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file1.&quot;</span>)</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,7 +316,7 @@ significance_threshold (float): The significance threshold for the KS test.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00098">98</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00101">101</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -332,7 +332,7 @@ significance_threshold (float): The significance threshold for the KS test.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00108">108</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00111">111</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ significance_threshold (float): The significance threshold for the KS test.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00104">104</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00107">107</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -364,7 +364,7 @@ significance_threshold (float): The significance threshold for the KS test.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00094">94</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00097">97</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -383,7 +383,7 @@ significance_threshold (float): The significance threshold for the KS test.
 <div class="line"><span class="lineno">    2</span>        description=<span class="stringliteral">&quot;Compare histograms in two ROOT files.&quot;</span></div>
 <div class="line"><span class="lineno">    3</span>    )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00091">91</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00094">94</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -399,7 +399,7 @@ significance_threshold (float): The significance threshold for the KS test.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00103">103</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00106">106</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>

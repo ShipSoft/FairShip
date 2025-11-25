@@ -169,15 +169,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle lifetime from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00053">53</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>lifetime(particle):</div>
-<div class="line"><span class="lineno">   54</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   55</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
-<div class="line"><span class="lineno">   56</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   57</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   58</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
-<div class="line"><span class="lineno">   60</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00056">56</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span><span class="keyword">def </span>lifetime(particle):</div>
+<div class="line"><span class="lineno">   57</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
+<div class="line"><span class="lineno">   59</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   60</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   61</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
+<div class="line"><span class="lineno">   63</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -198,15 +198,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle mass from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00045">45</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>mass(particle):</div>
-<div class="line"><span class="lineno">   46</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   47</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
-<div class="line"><span class="lineno">   48</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   49</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   50</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00048">48</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>mass(particle):</div>
+<div class="line"><span class="lineno">   49</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   50</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
+<div class="line"><span class="lineno">   51</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   52</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   53</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
+<div class="line"><span class="lineno">   55</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -227,16 +227,16 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Change particle name for use with the PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00036">36</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span><span class="keyword">def </span>PDGname(particle):</div>
-<div class="line"><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral">    Change particle name for use with the PDG database</span></div>
-<div class="line"><span class="lineno">   39</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;1&#39;</span> <span class="keywordflow">in</span> particle:</div>
-<div class="line"><span class="lineno">   41</span>        particle = particle.replace(<span class="stringliteral">&#39;1&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>)</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> particle == <span class="stringliteral">&#39;nu&#39;</span>: <span class="keywordflow">return</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="comment"># simple workaround to handle 3nu channel</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> particle</div>
-<div class="line"><span class="lineno">   44</span> </div>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00039">39</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span><span class="keyword">def </span>PDGname(particle):</div>
+<div class="line"><span class="lineno">   40</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">    Change particle name for use with the PDG database</span></div>
+<div class="line"><span class="lineno">   42</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;1&#39;</span> <span class="keywordflow">in</span> particle:</div>
+<div class="line"><span class="lineno">   44</span>        particle = particle.replace(<span class="stringliteral">&#39;1&#39;</span>,<span class="stringliteral">&quot;&#39;&quot;</span>)</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> particle == <span class="stringliteral">&#39;nu&#39;</span>: <span class="keywordflow">return</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="comment"># simple workaround to handle 3nu channel</span></div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> particle</div>
+<div class="line"><span class="lineno">   47</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -253,7 +253,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00098">98</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00101">101</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>
@@ -269,7 +269,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00034">34</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hnl_8py_source.html#l00037">37</a> of file <a class="el" href="hnl_8py_source.html">hnl.py</a>.</p>
 
 </div>
 </div>

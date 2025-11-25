@@ -154,7 +154,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00005">5</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00008">8</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3002d6f110266c9aa47a69949bd85bef" name="a3002d6f110266c9aa47a69949bd85bef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3002d6f110266c9aa47a69949bd85bef">&#9670;&#160;</a></span>__init__()</h2>
@@ -193,13 +193,13 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initialise detector digitisation.</pre> 
+<pre class="fragment">Initialize the detector digitizer.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a770798bc9f8dc602ddd63f5e8c99d8a6">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00006">6</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span>    <span class="keyword">def </span>__init__(self, name, intree, outtree=None):</div>
-<div class="line"><span class="lineno">    7</span>        super().__init__(name, intree, outtree=outtree)</div>
-<div class="line"><span class="lineno">    8</span> </div>
+<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00009">9</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    9</span>    <span class="keyword">def </span>__init__(self, name, intree, outtree=None):</div>
+<div class="line"><span class="lineno">   10</span>        super().__init__(name, intree, outtree=outtree)</div>
+<div class="line"><span class="lineno">   11</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -225,28 +225,28 @@ The earliest hit per detector will be marked valid, all later ones invalid.
 </pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00009">9</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span>    <span class="keyword">def </span>digitize(self):</div>
-<div class="line"><span class="lineno">   10</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize muon detector MC hits.</span></div>
-<div class="line"><span class="lineno">   11</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   12</span><span class="stringliteral">        The earliest hit per detector will be marked valid, all later ones invalid.</span></div>
-<div class="line"><span class="lineno">   13</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   14</span>        earliest_per_det_id = {}</div>
-<div class="line"><span class="lineno">   15</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.intree.muonPoint):</div>
-<div class="line"><span class="lineno">   16</span>            hit = ROOT.muonHit(point, self.intree.t0)</div>
-<div class="line"><span class="lineno">   17</span>            self.det.push_back(hit)</div>
-<div class="line"><span class="lineno">   18</span>            detector_id = hit.GetDetectorID()</div>
-<div class="line"><span class="lineno">   19</span>            <span class="keywordflow">if</span> hit.isValid():</div>
-<div class="line"><span class="lineno">   20</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
-<div class="line"><span class="lineno">   21</span>                    earliest = earliest_per_det_id[detector_id]</div>
-<div class="line"><span class="lineno">   22</span>                    <span class="keywordflow">if</span> self.det[earliest].GetDigi() &gt; hit.GetDigi():</div>
-<div class="line"><span class="lineno">   23</span>                        <span class="comment"># second hit with smaller tdc</span></div>
-<div class="line"><span class="lineno">   24</span>                        self.det[earliest].setValidity(0)</div>
-<div class="line"><span class="lineno">   25</span>                        earliest_per_det_id[detector_id] = index</div>
-<div class="line"><span class="lineno">   26</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   27</span>                        self.det[index].setValidity(0)</div>
-<div class="line"><span class="lineno">   28</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   29</span>                    earliest_per_det_id[detector_id] = index</div>
+<p class="definition">Definition at line <a class="el" href="muonDetector_8py_source.html#l00012">12</a> of file <a class="el" href="muonDetector_8py_source.html">muonDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span>    <span class="keyword">def </span>digitize(self):</div>
+<div class="line"><span class="lineno">   13</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize muon detector MC hits.</span></div>
+<div class="line"><span class="lineno">   14</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   15</span><span class="stringliteral">        The earliest hit per detector will be marked valid, all later ones invalid.</span></div>
+<div class="line"><span class="lineno">   16</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   17</span>        earliest_per_det_id = {}</div>
+<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.intree.muonPoint):</div>
+<div class="line"><span class="lineno">   19</span>            hit = ROOT.muonHit(point, self.intree.t0)</div>
+<div class="line"><span class="lineno">   20</span>            self.det.push_back(hit)</div>
+<div class="line"><span class="lineno">   21</span>            detector_id = hit.GetDetectorID()</div>
+<div class="line"><span class="lineno">   22</span>            <span class="keywordflow">if</span> hit.isValid():</div>
+<div class="line"><span class="lineno">   23</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
+<div class="line"><span class="lineno">   24</span>                    earliest = earliest_per_det_id[detector_id]</div>
+<div class="line"><span class="lineno">   25</span>                    <span class="keywordflow">if</span> self.det[earliest].GetDigi() &gt; hit.GetDigi():</div>
+<div class="line"><span class="lineno">   26</span>                        <span class="comment"># second hit with smaller tdc</span></div>
+<div class="line"><span class="lineno">   27</span>                        self.det[earliest].setValidity(0)</div>
+<div class="line"><span class="lineno">   28</span>                        earliest_per_det_id[detector_id] = index</div>
+<div class="line"><span class="lineno">   29</span>                    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   30</span>                        self.det[index].setValidity(0)</div>
+<div class="line"><span class="lineno">   31</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   32</span>                    earliest_per_det_id[detector_id] = index</div>
 </div><!-- fragment -->
 </div>
 </div>

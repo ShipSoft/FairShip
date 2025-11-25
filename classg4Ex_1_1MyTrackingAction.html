@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00174">174</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00177">177</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af4fdbde80bb52e6004380af06174eae3" name="af4fdbde80bb52e6004380af06174eae3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4fdbde80bb52e6004380af06174eae3">&#9670;&#160;</a></span>myPrintout()</h2>
@@ -155,13 +155,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00188">188</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  188</span> <span class="keyword">def </span>myPrintout(self, atrack):</div>
-<div class="line"><span class="lineno">  189</span>   part         = atrack.GetDynamicParticle()</div>
-<div class="line"><span class="lineno">  190</span>   pid          = part.GetPDGcode()</div>
-<div class="line"><span class="lineno">  191</span>   print(<span class="stringliteral">&#39;TA&#39;</span>,pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span><span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00191">191</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span> <span class="keyword">def </span>myPrintout(self, atrack):</div>
+<div class="line"><span class="lineno">  192</span>   part         = atrack.GetDynamicParticle()</div>
+<div class="line"><span class="lineno">  193</span>   pid          = part.GetPDGcode()</div>
+<div class="line"><span class="lineno">  194</span>   print(<span class="stringliteral">&#39;TA&#39;</span>,pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span><span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,9 +191,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00175">175</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  175</span> <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
-<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">pass</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00178">178</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  178</span> <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">pass</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,18 +223,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00177">177</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  177</span> <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
-<div class="line"><span class="lineno">  178</span>   <span class="comment"># self.myPrintout(atrack)</span></div>
-<div class="line"><span class="lineno">  179</span>   <span class="keywordflow">if</span> atrack.GetTotalEnergy()/GeV &lt; ecut :</div>
-<div class="line"><span class="lineno">  180</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  181</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
-<div class="line"><span class="lineno">  182</span>   part         = atrack.GetDynamicParticle()</div>
-<div class="line"><span class="lineno">  183</span>   pid          = part.GetPDGcode()</div>
-<div class="line"><span class="lineno">  184</span>   <span class="keywordflow">if</span> pid <span class="keywordflow">in</span> notWanted:</div>
-<div class="line"><span class="lineno">  185</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  186</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
-<div class="line"><span class="lineno">  187</span> </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00180">180</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span> <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
+<div class="line"><span class="lineno">  181</span>   <span class="comment"># self.myPrintout(atrack)</span></div>
+<div class="line"><span class="lineno">  182</span>   <span class="keywordflow">if</span> atrack.GetTotalEnergy()/GeV &lt; ecut :</div>
+<div class="line"><span class="lineno">  183</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  184</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
+<div class="line"><span class="lineno">  185</span>   part         = atrack.GetDynamicParticle()</div>
+<div class="line"><span class="lineno">  186</span>   pid          = part.GetPDGcode()</div>
+<div class="line"><span class="lineno">  187</span>   <span class="keywordflow">if</span> pid <span class="keywordflow">in</span> notWanted:</div>
+<div class="line"><span class="lineno">  188</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  189</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
+<div class="line"><span class="lineno">  190</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

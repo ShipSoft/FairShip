@@ -191,41 +191,41 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00017">17</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span><span class="keyword">def </span>generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None):</div>
-<div class="line"><span class="lineno">   18</span>    <span class="comment"># (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)</span></div>
-<div class="line"><span class="lineno">   19</span>    field = pd.read_csv(input_fileName, skiprows=1, sep =<span class="stringliteral">r&#39;\s+&#39;</span>, names=[<span class="stringliteral">&#39;x&#39;</span>, <span class="stringliteral">&#39;y&#39;</span>, <span class="stringliteral">&#39;z&#39;</span>, <span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>])</div>
-<div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span>    field_mask = field.copy()</div>
-<div class="line"><span class="lineno">   22</span>    field_mask[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] = field_mask[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] != 0</div>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00020">20</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span><span class="keyword">def </span>generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None):</div>
+<div class="line"><span class="lineno">   21</span>    <span class="comment"># (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)</span></div>
+<div class="line"><span class="lineno">   22</span>    field = pd.read_csv(input_fileName, skiprows=1, sep =<span class="stringliteral">r&#39;\s+&#39;</span>, names=[<span class="stringliteral">&#39;x&#39;</span>, <span class="stringliteral">&#39;y&#39;</span>, <span class="stringliteral">&#39;z&#39;</span>, <span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>])</div>
 <div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>    field_new = field.copy()</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> args.sidesOnly:</div>
-<div class="line"><span class="lineno">   27</span>        temp_by = np.array(field_new[<span class="stringliteral">&#39;by&#39;</span>]).reshape([xSpace, ySpace, zSpace])</div>
-<div class="line"><span class="lineno">   28</span>        temp_by = gaussian_filter(temp_by, sigma=args.sigma)</div>
-<div class="line"><span class="lineno">   29</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = temp_by.reshape(-1)</div>
-<div class="line"><span class="lineno">   30</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] * field_mask[<span class="stringliteral">&#39;by&#39;</span>]</div>
-<div class="line"><span class="lineno">   31</span>        rezult = field_new</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   33</span>        field_new[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] = 0</div>
-<div class="line"><span class="lineno">   34</span>        index_range = np.random.choice(field_new.index, size=args.nCores)</div>
-<div class="line"><span class="lineno">   35</span>        field_new.loc[index_range, <span class="stringliteral">&#39;by&#39;</span>] = random.uniform(-args.peak, args.peak)</div>
-<div class="line"><span class="lineno">   36</span>        temp_by = np.array(field_new[<span class="stringliteral">&#39;by&#39;</span>]).reshape([xSpace, ySpace, zSpace])</div>
-<div class="line"><span class="lineno">   37</span>        temp_by = gaussian_filter(temp_by, sigma=args.sigma)</div>
-<div class="line"><span class="lineno">   38</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = temp_by.reshape(-1)</div>
-<div class="line"><span class="lineno">   39</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] / (field_new[<span class="stringliteral">&#39;by&#39;</span>].abs().max())  <span class="comment"># *field_mask[&#39;by&#39;]</span></div>
-<div class="line"><span class="lineno">   40</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] * field_mask[<span class="stringliteral">&#39;by&#39;</span>]</div>
-<div class="line"><span class="lineno">   41</span>        rezult = field.copy()</div>
-<div class="line"><span class="lineno">   42</span>        rezult[<span class="stringliteral">&#39;by&#39;</span>] = rezult[<span class="stringliteral">&#39;by&#39;</span>] + rezult[<span class="stringliteral">&#39;by&#39;</span>] * field_new[<span class="stringliteral">&#39;by&#39;</span>] * args.fraction</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>    <span class="comment"># plot_my_hist(field_mask)</span></div>
-<div class="line"><span class="lineno">   45</span>    <span class="comment"># plot_my_hist(field)</span></div>
-<div class="line"><span class="lineno">   46</span>    <span class="comment"># plot_my_hist(field_new)</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment"># plot_my_hist(rezult)</span></div>
-<div class="line"><span class="lineno">   48</span>    rezult.to_csv(output, sep=<span class="stringliteral">&#39;\t&#39;</span>, header=<span class="keywordtype">None</span>, index=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   24</span>    field_mask = field.copy()</div>
+<div class="line"><span class="lineno">   25</span>    field_mask[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] = field_mask[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] != 0</div>
+<div class="line"><span class="lineno">   26</span> </div>
+<div class="line"><span class="lineno">   27</span>    field_new = field.copy()</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">if</span> args.sidesOnly:</div>
+<div class="line"><span class="lineno">   30</span>        temp_by = np.array(field_new[<span class="stringliteral">&#39;by&#39;</span>]).reshape([xSpace, ySpace, zSpace])</div>
+<div class="line"><span class="lineno">   31</span>        temp_by = gaussian_filter(temp_by, sigma=args.sigma)</div>
+<div class="line"><span class="lineno">   32</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = temp_by.reshape(-1)</div>
+<div class="line"><span class="lineno">   33</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] * field_mask[<span class="stringliteral">&#39;by&#39;</span>]</div>
+<div class="line"><span class="lineno">   34</span>        rezult = field_new</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   36</span>        field_new[[<span class="stringliteral">&#39;bx&#39;</span>, <span class="stringliteral">&#39;by&#39;</span>, <span class="stringliteral">&#39;bz&#39;</span>]] = 0</div>
+<div class="line"><span class="lineno">   37</span>        index_range = np.random.choice(field_new.index, size=args.nCores)</div>
+<div class="line"><span class="lineno">   38</span>        field_new.loc[index_range, <span class="stringliteral">&#39;by&#39;</span>] = random.uniform(-args.peak, args.peak)</div>
+<div class="line"><span class="lineno">   39</span>        temp_by = np.array(field_new[<span class="stringliteral">&#39;by&#39;</span>]).reshape([xSpace, ySpace, zSpace])</div>
+<div class="line"><span class="lineno">   40</span>        temp_by = gaussian_filter(temp_by, sigma=args.sigma)</div>
+<div class="line"><span class="lineno">   41</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = temp_by.reshape(-1)</div>
+<div class="line"><span class="lineno">   42</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] / (field_new[<span class="stringliteral">&#39;by&#39;</span>].abs().max())  <span class="comment"># *field_mask[&#39;by&#39;]</span></div>
+<div class="line"><span class="lineno">   43</span>        field_new[<span class="stringliteral">&#39;by&#39;</span>] = field_new[<span class="stringliteral">&#39;by&#39;</span>] * field_mask[<span class="stringliteral">&#39;by&#39;</span>]</div>
+<div class="line"><span class="lineno">   44</span>        rezult = field.copy()</div>
+<div class="line"><span class="lineno">   45</span>        rezult[<span class="stringliteral">&#39;by&#39;</span>] = rezult[<span class="stringliteral">&#39;by&#39;</span>] + rezult[<span class="stringliteral">&#39;by&#39;</span>] * field_new[<span class="stringliteral">&#39;by&#39;</span>] * args.fraction</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    <span class="comment"># plot_my_hist(field_mask)</span></div>
+<div class="line"><span class="lineno">   48</span>    <span class="comment"># plot_my_hist(field)</span></div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment"># plot_my_hist(field_new)</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment"># plot_my_hist(rezult)</span></div>
+<div class="line"><span class="lineno">   51</span>    rezult.to_csv(output, sep=<span class="stringliteral">&#39;\t&#39;</span>, header=<span class="keywordtype">None</span>, index=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -245,15 +245,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00009">9</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>plot_my_hist(datum):</div>
-<div class="line"><span class="lineno">   10</span>    plotData = datum[datum[<span class="stringliteral">&#39;y&#39;</span>] == 0]</div>
-<div class="line"><span class="lineno">   11</span>    H, xedges, yedges = np.histogram2d(plotData[<span class="stringliteral">&#39;x&#39;</span>], plotData[<span class="stringliteral">&#39;z&#39;</span>], bins=[50, 500], weights=plotData[<span class="stringliteral">&#39;by&#39;</span>])</div>
-<div class="line"><span class="lineno">   12</span>    plt.figure(figsize=[20, 10])</div>
-<div class="line"><span class="lineno">   13</span>    plt.imshow(H, interpolation=<span class="stringliteral">&#39;nearest&#39;</span>, origin=<span class="stringliteral">&#39;low&#39;</span>)</div>
-<div class="line"><span class="lineno">   14</span>    <span class="comment"># plt.colorbar()</span></div>
-<div class="line"><span class="lineno">   15</span>    plt.show()</div>
-<div class="line"><span class="lineno">   16</span> </div>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00012">12</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>plot_my_hist(datum):</div>
+<div class="line"><span class="lineno">   13</span>    plotData = datum[datum[<span class="stringliteral">&#39;y&#39;</span>] == 0]</div>
+<div class="line"><span class="lineno">   14</span>    H, xedges, yedges = np.histogram2d(plotData[<span class="stringliteral">&#39;x&#39;</span>], plotData[<span class="stringliteral">&#39;z&#39;</span>], bins=[50, 500], weights=plotData[<span class="stringliteral">&#39;by&#39;</span>])</div>
+<div class="line"><span class="lineno">   15</span>    plt.figure(figsize=[20, 10])</div>
+<div class="line"><span class="lineno">   16</span>    plt.imshow(H, interpolation=<span class="stringliteral">&#39;nearest&#39;</span>, origin=<span class="stringliteral">&#39;low&#39;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    <span class="comment"># plt.colorbar()</span></div>
+<div class="line"><span class="lineno">   18</span>    plt.show()</div>
+<div class="line"><span class="lineno">   19</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,7 +270,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00053">53</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00056">56</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00060">60</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00063">63</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -302,7 +302,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00053">53</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00056">56</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -318,7 +318,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00055">55</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00058">58</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -334,7 +334,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00063">63</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00066">66</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -350,7 +350,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00056">56</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00059">59</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00057">57</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00060">60</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -382,7 +382,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00052">52</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00055">55</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -398,7 +398,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00069">69</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00072">72</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -414,7 +414,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00053">53</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00056">56</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -430,7 +430,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00053">53</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00056">56</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -446,7 +446,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00066">66</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00069">69</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -462,7 +462,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00067">67</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00070">70</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>
@@ -478,7 +478,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00068">68</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00071">71</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 
 </div>
 </div>

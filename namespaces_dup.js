@@ -404,6 +404,7 @@ var namespaces_dup =
       [ "mparam", "namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05", null ],
       [ "start", "namespacegetInteractionAndRadiationLength.html#acb156e7c2455b7437dfa7ceb797dc4b8", null ]
     ] ],
+    [ "global_variables", "namespaceglobal__variables.html", null ],
     [ "hepunit", "namespacehepunit.html", [
       [ "alpha_rcl2", "namespacehepunit.html#a2ed3ece3593ff0d71b333900d1a5bce8", null ],
       [ "ampere", "namespacehepunit.html#ac046f0a6ab0211aad4d2c047126c0f1f", null ],

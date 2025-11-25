@@ -97,20 +97,23 @@ $(document).ready(function(){initNavTree('evd__nextEvent_8py_source.html',''); i
   <div class="headertitle"><div class="title">evd_nextEvent.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="evd__nextEvent_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceevd__nextEvent.html">    1</a></span><span class="keyword">import</span> ROOT<span class="comment">#,evd_fillEnergy</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span>  eveGlobal</div>
-<div class="foldopen" id="foldopen00003" data-start="" data-end="">
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">    3</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">execute</a>():</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>  lsOfGlobals = ROOT.gROOT.GetListOfGlobals()</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>  SHiPDisplay = eveGlobal.SHiPDisplay</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>  SHiPDisplay.NextEvent()</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keywordflow">if</span> ROOT.gROOT.FindObject(<span class="stringliteral">&#39;Root Canvas&#39;</span>): <a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a>()</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keywordflow">pass</span></div>
+<a href="evd__nextEvent_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceevd__nextEvent.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> ROOT<span class="comment">#,evd_fillEnergy</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span>  eveGlobal</div>
+<div class="foldopen" id="foldopen00006" data-start="" data-end="">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">    6</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">execute</a>():</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  lsOfGlobals = ROOT.gROOT.GetListOfGlobals()</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  SHiPDisplay = eveGlobal.SHiPDisplay</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  SHiPDisplay.NextEvent()</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keywordflow">if</span> ROOT.gROOT.FindObject(<span class="stringliteral">&#39;Root Canvas&#39;</span>): <a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a>()</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keywordflow">pass</span></div>
 </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordflow">if</span> __name__==<span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_function" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">execute</a>()</div>
-<div class="ttc" id="anamespaceevd__fillEnergy_html_ad52729d6ce0c884ae566786a297327cd"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00057">evd_fillEnergy.py:57</a></div></div>
-<div class="ttc" id="anamespaceevd__nextEvent_html_ae96688f184f12446cedeaec7189c3205"><div class="ttname"><a href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">evd_nextEvent.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__nextEvent_8py_source.html#l00003">evd_nextEvent.py:3</a></div></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordflow">if</span> __name__==<span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <a class="code hl_function" href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">execute</a>()</div>
+<div class="ttc" id="anamespaceevd__fillEnergy_html_ad52729d6ce0c884ae566786a297327cd"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00060">evd_fillEnergy.py:60</a></div></div>
+<div class="ttc" id="anamespaceevd__nextEvent_html_ae96688f184f12446cedeaec7189c3205"><div class="ttname"><a href="namespaceevd__nextEvent.html#ae96688f184f12446cedeaec7189c3205">evd_nextEvent.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__nextEvent_8py_source.html#l00006">evd_nextEvent.py:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

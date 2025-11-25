@@ -154,7 +154,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00006">6</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00009">9</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae6527b82b9e6a8732d0c348d2d0e6351" name="ae6527b82b9e6a8732d0c348d2d0e6351"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae6527b82b9e6a8732d0c348d2d0e6351">&#9670;&#160;</a></span>__init__()</h2>
@@ -193,13 +193,13 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initialise detector digitisation.</pre> 
+<pre class="fragment">Initialize the detector digitizer.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a770798bc9f8dc602ddd63f5e8c99d8a6">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00007">7</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span>    <span class="keyword">def </span>__init__(self, name, intree, outtree=None):</div>
-<div class="line"><span class="lineno">    8</span>        super().__init__(name, intree, outtree=outtree)</div>
-<div class="line"><span class="lineno">    9</span> </div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00010">10</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   10</span>    <span class="keyword">def </span>__init__(self, name, intree, outtree=None):</div>
+<div class="line"><span class="lineno">   11</span>        super().__init__(name, intree, outtree=outtree)</div>
+<div class="line"><span class="lineno">   12</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -226,15 +226,15 @@ MC hits into digitized detector responses.
 </pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00010">10</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span>    <span class="keyword">def </span>digitize(self):</div>
-<div class="line"><span class="lineno">   11</span>        ship_geo = global_variables.ShipGeo</div>
-<div class="line"><span class="lineno">   12</span>        pos_res = ship_geo.UpstreamTagger.PositionResolution</div>
-<div class="line"><span class="lineno">   13</span>        time_res = ship_geo.UpstreamTagger.TimeResolution</div>
-<div class="line"><span class="lineno">   14</span> </div>
-<div class="line"><span class="lineno">   15</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.UpstreamTaggerPoint:</div>
-<div class="line"><span class="lineno">   16</span>            aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, pos_res, time_res)</div>
-<div class="line"><span class="lineno">   17</span>            self.det.push_back(aHit)</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerDetector_8py_source.html#l00013">13</a> of file <a class="el" href="UpstreamTaggerDetector_8py_source.html">UpstreamTaggerDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span>    <span class="keyword">def </span>digitize(self):</div>
+<div class="line"><span class="lineno">   14</span>        ship_geo = global_variables.ShipGeo</div>
+<div class="line"><span class="lineno">   15</span>        pos_res = ship_geo.UpstreamTagger.PositionResolution</div>
+<div class="line"><span class="lineno">   16</span>        time_res = ship_geo.UpstreamTagger.TimeResolution</div>
+<div class="line"><span class="lineno">   17</span> </div>
+<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.intree.UpstreamTaggerPoint:</div>
+<div class="line"><span class="lineno">   19</span>            aHit = ROOT.UpstreamTaggerHit(aMCPoint, self.intree.t0, pos_res, time_res)</div>
+<div class="line"><span class="lineno">   20</span>            self.det.push_back(aHit)</div>
 </div><!-- fragment -->
 </div>
 </div>

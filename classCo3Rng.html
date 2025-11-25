@@ -125,7 +125,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00019">19</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00022">22</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a392890680f6128c2ec0a854847845358" name="a392890680f6128c2ec0a854847845358"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a392890680f6128c2ec0a854847845358">&#9670;&#160;</a></span>Co3Rng()</h2>
@@ -150,16 +150,16 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00021">21</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>                {</div>
-<div class="line"><span class="lineno">   22</span>            <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a> = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed());</div>
-<div class="line"><span class="lineno">   23</span>            <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f2&quot;</span>,<span class="stringliteral">&quot;cos(x)*cos(x)&quot;</span>,0,TMath::Pi()/2);</div>
-<div class="line"><span class="lineno">   24</span>            <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>-&gt;SetNpx(10);</div>
-<div class="line"><span class="lineno">   25</span>            <a class="code hl_variable" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f4&quot;</span>,<span class="stringliteral">&quot;1400*TMath::Power(x,-2.7)*(1/(1+x/115)+0.054/(1+x/850))&quot;</span>,100,1000); <span class="comment">// momentum above 100GeV</span></div>
-<div class="line"><span class="lineno">   26</span>        };</div>
-<div class="ttc" id="aclassCo3Rng_html_a45d30cdf242865401fe0511109b86e4f"><div class="ttname"><a href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">Co3Rng::fTheta</a></div><div class="ttdeci">TF1 * fTheta</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00030">CosmicsGenerator.h:30</a></div></div>
-<div class="ttc" id="aclassCo3Rng_html_a4b5c5e8366ed58a801888305b46926db"><div class="ttname"><a href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">Co3Rng::fSpectrumH</a></div><div class="ttdeci">TF1 * fSpectrumH</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00029">CosmicsGenerator.h:29</a></div></div>
-<div class="ttc" id="aclassCo3Rng_html_a541c87d453d6c814306faff157d5cfc2"><div class="ttname"><a href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">Co3Rng::rng</a></div><div class="ttdeci">TRandom3 * rng</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00033">CosmicsGenerator.h:33</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00024">24</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>                {</div>
+<div class="line"><span class="lineno">   25</span>            <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a> = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed());</div>
+<div class="line"><span class="lineno">   26</span>            <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f2&quot;</span>,<span class="stringliteral">&quot;cos(x)*cos(x)&quot;</span>,0,TMath::Pi()/2);</div>
+<div class="line"><span class="lineno">   27</span>            <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>-&gt;SetNpx(10);</div>
+<div class="line"><span class="lineno">   28</span>            <a class="code hl_variable" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f4&quot;</span>,<span class="stringliteral">&quot;1400*TMath::Power(x,-2.7)*(1/(1+x/115)+0.054/(1+x/850))&quot;</span>,100,1000); <span class="comment">// momentum above 100GeV</span></div>
+<div class="line"><span class="lineno">   29</span>        };</div>
+<div class="ttc" id="aclassCo3Rng_html_a45d30cdf242865401fe0511109b86e4f"><div class="ttname"><a href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">Co3Rng::fTheta</a></div><div class="ttdeci">TF1 * fTheta</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00033">CosmicsGenerator.h:33</a></div></div>
+<div class="ttc" id="aclassCo3Rng_html_a4b5c5e8366ed58a801888305b46926db"><div class="ttname"><a href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">Co3Rng::fSpectrumH</a></div><div class="ttdeci">TF1 * fSpectrumH</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00032">CosmicsGenerator.h:32</a></div></div>
+<div class="ttc" id="aclassCo3Rng_html_a541c87d453d6c814306faff157d5cfc2"><div class="ttname"><a href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">Co3Rng::rng</a></div><div class="ttdeci">TRandom3 * rng</div><div class="ttdef"><b>Definition</b> <a href="CosmicsGenerator_8h_source.html#l00036">CosmicsGenerator.h:36</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,8 +186,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00027">27</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{<span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>; <span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>; <span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a>;};</div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00030">30</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{<span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>; <span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>; <span class="keyword">delete</span> <a class="code hl_variable" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a>;};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -224,40 +224,40 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8cxx_source.html#l00016">16</a> of file <a class="el" href="CosmicsGenerator_8cxx_source.html">CosmicsGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>                                                                        {</div>
-<div class="line"><span class="lineno">   17</span>    <span class="comment">// 2 Options: a) generateP, b) calcInt</span></div>
-<div class="line"><span class="lineno">   18</span>    <span class="comment">// see doi: 10.1016/j.nuclphysbps.2005.07.056. for flux details</span></div>
-<div class="line"><span class="lineno">   19</span>    <span class="comment">// ad a) returns a random P between minE and 100GeV taken from the</span></div>
-<div class="line"><span class="lineno">   20</span>    <span class="comment">//       zenith angle dependent momentum distribution</span></div>
-<div class="line"><span class="lineno">   21</span>    <span class="comment">//       Here, the inverse of the function is computed and a random</span></div>
-<div class="line"><span class="lineno">   22</span>    <span class="comment">//       number between 0 and 1 mapped to the interval [minE, 100[ GeV</span></div>
-<div class="line"><span class="lineno">   23</span>    <span class="comment">// ad b) return the momentum-integrated flux for a given zenith angle</span></div>
-<div class="line"><span class="lineno">   24</span>    <span class="comment">//       from minE to 100 GeV. Result in cm-2s-1</span></div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = 180 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> / TMath::Pi();   <span class="comment">// theta in degrees</span></div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordtype">double</span> a = -0.8816 / 10000 / (1 / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 0.1117 / 1000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>) - 0.1096 - 0.01966 * TMath::Exp(-0.02040 * theta);</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keywordtype">double</span> b =</div>
-<div class="line"><span class="lineno">   29</span>        0.4169 / 100 / (1 / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 0.9891 / 10000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>) + 4.0395 - 4.3118 * TMath::Exp(0.9235 / 1000 * theta);</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordtype">double</span> btilde = b + 1.0 / TMath::Ln10();</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">gamma</a> = sqrt(-TMath::Ln10() * a);</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordtype">double</span> offset = 0.5 * btilde / a;</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">norm</a> = TMath::Erf(gamma * (TMath::Log(100) + offset)) - TMath::Erf(gamma * (offset + TMath::Log(minE)));</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (generateP) {</div>
-<div class="line"><span class="lineno">   36</span>        <span class="keywordtype">double</span> r3 = <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform();</div>
-<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">return</span> exp(TMath::ErfInverse(r3 * norm + TMath::Erf(gamma * (offset + TMath::Log(minE)))) / gamma - offset);</div>
-<div class="line"><span class="lineno">   38</span>    }</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">else</span>{</div>
-<div class="line"><span class="lineno">   40</span>        <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a> = -0.3516/1000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>*<a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> + 0.8861/100 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 2.5985 -0.8745/100000*TMath::Exp(0.1457*theta);</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordtype">double</span> scale = 0.5*TMath::Sqrt(TMath::Pi())/<a class="code hl_variable" href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">gamma</a> * TMath::Power(10,(-0.25/a*btilde*btilde + c));</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> scale * <a class="code hl_variable" href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">norm</a>;</div>
-<div class="line"><span class="lineno">   43</span>    }</div>
-<div class="line"><span class="lineno">   44</span>}</div>
-<div class="ttc" id="anamespaceg4Ex__gap__mergeFiles_html_a7476ba2e67b1127eb1c1de262c5ff876"><div class="ttname"><a href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">g4Ex_gap_mergeFiles.norm</a></div><div class="ttdeci">norm</div><div class="ttdef"><b>Definition</b> <a href="g4Ex__gap__mergeFiles_8py_source.html#l00198">g4Ex_gap_mergeFiles.py:198</a></div></div>
-<div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00098">hnl.py:98</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a1954f4a40c77a4917a15955372b85700"><div class="ttname"><a href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">makeCascade.gamma</a></div><div class="ttdeci">tuple gamma</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00312">makeCascade.py:312</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a6deb68dc080ef810c34fcffdd94b6a57"><div class="ttname"><a href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">makeMuonDIS.theta</a></div><div class="ttdeci">theta</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00082">makeMuonDIS.py:82</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8cxx_source.html#l00019">19</a> of file <a class="el" href="CosmicsGenerator_8cxx_source.html">CosmicsGenerator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   19</span>                                                                        {</div>
+<div class="line"><span class="lineno">   20</span>    <span class="comment">// 2 Options: a) generateP, b) calcInt</span></div>
+<div class="line"><span class="lineno">   21</span>    <span class="comment">// see doi: 10.1016/j.nuclphysbps.2005.07.056. for flux details</span></div>
+<div class="line"><span class="lineno">   22</span>    <span class="comment">// ad a) returns a random P between minE and 100GeV taken from the</span></div>
+<div class="line"><span class="lineno">   23</span>    <span class="comment">//       zenith angle dependent momentum distribution</span></div>
+<div class="line"><span class="lineno">   24</span>    <span class="comment">//       Here, the inverse of the function is computed and a random</span></div>
+<div class="line"><span class="lineno">   25</span>    <span class="comment">//       number between 0 and 1 mapped to the interval [minE, 100[ GeV</span></div>
+<div class="line"><span class="lineno">   26</span>    <span class="comment">// ad b) return the momentum-integrated flux for a given zenith angle</span></div>
+<div class="line"><span class="lineno">   27</span>    <span class="comment">//       from minE to 100 GeV. Result in cm-2s-1</span></div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = 180 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> / TMath::Pi();   <span class="comment">// theta in degrees</span></div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordtype">double</span> a = -0.8816 / 10000 / (1 / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 0.1117 / 1000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>) - 0.1096 - 0.01966 * TMath::Exp(-0.02040 * theta);</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordtype">double</span> b =</div>
+<div class="line"><span class="lineno">   32</span>        0.4169 / 100 / (1 / <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 0.9891 / 10000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>) + 4.0395 - 4.3118 * TMath::Exp(0.9235 / 1000 * theta);</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordtype">double</span> btilde = b + 1.0 / TMath::Ln10();</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">gamma</a> = sqrt(-TMath::Ln10() * a);</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordtype">double</span> offset = 0.5 * btilde / a;</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">norm</a> = TMath::Erf(gamma * (TMath::Log(100) + offset)) - TMath::Erf(gamma * (offset + TMath::Log(minE)));</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (generateP) {</div>
+<div class="line"><span class="lineno">   39</span>        <span class="keywordtype">double</span> r3 = <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform();</div>
+<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">return</span> exp(TMath::ErfInverse(r3 * norm + TMath::Erf(gamma * (offset + TMath::Log(minE)))) / gamma - offset);</div>
+<div class="line"><span class="lineno">   41</span>    }</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a> = -0.3516/1000 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>*<a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> + 0.8861/100 * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> - 2.5985 -0.8745/100000*TMath::Exp(0.1457*theta);</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordtype">double</span> scale = 0.5*TMath::Sqrt(TMath::Pi())/<a class="code hl_variable" href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">gamma</a> * TMath::Power(10,(-0.25/a*btilde*btilde + c));</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">return</span> scale * <a class="code hl_variable" href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">norm</a>;</div>
+<div class="line"><span class="lineno">   46</span>    }</div>
+<div class="line"><span class="lineno">   47</span>}</div>
+<div class="ttc" id="anamespaceg4Ex__gap__mergeFiles_html_a7476ba2e67b1127eb1c1de262c5ff876"><div class="ttname"><a href="namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876">g4Ex_gap_mergeFiles.norm</a></div><div class="ttdeci">norm</div><div class="ttdef"><b>Definition</b> <a href="g4Ex__gap__mergeFiles_8py_source.html#l00201">g4Ex_gap_mergeFiles.py:201</a></div></div>
+<div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00101">hnl.py:101</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a1954f4a40c77a4917a15955372b85700"><div class="ttname"><a href="namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700">makeCascade.gamma</a></div><div class="ttdeci">tuple gamma</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00315">makeCascade.py:315</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_a6deb68dc080ef810c34fcffdd94b6a57"><div class="ttname"><a href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">makeMuonDIS.theta</a></div><div class="ttdeci">theta</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00085">makeMuonDIS.py:85</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -295,8 +295,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00028">28</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform(min,max);};</div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00031">31</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform(min,max);};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -313,7 +313,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00029">29</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00032">32</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -329,7 +329,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00030">30</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00033">33</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -353,7 +353,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00033">33</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00036">36</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>

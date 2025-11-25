@@ -167,15 +167,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00072">72</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span><span class="keyword">def </span>brMesonToDP(mass,epsilon,mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> mumPdg==223: <span class="keywordflow">return</span> brMesonToMesonDP(mass,epsilon,mumPdg,111,doprint)</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">elif</span> (mumPdg==111 <span class="keywordflow">or</span> mumPdg==221): <span class="keywordflow">return</span> brMesonToGammaDP(mass,epsilon,mumPdg,doprint)</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">elif</span> mumPdg==331: <span class="keywordflow">return</span> brMesonToMesonDP(mass,epsilon,mumPdg,113,doprint),brMesonToGammaDP(mass,epsilon,mumPdg,doprint)</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   77</span>        print(<span class="stringliteral">&quot;Warning! Unknown mother pdgId %d, not implemented. Setting br to 0.&quot;</span>%mumPdg)</div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> 1</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00075">75</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span><span class="keyword">def </span>brMesonToDP(mass,epsilon,mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> mumPdg==223: <span class="keywordflow">return</span> brMesonToMesonDP(mass,epsilon,mumPdg,111,doprint)</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">elif</span> (mumPdg==111 <span class="keywordflow">or</span> mumPdg==221): <span class="keywordflow">return</span> brMesonToGammaDP(mass,epsilon,mumPdg,doprint)</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">elif</span> mumPdg==331: <span class="keywordflow">return</span> brMesonToMesonDP(mass,epsilon,mumPdg,113,doprint),brMesonToGammaDP(mass,epsilon,mumPdg,doprint)</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   80</span>        print(<span class="stringliteral">&quot;Warning! Unknown mother pdgId %d, not implemented. Setting br to 0.&quot;</span>%mumPdg)</div>
+<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">return</span> 1</div>
+<div class="line"><span class="lineno">   82</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,15 +217,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00050">50</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>brMesonToGammaDP(mass,epsilon,mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">   51</span>    mMeson = PDG.GetParticle(mumPdg).Mass()</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of mother %d meson is %3.3f&quot;</span>%(mumPdg,mMeson))</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (mass&lt;mMeson): br = 2*epsilon**2*pow((1-mass**2/mMeson**2),3)*mesonBRtoPhoton(mumPdg,doprint)</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">else</span>: br = 0</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Branching ratio of %d meson to DP is %.8g&quot;</span>%(mumPdg,br))</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00053">53</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>brMesonToGammaDP(mass,epsilon,mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">   54</span>    mMeson = PDG.GetParticle(mumPdg).Mass()</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of mother %d meson is %3.3f&quot;</span>%(mumPdg,mMeson))</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (mass&lt;mMeson): br = 2*epsilon**2*pow((1-mass**2/mMeson**2),3)*mesonBRtoPhoton(mumPdg,doprint)</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">else</span>: br = 0</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Branching ratio of %d meson to DP is %.8g&quot;</span>%(mumPdg,br))</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -273,21 +273,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00058">58</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span>brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):</div>
-<div class="line"><span class="lineno">   59</span>    mMeson = PDG.GetParticle(mumPdg).Mass()</div>
-<div class="line"><span class="lineno">   60</span>    mDaughterMeson = PDG.GetParticle(dauPdg).Mass()</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of mother %d meson is %3.3f&quot;</span>%(mumPdg,mMeson))</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of daughter %d meson is %3.3f&quot;</span>%(dauPdg,mDaughterMeson))</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (mass&lt;(mMeson-mDaughterMeson)):</div>
-<div class="line"><span class="lineno">   64</span>        fac1 = pow(mMeson**2.-mDaughterMeson**2.,-3.)</div>
-<div class="line"><span class="lineno">   65</span>        fac2 = pow((mass**2.-(mMeson+mDaughterMeson)**2.)*(mass**2.-(mMeson-mDaughterMeson)**2.),1.5)</div>
-<div class="line"><span class="lineno">   66</span>        massfactor = fac1*fac2</div>
-<div class="line"><span class="lineno">   67</span>        br = (epsilon**2.)*mesonBRtoPhoton(mumPdg,doprint)*massfactor</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">else</span>: br = 0</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Branching ratio of %d meson to DP is %.8g&quot;</span>%(mumPdg,br))</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">   71</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00061">61</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):</div>
+<div class="line"><span class="lineno">   62</span>    mMeson = PDG.GetParticle(mumPdg).Mass()</div>
+<div class="line"><span class="lineno">   63</span>    mDaughterMeson = PDG.GetParticle(dauPdg).Mass()</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of mother %d meson is %3.3f&quot;</span>%(mumPdg,mMeson))</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Mass of daughter %d meson is %3.3f&quot;</span>%(dauPdg,mDaughterMeson))</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (mass&lt;(mMeson-mDaughterMeson)):</div>
+<div class="line"><span class="lineno">   67</span>        fac1 = pow(mMeson**2.-mDaughterMeson**2.,-3.)</div>
+<div class="line"><span class="lineno">   68</span>        fac2 = pow((mass**2.-(mMeson+mDaughterMeson)**2.)*(mass**2.-(mMeson-mDaughterMeson)**2.),1.5)</div>
+<div class="line"><span class="lineno">   69</span>        massfactor = fac1*fac2</div>
+<div class="line"><span class="lineno">   70</span>        br = (epsilon**2.)*mesonBRtoPhoton(mumPdg,doprint)*massfactor</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">else</span>: br = 0</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;Branching ratio of %d meson to DP is %.8g&quot;</span>%(mumPdg,br))</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">   74</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -307,16 +307,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00032">32</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>getAverageMesonRate(mumPdg):</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> (mumPdg==111): <span class="keywordflow">return</span> 6.166</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">if</span> (mumPdg==221): <span class="keywordflow">return</span> 0.7012</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (mumPdg==223): <span class="keywordflow">return</span> 0.8295</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">if</span> (mumPdg==331): <span class="keywordflow">return</span> 0.07825</div>
-<div class="line"><span class="lineno">   37</span>    print(<span class="stringliteral">&quot; -- ERROR, unknown mother pdgId %d&quot;</span>%mumPdg)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span><span class="comment">#from the PDG, decay to photon channels available for mixing with DP</span></div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00035">35</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span><span class="keyword">def </span>getAverageMesonRate(mumPdg):</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">if</span> (mumPdg==111): <span class="keywordflow">return</span> 6.166</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> (mumPdg==221): <span class="keywordflow">return</span> 0.7012</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (mumPdg==223): <span class="keywordflow">return</span> 0.8295</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (mumPdg==331): <span class="keywordflow">return</span> 0.07825</div>
+<div class="line"><span class="lineno">   40</span>    print(<span class="stringliteral">&quot; -- ERROR, unknown mother pdgId %d&quot;</span>%mumPdg)</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span><span class="comment">#from the PDG, decay to photon channels available for mixing with DP</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -364,21 +364,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00102">102</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span><span class="keyword">def </span>getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (<span class="stringliteral">&#39;pbrem&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  104</span>        print(<span class="stringliteral">&quot;VDM&quot;</span>)</div>
-<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">return</span> pbremProdRateVDM(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;pbrem1&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  107</span>        print(<span class="stringliteral">&quot;Dipole&quot;</span>)</div>
-<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> pbremProdRateDipole(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;meson&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> mesonProdRate(mass,epsilon,mumPdg,doprint)</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;qcd&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> qcdprodRate(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  114</span>        print(<span class="stringliteral">&quot;Unknown production mode! Choose among pbrem, meson or qcd.&quot;</span>)</div>
-<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> 1</div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00105">105</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span><span class="keyword">def </span>getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (<span class="stringliteral">&#39;pbrem&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  107</span>        print(<span class="stringliteral">&quot;VDM&quot;</span>)</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> pbremProdRateVDM(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;pbrem1&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  110</span>        print(<span class="stringliteral">&quot;Dipole&quot;</span>)</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">return</span> pbremProdRateDipole(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;meson&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">return</span> mesonProdRate(mass,epsilon,mumPdg,doprint)</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;qcd&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> qcdprodRate(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  117</span>        print(<span class="stringliteral">&quot;Unknown production mode! Choose among pbrem, meson or qcd.&quot;</span>)</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">return</span> 1</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -398,12 +398,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00010">10</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span><span class="keyword">def </span>isDP(pdg):</div>
-<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">if</span> (pdg==9900015 <span class="keywordflow">or</span> pdg==4900023):</div>
-<div class="line"><span class="lineno">   12</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   14</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00013">13</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span><span class="keyword">def </span>isDP(pdg):</div>
+<div class="line"><span class="lineno">   14</span>    <span class="keywordflow">if</span> (pdg==9900015 <span class="keywordflow">or</span> pdg==4900023):</div>
+<div class="line"><span class="lineno">   15</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   16</span>    <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   17</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -433,16 +433,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00041">41</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span><span class="keyword">def </span>mesonBRtoPhoton(mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">   42</span>    br = 1</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (mumPdg==111): br = 0.9879900</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (mumPdg==221): br = 0.3931181</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> (mumPdg==223): br = 0.0834941</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> (mumPdg==331): br = 0.0219297</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;BR of %d meson to photons: %.8g&quot;</span>%(mumPdg,br))</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">   49</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00044">44</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>mesonBRtoPhoton(mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">   45</span>    br = 1</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> (mumPdg==111): br = 0.9879900</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (mumPdg==221): br = 0.3931181</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (mumPdg==223): br = 0.0834941</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (mumPdg==331): br = 0.0219297</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (doprint==<span class="keyword">True</span>): print(<span class="stringliteral">&quot;BR of %d meson to photons: %.8g&quot;</span>%(mumPdg,br))</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">   52</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -484,19 +484,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00080">80</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>mesonProdRate(mass,epsilon,mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">   81</span>    brM2DP=brMesonToDP(mass,epsilon,mumPdg,doprint)</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> mumPdg==331:</div>
-<div class="line"><span class="lineno">   83</span>        avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0]</div>
-<div class="line"><span class="lineno">   84</span>        avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]</div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">return</span> avgMeson*0.6, avgMeson1*0.6</div>
-<div class="line"><span class="lineno">   86</span>        <span class="comment">#return avgMeson + avgMeson1</span></div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> mumPdg==331:</div>
-<div class="line"><span class="lineno">   88</span>        avgMeson = getAverageMesonRate(mumPdg)*brM2DP</div>
-<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">return</span> avgMeson*0.6</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span><span class="comment">#from interpolation of Pythia XS, normalised to epsilon^2</span></div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00083">83</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span>mesonProdRate(mass,epsilon,mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">   84</span>    brM2DP=brMesonToDP(mass,epsilon,mumPdg,doprint)</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">if</span> mumPdg==331:</div>
+<div class="line"><span class="lineno">   86</span>        avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0]</div>
+<div class="line"><span class="lineno">   87</span>        avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]</div>
+<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">return</span> avgMeson*0.6, avgMeson1*0.6</div>
+<div class="line"><span class="lineno">   89</span>        <span class="comment">#return avgMeson + avgMeson1</span></div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> mumPdg==331:</div>
+<div class="line"><span class="lineno">   91</span>        avgMeson = getAverageMesonRate(mumPdg)*brM2DP</div>
+<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">return</span> avgMeson*0.6</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span><span class="comment">#from interpolation of Pythia XS, normalised to epsilon^2</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -532,18 +532,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00023">23</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   23</span><span class="keyword">def </span>pbremProdRateDipole(mass,epsilon,doprint=False):</div>
-<div class="line"><span class="lineno">   24</span>    xswg = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a>(mass, epsilon)</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; production rate per p.o.t: \t %.8g&quot;</span>%(xswg))</div>
-<div class="line"><span class="lineno">   26</span>    penalty = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77">proton_bremsstrahlung.penaltyFactor</a>(mass)</div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; penalty factor: \t %.8g&quot;</span>%penalty)</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rescaled production rate per p.o.t:\t %.8g&quot;</span>%(xswg*penalty))</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> xswg*penalty</div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span><span class="comment">#obtained with Pythia8: average number of meson expected per p.o.t from inclusive pp to X production, 100k events produced</span></div>
-<div class="ttc" id="anamespaceproton__bremsstrahlung_html_ab60c4f9c4c1c795b40709d9f41ae0a77"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77">proton_bremsstrahlung.penaltyFactor</a></div><div class="ttdeci">penaltyFactor(m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00037">proton_bremsstrahlung.py:37</a></div></div>
-<div class="ttc" id="anamespaceproton__bremsstrahlung_html_abcb3a72611c1a17d989c096c777046dc"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a></div><div class="ttdeci">prodRate(mDarkPhoton, epsilon, tmin=-0.5 *math.pi, tmax=0.5 *math.pi)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00139">proton_bremsstrahlung.py:139</a></div></div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00026">26</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span><span class="keyword">def </span>pbremProdRateDipole(mass,epsilon,doprint=False):</div>
+<div class="line"><span class="lineno">   27</span>    xswg = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a>(mass, epsilon)</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; production rate per p.o.t: \t %.8g&quot;</span>%(xswg))</div>
+<div class="line"><span class="lineno">   29</span>    penalty = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77">proton_bremsstrahlung.penaltyFactor</a>(mass)</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; penalty factor: \t %.8g&quot;</span>%penalty)</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rescaled production rate per p.o.t:\t %.8g&quot;</span>%(xswg*penalty))</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> xswg*penalty</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span><span class="comment">#obtained with Pythia8: average number of meson expected per p.o.t from inclusive pp to X production, 100k events produced</span></div>
+<div class="ttc" id="anamespaceproton__bremsstrahlung_html_ab60c4f9c4c1c795b40709d9f41ae0a77"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77">proton_bremsstrahlung.penaltyFactor</a></div><div class="ttdeci">penaltyFactor(m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00040">proton_bremsstrahlung.py:40</a></div></div>
+<div class="ttc" id="anamespaceproton__bremsstrahlung_html_abcb3a72611c1a17d989c096c777046dc"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a></div><div class="ttdeci">prodRate(mDarkPhoton, epsilon, tmin=-0.5 *math.pi, tmax=0.5 *math.pi)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00142">proton_bremsstrahlung.py:142</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -579,16 +579,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00015">15</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span><span class="keyword">def </span>pbremProdRateVDM(mass,epsilon,doprint=True):</div>
-<div class="line"><span class="lineno">   16</span>    xswg = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a>(mass, epsilon)</div>
-<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; production rate per p.o.t: \t %.8g&quot;</span>%(xswg))</div>
-<div class="line"><span class="lineno">   18</span>    rhoff = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a337eaf0de32efa7f8933e7ae39991ae0">proton_bremsstrahlung.rhoFormFactor</a>(mass)**2</div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rho form factor: \t %.8g&quot;</span>%rhoff)</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rescaled production rate per p.o.t:\t %.8g&quot;</span>%(xswg*rhoff))</div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">return</span> xswg*rhoff</div>
-<div class="line"><span class="lineno">   22</span> </div>
-<div class="ttc" id="anamespaceproton__bremsstrahlung_html_a337eaf0de32efa7f8933e7ae39991ae0"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#a337eaf0de32efa7f8933e7ae39991ae0">proton_bremsstrahlung.rhoFormFactor</a></div><div class="ttdeci">rhoFormFactor(m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00015">proton_bremsstrahlung.py:15</a></div></div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00018">18</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>pbremProdRateVDM(mass,epsilon,doprint=True):</div>
+<div class="line"><span class="lineno">   19</span>    xswg = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc">proton_bremsstrahlung.prodRate</a>(mass, epsilon)</div>
+<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; production rate per p.o.t: \t %.8g&quot;</span>%(xswg))</div>
+<div class="line"><span class="lineno">   21</span>    rhoff = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a337eaf0de32efa7f8933e7ae39991ae0">proton_bremsstrahlung.rhoFormFactor</a>(mass)**2</div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rho form factor: \t %.8g&quot;</span>%rhoff)</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">if</span> doprint: print(<span class="stringliteral">&quot;A&#39; rescaled production rate per p.o.t:\t %.8g&quot;</span>%(xswg*rhoff))</div>
+<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">return</span> xswg*rhoff</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="ttc" id="anamespaceproton__bremsstrahlung_html_a337eaf0de32efa7f8933e7ae39991ae0"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#a337eaf0de32efa7f8933e7ae39991ae0">proton_bremsstrahlung.rhoFormFactor</a></div><div class="ttdeci">rhoFormFactor(m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00018">proton_bremsstrahlung.py:18</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -624,17 +624,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00092">92</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>qcdprodRate(mass,epsilon,doprint=False):</div>
-<div class="line"><span class="lineno">   93</span>    xs = 0.</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (mass &gt; 3.):</div>
-<div class="line"><span class="lineno">   95</span>        xs = math.exp(-5.928-0.8669*mass)</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">elif</span> (mass &gt; 1.4):</div>
-<div class="line"><span class="lineno">   97</span>        xs = math.exp(-4.1477-1.4745*mass)</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   99</span>        xs = 0.</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> xs*epsilon*epsilon</div>
-<div class="line"><span class="lineno">  101</span> </div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00095">95</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span><span class="keyword">def </span>qcdprodRate(mass,epsilon,doprint=False):</div>
+<div class="line"><span class="lineno">   96</span>    xs = 0.</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> (mass &gt; 3.):</div>
+<div class="line"><span class="lineno">   98</span>        xs = math.exp(-5.928-0.8669*mass)</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">elif</span> (mass &gt; 1.4):</div>
+<div class="line"><span class="lineno">  100</span>        xs = math.exp(-4.1477-1.4745*mass)</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  102</span>        xs = 0.</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> xs*epsilon*epsilon</div>
+<div class="line"><span class="lineno">  104</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -651,7 +651,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00006">6</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00009">9</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
 
 </div>
 </div>
@@ -667,7 +667,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00007">7</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00010">10</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
 
 </div>
 </div>

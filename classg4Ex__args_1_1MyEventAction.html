@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00209">209</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00212">212</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af49393c4bf4f30a8398a6de034e62533" name="af49393c4bf4f30a8398a6de034e62533"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af49393c4bf4f30a8398a6de034e62533">&#9670;&#160;</a></span>EndOfEventAction()</h2>
@@ -153,11 +153,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00211">211</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  211</span>  <span class="keyword">def </span>EndOfEventAction(self, event):</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keyword">global</span> myEventnr</div>
-<div class="line"><span class="lineno">  213</span>    myEventnr += 1</div>
-<div class="line"><span class="lineno">  214</span>    <span class="comment"># self.myPrintout(event)</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00214">214</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  214</span>  <span class="keyword">def </span>EndOfEventAction(self, event):</div>
+<div class="line"><span class="lineno">  215</span>    <span class="keyword">global</span> myEventnr</div>
+<div class="line"><span class="lineno">  216</span>    myEventnr += 1</div>
+<div class="line"><span class="lineno">  217</span>    <span class="comment"># self.myPrintout(event)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -187,14 +187,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00215">215</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  215</span>  <span class="keyword">def </span>myPrintout(self, event):</div>
-<div class="line"><span class="lineno">  216</span>    prim = event.GetPrimaryVertex()</div>
-<div class="line"><span class="lineno">  217</span>    print(<span class="stringliteral">&#39;vertex &#39;</span>,prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m)</div>
-<div class="line"><span class="lineno">  218</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range( prim.GetNumberOfParticle() ):</div>
-<div class="line"><span class="lineno">  219</span>      p = prim.GetPrimary(k)</div>
-<div class="line"><span class="lineno">  220</span>      print(<span class="stringliteral">&#39;event&#39;</span>,p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)</div>
-<div class="line"><span class="lineno">  221</span><span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00218">218</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  218</span>  <span class="keyword">def </span>myPrintout(self, event):</div>
+<div class="line"><span class="lineno">  219</span>    prim = event.GetPrimaryVertex()</div>
+<div class="line"><span class="lineno">  220</span>    print(<span class="stringliteral">&#39;vertex &#39;</span>,prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m)</div>
+<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range( prim.GetNumberOfParticle() ):</div>
+<div class="line"><span class="lineno">  222</span>      p = prim.GetPrimary(k)</div>
+<div class="line"><span class="lineno">  223</span>      print(<span class="stringliteral">&#39;event&#39;</span>,p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)</div>
+<div class="line"><span class="lineno">  224</span><span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>

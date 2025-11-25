@@ -129,140 +129,140 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertMisisMap_8py_source.html#l00046">46</a> of file <a class="el" href="convertMisisMap_8py_source.html">convertMisisMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>createRootMap(inFileName, rootFileName):</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    print(f<span class="stringliteral">&#39;Create ROOT map {rootFileName} from {inFileName}&#39;</span>)</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
-<div class="line"><span class="lineno">   51</span>    theFile = ROOT.TFile.Open(rootFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="convertMisisMap_8py_source.html#l00049">49</a> of file <a class="el" href="convertMisisMap_8py_source.html">convertMisisMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span>createRootMap(inFileName, rootFileName):</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    print(f<span class="stringliteral">&#39;Create ROOT map {rootFileName} from {inFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
-<div class="line"><span class="lineno">   54</span>    rangeTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">   53</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
+<div class="line"><span class="lineno">   54</span>    theFile = ROOT.TFile.Open(rootFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
 <div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    <span class="comment"># Coordinate ranges</span></div>
-<div class="line"><span class="lineno">   57</span>    rStruct = ROOT.rangeStruct()</div>
-<div class="line"><span class="lineno">   58</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   59</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   60</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   61</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   62</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   63</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   64</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   65</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   66</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    dataTree = ROOT.TTree(<span class="stringliteral">&#39;Data&#39;</span>, <span class="stringliteral">&#39;Data&#39;</span>)</div>
-<div class="line"><span class="lineno">   69</span>    dataTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">   56</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
+<div class="line"><span class="lineno">   57</span>    rangeTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>    <span class="comment"># Coordinate ranges</span></div>
+<div class="line"><span class="lineno">   60</span>    rStruct = ROOT.rangeStruct()</div>
+<div class="line"><span class="lineno">   61</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   62</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   63</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   64</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   65</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   66</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   67</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   68</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   69</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="comment"># Field components with (x,y,z) coordinate binning ordered such that</span></div>
-<div class="line"><span class="lineno">   72</span>    <span class="comment"># z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),</span></div>
-<div class="line"><span class="lineno">   73</span>    <span class="comment"># the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number</span></div>
-<div class="line"><span class="lineno">   74</span>    <span class="comment"># of y and z bins</span></div>
-<div class="line"><span class="lineno">   75</span>    dStruct = ROOT.dataStruct()</div>
-<div class="line"><span class="lineno">   76</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   77</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   78</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    <span class="comment"># mm to cm conversion</span></div>
-<div class="line"><span class="lineno">   81</span>    mm2cm = 0.1</div>
-<div class="line"><span class="lineno">   82</span>    <span class="comment"># m to cm conversion</span></div>
-<div class="line"><span class="lineno">   83</span>    m2cm = 100.0</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    <span class="comment"># Open text file and process the information</span></div>
-<div class="line"><span class="lineno">   86</span>    iLine = 0</div>
+<div class="line"><span class="lineno">   71</span>    dataTree = ROOT.TTree(<span class="stringliteral">&#39;Data&#39;</span>, <span class="stringliteral">&#39;Data&#39;</span>)</div>
+<div class="line"><span class="lineno">   72</span>    dataTree.SetDirectory(theFile)</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    <span class="comment"># Field components with (x,y,z) coordinate binning ordered such that</span></div>
+<div class="line"><span class="lineno">   75</span>    <span class="comment"># z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),</span></div>
+<div class="line"><span class="lineno">   76</span>    <span class="comment"># the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="comment"># of y and z bins</span></div>
+<div class="line"><span class="lineno">   78</span>    dStruct = ROOT.dataStruct()</div>
+<div class="line"><span class="lineno">   79</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   80</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   81</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>    <span class="comment"># mm to cm conversion</span></div>
+<div class="line"><span class="lineno">   84</span>    mm2cm = 0.1</div>
+<div class="line"><span class="lineno">   85</span>    <span class="comment"># m to cm conversion</span></div>
+<div class="line"><span class="lineno">   86</span>    m2cm = 100.0</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment"># Number of bins initialised by reading first line</span></div>
-<div class="line"><span class="lineno">   89</span>    Nx = 0</div>
-<div class="line"><span class="lineno">   90</span>    Ny = 0</div>
-<div class="line"><span class="lineno">   91</span>    Nz = 0</div>
-<div class="line"><span class="lineno">   92</span>    Nzy = 0</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    <span class="comment"># Field centering coordinates</span></div>
-<div class="line"><span class="lineno">   95</span>    x0 = 0.0</div>
-<div class="line"><span class="lineno">   96</span>    y0 = 0.0</div>
-<div class="line"><span class="lineno">   97</span>    z0 = 0.0</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
-<div class="line"><span class="lineno">  102</span>            iLine += 1</div>
+<div class="line"><span class="lineno">   88</span>    <span class="comment"># Open text file and process the information</span></div>
+<div class="line"><span class="lineno">   89</span>    iLine = 0</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>    <span class="comment"># Number of bins initialised by reading first line</span></div>
+<div class="line"><span class="lineno">   92</span>    Nx = 0</div>
+<div class="line"><span class="lineno">   93</span>    Ny = 0</div>
+<div class="line"><span class="lineno">   94</span>    Nz = 0</div>
+<div class="line"><span class="lineno">   95</span>    Nzy = 0</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># Field centering coordinates</span></div>
+<div class="line"><span class="lineno">   98</span>    x0 = 0.0</div>
+<div class="line"><span class="lineno">   99</span>    y0 = 0.0</div>
+<div class="line"><span class="lineno">  100</span>    z0 = 0.0</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>            <span class="comment"># First line contains ranges</span></div>
-<div class="line"><span class="lineno">  105</span>            <span class="keywordflow">if</span> iLine == 1:</div>
-<div class="line"><span class="lineno">  106</span>                <span class="comment"># Remove extraneous, unneeded symbols in the line</span></div>
-<div class="line"><span class="lineno">  107</span>                line = line.replace(<span class="stringliteral">&#39;[&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">  108</span>                line = line.replace(<span class="stringliteral">&#39;]&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">  109</span>                line = line.replace(<span class="stringliteral">&#39;mm&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">  110</span>                sLine = line.split()</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>                <span class="comment"># Bin info line assumed to be formatted as:</span></div>
-<div class="line"><span class="lineno">  113</span>                <span class="comment"># Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz</span></div>
-<div class="line"><span class="lineno">  114</span>                <span class="comment"># These coordinate limits are in mm, but the actual data lines use m</span></div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>                print(f<span class="stringliteral">&#39;sLine = {sLine}&#39;</span>)</div>
-<div class="line"><span class="lineno">  117</span>                <span class="comment"># For each value, convert from mm to cm</span></div>
-<div class="line"><span class="lineno">  118</span>                rStruct.xMin = float(sLine[3])*mm2cm</div>
-<div class="line"><span class="lineno">  119</span>                rStruct.xMax = float(sLine[7])*mm2cm</div>
-<div class="line"><span class="lineno">  120</span>                rStruct.dx = float(sLine[12])*mm2cm</div>
-<div class="line"><span class="lineno">  121</span>                rStruct.yMin = float(sLine[4])*mm2cm</div>
-<div class="line"><span class="lineno">  122</span>                rStruct.yMax = float(sLine[8])*mm2cm</div>
-<div class="line"><span class="lineno">  123</span>                rStruct.dy = float(sLine[13])*mm2cm</div>
-<div class="line"><span class="lineno">  124</span>                rStruct.zMin = float(sLine[5])*mm2cm</div>
-<div class="line"><span class="lineno">  125</span>                rStruct.zMax = float(sLine[9])*mm2cm</div>
-<div class="line"><span class="lineno">  126</span>                rStruct.dz = float(sLine[14])*mm2cm</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)</div>
-<div class="line"><span class="lineno">  129</span>                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)</div>
-<div class="line"><span class="lineno">  130</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
-<div class="line"><span class="lineno">  131</span>                Nzy = Nz*Ny</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>                <span class="comment"># Centre the field map on the local origin (cm)</span></div>
-<div class="line"><span class="lineno">  136</span>                x0 = 0.5*(rStruct.xMin + rStruct.xMax)</div>
-<div class="line"><span class="lineno">  137</span>                y0 = 0.5*(rStruct.yMin + rStruct.yMax)</div>
-<div class="line"><span class="lineno">  138</span>                z0 = 0.5*(rStruct.zMin + rStruct.zMax)</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>                print(f<span class="stringliteral">&#39;Centering field map using coordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
-<div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span>                <span class="comment"># Center coordinate range limits (cm)</span></div>
-<div class="line"><span class="lineno">  143</span>                rStruct.xMin = rStruct.xMin - x0</div>
-<div class="line"><span class="lineno">  144</span>                rStruct.xMax = rStruct.xMax - x0</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>                rStruct.yMin = rStruct.yMin - y0</div>
-<div class="line"><span class="lineno">  147</span>                rStruct.yMax = rStruct.yMax - y0</div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
+<div class="line"><span class="lineno">  105</span>            iLine += 1</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>            <span class="comment"># First line contains ranges</span></div>
+<div class="line"><span class="lineno">  108</span>            <span class="keywordflow">if</span> iLine == 1:</div>
+<div class="line"><span class="lineno">  109</span>                <span class="comment"># Remove extraneous, unneeded symbols in the line</span></div>
+<div class="line"><span class="lineno">  110</span>                line = line.replace(<span class="stringliteral">&#39;[&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">  111</span>                line = line.replace(<span class="stringliteral">&#39;]&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">  112</span>                line = line.replace(<span class="stringliteral">&#39;mm&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">  113</span>                sLine = line.split()</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>                <span class="comment"># Bin info line assumed to be formatted as:</span></div>
+<div class="line"><span class="lineno">  116</span>                <span class="comment"># Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz</span></div>
+<div class="line"><span class="lineno">  117</span>                <span class="comment"># These coordinate limits are in mm, but the actual data lines use m</span></div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>                print(f<span class="stringliteral">&#39;sLine = {sLine}&#39;</span>)</div>
+<div class="line"><span class="lineno">  120</span>                <span class="comment"># For each value, convert from mm to cm</span></div>
+<div class="line"><span class="lineno">  121</span>                rStruct.xMin = float(sLine[3])*mm2cm</div>
+<div class="line"><span class="lineno">  122</span>                rStruct.xMax = float(sLine[7])*mm2cm</div>
+<div class="line"><span class="lineno">  123</span>                rStruct.dx = float(sLine[12])*mm2cm</div>
+<div class="line"><span class="lineno">  124</span>                rStruct.yMin = float(sLine[4])*mm2cm</div>
+<div class="line"><span class="lineno">  125</span>                rStruct.yMax = float(sLine[8])*mm2cm</div>
+<div class="line"><span class="lineno">  126</span>                rStruct.dy = float(sLine[13])*mm2cm</div>
+<div class="line"><span class="lineno">  127</span>                rStruct.zMin = float(sLine[5])*mm2cm</div>
+<div class="line"><span class="lineno">  128</span>                rStruct.zMax = float(sLine[9])*mm2cm</div>
+<div class="line"><span class="lineno">  129</span>                rStruct.dz = float(sLine[14])*mm2cm</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)</div>
+<div class="line"><span class="lineno">  132</span>                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)</div>
+<div class="line"><span class="lineno">  133</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
+<div class="line"><span class="lineno">  134</span>                Nzy = Nz*Ny</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>                <span class="comment"># Centre the field map on the local origin (cm)</span></div>
+<div class="line"><span class="lineno">  139</span>                x0 = 0.5*(rStruct.xMin + rStruct.xMax)</div>
+<div class="line"><span class="lineno">  140</span>                y0 = 0.5*(rStruct.yMin + rStruct.yMax)</div>
+<div class="line"><span class="lineno">  141</span>                z0 = 0.5*(rStruct.zMin + rStruct.zMax)</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>                print(f<span class="stringliteral">&#39;Centering field map using coordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>                <span class="comment"># Center coordinate range limits (cm)</span></div>
+<div class="line"><span class="lineno">  146</span>                rStruct.xMin = rStruct.xMin - x0</div>
+<div class="line"><span class="lineno">  147</span>                rStruct.xMax = rStruct.xMax - x0</div>
 <div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>                rStruct.zMin = rStruct.zMin - z0</div>
-<div class="line"><span class="lineno">  150</span>                rStruct.zMax = rStruct.zMax - z0</div>
+<div class="line"><span class="lineno">  149</span>                rStruct.yMin = rStruct.yMin - y0</div>
+<div class="line"><span class="lineno">  150</span>                rStruct.yMax = rStruct.yMax - y0</div>
 <div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>                <span class="comment"># Fill info into range tree</span></div>
-<div class="line"><span class="lineno">  153</span>                rangeTree.Fill()</div>
+<div class="line"><span class="lineno">  152</span>                rStruct.zMin = rStruct.zMin - z0</div>
+<div class="line"><span class="lineno">  153</span>                rStruct.zMax = rStruct.zMax - z0</div>
 <div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>            <span class="comment"># Field data values start from line 3</span></div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">elif</span> iLine &gt; 2:</div>
+<div class="line"><span class="lineno">  155</span>                <span class="comment"># Fill info into range tree</span></div>
+<div class="line"><span class="lineno">  156</span>                rangeTree.Fill()</div>
+<div class="line"><span class="lineno">  157</span> </div>
 <div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>                sLine = line.split()</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>                <span class="comment"># Bin centre coordinates (m to cm), with origin shift (cm)</span></div>
-<div class="line"><span class="lineno">  162</span>                dStruct.x = float(sLine[0])*m2cm - x0</div>
-<div class="line"><span class="lineno">  163</span>                dStruct.y = float(sLine[1])*m2cm - y0</div>
-<div class="line"><span class="lineno">  164</span>                dStruct.z = float(sLine[2])*m2cm - z0</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>                <span class="comment"># B field components (Tesla)</span></div>
-<div class="line"><span class="lineno">  167</span>                dStruct.Bx = float(sLine[3])</div>
-<div class="line"><span class="lineno">  168</span>                dStruct.By = float(sLine[4])</div>
-<div class="line"><span class="lineno">  169</span>                dStruct.Bz = float(sLine[5])</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>                dataTree.Fill()</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>    theFile.cd()</div>
-<div class="line"><span class="lineno">  174</span>    rangeTree.Write()</div>
-<div class="line"><span class="lineno">  175</span>    dataTree.Write()</div>
-<div class="line"><span class="lineno">  176</span>    theFile.Close()</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  159</span>            <span class="comment"># Field data values start from line 3</span></div>
+<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">elif</span> iLine &gt; 2:</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span>                sLine = line.split()</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>                <span class="comment"># Bin centre coordinates (m to cm), with origin shift (cm)</span></div>
+<div class="line"><span class="lineno">  165</span>                dStruct.x = float(sLine[0])*m2cm - x0</div>
+<div class="line"><span class="lineno">  166</span>                dStruct.y = float(sLine[1])*m2cm - y0</div>
+<div class="line"><span class="lineno">  167</span>                dStruct.z = float(sLine[2])*m2cm - z0</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>                <span class="comment"># B field components (Tesla)</span></div>
+<div class="line"><span class="lineno">  170</span>                dStruct.Bx = float(sLine[3])</div>
+<div class="line"><span class="lineno">  171</span>                dStruct.By = float(sLine[4])</div>
+<div class="line"><span class="lineno">  172</span>                dStruct.Bz = float(sLine[5])</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>                dataTree.Fill()</div>
+<div class="line"><span class="lineno">  175</span> </div>
+<div class="line"><span class="lineno">  176</span>    theFile.cd()</div>
+<div class="line"><span class="lineno">  177</span>    rangeTree.Write()</div>
+<div class="line"><span class="lineno">  178</span>    dataTree.Write()</div>
+<div class="line"><span class="lineno">  179</span>    theFile.Close()</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -292,12 +292,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="convertMisisMap_8py_source.html#l00040">40</a> of file <a class="el" href="convertMisisMap_8py_source.html">convertMisisMap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>        rootFileName = <span class="stringliteral">&#39;BFieldTest.root&#39;</span>):</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>    createRootMap(inFileName, rootFileName)</div>
-<div class="line"><span class="lineno">   44</span> </div>
+<p class="definition">Definition at line <a class="el" href="convertMisisMap_8py_source.html#l00043">43</a> of file <a class="el" href="convertMisisMap_8py_source.html">convertMisisMap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>        rootFileName = <span class="stringliteral">&#39;BFieldTest.root&#39;</span>):</div>
 <div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>    createRootMap(inFileName, rootFileName)</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

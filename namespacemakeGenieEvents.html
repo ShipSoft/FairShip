@@ -195,19 +195,19 @@ Notes
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Build per-call env overrides (sets GXMLPATH only in nudet mode).</pre> 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00109">109</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span><span class="keyword">def </span>_build_env(nudet: bool, gxmlpath: Path | <span class="keywordtype">None</span>) -&gt; Mapping[str, str | <span class="keywordtype">None</span>] | <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  110</span>    <span class="stringliteral">&quot;&quot;&quot;Build per-call env overrides (sets GXMLPATH only in nudet mode).&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> nudet:</div>
-<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  113</span>    val = (</div>
-<div class="line"><span class="lineno">  114</span>        str(gxmlpath)</div>
-<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">if</span> gxmlpath</div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">else</span> <span class="stringliteral">&quot;/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines&quot;</span></div>
-<div class="line"><span class="lineno">  117</span>    )</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;GXMLPATH&quot;</span>: val}</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00112">112</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span><span class="keyword">def </span>_build_env(nudet: bool, gxmlpath: Path | <span class="keywordtype">None</span>) -&gt; Mapping[str, str | <span class="keywordtype">None</span>] | <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  113</span>    <span class="stringliteral">&quot;&quot;&quot;Build per-call env overrides (sets GXMLPATH only in nudet mode).&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> nudet:</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  116</span>    val = (</div>
+<div class="line"><span class="lineno">  117</span>        str(gxmlpath)</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">if</span> gxmlpath</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">else</span> <span class="stringliteral">&quot;/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines&quot;</span></div>
+<div class="line"><span class="lineno">  120</span>    )</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;GXMLPATH&quot;</span>: val}</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -234,112 +234,112 @@ Notes
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00212">212</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  212</span><span class="keyword">def </span>_build_parser() -&gt; argparse.ArgumentParser:</div>
-<div class="line"><span class="lineno">  213</span>    p = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Run GENIE neutrino simulation&quot;</span>)</div>
-<div class="line"><span class="lineno">  214</span>    sub = p.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  215</span> </div>
-<div class="line"><span class="lineno">  216</span>    <span class="comment"># sim command</span></div>
-<div class="line"><span class="lineno">  217</span>    ap = sub.add_parser(<span class="stringliteral">&quot;sim&quot;</span>, help=<span class="stringliteral">&quot;Make GENIE simulation file(s)&quot;</span>)</div>
-<div class="line"><span class="lineno">  218</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  219</span>        <span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=65539, help=<span class="stringliteral">&quot;RNG seed (default: GENIE 65539)&quot;</span></div>
-<div class="line"><span class="lineno">  220</span>    )</div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00215">215</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  215</span><span class="keyword">def </span>_build_parser() -&gt; argparse.ArgumentParser:</div>
+<div class="line"><span class="lineno">  216</span>    p = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Run GENIE neutrino simulation&quot;</span>)</div>
+<div class="line"><span class="lineno">  217</span>    sub = p.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>    <span class="comment"># sim command</span></div>
+<div class="line"><span class="lineno">  220</span>    ap = sub.add_parser(<span class="stringliteral">&quot;sim&quot;</span>, help=<span class="stringliteral">&quot;Make GENIE simulation file(s)&quot;</span>)</div>
 <div class="line"><span class="lineno">  221</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  222</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
-<div class="line"><span class="lineno">  223</span>        <span class="stringliteral">&quot;--output&quot;</span>,</div>
-<div class="line"><span class="lineno">  224</span>        dest=<span class="stringliteral">&quot;work_dir&quot;</span>,</div>
-<div class="line"><span class="lineno">  225</span>        type=Path,</div>
-<div class="line"><span class="lineno">  226</span>        default=Path(<span class="stringliteral">&quot;./work&quot;</span>),</div>
-<div class="line"><span class="lineno">  227</span>        help=<span class="stringliteral">&quot;Output directory&quot;</span>,</div>
-<div class="line"><span class="lineno">  228</span>    )</div>
-<div class="line"><span class="lineno">  229</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  230</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
-<div class="line"><span class="lineno">  231</span>        <span class="stringliteral">&quot;--filedir&quot;</span>,</div>
-<div class="line"><span class="lineno">  232</span>        dest=<span class="stringliteral">&quot;filedir&quot;</span>,</div>
-<div class="line"><span class="lineno">  233</span>        type=Path,</div>
-<div class="line"><span class="lineno">  234</span>        default=DEFAULT_FILE_DIR,</div>
-<div class="line"><span class="lineno">  235</span>        help=<span class="stringliteral">&quot;Flux dir&quot;</span>,</div>
-<div class="line"><span class="lineno">  236</span>    )</div>
-<div class="line"><span class="lineno">  237</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  238</span>        <span class="stringliteral">&quot;-c&quot;</span>,</div>
-<div class="line"><span class="lineno">  239</span>        <span class="stringliteral">&quot;--crosssectiondir&quot;</span>,</div>
-<div class="line"><span class="lineno">  240</span>        dest=<span class="stringliteral">&quot;splinedir&quot;</span>,</div>
-<div class="line"><span class="lineno">  241</span>        type=Path,</div>
-<div class="line"><span class="lineno">  242</span>        default=DEFAULT_SPLINE_DIR,</div>
-<div class="line"><span class="lineno">  243</span>        help=<span class="stringliteral">&quot;Spline dir&quot;</span>,</div>
-<div class="line"><span class="lineno">  244</span>    )</div>
-<div class="line"><span class="lineno">  245</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  246</span>        <span class="stringliteral">&quot;--xsec-file&quot;</span>,</div>
-<div class="line"><span class="lineno">  247</span>        type=str,</div>
-<div class="line"><span class="lineno">  248</span>        default=DEFAULT_XSEC_FILE,</div>
-<div class="line"><span class="lineno">  249</span>        help=f<span class="stringliteral">&quot;Spline XML (default: {DEFAULT_XSEC_FILE})&quot;</span>,</div>
-<div class="line"><span class="lineno">  250</span>    )</div>
-<div class="line"><span class="lineno">  251</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  252</span>        <span class="stringliteral">&quot;--flux-file&quot;</span>,</div>
-<div class="line"><span class="lineno">  253</span>        type=str,</div>
-<div class="line"><span class="lineno">  254</span>        default=DEFAULT_FLUX_FILE,</div>
-<div class="line"><span class="lineno">  255</span>        help=f<span class="stringliteral">&quot;Flux ROOT (default: {DEFAULT_FLUX_FILE})&quot;</span>,</div>
-<div class="line"><span class="lineno">  256</span>    )</div>
-<div class="line"><span class="lineno">  257</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  258</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><span class="lineno">  259</span>        <span class="stringliteral">&quot;--target&quot;</span>,</div>
-<div class="line"><span class="lineno">  260</span>        type=str,</div>
-<div class="line"><span class="lineno">  261</span>        default=<span class="stringliteral">&quot;iron&quot;</span>,</div>
-<div class="line"><span class="lineno">  262</span>        choices=sorted(TARGET_CODE),</div>
-<div class="line"><span class="lineno">  263</span>        help=<span class="stringliteral">&quot;Target material&quot;</span>,</div>
-<div class="line"><span class="lineno">  264</span>    )</div>
-<div class="line"><span class="lineno">  265</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  266</span>        <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, default=100, help=<span class="stringliteral">&quot;Events per neutrino species&quot;</span></div>
+<div class="line"><span class="lineno">  222</span>        <span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=65539, help=<span class="stringliteral">&quot;RNG seed (default: GENIE 65539)&quot;</span></div>
+<div class="line"><span class="lineno">  223</span>    )</div>
+<div class="line"><span class="lineno">  224</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  225</span>        <span class="stringliteral">&quot;-o&quot;</span>,</div>
+<div class="line"><span class="lineno">  226</span>        <span class="stringliteral">&quot;--output&quot;</span>,</div>
+<div class="line"><span class="lineno">  227</span>        dest=<span class="stringliteral">&quot;work_dir&quot;</span>,</div>
+<div class="line"><span class="lineno">  228</span>        type=Path,</div>
+<div class="line"><span class="lineno">  229</span>        default=Path(<span class="stringliteral">&quot;./work&quot;</span>),</div>
+<div class="line"><span class="lineno">  230</span>        help=<span class="stringliteral">&quot;Output directory&quot;</span>,</div>
+<div class="line"><span class="lineno">  231</span>    )</div>
+<div class="line"><span class="lineno">  232</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  233</span>        <span class="stringliteral">&quot;-f&quot;</span>,</div>
+<div class="line"><span class="lineno">  234</span>        <span class="stringliteral">&quot;--filedir&quot;</span>,</div>
+<div class="line"><span class="lineno">  235</span>        dest=<span class="stringliteral">&quot;filedir&quot;</span>,</div>
+<div class="line"><span class="lineno">  236</span>        type=Path,</div>
+<div class="line"><span class="lineno">  237</span>        default=DEFAULT_FILE_DIR,</div>
+<div class="line"><span class="lineno">  238</span>        help=<span class="stringliteral">&quot;Flux dir&quot;</span>,</div>
+<div class="line"><span class="lineno">  239</span>    )</div>
+<div class="line"><span class="lineno">  240</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  241</span>        <span class="stringliteral">&quot;-c&quot;</span>,</div>
+<div class="line"><span class="lineno">  242</span>        <span class="stringliteral">&quot;--crosssectiondir&quot;</span>,</div>
+<div class="line"><span class="lineno">  243</span>        dest=<span class="stringliteral">&quot;splinedir&quot;</span>,</div>
+<div class="line"><span class="lineno">  244</span>        type=Path,</div>
+<div class="line"><span class="lineno">  245</span>        default=DEFAULT_SPLINE_DIR,</div>
+<div class="line"><span class="lineno">  246</span>        help=<span class="stringliteral">&quot;Spline dir&quot;</span>,</div>
+<div class="line"><span class="lineno">  247</span>    )</div>
+<div class="line"><span class="lineno">  248</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  249</span>        <span class="stringliteral">&quot;--xsec-file&quot;</span>,</div>
+<div class="line"><span class="lineno">  250</span>        type=str,</div>
+<div class="line"><span class="lineno">  251</span>        default=DEFAULT_XSEC_FILE,</div>
+<div class="line"><span class="lineno">  252</span>        help=f<span class="stringliteral">&quot;Spline XML (default: {DEFAULT_XSEC_FILE})&quot;</span>,</div>
+<div class="line"><span class="lineno">  253</span>    )</div>
+<div class="line"><span class="lineno">  254</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  255</span>        <span class="stringliteral">&quot;--flux-file&quot;</span>,</div>
+<div class="line"><span class="lineno">  256</span>        type=str,</div>
+<div class="line"><span class="lineno">  257</span>        default=DEFAULT_FLUX_FILE,</div>
+<div class="line"><span class="lineno">  258</span>        help=f<span class="stringliteral">&quot;Flux ROOT (default: {DEFAULT_FLUX_FILE})&quot;</span>,</div>
+<div class="line"><span class="lineno">  259</span>    )</div>
+<div class="line"><span class="lineno">  260</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  261</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><span class="lineno">  262</span>        <span class="stringliteral">&quot;--target&quot;</span>,</div>
+<div class="line"><span class="lineno">  263</span>        type=str,</div>
+<div class="line"><span class="lineno">  264</span>        default=<span class="stringliteral">&quot;iron&quot;</span>,</div>
+<div class="line"><span class="lineno">  265</span>        choices=sorted(TARGET_CODE),</div>
+<div class="line"><span class="lineno">  266</span>        help=<span class="stringliteral">&quot;Target material&quot;</span>,</div>
 <div class="line"><span class="lineno">  267</span>    )</div>
-<div class="line"><span class="lineno">  268</span>    ap.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, default=0.5, help=<span class="stringliteral">&quot;Min Eν [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  269</span>    ap.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, default=350.0, help=<span class="stringliteral">&quot;Max Eν [GeV]&quot;</span>)</div>
-<div class="line"><span class="lineno">  270</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  271</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
-<div class="line"><span class="lineno">  272</span>        <span class="stringliteral">&quot;--event-generator-list&quot;</span>,</div>
-<div class="line"><span class="lineno">  273</span>        dest=<span class="stringliteral">&quot;evtype&quot;</span>,</div>
-<div class="line"><span class="lineno">  274</span>        type=str,</div>
-<div class="line"><span class="lineno">  275</span>        default=<span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  276</span>        help=<span class="stringliteral">&quot;GENIE generator list (e.g. CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, ...)&quot;</span>,</div>
-<div class="line"><span class="lineno">  277</span>    )</div>
-<div class="line"><span class="lineno">  278</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  279</span>        <span class="stringliteral">&quot;--nudet&quot;</span>, action=<span class="stringliteral">&quot;store_true&quot;</span>, help=<span class="stringliteral">&quot;Disable charm &amp; tau decays via GXMLPATH&quot;</span></div>
+<div class="line"><span class="lineno">  268</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  269</span>        <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, default=100, help=<span class="stringliteral">&quot;Events per neutrino species&quot;</span></div>
+<div class="line"><span class="lineno">  270</span>    )</div>
+<div class="line"><span class="lineno">  271</span>    ap.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, default=0.5, help=<span class="stringliteral">&quot;Min Eν [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  272</span>    ap.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, default=350.0, help=<span class="stringliteral">&quot;Max Eν [GeV]&quot;</span>)</div>
+<div class="line"><span class="lineno">  273</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  274</span>        <span class="stringliteral">&quot;-e&quot;</span>,</div>
+<div class="line"><span class="lineno">  275</span>        <span class="stringliteral">&quot;--event-generator-list&quot;</span>,</div>
+<div class="line"><span class="lineno">  276</span>        dest=<span class="stringliteral">&quot;evtype&quot;</span>,</div>
+<div class="line"><span class="lineno">  277</span>        type=str,</div>
+<div class="line"><span class="lineno">  278</span>        default=<span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  279</span>        help=<span class="stringliteral">&quot;GENIE generator list (e.g. CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, ...)&quot;</span>,</div>
 <div class="line"><span class="lineno">  280</span>    )</div>
 <div class="line"><span class="lineno">  281</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  282</span>        <span class="stringliteral">&quot;--gxmlpath&quot;</span>, type=Path, default=<span class="keywordtype">None</span>, help=<span class="stringliteral">&quot;Override GXMLPATH in --nudet mode&quot;</span></div>
+<div class="line"><span class="lineno">  282</span>        <span class="stringliteral">&quot;--nudet&quot;</span>, action=<span class="stringliteral">&quot;store_true&quot;</span>, help=<span class="stringliteral">&quot;Disable charm &amp; tau decays via GXMLPATH&quot;</span></div>
 <div class="line"><span class="lineno">  283</span>    )</div>
 <div class="line"><span class="lineno">  284</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  285</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
-<div class="line"><span class="lineno">  286</span>        <span class="stringliteral">&quot;--particles&quot;</span>,</div>
-<div class="line"><span class="lineno">  287</span>        nargs=<span class="stringliteral">&quot;+&quot;</span>,</div>
-<div class="line"><span class="lineno">  288</span>        type=int,</div>
-<div class="line"><span class="lineno">  289</span>        default=NUPDGLIST,</div>
-<div class="line"><span class="lineno">  290</span>        help=<span class="stringliteral">&quot;PDGs (e.g. 16 -16 14 -14 12 -12). Default: all flavors&quot;</span>,</div>
-<div class="line"><span class="lineno">  291</span>    )</div>
-<div class="line"><span class="lineno">  292</span>    ap.add_argument(<span class="stringliteral">&quot;-r&quot;</span>, <span class="stringliteral">&quot;--run&quot;</span>, type=int, default=1, help=<span class="stringliteral">&quot;GENIE run number&quot;</span>)</div>
-<div class="line"><span class="lineno">  293</span>    ap.add_argument(</div>
-<div class="line"><span class="lineno">  294</span>        <span class="stringliteral">&quot;-v&quot;</span>,</div>
-<div class="line"><span class="lineno">  295</span>        <span class="stringliteral">&quot;--verbose&quot;</span>,</div>
-<div class="line"><span class="lineno">  296</span>        action=<span class="stringliteral">&quot;count&quot;</span>,</div>
-<div class="line"><span class="lineno">  297</span>        default=0,</div>
-<div class="line"><span class="lineno">  298</span>        help=<span class="stringliteral">&quot;Increase verbosity (-v or -vv)&quot;</span>,</div>
-<div class="line"><span class="lineno">  299</span>    )</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>    <span class="comment"># spline command</span></div>
-<div class="line"><span class="lineno">  302</span>    ap1 = sub.add_parser(</div>
-<div class="line"><span class="lineno">  303</span>        <span class="stringliteral">&quot;spline&quot;</span>, help=<span class="stringliteral">&quot;Make a new cross-section spline (xsec_splines.xml)&quot;</span></div>
-<div class="line"><span class="lineno">  304</span>    )</div>
-<div class="line"><span class="lineno">  305</span>    ap1.add_argument(</div>
-<div class="line"><span class="lineno">  306</span>        <span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, type=str, default=<span class="stringliteral">&quot;iron&quot;</span>, choices=sorted(TARGET_CODE)</div>
+<div class="line"><span class="lineno">  285</span>        <span class="stringliteral">&quot;--gxmlpath&quot;</span>, type=Path, default=<span class="keywordtype">None</span>, help=<span class="stringliteral">&quot;Override GXMLPATH in --nudet mode&quot;</span></div>
+<div class="line"><span class="lineno">  286</span>    )</div>
+<div class="line"><span class="lineno">  287</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  288</span>        <span class="stringliteral">&quot;-p&quot;</span>,</div>
+<div class="line"><span class="lineno">  289</span>        <span class="stringliteral">&quot;--particles&quot;</span>,</div>
+<div class="line"><span class="lineno">  290</span>        nargs=<span class="stringliteral">&quot;+&quot;</span>,</div>
+<div class="line"><span class="lineno">  291</span>        type=int,</div>
+<div class="line"><span class="lineno">  292</span>        default=NUPDGLIST,</div>
+<div class="line"><span class="lineno">  293</span>        help=<span class="stringliteral">&quot;PDGs (e.g. 16 -16 14 -14 12 -12). Default: all flavors&quot;</span>,</div>
+<div class="line"><span class="lineno">  294</span>    )</div>
+<div class="line"><span class="lineno">  295</span>    ap.add_argument(<span class="stringliteral">&quot;-r&quot;</span>, <span class="stringliteral">&quot;--run&quot;</span>, type=int, default=1, help=<span class="stringliteral">&quot;GENIE run number&quot;</span>)</div>
+<div class="line"><span class="lineno">  296</span>    ap.add_argument(</div>
+<div class="line"><span class="lineno">  297</span>        <span class="stringliteral">&quot;-v&quot;</span>,</div>
+<div class="line"><span class="lineno">  298</span>        <span class="stringliteral">&quot;--verbose&quot;</span>,</div>
+<div class="line"><span class="lineno">  299</span>        action=<span class="stringliteral">&quot;count&quot;</span>,</div>
+<div class="line"><span class="lineno">  300</span>        default=0,</div>
+<div class="line"><span class="lineno">  301</span>        help=<span class="stringliteral">&quot;Increase verbosity (-v or -vv)&quot;</span>,</div>
+<div class="line"><span class="lineno">  302</span>    )</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>    <span class="comment"># spline command</span></div>
+<div class="line"><span class="lineno">  305</span>    ap1 = sub.add_parser(</div>
+<div class="line"><span class="lineno">  306</span>        <span class="stringliteral">&quot;spline&quot;</span>, help=<span class="stringliteral">&quot;Make a new cross-section spline (xsec_splines.xml)&quot;</span></div>
 <div class="line"><span class="lineno">  307</span>    )</div>
 <div class="line"><span class="lineno">  308</span>    ap1.add_argument(</div>
-<div class="line"><span class="lineno">  309</span>        <span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, dest=<span class="stringliteral">&quot;work_dir&quot;</span>, type=Path, default=Path(<span class="stringliteral">&quot;./work&quot;</span>)</div>
+<div class="line"><span class="lineno">  309</span>        <span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, type=str, default=<span class="stringliteral">&quot;iron&quot;</span>, choices=sorted(TARGET_CODE)</div>
 <div class="line"><span class="lineno">  310</span>    )</div>
-<div class="line"><span class="lineno">  311</span>    ap1.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, default=500)</div>
-<div class="line"><span class="lineno">  312</span>    ap1.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, default=400.0)</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">return</span> p</div>
-<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  311</span>    ap1.add_argument(</div>
+<div class="line"><span class="lineno">  312</span>        <span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, dest=<span class="stringliteral">&quot;work_dir&quot;</span>, type=Path, default=Path(<span class="stringliteral">&quot;./work&quot;</span>)</div>
+<div class="line"><span class="lineno">  313</span>    )</div>
+<div class="line"><span class="lineno">  314</span>    ap1.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, default=500)</div>
+<div class="line"><span class="lineno">  315</span>    ap1.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, default=400.0)</div>
 <div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">return</span> p</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -367,11 +367,11 @@ Notes
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00105">105</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span><span class="keyword">def </span>_ensure_dir(path: Path) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  106</span>    path.mkdir(parents=<span class="keyword">True</span>, exist_ok=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00108">108</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span><span class="keyword">def </span>_ensure_dir(path: Path) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  109</span>    path.mkdir(parents=<span class="keyword">True</span>, exist_ok=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -399,11 +399,11 @@ Notes
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00128">128</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span><span class="keyword">def </span>_pdg_list(particles: Sequence[int]) -&gt; Sequence[int]:</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> [int(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles]</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00131">131</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>_pdg_list(particles: Sequence[int]) -&gt; Sequence[int]:</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> [int(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles]</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -431,14 +431,14 @@ Notes
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00121">121</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span><span class="keyword">def </span>_target_code(name: str) -&gt; str:</div>
-<div class="line"><span class="lineno">  122</span>    code = TARGET_CODE.get(name.lower())</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> code:</div>
-<div class="line"><span class="lineno">  124</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown target &#39;{name}&#39;. Choices: {&#39;, &#39;.join(TARGET_CODE)}&quot;</span>)</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> code</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00124">124</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span><span class="keyword">def </span>_target_code(name: str) -&gt; str:</div>
+<div class="line"><span class="lineno">  125</span>    code = TARGET_CODE.get(name.lower())</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> code:</div>
+<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown target &#39;{name}&#39;. Choices: {&#39;, &#39;.join(TARGET_CODE)}&quot;</span>)</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> code</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -469,40 +469,40 @@ Notes
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00070">70</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>) -&gt; dict[int, float]:</div>
-<div class="line"><span class="lineno">   73</span>    <span class="stringliteral">&quot;&quot;&quot;Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   74</span>    f = ROOT.TFile(str(neutrino_flux), <span class="stringliteral">&quot;READ&quot;</span>)</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> f <span class="keywordflow">or</span> f.IsZombie():</div>
-<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Cannot open flux file: {neutrino_flux}&quot;</span>)</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   78</span>        ratios: dict[int, float] = {}</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">for</span> pdg <span class="keywordflow">in</span> particles:</div>
-<div class="line"><span class="lineno">   80</span>            fam = abs(int(pdg))</div>
-<div class="line"><span class="lineno">   81</span>            h_nu = f.Get(get_1D_flux_name(fam))</div>
-<div class="line"><span class="lineno">   82</span>            h_nubar = f.Get(get_1D_flux_name(-fam))</div>
-<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> h_nu <span class="keywordflow">or</span> <span class="keywordflow">not</span> h_nubar:</div>
-<div class="line"><span class="lineno">   84</span>                <span class="keywordflow">raise</span> FileNotFoundError(</div>
-<div class="line"><span class="lineno">   85</span>                    f<span class="stringliteral">&quot;Missing hists {get_1D_flux_name(fam)} / &quot;</span></div>
-<div class="line"><span class="lineno">   86</span>                    f<span class="stringliteral">&quot;{get_1D_flux_name(-fam)} in {neutrino_flux}&quot;</span></div>
-<div class="line"><span class="lineno">   87</span>                )</div>
-<div class="line"><span class="lineno">   88</span>            s_nu = float(h_nu.GetSumOfWeights())</div>
-<div class="line"><span class="lineno">   89</span>            s_nubar = float(h_nubar.GetSumOfWeights())</div>
-<div class="line"><span class="lineno">   90</span>            <span class="keywordflow">if</span> s_nubar &lt;= 0.0:</div>
-<div class="line"><span class="lineno">   91</span>                <span class="keywordflow">raise</span> FileNotFoundError(</div>
-<div class="line"><span class="lineno">   92</span>                    f<span class="stringliteral">&quot;ν̄ sum of weights is zero for family {fam} in {neutrino_flux}&quot;</span></div>
-<div class="line"><span class="lineno">   93</span>                )</div>
-<div class="line"><span class="lineno">   94</span>            ratios[fam] = s_nu / s_nubar</div>
-<div class="line"><span class="lineno">   95</span>            log_output = (</div>
-<div class="line"><span class="lineno">   96</span>                f<span class="stringliteral">&quot;ν/ν̄ ratio for |PDG|={fam}: &quot;</span></div>
-<div class="line"><span class="lineno">   97</span>                f<span class="stringliteral">&quot;{ratios[fam]:.4f} (nu={s_nu}, nubar={s_nubar})&quot;</span></div>
-<div class="line"><span class="lineno">   98</span>            )</div>
-<div class="line"><span class="lineno">   99</span>            logging.info(log_output)</div>
-<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">return</span> ratios</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">finally</span>:</div>
-<div class="line"><span class="lineno">  102</span>        f.Close()</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00073">73</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>) -&gt; dict[int, float]:</div>
+<div class="line"><span class="lineno">   76</span>    <span class="stringliteral">&quot;&quot;&quot;Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   77</span>    f = ROOT.TFile(str(neutrino_flux), <span class="stringliteral">&quot;READ&quot;</span>)</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> f <span class="keywordflow">or</span> f.IsZombie():</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Cannot open flux file: {neutrino_flux}&quot;</span>)</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   81</span>        ratios: dict[int, float] = {}</div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">for</span> pdg <span class="keywordflow">in</span> particles:</div>
+<div class="line"><span class="lineno">   83</span>            fam = abs(int(pdg))</div>
+<div class="line"><span class="lineno">   84</span>            h_nu = f.Get(get_1D_flux_name(fam))</div>
+<div class="line"><span class="lineno">   85</span>            h_nubar = f.Get(get_1D_flux_name(-fam))</div>
+<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> h_nu <span class="keywordflow">or</span> <span class="keywordflow">not</span> h_nubar:</div>
+<div class="line"><span class="lineno">   87</span>                <span class="keywordflow">raise</span> FileNotFoundError(</div>
+<div class="line"><span class="lineno">   88</span>                    f<span class="stringliteral">&quot;Missing hists {get_1D_flux_name(fam)} / &quot;</span></div>
+<div class="line"><span class="lineno">   89</span>                    f<span class="stringliteral">&quot;{get_1D_flux_name(-fam)} in {neutrino_flux}&quot;</span></div>
+<div class="line"><span class="lineno">   90</span>                )</div>
+<div class="line"><span class="lineno">   91</span>            s_nu = float(h_nu.GetSumOfWeights())</div>
+<div class="line"><span class="lineno">   92</span>            s_nubar = float(h_nubar.GetSumOfWeights())</div>
+<div class="line"><span class="lineno">   93</span>            <span class="keywordflow">if</span> s_nubar &lt;= 0.0:</div>
+<div class="line"><span class="lineno">   94</span>                <span class="keywordflow">raise</span> FileNotFoundError(</div>
+<div class="line"><span class="lineno">   95</span>                    f<span class="stringliteral">&quot;ν̄ sum of weights is zero for family {fam} in {neutrino_flux}&quot;</span></div>
+<div class="line"><span class="lineno">   96</span>                )</div>
+<div class="line"><span class="lineno">   97</span>            ratios[fam] = s_nu / s_nubar</div>
+<div class="line"><span class="lineno">   98</span>            log_output = (</div>
+<div class="line"><span class="lineno">   99</span>                f<span class="stringliteral">&quot;ν/ν̄ ratio for |PDG|={fam}: &quot;</span></div>
+<div class="line"><span class="lineno">  100</span>                f<span class="stringliteral">&quot;{ratios[fam]:.4f} (nu={s_nu}, nubar={s_nubar})&quot;</span></div>
+<div class="line"><span class="lineno">  101</span>            )</div>
+<div class="line"><span class="lineno">  102</span>            logging.info(log_output)</div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">return</span> ratios</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">finally</span>:</div>
+<div class="line"><span class="lineno">  105</span>        f.Close()</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -522,74 +522,74 @@ Notes
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Launch GENIE event generation or spline creation from CLI args.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00317">317</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  317</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(argv: Sequence[str] | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; int:</div>
-<div class="line"><span class="lineno">  318</span>    <span class="stringliteral">&quot;&quot;&quot;Launch GENIE event generation or spline creation from CLI args.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  319</span>    <span class="comment"># CLI</span></div>
-<div class="line"><span class="lineno">  320</span>    parser = _build_parser()</div>
-<div class="line"><span class="lineno">  321</span>    args = parser.parse_args(argv)</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>    <span class="comment"># logging</span></div>
-<div class="line"><span class="lineno">  324</span>    level = logging.WARNING</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
-<div class="line"><span class="lineno">  326</span>        level = logging.INFO</div>
-<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
-<div class="line"><span class="lineno">  328</span>        level = logging.DEBUG</div>
-<div class="line"><span class="lineno">  329</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>    <span class="comment"># ROOT env</span></div>
-<div class="line"><span class="lineno">  332</span>    <a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()</div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00320">320</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  320</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(argv: Sequence[str] | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; int:</div>
+<div class="line"><span class="lineno">  321</span>    <span class="stringliteral">&quot;&quot;&quot;Launch GENIE event generation or spline creation from CLI args.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  322</span>    <span class="comment"># CLI</span></div>
+<div class="line"><span class="lineno">  323</span>    parser = _build_parser()</div>
+<div class="line"><span class="lineno">  324</span>    args = parser.parse_args(argv)</div>
+<div class="line"><span class="lineno">  325</span> </div>
+<div class="line"><span class="lineno">  326</span>    <span class="comment"># logging</span></div>
+<div class="line"><span class="lineno">  327</span>    level = logging.WARNING</div>
+<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
+<div class="line"><span class="lineno">  329</span>        level = logging.INFO</div>
+<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
+<div class="line"><span class="lineno">  331</span>        level = logging.DEBUG</div>
+<div class="line"><span class="lineno">  332</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
 <div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;spline&quot;</span>:</div>
-<div class="line"><span class="lineno">  335</span>        make_splines_cli(</div>
-<div class="line"><span class="lineno">  336</span>            target=args.target,</div>
-<div class="line"><span class="lineno">  337</span>            work_dir=args.work_dir,</div>
-<div class="line"><span class="lineno">  338</span>            nknots=args.nknots,</div>
-<div class="line"><span class="lineno">  339</span>            emax=args.emax,</div>
-<div class="line"><span class="lineno">  340</span>        )</div>
-<div class="line"><span class="lineno">  341</span>        <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>    <span class="comment"># sim</span></div>
-<div class="line"><span class="lineno">  344</span>    env_vars = _build_env(nudet=bool(args.nudet), gxmlpath=args.gxmlpath)</div>
-<div class="line"><span class="lineno">  345</span>    targetcode = _target_code(args.target)</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>    splines = (args.splinedir / args.xsec_file).resolve()</div>
-<div class="line"><span class="lineno">  348</span>    flux = (args.filedir / args.flux_file).resolve()</div>
-<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> splines.is_file():</div>
-<div class="line"><span class="lineno">  350</span>        parser.error(f<span class="stringliteral">&quot;Spline file not found: {splines}&quot;</span>)</div>
-<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> flux.is_file():</div>
-<div class="line"><span class="lineno">  352</span>        parser.error(f<span class="stringliteral">&quot;Flux ROOT file not found: {flux}&quot;</span>)</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>    particles = _pdg_list(args.particles)</div>
-<div class="line"><span class="lineno">  355</span>    nu_over_nubar = extract_nu_over_nubar(flux, particles)</div>
+<div class="line"><span class="lineno">  334</span>    <span class="comment"># ROOT env</span></div>
+<div class="line"><span class="lineno">  335</span>    <a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;spline&quot;</span>:</div>
+<div class="line"><span class="lineno">  338</span>        make_splines_cli(</div>
+<div class="line"><span class="lineno">  339</span>            target=args.target,</div>
+<div class="line"><span class="lineno">  340</span>            work_dir=args.work_dir,</div>
+<div class="line"><span class="lineno">  341</span>            nknots=args.nknots,</div>
+<div class="line"><span class="lineno">  342</span>            emax=args.emax,</div>
+<div class="line"><span class="lineno">  343</span>        )</div>
+<div class="line"><span class="lineno">  344</span>        <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  345</span> </div>
+<div class="line"><span class="lineno">  346</span>    <span class="comment"># sim</span></div>
+<div class="line"><span class="lineno">  347</span>    env_vars = _build_env(nudet=bool(args.nudet), gxmlpath=args.gxmlpath)</div>
+<div class="line"><span class="lineno">  348</span>    targetcode = _target_code(args.target)</div>
+<div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span>    splines = (args.splinedir / args.xsec_file).resolve()</div>
+<div class="line"><span class="lineno">  351</span>    flux = (args.filedir / args.flux_file).resolve()</div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> splines.is_file():</div>
+<div class="line"><span class="lineno">  353</span>        parser.error(f<span class="stringliteral">&quot;Spline file not found: {splines}&quot;</span>)</div>
+<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> flux.is_file():</div>
+<div class="line"><span class="lineno">  355</span>        parser.error(f<span class="stringliteral">&quot;Flux ROOT file not found: {flux}&quot;</span>)</div>
 <div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>    logging.info(</div>
-<div class="line"><span class="lineno">  358</span>        f<span class="stringliteral">&quot;Seed: {args.seed} | &quot;</span></div>
-<div class="line"><span class="lineno">  359</span>        f<span class="stringliteral">&quot;Target: {args.target} ({targetcode}) | &quot;</span></div>
-<div class="line"><span class="lineno">  360</span>        f<span class="stringliteral">&quot;Process: {args.evtype or &#39;ALL&#39;} | &quot;</span></div>
-<div class="line"><span class="lineno">  361</span>        f<span class="stringliteral">&quot;nudet={bool(args.nudet)}&quot;</span></div>
-<div class="line"><span class="lineno">  362</span>    )</div>
-<div class="line"><span class="lineno">  363</span>    make_events(</div>
-<div class="line"><span class="lineno">  364</span>        run=int(args.run),</div>
-<div class="line"><span class="lineno">  365</span>        nevents=int(args.nevents),</div>
-<div class="line"><span class="lineno">  366</span>        particles=particles,</div>
-<div class="line"><span class="lineno">  367</span>        targetcode=targetcode,</div>
-<div class="line"><span class="lineno">  368</span>        process=args.evtype,</div>
-<div class="line"><span class="lineno">  369</span>        emin=float(args.emin),</div>
-<div class="line"><span class="lineno">  370</span>        emax=float(args.emax),</div>
-<div class="line"><span class="lineno">  371</span>        neutrino_flux=flux,</div>
-<div class="line"><span class="lineno">  372</span>        splines=splines,</div>
-<div class="line"><span class="lineno">  373</span>        seed=int(args.seed),</div>
-<div class="line"><span class="lineno">  374</span>        env_vars=env_vars,</div>
-<div class="line"><span class="lineno">  375</span>        work_dir=args.work_dir.resolve(),</div>
-<div class="line"><span class="lineno">  376</span>        nu_over_nubar=nu_over_nubar,</div>
-<div class="line"><span class="lineno">  377</span>    )</div>
-<div class="line"><span class="lineno">  378</span>    logging.info(<span class="stringliteral">&quot;Event generation completed successfully.&quot;</span>)</div>
-<div class="line"><span class="lineno">  379</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  380</span> </div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00060">shipRoot_conf.py:60</a></div></div>
-<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
+<div class="line"><span class="lineno">  357</span>    particles = _pdg_list(args.particles)</div>
+<div class="line"><span class="lineno">  358</span>    nu_over_nubar = extract_nu_over_nubar(flux, particles)</div>
+<div class="line"><span class="lineno">  359</span> </div>
+<div class="line"><span class="lineno">  360</span>    logging.info(</div>
+<div class="line"><span class="lineno">  361</span>        f<span class="stringliteral">&quot;Seed: {args.seed} | &quot;</span></div>
+<div class="line"><span class="lineno">  362</span>        f<span class="stringliteral">&quot;Target: {args.target} ({targetcode}) | &quot;</span></div>
+<div class="line"><span class="lineno">  363</span>        f<span class="stringliteral">&quot;Process: {args.evtype or &#39;ALL&#39;} | &quot;</span></div>
+<div class="line"><span class="lineno">  364</span>        f<span class="stringliteral">&quot;nudet={bool(args.nudet)}&quot;</span></div>
+<div class="line"><span class="lineno">  365</span>    )</div>
+<div class="line"><span class="lineno">  366</span>    make_events(</div>
+<div class="line"><span class="lineno">  367</span>        run=int(args.run),</div>
+<div class="line"><span class="lineno">  368</span>        nevents=int(args.nevents),</div>
+<div class="line"><span class="lineno">  369</span>        particles=particles,</div>
+<div class="line"><span class="lineno">  370</span>        targetcode=targetcode,</div>
+<div class="line"><span class="lineno">  371</span>        process=args.evtype,</div>
+<div class="line"><span class="lineno">  372</span>        emin=float(args.emin),</div>
+<div class="line"><span class="lineno">  373</span>        emax=float(args.emax),</div>
+<div class="line"><span class="lineno">  374</span>        neutrino_flux=flux,</div>
+<div class="line"><span class="lineno">  375</span>        splines=splines,</div>
+<div class="line"><span class="lineno">  376</span>        seed=int(args.seed),</div>
+<div class="line"><span class="lineno">  377</span>        env_vars=env_vars,</div>
+<div class="line"><span class="lineno">  378</span>        work_dir=args.work_dir.resolve(),</div>
+<div class="line"><span class="lineno">  379</span>        nu_over_nubar=nu_over_nubar,</div>
+<div class="line"><span class="lineno">  380</span>    )</div>
+<div class="line"><span class="lineno">  381</span>    logging.info(<span class="stringliteral">&quot;Event generation completed successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  383</span> </div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00063">shipRoot_conf.py:63</a></div></div>
+<div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -685,58 +685,58 @@ Notes
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Generate events for PDGs, convert to GST, and attach 2D flux.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00146">146</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  162</span>    <span class="stringliteral">&quot;&quot;&quot;Generate events for PDGs, convert to GST, and attach 2D flux.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  163</span>    _ensure_dir(work_dir)</div>
-<div class="line"><span class="lineno">  164</span>    pdg_db = ROOT.TDatabasePDG()</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">for</span> pdg <span class="keywordflow">in</span> particles:</div>
-<div class="line"><span class="lineno">  167</span>        fam = abs(pdg)</div>
-<div class="line"><span class="lineno">  168</span>        part = pdg_db.GetParticle(int(pdg))</div>
-<div class="line"><span class="lineno">  169</span>        pdg_name = part.GetName() <span class="keywordflow">if</span> part <span class="keywordflow">else</span> str(pdg)</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>        <span class="comment"># anti-neutrinos scaled by flux ratio</span></div>
-<div class="line"><span class="lineno">  172</span>        N = int(nevents) <span class="keywordflow">if</span> pdg &gt; 0 <span class="keywordflow">else</span> int(nevents / nu_over_nubar[fam])</div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00149">149</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  164</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  165</span>    <span class="stringliteral">&quot;&quot;&quot;Generate events for PDGs, convert to GST, and attach 2D flux.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  166</span>    _ensure_dir(work_dir)</div>
+<div class="line"><span class="lineno">  167</span>    pdg_db = ROOT.TDatabasePDG()</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">for</span> pdg <span class="keywordflow">in</span> particles:</div>
+<div class="line"><span class="lineno">  170</span>        fam = abs(pdg)</div>
+<div class="line"><span class="lineno">  171</span>        part = pdg_db.GetParticle(int(pdg))</div>
+<div class="line"><span class="lineno">  172</span>        pdg_name = part.GetName() <span class="keywordflow">if</span> part <span class="keywordflow">else</span> str(pdg)</div>
 <div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>        out_dir = work_dir / f<span class="stringliteral">&quot;genie-{pdg_name}_{N}_events&quot;</span></div>
-<div class="line"><span class="lineno">  175</span>        _ensure_dir(out_dir)</div>
+<div class="line"><span class="lineno">  174</span>        <span class="comment"># anti-neutrinos scaled by flux ratio</span></div>
+<div class="line"><span class="lineno">  175</span>        N = int(nevents) <span class="keywordflow">if</span> pdg &gt; 0 <span class="keywordflow">else</span> int(nevents / nu_over_nubar[fam])</div>
 <div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>        nudet_suffix = <span class="stringliteral">&quot;_nudet&quot;</span> <span class="keywordflow">if</span> env_vars <span class="keywordflow">and</span> env_vars.get(<span class="stringliteral">&quot;GXMLPATH&quot;</span>) <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  178</span>        filename = (</div>
-<div class="line"><span class="lineno">  179</span>            f<span class="stringliteral">&quot;run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_&quot;</span></div>
-<div class="line"><span class="lineno">  180</span>            f<span class="stringliteral">&quot;{process or &#39;ALL&#39;}{nudet_suffix}.ghep.root&quot;</span></div>
-<div class="line"><span class="lineno">  181</span>        )</div>
-<div class="line"><span class="lineno">  182</span>        ghep_path = out_dir / filename</div>
-<div class="line"><span class="lineno">  183</span>        gst_path = out_dir / f<span class="stringliteral">&quot;genie-{filename}&quot;</span></div>
-<div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span>        logging.info(</div>
-<div class="line"><span class="lineno">  186</span>            f<span class="stringliteral">&quot;Generating {N} events for PDG {pdg_name} (run={run}) -&gt; {ghep_path}&quot;</span></div>
-<div class="line"><span class="lineno">  187</span>        )</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>        generate_genie_events(</div>
-<div class="line"><span class="lineno">  190</span>            nevents=N,</div>
-<div class="line"><span class="lineno">  191</span>            nupdg=int(pdg),</div>
-<div class="line"><span class="lineno">  192</span>            emin=emin,</div>
-<div class="line"><span class="lineno">  193</span>            emax=emax,</div>
-<div class="line"><span class="lineno">  194</span>            targetcode=targetcode,</div>
-<div class="line"><span class="lineno">  195</span>            inputflux=str(neutrino_flux),</div>
-<div class="line"><span class="lineno">  196</span>            spline=str(splines),</div>
-<div class="line"><span class="lineno">  197</span>            outputfile=str(ghep_path),</div>
-<div class="line"><span class="lineno">  198</span>            process=process,</div>
-<div class="line"><span class="lineno">  199</span>            seed=int(seed),</div>
-<div class="line"><span class="lineno">  200</span>            irun=int(run),</div>
-<div class="line"><span class="lineno">  201</span>            env_vars=env_vars,</div>
-<div class="line"><span class="lineno">  202</span>        )</div>
-<div class="line"><span class="lineno">  203</span>        make_ntuples(str(ghep_path), str(gst_path), env_vars=env_vars)</div>
-<div class="line"><span class="lineno">  204</span>        add_hists(str(neutrino_flux), str(gst_path), int(pdg))</div>
-<div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>        logging.info(f<span class="stringliteral">&quot;Done PDG {pdg_name}: {ghep_path} -&gt; {gst_path}&quot;</span>)</div>
-<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  177</span>        out_dir = work_dir / f<span class="stringliteral">&quot;genie-{pdg_name}_{N}_events&quot;</span></div>
+<div class="line"><span class="lineno">  178</span>        _ensure_dir(out_dir)</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>        nudet_suffix = <span class="stringliteral">&quot;_nudet&quot;</span> <span class="keywordflow">if</span> env_vars <span class="keywordflow">and</span> env_vars.get(<span class="stringliteral">&quot;GXMLPATH&quot;</span>) <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  181</span>        filename = (</div>
+<div class="line"><span class="lineno">  182</span>            f<span class="stringliteral">&quot;run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_&quot;</span></div>
+<div class="line"><span class="lineno">  183</span>            f<span class="stringliteral">&quot;{process or &#39;ALL&#39;}{nudet_suffix}.ghep.root&quot;</span></div>
+<div class="line"><span class="lineno">  184</span>        )</div>
+<div class="line"><span class="lineno">  185</span>        ghep_path = out_dir / filename</div>
+<div class="line"><span class="lineno">  186</span>        gst_path = out_dir / f<span class="stringliteral">&quot;genie-{filename}&quot;</span></div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>        logging.info(</div>
+<div class="line"><span class="lineno">  189</span>            f<span class="stringliteral">&quot;Generating {N} events for PDG {pdg_name} (run={run}) -&gt; {ghep_path}&quot;</span></div>
+<div class="line"><span class="lineno">  190</span>        )</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>        generate_genie_events(</div>
+<div class="line"><span class="lineno">  193</span>            nevents=N,</div>
+<div class="line"><span class="lineno">  194</span>            nupdg=int(pdg),</div>
+<div class="line"><span class="lineno">  195</span>            emin=emin,</div>
+<div class="line"><span class="lineno">  196</span>            emax=emax,</div>
+<div class="line"><span class="lineno">  197</span>            targetcode=targetcode,</div>
+<div class="line"><span class="lineno">  198</span>            inputflux=str(neutrino_flux),</div>
+<div class="line"><span class="lineno">  199</span>            spline=str(splines),</div>
+<div class="line"><span class="lineno">  200</span>            outputfile=str(ghep_path),</div>
+<div class="line"><span class="lineno">  201</span>            process=process,</div>
+<div class="line"><span class="lineno">  202</span>            seed=int(seed),</div>
+<div class="line"><span class="lineno">  203</span>            irun=int(run),</div>
+<div class="line"><span class="lineno">  204</span>            env_vars=env_vars,</div>
+<div class="line"><span class="lineno">  205</span>        )</div>
+<div class="line"><span class="lineno">  206</span>        make_ntuples(str(ghep_path), str(gst_path), env_vars=env_vars)</div>
+<div class="line"><span class="lineno">  207</span>        add_hists(str(neutrino_flux), str(gst_path), int(pdg))</div>
 <div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span><span class="comment"># ----------------------------- CLI &amp; main -------------------------------------</span></div>
+<div class="line"><span class="lineno">  209</span>        logging.info(f<span class="stringliteral">&quot;Done PDG {pdg_name}: {ghep_path} -&gt; {gst_path}&quot;</span>)</div>
 <div class="line"><span class="lineno">  210</span> </div>
 <div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span><span class="comment"># ----------------------------- CLI &amp; main -------------------------------------</span></div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -778,21 +778,21 @@ Notes
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Build xsec splines with gmkspl and write `xsec_splines.xml` to work_dir.</pre> 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00132">132</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  132</span><span class="keyword">def </span>make_splines_cli(target: str, work_dir: Path, nknots: int, emax: float) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  133</span>    <span class="stringliteral">&quot;&quot;&quot;Build xsec splines with gmkspl and write `xsec_splines.xml` to work_dir.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  134</span>    _ensure_dir(work_dir)</div>
-<div class="line"><span class="lineno">  135</span>    output = work_dir / <span class="stringliteral">&quot;xsec_splines.xml&quot;</span></div>
-<div class="line"><span class="lineno">  136</span>    make_splines(</div>
-<div class="line"><span class="lineno">  137</span>        nupdglist=NUPDGLIST,</div>
-<div class="line"><span class="lineno">  138</span>        targetcode=_target_code(target),</div>
-<div class="line"><span class="lineno">  139</span>        emax=emax,</div>
-<div class="line"><span class="lineno">  140</span>        nknots=nknots,</div>
-<div class="line"><span class="lineno">  141</span>        outputfile=output,</div>
-<div class="line"><span class="lineno">  142</span>    )</div>
-<div class="line"><span class="lineno">  143</span>    logging.info(f<span class="stringliteral">&quot;Spline file written: {output}&quot;</span>)</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span> </div>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00135">135</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span>make_splines_cli(target: str, work_dir: Path, nknots: int, emax: float) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  136</span>    <span class="stringliteral">&quot;&quot;&quot;Build xsec splines with gmkspl and write `xsec_splines.xml` to work_dir.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  137</span>    _ensure_dir(work_dir)</div>
+<div class="line"><span class="lineno">  138</span>    output = work_dir / <span class="stringliteral">&quot;xsec_splines.xml&quot;</span></div>
+<div class="line"><span class="lineno">  139</span>    make_splines(</div>
+<div class="line"><span class="lineno">  140</span>        nupdglist=NUPDGLIST,</div>
+<div class="line"><span class="lineno">  141</span>        targetcode=_target_code(target),</div>
+<div class="line"><span class="lineno">  142</span>        emax=emax,</div>
+<div class="line"><span class="lineno">  143</span>        nknots=nknots,</div>
+<div class="line"><span class="lineno">  144</span>        outputfile=output,</div>
+<div class="line"><span class="lineno">  145</span>    )</div>
+<div class="line"><span class="lineno">  146</span>    logging.info(f<span class="stringliteral">&quot;Spline file written: {output}&quot;</span>)</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -809,7 +809,7 @@ Notes
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00057">57</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00060">60</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>
@@ -825,7 +825,7 @@ Notes
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00052">52</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00055">55</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>
@@ -844,7 +844,7 @@ Notes
 <div class="line"><span class="lineno">    2</span>    <span class="stringliteral">&quot;/eos/experiment/ship/user/edursov/genie/genie_xsec/v3_02_00/NULL/G1802a00000-k250-e1000/data&quot;</span></div>
 <div class="line"><span class="lineno">    3</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00054">54</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00057">57</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>
@@ -860,7 +860,7 @@ Notes
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00051">51</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00054">54</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>
@@ -876,7 +876,7 @@ Notes
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00065">65</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00068">68</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>
@@ -897,7 +897,7 @@ Notes
 <div class="line"><span class="lineno">    4</span>    <span class="stringliteral">&quot;tungsten&quot;</span>: <span class="stringliteral">&quot;1000741840&quot;</span>,</div>
 <div class="line"><span class="lineno">    5</span>}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00059">59</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="makeGenieEvents_8py_source.html#l00062">62</a> of file <a class="el" href="makeGenieEvents_8py_source.html">makeGenieEvents.py</a>.</p>
 
 </div>
 </div>

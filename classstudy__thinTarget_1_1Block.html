@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00053">53</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00056">56</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a79aec59a3057c1675c2516f8771fbabc" name="a79aec59a3057c1675c2516f8771fbabc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79aec59a3057c1675c2516f8771fbabc">&#9670;&#160;</a></span>__init__()</h2>
@@ -145,8 +145,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00055">55</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span> <span class="keyword">def </span>__init__(self): ROOT.pyFairModule.__init__(self,self)</div>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00058">58</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span> <span class="keyword">def </span>__init__(self): ROOT.pyFairModule.__init__(self,self)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -167,21 +167,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00056">56</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span> <span class="keyword">def </span>ConstructGeometry(self):</div>
-<div class="line"><span class="lineno">   57</span>    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
-<div class="line"><span class="lineno">   58</span>    top=ROOT.gGeoManager.GetTopVolume()</div>
-<div class="line"><span class="lineno">   59</span>    geoLoad=ROOT.FairGeoLoader.Instance()</div>
-<div class="line"><span class="lineno">   60</span>    geoFace=geoLoad.getGeoInterface()</div>
-<div class="line"><span class="lineno">   61</span>    media=geoFace.getMedia()</div>
-<div class="line"><span class="lineno">   62</span>    geoBuild=geoLoad.getGeoBuilder()</div>
-<div class="line"><span class="lineno">   63</span>    ShipMedium=media.getMedium(material)</div>
-<div class="line"><span class="lineno">   64</span>    W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
-<div class="line"><span class="lineno">   66</span>        rc = geoBuild.createMedium(ShipMedium)</div>
-<div class="line"><span class="lineno">   67</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><span class="lineno">   68</span>    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
-<div class="line"><span class="lineno">   69</span>    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00059">59</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span> <span class="keyword">def </span>ConstructGeometry(self):</div>
+<div class="line"><span class="lineno">   60</span>    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
+<div class="line"><span class="lineno">   61</span>    top=ROOT.gGeoManager.GetTopVolume()</div>
+<div class="line"><span class="lineno">   62</span>    geoLoad=ROOT.FairGeoLoader.Instance()</div>
+<div class="line"><span class="lineno">   63</span>    geoFace=geoLoad.getGeoInterface()</div>
+<div class="line"><span class="lineno">   64</span>    media=geoFace.getMedia()</div>
+<div class="line"><span class="lineno">   65</span>    geoBuild=geoLoad.getGeoBuilder()</div>
+<div class="line"><span class="lineno">   66</span>    ShipMedium=media.getMedium(material)</div>
+<div class="line"><span class="lineno">   67</span>    W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
+<div class="line"><span class="lineno">   69</span>        rc = geoBuild.createMedium(ShipMedium)</div>
+<div class="line"><span class="lineno">   70</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><span class="lineno">   71</span>    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
+<div class="line"><span class="lineno">   72</span>    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -200,10 +200,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00070">70</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span> <span class="keyword">def </span>InitParContainers():</div>
-<div class="line"><span class="lineno">   71</span>    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
-<div class="line"><span class="lineno">   72</span> </div>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00073">73</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span> <span class="keyword">def </span>InitParContainers():</div>
+<div class="line"><span class="lineno">   74</span>    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
+<div class="line"><span class="lineno">   75</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

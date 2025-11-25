@@ -97,34 +97,37 @@ $(document).ready(function(){initNavTree('inspectGeant4Geo_8py_source.html','');
   <div class="headertitle"><div class="title">inspectGeant4Geo.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="inspectGeant4Geo_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html">    1</a></span><span class="keyword">import</span> sys</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> shipRoot_conf</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ab8f09cef4b6793ac0654495e2c61384b">    7</a></span>fname = <span class="stringliteral">&#39;geofile_full.10.0.Pythia8-TGeant4.root&#39;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordflow">if</span> len(sys.argv) &gt; 1:</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    fname = sys.argv[1]</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">   11</a></span>fgeo = ROOT.TFile(fname)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ad3a4209be563bb7349a917104d413925">   12</a></span>sGeo = fgeo.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> shipDet_conf</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c">   14</a></span>run = ROOT.FairRunSim()</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2">   15</a></span>ShipGeo = load_from_root_file(fgeo, <span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">   16</a></span>modules = <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ShipGeo)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>run.SetUserConfig(<span class="stringliteral">&#39;g4Config.C&#39;</span>)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>run.SetName(<span class="stringliteral">&#39;TGeant4&#39;</span>)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile(<span class="stringliteral">&#39;output&#39;</span>, <span class="stringliteral">&#39;recreate&#39;</span>)))</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>run.Init()</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>run.Run(0)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">import</span> geomGeant4</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_function" href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">geomGeant4.printVMCFields</a>()</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_function" href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">geomGeant4.printWeightsandFields</a>()</div>
-<div class="ttc" id="anamespacegeomGeant4_html_a2cbf5bdfe03787d918546f67d925e597"><div class="ttname"><a href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">geomGeant4.printWeightsandFields</a></div><div class="ttdeci">printWeightsandFields(onlyWithField=True, exclude=[])</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00123">geomGeant4.py:123</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a71f637b146dcfe94b369f6ee94958cea"><div class="ttname"><a href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">geomGeant4.printVMCFields</a></div><div class="ttdeci">printVMCFields()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00184">geomGeant4.py:184</a></div></div>
-<div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00261">shipDet_conf.py:261</a></div></div>
-<div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00060">shipRoot_conf.py:60</a></div></div>
+<a href="inspectGeant4Geo_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> sys</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> shipRoot_conf</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ab8f09cef4b6793ac0654495e2c61384b">   10</a></span>fname = <span class="stringliteral">&#39;geofile_full.10.0.Pythia8-TGeant4.root&#39;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordflow">if</span> len(sys.argv) &gt; 1:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    fname = sys.argv[1]</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">   14</a></span>fgeo = ROOT.TFile(fname)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ad3a4209be563bb7349a917104d413925">   15</a></span>sGeo = fgeo.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">import</span> shipDet_conf</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c">   17</a></span>run = ROOT.FairRunSim()</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2">   18</a></span>ShipGeo = load_from_root_file(fgeo, <span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">   19</a></span>modules = <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ShipGeo)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>run.SetUserConfig(<span class="stringliteral">&#39;g4Config.C&#39;</span>)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>run.SetName(<span class="stringliteral">&#39;TGeant4&#39;</span>)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile(<span class="stringliteral">&#39;output&#39;</span>, <span class="stringliteral">&#39;recreate&#39;</span>)))</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>run.Init()</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>run.Run(0)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">import</span> geomGeant4</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><a class="code hl_function" href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">geomGeant4.printVMCFields</a>()</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><a class="code hl_function" href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">geomGeant4.printWeightsandFields</a>()</div>
+<div class="ttc" id="anamespacegeomGeant4_html_a2cbf5bdfe03787d918546f67d925e597"><div class="ttname"><a href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">geomGeant4.printWeightsandFields</a></div><div class="ttdeci">printWeightsandFields(onlyWithField=True, exclude=[])</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00126">geomGeant4.py:126</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a71f637b146dcfe94b369f6ee94958cea"><div class="ttname"><a href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">geomGeant4.printVMCFields</a></div><div class="ttdeci">printVMCFields()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00187">geomGeant4.py:187</a></div></div>
+<div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00264">shipDet_conf.py:264</a></div></div>
+<div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00063">shipRoot_conf.py:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00308">308</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00311">311</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a3a13e379b6b61313a6926274b29e2ece" name="a3a13e379b6b61313a6926274b29e2ece"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a13e379b6b61313a6926274b29e2ece">&#9670;&#160;</a></span>myPrintout()</h2>
@@ -155,17 +155,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00363">363</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  363</span> <span class="keyword">def </span>myPrintout(self, atrack):</div>
-<div class="line"><span class="lineno">  364</span>   part         = atrack.GetDynamicParticle()</div>
-<div class="line"><span class="lineno">  365</span>   pid          = part.GetPDGcode()</div>
-<div class="line"><span class="lineno">  366</span>   vx  = atrack.GetVertexPosition()</div>
-<div class="line"><span class="lineno">  367</span>   pos = atrack.GetPosition()</div>
-<div class="line"><span class="lineno">  368</span>   mom = atrack.GetMomentum()</div>
-<div class="line"><span class="lineno">  369</span>   print(<span class="stringliteral">&#39;TA&#39;</span>,pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)</div>
-<div class="line"><span class="lineno">  370</span>   print(<span class="stringliteral">&#39;start tracking&#39;</span>,atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV)</div>
-<div class="line"><span class="lineno">  371</span> </div>
-<div class="line"><span class="lineno">  372</span><span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00366">366</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  366</span> <span class="keyword">def </span>myPrintout(self, atrack):</div>
+<div class="line"><span class="lineno">  367</span>   part         = atrack.GetDynamicParticle()</div>
+<div class="line"><span class="lineno">  368</span>   pid          = part.GetPDGcode()</div>
+<div class="line"><span class="lineno">  369</span>   vx  = atrack.GetVertexPosition()</div>
+<div class="line"><span class="lineno">  370</span>   pos = atrack.GetPosition()</div>
+<div class="line"><span class="lineno">  371</span>   mom = atrack.GetMomentum()</div>
+<div class="line"><span class="lineno">  372</span>   print(<span class="stringliteral">&#39;TA&#39;</span>,pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)</div>
+<div class="line"><span class="lineno">  373</span>   print(<span class="stringliteral">&#39;start tracking&#39;</span>,atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV)</div>
+<div class="line"><span class="lineno">  374</span> </div>
+<div class="line"><span class="lineno">  375</span><span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -195,24 +195,24 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00309">309</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  309</span> <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
-<div class="line"><span class="lineno">  310</span>   <span class="keywordflow">if</span> particleGun <span class="keywordflow">and</span> atrack.GetTrackID() == 1:</div>
-<div class="line"><span class="lineno">  311</span>     <span class="comment"># record dead of 400GeV proton</span></div>
-<div class="line"><span class="lineno">  312</span>     <span class="keywordflow">if</span> atrack.GetTrackStatus() != atrack.GetTrackStatus().fAlive :</div>
-<div class="line"><span class="lineno">  313</span>      part         = atrack.GetDynamicParticle()</div>
-<div class="line"><span class="lineno">  314</span>      pid          = part.GetPDGcode()</div>
-<div class="line"><span class="lineno">  315</span>      vx           = atrack.GetVertexPosition()</div>
-<div class="line"><span class="lineno">  316</span>      mom  = atrack.GetMomentum()</div>
-<div class="line"><span class="lineno">  317</span>      ekin = atrack.GetKineticEnergy()/GeV</div>
-<div class="line"><span class="lineno">  318</span>      pos  = atrack.GetPosition()</div>
-<div class="line"><span class="lineno">  319</span>      w = atrack.GetWeight()</div>
-<div class="line"><span class="lineno">  320</span>      parentid = int(w)/100000-10000</div>
-<div class="line"><span class="lineno">  321</span>      pythiaid = int(w)%100000-10000</div>
-<div class="line"><span class="lineno">  322</span>      h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\</div>
-<div class="line"><span class="lineno">  323</span>                   float(pos.x/m),float(pos.y/m),float(pos.z/m),\</div>
-<div class="line"><span class="lineno">  324</span>                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)</div>
-<div class="line"><span class="lineno">  325</span> </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00312">312</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  312</span> <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
+<div class="line"><span class="lineno">  313</span>   <span class="keywordflow">if</span> particleGun <span class="keywordflow">and</span> atrack.GetTrackID() == 1:</div>
+<div class="line"><span class="lineno">  314</span>     <span class="comment"># record dead of 400GeV proton</span></div>
+<div class="line"><span class="lineno">  315</span>     <span class="keywordflow">if</span> atrack.GetTrackStatus() != atrack.GetTrackStatus().fAlive :</div>
+<div class="line"><span class="lineno">  316</span>      part         = atrack.GetDynamicParticle()</div>
+<div class="line"><span class="lineno">  317</span>      pid          = part.GetPDGcode()</div>
+<div class="line"><span class="lineno">  318</span>      vx           = atrack.GetVertexPosition()</div>
+<div class="line"><span class="lineno">  319</span>      mom  = atrack.GetMomentum()</div>
+<div class="line"><span class="lineno">  320</span>      ekin = atrack.GetKineticEnergy()/GeV</div>
+<div class="line"><span class="lineno">  321</span>      pos  = atrack.GetPosition()</div>
+<div class="line"><span class="lineno">  322</span>      w = atrack.GetWeight()</div>
+<div class="line"><span class="lineno">  323</span>      parentid = int(w)/100000-10000</div>
+<div class="line"><span class="lineno">  324</span>      pythiaid = int(w)%100000-10000</div>
+<div class="line"><span class="lineno">  325</span>      h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\</div>
+<div class="line"><span class="lineno">  326</span>                   float(pos.x/m),float(pos.y/m),float(pos.z/m),\</div>
+<div class="line"><span class="lineno">  327</span>                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)</div>
+<div class="line"><span class="lineno">  328</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -242,44 +242,44 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00326">326</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  326</span> <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
-<div class="line"><span class="lineno">  327</span>   <span class="keyword">global</span> trackHistory</div>
-<div class="line"><span class="lineno">  328</span><span class="comment"># need to be careful with energy cut, anti-protons and neutrons can always produce pions and kaons</span></div>
-<div class="line"><span class="lineno">  329</span>   part         = atrack.GetDynamicParticle()</div>
-<div class="line"><span class="lineno">  330</span>   pid          = part.GetPDGcode()</div>
-<div class="line"><span class="lineno">  331</span>   <span class="comment"># if debug: self.myPrintout(atrack)</span></div>
-<div class="line"><span class="lineno">  332</span>   moid = atrack.GetParentID()</div>
-<div class="line"><span class="lineno">  333</span>   trackHistory[atrack.GetTrackID()]=[pid,moid]</div>
-<div class="line"><span class="lineno">  334</span>   tmoid = str(moid)</div>
-<div class="line"><span class="lineno">  335</span>   <span class="keywordflow">if</span> moid <span class="keywordflow">in</span> trackHistory:</div>
-<div class="line"><span class="lineno">  336</span>         mo = pdg.GetParticle(trackHistory[moid][0])</div>
-<div class="line"><span class="lineno">  337</span>         <span class="keywordflow">if</span> mo : tmoid = mo.GetName()</div>
-<div class="line"><span class="lineno">  338</span>   tid = str(pid)</div>
-<div class="line"><span class="lineno">  339</span>   <span class="keywordflow">if</span> pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()</div>
-<div class="line"><span class="lineno">  340</span>   mom = atrack.GetMomentum()</div>
-<div class="line"><span class="lineno">  341</span>   p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)</div>
-<div class="line"><span class="lineno">  342</span>   <span class="keywordflow">if</span> debug <span class="keywordflow">and</span> abs(pid)==13: print(<span class="stringliteral">&#39;track&#39;</span>,atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)</div>
-<div class="line"><span class="lineno">  343</span>   <span class="keywordflow">if</span> pid==12:</div>
-<div class="line"><span class="lineno">  344</span>      <span class="keywordflow">if</span> moid <span class="keywordflow">in</span> trackHistory:</div>
-<div class="line"><span class="lineno">  345</span>        gmoid = trackHistory[moid][1]</div>
-<div class="line"><span class="lineno">  346</span>        <span class="keywordflow">if</span> gmoid <span class="keywordflow">in</span> trackHistory:</div>
-<div class="line"><span class="lineno">  347</span>          tgmoid = str(gmoid)</div>
-<div class="line"><span class="lineno">  348</span>          mo = pdg.GetParticle(trackHistory[gmoid][0])</div>
-<div class="line"><span class="lineno">  349</span>          <span class="keywordflow">if</span> mo : tgmoid = mo.GetName()</div>
-<div class="line"><span class="lineno">  350</span>          print(<span class="stringliteral">&#39;   &lt;--&#39;</span>,gmoid,tgmoid)</div>
-<div class="line"><span class="lineno">  351</span>          gmoid = trackHistory[gmoid][1]</div>
-<div class="line"><span class="lineno">  352</span>          <span class="keywordflow">if</span> gmoid <span class="keywordflow">in</span> trackHistory:</div>
-<div class="line"><span class="lineno">  353</span>           tgmoid = str(gmoid)</div>
-<div class="line"><span class="lineno">  354</span>           mo = pdg.GetParticle(trackHistory[gmoid][0])</div>
-<div class="line"><span class="lineno">  355</span>           <span class="keywordflow">if</span> mo : tgmoid = mo.GetName()</div>
-<div class="line"><span class="lineno">  356</span>           print(<span class="stringliteral">&#39;      &lt;--&#39;</span>,gmoid,tgmoid)</div>
-<div class="line"><span class="lineno">  357</span> </div>
-<div class="line"><span class="lineno">  358</span>   qed          = pid <span class="keywordflow">in</span> qedlist  <span class="comment"># use cut only for photons, electrons, protons and neutrons</span></div>
-<div class="line"><span class="lineno">  359</span>   <span class="keywordflow">if</span> atrack.GetKineticEnergy()/GeV &lt; ecut <span class="keywordflow">and</span> (qed <span class="keywordflow">or</span> allPart):</div>
-<div class="line"><span class="lineno">  360</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  361</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
-<div class="line"><span class="lineno">  362</span> </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00329">329</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  329</span> <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
+<div class="line"><span class="lineno">  330</span>   <span class="keyword">global</span> trackHistory</div>
+<div class="line"><span class="lineno">  331</span><span class="comment"># need to be careful with energy cut, anti-protons and neutrons can always produce pions and kaons</span></div>
+<div class="line"><span class="lineno">  332</span>   part         = atrack.GetDynamicParticle()</div>
+<div class="line"><span class="lineno">  333</span>   pid          = part.GetPDGcode()</div>
+<div class="line"><span class="lineno">  334</span>   <span class="comment"># if debug: self.myPrintout(atrack)</span></div>
+<div class="line"><span class="lineno">  335</span>   moid = atrack.GetParentID()</div>
+<div class="line"><span class="lineno">  336</span>   trackHistory[atrack.GetTrackID()]=[pid,moid]</div>
+<div class="line"><span class="lineno">  337</span>   tmoid = str(moid)</div>
+<div class="line"><span class="lineno">  338</span>   <span class="keywordflow">if</span> moid <span class="keywordflow">in</span> trackHistory:</div>
+<div class="line"><span class="lineno">  339</span>         mo = pdg.GetParticle(trackHistory[moid][0])</div>
+<div class="line"><span class="lineno">  340</span>         <span class="keywordflow">if</span> mo : tmoid = mo.GetName()</div>
+<div class="line"><span class="lineno">  341</span>   tid = str(pid)</div>
+<div class="line"><span class="lineno">  342</span>   <span class="keywordflow">if</span> pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()</div>
+<div class="line"><span class="lineno">  343</span>   mom = atrack.GetMomentum()</div>
+<div class="line"><span class="lineno">  344</span>   p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)</div>
+<div class="line"><span class="lineno">  345</span>   <span class="keywordflow">if</span> debug <span class="keywordflow">and</span> abs(pid)==13: print(<span class="stringliteral">&#39;track&#39;</span>,atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)</div>
+<div class="line"><span class="lineno">  346</span>   <span class="keywordflow">if</span> pid==12:</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">if</span> moid <span class="keywordflow">in</span> trackHistory:</div>
+<div class="line"><span class="lineno">  348</span>        gmoid = trackHistory[moid][1]</div>
+<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">if</span> gmoid <span class="keywordflow">in</span> trackHistory:</div>
+<div class="line"><span class="lineno">  350</span>          tgmoid = str(gmoid)</div>
+<div class="line"><span class="lineno">  351</span>          mo = pdg.GetParticle(trackHistory[gmoid][0])</div>
+<div class="line"><span class="lineno">  352</span>          <span class="keywordflow">if</span> mo : tgmoid = mo.GetName()</div>
+<div class="line"><span class="lineno">  353</span>          print(<span class="stringliteral">&#39;   &lt;--&#39;</span>,gmoid,tgmoid)</div>
+<div class="line"><span class="lineno">  354</span>          gmoid = trackHistory[gmoid][1]</div>
+<div class="line"><span class="lineno">  355</span>          <span class="keywordflow">if</span> gmoid <span class="keywordflow">in</span> trackHistory:</div>
+<div class="line"><span class="lineno">  356</span>           tgmoid = str(gmoid)</div>
+<div class="line"><span class="lineno">  357</span>           mo = pdg.GetParticle(trackHistory[gmoid][0])</div>
+<div class="line"><span class="lineno">  358</span>           <span class="keywordflow">if</span> mo : tgmoid = mo.GetName()</div>
+<div class="line"><span class="lineno">  359</span>           print(<span class="stringliteral">&#39;      &lt;--&#39;</span>,gmoid,tgmoid)</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>   qed          = pid <span class="keywordflow">in</span> qedlist  <span class="comment"># use cut only for photons, electrons, protons and neutrons</span></div>
+<div class="line"><span class="lineno">  362</span>   <span class="keywordflow">if</span> atrack.GetKineticEnergy()/GeV &lt; ecut <span class="keywordflow">and</span> (qed <span class="keywordflow">or</span> allPart):</div>
+<div class="line"><span class="lineno">  363</span>      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  364</span>      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
+<div class="line"><span class="lineno">  365</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
