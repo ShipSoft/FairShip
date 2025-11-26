@@ -474,14 +474,14 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol)
             z = (fPos.Z() + Pos.Z()) / 2.;
         }
 
-        auto hit = AddHit(fTrackID,
-                          fVolumeID,
-                          TVector3(x, y, z),
-                          TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
-                          fTime,
-                          fLength,
-                          fELoss,
-                          pdgCode);
+        AddHit(fTrackID,
+               fVolumeID,
+               TVector3(x, y, z),
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
+               fTime,
+               fLength,
+               fELoss,
+               pdgCode);
         // hit->Print();
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMTC);
@@ -546,7 +546,6 @@ void MTCDetector::SiPMOverlap()
         - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
     */
 
-    int N = fNMats == 1 ? 1 : 0;
     Double_t pos = fEdge + firstChannelX;
     for (int imat = 0; imat < fNMats; imat++) {
         for (int isipms = 0; isipms < fNSiPMs; isipms++) {
@@ -583,7 +582,6 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 
     Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
     Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -611,7 +609,6 @@ TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob)
 {
     Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
     Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -695,7 +692,6 @@ void MTCDetector::SiPMmapping()
             continue;
         for (int imat = 0; imat < plane->GetNodes()->GetEntries(); imat++) {
             auto mat = static_cast<TGeoNode*>(plane->GetNodes()->At(imat));
-            Float_t t1 = mat->GetMatrix()->GetTranslation()[0];
             auto vmat = mat->GetVolume();
             for (int ifibre = 0; ifibre < vmat->GetNodes()->GetEntriesFast(); ifibre++) {
                 fibre = static_cast<TGeoNode*>(vmat->GetNodes()->At(ifibre));

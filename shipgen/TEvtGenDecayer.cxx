@@ -277,7 +277,7 @@ Int_t TEvtGenDecayer::ImportParticles(TClonesArray *particles)
         int nParticles = fEvtGenProducts->GetEntriesFast();
         for (int i = 0; i < nParticles; i++) {
             TParticle* srcParticle = static_cast<TParticle*>(fEvtGenProducts->At(i));
-            TParticle* destParticle = new ((*particles)[i]) TParticle(*srcParticle);
+            new ((*particles)[i]) TParticle(*srcParticle);
         }
 
         // Reset the flag for next decay

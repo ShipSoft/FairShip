@@ -230,7 +230,6 @@ Bool_t FixedTargetGenerator::Init()
 
    TString ParticleFile = TString(evtgendata) + "/evt.pdl";
    std::cout << "Using $EVTGENDATA " << evtgendata << std::endl;
-   EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
 #if PYTHIA_VERSION_INTEGER < 8315

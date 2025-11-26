@@ -77,7 +77,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     }
 
     int nf = dPart->GetEntries();
-    int ns = dPartSoft->GetEntries();
     LOG(debug) << "*********************************************************";
     LOG(debug) << "muon DIS Generator debug " << iMuon->GetEntries() << " " << iMuon->AddrAt(0) << " nf " << nf
                << " fn=" << fn;

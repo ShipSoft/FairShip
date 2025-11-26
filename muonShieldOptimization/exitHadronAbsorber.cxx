@@ -228,7 +228,7 @@ void exitHadronAbsorber::ConstructGeometry()
    if (vac==NULL)
      geoBuild->createMedium(ShipMedium);
    vac =gGeoManager->GetMedium("vacuums");
-   TGeoVolume *top=gGeoManager->GetTopVolume();
+   gGeoManager->GetTopVolume();
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    Double_t zLoc;
    if (fzPos>1E8){
