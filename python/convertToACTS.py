@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 from collections import defaultdict
 import ROOT
 import array
@@ -8,6 +11,8 @@ import global_variables
 import shipunit as u
 import numpy as np
 PDG = ROOT.TDatabasePDG.Instance()
+from ShipGeoConfig import load_from_root_file
+import shipDet_conf
 
 import acts
 
@@ -22,8 +27,6 @@ def main():
 
     outFile = global_variables.inputFile.replace('.root','_ACTS.root')
 
-    from ShipGeoConfig import load_from_root_file
-    import shipDet_conf
 
     #load Shipgeo dictionary
     ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
@@ -91,7 +94,7 @@ def main():
         event_id_mtc = array.array('i', [0])
         mtcHitTree.Branch('event_id', event_id_mtc, 'event_id/i')
         volume_id_mtc = array.array('i', [0])
-        mtcHitTree.Branch('volume_id', event_id_mtc, 'volume_id/i')
+        mtcHitTree.Branch('volume_id', volume_id_mtc, 'volume_id/i')
         boundary_id_mtc = array.array('i', [0])
         mtcHitTree.Branch('boundary_id', boundary_id_mtc, 'boundary_id/i')
         layer_id_mtc = array.array('i', [0])
@@ -135,7 +138,7 @@ def main():
         event_id_straw = array.array('i', [0])
         strawHitTree.Branch('event_id', event_id_straw, 'event_id/i')
         volume_id_straw = array.array('i', [0])
-        strawHitTree.Branch('volume_id', event_id_straw, 'volume_id/i')
+        strawHitTree.Branch('volume_id', volume_id_straw, 'volume_id/i')
         boundary_id_straw = array.array('i', [0])
         strawHitTree.Branch('boundary_id', boundary_id_straw, 'boundary_id/i')
         layer_id_straw = array.array('i', [0])
