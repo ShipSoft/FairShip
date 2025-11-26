@@ -102,7 +102,7 @@ HNLPythia8Generator::~HNLPythia8Generator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-   Double_t tp,td,tS,zp,xp,yp,zd,xd,yd,zS,xS,yS,pz,px,py,e,w;
+   Double_t tp,tS,zp,xp,yp,zS,xS,yS,pz,px,py,e,w;
    Double_t tm,zm,xm,ym,pmz,pmx,pmy,em;
    Int_t im;
 // take HNL decay of Pythia, move it to the SHiP decay region
@@ -158,12 +158,6 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          px =fPythia->event[i].px();
          py =fPythia->event[i].py();
          e  =fPythia->event[i].e();
-         // old decay vertex
-         Int_t ida =fPythia->event[i].daughter1();
-         zd =fPythia->event[ida].zProd();
-         xd =fPythia->event[ida].xProd();
-         yd =fPythia->event[ida].yProd();
-         td =fPythia->event[ida].tProd();
          // new decay vertex
          Double_t LS = gRandom->Uniform(fLmin,fLmax); // mm, G4 and Pythia8 units
          Double_t p = TMath::Sqrt(px*px+py*py+pz*pz);
