@@ -5,7 +5,7 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "experimental", "dir_2e0e69ef539ddd9cb94ea6b3ad993e89.html", "dir_2e0e69ef539ddd9cb94ea6b3ad993e89" ],
     [ "AddDiMuonDecayChannelsToG4.py", "AddDiMuonDecayChannelsToG4_8py.html", "AddDiMuonDecayChannelsToG4_8py" ],
     [ "BaseDetector.py", "BaseDetector_8py.html", "BaseDetector_8py" ],
-    [ "basiclibs.py", "basiclibs_8py.html", null ],
+    [ "basiclibs.py", "basiclibs_8py.html", "basiclibs_8py" ],
     [ "checkMagFields.py", "checkMagFields_8py.html", "checkMagFields_8py" ],
     [ "CMBG_conf.py", "CMBG__conf_8py.html", "CMBG__conf_8py" ],
     [ "configGenieGenerator.py", "configGenieGenerator_8py.html", "configGenieGenerator_8py" ],

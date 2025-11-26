@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"makeGenieEvents_8py.html#a81f9b7fc054fb2f9fe4a2cd9f8f6ad45":[6,0,6,16,6],
 "makeGenieEvents_8py.html#a8d85a53750f8937b2e67972a0871d41e":[6,0,6,16,3],
 "makeGenieEvents_8py.html#a8d9f64a726e1f2908898186e0345a12e":[6,0,6,16,10],
 "makeGenieEvents_8py.html#aa43083eb0dfff8f3af821a35a17837d8":[6,0,6,16,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "muonShieldOptimization_2makeMuonDIS_8py.html#a26aa2d2f4969d3eeb816781e0da12ee0":[6,0,8,11,28],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a2b4e630f0163fb403afd6440c31de817":[6,0,8,11,50],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a31069c861ee6564962a537e94c422254":[6,0,8,11,47],
-"muonShieldOptimization_2makeMuonDIS_8py.html#a3376c7ac13d7058bff30c174977e1d6e":[6,0,8,11,13],
-"muonShieldOptimization_2makeMuonDIS_8py.html#a46fd07d81c633221657121b3f0589fb3":[6,0,8,11,34]
+"muonShieldOptimization_2makeMuonDIS_8py.html#a3376c7ac13d7058bff30c174977e1d6e":[6,0,8,11,13]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespaceadd__noise__to__field.html#ad3bdeebe3d0279aca028937b765abdb3":[4,0,1,4],
 "namespaceadd__noise__to__field.html#ad9efc3056172174fd51491e6695173bc":[4,0,1,0],
 "namespaceadd__noise__to__field.html#ada38192948951a9c388875eaac66cb7e":[4,0,1,1],
 "namespaceana__ShipMuon.html":[4,0,3],
@@ -85,6 +86,7 @@ var NAVTREEINDEX20 =
 "namespaceanalysis__example.html":[4,0,4],
 "namespaceanalysis__example.html#a0c6c11891bec942ba89192f6fbef9a1a":[4,0,4,0],
 "namespacebasiclibs.html":[4,0,6],
+"namespacebasiclibs.html#a05cc1bb0049c8bb7a9db364b721255af":[4,0,6,0],
 "namespacecheckMagFields.html":[4,0,7],
 "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249":[4,0,7,0],
 "namespacecheckZpositions.html":[4,0,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "namespaceeventDisplay.html#a62b3ef2ca1091e625b50bb4e79fe461b":[4,0,28,35],
 "namespaceeventDisplay.html#a634deb6cb1584bf45b4ed7a4be8da532":[4,0,28,58],
 "namespaceeventDisplay.html#a673da074922b5248beb6612ca447a019":[4,0,28,50],
-"namespaceeventDisplay.html#a681445dbc58506f91aedc16be890fd0d":[4,0,28,62],
-"namespaceeventDisplay.html#a6820b8d5176d609cefecb49b8176516a":[4,0,28,52],
-"namespaceeventDisplay.html#a6b6c3eee0e93e8705a50c90b752cba0b":[4,0,28,23]
+"namespaceeventDisplay.html#a681445dbc58506f91aedc16be890fd0d":[4,0,28,62]
 };

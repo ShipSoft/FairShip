@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classEvtCalcGenerator.html#a1deb006d5a0eb8b47e8a5281f5fa238e":[5,0,30,1],
 "classEvtCalcGenerator.html#a230ae1a2f467fc8c8d74c03371a1e3cd":[5,0,30,7],
 "classEvtCalcGenerator.html#a23d5af5f4a8fa355bcc0d1329b1431b8":[5,0,30,3],
 "classEvtCalcGenerator.html#a2846161801b43ede92a3d37c0994f93e":[5,0,30,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classHNLPythia8Generator.html#acfa32d3f4ff2117c83a813cf7247c65d":[5,0,34,32],
 "classHNLPythia8Generator.html#adb1372bda90760dd76f8335650ca2a65":[5,0,34,37],
 "classHNLPythia8Generator.html#ade62cee24cabc7cd03a59a7b64acf67e":[5,0,34,29],
-"classHNLPythia8Generator.html#ae100aa882ebf4a38c74a6e12993a87c1":[5,0,34,41],
-"classHNLPythia8Generator.html#ae17a07d095a078e28be61549e4187e61":[5,0,34,30]
+"classHNLPythia8Generator.html#ae100aa882ebf4a38c74a6e12993a87c1":[5,0,34,41]
 };

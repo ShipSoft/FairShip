@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"classhnl_1_1CKMmatrix.html":[4,0,45,0],
 "classhnl_1_1CKMmatrix.html":[5,0,8,0],
 "classhnl_1_1CKMmatrix.html#a05a7bc8307d7fe34e9ac90c1a800e165":[4,0,45,0,0],
 "classhnl_1_1CKMmatrix.html#a05a7bc8307d7fe34e9ac90c1a800e165":[5,0,8,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "classshipDigiReco_1_1ShipDigiReco.html#abe80355808dfeae8a191128858dbf486":[4,0,82,0,16],
 "classshipDigiReco_1_1ShipDigiReco.html#ac2183ffb516c391bcd688c91b35f1177":[5,0,15,0,42],
 "classshipDigiReco_1_1ShipDigiReco.html#ac2183ffb516c391bcd688c91b35f1177":[4,0,82,0,42],
-"classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab":[4,0,82,0,39],
-"classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab":[5,0,15,0,39]
+"classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab":[4,0,82,0,39]
 };
