@@ -10,6 +10,5 @@ var searchData=
   ['mergembias_7',['mergeMbias',['../namespacemergeMbias.html',1,'']]],
   ['method_5flogger_8',['method_logger',['../namespacemethod__logger.html',1,'']]],
   ['mtcdetector_9',['MTCDetector',['../namespaceMTCDetector.html',1,'']]],
-  ['mudis_5fmergefiles_10',['muDIS_mergeFiles',['../namespacemuDIS__mergeFiles.html',1,'']]],
-  ['muondetector_11',['muonDetector',['../namespacemuonDetector.html',1,'']]]
+  ['mudis_5fmergefiles_10',['muDIS_mergeFiles',['../namespacemuDIS__mergeFiles.html',1,'']]]
 ];

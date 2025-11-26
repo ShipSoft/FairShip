@@ -5,7 +5,7 @@ var searchData=
   ['makecascade_2epy_2',['makeCascade.py',['../makeCascade_8py.html',1,'']]],
   ['makedecay_2epy_3',['makeDecay.py',['../makeDecay_8py.html',1,'']]],
   ['makegenieevents_2epy_4',['makeGenieEvents.py',['../makeGenieEvents_8py.html',1,'']]],
-  ['makemuondis_2epy_5',['makemuondis.py',['../muonShieldOptimization_2makeMuonDIS_8py.html',1,'(Global Namespace)'],['../muonDIS_2makeMuonDIS_8py.html',1,'(Global Namespace)']]],
+  ['makemuondis_2epy_5',['makemuondis.py',['../muonDIS_2makeMuonDIS_8py.html',1,'(Global Namespace)'],['../muonShieldOptimization_2makeMuonDIS_8py.html',1,'(Global Namespace)']]],
   ['makemuonem_2epy_6',['makeMuonEM.py',['../makeMuonEM_8py.html',1,'']]],
   ['mergembias_2epy_7',['mergeMbias.py',['../mergeMbias_8py.html',1,'']]],
   ['method_5flogger_2epy_8',['method_logger.py',['../method__logger_8py.html',1,'']]],
@@ -20,15 +20,6 @@ var searchData=
   ['mudis_5fmergefiles_2epy_17',['muDIS_mergeFiles.py',['../muDIS__mergeFiles_8py.html',1,'']]],
   ['mudisgenerator_2ecxx_18',['MuDISGenerator.cxx',['../MuDISGenerator_8cxx.html',1,'']]],
   ['mudisgenerator_2eh_19',['MuDISGenerator.h',['../MuDISGenerator_8h.html',1,'']]],
-  ['muon_2ecxx_20',['muon.cxx',['../muon_8cxx.html',1,'']]],
-  ['muon_2eh_21',['muon.h',['../muon_8h.html',1,'']]],
-  ['muonbackgenerator_2ecxx_22',['MuonBackGenerator.cxx',['../MuonBackGenerator_8cxx.html',1,'']]],
-  ['muonbackgenerator_2eh_23',['MuonBackGenerator.h',['../MuonBackGenerator_8h.html',1,'']]],
-  ['muoncontfact_2ecxx_24',['muonContFact.cxx',['../muonContFact_8cxx.html',1,'']]],
-  ['muoncontfact_2eh_25',['muonContFact.h',['../muonContFact_8h.html',1,'']]],
-  ['muondetector_2epy_26',['muonDetector.py',['../muonDetector_8py.html',1,'']]],
-  ['muonhit_2ecxx_27',['muonHit.cxx',['../muonHit_8cxx.html',1,'']]],
-  ['muonhit_2eh_28',['muonHit.h',['../muonHit_8h.html',1,'']]],
-  ['muonpoint_2ecxx_29',['muonPoint.cxx',['../muonPoint_8cxx.html',1,'']]],
-  ['muonpoint_2eh_30',['muonPoint.h',['../muonPoint_8h.html',1,'']]]
+  ['muonbackgenerator_2ecxx_20',['MuonBackGenerator.cxx',['../MuonBackGenerator_8cxx.html',1,'']]],
+  ['muonbackgenerator_2eh_21',['MuonBackGenerator.h',['../MuonBackGenerator_8h.html',1,'']]]
 ];

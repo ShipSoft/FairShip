@@ -210,7 +210,7 @@ Fixed</h2>
 <li>Fix the condition in the sipm channel &lt;-&gt; fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.</li>
 <li>Add flags for <code>python/ScifiMapping.py</code></li>
 <li>Fixed <a class="el" href="classSiliconTarget.html">SiliconTarget</a> detector identifier.</li>
-<li>fix(muon): Make <a class="el" href="classmuonHit.html">muonHit</a> copy constructor public for std::vector compatibility</li>
+<li>fix(muon): Make muonHit copy constructor public for std::vector compatibility</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -229,7 +229,7 @@ Changed</h2>
 <li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
 <li>Remove TClonesArray support from digitisation framework. <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> now exclusively uses std::vector, removing branchType parameter</li>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
-<li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, <a class="el" href="namespacemuonDetector.html">muonDetector</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
+<li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, muonDetector, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
 <li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>
 <li>refactor(splitcal): Use value storage for both hits and clusters instead of pointer storage</li>
 <li>refactor(splitcal): Replace TVector3 with std::array and hit pointers with indices in <a class="el" href="classsplitcalCluster.html">splitcalCluster</a> for RNtuple compatibility</li>
@@ -352,6 +352,7 @@ Removed</h2>
 <li>Remove simpleTarget and personal study study_muEloss.py</li>
 <li>Remove TTCluster.py</li>
 <li>Remove pid class</li>
+<li>Remove muon system</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.01</h1>

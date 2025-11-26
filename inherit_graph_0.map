@@ -1,19 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,169,55,195"/>
-<area shape="rect" id="Node000001" href="$classBaseDetector_1_1BaseDetector.html" title=" " alt="" coords="103,169,304,195"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="68,179,102,179,102,185,68,185"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,144,55,169"/>
+<area shape="rect" id="Node000001" href="$classBaseDetector_1_1BaseDetector.html" title=" " alt="" coords="103,144,304,169"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="68,154,102,154,102,159,68,159"/>
 <area shape="rect" id="Node000002" href="$classMTCDetector_1_1MTCDetector.html" title=" " alt="" coords="381,5,575,31"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="220,156,274,97,310,66,351,40,380,28,382,33,353,44,314,70,278,101,224,160"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="224,132,279,85,313,60,351,40,383,28,385,33,353,44,316,65,282,89,228,136"/>
 <area shape="rect" id="Node000003" href="$classSBTDetector_1_1SBTDetector.html" title=" " alt="" coords="385,55,571,80"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="231,159,285,123,351,90,393,77,394,83,353,95,288,128,234,163"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="241,136,292,112,351,90,400,78,402,83,353,95,294,117,243,140"/>
 <area shape="rect" id="Node000004" href="$classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html" title=" " alt="" coords="352,105,604,145"/>
-<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="278,164,381,142,382,147,279,169"/>
-<area shape="rect" id="Node000005" href="$classmuonDetector_1_1muonDetector.html" title=" " alt="" coords="373,169,583,195"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="318,179,373,179,373,185,318,185"/>
-<area shape="rect" id="Node000006" href="$classsplitcalDetector_1_1splitcalDetector.html" title=" " alt="" coords="391,219,565,259"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="279,195,391,218,390,224,278,200"/>
-<area shape="rect" id="Node000007" href="$classstrawtubesDetector_1_1strawtubesDetector.html" title=" " alt="" coords="365,283,591,323"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="235,200,288,235,353,269,386,281,384,286,351,274,286,240,232,205"/>
-<area shape="rect" id="Node000008" href="$classtimeDetector_1_1timeDetector.html" title=" " alt="" coords="379,348,577,373"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="223,204,275,270,312,304,353,333,384,346,382,350,351,338,309,309,272,273,218,208"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="317,141,351,137,352,142,318,146"/>
+<area shape="rect" id="Node000005" href="$classsplitcalDetector_1_1splitcalDetector.html" title=" " alt="" coords="391,169,565,209"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="318,167,391,176,390,181,317,173"/>
+<area shape="rect" id="Node000006" href="$classstrawtubesDetector_1_1strawtubesDetector.html" title=" " alt="" coords="365,233,591,273"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="244,173,353,218,392,230,390,235,351,223,242,178"/>
+<area shape="rect" id="Node000007" href="$classtimeDetector_1_1timeDetector.html" title=" " alt="" coords="379,297,577,323"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="226,178,280,231,315,259,353,282,387,295,385,300,351,287,312,264,276,235,222,182"/>
 </map>

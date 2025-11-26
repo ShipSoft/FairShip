@@ -153,290 +153,253 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>                        nplane), 100, -300, +300, 100, -300,</div>
 <div class="line"><span class="lineno">   41</span>                    300)</div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">for</span> suffix, title <span class="keywordflow">in</span> [(<span class="stringliteral">&#39;mu&#39;</span>, <span class="stringliteral">&#39;#mu#pm hits&#39;</span>), (<span class="stringliteral">&#39;all&#39;</span>, <span class="stringliteral">&#39;All hits&#39;</span>)]:</div>
-<div class="line"><span class="lineno">   43</span>        ut.bookHist(h, f<span class="stringliteral">&#39;muon_tiles_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   44</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 200, -1000, +1000, 90,</div>
-<div class="line"><span class="lineno">   45</span>                    -900, 900)</div>
-<div class="line"><span class="lineno">   46</span>        ut.bookHist(h, f<span class="stringliteral">&#39;muon_bars_x_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   47</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 2, -300, +300, 240, -600,</div>
-<div class="line"><span class="lineno">   48</span>                    600)</div>
-<div class="line"><span class="lineno">   49</span>        ut.bookHist(h, f<span class="stringliteral">&#39;muon_bars_y_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   50</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 120, -300, +300, 4, -600,</div>
-<div class="line"><span class="lineno">   51</span>                    600)</div>
-<div class="line"><span class="lineno">   52</span>        ut.bookHist(h, f<span class="stringliteral">&#39;timing_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   53</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 3, -252, +252, 167, -501,</div>
-<div class="line"><span class="lineno">   54</span>                    501)</div>
-<div class="line"><span class="lineno">   55</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   56</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 120, -60, 60, 120, -60,</div>
-<div class="line"><span class="lineno">   57</span>                    60)</div>
-<div class="line"><span class="lineno">   58</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_yvsz_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   59</span>                    <span class="stringliteral">&#39;{};z[cm];y[cm]&#39;</span>.format(</div>
-<div class="line"><span class="lineno">   60</span>                        title), 400, -3300, -2900, 120, -60,</div>
-<div class="line"><span class="lineno">   61</span>                    60)</div>
-<div class="line"><span class="lineno">   62</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_xvsz_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   63</span>                    <span class="stringliteral">&#39;{};z[cm];x[cm]&#39;</span>.format(</div>
-<div class="line"><span class="lineno">   64</span>                        title), 400, -3300, -2900, 120, -60,</div>
-<div class="line"><span class="lineno">   65</span>                    60)</div>
-<div class="line"><span class="lineno">   66</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   67</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 100, -300, +300, 100, -300,</div>
-<div class="line"><span class="lineno">   68</span>                    300)</div>
-<div class="line"><span class="lineno">   69</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_yvsz_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   70</span>                    <span class="stringliteral">&#39;{};z[cm];y[cm]&#39;</span>.format(</div>
-<div class="line"><span class="lineno">   71</span>                        title), 200, -2680, -2480, 600, -300,</div>
-<div class="line"><span class="lineno">   72</span>                    300)</div>
-<div class="line"><span class="lineno">   73</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_xvsz_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   74</span>                    <span class="stringliteral">&#39;{};z[cm];x[cm]&#39;</span>.format(</div>
-<div class="line"><span class="lineno">   75</span>                        title), 200, -2680, -2480, 600, -300,</div>
-<div class="line"><span class="lineno">   76</span>                    300)</div>
-<div class="line"><span class="lineno">   77</span>        ut.bookHist(h, f<span class="stringliteral">&#39;SBT_Liquid_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   78</span>                    f<span class="stringliteral">&#39;{title};z[cm];#phi&#39;</span>, 100, -3000, +3000, 100,</div>
-<div class="line"><span class="lineno">   79</span>                    -r.TMath.Pi(), r.TMath.Pi())</div>
-<div class="line"><span class="lineno">   80</span>        ut.bookHist(h, f<span class="stringliteral">&#39;SBT_Plastic_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   81</span>                    f<span class="stringliteral">&#39;{title};z[cm];#phi&#39;</span>, 100, -3000, +3000, 100,</div>
-<div class="line"><span class="lineno">   82</span>                    -r.TMath.Pi(), r.TMath.Pi())</div>
-<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">for</span> station <span class="keywordflow">in</span> range(1, 5):</div>
-<div class="line"><span class="lineno">   84</span>            ut.bookHist(h, f<span class="stringliteral">&#39;T{station}_{suffix}&#39;</span>,</div>
-<div class="line"><span class="lineno">   85</span>                        f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 10, -250, +250, 20,</div>
-<div class="line"><span class="lineno">   86</span>                        -500, 500)</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_p&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
-<div class="line"><span class="lineno">   89</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_pt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
-<div class="line"><span class="lineno">   90</span>                maxpt)</div>
-<div class="line"><span class="lineno">   91</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_ppt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
-<div class="line"><span class="lineno">   92</span>                100, 0, maxp, 100, 0, maxpt)</div>
-<div class="line"><span class="lineno">   93</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_p&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
-<div class="line"><span class="lineno">   94</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_pt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
-<div class="line"><span class="lineno">   95</span>                maxpt)</div>
-<div class="line"><span class="lineno">   96</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_ppt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
-<div class="line"><span class="lineno">   97</span>                100, 0, maxp, 100, 0, maxpt)</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">for</span> suffix <span class="keywordflow">in</span> [<span class="stringliteral">&#39;&#39;</span>, <span class="stringliteral">&#39;_original&#39;</span>]:</div>
-<div class="line"><span class="lineno">  100</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_p{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
-<div class="line"><span class="lineno">  101</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_pt{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
-<div class="line"><span class="lineno">  102</span>                    maxpt)</div>
-<div class="line"><span class="lineno">  103</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_ppt{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
-<div class="line"><span class="lineno">  104</span>                    100, 0, maxp, 100, 0, maxpt)</div>
-<div class="line"><span class="lineno">  105</span>    ch = r.TChain(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
-<div class="line"><span class="lineno">  106</span>    ch.Add(args.inputfile)</div>
-<div class="line"><span class="lineno">  107</span>    n = ch.GetEntries()</div>
-<div class="line"><span class="lineno">  108</span>    log.info(n)</div>
-<div class="line"><span class="lineno">  109</span>    i = 0</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">for</span> event <span class="keywordflow">in</span> ch:</div>
-<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">if</span> i % 10000 == 0:</div>
-<div class="line"><span class="lineno">  112</span>            log.info(f<span class="stringliteral">&#39;{i}/{n}&#39;</span>)</div>
-<div class="line"><span class="lineno">  113</span>        i += 1</div>
-<div class="line"><span class="lineno">  114</span>        muon = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.strawtubesPoint:</div>
-<div class="line"><span class="lineno">  116</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  117</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  118</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  119</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  120</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  121</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  122</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  123</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  124</span>                z = hit.GetZ()</div>
-<div class="line"><span class="lineno">  125</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  126</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  127</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  128</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  129</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  130</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  131</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  132</span>                station = hit.GetStationNumber()</div>
-<div class="line"><span class="lineno">  133</span>                h[f<span class="stringliteral">&#39;T{station}_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  134</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  135</span>                    muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  136</span>                    muonid = trid</div>
-<div class="line"><span class="lineno">  137</span>                    h[f<span class="stringliteral">&#39;T{station}_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  138</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  139</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  140</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.TTPoint:</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  143</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  144</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  145</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  146</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  147</span>                detID = hit.GetDetectorID()</div>
-<div class="line"><span class="lineno">  148</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  149</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  150</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  151</span>                z = hit.GetZ()</div>
-<div class="line"><span class="lineno">  152</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  153</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  154</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  155</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  156</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  157</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  158</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  159</span>                <span class="keywordflow">if</span> detID == 0:</div>
-<div class="line"><span class="lineno">  160</span>                    h[<span class="stringliteral">&#39;TargetTracker_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  161</span>                h[<span class="stringliteral">&#39;TargetTracker_xvsz_all&#39;</span>].Fill(z, x, weight)</div>
-<div class="line"><span class="lineno">  162</span>                h[<span class="stringliteral">&#39;TargetTracker_yvsz_all&#39;</span>].Fill(z, y, weight)</div>
-<div class="line"><span class="lineno">  163</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  164</span>                    muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  165</span>                    muonid = trid</div>
-<div class="line"><span class="lineno">  166</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  167</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  168</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  169</span>                    <span class="keywordflow">if</span> detID == 0:</div>
-<div class="line"><span class="lineno">  170</span>                        h[<span class="stringliteral">&#39;TargetTracker_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  171</span>                    h[<span class="stringliteral">&#39;TargetTracker_xvsz_mu&#39;</span>].Fill(z, x, weight)</div>
-<div class="line"><span class="lineno">  172</span>                    h[<span class="stringliteral">&#39;TargetTracker_yvsz_mu&#39;</span>].Fill(z, y, weight)</div>
-<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.ShipRpcPoint:</div>
-<div class="line"><span class="lineno">  174</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  175</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  176</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  177</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  178</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  179</span>                detID = hit.GetDetectorID()</div>
-<div class="line"><span class="lineno">  180</span>                nplane = detID - 10000</div>
-<div class="line"><span class="lineno">  181</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  182</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  183</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  184</span>                z = hit.GetZ()</div>
-<div class="line"><span class="lineno">  185</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  186</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  187</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  188</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  189</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  190</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  191</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  192</span>                h[<span class="stringliteral">&#39;NuTauMu_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  193</span>                <span class="keywordflow">if</span> nplane &gt;= 0:</div>
-<div class="line"><span class="lineno">  194</span>                    h[f<span class="stringliteral">&#39;NuTauMu_all_{nplane}&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  195</span>                h[<span class="stringliteral">&#39;NuTauMu_xvsz_all&#39;</span>].Fill(z, x, weight)</div>
-<div class="line"><span class="lineno">  196</span>                h[<span class="stringliteral">&#39;NuTauMu_yvsz_all&#39;</span>].Fill(z, y, weight)</div>
-<div class="line"><span class="lineno">  197</span>                <span class="keywordflow">if</span> detID == 10000:</div>
-<div class="line"><span class="lineno">  198</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  199</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  200</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  201</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  202</span>                    muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  203</span>                    muonid = trid</div>
-<div class="line"><span class="lineno">  204</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  205</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  206</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  207</span>                    h[<span class="stringliteral">&#39;NuTauMu_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  208</span>                    <span class="keywordflow">if</span> nplane &gt;= 0:</div>
-<div class="line"><span class="lineno">  209</span>                        <span class="comment"># fill the histogram corresponding to nplane</span></div>
-<div class="line"><span class="lineno">  210</span>                        h[f<span class="stringliteral">&#39;NuTauMu_mu_{nplane}&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  211</span>                    <span class="keywordflow">if</span> detID == 10000:</div>
-<div class="line"><span class="lineno">  212</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  213</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  214</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  215</span>                    h[<span class="stringliteral">&#39;NuTauMu_xvsz_mu&#39;</span>].Fill(z, x, weight)</div>
-<div class="line"><span class="lineno">  216</span>                    h[<span class="stringliteral">&#39;NuTauMu_yvsz_mu&#39;</span>].Fill(z, y, weight)</div>
-<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.TimeDetPoint:</div>
-<div class="line"><span class="lineno">  218</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  219</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  220</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  221</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  222</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  223</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  224</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  225</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  226</span>                z = hit.GetZ()</div>
-<div class="line"><span class="lineno">  227</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  228</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  229</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  230</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  231</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  232</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  233</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  234</span>                h[<span class="stringliteral">&#39;timing_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  235</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  236</span>                    muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  237</span>                    muonid = trid</div>
-<div class="line"><span class="lineno">  238</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  239</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  240</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  241</span>                    h[<span class="stringliteral">&#39;timing_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.muonPoint:</div>
-<div class="line"><span class="lineno">  243</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  244</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  245</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  246</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  247</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  248</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  249</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  250</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  251</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  252</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  253</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  254</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  255</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  256</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  257</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  258</span>                h[<span class="stringliteral">&#39;muon_tiles_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  259</span>                h[<span class="stringliteral">&#39;muon_bars_x_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  260</span>                h[<span class="stringliteral">&#39;muon_bars_y_all&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  261</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  262</span>                    muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  263</span>                    muonid = trid</div>
-<div class="line"><span class="lineno">  264</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  265</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  266</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  267</span>                    h[<span class="stringliteral">&#39;muon_tiles_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  268</span>                    h[<span class="stringliteral">&#39;muon_bars_y_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  269</span>                    h[<span class="stringliteral">&#39;muon_bars_x_mu&#39;</span>].Fill(x, y, weight)</div>
-<div class="line"><span class="lineno">  270</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.vetoPoint:</div>
-<div class="line"><span class="lineno">  271</span>            <span class="keywordflow">if</span> hit:</div>
-<div class="line"><span class="lineno">  272</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
-<div class="line"><span class="lineno">  273</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  274</span>                trid = hit.GetTrackID()</div>
-<div class="line"><span class="lineno">  275</span>                <span class="keyword">assert</span> trid &gt; 0</div>
-<div class="line"><span class="lineno">  276</span>                weight = event.MCTrack[trid].GetWeight()</div>
-<div class="line"><span class="lineno">  277</span>                x = hit.GetX()</div>
-<div class="line"><span class="lineno">  278</span>                y = hit.GetY()</div>
-<div class="line"><span class="lineno">  279</span>                z = hit.GetZ()</div>
-<div class="line"><span class="lineno">  280</span>                px = hit.GetPx()</div>
-<div class="line"><span class="lineno">  281</span>                py = hit.GetPy()</div>
-<div class="line"><span class="lineno">  282</span>                pz = hit.GetPz()</div>
-<div class="line"><span class="lineno">  283</span>                pt = np.hypot(px, py)</div>
-<div class="line"><span class="lineno">  284</span>                P = np.hypot(pz, pt)</div>
-<div class="line"><span class="lineno">  285</span>                pid = hit.PdgCode()</div>
-<div class="line"><span class="lineno">  286</span>                detector_ID = hit.GetDetectorID()</div>
-<div class="line"><span class="lineno">  287</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
-<div class="line"><span class="lineno">  288</span>                phi = r.TMath.ATan2(y, x)</div>
-<div class="line"><span class="lineno">  289</span>                <span class="keywordflow">if</span> 99999 &lt; detector_ID &lt; 999999:</div>
-<div class="line"><span class="lineno">  290</span>                    h[<span class="stringliteral">&#39;SBT_Liquid_all&#39;</span>].Fill(z, phi, weight)</div>
-<div class="line"><span class="lineno">  291</span>                    <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  292</span>                        muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  293</span>                        muonid = trid</div>
-<div class="line"><span class="lineno">  294</span>                        h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  295</span>                        h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  296</span>                        h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  297</span>                        h[<span class="stringliteral">&#39;SBT_Liquid_mu&#39;</span>].Fill(z, phi, weight)</div>
-<div class="line"><span class="lineno">  298</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  299</span>                <span class="keywordflow">elif</span> detector_ID &gt; 999999:</div>
-<div class="line"><span class="lineno">  300</span>                    h[<span class="stringliteral">&#39;SBT_Plastic_all&#39;</span>].Fill(z, phi, weight)</div>
-<div class="line"><span class="lineno">  301</span>                    <span class="keywordflow">if</span> abs(pid) == 13:</div>
-<div class="line"><span class="lineno">  302</span>                        muon = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  303</span>                        muonid = trid</div>
-<div class="line"><span class="lineno">  304</span>                        h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
-<div class="line"><span class="lineno">  305</span>                        h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
-<div class="line"><span class="lineno">  306</span>                        h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
-<div class="line"><span class="lineno">  307</span>                        h[<span class="stringliteral">&#39;SBT_Plastic_mu&#39;</span>].Fill(z, phi, weight)</div>
-<div class="line"><span class="lineno">  308</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  309</span>                log.warning(<span class="stringliteral">&#39;Unidentified vetoPoint.&#39;</span>)</div>
-<div class="line"><span class="lineno">  310</span>        <span class="keywordflow">if</span> muon:</div>
-<div class="line"><span class="lineno">  311</span>            original_muon = event.MCTrack[muonid]</div>
-<div class="line"><span class="lineno">  312</span>            weight = original_muon.GetWeight()</div>
-<div class="line"><span class="lineno">  313</span>            h[<span class="stringliteral">&#39;mu_p_original&#39;</span>].Fill(original_muon.GetP(), weight)</div>
-<div class="line"><span class="lineno">  314</span>            h[<span class="stringliteral">&#39;mu_pt_original&#39;</span>].Fill(original_muon.GetPt(), weight)</div>
-<div class="line"><span class="lineno">  315</span>            h[<span class="stringliteral">&#39;mu_ppt_original&#39;</span>].Fill(original_muon.GetP(),</div>
-<div class="line"><span class="lineno">  316</span>                                      original_muon.GetPt(), weight)</div>
-<div class="line"><span class="lineno">  317</span>            <span class="comment"># NOTE: muons are counted several times if they create several hits</span></div>
-<div class="line"><span class="lineno">  318</span>            <span class="comment">#       But the original muon is only counted once.</span></div>
-<div class="line"><span class="lineno">  319</span>    log.info(<span class="stringliteral">&#39;Event loop done&#39;</span>)</div>
-<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  321</span>        classname = h[key].Class().GetName()</div>
-<div class="line"><span class="lineno">  322</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;TH&#39;</span> <span class="keywordflow">in</span> classname <span class="keywordflow">or</span> <span class="stringliteral">&#39;TP&#39;</span> <span class="keywordflow">in</span> classname:</div>
-<div class="line"><span class="lineno">  323</span>            h[key].Write()</div>
-<div class="line"><span class="lineno">  324</span>    f.Close()</div>
-<div class="line"><span class="lineno">  325</span> </div>
-<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">   43</span>        ut.bookHist(h, f<span class="stringliteral">&#39;timing_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   44</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 3, -252, +252, 167, -501,</div>
+<div class="line"><span class="lineno">   45</span>                    501)</div>
+<div class="line"><span class="lineno">   46</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   47</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 120, -60, 60, 120, -60,</div>
+<div class="line"><span class="lineno">   48</span>                    60)</div>
+<div class="line"><span class="lineno">   49</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_yvsz_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   50</span>                    <span class="stringliteral">&#39;{};z[cm];y[cm]&#39;</span>.format(</div>
+<div class="line"><span class="lineno">   51</span>                        title), 400, -3300, -2900, 120, -60,</div>
+<div class="line"><span class="lineno">   52</span>                    60)</div>
+<div class="line"><span class="lineno">   53</span>        ut.bookHist(h, f<span class="stringliteral">&#39;TargetTracker_xvsz_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   54</span>                    <span class="stringliteral">&#39;{};z[cm];x[cm]&#39;</span>.format(</div>
+<div class="line"><span class="lineno">   55</span>                        title), 400, -3300, -2900, 120, -60,</div>
+<div class="line"><span class="lineno">   56</span>                    60)</div>
+<div class="line"><span class="lineno">   57</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   58</span>                    f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 100, -300, +300, 100, -300,</div>
+<div class="line"><span class="lineno">   59</span>                    300)</div>
+<div class="line"><span class="lineno">   60</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_yvsz_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   61</span>                    <span class="stringliteral">&#39;{};z[cm];y[cm]&#39;</span>.format(</div>
+<div class="line"><span class="lineno">   62</span>                        title), 200, -2680, -2480, 600, -300,</div>
+<div class="line"><span class="lineno">   63</span>                    300)</div>
+<div class="line"><span class="lineno">   64</span>        ut.bookHist(h, f<span class="stringliteral">&#39;NuTauMu_xvsz_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   65</span>                    <span class="stringliteral">&#39;{};z[cm];x[cm]&#39;</span>.format(</div>
+<div class="line"><span class="lineno">   66</span>                        title), 200, -2680, -2480, 600, -300,</div>
+<div class="line"><span class="lineno">   67</span>                    300)</div>
+<div class="line"><span class="lineno">   68</span>        ut.bookHist(h, f<span class="stringliteral">&#39;SBT_Liquid_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   69</span>                    f<span class="stringliteral">&#39;{title};z[cm];#phi&#39;</span>, 100, -3000, +3000, 100,</div>
+<div class="line"><span class="lineno">   70</span>                    -r.TMath.Pi(), r.TMath.Pi())</div>
+<div class="line"><span class="lineno">   71</span>        ut.bookHist(h, f<span class="stringliteral">&#39;SBT_Plastic_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   72</span>                    f<span class="stringliteral">&#39;{title};z[cm];#phi&#39;</span>, 100, -3000, +3000, 100,</div>
+<div class="line"><span class="lineno">   73</span>                    -r.TMath.Pi(), r.TMath.Pi())</div>
+<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">for</span> station <span class="keywordflow">in</span> range(1, 5):</div>
+<div class="line"><span class="lineno">   75</span>            ut.bookHist(h, f<span class="stringliteral">&#39;T{station}_{suffix}&#39;</span>,</div>
+<div class="line"><span class="lineno">   76</span>                        f<span class="stringliteral">&#39;{title};x[cm];y[cm]&#39;</span>, 10, -250, +250, 20,</div>
+<div class="line"><span class="lineno">   77</span>                        -500, 500)</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_p&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
+<div class="line"><span class="lineno">   80</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_pt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
+<div class="line"><span class="lineno">   81</span>                maxpt)</div>
+<div class="line"><span class="lineno">   82</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_mu_ppt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
+<div class="line"><span class="lineno">   83</span>                100, 0, maxp, 100, 0, maxpt)</div>
+<div class="line"><span class="lineno">   84</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_p&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
+<div class="line"><span class="lineno">   85</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_pt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
+<div class="line"><span class="lineno">   86</span>                maxpt)</div>
+<div class="line"><span class="lineno">   87</span>    ut.bookHist(h, <span class="stringliteral">&#39;NuTauMu_all_ppt&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
+<div class="line"><span class="lineno">   88</span>                100, 0, maxp, 100, 0, maxpt)</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">for</span> suffix <span class="keywordflow">in</span> [<span class="stringliteral">&#39;&#39;</span>, <span class="stringliteral">&#39;_original&#39;</span>]:</div>
+<div class="line"><span class="lineno">   91</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_p{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];&#39;</span>, 100, 0, maxp)</div>
+<div class="line"><span class="lineno">   92</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_pt{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p_t[GeV];&#39;</span>, 100, 0,</div>
+<div class="line"><span class="lineno">   93</span>                    maxpt)</div>
+<div class="line"><span class="lineno">   94</span>        ut.bookHist(h, f<span class="stringliteral">&#39;mu_ppt{suffix}&#39;</span>, <span class="stringliteral">&#39;#mu#pm;p[GeV];p_t[GeV];&#39;</span>,</div>
+<div class="line"><span class="lineno">   95</span>                    100, 0, maxp, 100, 0, maxpt)</div>
+<div class="line"><span class="lineno">   96</span>    ch = r.TChain(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
+<div class="line"><span class="lineno">   97</span>    ch.Add(args.inputfile)</div>
+<div class="line"><span class="lineno">   98</span>    n = ch.GetEntries()</div>
+<div class="line"><span class="lineno">   99</span>    log.info(n)</div>
+<div class="line"><span class="lineno">  100</span>    i = 0</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">for</span> event <span class="keywordflow">in</span> ch:</div>
+<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">if</span> i % 10000 == 0:</div>
+<div class="line"><span class="lineno">  103</span>            log.info(f<span class="stringliteral">&#39;{i}/{n}&#39;</span>)</div>
+<div class="line"><span class="lineno">  104</span>        i += 1</div>
+<div class="line"><span class="lineno">  105</span>        muon = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.strawtubesPoint:</div>
+<div class="line"><span class="lineno">  107</span>            <span class="keywordflow">if</span> hit:</div>
+<div class="line"><span class="lineno">  108</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
+<div class="line"><span class="lineno">  109</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  110</span>                trid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  111</span>                <span class="keyword">assert</span> trid &gt; 0</div>
+<div class="line"><span class="lineno">  112</span>                weight = event.MCTrack[trid].GetWeight()</div>
+<div class="line"><span class="lineno">  113</span>                x = hit.GetX()</div>
+<div class="line"><span class="lineno">  114</span>                y = hit.GetY()</div>
+<div class="line"><span class="lineno">  115</span>                z = hit.GetZ()</div>
+<div class="line"><span class="lineno">  116</span>                px = hit.GetPx()</div>
+<div class="line"><span class="lineno">  117</span>                py = hit.GetPy()</div>
+<div class="line"><span class="lineno">  118</span>                pz = hit.GetPz()</div>
+<div class="line"><span class="lineno">  119</span>                pt = np.hypot(px, py)</div>
+<div class="line"><span class="lineno">  120</span>                P = np.hypot(pz, pt)</div>
+<div class="line"><span class="lineno">  121</span>                pid = hit.PdgCode()</div>
+<div class="line"><span class="lineno">  122</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
+<div class="line"><span class="lineno">  123</span>                station = hit.GetStationNumber()</div>
+<div class="line"><span class="lineno">  124</span>                h[f<span class="stringliteral">&#39;T{station}_all&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  125</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  126</span>                    muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  127</span>                    muonid = trid</div>
+<div class="line"><span class="lineno">  128</span>                    h[f<span class="stringliteral">&#39;T{station}_mu&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  129</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  130</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  131</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.TTPoint:</div>
+<div class="line"><span class="lineno">  133</span>            <span class="keywordflow">if</span> hit:</div>
+<div class="line"><span class="lineno">  134</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
+<div class="line"><span class="lineno">  135</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  136</span>                trid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  137</span>                <span class="keyword">assert</span> trid &gt; 0</div>
+<div class="line"><span class="lineno">  138</span>                detID = hit.GetDetectorID()</div>
+<div class="line"><span class="lineno">  139</span>                weight = event.MCTrack[trid].GetWeight()</div>
+<div class="line"><span class="lineno">  140</span>                x = hit.GetX()</div>
+<div class="line"><span class="lineno">  141</span>                y = hit.GetY()</div>
+<div class="line"><span class="lineno">  142</span>                z = hit.GetZ()</div>
+<div class="line"><span class="lineno">  143</span>                px = hit.GetPx()</div>
+<div class="line"><span class="lineno">  144</span>                py = hit.GetPy()</div>
+<div class="line"><span class="lineno">  145</span>                pz = hit.GetPz()</div>
+<div class="line"><span class="lineno">  146</span>                pt = np.hypot(px, py)</div>
+<div class="line"><span class="lineno">  147</span>                P = np.hypot(pz, pt)</div>
+<div class="line"><span class="lineno">  148</span>                pid = hit.PdgCode()</div>
+<div class="line"><span class="lineno">  149</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
+<div class="line"><span class="lineno">  150</span>                <span class="keywordflow">if</span> detID == 0:</div>
+<div class="line"><span class="lineno">  151</span>                    h[<span class="stringliteral">&#39;TargetTracker_all&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  152</span>                h[<span class="stringliteral">&#39;TargetTracker_xvsz_all&#39;</span>].Fill(z, x, weight)</div>
+<div class="line"><span class="lineno">  153</span>                h[<span class="stringliteral">&#39;TargetTracker_yvsz_all&#39;</span>].Fill(z, y, weight)</div>
+<div class="line"><span class="lineno">  154</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  155</span>                    muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  156</span>                    muonid = trid</div>
+<div class="line"><span class="lineno">  157</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  158</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  159</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  160</span>                    <span class="keywordflow">if</span> detID == 0:</div>
+<div class="line"><span class="lineno">  161</span>                        h[<span class="stringliteral">&#39;TargetTracker_mu&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  162</span>                    h[<span class="stringliteral">&#39;TargetTracker_xvsz_mu&#39;</span>].Fill(z, x, weight)</div>
+<div class="line"><span class="lineno">  163</span>                    h[<span class="stringliteral">&#39;TargetTracker_yvsz_mu&#39;</span>].Fill(z, y, weight)</div>
+<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.ShipRpcPoint:</div>
+<div class="line"><span class="lineno">  165</span>            <span class="keywordflow">if</span> hit:</div>
+<div class="line"><span class="lineno">  166</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
+<div class="line"><span class="lineno">  167</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  168</span>                trid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  169</span>                <span class="keyword">assert</span> trid &gt; 0</div>
+<div class="line"><span class="lineno">  170</span>                detID = hit.GetDetectorID()</div>
+<div class="line"><span class="lineno">  171</span>                nplane = detID - 10000</div>
+<div class="line"><span class="lineno">  172</span>                weight = event.MCTrack[trid].GetWeight()</div>
+<div class="line"><span class="lineno">  173</span>                x = hit.GetX()</div>
+<div class="line"><span class="lineno">  174</span>                y = hit.GetY()</div>
+<div class="line"><span class="lineno">  175</span>                z = hit.GetZ()</div>
+<div class="line"><span class="lineno">  176</span>                px = hit.GetPx()</div>
+<div class="line"><span class="lineno">  177</span>                py = hit.GetPy()</div>
+<div class="line"><span class="lineno">  178</span>                pz = hit.GetPz()</div>
+<div class="line"><span class="lineno">  179</span>                pt = np.hypot(px, py)</div>
+<div class="line"><span class="lineno">  180</span>                P = np.hypot(pz, pt)</div>
+<div class="line"><span class="lineno">  181</span>                pid = hit.PdgCode()</div>
+<div class="line"><span class="lineno">  182</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
+<div class="line"><span class="lineno">  183</span>                h[<span class="stringliteral">&#39;NuTauMu_all&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  184</span>                <span class="keywordflow">if</span> nplane &gt;= 0:</div>
+<div class="line"><span class="lineno">  185</span>                    h[f<span class="stringliteral">&#39;NuTauMu_all_{nplane}&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  186</span>                h[<span class="stringliteral">&#39;NuTauMu_xvsz_all&#39;</span>].Fill(z, x, weight)</div>
+<div class="line"><span class="lineno">  187</span>                h[<span class="stringliteral">&#39;NuTauMu_yvsz_all&#39;</span>].Fill(z, y, weight)</div>
+<div class="line"><span class="lineno">  188</span>                <span class="keywordflow">if</span> detID == 10000:</div>
+<div class="line"><span class="lineno">  189</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  190</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  191</span>                    h[<span class="stringliteral">&#39;NuTauMu_all_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  192</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  193</span>                    muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  194</span>                    muonid = trid</div>
+<div class="line"><span class="lineno">  195</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  196</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  197</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  198</span>                    h[<span class="stringliteral">&#39;NuTauMu_mu&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  199</span>                    <span class="keywordflow">if</span> nplane &gt;= 0:</div>
+<div class="line"><span class="lineno">  200</span>                        <span class="comment"># fill the histogram corresponding to nplane</span></div>
+<div class="line"><span class="lineno">  201</span>                        h[f<span class="stringliteral">&#39;NuTauMu_mu_{nplane}&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  202</span>                    <span class="keywordflow">if</span> detID == 10000:</div>
+<div class="line"><span class="lineno">  203</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  204</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  205</span>                        h[<span class="stringliteral">&#39;NuTauMu_mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  206</span>                    h[<span class="stringliteral">&#39;NuTauMu_xvsz_mu&#39;</span>].Fill(z, x, weight)</div>
+<div class="line"><span class="lineno">  207</span>                    h[<span class="stringliteral">&#39;NuTauMu_yvsz_mu&#39;</span>].Fill(z, y, weight)</div>
+<div class="line"><span class="lineno">  208</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.TimeDetPoint:</div>
+<div class="line"><span class="lineno">  209</span>            <span class="keywordflow">if</span> hit:</div>
+<div class="line"><span class="lineno">  210</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
+<div class="line"><span class="lineno">  211</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  212</span>                trid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  213</span>                <span class="keyword">assert</span> trid &gt; 0</div>
+<div class="line"><span class="lineno">  214</span>                weight = event.MCTrack[trid].GetWeight()</div>
+<div class="line"><span class="lineno">  215</span>                x = hit.GetX()</div>
+<div class="line"><span class="lineno">  216</span>                y = hit.GetY()</div>
+<div class="line"><span class="lineno">  217</span>                z = hit.GetZ()</div>
+<div class="line"><span class="lineno">  218</span>                px = hit.GetPx()</div>
+<div class="line"><span class="lineno">  219</span>                py = hit.GetPy()</div>
+<div class="line"><span class="lineno">  220</span>                pz = hit.GetPz()</div>
+<div class="line"><span class="lineno">  221</span>                pt = np.hypot(px, py)</div>
+<div class="line"><span class="lineno">  222</span>                P = np.hypot(pz, pt)</div>
+<div class="line"><span class="lineno">  223</span>                pid = hit.PdgCode()</div>
+<div class="line"><span class="lineno">  224</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
+<div class="line"><span class="lineno">  225</span>                h[<span class="stringliteral">&#39;timing_all&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  226</span>                <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  227</span>                    muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  228</span>                    muonid = trid</div>
+<div class="line"><span class="lineno">  229</span>                    h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  230</span>                    h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  231</span>                    h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  232</span>                    h[<span class="stringliteral">&#39;timing_mu&#39;</span>].Fill(x, y, weight)</div>
+<div class="line"><span class="lineno">  233</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.vetoPoint:</div>
+<div class="line"><span class="lineno">  234</span>            <span class="keywordflow">if</span> hit:</div>
+<div class="line"><span class="lineno">  235</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> hit.GetEnergyLoss() &gt; 0:</div>
+<div class="line"><span class="lineno">  236</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  237</span>                trid = hit.GetTrackID()</div>
+<div class="line"><span class="lineno">  238</span>                <span class="keyword">assert</span> trid &gt; 0</div>
+<div class="line"><span class="lineno">  239</span>                weight = event.MCTrack[trid].GetWeight()</div>
+<div class="line"><span class="lineno">  240</span>                x = hit.GetX()</div>
+<div class="line"><span class="lineno">  241</span>                y = hit.GetY()</div>
+<div class="line"><span class="lineno">  242</span>                z = hit.GetZ()</div>
+<div class="line"><span class="lineno">  243</span>                px = hit.GetPx()</div>
+<div class="line"><span class="lineno">  244</span>                py = hit.GetPy()</div>
+<div class="line"><span class="lineno">  245</span>                pz = hit.GetPz()</div>
+<div class="line"><span class="lineno">  246</span>                pt = np.hypot(px, py)</div>
+<div class="line"><span class="lineno">  247</span>                P = np.hypot(pz, pt)</div>
+<div class="line"><span class="lineno">  248</span>                pid = hit.PdgCode()</div>
+<div class="line"><span class="lineno">  249</span>                detector_ID = hit.GetDetectorID()</div>
+<div class="line"><span class="lineno">  250</span>                <span class="keyword">assert</span> pid <span class="keywordflow">not</span> <span class="keywordflow">in</span> [12, -12, 14, -14, 16, -16]</div>
+<div class="line"><span class="lineno">  251</span>                phi = r.TMath.ATan2(y, x)</div>
+<div class="line"><span class="lineno">  252</span>                <span class="keywordflow">if</span> 99999 &lt; detector_ID &lt; 999999:</div>
+<div class="line"><span class="lineno">  253</span>                    h[<span class="stringliteral">&#39;SBT_Liquid_all&#39;</span>].Fill(z, phi, weight)</div>
+<div class="line"><span class="lineno">  254</span>                    <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  255</span>                        muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  256</span>                        muonid = trid</div>
+<div class="line"><span class="lineno">  257</span>                        h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  258</span>                        h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  259</span>                        h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  260</span>                        h[<span class="stringliteral">&#39;SBT_Liquid_mu&#39;</span>].Fill(z, phi, weight)</div>
+<div class="line"><span class="lineno">  261</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  262</span>                <span class="keywordflow">elif</span> detector_ID &gt; 999999:</div>
+<div class="line"><span class="lineno">  263</span>                    h[<span class="stringliteral">&#39;SBT_Plastic_all&#39;</span>].Fill(z, phi, weight)</div>
+<div class="line"><span class="lineno">  264</span>                    <span class="keywordflow">if</span> abs(pid) == 13:</div>
+<div class="line"><span class="lineno">  265</span>                        muon = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  266</span>                        muonid = trid</div>
+<div class="line"><span class="lineno">  267</span>                        h[<span class="stringliteral">&#39;mu_p&#39;</span>].Fill(P, weight)</div>
+<div class="line"><span class="lineno">  268</span>                        h[<span class="stringliteral">&#39;mu_pt&#39;</span>].Fill(pt, weight)</div>
+<div class="line"><span class="lineno">  269</span>                        h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
+<div class="line"><span class="lineno">  270</span>                        h[<span class="stringliteral">&#39;SBT_Plastic_mu&#39;</span>].Fill(z, phi, weight)</div>
+<div class="line"><span class="lineno">  271</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  272</span>                log.warning(<span class="stringliteral">&#39;Unidentified vetoPoint.&#39;</span>)</div>
+<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">if</span> muon:</div>
+<div class="line"><span class="lineno">  274</span>            original_muon = event.MCTrack[muonid]</div>
+<div class="line"><span class="lineno">  275</span>            weight = original_muon.GetWeight()</div>
+<div class="line"><span class="lineno">  276</span>            h[<span class="stringliteral">&#39;mu_p_original&#39;</span>].Fill(original_muon.GetP(), weight)</div>
+<div class="line"><span class="lineno">  277</span>            h[<span class="stringliteral">&#39;mu_pt_original&#39;</span>].Fill(original_muon.GetPt(), weight)</div>
+<div class="line"><span class="lineno">  278</span>            h[<span class="stringliteral">&#39;mu_ppt_original&#39;</span>].Fill(original_muon.GetP(),</div>
+<div class="line"><span class="lineno">  279</span>                                      original_muon.GetPt(), weight)</div>
+<div class="line"><span class="lineno">  280</span>            <span class="comment"># NOTE: muons are counted several times if they create several hits</span></div>
+<div class="line"><span class="lineno">  281</span>            <span class="comment">#       But the original muon is only counted once.</span></div>
+<div class="line"><span class="lineno">  282</span>    log.info(<span class="stringliteral">&#39;Event loop done&#39;</span>)</div>
+<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  284</span>        classname = h[key].Class().GetName()</div>
+<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;TH&#39;</span> <span class="keywordflow">in</span> classname <span class="keywordflow">or</span> <span class="stringliteral">&#39;TP&#39;</span> <span class="keywordflow">in</span> classname:</div>
+<div class="line"><span class="lineno">  286</span>            h[key].Write()</div>
+<div class="line"><span class="lineno">  287</span>    f.Close()</div>
+<div class="line"><span class="lineno">  288</span> </div>
+<div class="line"><span class="lineno">  289</span> </div>
 <div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00006">test_pythia_version.cpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -454,7 +417,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flux__map_8py_source.html#l00328">328</a> of file <a class="el" href="flux__map_8py_source.html">flux_map.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flux__map_8py_source.html#l00291">291</a> of file <a class="el" href="flux__map_8py_source.html">flux_map.py</a>.</p>
 
 </div>
 </div>

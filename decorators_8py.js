@@ -5,7 +5,6 @@ var decorators_8py =
     [ "FitTrackPrintOut", "decorators_8py.html#ad60443c6f7c9480c370f7bf319b11b07", null ],
     [ "MCPointPrintOut", "decorators_8py.html#a1639e2afcc016284ccd45c276539c2ba", null ],
     [ "MCTrackPrintOut", "decorators_8py.html#a2ec1e32203e1b964c50333fe4ac80774", null ],
-    [ "muonHitPrintOut", "decorators_8py.html#a93ba609965ce91eca0009e73b2cae94a", null ],
     [ "ShipParticlePrintOut", "decorators_8py.html#aa3f84a39dd53816eddb7e035be380d26", null ],
     [ "TEvePointSetPrintOut", "decorators_8py.html#a39ea9b0935df86db925f26d35f7e1dab", null ],
     [ "TimeDetHitPrintOut", "decorators_8py.html#ac67f665b749ba7095f3c3acfff538a30", null ],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['x_0',['x',['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x']]],
+  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x']]],
   ['x0_5f_1',['x0_',['../structShipFieldMaker_1_1transformInfo.html#a3a709cf11c81f7e10e2b69f6fe93ed02',1,'ShipFieldMaker::transformInfo']]],
   ['xaxis_2',['xAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e',1,'ShipBFieldMap']]],
   ['xbox_3',['xBox',['../classCosmicsGenerator.html#a0b94b15a80545d75d55bcd4a88271e63',1,'CosmicsGenerator']]],
@@ -21,6 +21,5 @@ var searchData=
   ['xvessel_18',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
   ['xx_19',['xx',['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespaceg4Ex.html#abd8cde62a307957fbb35535058451d42',1,'g4Ex.xx'],['../namespaceg4Ex__args.html#a269d9ac8bda33cc3ce8153881c64a596',1,'g4Ex_args.xx'],['../namespaceg4Ex__gap.html#a7997130f1a56bd6b1ecbcb54b415c17e',1,'g4Ex_gap.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]],
   ['xxx_20',['xxx',['../namespacerun__simScript.html#a74ff17349a4760ce81e57487c477618b',1,'run_simScript']]],
-  ['xy_21',['xy',['../namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878',1,'run_fixedTarget']]],
-  ['xyzfromdetid_22',['XYZfromDetID',['../classmuonHit.html#a398f7c4a482125ecec0dfdc3bc19b5e1',1,'muonHit']]]
+  ['xy_21',['xy',['../namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878',1,'run_fixedTarget']]]
 ];

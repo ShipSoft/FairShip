@@ -267,17 +267,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01188">1188</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1188</span><span class="keyword">def </span>debugStraw(n):</div>
-<div class="line"><span class="lineno"> 1189</span>    sGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno"> 1190</span>    vols = sGeo.GetListOfVolumes()</div>
-<div class="line"><span class="lineno"> 1191</span>    sTree = g.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1192</span>    sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno"> 1193</span>    <span class="keywordflow">for</span> s <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
-<div class="line"><span class="lineno"> 1194</span>        print(vols[s.GetDetectorID() - 1].GetName())</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01187">1187</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1187</span><span class="keyword">def </span>debugStraw(n):</div>
+<div class="line"><span class="lineno"> 1188</span>    sGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno"> 1189</span>    vols = sGeo.GetListOfVolumes()</div>
+<div class="line"><span class="lineno"> 1190</span>    sTree = g.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1191</span>    sTree.GetEntry(n)</div>
+<div class="line"><span class="lineno"> 1192</span>    <span class="keywordflow">for</span> s <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
+<div class="line"><span class="lineno"> 1193</span>        print(vols[s.GetDetectorID() - 1].GetName())</div>
+<div class="line"><span class="lineno"> 1194</span> </div>
 <div class="line"><span class="lineno"> 1195</span> </div>
-<div class="line"><span class="lineno"> 1196</span> </div>
-<div class="line"><span class="lineno"> 1197</span><span class="comment"># ----Load the default libraries------</span></div>
+<div class="line"><span class="lineno"> 1196</span><span class="comment"># ----Load the default libraries------</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -296,19 +296,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00912">912</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  912</span><span class="keyword">def </span>DisplayNuDetector():</div>
-<div class="line"><span class="lineno">  913</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;Wall&quot;</span>]:</div>
-<div class="line"><span class="lineno">  914</span>        xvol = sGeo.GetVolume(x)</div>
-<div class="line"><span class="lineno">  915</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> xvol:</div>
-<div class="line"><span class="lineno">  916</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  917</span>        xvol.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  918</span>        xvol.SetVisibility(1)</div>
-<div class="line"><span class="lineno">  919</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  920</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  921</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00911">911</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  911</span><span class="keyword">def </span>DisplayNuDetector():</div>
+<div class="line"><span class="lineno">  912</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;Wall&quot;</span>]:</div>
+<div class="line"><span class="lineno">  913</span>        xvol = sGeo.GetVolume(x)</div>
+<div class="line"><span class="lineno">  914</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> xvol:</div>
+<div class="line"><span class="lineno">  915</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  916</span>        xvol.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  917</span>        xvol.SetVisibility(1)</div>
+<div class="line"><span class="lineno">  918</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  919</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  920</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  921</span> </div>
 <div class="line"><span class="lineno">  922</span> </div>
-<div class="line"><span class="lineno">  923</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -327,20 +327,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01346">1346</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1346</span><span class="keyword">def </span>DrawCharmTracks():</div>
-<div class="line"><span class="lineno"> 1347</span>    i = -1</div>
-<div class="line"><span class="lineno"> 1348</span>    <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><span class="lineno"> 1349</span>        i += 1</div>
-<div class="line"><span class="lineno"> 1350</span>        <span class="keywordflow">if</span> i &lt; 2:</div>
-<div class="line"><span class="lineno"> 1351</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno"> 1352</span>        <span class="keywordflow">if</span> aTrack.GetMotherId() == 1:</div>
-<div class="line"><span class="lineno"> 1353</span>            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())</div>
-<div class="line"><span class="lineno"> 1354</span>            <span class="keywordflow">if</span> pa.Lifetime() &gt; 1.0e-12:</div>
-<div class="line"><span class="lineno"> 1355</span>                print(sTree.MCTrack[i])</div>
-<div class="line"><span class="lineno"> 1356</span>                SHiPDisplay.tracks.DrawMCTrack(i)</div>
-<div class="line"><span class="lineno"> 1357</span> </div>
-<div class="line"><span class="lineno"> 1358</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01342">1342</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1342</span><span class="keyword">def </span>DrawCharmTracks():</div>
+<div class="line"><span class="lineno"> 1343</span>    i = -1</div>
+<div class="line"><span class="lineno"> 1344</span>    <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><span class="lineno"> 1345</span>        i += 1</div>
+<div class="line"><span class="lineno"> 1346</span>        <span class="keywordflow">if</span> i &lt; 2:</div>
+<div class="line"><span class="lineno"> 1347</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno"> 1348</span>        <span class="keywordflow">if</span> aTrack.GetMotherId() == 1:</div>
+<div class="line"><span class="lineno"> 1349</span>            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())</div>
+<div class="line"><span class="lineno"> 1350</span>            <span class="keywordflow">if</span> pa.Lifetime() &gt; 1.0e-12:</div>
+<div class="line"><span class="lineno"> 1351</span>                print(sTree.MCTrack[i])</div>
+<div class="line"><span class="lineno"> 1352</span>                SHiPDisplay.tracks.DrawMCTrack(i)</div>
+<div class="line"><span class="lineno"> 1353</span> </div>
+<div class="line"><span class="lineno"> 1354</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -359,44 +359,44 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01359">1359</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1359</span><span class="keyword">def </span>DrawSimpleMCTracks():</div>
-<div class="line"><span class="lineno"> 1360</span>    comp = SHiPDisplay.tracks.comp</div>
-<div class="line"><span class="lineno"> 1361</span>    comp.OpenCompound()</div>
-<div class="line"><span class="lineno"> 1362</span>    n = -1</div>
-<div class="line"><span class="lineno"> 1363</span>    ntot = 0</div>
-<div class="line"><span class="lineno"> 1364</span>    fPos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno"> 1365</span>    fMom = ROOT.TVector3()</div>
-<div class="line"><span class="lineno"> 1366</span>    delZ = 10 * u.m</div>
-<div class="line"><span class="lineno"> 1367</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><span class="lineno"> 1368</span>        n += 1</div>
-<div class="line"><span class="lineno"> 1369</span>        DTrack = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1370</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno"> 1371</span>        DTrack.SetTitle(fT.__repr__())</div>
-<div class="line"><span class="lineno"> 1372</span>        fT.GetStartVertex(fPos)</div>
-<div class="line"><span class="lineno"> 1373</span>        fT.GetMomentum(fMom)</div>
-<div class="line"><span class="lineno"> 1374</span>        hitlist = {}</div>
-<div class="line"><span class="lineno"> 1375</span>        hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]</div>
-<div class="line"><span class="lineno"> 1376</span>        z = fPos.Z() + delZ</div>
-<div class="line"><span class="lineno"> 1377</span>        slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()</div>
-<div class="line"><span class="lineno"> 1378</span>        hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]</div>
-<div class="line"><span class="lineno"> 1379</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> hitlist.keys():</div>
-<div class="line"><span class="lineno"> 1380</span>            DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
-<div class="line"><span class="lineno"> 1381</span>        p = pdg.GetParticle(fT.GetPdgCode())</div>
-<div class="line"><span class="lineno"> 1382</span>        <span class="keywordflow">if</span> p:</div>
-<div class="line"><span class="lineno"> 1383</span>            pName = p.GetName()</div>
-<div class="line"><span class="lineno"> 1384</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno"> 1385</span>            pName = str(fT.GetPdgCode())</div>
-<div class="line"><span class="lineno"> 1386</span>        DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
-<div class="line"><span class="lineno"> 1387</span>        c = ROOT.kYellow</div>
-<div class="line"><span class="lineno"> 1388</span>        DTrack.SetMainColor(c)</div>
-<div class="line"><span class="lineno"> 1389</span>        DTrack.SetLineWidth(3)</div>
-<div class="line"><span class="lineno"> 1390</span>        comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno"> 1391</span>        ntot += 1</div>
-<div class="line"><span class="lineno"> 1392</span>    comp.CloseCompound()</div>
-<div class="line"><span class="lineno"> 1393</span>    gEve.ElementChanged(SHiPDisplay.tracks.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno"> 1394</span> </div>
-<div class="line"><span class="lineno"> 1395</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01355">1355</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1355</span><span class="keyword">def </span>DrawSimpleMCTracks():</div>
+<div class="line"><span class="lineno"> 1356</span>    comp = SHiPDisplay.tracks.comp</div>
+<div class="line"><span class="lineno"> 1357</span>    comp.OpenCompound()</div>
+<div class="line"><span class="lineno"> 1358</span>    n = -1</div>
+<div class="line"><span class="lineno"> 1359</span>    ntot = 0</div>
+<div class="line"><span class="lineno"> 1360</span>    fPos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno"> 1361</span>    fMom = ROOT.TVector3()</div>
+<div class="line"><span class="lineno"> 1362</span>    delZ = 10 * u.m</div>
+<div class="line"><span class="lineno"> 1363</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><span class="lineno"> 1364</span>        n += 1</div>
+<div class="line"><span class="lineno"> 1365</span>        DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1366</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno"> 1367</span>        DTrack.SetTitle(fT.__repr__())</div>
+<div class="line"><span class="lineno"> 1368</span>        fT.GetStartVertex(fPos)</div>
+<div class="line"><span class="lineno"> 1369</span>        fT.GetMomentum(fMom)</div>
+<div class="line"><span class="lineno"> 1370</span>        hitlist = {}</div>
+<div class="line"><span class="lineno"> 1371</span>        hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]</div>
+<div class="line"><span class="lineno"> 1372</span>        z = fPos.Z() + delZ</div>
+<div class="line"><span class="lineno"> 1373</span>        slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()</div>
+<div class="line"><span class="lineno"> 1374</span>        hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]</div>
+<div class="line"><span class="lineno"> 1375</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> hitlist.keys():</div>
+<div class="line"><span class="lineno"> 1376</span>            DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
+<div class="line"><span class="lineno"> 1377</span>        p = pdg.GetParticle(fT.GetPdgCode())</div>
+<div class="line"><span class="lineno"> 1378</span>        <span class="keywordflow">if</span> p:</div>
+<div class="line"><span class="lineno"> 1379</span>            pName = p.GetName()</div>
+<div class="line"><span class="lineno"> 1380</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno"> 1381</span>            pName = str(fT.GetPdgCode())</div>
+<div class="line"><span class="lineno"> 1382</span>        DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
+<div class="line"><span class="lineno"> 1383</span>        c = ROOT.kYellow</div>
+<div class="line"><span class="lineno"> 1384</span>        DTrack.SetMainColor(c)</div>
+<div class="line"><span class="lineno"> 1385</span>        DTrack.SetLineWidth(3)</div>
+<div class="line"><span class="lineno"> 1386</span>        comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno"> 1387</span>        ntot += 1</div>
+<div class="line"><span class="lineno"> 1388</span>    comp.CloseCompound()</div>
+<div class="line"><span class="lineno"> 1389</span>    gEve.ElementChanged(SHiPDisplay.tracks.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno"> 1390</span> </div>
+<div class="line"><span class="lineno"> 1391</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -472,21 +472,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00947">947</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  947</span><span class="keyword">def </span>hidePlasticScintillator():</div>
-<div class="line"><span class="lineno">  948</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  949</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  950</span>    v = sGeo.FindVolumeFast(<span class="stringliteral">&quot;vleft&quot;</span>)</div>
-<div class="line"><span class="lineno">  951</span>    v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  952</span>    v.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  953</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sGeo.GetListOfVolumes():</div>
-<div class="line"><span class="lineno">  954</span>        <span class="keywordflow">if</span> v.GetName().find(<span class="stringliteral">&quot;wallVeto&quot;</span>) &gt; 0:</div>
-<div class="line"><span class="lineno">  955</span>            v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  956</span>            v.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  957</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00946">946</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  946</span><span class="keyword">def </span>hidePlasticScintillator():</div>
+<div class="line"><span class="lineno">  947</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  948</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  949</span>    v = sGeo.FindVolumeFast(<span class="stringliteral">&quot;vleft&quot;</span>)</div>
+<div class="line"><span class="lineno">  950</span>    v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  951</span>    v.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  952</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sGeo.GetListOfVolumes():</div>
+<div class="line"><span class="lineno">  953</span>        <span class="keywordflow">if</span> v.GetName().find(<span class="stringliteral">&quot;wallVeto&quot;</span>) &gt; 0:</div>
+<div class="line"><span class="lineno">  954</span>            v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  955</span>            v.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  956</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  957</span> </div>
 <div class="line"><span class="lineno">  958</span> </div>
-<div class="line"><span class="lineno">  959</span> </div>
-<div class="line"><span class="lineno">  960</span><span class="comment"># switch off drawing of rock</span></div>
+<div class="line"><span class="lineno">  959</span><span class="comment"># switch off drawing of rock</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -505,56 +505,56 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01139">1139</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1139</span><span class="keyword">def </span>mydebug():</div>
-<div class="line"><span class="lineno"> 1140</span>    t = g.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1141</span>    nev = t.GetEntriesFast()</div>
-<div class="line"><span class="lineno"> 1142</span>    t.GetEntry(0)</div>
-<div class="line"><span class="lineno"> 1143</span>    <span class="comment"># Loop over Geo tracks</span></div>
-<div class="line"><span class="lineno"> 1144</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(min(5, nev)):</div>
-<div class="line"><span class="lineno"> 1145</span>        t.GetEntry(i)</div>
-<div class="line"><span class="lineno"> 1146</span>        <span class="keywordflow">for</span> gTr <span class="keywordflow">in</span> t.GeoTracks:</div>
-<div class="line"><span class="lineno"> 1147</span>            gTr.Print()</div>
-<div class="line"><span class="lineno"> 1148</span>            part = gTr.GetParticle()</div>
-<div class="line"><span class="lineno"> 1149</span>            lorv = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno"> 1150</span>            print(</div>
-<div class="line"><span class="lineno"> 1151</span>                <span class="stringliteral">&quot;xyz E pxpypz&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1152</span>                gTr.GetPoint(0)[0],</div>
-<div class="line"><span class="lineno"> 1153</span>                gTr.GetPoint(0)[1],</div>
-<div class="line"><span class="lineno"> 1154</span>                gTr.GetPoint(0)[2],</div>
-<div class="line"><span class="lineno"> 1155</span>                lorv.E(),</div>
-<div class="line"><span class="lineno"> 1156</span>                lorv.Px(),</div>
-<div class="line"><span class="lineno"> 1157</span>                lorv.Py(),</div>
-<div class="line"><span class="lineno"> 1158</span>                lorv.Pz(),</div>
-<div class="line"><span class="lineno"> 1159</span>            )</div>
-<div class="line"><span class="lineno"> 1160</span>    <span class="comment"># Loop over MC tracks</span></div>
-<div class="line"><span class="lineno"> 1161</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(min(5, nev)):</div>
-<div class="line"><span class="lineno"> 1162</span>        t.GetEntry(i)</div>
-<div class="line"><span class="lineno"> 1163</span>        <span class="keywordflow">for</span> gMCTr <span class="keywordflow">in</span> t.MCTrack:</div>
-<div class="line"><span class="lineno"> 1164</span>            gMCTr.Print()</div>
-<div class="line"><span class="lineno"> 1165</span>            print(gMCTr.GetPdgCode(), gMCTr.GetMass(), gMCTr.GetP())</div>
-<div class="line"><span class="lineno"> 1166</span>    <span class="comment"># MC event header</span></div>
-<div class="line"><span class="lineno"> 1167</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nev):</div>
-<div class="line"><span class="lineno"> 1168</span>        t.GetEntry(i)</div>
-<div class="line"><span class="lineno"> 1169</span>        print(</div>
-<div class="line"><span class="lineno"> 1170</span>            t.MCEventHeader.GetEventID(),</div>
-<div class="line"><span class="lineno"> 1171</span>            t.MCEventHeader.GetRunID(),</div>
-<div class="line"><span class="lineno"> 1172</span>            t.MCEventHeader.GetZ(),</div>
-<div class="line"><span class="lineno"> 1173</span>        )</div>
-<div class="line"><span class="lineno"> 1174</span>    <span class="comment"># Load geometry</span></div>
-<div class="line"><span class="lineno"> 1175</span>    sGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno"> 1176</span>    cave = sGeo.GetTopVolume()</div>
-<div class="line"><span class="lineno"> 1177</span>    cave.Draw(<span class="stringliteral">&quot;ogl&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1178</span>    <span class="comment"># eve</span></div>
-<div class="line"><span class="lineno"> 1179</span>    gEve = ROOT.gEve</div>
-<div class="line"><span class="lineno"> 1180</span>    <span class="comment">#</span></div>
-<div class="line"><span class="lineno"> 1181</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno"> 1182</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1183</span>    topnode = geoscene.FindChild(<span class="stringliteral">&quot;cave_1&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1184</span>    topnode.SetVisLevel(4)</div>
-<div class="line"><span class="lineno"> 1185</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01138">1138</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1138</span><span class="keyword">def </span>mydebug():</div>
+<div class="line"><span class="lineno"> 1139</span>    t = g.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1140</span>    nev = t.GetEntriesFast()</div>
+<div class="line"><span class="lineno"> 1141</span>    t.GetEntry(0)</div>
+<div class="line"><span class="lineno"> 1142</span>    <span class="comment"># Loop over Geo tracks</span></div>
+<div class="line"><span class="lineno"> 1143</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(min(5, nev)):</div>
+<div class="line"><span class="lineno"> 1144</span>        t.GetEntry(i)</div>
+<div class="line"><span class="lineno"> 1145</span>        <span class="keywordflow">for</span> gTr <span class="keywordflow">in</span> t.GeoTracks:</div>
+<div class="line"><span class="lineno"> 1146</span>            gTr.Print()</div>
+<div class="line"><span class="lineno"> 1147</span>            part = gTr.GetParticle()</div>
+<div class="line"><span class="lineno"> 1148</span>            lorv = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno"> 1149</span>            print(</div>
+<div class="line"><span class="lineno"> 1150</span>                <span class="stringliteral">&quot;xyz E pxpypz&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1151</span>                gTr.GetPoint(0)[0],</div>
+<div class="line"><span class="lineno"> 1152</span>                gTr.GetPoint(0)[1],</div>
+<div class="line"><span class="lineno"> 1153</span>                gTr.GetPoint(0)[2],</div>
+<div class="line"><span class="lineno"> 1154</span>                lorv.E(),</div>
+<div class="line"><span class="lineno"> 1155</span>                lorv.Px(),</div>
+<div class="line"><span class="lineno"> 1156</span>                lorv.Py(),</div>
+<div class="line"><span class="lineno"> 1157</span>                lorv.Pz(),</div>
+<div class="line"><span class="lineno"> 1158</span>            )</div>
+<div class="line"><span class="lineno"> 1159</span>    <span class="comment"># Loop over MC tracks</span></div>
+<div class="line"><span class="lineno"> 1160</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(min(5, nev)):</div>
+<div class="line"><span class="lineno"> 1161</span>        t.GetEntry(i)</div>
+<div class="line"><span class="lineno"> 1162</span>        <span class="keywordflow">for</span> gMCTr <span class="keywordflow">in</span> t.MCTrack:</div>
+<div class="line"><span class="lineno"> 1163</span>            gMCTr.Print()</div>
+<div class="line"><span class="lineno"> 1164</span>            print(gMCTr.GetPdgCode(), gMCTr.GetMass(), gMCTr.GetP())</div>
+<div class="line"><span class="lineno"> 1165</span>    <span class="comment"># MC event header</span></div>
+<div class="line"><span class="lineno"> 1166</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nev):</div>
+<div class="line"><span class="lineno"> 1167</span>        t.GetEntry(i)</div>
+<div class="line"><span class="lineno"> 1168</span>        print(</div>
+<div class="line"><span class="lineno"> 1169</span>            t.MCEventHeader.GetEventID(),</div>
+<div class="line"><span class="lineno"> 1170</span>            t.MCEventHeader.GetRunID(),</div>
+<div class="line"><span class="lineno"> 1171</span>            t.MCEventHeader.GetZ(),</div>
+<div class="line"><span class="lineno"> 1172</span>        )</div>
+<div class="line"><span class="lineno"> 1173</span>    <span class="comment"># Load geometry</span></div>
+<div class="line"><span class="lineno"> 1174</span>    sGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno"> 1175</span>    cave = sGeo.GetTopVolume()</div>
+<div class="line"><span class="lineno"> 1176</span>    cave.Draw(<span class="stringliteral">&quot;ogl&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1177</span>    <span class="comment"># eve</span></div>
+<div class="line"><span class="lineno"> 1178</span>    gEve = ROOT.gEve</div>
+<div class="line"><span class="lineno"> 1179</span>    <span class="comment">#</span></div>
+<div class="line"><span class="lineno"> 1180</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno"> 1181</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1182</span>    topnode = geoscene.FindChild(<span class="stringliteral">&quot;cave_1&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1183</span>    topnode.SetVisLevel(4)</div>
+<div class="line"><span class="lineno"> 1184</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno"> 1185</span> </div>
 <div class="line"><span class="lineno"> 1186</span> </div>
-<div class="line"><span class="lineno"> 1187</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -632,18 +632,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01396">1396</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1407</span>):</div>
-<div class="line"><span class="lineno"> 1408</span>    tt = ROOT.TEveText(txt)</div>
-<div class="line"><span class="lineno"> 1409</span>    tt.SetFontSize(size)</div>
-<div class="line"><span class="lineno"> 1410</span>    tt.RefMainTrans().SetPos(x, y, z)</div>
-<div class="line"><span class="lineno"> 1411</span>    tt.PtrMainTrans().RotateLF(1, 3, angle)</div>
-<div class="line"><span class="lineno"> 1412</span>    tt.SetMainColor(color)</div>
-<div class="line"><span class="lineno"> 1413</span>    tt.SetFontMode(mode)</div>
-<div class="line"><span class="lineno"> 1414</span>    tt.SetLighting(light)</div>
-<div class="line"><span class="lineno"> 1415</span>    r.AddElement(tt)</div>
-<div class="line"><span class="lineno"> 1416</span> </div>
-<div class="line"><span class="lineno"> 1417</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01392">1392</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1403</span>):</div>
+<div class="line"><span class="lineno"> 1404</span>    tt = ROOT.TEveText(txt)</div>
+<div class="line"><span class="lineno"> 1405</span>    tt.SetFontSize(size)</div>
+<div class="line"><span class="lineno"> 1406</span>    tt.RefMainTrans().SetPos(x, y, z)</div>
+<div class="line"><span class="lineno"> 1407</span>    tt.PtrMainTrans().RotateLF(1, 3, angle)</div>
+<div class="line"><span class="lineno"> 1408</span>    tt.SetMainColor(color)</div>
+<div class="line"><span class="lineno"> 1409</span>    tt.SetFontMode(mode)</div>
+<div class="line"><span class="lineno"> 1410</span>    tt.SetLighting(light)</div>
+<div class="line"><span class="lineno"> 1411</span>    r.AddElement(tt)</div>
+<div class="line"><span class="lineno"> 1412</span> </div>
+<div class="line"><span class="lineno"> 1413</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -796,26 +796,26 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00831">831</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  831</span><span class="keyword">def </span>projection():</div>
-<div class="line"><span class="lineno">  832</span>    <span class="comment"># if 1&gt;0:</span></div>
-<div class="line"><span class="lineno">  833</span>    <span class="comment"># camera</span></div>
-<div class="line"><span class="lineno">  834</span>    s = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Projected Event&quot;</span>)</div>
-<div class="line"><span class="lineno">  835</span>    ROOT.gEve.GetDefaultViewer().AddScene(s)</div>
-<div class="line"><span class="lineno">  836</span>    v = ROOT.gEve.GetDefaultGLViewer()</div>
-<div class="line"><span class="lineno">  837</span>    v.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoXOY)</div>
-<div class="line"><span class="lineno">  838</span>    cam = v.CurrentCamera()</div>
-<div class="line"><span class="lineno">  839</span>    cam.SetZoomMinMax(0.2, 20)</div>
-<div class="line"><span class="lineno">  840</span>    <span class="comment"># projections</span></div>
-<div class="line"><span class="lineno">  841</span>    mng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPT_RPhi)</div>
-<div class="line"><span class="lineno">  842</span>    s.AddElement(mng)</div>
-<div class="line"><span class="lineno">  843</span>    axes = ROOT.TEveProjectionAxes(mng)</div>
-<div class="line"><span class="lineno">  844</span>    axes.SetTitle(<span class="stringliteral">&quot;TEveProjections demo&quot;</span>)</div>
-<div class="line"><span class="lineno">  845</span>    s.AddElement(axes)</div>
-<div class="line"><span class="lineno">  846</span>    ROOT.gEve.AddToListTree(axes, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  847</span>    ROOT.gEve.AddToListTree(mng, ROOT.kTRUE)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00830">830</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  830</span><span class="keyword">def </span>projection():</div>
+<div class="line"><span class="lineno">  831</span>    <span class="comment"># if 1&gt;0:</span></div>
+<div class="line"><span class="lineno">  832</span>    <span class="comment"># camera</span></div>
+<div class="line"><span class="lineno">  833</span>    s = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Projected Event&quot;</span>)</div>
+<div class="line"><span class="lineno">  834</span>    ROOT.gEve.GetDefaultViewer().AddScene(s)</div>
+<div class="line"><span class="lineno">  835</span>    v = ROOT.gEve.GetDefaultGLViewer()</div>
+<div class="line"><span class="lineno">  836</span>    v.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoXOY)</div>
+<div class="line"><span class="lineno">  837</span>    cam = v.CurrentCamera()</div>
+<div class="line"><span class="lineno">  838</span>    cam.SetZoomMinMax(0.2, 20)</div>
+<div class="line"><span class="lineno">  839</span>    <span class="comment"># projections</span></div>
+<div class="line"><span class="lineno">  840</span>    mng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPT_RPhi)</div>
+<div class="line"><span class="lineno">  841</span>    s.AddElement(mng)</div>
+<div class="line"><span class="lineno">  842</span>    axes = ROOT.TEveProjectionAxes(mng)</div>
+<div class="line"><span class="lineno">  843</span>    axes.SetTitle(<span class="stringliteral">&quot;TEveProjections demo&quot;</span>)</div>
+<div class="line"><span class="lineno">  844</span>    s.AddElement(axes)</div>
+<div class="line"><span class="lineno">  845</span>    ROOT.gEve.AddToListTree(axes, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  846</span>    ROOT.gEve.AddToListTree(mng, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  847</span> </div>
 <div class="line"><span class="lineno">  848</span> </div>
-<div class="line"><span class="lineno">  849</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -834,32 +834,32 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00850">850</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  850</span><span class="keyword">def </span>projection_prescale():</div>
-<div class="line"><span class="lineno">  851</span>    <span class="comment"># if 1&gt;0:</span></div>
-<div class="line"><span class="lineno">  852</span>    v = gEve.GetViewers()</div>
-<div class="line"><span class="lineno">  853</span>    vw = v.FindChild(<span class="stringliteral">&quot;Viewer 1&quot;</span>)</div>
-<div class="line"><span class="lineno">  854</span>    <span class="keywordflow">if</span> vw:</div>
-<div class="line"><span class="lineno">  855</span>        vw.SetName(<span class="stringliteral">&quot;3d&quot;</span>)</div>
-<div class="line"><span class="lineno">  856</span>    sev = ROOT.gEve.SpawnNewViewer(<span class="stringliteral">&quot;Scaled 2D&quot;</span>)</div>
-<div class="line"><span class="lineno">  857</span>    smng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPP_Plane)</div>
-<div class="line"><span class="lineno">  858</span>    sp = smng.GetProjection()</div>
-<div class="line"><span class="lineno">  859</span>    sp.SetUsePreScale(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  860</span>    sp.AddPreScaleEntry(2, 100000000.0, 0.1)</div>
-<div class="line"><span class="lineno">  861</span>    ss = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Scaled Geom&quot;</span>)</div>
-<div class="line"><span class="lineno">  862</span>    sev.AddScene(ss)</div>
-<div class="line"><span class="lineno">  863</span>    ss.AddElement(smng)</div>
-<div class="line"><span class="lineno">  864</span>    N = sGeo.GetTopNode()</div>
-<div class="line"><span class="lineno">  865</span>    TNod = ROOT.TEveGeoTopNode(sGeo, N, 1, 3, 10)</div>
-<div class="line"><span class="lineno">  866</span>    ss.AddElement(TNod)</div>
-<div class="line"><span class="lineno">  867</span>    eventscene = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Scaled event&quot;</span>)</div>
-<div class="line"><span class="lineno">  868</span>    eventscene.AddElement(ROOT.FairEventManager.Instance())</div>
-<div class="line"><span class="lineno">  869</span>    sev.AddScene(eventscene)</div>
-<div class="line"><span class="lineno">  870</span>    eventscene.AddElement(smng)</div>
-<div class="line"><span class="lineno">  871</span>    ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)</div>
-<div class="line"><span class="lineno">  872</span>    ROOT.gEve.FullRedraw3D(ROOT.kTRUE)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00849">849</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  849</span><span class="keyword">def </span>projection_prescale():</div>
+<div class="line"><span class="lineno">  850</span>    <span class="comment"># if 1&gt;0:</span></div>
+<div class="line"><span class="lineno">  851</span>    v = gEve.GetViewers()</div>
+<div class="line"><span class="lineno">  852</span>    vw = v.FindChild(<span class="stringliteral">&quot;Viewer 1&quot;</span>)</div>
+<div class="line"><span class="lineno">  853</span>    <span class="keywordflow">if</span> vw:</div>
+<div class="line"><span class="lineno">  854</span>        vw.SetName(<span class="stringliteral">&quot;3d&quot;</span>)</div>
+<div class="line"><span class="lineno">  855</span>    sev = ROOT.gEve.SpawnNewViewer(<span class="stringliteral">&quot;Scaled 2D&quot;</span>)</div>
+<div class="line"><span class="lineno">  856</span>    smng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPP_Plane)</div>
+<div class="line"><span class="lineno">  857</span>    sp = smng.GetProjection()</div>
+<div class="line"><span class="lineno">  858</span>    sp.SetUsePreScale(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  859</span>    sp.AddPreScaleEntry(2, 100000000.0, 0.1)</div>
+<div class="line"><span class="lineno">  860</span>    ss = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Scaled Geom&quot;</span>)</div>
+<div class="line"><span class="lineno">  861</span>    sev.AddScene(ss)</div>
+<div class="line"><span class="lineno">  862</span>    ss.AddElement(smng)</div>
+<div class="line"><span class="lineno">  863</span>    N = sGeo.GetTopNode()</div>
+<div class="line"><span class="lineno">  864</span>    TNod = ROOT.TEveGeoTopNode(sGeo, N, 1, 3, 10)</div>
+<div class="line"><span class="lineno">  865</span>    ss.AddElement(TNod)</div>
+<div class="line"><span class="lineno">  866</span>    eventscene = ROOT.gEve.SpawnNewScene(<span class="stringliteral">&quot;Scaled event&quot;</span>)</div>
+<div class="line"><span class="lineno">  867</span>    eventscene.AddElement(ROOT.FairEventManager.Instance())</div>
+<div class="line"><span class="lineno">  868</span>    sev.AddScene(eventscene)</div>
+<div class="line"><span class="lineno">  869</span>    eventscene.AddElement(smng)</div>
+<div class="line"><span class="lineno">  870</span>    ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)</div>
+<div class="line"><span class="lineno">  871</span>    ROOT.gEve.FullRedraw3D(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  872</span> </div>
 <div class="line"><span class="lineno">  873</span> </div>
-<div class="line"><span class="lineno">  874</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -878,155 +878,155 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01418">1418</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1418</span><span class="keyword">def </span>PRVersion():</div>
-<div class="line"><span class="lineno"> 1419</span>    readCameraSetting()</div>
-<div class="line"><span class="lineno"> 1420</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [</div>
-<div class="line"><span class="lineno"> 1421</span>        <span class="stringliteral">&quot;moreShieldingSide&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1422</span>        <span class="stringliteral">&quot;moreShieldingTopBot&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1423</span>        <span class="stringliteral">&quot;CoatWall&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1424</span>        <span class="stringliteral">&quot;CoatVol&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1425</span>        <span class="stringliteral">&quot;AbsorberVol&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1426</span>    ]:</div>
-<div class="line"><span class="lineno"> 1427</span>        vol = ROOT.gGeoManager.FindVolumeFast(x)</div>
-<div class="line"><span class="lineno"> 1428</span>        vol.SetVisibility(0)</div>
-<div class="line"><span class="lineno"> 1429</span>    ROOT.gGeoManager.GetMaterial(<span class="stringliteral">&quot;Concrete&quot;</span>).SetTransparency(0)</div>
-<div class="line"><span class="lineno"> 1430</span>    r = rulers.ruler</div>
-<div class="line"><span class="lineno"> 1431</span>    ticks = 5</div>
-<div class="line"><span class="lineno"> 1432</span>    r.DestroyElements()</div>
-<div class="line"><span class="lineno"> 1433</span>    r.OpenCompound()</div>
-<div class="line"><span class="lineno"> 1434</span>    xpos, ypos = -500.0, -1500.0</div>
-<div class="line"><span class="lineno"> 1435</span>    zstart = ShipGeo.target.z0</div>
-<div class="line"><span class="lineno"> 1436</span>    zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
-<div class="line"><span class="lineno"> 1437</span>    z = zstart</div>
-<div class="line"><span class="lineno"> 1438</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
-<div class="line"><span class="lineno"> 1439</span>        m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1440</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1441</span>        m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1442</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1443</span>        m.SetLineWidth(5)</div>
-<div class="line"><span class="lineno"> 1444</span>        r.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1445</span>        t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1446</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1447</span>        t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1448</span>        t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1449</span>        r.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1450</span>        z += ticks * u.m</div>
-<div class="line"><span class="lineno"> 1451</span>    xpos, ypos = 0.0, 0.0</div>
-<div class="line"><span class="lineno"> 1452</span>    z = ShipGeo.MuonStation3.z + 6 * u.m</div>
-<div class="line"><span class="lineno"> 1453</span>    ylength = 7 * u.m</div>
-<div class="line"><span class="lineno"> 1454</span>    ypos = -ylength</div>
-<div class="line"><span class="lineno"> 1455</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
-<div class="line"><span class="lineno"> 1456</span>        m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1457</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1458</span>        m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1459</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1460</span>        m.SetLineWidth(3)</div>
-<div class="line"><span class="lineno"> 1461</span>        r.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1462</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1463</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1464</span>        t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1465</span>        t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1466</span>        r.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1467</span>        ypos += 1 * u.m</div>
-<div class="line"><span class="lineno"> 1468</span>    ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1469</span>    ty.SetFontSize(10)</div>
-<div class="line"><span class="lineno"> 1470</span>    ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1471</span>    ty.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><span class="lineno"> 1472</span>    r.AddElement(ty)</div>
-<div class="line"><span class="lineno"> 1473</span>    xpos, ypos = 0.0, 0.0</div>
-<div class="line"><span class="lineno"> 1474</span>    z = ShipGeo.MuonStation3.z + 10 * u.m</div>
-<div class="line"><span class="lineno"> 1475</span>    xlength = 3 * u.m</div>
-<div class="line"><span class="lineno"> 1476</span>    xpos = -xlength</div>
-<div class="line"><span class="lineno"> 1477</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
-<div class="line"><span class="lineno"> 1478</span>        m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1479</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1480</span>        m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1481</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1482</span>        m.SetLineWidth(3)</div>
-<div class="line"><span class="lineno"> 1483</span>        r.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1484</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1485</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1486</span>        t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1487</span>        t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1488</span>        r.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1489</span>        xpos += 1 * u.m</div>
-<div class="line"><span class="lineno"> 1490</span>    tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1491</span>    tx.SetFontSize(10)</div>
-<div class="line"><span class="lineno"> 1492</span>    tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
-<div class="line"><span class="lineno"> 1493</span>    tx.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><span class="lineno"> 1494</span>    r.AddElement(tx)</div>
-<div class="line"><span class="lineno"> 1495</span>    rotAngle = ROOT.TMath.Pi() + ROOT.TMath.PiOver2() * 5.0 / 2.0</div>
-<div class="line"><span class="lineno"> 1496</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1497</span>        r,</div>
-<div class="line"><span class="lineno"> 1498</span>        0.0,</div>
-<div class="line"><span class="lineno"> 1499</span>        900.0,</div>
-<div class="line"><span class="lineno"> 1500</span>        ShipGeo.TrackStation1.z - 20 * u.m,</div>
-<div class="line"><span class="lineno"> 1501</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1502</span>        <span class="stringliteral">&quot;SHiP&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1503</span>        200,</div>
-<div class="line"><span class="lineno"> 1504</span>        ROOT.kOrange - 2,</div>
-<div class="line"><span class="lineno"> 1505</span>    )</div>
-<div class="line"><span class="lineno"> 1506</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1507</span>        r,</div>
-<div class="line"><span class="lineno"> 1508</span>        0.0,</div>
-<div class="line"><span class="lineno"> 1509</span>        750.0,</div>
-<div class="line"><span class="lineno"> 1510</span>        ShipGeo.TrackStation1.z - 40 * u.m,</div>
-<div class="line"><span class="lineno"> 1511</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1512</span>        <span class="stringliteral">&quot;Vacuum decay vessel&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1513</span>        200,</div>
-<div class="line"><span class="lineno"> 1514</span>        ROOT.kGray + 1,</div>
-<div class="line"><span class="lineno"> 1515</span>    )</div>
-<div class="line"><span class="lineno"> 1516</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1517</span>        r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, <span class="stringliteral">&quot;Target&quot;</span>, 200, ROOT.kBlue</div>
-<div class="line"><span class="lineno"> 1518</span>    )</div>
-<div class="line"><span class="lineno"> 1519</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1520</span>        r,</div>
-<div class="line"><span class="lineno"> 1521</span>        0.0,</div>
-<div class="line"><span class="lineno"> 1522</span>        600.0,</div>
-<div class="line"><span class="lineno"> 1523</span>        ShipGeo.muShield.z - 10 * u.m,</div>
-<div class="line"><span class="lineno"> 1524</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1525</span>        <span class="stringliteral">&quot;Active muon shield&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1526</span>        200,</div>
-<div class="line"><span class="lineno"> 1527</span>        ROOT.kGreen - 2,</div>
-<div class="line"><span class="lineno"> 1528</span>    )</div>
-<div class="line"><span class="lineno"> 1529</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1530</span>        r,</div>
-<div class="line"><span class="lineno"> 1531</span>        0.0,</div>
-<div class="line"><span class="lineno"> 1532</span>        600.0,</div>
-<div class="line"><span class="lineno"> 1533</span>        ShipGeo.tauMudet.zMudetC - 10 * u.m,</div>
-<div class="line"><span class="lineno"> 1534</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1535</span>        <span class="stringliteral">&quot;Tau neutrino detector&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1536</span>        200,</div>
-<div class="line"><span class="lineno"> 1537</span>        ROOT.kRed - 2,</div>
-<div class="line"><span class="lineno"> 1538</span>    )</div>
-<div class="line"><span class="lineno"> 1539</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1540</span>        r,</div>
-<div class="line"><span class="lineno"> 1541</span>        0.0,</div>
-<div class="line"><span class="lineno"> 1542</span>        900.0,</div>
-<div class="line"><span class="lineno"> 1543</span>        ShipGeo.Bfield.z - 5 * u.m,</div>
-<div class="line"><span class="lineno"> 1544</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1545</span>        <span class="stringliteral">&quot;Dipole Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1546</span>        200,</div>
-<div class="line"><span class="lineno"> 1547</span>        ROOT.kBlue + 2,</div>
-<div class="line"><span class="lineno"> 1548</span>    )</div>
-<div class="line"><span class="lineno"> 1549</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1550</span>        r,</div>
-<div class="line"><span class="lineno"> 1551</span>        -1500.0,</div>
-<div class="line"><span class="lineno"> 1552</span>        -800.0,</div>
-<div class="line"><span class="lineno"> 1553</span>        ShipGeo.TrackStation3.z - 2 * u.m,</div>
-<div class="line"><span class="lineno"> 1554</span>        rotAngle,</div>
-<div class="line"><span class="lineno"> 1555</span>        <span class="stringliteral">&quot;Strawtracker&quot;</span>,</div>
-<div class="line"><span class="lineno"> 1556</span>        200,</div>
-<div class="line"><span class="lineno"> 1557</span>        ROOT.kRed + 2,</div>
-<div class="line"><span class="lineno"> 1558</span>    )</div>
-<div class="line"><span class="lineno"> 1559</span>    positionText(</div>
-<div class="line"><span class="lineno"> 1560</span>        r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, <span class="stringliteral">&quot;Muon&quot;</span>, 200, ROOT.kGreen + 2</div>
-<div class="line"><span class="lineno"> 1561</span>    )</div>
-<div class="line"><span class="lineno"> 1562</span>    r.CloseCompound()</div>
-<div class="line"><span class="lineno"> 1563</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno"> 1564</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1565</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01414">1414</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1414</span><span class="keyword">def </span>PRVersion():</div>
+<div class="line"><span class="lineno"> 1415</span>    readCameraSetting()</div>
+<div class="line"><span class="lineno"> 1416</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [</div>
+<div class="line"><span class="lineno"> 1417</span>        <span class="stringliteral">&quot;moreShieldingSide&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1418</span>        <span class="stringliteral">&quot;moreShieldingTopBot&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1419</span>        <span class="stringliteral">&quot;CoatWall&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1420</span>        <span class="stringliteral">&quot;CoatVol&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1421</span>        <span class="stringliteral">&quot;AbsorberVol&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1422</span>    ]:</div>
+<div class="line"><span class="lineno"> 1423</span>        vol = ROOT.gGeoManager.FindVolumeFast(x)</div>
+<div class="line"><span class="lineno"> 1424</span>        vol.SetVisibility(0)</div>
+<div class="line"><span class="lineno"> 1425</span>    ROOT.gGeoManager.GetMaterial(<span class="stringliteral">&quot;Concrete&quot;</span>).SetTransparency(0)</div>
+<div class="line"><span class="lineno"> 1426</span>    r = rulers.ruler</div>
+<div class="line"><span class="lineno"> 1427</span>    ticks = 5</div>
+<div class="line"><span class="lineno"> 1428</span>    r.DestroyElements()</div>
+<div class="line"><span class="lineno"> 1429</span>    r.OpenCompound()</div>
+<div class="line"><span class="lineno"> 1430</span>    xpos, ypos = -500.0, -1500.0</div>
+<div class="line"><span class="lineno"> 1431</span>    zstart = ShipGeo.target.z0</div>
+<div class="line"><span class="lineno"> 1432</span>    zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
+<div class="line"><span class="lineno"> 1433</span>    z = zstart</div>
+<div class="line"><span class="lineno"> 1434</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
+<div class="line"><span class="lineno"> 1435</span>        m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1436</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1437</span>        m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1438</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1439</span>        m.SetLineWidth(5)</div>
+<div class="line"><span class="lineno"> 1440</span>        r.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1441</span>        t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1442</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1443</span>        t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1444</span>        t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1445</span>        r.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1446</span>        z += ticks * u.m</div>
+<div class="line"><span class="lineno"> 1447</span>    xpos, ypos = 0.0, 0.0</div>
+<div class="line"><span class="lineno"> 1448</span>    z = ShipGeo.MuonStation3.z + 6 * u.m</div>
+<div class="line"><span class="lineno"> 1449</span>    ylength = 7 * u.m</div>
+<div class="line"><span class="lineno"> 1450</span>    ypos = -ylength</div>
+<div class="line"><span class="lineno"> 1451</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
+<div class="line"><span class="lineno"> 1452</span>        m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1453</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1454</span>        m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1455</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1456</span>        m.SetLineWidth(3)</div>
+<div class="line"><span class="lineno"> 1457</span>        r.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1458</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1459</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1460</span>        t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1461</span>        t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1462</span>        r.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1463</span>        ypos += 1 * u.m</div>
+<div class="line"><span class="lineno"> 1464</span>    ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1465</span>    ty.SetFontSize(10)</div>
+<div class="line"><span class="lineno"> 1466</span>    ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1467</span>    ty.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><span class="lineno"> 1468</span>    r.AddElement(ty)</div>
+<div class="line"><span class="lineno"> 1469</span>    xpos, ypos = 0.0, 0.0</div>
+<div class="line"><span class="lineno"> 1470</span>    z = ShipGeo.MuonStation3.z + 10 * u.m</div>
+<div class="line"><span class="lineno"> 1471</span>    xlength = 3 * u.m</div>
+<div class="line"><span class="lineno"> 1472</span>    xpos = -xlength</div>
+<div class="line"><span class="lineno"> 1473</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
+<div class="line"><span class="lineno"> 1474</span>        m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1475</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1476</span>        m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1477</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1478</span>        m.SetLineWidth(3)</div>
+<div class="line"><span class="lineno"> 1479</span>        r.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1480</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1481</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1482</span>        t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1483</span>        t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1484</span>        r.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1485</span>        xpos += 1 * u.m</div>
+<div class="line"><span class="lineno"> 1486</span>    tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1487</span>    tx.SetFontSize(10)</div>
+<div class="line"><span class="lineno"> 1488</span>    tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
+<div class="line"><span class="lineno"> 1489</span>    tx.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><span class="lineno"> 1490</span>    r.AddElement(tx)</div>
+<div class="line"><span class="lineno"> 1491</span>    rotAngle = ROOT.TMath.Pi() + ROOT.TMath.PiOver2() * 5.0 / 2.0</div>
+<div class="line"><span class="lineno"> 1492</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1493</span>        r,</div>
+<div class="line"><span class="lineno"> 1494</span>        0.0,</div>
+<div class="line"><span class="lineno"> 1495</span>        900.0,</div>
+<div class="line"><span class="lineno"> 1496</span>        ShipGeo.TrackStation1.z - 20 * u.m,</div>
+<div class="line"><span class="lineno"> 1497</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1498</span>        <span class="stringliteral">&quot;SHiP&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1499</span>        200,</div>
+<div class="line"><span class="lineno"> 1500</span>        ROOT.kOrange - 2,</div>
+<div class="line"><span class="lineno"> 1501</span>    )</div>
+<div class="line"><span class="lineno"> 1502</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1503</span>        r,</div>
+<div class="line"><span class="lineno"> 1504</span>        0.0,</div>
+<div class="line"><span class="lineno"> 1505</span>        750.0,</div>
+<div class="line"><span class="lineno"> 1506</span>        ShipGeo.TrackStation1.z - 40 * u.m,</div>
+<div class="line"><span class="lineno"> 1507</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1508</span>        <span class="stringliteral">&quot;Vacuum decay vessel&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1509</span>        200,</div>
+<div class="line"><span class="lineno"> 1510</span>        ROOT.kGray + 1,</div>
+<div class="line"><span class="lineno"> 1511</span>    )</div>
+<div class="line"><span class="lineno"> 1512</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1513</span>        r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, <span class="stringliteral">&quot;Target&quot;</span>, 200, ROOT.kBlue</div>
+<div class="line"><span class="lineno"> 1514</span>    )</div>
+<div class="line"><span class="lineno"> 1515</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1516</span>        r,</div>
+<div class="line"><span class="lineno"> 1517</span>        0.0,</div>
+<div class="line"><span class="lineno"> 1518</span>        600.0,</div>
+<div class="line"><span class="lineno"> 1519</span>        ShipGeo.muShield.z - 10 * u.m,</div>
+<div class="line"><span class="lineno"> 1520</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1521</span>        <span class="stringliteral">&quot;Active muon shield&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1522</span>        200,</div>
+<div class="line"><span class="lineno"> 1523</span>        ROOT.kGreen - 2,</div>
+<div class="line"><span class="lineno"> 1524</span>    )</div>
+<div class="line"><span class="lineno"> 1525</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1526</span>        r,</div>
+<div class="line"><span class="lineno"> 1527</span>        0.0,</div>
+<div class="line"><span class="lineno"> 1528</span>        600.0,</div>
+<div class="line"><span class="lineno"> 1529</span>        ShipGeo.tauMudet.zMudetC - 10 * u.m,</div>
+<div class="line"><span class="lineno"> 1530</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1531</span>        <span class="stringliteral">&quot;Tau neutrino detector&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1532</span>        200,</div>
+<div class="line"><span class="lineno"> 1533</span>        ROOT.kRed - 2,</div>
+<div class="line"><span class="lineno"> 1534</span>    )</div>
+<div class="line"><span class="lineno"> 1535</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1536</span>        r,</div>
+<div class="line"><span class="lineno"> 1537</span>        0.0,</div>
+<div class="line"><span class="lineno"> 1538</span>        900.0,</div>
+<div class="line"><span class="lineno"> 1539</span>        ShipGeo.Bfield.z - 5 * u.m,</div>
+<div class="line"><span class="lineno"> 1540</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1541</span>        <span class="stringliteral">&quot;Dipole Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1542</span>        200,</div>
+<div class="line"><span class="lineno"> 1543</span>        ROOT.kBlue + 2,</div>
+<div class="line"><span class="lineno"> 1544</span>    )</div>
+<div class="line"><span class="lineno"> 1545</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1546</span>        r,</div>
+<div class="line"><span class="lineno"> 1547</span>        -1500.0,</div>
+<div class="line"><span class="lineno"> 1548</span>        -800.0,</div>
+<div class="line"><span class="lineno"> 1549</span>        ShipGeo.TrackStation3.z - 2 * u.m,</div>
+<div class="line"><span class="lineno"> 1550</span>        rotAngle,</div>
+<div class="line"><span class="lineno"> 1551</span>        <span class="stringliteral">&quot;Strawtracker&quot;</span>,</div>
+<div class="line"><span class="lineno"> 1552</span>        200,</div>
+<div class="line"><span class="lineno"> 1553</span>        ROOT.kRed + 2,</div>
+<div class="line"><span class="lineno"> 1554</span>    )</div>
+<div class="line"><span class="lineno"> 1555</span>    positionText(</div>
+<div class="line"><span class="lineno"> 1556</span>        r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, <span class="stringliteral">&quot;Muon&quot;</span>, 200, ROOT.kGreen + 2</div>
+<div class="line"><span class="lineno"> 1557</span>    )</div>
+<div class="line"><span class="lineno"> 1558</span>    r.CloseCompound()</div>
+<div class="line"><span class="lineno"> 1559</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno"> 1560</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1561</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1046,16 +1046,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00882">882</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  882</span><span class="keyword">def </span>readCameraSetting(fname=&quot;camSetting.root&quot;):</div>
-<div class="line"><span class="lineno">  883</span>    f = ROOT.TFile.Open(fname)</div>
-<div class="line"><span class="lineno">  884</span>    cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()</div>
-<div class="line"><span class="lineno">  885</span>    f.GetKey(cam.ClassName()).Read(cam)</div>
-<div class="line"><span class="lineno">  886</span>    cam.IncTimeStamp()</div>
-<div class="line"><span class="lineno">  887</span>    gEve.GetDefaultGLViewer().RequestDraw()</div>
-<div class="line"><span class="lineno">  888</span>    f.Close()</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00881">881</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  881</span><span class="keyword">def </span>readCameraSetting(fname=&quot;camSetting.root&quot;):</div>
+<div class="line"><span class="lineno">  882</span>    f = ROOT.TFile.Open(fname)</div>
+<div class="line"><span class="lineno">  883</span>    cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()</div>
+<div class="line"><span class="lineno">  884</span>    f.GetKey(cam.ClassName()).Read(cam)</div>
+<div class="line"><span class="lineno">  885</span>    cam.IncTimeStamp()</div>
+<div class="line"><span class="lineno">  886</span>    gEve.GetDefaultGLViewer().RequestDraw()</div>
+<div class="line"><span class="lineno">  887</span>    f.Close()</div>
+<div class="line"><span class="lineno">  888</span> </div>
 <div class="line"><span class="lineno">  889</span> </div>
-<div class="line"><span class="lineno">  890</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1075,17 +1075,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01019">1019</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1019</span><span class="keyword">def </span>rename(name=&quot;ship.TGeant4.root&quot;):</div>
-<div class="line"><span class="lineno"> 1020</span>    f = ROOT.TFile(name, <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1021</span>    t = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1022</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> t.GetListOfBranches():</div>
-<div class="line"><span class="lineno"> 1023</span>        nm = x.GetName().replace(<span class="stringliteral">&quot;_1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1024</span>        x.SetName(nm)</div>
-<div class="line"><span class="lineno"> 1025</span>    t.Write()</div>
-<div class="line"><span class="lineno"> 1026</span>    f.Close()</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01018">1018</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1018</span><span class="keyword">def </span>rename(name=&quot;ship.TGeant4.root&quot;):</div>
+<div class="line"><span class="lineno"> 1019</span>    f = ROOT.TFile(name, <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1020</span>    t = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1021</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> t.GetListOfBranches():</div>
+<div class="line"><span class="lineno"> 1022</span>        nm = x.GetName().replace(<span class="stringliteral">&quot;_1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1023</span>        x.SetName(nm)</div>
+<div class="line"><span class="lineno"> 1024</span>    t.Write()</div>
+<div class="line"><span class="lineno"> 1025</span>    f.Close()</div>
+<div class="line"><span class="lineno"> 1026</span> </div>
 <div class="line"><span class="lineno"> 1027</span> </div>
-<div class="line"><span class="lineno"> 1028</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1115,13 +1115,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01013">1013</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1013</span><span class="keyword">def </span>search(lvdict, tag):</div>
-<div class="line"><span class="lineno"> 1014</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> lvdict:</div>
-<div class="line"><span class="lineno"> 1015</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(tag) &lt; 0:</div>
-<div class="line"><span class="lineno"> 1016</span>            print(x)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01012">1012</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1012</span><span class="keyword">def </span>search(lvdict, tag):</div>
+<div class="line"><span class="lineno"> 1013</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> lvdict:</div>
+<div class="line"><span class="lineno"> 1014</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(tag) &lt; 0:</div>
+<div class="line"><span class="lineno"> 1015</span>            print(x)</div>
+<div class="line"><span class="lineno"> 1016</span> </div>
 <div class="line"><span class="lineno"> 1017</span> </div>
-<div class="line"><span class="lineno"> 1018</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1141,16 +1141,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01004">1004</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1004</span><span class="keyword">def </span>select(pattern):</div>
-<div class="line"><span class="lineno"> 1005</span>    exc = []</div>
-<div class="line"><span class="lineno"> 1006</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sGeo.GetListOfVolumes():</div>
-<div class="line"><span class="lineno"> 1007</span>        vname = v.GetName()</div>
-<div class="line"><span class="lineno"> 1008</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(pattern) &lt; 0:</div>
-<div class="line"><span class="lineno"> 1009</span>            exc.append(vname)</div>
-<div class="line"><span class="lineno"> 1010</span>    <span class="keywordflow">return</span> exc</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01003">1003</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1003</span><span class="keyword">def </span>select(pattern):</div>
+<div class="line"><span class="lineno"> 1004</span>    exc = []</div>
+<div class="line"><span class="lineno"> 1005</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sGeo.GetListOfVolumes():</div>
+<div class="line"><span class="lineno"> 1006</span>        vname = v.GetName()</div>
+<div class="line"><span class="lineno"> 1007</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(pattern) &lt; 0:</div>
+<div class="line"><span class="lineno"> 1008</span>            exc.append(vname)</div>
+<div class="line"><span class="lineno"> 1009</span>    <span class="keywordflow">return</span> exc</div>
+<div class="line"><span class="lineno"> 1010</span> </div>
 <div class="line"><span class="lineno"> 1011</span> </div>
-<div class="line"><span class="lineno"> 1012</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1169,28 +1169,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00891">891</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  891</span><span class="keyword">def </span>speedUp():</div>
-<div class="line"><span class="lineno">  892</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;wire&quot;</span>, <span class="stringliteral">&quot;gas&quot;</span>, <span class="stringliteral">&quot;rockD&quot;</span>, <span class="stringliteral">&quot;rockS&quot;</span>, <span class="stringliteral">&quot;rockSFe&quot;</span>]:</div>
-<div class="line"><span class="lineno">  893</span>        xvol = sGeo.GetVolume(x)</div>
-<div class="line"><span class="lineno">  894</span>        <span class="keywordflow">if</span> xvol:</div>
-<div class="line"><span class="lineno">  895</span>            xvol.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  896</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(1, 7):</div>
-<div class="line"><span class="lineno">  897</span>        va = sGeo.GetVolume(<span class="stringliteral">&quot;T&quot;</span> + str(k))</div>
-<div class="line"><span class="lineno">  898</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> va:</div>
-<div class="line"><span class="lineno">  899</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  900</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> va.GetNodes():</div>
-<div class="line"><span class="lineno">  901</span>            nm = x.GetName()</div>
-<div class="line"><span class="lineno">  902</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;Inner&quot;</span>) &lt; 0 <span class="keywordflow">and</span> k &lt; 3:</div>
-<div class="line"><span class="lineno">  903</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  904</span>                x.SetVisibility(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  905</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;LiSc&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">  906</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  907</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;RibPhi&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">  908</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00890">890</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  890</span><span class="keyword">def </span>speedUp():</div>
+<div class="line"><span class="lineno">  891</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;wire&quot;</span>, <span class="stringliteral">&quot;gas&quot;</span>, <span class="stringliteral">&quot;rockD&quot;</span>, <span class="stringliteral">&quot;rockS&quot;</span>, <span class="stringliteral">&quot;rockSFe&quot;</span>]:</div>
+<div class="line"><span class="lineno">  892</span>        xvol = sGeo.GetVolume(x)</div>
+<div class="line"><span class="lineno">  893</span>        <span class="keywordflow">if</span> xvol:</div>
+<div class="line"><span class="lineno">  894</span>            xvol.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  895</span>    <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(1, 7):</div>
+<div class="line"><span class="lineno">  896</span>        va = sGeo.GetVolume(<span class="stringliteral">&quot;T&quot;</span> + str(k))</div>
+<div class="line"><span class="lineno">  897</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> va:</div>
+<div class="line"><span class="lineno">  898</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  899</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> va.GetNodes():</div>
+<div class="line"><span class="lineno">  900</span>            nm = x.GetName()</div>
+<div class="line"><span class="lineno">  901</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;Inner&quot;</span>) &lt; 0 <span class="keywordflow">and</span> k &lt; 3:</div>
+<div class="line"><span class="lineno">  902</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  903</span>                x.SetVisibility(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  904</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;LiSc&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">  905</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  906</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> nm.find(<span class="stringliteral">&quot;RibPhi&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">  907</span>                x.SetVisDaughters(<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  908</span> </div>
 <div class="line"><span class="lineno">  909</span> </div>
-<div class="line"><span class="lineno">  910</span> </div>
-<div class="line"><span class="lineno">  911</span><span class="comment"># set display properties for tau nu target</span></div>
+<div class="line"><span class="lineno">  910</span><span class="comment"># set display properties for tau nu target</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1210,14 +1210,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00875">875</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  875</span><span class="keyword">def </span>storeCameraSetting(fname=&quot;camSetting.root&quot;):</div>
-<div class="line"><span class="lineno">  876</span>    f = ROOT.TFile.Open(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  877</span>    cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()</div>
-<div class="line"><span class="lineno">  878</span>    cam.Write()</div>
-<div class="line"><span class="lineno">  879</span>    f.Close()</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00874">874</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  874</span><span class="keyword">def </span>storeCameraSetting(fname=&quot;camSetting.root&quot;):</div>
+<div class="line"><span class="lineno">  875</span>    f = ROOT.TFile.Open(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  876</span>    cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()</div>
+<div class="line"><span class="lineno">  877</span>    cam.Write()</div>
+<div class="line"><span class="lineno">  878</span>    f.Close()</div>
+<div class="line"><span class="lineno">  879</span> </div>
 <div class="line"><span class="lineno">  880</span> </div>
-<div class="line"><span class="lineno">  881</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1237,18 +1237,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00924">924</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  924</span><span class="keyword">def </span>switchOff(tag):</div>
-<div class="line"><span class="lineno">  925</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  926</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  927</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  928</span>        vname = v.GetName()</div>
-<div class="line"><span class="lineno">  929</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(tag) &lt; 0:</div>
-<div class="line"><span class="lineno">  930</span>            v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  931</span>            v.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  932</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00923">923</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  923</span><span class="keyword">def </span>switchOff(tag):</div>
+<div class="line"><span class="lineno">  924</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  925</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  926</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  927</span>        vname = v.GetName()</div>
+<div class="line"><span class="lineno">  928</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(tag) &lt; 0:</div>
+<div class="line"><span class="lineno">  929</span>            v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  930</span>            v.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  931</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  932</span> </div>
 <div class="line"><span class="lineno">  933</span> </div>
-<div class="line"><span class="lineno">  934</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1268,24 +1268,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00970">970</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  970</span><span class="keyword">def </span>switchOffAll(exc):</div>
-<div class="line"><span class="lineno">  971</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  972</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  973</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  974</span>        vname = v.GetName()</div>
-<div class="line"><span class="lineno">  975</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(<span class="stringliteral">&quot;cave&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">  976</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  977</span>        todo = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  978</span>        <span class="keywordflow">for</span> tag <span class="keywordflow">in</span> exc:</div>
-<div class="line"><span class="lineno">  979</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tag.find(vname) &lt; 0:</div>
-<div class="line"><span class="lineno">  980</span>                todo = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  981</span>        <span class="keywordflow">if</span> todo:</div>
-<div class="line"><span class="lineno">  982</span>            v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  983</span>            v.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  984</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00969">969</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  969</span><span class="keyword">def </span>switchOffAll(exc):</div>
+<div class="line"><span class="lineno">  970</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  971</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  972</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  973</span>        vname = v.GetName()</div>
+<div class="line"><span class="lineno">  974</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(<span class="stringliteral">&quot;cave&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">  975</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  976</span>        todo = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  977</span>        <span class="keywordflow">for</span> tag <span class="keywordflow">in</span> exc:</div>
+<div class="line"><span class="lineno">  978</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tag.find(vname) &lt; 0:</div>
+<div class="line"><span class="lineno">  979</span>                todo = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  980</span>        <span class="keywordflow">if</span> todo:</div>
+<div class="line"><span class="lineno">  981</span>            v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  982</span>            v.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  983</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  984</span> </div>
 <div class="line"><span class="lineno">  985</span> </div>
-<div class="line"><span class="lineno">  986</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1304,16 +1304,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00961">961</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  961</span><span class="keyword">def </span>switchOffRock():</div>
-<div class="line"><span class="lineno">  962</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  963</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  964</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;rockD&quot;</span>, <span class="stringliteral">&quot;rockS&quot;</span>]:</div>
-<div class="line"><span class="lineno">  965</span>        v = sGeo.FindVolumeFast(x)</div>
-<div class="line"><span class="lineno">  966</span>        v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  967</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00960">960</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  960</span><span class="keyword">def </span>switchOffRock():</div>
+<div class="line"><span class="lineno">  961</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  962</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  963</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;rockD&quot;</span>, <span class="stringliteral">&quot;rockS&quot;</span>]:</div>
+<div class="line"><span class="lineno">  964</span>        v = sGeo.FindVolumeFast(x)</div>
+<div class="line"><span class="lineno">  965</span>        v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  966</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  967</span> </div>
 <div class="line"><span class="lineno">  968</span> </div>
-<div class="line"><span class="lineno">  969</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1333,19 +1333,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00935">935</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  935</span><span class="keyword">def </span>switchOn(tag):</div>
-<div class="line"><span class="lineno">  936</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  937</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  938</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  939</span>        vname = v.GetName()</div>
-<div class="line"><span class="lineno">  940</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(tag) &lt; 0:</div>
-<div class="line"><span class="lineno">  941</span>            print(<span class="stringliteral">&quot;switch on &quot;</span>, vname)</div>
-<div class="line"><span class="lineno">  942</span>            v.SetVisibility(1)</div>
-<div class="line"><span class="lineno">  943</span>            v.SetVisDaughters(1)</div>
-<div class="line"><span class="lineno">  944</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00934">934</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  934</span><span class="keyword">def </span>switchOn(tag):</div>
+<div class="line"><span class="lineno">  935</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  936</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  937</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  938</span>        vname = v.GetName()</div>
+<div class="line"><span class="lineno">  939</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(tag) &lt; 0:</div>
+<div class="line"><span class="lineno">  940</span>            print(<span class="stringliteral">&quot;switch on &quot;</span>, vname)</div>
+<div class="line"><span class="lineno">  941</span>            v.SetVisibility(1)</div>
+<div class="line"><span class="lineno">  942</span>            v.SetVisDaughters(1)</div>
+<div class="line"><span class="lineno">  943</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  944</span> </div>
 <div class="line"><span class="lineno">  945</span> </div>
-<div class="line"><span class="lineno">  946</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1365,24 +1365,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00987">987</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  987</span><span class="keyword">def </span>switchOnAll(exc):</div>
-<div class="line"><span class="lineno">  988</span>    sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  989</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  990</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  991</span>        vname = v.GetName()</div>
-<div class="line"><span class="lineno">  992</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(<span class="stringliteral">&quot;cave&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">  993</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  994</span>        todo = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  995</span>        <span class="keywordflow">for</span> tag <span class="keywordflow">in</span> exc:</div>
-<div class="line"><span class="lineno">  996</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tag.find(vname) &lt; 0:</div>
-<div class="line"><span class="lineno">  997</span>                todo = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  998</span>        <span class="keywordflow">if</span> todo:</div>
-<div class="line"><span class="lineno">  999</span>            v.SetVisibility(1)</div>
-<div class="line"><span class="lineno"> 1000</span>            v.SetVisDaughters(1)</div>
-<div class="line"><span class="lineno"> 1001</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00986">986</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  986</span><span class="keyword">def </span>switchOnAll(exc):</div>
+<div class="line"><span class="lineno">  987</span>    sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  988</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  989</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  990</span>        vname = v.GetName()</div>
+<div class="line"><span class="lineno">  991</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vname.find(<span class="stringliteral">&quot;cave&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">  992</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  993</span>        todo = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  994</span>        <span class="keywordflow">for</span> tag <span class="keywordflow">in</span> exc:</div>
+<div class="line"><span class="lineno">  995</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tag.find(vname) &lt; 0:</div>
+<div class="line"><span class="lineno">  996</span>                todo = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  997</span>        <span class="keywordflow">if</span> todo:</div>
+<div class="line"><span class="lineno">  998</span>            v.SetVisibility(1)</div>
+<div class="line"><span class="lineno">  999</span>            v.SetVisDaughters(1)</div>
+<div class="line"><span class="lineno"> 1000</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno"> 1001</span> </div>
 <div class="line"><span class="lineno"> 1002</span> </div>
-<div class="line"><span class="lineno"> 1003</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1415,7 +1415,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01300">1300</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01296">1296</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1431,7 +1431,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01313">1313</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01309">1309</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1479,7 +1479,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01299">1299</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01295">1295</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1495,7 +1495,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01308">1308</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01304">1304</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1527,7 +1527,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01283">1283</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01279">1279</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1591,7 +1591,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01306">1306</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01302">1302</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1607,7 +1607,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01291">1291</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01287">1287</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1623,7 +1623,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01226">1226</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01225">1225</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1655,7 +1655,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01202">1202</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01201">1201</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1687,7 +1687,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01285">1285</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01281">1281</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1719,7 +1719,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01233">1233</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01232">1232</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1751,7 +1751,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01207">1207</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01206">1206</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1767,7 +1767,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01212">1212</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01211">1211</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1847,7 +1847,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01211">1211</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01210">1210</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1863,7 +1863,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01320">1320</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01316">1316</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1879,7 +1879,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01287">1287</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01283">1283</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1895,7 +1895,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01321">1321</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01317">1317</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1911,7 +1911,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01231">1231</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01230">1230</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1943,7 +1943,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01284">1284</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01280">1280</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1959,7 +1959,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01288">1288</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01284">1284</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -1975,7 +1975,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01225">1225</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01224">1224</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -2023,7 +2023,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01223">1223</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01222">1222</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

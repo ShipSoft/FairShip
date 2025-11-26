@@ -26,7 +26,6 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "header", "classshipDigiReco_1_1ShipDigiReco.html#a1384f7576fb48e91c1e0ecd5267ce217", null ],
     [ "inputFile", "classshipDigiReco_1_1ShipDigiReco.html#a13ae437c6726a69926bd512406052b49", null ],
     [ "mcLink", "classshipDigiReco_1_1ShipDigiReco.html#a7a8ad5ed24bdbedcc91f32db71c2fa5d", null ],
-    [ "muonDetector", "classshipDigiReco_1_1ShipDigiReco.html#af914a0266a19cdd80728ffb41f100d11", null ],
     [ "outputFile", "classshipDigiReco_1_1ShipDigiReco.html#acabbf3962d24616f9f45c0812bbe6e20", null ],
     [ "PDG", "classshipDigiReco_1_1ShipDigiReco.html#ad6bdf194af8872402ee2141c57a4b2a1", null ],
     [ "random", "classshipDigiReco_1_1ShipDigiReco.html#a9f5c248192b6d24c792186da6f90234f", null ],

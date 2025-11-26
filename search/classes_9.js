@@ -5,16 +5,11 @@ var searchData=
   ['mtcdethit_2',['MTCDetHit',['../classMTCDetHit.html',1,'']]],
   ['mtcdetpoint_3',['MTCDetPoint',['../classMTCDetPoint.html',1,'']]],
   ['mudisgenerator_4',['MuDISGenerator',['../classMuDISGenerator.html',1,'']]],
-  ['muon_5',['muon',['../classmuon.html',1,'']]],
-  ['muonbackgenerator_6',['MuonBackGenerator',['../classMuonBackGenerator.html',1,'']]],
-  ['muoncontfact_7',['muonContFact',['../classmuonContFact.html',1,'']]],
-  ['muondetector_8',['muonDetector',['../classmuonDetector_1_1muonDetector.html',1,'muonDetector']]],
-  ['muonhit_9',['muonHit',['../classmuonHit.html',1,'']]],
-  ['muonpoint_10',['muonPoint',['../classmuonPoint.html',1,'']]],
-  ['myeventaction_11',['myeventaction',['../classg4Ex__gap_1_1MyEventAction.html',1,'g4Ex_gap.MyEventAction'],['../classg4Ex__args_1_1MyEventAction.html',1,'g4Ex_args.MyEventAction'],['../classg4Ex_1_1MyEventAction.html',1,'g4Ex.MyEventAction']]],
-  ['mygeneratoraction_12',['mygeneratoraction',['../classg4Ex_1_1MyGeneratorAction.html',1,'g4Ex.MyGeneratorAction'],['../classg4Ex__args_1_1MyGeneratorAction.html',1,'g4Ex_args.MyGeneratorAction'],['../classg4Ex__gap_1_1MyGeneratorAction.html',1,'g4Ex_gap.MyGeneratorAction']]],
-  ['myrunaction_13',['myrunaction',['../classg4Ex_1_1MyRunAction.html',1,'g4Ex.MyRunAction'],['../classg4Ex__args_1_1MyRunAction.html',1,'g4Ex_args.MyRunAction'],['../classg4Ex__gap_1_1MyRunAction.html',1,'g4Ex_gap.MyRunAction']]],
-  ['mysteppingaction_14',['mysteppingaction',['../classg4Ex_1_1MySteppingAction.html',1,'g4Ex.MySteppingAction'],['../classg4Ex__args_1_1MySteppingAction.html',1,'g4Ex_args.MySteppingAction'],['../classg4Ex__gap_1_1MySteppingAction.html',1,'g4Ex_gap.MySteppingAction']]],
-  ['mytrackingaction_15',['mytrackingaction',['../classg4Ex_1_1MyTrackingAction.html',1,'g4Ex.MyTrackingAction'],['../classg4Ex__args_1_1MyTrackingAction.html',1,'g4Ex_args.MyTrackingAction'],['../classg4Ex__gap_1_1MyTrackingAction.html',1,'g4Ex_gap.MyTrackingAction']]],
-  ['mytrackingactiond_16',['MyTrackingActionD',['../classg4Ex__gap_1_1MyTrackingActionD.html',1,'g4Ex_gap']]]
+  ['muonbackgenerator_5',['MuonBackGenerator',['../classMuonBackGenerator.html',1,'']]],
+  ['myeventaction_6',['myeventaction',['../classg4Ex_1_1MyEventAction.html',1,'g4Ex.MyEventAction'],['../classg4Ex__args_1_1MyEventAction.html',1,'g4Ex_args.MyEventAction'],['../classg4Ex__gap_1_1MyEventAction.html',1,'g4Ex_gap.MyEventAction']]],
+  ['mygeneratoraction_7',['mygeneratoraction',['../classg4Ex__args_1_1MyGeneratorAction.html',1,'g4Ex_args.MyGeneratorAction'],['../classg4Ex__gap_1_1MyGeneratorAction.html',1,'g4Ex_gap.MyGeneratorAction'],['../classg4Ex_1_1MyGeneratorAction.html',1,'g4Ex.MyGeneratorAction']]],
+  ['myrunaction_8',['myrunaction',['../classg4Ex_1_1MyRunAction.html',1,'g4Ex.MyRunAction'],['../classg4Ex__args_1_1MyRunAction.html',1,'g4Ex_args.MyRunAction'],['../classg4Ex__gap_1_1MyRunAction.html',1,'g4Ex_gap.MyRunAction']]],
+  ['mysteppingaction_9',['mysteppingaction',['../classg4Ex_1_1MySteppingAction.html',1,'g4Ex.MySteppingAction'],['../classg4Ex__args_1_1MySteppingAction.html',1,'g4Ex_args.MySteppingAction'],['../classg4Ex__gap_1_1MySteppingAction.html',1,'g4Ex_gap.MySteppingAction']]],
+  ['mytrackingaction_10',['mytrackingaction',['../classg4Ex_1_1MyTrackingAction.html',1,'g4Ex.MyTrackingAction'],['../classg4Ex__args_1_1MyTrackingAction.html',1,'g4Ex_args.MyTrackingAction'],['../classg4Ex__gap_1_1MyTrackingAction.html',1,'g4Ex_gap.MyTrackingAction']]],
+  ['mytrackingactiond_11',['MyTrackingActionD',['../classg4Ex__gap_1_1MyTrackingActionD.html',1,'g4Ex_gap']]]
 ];

@@ -212,7 +212,6 @@ var namespaces_dup =
       [ "FitTrackPrintOut", "namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07", null ],
       [ "MCPointPrintOut", "namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba", null ],
       [ "MCTrackPrintOut", "namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774", null ],
-      [ "muonHitPrintOut", "namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a", null ],
       [ "ShipParticlePrintOut", "namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26", null ],
       [ "TEvePointSetPrintOut", "namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab", null ],
       [ "TimeDetHitPrintOut", "namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30", null ],
@@ -935,7 +934,6 @@ var namespaces_dup =
       [ "test", "namespacemuDIS__mergeFiles.html#a2ad4e59b5b770f5e8954ae02a12b75c0", null ],
       [ "h", "namespacemuDIS__mergeFiles.html#a83f94c211fdeec0f62c2f112ef51da13", null ]
     ] ],
-    [ "muonDetector", "namespacemuonDetector.html", "namespacemuonDetector" ],
     [ "proton_bremsstrahlung", "namespaceproton__bremsstrahlung.html", [
       [ "dNdPdTheta", "namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9", null ],
       [ "dNdZdPtSquare", "namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28", null ],

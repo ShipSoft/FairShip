@@ -154,7 +154,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   28</span>  hitlist = {}</div>
 <div class="line"><span class="lineno">   29</span>  hitlist[fPos.Z()] = [fPos.X(), fPos.Y(), fT.GetP()]</div>
 <div class="line"><span class="lineno">   30</span><span class="comment"># loop over all sensitive volumes to find hits</span></div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">for</span> P <span class="keywordflow">in</span> [<span class="stringliteral">&quot;vetoPoint&quot;</span>, <span class="stringliteral">&quot;muonPoint&quot;</span>,</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">for</span> P <span class="keywordflow">in</span> [<span class="stringliteral">&quot;vetoPoint&quot;</span>,</div>
 <div class="line"><span class="lineno">   32</span>            <span class="stringliteral">&quot;strawtubesPoint&quot;</span>, <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>, <span class="stringliteral">&quot;TargetPoint&quot;</span>]:</div>
 <div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.GetBranch(P):</div>
 <div class="line"><span class="lineno">   34</span>      <span class="keywordflow">continue</span></div>

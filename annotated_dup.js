@@ -59,9 +59,6 @@ var annotated_dup =
     [ "MTCDetector", "namespaceMTCDetector.html", [
       [ "MTCDetector", "classMTCDetector_1_1MTCDetector.html", "classMTCDetector_1_1MTCDetector" ]
     ] ],
-    [ "muonDetector", "namespacemuonDetector.html", [
-      [ "muonDetector", "classmuonDetector_1_1muonDetector.html", "classmuonDetector_1_1muonDetector" ]
-    ] ],
     [ "rootUtils", "namespacerootUtils.html", [
       [ "PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
     ] ],
@@ -125,11 +122,7 @@ var annotated_dup =
     [ "MTCDetHit", "classMTCDetHit.html", "classMTCDetHit" ],
     [ "MTCDetPoint", "classMTCDetPoint.html", "classMTCDetPoint" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
-    [ "muon", "classmuon.html", "classmuon" ],
     [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ],
-    [ "muonContFact", "classmuonContFact.html", "classmuonContFact" ],
-    [ "muonHit", "classmuonHit.html", "classmuonHit" ],
-    [ "muonPoint", "classmuonPoint.html", "classmuonPoint" ],
     [ "NtupleGenerator", "classNtupleGenerator.html", "classNtupleGenerator" ],
     [ "pyFairModule", "classpyFairModule.html", "classpyFairModule" ],
     [ "Pythia6Generator", "classPythia6Generator.html", "classPythia6Generator" ],
