@@ -327,7 +327,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   Double_t zinter=0;
   Double_t ZoverA = 1.;
-  if (targetName.Data() !=""){
+  if (!targetName.IsNull()){
 // calculate primary proton interaction point:
 // loop over trajectory between start and end to pick an interaction point, copied from GenieGenerator and adapted to hadrons
    Double_t prob2int = -1.;

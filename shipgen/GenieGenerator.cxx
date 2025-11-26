@@ -299,8 +299,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "Info GenieGenerator: ztarget " << ztarget << endl;
     Double_t bparam=0.;
     Double_t mparam[10];
-    Double_t pout[3];
-    pout[2]=-1.;
+    Double_t pout[3] = {0., 0., -1.};
     Double_t txnu=0;
     Double_t tynu=0;
     //Does this neutrino fly through material? Otherwise draw another pt..
@@ -352,9 +351,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     }
     //loop over trajectory between start and end to pick an interaction point
     Double_t prob2int = -1.;
-    Double_t x;
-    Double_t y;
-    Double_t z;
+    Double_t x = 0.;
+    Double_t y = 0.;
+    Double_t z = 0.;
     Int_t count=0;
     while (prob2int<gRandom->Uniform(0.,1.)) {
       //place x,y,z uniform along path
