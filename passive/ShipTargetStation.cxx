@@ -119,7 +119,7 @@ void ShipTargetStation::ConstructGeometry()
 
     auto vessel = gGeoManager->MakeTube("TargetVessel", inc718, 0, vessel_diameter / 2., vessel_length / 2.);
     vessel->SetLineColor(28);
-    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
+
     //He inside
     auto helium_volume = gGeoManager->MakeTube("target_He", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
     helium_volume->SetLineColor(7);
