@@ -11,12 +11,12 @@ parser.add_argument("-g", "--geoFile", dest="geoFile", help="ROOT geofile", requ
 parser.add_argument("-o", "--outputDir", dest="outputDir", help="Output directory", required=False, default=os.getcwd())
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="Num of events to process", type=int, required=False, default=1E6)
 parser.add_argument("--detector", dest="detector", help="Select which detector to perform track reco." \
-                                     , required=False, choices=['SiliconTarget','MTC','SND','StrawTracker'], default='SiliconTarget')
-parser.add_argument("--realPR", dest="realPR", help="Option for pattern recognition", required=False, default=False)
-parser.add_argument("--vertexing", dest="vertexing", help="Enable vertexing", required=False, default=False)
-parser.add_argument("--DQM", dest="DQM", help="Option to enable ACTS track and vertex DQM", required=False, default=True)
-parser.add_argument("--minHits", dest="minHits", help="Option for minimum required hits to build a valid track", required=False, default=6)
-parser.add_argument("--minPt", dest="minPt", help="Option for minimum required transverse momenta to build a valid track", required=False, default=1)
+                                     , required=False, choices=["SiliconTarget","MTC","SND","StrawTracker"], default="SiliconTarget")
+parser.add_argument("--realPR", dest="realPR", help="Option for pattern recognition", action="store_true")
+parser.add_argument("--vertexing", dest="vertexing", help="Enable vertexing", action="store_true")
+parser.add_argument("--DQM", dest="DQM", help="Option to enable ACTS track and vertex DQM", action="store_true")
+parser.add_argument("--minHits", dest="minHits", help="Option for minimum required hits to build a valid track", required=False, default=6, type=int)
+parser.add_argument("--minPt", dest="minPt", help="Option for minimum required transverse momenta to build a valid track", required=False, default=0, type=float)
 
 options = parser.parse_args()
 

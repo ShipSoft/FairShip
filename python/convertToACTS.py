@@ -1,12 +1,12 @@
 from collections import defaultdict
 import ROOT
-import statistics
 import array
 import math
 import sys
 import os
 import global_variables
 import shipunit as u
+import numpy as np
 PDG = ROOT.TDatabasePDG.Instance()
 
 import acts
@@ -39,6 +39,7 @@ def main():
         particleTree = ROOT.TTree("particles","particles")
         vertexTree = ROOT.TTree("vertices","vertices")
         siHitTree = ROOT.TTree("siHits","siHits")
+        mtcHitTree = ROOT.TTree("mtcHits","mtcHits")
         strawHitTree = ROOT.TTree("strawHits","strawHits")
 
         #Silicon target hit branches
@@ -85,6 +86,50 @@ def main():
         siHitTree.Branch('deltapz', deltapz, 'deltapz/F')
         deltae = array.array('f', [0])
         siHitTree.Branch('deltae', deltae, 'deltae/F')
+
+        #MTC hit branches
+        event_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('event_id', event_id_mtc, 'event_id/i')
+        volume_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('volume_id', event_id_mtc, 'volume_id/i')
+        boundary_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('boundary_id', boundary_id_mtc, 'boundary_id/i')
+        layer_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('layer_id', layer_id_mtc, 'layer_id/i')
+        approach_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('approach_id', approach_id_mtc, 'approach_id/i')
+        sensitive_id_mtc = array.array('i', [0])
+        mtcHitTree.Branch('sensitive_id', sensitive_id_mtc, 'sensitive_id/i')
+        geometry_id_mtc = array.array('l', [0])
+        mtcHitTree.Branch('geometry_id', geometry_id_mtc, 'geometry_id/l')
+        particle_id_mtc = array.array('l', [0])
+        mtcHitTree.Branch('particle_id', particle_id_mtc, 'particle_id/l')
+        index_mtc = array.array('i', [0])
+        mtcHitTree.Branch('index', index_mtc, 'index/I')
+        tx_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tx', tx_mtc, 'tx/F')
+        ty_mtc = array.array('f', [0])
+        mtcHitTree.Branch('ty', ty_mtc, 'ty/F')
+        tz_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tz', tz_mtc, 'tz/F')
+        tt_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tt', tt_mtc, 'tt/F')
+        tpx_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tpx', tpx_mtc, 'tpx/F')
+        tpy_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tpy', tpy_mtc, 'tpy/F')
+        tpz_mtc = array.array('f', [0])
+        mtcHitTree.Branch('tpz', tpz_mtc, 'tpz/F')
+        te_mtc = array.array('f', [0])
+        mtcHitTree.Branch('te', te_mtc, 'te/F')
+        deltapx_mtc = array.array('f', [0])
+        mtcHitTree.Branch('deltapx', deltapx_mtc, 'deltapx/F')
+        deltapy_mtc = array.array('f', [0])
+        mtcHitTree.Branch('deltapy', deltapy_mtc, 'deltapy/F')
+        deltapz_mtc = array.array('f', [0])
+        mtcHitTree.Branch('deltapz', deltapz_mtc, 'deltapz/F')
+        deltae_mtc = array.array('f', [0])
+        mtcHitTree.Branch('deltae', deltae_mtc, 'deltae/F')
 
         #Straw tracker hit branches
         event_id_straw = array.array('i', [0])
@@ -219,7 +264,7 @@ def main():
             strawHitArr=[]
             trID=[]
 
-            if global_variables.detector == "SiliconTarget":
+            if global_variables.detector == "SiliconTarget" or global_variables.detector == "SND":
                 detHitArray.clear()
                 trID.clear()
                 detHitMap.clear()
@@ -241,9 +286,10 @@ def main():
                 for i in detHitMap:
                     detHitMap[i].sort(key=lambda x:x[0])
 
-                for iTrack, i in enumerate(detHitMap):
-                    for index, hit in enumerate(detHitMap[i]):
-
+                for iTrack in detHitMap:
+                    for index, hit in enumerate(detHitMap[iTrack]):
+                        if iTrack < -1: #If track id == -2 barcode will fail
+                            continue
                         hit=hit[1]
                         layerID= 6*hit.GetLayer() + 2*hit.GetPlane() + 4 #Layers correspond to planes, including W planes and navigation layers in between
                         event_id[0] = ievent
@@ -251,7 +297,7 @@ def main():
                         boundary_id[0] = 0
                         layer_id[0] = layerID
                         approach_id[0] = 0
-                        sens = hit.GetModule() #number is inverted following rotation about y-axis
+                        sens = hit.GetModule()
                         sensitive_id[0] = sens
                         geometry_id[0] = acts.GeometryIdentifier(volume=1, layer=layerID, sensitive=sens).value
                         barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = iTrack, gen = 0, subpart = 0).value
@@ -276,6 +322,69 @@ def main():
                         deltae[0] = -hit.GetSignal()
 
                         siHitTree.Fill()
+
+            if global_variables.detector == "MTC" or global_variables.detector == "SND":
+                detHitArray.clear()
+                trID.clear()
+                detHitMap.clear()
+                pointsDict = defaultdict(list)
+                for index, point in enumerate(event.MTCPoint):
+                    detID = point.GetDetectorID()
+                    pointsDict[detID].append(point)
+
+                for index, detID in enumerate(pointsDict):
+                    allPoints = ROOT.std.vector('MTCPoint*')()
+                    trID.clear()
+                    for p in pointsDict[detID]:
+                         allPoints.push_back(p)
+                         trID.append(p.GetTrackID())
+                    detHitArray.append([ROOT.MTCHit(detID, allPoints),trID[0]])
+                for index, hit in enumerate(detHitArray):
+                    trackID = hit[1]
+                    detHitMap[trackID].append([hit[0].GetDetectorID(),hit[0]])
+                for i in detHitMap:
+                    detHitMap[i].sort(key=lambda x:x[0])
+
+                for iTrack in detHitMap:
+                    for index, hit in enumerate(detHitMap[iTrack]):
+                        if iTrack < -1: #If track id == -2 barcode will fail
+                            continue
+                        hit=hit[1]
+                        layerID= 6*hit.GetLayer() + 2*hit.GetPlane() + 4 #Layers correspond to SciFi planes, including Fe planes and navigation layers in between
+                        event_id[0] = ievent
+                        volume_id[0] = 1
+                        boundary_id[0] = 0
+                        layer_id[0] = layerID
+                        approach_id[0] = 0
+                        sens = hit.GetChannelID() #Does this work properly? 
+                        sensitive_id[0] = sens
+                        if global_variables.detector == "SND":
+                            volumeVar = 2
+                        else:
+                            volumeVar = 1
+                        geometry_id[0] = acts.GeometryIdentifier(volume=volumeVar, layer=layerID, sensitive=sens).value
+                        barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = iTrack, gen = 0, subpart = 0).value
+                        particle_id[0] = barVal
+                        index_mtc[0] = index
+
+                        #SHiP coordinate system translated to reconstruction coord system
+                        # z -> x
+                        # y -> y
+                        # x -> -z
+                        tx_mtc[0] = hit.GetZ() * 10 #Units cm -> mm
+                        ty_mtc[0] = hit.GetY() * 10
+                        tz_mtc[0] = -hit.GetX() * 10
+                        tt_mtc[0] = 0
+                        tpx_mtc[0] = 0.
+                        tpy_mtc[0] = 0.
+                        tpz_mtc[0] = 0.
+                        tenergy_mtc[0] = 0.
+                        deltapx_mtc[0] = 0.
+                        deltapy_mtc[0] = 0.
+                        deltapz_mtc[0] = 0.
+                        deltae_mtc[0] = -hit.GetSignal()
+
+                        mtcHitTree.Fill()
 
             if global_variables.detector == "StrawTracker":
                 #Follow shipDigiReco method of only selecting the point with the earliest time
@@ -308,9 +417,10 @@ def main():
                     ##Ordered hit array for each track
                     detHitMap[i].sort(key=lambda x:x[0])
 
-                for iTrack, i in enumerate(detHitMap):
-                    for index, hit in enumerate(detHitMap[i]):
-
+                for iTrack in detHitMap:
+                    for index, hit in enumerate(detHitMap[iTrack]):
+                        if iTrack < -1: #If track id == -2 barcode will fail
+                            continue
                         point=hit[2]
                         hit=hit[1]
                         layerID= 8 * hit.GetStationNumber() + 2 * hit.GetViewNumber() - 6
@@ -353,6 +463,9 @@ def main():
 
             ##Convert SHiP MCTrack into ACTS MC particle style EDM
             for count, part in enumerate(event.MCTrack):
+                #He3, alpha, deutron, triton not in database, $ROOTSYS/etc/pdg_table.txt
+                if(part.GetPdgCode()>=1000010020):
+                    continue
                 event_id_particle[0] = ievent
                 generation_particle.push_back(0)
                 barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = count, gen = 0, subpart = 0).value
@@ -374,7 +487,7 @@ def main():
                 pp.push_back(part.GetP())
                 m.push_back(part.GetMass())
                 charge = PDG.GetParticle(part.GetPdgCode()).Charge()
-                q.push_back(charge)
+                q.push_back(np.sign(charge))
                 eta.push_back(fourVec.Eta())
                 phi.push_back(fourVec.Phi())
                 pt.push_back(fourVec.Pt())
@@ -421,6 +534,9 @@ def main():
 
             for c , i in enumerate(motherMap):
                 particleCodes = motherMapVal[str(i)]
+                #If there are not atleast 2 tracks at decay vtx, do not write
+                if len(particleCodes) < 2:
+                    continue
                 event_id_vertex[0] = ievent
                 vertexVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = 0, gen = 0, subpart = 0).value
                 vertex_id.push_back(vertexVal)
@@ -430,14 +546,14 @@ def main():
                 # z -> x
                 # y -> y
                 # x -> -z
-                vx_vtx.push_back(particle_0.GetStartZ())
-                vy_vtx.push_back(particle_0.GetStartY())
-                vz_vtx.push_back(-particle_0.GetStartX())
+                vx_vtx.push_back(particle_0.GetStartZ() * 10)
+                vy_vtx.push_back(particle_0.GetStartY() * 10)
+                vz_vtx.push_back(-particle_0.GetStartX() * 10)
                 vt_vtx.push_back(0)
                 vertex_primary_vtx.push_back(1)
                 vertex_secondary_vtx.push_back(0)
                 generation_vtx.push_back(0)
-    #            for j in particle_0ID:
+                process_vtx.push_back(0)
                 for j in particleCodes:
                    outgoing_particlesVec.push_back(j)
                 outgoing_particles.push_back(outgoing_particlesVec)
@@ -452,11 +568,14 @@ def main():
             vt_vtx.clear()
             vertex_primary_vtx.clear()
             vertex_secondary_vtx.clear()
+            generation_vtx.clear()
+            process_vtx.clear()
             motherMap.clear()
             motherMapVal.clear()
 
 
         f.WriteObject(siHitTree,"siHits")
+        f.WriteObject(mtcHitTree,"mtcHits")
         f.WriteObject(strawHitTree,"strawHits")
         f.WriteObject(particleTree,"particles")
         f.WriteObject(vertexTree,"vertices")

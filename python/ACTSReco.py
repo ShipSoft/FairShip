@@ -41,16 +41,24 @@ def runTracking():
 
     if global_variables.detector == "SiliconTarget":
        field = acts.ConstantBField(acts.Vector3(0.0, 0.0, 0.0 * u.T))
+       simHitTree="siHits"
        digiConfigFile = currentPath + "/SiliconTarget-digi-config.json"
        detector = acts.examples.SiTargetBuilder(fileName=str(global_variables.geoFile),
                                                 surfaceLogLevel=customLogLevel(),
                                                 layerLogLevel=customLogLevel(),
                                                 volumeLogLevel=customLogLevel(),
                                                )
-       simHitTree="siHits"
+
     if global_variables.detector == "MTC":
         #MTC setup to be updated.
-        return
+       field = acts.ConstantBField(acts.Vector3(0.0, -1.2, 0.0 * u.T))
+       simHitTree="mtcHits"
+       digiConfigFile = currentPath + "/MTC-digi-config.json"
+       detector = acts.examples.MTCBuilder(fileName=str(global_variables.geoFile),
+                                                surfaceLogLevel=customLogLevel(),
+                                                layerLogLevel=customLogLevel(),
+                                                volumeLogLevel=customLogLevel(),
+                                               )
 
     if global_variables.detector == "StrawTracker":
        #Bfield x/y non-zero, offsets manually set to zero.
@@ -167,25 +175,23 @@ def runTracking():
     s.addWhiteboardAlias("tracks", "selected-tracks")
 
     s.addWriter(
-        acts.examples.RootTrackStatesWriter(
-            level=acts.logging.INFO,
-            inputTracks="tracks",
-            inputParticles="particles_selected",
-            inputTrackParticleMatching="track_particle_matching",
-            inputSimHits="simhits",
-            inputMeasurementSimHitsMap="measurement_simhits_map",
-            filePath=str(global_variables.outputDir) + "/trackstates_kf.root",
+        acts.examples.SHiPTrackWriter(
+           level=acts.logging.INFO,
+           inputTracks="tracks",
+           inputParticles="particles_selected",
+           inputTrackParticleMatching="track_particle_matching",
+           filePath=str(global_variables.outputDir) + "/recoTracks.root",
+           writeCovMat=True,
         )
     )
-
 
     if global_variables.vertexing:
 
         s.addReader(
             acts.examples.RootVertexReader(
                 level=acts.logging.INFO,
-                filePath=str(inputHitsPath),
-                outputVertices="vertices_generated",
+                filePath=global_variables.inputFile,
+                outputVertices="vertices_truth",
                 treeName="vertices"
             )
         )
@@ -194,11 +200,23 @@ def runTracking():
             s,
             field,
             vertexFinder=VertexFinder.Truth,
-            outputDirRoot=global_variables.outputFile
+            outputDirRoot=global_variables.outputDir
         )
 
 
     if global_variables.DQM:
+
+        s.addWriter(
+            acts.examples.RootTrackStatesWriter(
+                level=acts.logging.INFO,
+                inputTracks="tracks",
+                inputParticles="particles_selected",
+                inputTrackParticleMatching="track_particle_matching",
+                inputSimHits="simhits",
+                inputMeasurementSimHitsMap="measurement_simhits_map",
+                filePath=str(global_variables.outputDir) + "/trackstates_kf.root",
+            )
+        )
 
         s.addWriter(
             acts.examples.TrackFitterPerformanceWriter(
@@ -220,20 +238,5 @@ def runTracking():
                 writeCovMat=True,
             )
         )
-
-        if global_variables.vertexing:
-            s.addWriter(
-                acts.examples.VertexNTupleWriter(
-                    level=acts.logging.INFO,
-                    inputTracks="tracks",
-                    inputTrackParticleMatching="track_particle_matching",
-                    inputParticles="particles_selected",
-                    inputSelectedParticles=selectedParticles,
-                    inputTruthVertices="vertices_truth",
-                    writeTrackInfo=True,
-                    treeName="vertexing",
-                    filePath=str(global_variables.outputDir) + "/performance_vertexing.root",
-                )
-            )
 
     s.run()
