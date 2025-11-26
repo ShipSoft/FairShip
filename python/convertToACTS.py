@@ -356,7 +356,7 @@ def main():
                         boundary_id[0] = 0
                         layer_id[0] = layerID
                         approach_id[0] = 0
-                        sens = hit.GetChannelID() #Does this work properly? 
+                        sens = hit.GetChannelID() #Does this work properly?
                         sensitive_id[0] = sens
                         if global_variables.detector == "SND":
                             volumeVar = 2
@@ -534,7 +534,7 @@ def main():
 
             for c , i in enumerate(motherMap):
                 particleCodes = motherMapVal[str(i)]
-                #If there are not atleast 2 tracks at decay vtx, do not write
+                #If there are not at least 2 tracks at decay vtx, do not write
                 if len(particleCodes) < 2:
                     continue
                 event_id_vertex[0] = ievent
