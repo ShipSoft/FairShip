@@ -1,5 +1,12 @@
 var NAVTREEINDEX7 =
 {
+"classShipMagnet.html#ac73d1bd95af9b753dde2dac5eb4a3ee0":[5,0,57,6],
+"classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1":[5,0,57,5],
+"classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c":[5,0,57,11],
+"classShipMagnet.html#afc771e59dbad7503a644c8cc41f788f0":[5,0,57,0],
+"classShipMuonShield.html":[5,0,59],
+"classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d":[5,0,59,11],
+"classShipMuonShield.html#a14c09abf8f8f662a955ecd22a02dae21":[5,0,59,2],
 "classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186":[5,0,59,15],
 "classShipMuonShield.html#a21c4058626af3ba4afb7100f8d1e4023":[5,0,59,1],
 "classShipMuonShield.html#a25d8a1229a943532bbc3c02ebc7f8109":[5,0,59,10],
@@ -242,12 +249,5 @@ var NAVTREEINDEX7 =
 "classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8":[5,0,80,20],
 "classTEvtGenDecayer.html#a0c0067da59bfb7896374d86517fd7a14":[5,0,80,13],
 "classTEvtGenDecayer.html#a2212574661b8635eb7eabdfa024b435e":[5,0,80,10],
-"classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4":[5,0,80,22],
-"classTEvtGenDecayer.html#a2924cca38526f7b93595b8b52a4259b3":[5,0,80,11],
-"classTEvtGenDecayer.html#a2e581d6fb7200163b53010e107eb0516":[5,0,80,16],
-"classTEvtGenDecayer.html#a4aa7b707a4b0b830b6d6cc7ac0054021":[5,0,80,19],
-"classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75":[5,0,80,6],
-"classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76":[5,0,80,23],
-"classTEvtGenDecayer.html#a54e4605777a20e532deadf5196f681c4":[5,0,80,0],
-"classTEvtGenDecayer.html#a587a785be405d458081c7c95044e87ac":[5,0,80,2]
+"classTEvtGenDecayer.html#a235e1cc1907e4cef68c43ab991649ea4":[5,0,80,22]
 };

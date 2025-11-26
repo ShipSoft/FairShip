@@ -1,5 +1,12 @@
 var namespaces_dup =
 [
+    [ "ACTSReco", "namespaceACTSReco.html", [
+      [ "runTracking", "namespaceACTSReco.html#a5a6b305b26347c412e74c3bf7c0bb680", null ],
+      [ "currentPath", "namespaceACTSReco.html#aaad011aa4dbfc91687e4c37d0d3bc50e", null ],
+      [ "fgeo", "namespaceACTSReco.html#aff51101f260e205ff8f6b0f0926c757c", null ],
+      [ "ShipGeo", "namespaceACTSReco.html#a88c4fd607032ca29aaa7e2dcf9554f1c", null ],
+      [ "sourcePath", "namespaceACTSReco.html#a133e2ecfa0812c9dad82343683ae64de", null ]
+    ] ],
     [ "add_muonresponse", "namespaceadd__muonresponse.html", [
       [ "inspect_file", "namespaceadd__muonresponse.html#a66189585055e1991c4d7ac3e1be16a1c", null ],
       [ "modify_file", "namespaceadd__muonresponse.html#aea92d8a3ac2013544f2c902db5c01714", null ],
@@ -192,6 +199,11 @@ var namespaces_dup =
       [ "createTextMap", "namespaceconvertRALMap.html#a5f671477f0f68c291783d295f35fab1d", null ],
       [ "formatNumber", "namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f", null ],
       [ "run", "namespaceconvertRALMap.html#a8c11e97dc0a32a0d9fb63d1984c76af5", null ]
+    ] ],
+    [ "convertToACTS", "namespaceconvertToACTS.html", [
+      [ "main", "namespaceconvertToACTS.html#abb41a5cf7ecd01213fd3f40fbb9a8ca9", null ],
+      [ "gErrorIgnoreLevel", "namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772", null ],
+      [ "PDG", "namespaceconvertToACTS.html#a424dbe697cd784b823f4471dd26663e4", null ]
     ] ],
     [ "create_field_perturbation", "namespacecreate__field__perturbation.html", [
       [ "create_csv_field_map", "namespacecreate__field__perturbation.html#a6d00ea983330a2eb4fe30eb85617355c", null ],
@@ -1026,6 +1038,36 @@ var namespaces_dup =
     ] ],
     [ "rootUtils", "namespacerootUtils.html", "namespacerootUtils" ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
+    [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [
+      [ "action", "namespacerun__ACTSTracking.html#afb76210fc78f0dc6654161d27b5e3892", null ],
+      [ "choices", "namespacerun__ACTSTracking.html#a2be79bc84a594675cc05cc2ffb243d85", null ],
+      [ "default", "namespacerun__ACTSTracking.html#a0f1852307234764813c8d5b0b699edde", null ],
+      [ "dest", "namespacerun__ACTSTracking.html#a0446f743bb7c68a472aa8b14eb84afcc", null ],
+      [ "detector", "namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67", null ],
+      [ "DQM", "namespacerun__ACTSTracking.html#ab4132b0575d937e226784acc7c66b0f5", null ],
+      [ "False", "namespacerun__ACTSTracking.html#a9c9f2b602a14afe7eada8b6cc9a1fbac", null ],
+      [ "fTree", "namespacerun__ACTSTracking.html#a2efd7eb3251602f46cf2987825ef6d17", null ],
+      [ "fullpath", "namespacerun__ACTSTracking.html#ab2032c1f75194bf2334dad61233390b5", null ],
+      [ "geoFile", "namespacerun__ACTSTracking.html#a4528b9c9df0a87dbad855fe6cdd82d92", null ],
+      [ "help", "namespacerun__ACTSTracking.html#acfe3e7df7c0e44c4af0c43c1df5ab724", null ],
+      [ "inFile", "namespacerun__ACTSTracking.html#a5f50267a03dcbf057998ae2735e5540c", null ],
+      [ "inputFile", "namespacerun__ACTSTracking.html#a644639bb4a0262c985c8ad859245e831", null ],
+      [ "int", "namespacerun__ACTSTracking.html#ae2648259c10b1cdb180ebf92eb72690c", null ],
+      [ "minHits", "namespacerun__ACTSTracking.html#ad88454cbef3c98ab636f60341289f2b4", null ],
+      [ "minPt", "namespacerun__ACTSTracking.html#a5ec29eab8862cd79531eb8d33218d5d7", null ],
+      [ "nEvents", "namespacerun__ACTSTracking.html#ae53a95e20963a6302fd64e695c1c779a", null ],
+      [ "options", "namespacerun__ACTSTracking.html#af86a6db8f1fd628dc3d6af5bf54d03b2", null ],
+      [ "outDir", "namespacerun__ACTSTracking.html#aa6166cc437c4f9cc17178a2922246e56", null ],
+      [ "outFile", "namespacerun__ACTSTracking.html#a473bd60e069f89f4eb4d8588c08509b9", null ],
+      [ "outputDir", "namespacerun__ACTSTracking.html#ada17fddea233d5062ff3d42d82490ac5", null ],
+      [ "outputFile", "namespacerun__ACTSTracking.html#add83f453e6b2696958aff0de0969b1dc", null ],
+      [ "parser", "namespacerun__ACTSTracking.html#ab3edeeec030eb7825c70d6f4baf88acf", null ],
+      [ "realPR", "namespacerun__ACTSTracking.html#a9051dac2a237e6031ee6ccd557918504", null ],
+      [ "required", "namespacerun__ACTSTracking.html#ac6c206f04d89a3d97fd85d134a7b9ff2", null ],
+      [ "tmp", "namespacerun__ACTSTracking.html#a5fce0af33d0368e551b0c411e0aa7e9f", null ],
+      [ "type", "namespacerun__ACTSTracking.html#a1cc69da3f73bc5b9971b896610b3da48", null ],
+      [ "vertexing", "namespacerun__ACTSTracking.html#a023210aecd6147c1c4b5cdea80797442", null ]
+    ] ],
     [ "run_fixedTarget", "namespacerun__fixedTarget.html", [
       [ "get_work_dir", "namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd", null ],
       [ "action", "namespacerun__fixedTarget.html#ab5d680c22d22a38d96db40834019c7bf", null ],
