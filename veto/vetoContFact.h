@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 #ifndef VETO_VETOCONTFACT_H_
 #define VETO_VETOCONTFACT_H_

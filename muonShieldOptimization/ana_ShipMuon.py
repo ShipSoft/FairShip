@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT

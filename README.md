@@ -217,7 +217,7 @@ An [automatic class reference](https://shipsoft.github.io/FairShip/) is built us
 
 FairShip is distributed under the GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later). See the [LICENSE](LICENSE) file for details.
 
-Copyright is held by CERN on behalf of the SHiP Collaboration. Some components are distributed under different licenses and copyrights - see the individual file headers and the [LICENSES](LICENSES/) directory for details. This project follows the [REUSE specification](https://reuse.software/) for licensing information.
+Copyright is held by CERN for the benefit of the SHiP Collaboration. Some components are distributed under different licenses and copyrights - see the individual file headers and the [LICENSES](LICENSES/) directory for details. This project follows the [REUSE specification](https://reuse.software/) for licensing information.
 
 ## Contributing code
 
