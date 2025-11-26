@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # Macro for loading basic libraries used with both Geant3 and Geant4
 from ROOT import gSystem

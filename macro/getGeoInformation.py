@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: LGPL-3.0-or-later
-# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 #prints z-coordinators of SHiP detector volumes
 #WARNING: printing the entire geometry takes a lot of time

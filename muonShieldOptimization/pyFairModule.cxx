@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 #include "Python.h" // Needs to be included first to avoid redefinition of _POSIX_C_SOURCE
 #include "pyFairModule.h"
