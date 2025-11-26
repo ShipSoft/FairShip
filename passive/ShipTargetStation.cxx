@@ -115,42 +115,24 @@ void ShipTargetStation::ConstructGeometry()
     double vessel_diameter = fDiameter + 150 * mm;
     double vessel_shift = 76 * mm;
     double vessel_length = fTargetLength + 2*vessel_shift;
+    double epsilon = 0.01 * mm;
 
-    TGeoVolume* vessel;
-    vessel = gGeoManager->MakeTube("TargetVessel", inc718, vessel_diameter / 2. - vessel_thickness, vessel_diameter / 2., vessel_length / 2.);
+    auto vessel = gGeoManager->MakeTube("TargetVessel", inc718, 0, vessel_diameter / 2., vessel_length / 2.);
     vessel->SetLineColor(28);
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
-    //Front face
-    vessel = gGeoManager->MakeTube("TargetVesselFront", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
-    vessel->SetLineColor(28);
-    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift - vessel_thickness / 2.));
-    //Back face
-    vessel = gGeoManager->MakeTube("TargetVesselBack", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
-    vessel->SetLineColor(28);
-    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length + vessel_thickness/2.));
     //He inside
-    vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
-    vessel->SetLineColor(7);
+    auto helium_volume = gGeoManager->MakeTube("target_He", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
+    helium_volume->SetLineColor(7);
+    vessel->AddNode(helium_volume, 1);
 
-    // Steel enclosure around target inside He volume
-    // Inner radius must be larger than target radius (fDiameter/2) to avoid overlaps
-    double enclosure_clearance = 2 * mm;  // Clearance between target and enclosure
-    double enclosure_inner_radius = fDiameter / 2. + enclosure_clearance;
-    double enclosure_thickness = 40 * mm;
-    double enclosure_outer_radius = enclosure_inner_radius + enclosure_thickness;
-    double enclosure_cutout_width_x = 160 * mm;  // Width in x direction
-    double enclosure_cutout_width_y = 280 * mm;  // Width in y direction
-    double enclosure_length = fTargetLength;
+    auto steel_outer = gGeoManager->MakeTube("target_steel_outer", steel316L, 145 * mm, 185 * mm, fTargetLength / 2.);
+    steel_outer->SetLineColor(46);  // Reddish color for steel
+    helium_volume->AddNode(steel_outer, 1);
 
-    auto enclosure_outer_tube = new TGeoTube(
-        "enclosure_outer_tube", enclosure_inner_radius, enclosure_outer_radius, enclosure_length / 2.);
-    auto enclosure_cutout_box = new TGeoBBox(
-        "enclosure_cutout_box", enclosure_cutout_width_x / 2., enclosure_cutout_width_y / 2., enclosure_length / 2.);
-    auto enclosure_shape = new TGeoCompositeShape(
-        "enclosure_shape", "enclosure_outer_tube - enclosure_cutout_box");
-    auto enclosure = new TGeoVolume("target_enclosure", enclosure_shape, steel316L);
-    enclosure->SetLineColor(46);  // Reddish color for steel
-    vessel->AddNode(enclosure, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + enclosure_length / 2.));
+    auto steel_inner = gGeoManager->MakeTube("target_steel_inner", steel316L, 125 * mm + epsilon, 135 * mm, vessel_length / 2.);
+    steel_inner->SetLineColor(46);  // Reddish color for steel
+    helium_volume->AddNode(steel_inner, 1);
+
 
     //now place target inside He volume (and inside steel enclosure)
     Double_t zPos = 0.;
@@ -180,7 +162,7 @@ void ShipTargetStation::ConstructGeometry()
         } else {
             target->SetLineColor(38);
         };   // silver/blue
-        vessel->AddNode(target, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
+        helium_volume->AddNode(target, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
         if (i < slots) {
 	  //slits will already be filled with He, no need to define volume
 	  //  slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
