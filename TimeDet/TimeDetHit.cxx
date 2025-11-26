@@ -134,7 +134,7 @@ TGeoNode* TimeDetHit::GetNode() const
 {
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    TString path = "/Timing Detector_1/TimeDet_";path+=fDetectorID;
-   Bool_t rc = nav->cd(path);
+   nav->cd(path);
    return nav->GetCurrentNode();
 }
 

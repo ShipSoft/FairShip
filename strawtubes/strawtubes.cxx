@@ -278,12 +278,6 @@ void strawtubes::ConstructGeometry()
       implement here you own way of constructing the geometry. */
 
     TGeoVolume *top               = gGeoManager->GetTopVolume();
-    InitMedium("air");
-    TGeoMedium *air               = gGeoManager->GetMedium("air");
-    InitMedium("ShipSens");
-    TGeoMedium *Se                = gGeoManager->GetMedium("ShipSens");
-    InitMedium("aluminium");
-    TGeoMedium *Al                = gGeoManager->GetMedium("aluminium");
     InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
     InitMedium("STTmix8020_1bar");
