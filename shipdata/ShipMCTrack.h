@@ -137,7 +137,7 @@ class ShipMCTrack : public TObject
     /** Index of track in the event **/
     Int_t fTrackID;
 
-    ClassDef(ShipMCTrack,8);
+    ClassDef(ShipMCTrack,9);
 
 };
 
