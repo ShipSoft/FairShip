@@ -21,6 +21,9 @@ SiliconTargetHit::SiliconTargetHit()
 
 SiliconTargetHit::SiliconTargetHit(Int_t detID, const std::vector<SiliconTargetPoint*>& V)
 {
+    //Set detectorID.
+    fDetectorID = detID;
+
     // Sum up signal from all points within the hit
     std::vector<double> _signals;
     double totalSig = 0;
