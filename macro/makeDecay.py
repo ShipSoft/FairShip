@@ -142,8 +142,8 @@ for n in range(nEvents):
          if par.id()<0: idhnu+=1000
          pt2=par.px()**2+par.py()**2
          ptot=ROOT.TMath.Sqrt(pt2+par.pz()**2)
-         l10ptot=min(max(ROOT.TMath.Log10(ptot),-0.3),1.69999)
-         l10pt=min(max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)),-2.),0.4999)
+         l10ptot= max(ROOT.TMath.Log10(ptot),-0.3)
+         l10pt= max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)),-2.)
          h[str(idhnu)].Fill(ptot,wspill)
          h[str(idhnu+100)].Fill(l10ptot,l10pt,wspill)
          h[str(idhnu+200)].Fill(l10ptot,l10pt,wspill)
