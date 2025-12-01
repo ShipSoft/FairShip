@@ -258,9 +258,9 @@ void ShipTargetStation::ConstructGeometry()
 
     target_vacuum_box->AddNode(proximity_shielding, 1, proximity_shielding_centre);
 
-    // Iron shielding
+    // Top/bottom copper shielding
     auto top_shielding = gGeoManager->MakeBox(
-        "top_shielding", iron, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);
+        "top_shielding", copper, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);
     target_vacuum_box->AddNode(top_shielding,
                                1,
                                new TGeoTranslation(0.,
@@ -268,7 +268,7 @@ void ShipTargetStation::ConstructGeometry()
                                                        - proximity_shielding_hole_height + target_box_shift,
                                                    0));
     auto bottom_shielding = gGeoManager->MakeBox(
-        "bottom_shielding", iron, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
+        "bottom_shielding", copper, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
     target_vacuum_box->AddNode(
         bottom_shielding,
         1,
