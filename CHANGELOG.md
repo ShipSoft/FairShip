@@ -125,6 +125,7 @@ it in future.
 * Add flags for `python/ScifiMapping.py`
 * Fixed SiliconTarget detector identifier.
 * fix(muon): Make muonHit copy constructor public for std::vector compatibility
+* Fix the wrong methods in SND/MTC/MTCDetPoint.cxx to extract layer_id and layer_type for the MCPoint.
 
 ### Changed
 
