@@ -31,6 +31,7 @@ jobs:
 
       - name: Build
         run: |
+          set -o pipefail
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
 
