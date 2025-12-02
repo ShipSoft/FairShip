@@ -203,7 +203,7 @@ void ShipMagnet::ConstructGeometry()
      //and a epsilon larger yoke to subtract while making the coils
      [[maybe_unused]] TGeoBBox *my1 = new TGeoBBox("my1", xaperture+YokeWidth,yaperture+YokeWidth,YokeDepth+0.1*cm);
      [[maybe_unused]] TGeoBBox *my2 = new TGeoBBox("my2", xaperture-0.1*cm,yaperture-0.1*cm,YokeDepth+1.);
-     TGeoCompositeShape *myc = new TGeoCompositeShape("myc", "my1-my2");
+     [[maybe_unused]] TGeoCompositeShape *myc = new TGeoCompositeShape("myc", "my1-my2");
      TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
      magyoke->SetLineColor(kBlue);
      tMagnet->AddNode(magyoke, 1, new TGeoTranslation(0, 0, fSpecMagz));

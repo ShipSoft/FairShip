@@ -142,9 +142,9 @@ void ShipTargetStation::ConstructGeometry()
     double enclosure_cutout_width_y = 280 * mm;  // Width in y direction
     double enclosure_length = fTargetLength;
 
-    auto enclosure_outer_tube = new TGeoTube(
+    [[maybe_unused]] auto enclosure_outer_tube = new TGeoTube(
         "enclosure_outer_tube", enclosure_inner_radius, enclosure_outer_radius, enclosure_length / 2.);
-    auto enclosure_cutout_box = new TGeoBBox(
+    [[maybe_unused]] auto enclosure_cutout_box = new TGeoBBox(
         "enclosure_cutout_box", enclosure_cutout_width_x / 2., enclosure_cutout_width_y / 2., enclosure_length / 2.);
     auto enclosure_shape = new TGeoCompositeShape(
         "enclosure_shape", "enclosure_outer_tube - enclosure_cutout_box");
