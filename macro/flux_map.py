@@ -3,11 +3,13 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import argparse
+import logging
 import numpy as np
 import ROOT as r
 import shipunit as u
 import rootUtils as ut
-import logger as log
+
+log = logging.getLogger(__name__)
 
 
 def main():
@@ -288,6 +290,7 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     r.gErrorIgnoreLevel = r.kWarning
     r.gROOT.SetBatch(True)
     main()

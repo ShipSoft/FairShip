@@ -77,6 +77,10 @@ it in future.
 
 * Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for SiliconTarget, MTC, and Strawtubes.
 
+### Removed
+
+* Removed custom logger utilities (python/logger.py, utils/logger.hxx) in favour of Python's standard logging module
+
 ### Fixed
 
 * refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor
