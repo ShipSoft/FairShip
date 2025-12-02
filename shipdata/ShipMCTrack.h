@@ -54,6 +54,7 @@ class ShipMCTrack : public TObject
 
 
     /**  Output to screen  **/
+    using TObject::Print;
     void Print(Int_t iTrack=0) const;
 
 

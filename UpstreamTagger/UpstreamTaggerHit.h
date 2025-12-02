@@ -48,6 +48,7 @@ class UpstreamTaggerHit : public ShipHit
     Double_t GetTime() const { return fTime; }
 
     /** Output to screen **/
+    using ShipHit::Print;
     virtual void Print() const;
 
   private:
