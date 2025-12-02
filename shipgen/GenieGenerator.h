@@ -39,7 +39,6 @@ class GenieGenerator : public FairGenerator
     endZ        = zE;
   }
   void AddBox(TVector3 dVec, TVector3 box);
-  Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz);
 

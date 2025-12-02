@@ -212,6 +212,7 @@ it in future.
   - Update Python code in shipDigiReco.py to use modern constructors
   - Bump ClassDef versions to 2 for schema evolution
   - Add TrackInfo to RNTuple I/O test suite
+  - Move MeanMaterialBudget to standalone function to reduce duplication and allow proper attribution of code to ALICE
 
 ### Removed
 

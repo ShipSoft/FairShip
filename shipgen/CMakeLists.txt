@@ -76,7 +76,8 @@ set(SRCS
     FixedTargetGenerator.cxx
     EvtCalcGenerator.cxx
     TEvtGenDecayer.cxx
-    BeamSmearingUtils.cxx)
+    BeamSmearingUtils.cxx
+    MeanMaterialBudget.cxx)
 
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)
