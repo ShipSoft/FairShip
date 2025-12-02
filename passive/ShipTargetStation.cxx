@@ -213,16 +213,16 @@ void ShipTargetStation::ConstructGeometry()
     double shielding_position = start_of_target + fTargetLength + proximity_shielding_distance_after_target
                                              + proximity_shielding_thickness - shielding_length / 2;
     double target_box_shift = 14.45 * cm;
-    auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
+    [[maybe_unused]] auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
                                                      shielding_width / 2,
                                                      proximity_shielding_height / 2,
                                                      shielding_length / 2);
-    auto proximity_shielding_inner = new TGeoBBox(
+    [[maybe_unused]] auto proximity_shielding_inner = new TGeoBBox(
         "proximity_shielding_inner",
         shielding_width / 2 - proximity_shielding_thickness,
         proximity_shielding_height / 2,
         (shielding_length - (proximity_shielding_thickness_front + proximity_shielding_thickness)) / 2);
-    auto proximity_shielding_hole = new TGeoTube(
+    [[maybe_unused]] auto proximity_shielding_hole = new TGeoTube(
         "proximity_shielding_hole", 0, proximity_shielding_hole_diameter / 2, proximity_shielding_thickness_front / 2);
     auto proximity_shielding_inner_shift = new TGeoTranslation(
         "proximity_shielding_inner_shift", 0, 0, (proximity_shielding_thickness_front - proximity_shielding_thickness) / 2);
