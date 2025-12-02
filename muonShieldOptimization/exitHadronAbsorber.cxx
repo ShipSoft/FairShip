@@ -40,6 +40,23 @@ Double_t cm  = 1;       // cm
 Double_t m   = 100*cm;  //  m
 Double_t mm  = 0.1*cm;  //  mm
 
+exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
+  : FairDetector(Name, Active, kVETO),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fOnlyMuons(kFALSE),
+    fSkipNeutrinos(kFALSE),
+    fVetoName("veto"),
+    fzPos(3E8),
+    withNtuple(kFALSE),
+    fCylindricalPlane(kFALSE),
+    fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
+{}
+
 exitHadronAbsorber::exitHadronAbsorber()
   : FairDetector("exitHadronAbsorber", kTRUE, kVETO),
     fUniqueID(-1),
