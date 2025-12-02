@@ -1,0 +1,13 @@
+<map id="shipgen/MeanMaterialBudget.h" name="shipgen/MeanMaterialBudget.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="511,5,737,31"/>
+<area shape="rect" id="Node000002" href="$FixedTargetGenerator_8cxx.html" title=" " alt="" coords="5,79,248,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="531,35,207,81,206,76,530,30"/>
+<area shape="rect" id="Node000003" href="$GenieGenerator_8cxx.html" title=" " alt="" coords="273,79,479,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="572,37,417,81,415,76,570,32"/>
+<area shape="rect" id="Node000004" href="$MeanMaterialBudget_8cxx.html" title=" " alt="" coords="504,79,744,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="627,44,627,79,621,79,621,44"/>
+<area shape="rect" id="Node000005" href="$MuDISGenerator_8cxx.html" title=" " alt="" coords="768,79,979,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="678,32,834,76,832,81,677,37"/>
+<area shape="rect" id="Node000006" href="$Pythia8Generator_8cxx.html" title=" " alt="" coords="1003,79,1221,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="717,30,1034,76,1033,81,716,35"/>
+</map>

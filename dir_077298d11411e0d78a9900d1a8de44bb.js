@@ -15,6 +15,8 @@ var dir_077298d11411e0d78a9900d1a8de44bb =
     [ "HNLPythia8Generator.cxx", "HNLPythia8Generator_8cxx.html", "HNLPythia8Generator_8cxx" ],
     [ "HNLPythia8Generator.h", "HNLPythia8Generator_8h.html", "HNLPythia8Generator_8h" ],
     [ "LinkDef.h", "shipgen_2LinkDef_8h.html", null ],
+    [ "MeanMaterialBudget.cxx", "MeanMaterialBudget_8cxx.html", "MeanMaterialBudget_8cxx" ],
+    [ "MeanMaterialBudget.h", "MeanMaterialBudget_8h.html", "MeanMaterialBudget_8h" ],
     [ "MuDISGenerator.cxx", "MuDISGenerator_8cxx.html", "MuDISGenerator_8cxx" ],
     [ "MuDISGenerator.h", "MuDISGenerator_8h.html", "MuDISGenerator_8h" ],
     [ "MuonBackGenerator.cxx", "MuonBackGenerator_8cxx.html", null ],

@@ -6,7 +6,6 @@ var classMuDISGenerator =
     [ "GetNevents", "classMuDISGenerator.html#a0ce1232934fc28d9259d5255e0c34f57", null ],
     [ "Init", "classMuDISGenerator.html#ac83bb0ab4d089d85221d8e75978e9757", null ],
     [ "Init", "classMuDISGenerator.html#acff8290c0d478cf8998a4dd9344387d8", null ],
-    [ "MeanMaterialBudget", "classMuDISGenerator.html#a4bd7aacc60282f41dfe472f767940eca", null ],
     [ "ReadEvent", "classMuDISGenerator.html#a1ef04fa43d64060f2386e6a65b380ad2", null ],
     [ "SetPositions", "classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4", null ],
     [ "dPart", "classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37", null ],

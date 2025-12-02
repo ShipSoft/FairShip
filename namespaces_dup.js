@@ -1464,6 +1464,9 @@ var namespaces_dup =
       [ "detectorList", "namespaceshipDet__conf.html#a0507a6f94174d43157cb96b2984eb98d", null ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", "namespaceshipDigiReco" ],
+    [ "shipgen", "namespaceshipgen.html", [
+      [ "MeanMaterialBudget", "namespaceshipgen.html#abc8d24468b45babd8880fb0b38ef103a", null ]
+    ] ],
     [ "ShipGeo", "namespaceShipGeo.html", "namespaceShipGeo" ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
     [ "shipPatRec", "namespaceshipPatRec.html", [
