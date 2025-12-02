@@ -20,7 +20,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "global_variables.py", "global__variables_8py.html", null ],
     [ "hepunit.py", "hepunit_8py.html", "hepunit_8py" ],
     [ "hnl.py", "hnl_8py.html", "hnl_8py" ],
-    [ "logger.py", "logger_8py.html", "logger_8py" ],
     [ "method_logger.py", "method__logger_8py.html", "method__logger_8py" ],
     [ "proton_bremsstrahlung.py", "proton__bremsstrahlung_8py.html", "proton__bremsstrahlung_8py" ],
     [ "pythia8_conf.py", "pythia8__conf_8py.html", "pythia8__conf_8py" ],
