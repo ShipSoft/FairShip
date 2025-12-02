@@ -127,13 +127,13 @@ void exitHadronAbsorber::Initialize()
     TString name=PDG->GetParticle(idw)->GetName();
     TString title = name;title+=" momentum (GeV)";
     TString key = fVetoName;key+=idhnu;
-    TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
+    [[maybe_unused]] TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
     title = name;title+="  log10-p vs log10-pt";
     key = fVetoName;key+=idhnu+1000;
-    TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
+    [[maybe_unused]] TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
     title = name;title+="  log10-p vs log10-pt";
     key = fVetoName;key+=idhnu+2000;
-    TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
+    [[maybe_unused]] TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
      }
    }
   if(withNtuple) {
