@@ -78,7 +78,7 @@ set(SRCS
     TEvtGenDecayer.cxx
     BeamSmearingUtils.cxx
     MeanMaterialBudget.cxx
-    MyGenerator.cxx)
+    PrestrawGenerator.cxx)
 
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)

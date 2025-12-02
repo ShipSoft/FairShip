@@ -6,6 +6,6 @@
   },
   "options": {
     "theSeed": 42,
-    "nEvents": 11
+    "nEvents": 100
   }
 }

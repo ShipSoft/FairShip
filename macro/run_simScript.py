@@ -3,6 +3,10 @@ import os
 import sys
 import ROOT
 
+import time 
+t0 = time.perf_counter()
+c0 = time.process_time()
+
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
@@ -307,6 +311,9 @@ for x in os.listdir(options.outputDir):
 # Parameter file name
 parFile=f"{options.outputDir}/ship.params.{tag}.root"
 
+t1 = time.perf_counter()
+c1 = time.process_time()
+print(f"TIME 1 {t1-t0} and CPU {c1 - c0}")
 # In general, the following parts need not be touched
 # ========================================================================
 
@@ -320,12 +327,19 @@ run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
+
+t2 = time.perf_counter()
+c2 = time.process_time()
+print(f"TIME 2 {t2-t1} and CPU {c2 - c1}")
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
 
 modules = shipDet_conf.configure(run,ship_geo)
+t3 = time.perf_counter()
+c3 = time.process_time()
+print(f"TIME 3 {t3-t2} and CPU {c3 - c2}")
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
@@ -416,7 +430,7 @@ if options.pythia6:
 if options.ttreegen:
     primGen.SetTarget(0.0, 0.0)
     print(f"Opening input file for ttree generator: {inputFile}")
-    TtreeGen = ROOT.MyGenerator()
+    TtreeGen = ROOT.PrestrawGenerator()
     TtreeGen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(TtreeGen)
     options.nEvents = TtreeGen.GetNevents()
@@ -567,14 +581,21 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 if options.evtgen_decayer:
     run.SetPythiaDecayer('DecayConfigTEvtGen.C')
     print('Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen')
-
+t4 = time.perf_counter()
+c4 = time.process_time()
+print(f"TIME 4 {t4-t3} and CPU {c4 - c3}")
 # -----Initialize simulation run------------------------------------
 run.Init()
+ta = time.perf_counter()
+ca = time.process_time()
+print(f"TIME a {ta-t4} and CPU {ca - c4}")
 if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-
+tb = time.perf_counter()
+cb = time.process_time()
+print(f"TIME b {tb-ta} and CPU {cb - ca}")
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
 EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
@@ -601,7 +622,9 @@ if options.eventDisplay:
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
-
+tc = time.perf_counter()
+cc = time.process_time()
+print(f"TIME c {tc-tb} and CPU {cc - cb}")
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
 
@@ -623,9 +646,14 @@ if options.print_fields:
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
-
+t5 = time.perf_counter()
+c5 = time.process_time()
+print(f"TIME 5 {t5-tc} and CPU {c5-cc}")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
+t6 = time.perf_counter()
+c6 = time.process_time()
+print(f"TIME 6 {t6-t5} and CPU {c6 - c5}")
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
@@ -640,7 +668,9 @@ run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 import saveBasicParameters
 
 saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
-
+t7 = time.perf_counter()
+c7 = time.process_time()
+print(f"TIME 7 {t7-t6} and CPU {c7 - c6}")
 # checking for overlaps
 if options.check_overlaps:
  ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881

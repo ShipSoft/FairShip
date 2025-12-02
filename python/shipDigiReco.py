@@ -109,7 +109,7 @@ class ShipDigiReco:
     self.Vertexing.execute()
 
  def digitize(self):
-   self.sTree.t0 = self.random.Rndm()*1*u.microsecond
+   self.sTree.t0 = 0#self.random.Rndm()*1*u.microsecond
    self.header.SetEventTime( self.sTree.t0 )
    self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1

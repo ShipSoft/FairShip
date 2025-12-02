@@ -2,7 +2,7 @@
 #include "TROOT.h"
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
-#include "MyGenerator.h"
+#include "PrestrawGenerator.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
 
@@ -11,18 +11,18 @@ using std::endl;
 // read events from ntuples produced
 
 // -----   Default constructor   -------------------------------------------
-MyGenerator::MyGenerator() {}
+PrestrawGenerator::PrestrawGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
-Bool_t MyGenerator::Init(const char* fileName) {
+Bool_t PrestrawGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
 // -----   Default constructor   -------------------------------------------
-Bool_t MyGenerator::Init(const char* fileName, const int firstEvent) {
-  cout << "Info MyGenerator: Opening input file " << fileName << endl;
+Bool_t PrestrawGenerator::Init(const char* fileName, const int firstEvent) {
+  cout << "Info PrestrawGenerator: Opening input file " << fileName << endl;
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
-    cout << "-E MyGenerator: Error opening the Signal file" << fileName << endl;
+    cout << "-E PrestrawGenerator: Error opening the Signal file" << fileName << endl;
   }
   fTree = (TTree *)fInputFile->Get("mytree");
   fNevents = fTree->GetEntries();
@@ -40,9 +40,9 @@ Bool_t MyGenerator::Init(const char* fileName, const int firstEvent) {
 
 
 // -----   Destructor   ----------------------------------------------------
-MyGenerator::~MyGenerator()
+PrestrawGenerator::~PrestrawGenerator()
 {
- // cout << "destroy My" << endl;
+ // cout << "destroy prestraw" << endl;
  fInputFile->Close();
  fInputFile->Delete();
  delete fInputFile;
@@ -50,7 +50,7 @@ MyGenerator::~MyGenerator()
 // -------------------------------------------------------------------------
 
 // -----   Passing the event   ---------------------------------------------
-Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
+Bool_t PrestrawGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   cout <<fNevents<<endl;
   if (fn<fNevents) {
@@ -72,7 +72,7 @@ Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 }
 
 // -------------------------------------------------------------------------
-Int_t MyGenerator::GetNevents()
+Int_t PrestrawGenerator::GetNevents()
 {
  return fNevents;
 }

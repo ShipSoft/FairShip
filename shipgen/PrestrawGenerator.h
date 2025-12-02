@@ -1,5 +1,5 @@
-#ifndef MYGENERATOR_H
-#define MYGENERATOR_H 1
+#ifndef PRESTRAWGENERATOR_H
+#define PRESTRAWGENERATOR_H 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -8,15 +8,15 @@
 
 class FairPrimaryGenerator;
 
-class MyGenerator : public FairGenerator
+class PrestrawGenerator : public FairGenerator
 {
  public:
 
   /** default constructor **/
-  MyGenerator();
+  PrestrawGenerator();
 
   /** destructor **/
-  virtual ~MyGenerator();
+  virtual ~PrestrawGenerator();
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
@@ -34,7 +34,7 @@ class MyGenerator : public FairGenerator
   int fNevents;
   int fn;
   Int_t id;
-  ClassDef(MyGenerator,1);
+  ClassDef(PrestrawGenerator,1);
 };
 
-#endif /* !MYGENERATOR_H */
+#endif /* !PRESTRAWGENERATOR_H */
