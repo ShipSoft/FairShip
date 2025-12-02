@@ -36,9 +36,6 @@ class MuDISGenerator : public FairGenerator
         endZ = z_end;
     }
 
-  private:
-    Double_t MeanMaterialBudget(const Double_t* start, const Double_t* end, Double_t* mparam);
-
   protected:
     Double_t startZ, endZ;
     TClonesArray* iMuon;
