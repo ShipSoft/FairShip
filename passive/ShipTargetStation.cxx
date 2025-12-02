@@ -166,13 +166,12 @@ void ShipTargetStation::ConstructGeometry()
         nmi += i + 1;
         //TString sm = "Slit_";
         //sm += i + 1;
-        TGeoMedium* material;
+        TGeoMedium* material = nullptr;
         if (fM.at(i) == "molybdenum") {
             material = mo;
-        };
-        if (fM.at(i) == "tungsten") {
+        } else if (fM.at(i) == "tungsten") {
             material = tungsten;
-        };
+        }
 
         target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2., fL.at(i) / 2.);
         if (fM.at(i) == "molybdenum") {
