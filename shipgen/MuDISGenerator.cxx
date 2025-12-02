@@ -116,9 +116,9 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     bparam = shipgen::MeanMaterialBudget(start, end, mparam);
     // loop over trajectory between start and end to pick an interaction point
     Double_t prob2int = 0.;
-    Double_t xmu;
-    Double_t ymu;
-    Double_t zmu;
+    Double_t xmu = 0.;
+    Double_t ymu = 0.;
+    Double_t zmu = 0.;
     Int_t count = 0;
     LOG(debug) << "Info MuDISGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam * 1.e8;
     LOG(debug) << "Info MuDISGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7] * 1.e8;
