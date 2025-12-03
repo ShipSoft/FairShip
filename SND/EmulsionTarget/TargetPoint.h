@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #ifndef SND_EMULSIONTARGET_TARGETPOINT_H_
 #define SND_EMULSIONTARGET_TARGETPOINT_H_
@@ -8,53 +9,45 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class TargetPoint : public FairMCPoint
-{
+class TargetPoint : public FairMCPoint {
+ public:
+  /** Default constructor **/
+  TargetPoint();
 
-  public:
-    /** Default constructor **/
-    TargetPoint();
+  /** Constructor with arguments
+   *@param trackID  Index of MCTrack
+   *@param detID    Detector ID
+   *@param pos      Ccoordinates at entrance to active volume [cm]
+   *@param mom      Momentum of track at entrance [GeV]
+   *@param tof      Time since event start [ns]
+   *@param length   Track length since creation [cm]
+   *@param eLoss    Energy deposit [GeV]
+   **/
 
-    /** Constructor with arguments
-     *@param trackID  Index of MCTrack
-     *@param detID    Detector ID
-     *@param pos      Ccoordinates at entrance to active volume [cm]
-     *@param mom      Momentum of track at entrance [GeV]
-     *@param tof      Time since event start [ns]
-     *@param length   Track length since creation [cm]
-     *@param eLoss    Energy deposit [GeV]
-     **/
+  /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                   Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
+              Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot,
+     Bool_t tt, Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
 
-    /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
-                Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
-                Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
+  TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+              Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
-    TargetPoint(Int_t trackID,
-                Int_t detID,
-                TVector3 pos,
-                TVector3 mom,
-                Double_t tof,
-                Double_t length,
-                Double_t eLoss,
-                Int_t pdgCode);
+  /** Destructor **/
+  virtual ~TargetPoint();
 
-    /** Destructor **/
-    virtual ~TargetPoint();
+  /** Copy constructor **/
+  TargetPoint(const TargetPoint& point) = default;
+  TargetPoint& operator=(const TargetPoint& point) = default;
 
-    /** Copy constructor **/
-    TargetPoint(const TargetPoint& point) = default;
-    TargetPoint& operator=(const TargetPoint& point) = default;
+  /** Output to screen **/
+  virtual void Print(const Option_t* opt) const;
 
-    /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+  Int_t PdgCode() const { return fPdgCode; }
 
-    Int_t PdgCode() const { return fPdgCode; }
+ private:
+  Int_t fPdgCode;
 
-  private:
-    Int_t fPdgCode;
-
-    ClassDef(TargetPoint, 3)
+  ClassDef(TargetPoint, 3)
 };
 
-#endif   // SND_EMULSIONTARGET_TARGETPOINT_H_
+#endif  // SND_EMULSIONTARGET_TARGETPOINT_H_

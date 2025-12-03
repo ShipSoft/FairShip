@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #ifndef VETO_VETOCONTFACT_H_
 #define VETO_VETOCONTFACT_H_
@@ -8,16 +9,15 @@
 
 class FairContainer;
 
-class vetoContFact : public FairContFact
-{
-  private:
-    void setAllContainers();
+class vetoContFact : public FairContFact {
+ private:
+  void setAllContainers();
 
-  public:
-    vetoContFact();
-    ~vetoContFact() {}
-    FairParSet* createContainer(FairContainer*);
-    ClassDef(vetoContFact, 0)   // Factory for all veto parameter containers
+ public:
+  vetoContFact();
+  ~vetoContFact() {}
+  FairParSet* createContainer(FairContainer*);
+  ClassDef(vetoContFact, 0)  // Factory for all veto parameter containers
 };
 
-#endif   // VETO_VETOCONTFACT_H_
+#endif  // VETO_VETOCONTFACT_H_

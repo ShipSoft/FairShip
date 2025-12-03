@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #include "TargetPoint.h"
 
@@ -8,9 +9,7 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-TargetPoint::TargetPoint()
-    : FairMCPoint()
-{}
+TargetPoint::TargetPoint() : FairMCPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
@@ -18,25 +17,19 @@ TargetPoint::TargetPoint()
 TargetPoint::TargetPoint(Int_t trackID, Int_t detID,TVector3 pos, TVector3 mom,
                          Double_t tof, Double_t length,
                          Double_t eLoss, Int_t pdgcode,
-                         Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
-                         Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall)
-  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),fPdgCode(pdgcode),
-    fEmTop(emTop), fEmBot(emBot), fEmCESTop(emCESTop), fEmCESBot(emCESBot),fTT(tt),
-    fNPlate(nPlate),fNColumn(nColumn), fNRow(nRow),fNWall(nWall)
-{  }
+                         Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t
+emCESBot, Bool_t tt, Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall) :
+FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),fPdgCode(pdgcode),
+    fEmTop(emTop), fEmBot(emBot), fEmCESTop(emCESTop),
+fEmCESBot(emCESBot),fTT(tt), fNPlate(nPlate),fNColumn(nColumn),
+fNRow(nRow),fNWall(nWall) {  }
 */
 
-TargetPoint::TargetPoint(Int_t trackID,
-                         Int_t detID,
-                         TVector3 pos,
-                         TVector3 mom,
-                         Double_t tof,
-                         Double_t length,
-                         Double_t eLoss,
+TargetPoint::TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                         Double_t tof, Double_t length, Double_t eLoss,
                          Int_t pdgcode)
-    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
-    , fPdgCode(pdgcode)
-{}
+    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
+      fPdgCode(pdgcode) {}
 
 // -------------------------------------------------------------------------
 
@@ -46,12 +39,13 @@ TargetPoint::~TargetPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void TargetPoint::Print(const Option_t* opt) const
-{
-    cout << "-I- TargetPoint: ShipRpc point for track " << fTrackID << " in detector " << fDetectorID << endl;
-    cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
-    cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" << endl;
-    cout << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06 << " keV"
-         << endl;
+void TargetPoint::Print(const Option_t* opt) const {
+  cout << "-I- TargetPoint: ShipRpc point for track " << fTrackID
+       << " in detector " << fDetectorID << endl;
+  cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
+  cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV"
+       << endl;
+  cout << "    Time " << fTime << " ns,  Length " << fLength
+       << " cm,  Energy loss " << fELoss * 1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
