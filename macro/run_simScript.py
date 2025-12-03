@@ -1,20 +1,20 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import os
 import sys
 import ROOT
 
-import time 
-t0 = time.perf_counter()
-c0 = time.process_time()
-
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 from argparse import ArgumentParser
 from array import array
 from backports import tdirectory634
 DownScaleDiMuon = False
+
 from update_config import update_config
 # Default HNL parameters
 theHNLMass   = 1.0*u.GeV
@@ -40,21 +40,6 @@ HNL          = True
 inputFile    = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
 
-globalDesigns = {
-     '2023' : {
-          'dy' : 6.,
-          'caloDesign' : 3,
-          'strawDesign' : 10
-     },
-     '2025' : {
-          'dy' : 6.,
-          'ds' : 8,
-          'caloDesign' : 2,
-          'strawDesign' : 10
-     },
-}
-default = '2025'
-
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
@@ -62,8 +47,8 @@ parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="store_true")
 parser.add_argument("--EvtGenDecayer", dest="evtgen_decayer", help="Use TEvtGenDecayer for J/psi and other quarkonium decays", action="store_true")
-# === PG subcommand ===
 subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
+# === PG subcommand ===
 pg_parser = subparsers.add_parser("PG", help="Use Particle Gun")
 
 pg_parser.add_argument(
@@ -103,9 +88,19 @@ pg_parser.add_argument(
     "--Dy", dest="Dy", type=float,
     help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
-# === Enf of PG commands ===
+# === End of PG commands ===
+# === Genie subcommand ===
+genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
+genie_parser.add_argument(
+    "--z_start_nu", dest="z_start_nu", default=2844.2850, type=float,
+    help="Genie neutrino start z start position (default=2844.2850 cm)"
+)
+genie_parser.add_argument(
+    "--z_end_nu", dest="z_end_nu", default=3180.4350, type=float,
+    help="Genie neutrino end z position (default=3180.4350 cm)"
+)
+# === End of Genie subcommand ===
 parser.add_argument("-A", help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", default='c')
-parser.add_argument("--Genie", dest="genie", help="Genie for reading and processing neutrino interactions", action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", action="store_true")
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
 parser.add_argument("--MuonBack", dest="muonback", help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", action="store_true")
@@ -134,15 +129,10 @@ parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an 
 group.add_argument("-f", dest="inputFile", help="Input file if not default file", default=False)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
-parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
-parser.add_argument("--caloDesign",
-                    help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
-                    default=globalDesigns[default]['caloDesign'],
-                    type=int,
-                    choices=[0,2,3])
+parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument("--strawDesign",
                     help="Tracker station frame material: 4=aluminium; 10=steel (default)",
-                    default=globalDesigns[default]['strawDesign'],
+                    default=10,
                     type=int,
                     choices=[4,10])
 parser.add_argument("-F", dest="deepCopy", help="default = False: copy only stable particles to stack, except for HNL events", action="store_true")
@@ -176,7 +166,7 @@ parser.add_argument(
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument(
     "--SND_design",
-    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC",
+    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC + SiliconTarget",
     nargs='+',
     default=[2],
 )
@@ -192,9 +182,6 @@ parser.add_argument("--ttreegen",  dest="ttreegen",  help="Use events from ttree
 options = parser.parse_args()
 if options.json:
     update_config(options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.json'), 'options')
-
-
-
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == 'all' for x in options.SND_design):
@@ -242,7 +229,7 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
  print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
 
-if (options.genie or options.nuradio) and defaultInputFile:
+if (options.command == "Genie" or options.nuradio) and defaultInputFile:
   inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
 if options.mudis and defaultInputFile:
   print('input file required if simEngine = muonDIS')
@@ -266,10 +253,8 @@ elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
-ship_geo = ConfigRegistry.loadpy(
-     "$FAIRSHIP/geometry/geometry_config.py",
+ship_geo = geometry_config.create_config(
      Yheight=options.dy,
-     CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
      shieldName=options.shieldName,
@@ -289,8 +274,11 @@ ship_geo.decouple = options.decouple
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if options.command == "PG":
     tag = f"PG_{options.pID}-{mcEngine}"
+elif options.command == "Genie":
+    tag = f"Genie-{mcEngine}"
+    simEngine = "Genie"
 else:
-    for g in ["pythia8", "evtcalc", "pythia6", "genie", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics", "ttreegen"]:
+    for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics", "ttreegen"]:
         if getattr(options, g):
             simEngine = g.capitalize()
             break
@@ -311,9 +299,6 @@ for x in os.listdir(options.outputDir):
 # Parameter file name
 parFile=f"{options.outputDir}/ship.params.{tag}.root"
 
-t1 = time.perf_counter()
-c1 = time.process_time()
-print(f"TIME 1 {t1-t0} and CPU {c1 - c0}")
 # In general, the following parts need not be touched
 # ========================================================================
 
@@ -327,24 +312,16 @@ run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
-
-t2 = time.perf_counter()
-c2 = time.process_time()
-print(f"TIME 2 {t2-t1} and CPU {c2 - c1}")
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
 
 modules = shipDet_conf.configure(run,ship_geo)
-t3 = time.perf_counter()
-c3 = time.process_time()
-print(f"TIME 3 {t3-t2} and CPU {c3 - c2}")
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
  primGen.SetTarget(ship_geo.target.z0, 0.)
-
 # -----Pythia8--------------------------------------
  if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
@@ -398,9 +375,9 @@ if options.pythia8:
   P8gen.UseExternalFile(inputFile, options.firstEvent)
   # Use geometry constants instead of fragile TGeo navigation
   P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
-  # pion on proton 500GeV
-  # P8gen.SetMom(500.*u.GeV)
-  # P8gen.SetId(-211)
+# pion on proton 500GeV
+# P8gen.SetMom(500.*u.GeV)
+# P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
 if options.fixedTarget:
  HNL = False
@@ -424,7 +401,6 @@ if options.pythia6:
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
-
 # -----TTree generator--------------------------------------
 
 if options.ttreegen:
@@ -482,13 +458,13 @@ if options.mudis:
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----Neutrino Background------------------------
-if options.genie:
+if options.command == "Genie":
 # Genie
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,options.firstEvent)
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
+ Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
  primGen.AddGenerator(Geniegen)
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
@@ -581,21 +557,14 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 if options.evtgen_decayer:
     run.SetPythiaDecayer('DecayConfigTEvtGen.C')
     print('Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen')
-t4 = time.perf_counter()
-c4 = time.process_time()
-print(f"TIME 4 {t4-t3} and CPU {c4 - c3}")
+
 # -----Initialize simulation run------------------------------------
 run.Init()
-ta = time.perf_counter()
-ca = time.process_time()
-print(f"TIME a {ta-t4} and CPU {ca - c4}")
 if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-tb = time.perf_counter()
-cb = time.process_time()
-print(f"TIME b {tb-ta} and CPU {cb - ca}")
+
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
 EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
@@ -622,9 +591,7 @@ if options.eventDisplay:
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
-tc = time.perf_counter()
-cc = time.process_time()
-print(f"TIME c {tc-tb} and CPU {cc - cb}")
+
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
 
@@ -642,18 +609,13 @@ if hasattr(ship_geo.Bfield,"fieldMap"):
 if options.print_fields:
  geomGeant4.printVMCFields()
  geomGeant4.printWeightsandFields(onlyWithField = True,\
-             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
+             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','MuonDetector','SplitCal'])
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
-t5 = time.perf_counter()
-c5 = time.process_time()
-print(f"TIME 5 {t5-tc} and CPU {c5-cc}")
+
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
-t6 = time.perf_counter()
-c6 = time.process_time()
-print(f"TIME 6 {t6-t5} and CPU {c6 - c5}")
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
@@ -668,9 +630,7 @@ run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 import saveBasicParameters
 
 saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
-t7 = time.perf_counter()
-c7 = time.process_time()
-print(f"TIME 7 {t7-t6} and CPU {c7 - c6}")
+
 # checking for overlaps
 if options.check_overlaps:
  ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881
@@ -736,13 +696,11 @@ if options.muonback:
  branches.Add(ROOT.TObjString('TTPoint'))
  branches.Add(ROOT.TObjString('ScoringPoint'))
  branches.Add(ROOT.TObjString('strawtubesPoint'))
- branches.Add(ROOT.TObjString('EcalPoint'))
- branches.Add(ROOT.TObjString('sEcalPointLite'))
- branches.Add(ROOT.TObjString('smuonPoint'))
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
  branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
  branches.Add(ROOT.TObjString('MTCdetPoint'))
+ branches.Add(ROOT.TObjString('SiliconTargetPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()
@@ -784,6 +742,27 @@ if options.mudis:
 
     os.replace(temp_filename, outFile)
     print("Successfully added DISCrossSection to the output file:", outFile)
+
+if options.command == "Genie":
+    # breakpoint()
+    # Copy Genie (gst TTree) information to the output file
+    f_input = ROOT.TFile.Open(inputFile, "READ")
+    print("check")
+    gst = f_input.gst
+
+    selection_string = "(Entry$ >= "+str(options.firstEvent)+")"
+    if (options.firstEvent + options.nEvents) < gst.GetEntries() :
+        selection_string += "&&(Entry$ < "+str(options.firstEvent + options.nEvents)+")"
+
+    # Reopen output file
+    f_output = ROOT.TFile.Open(outFile, "UPDATE")
+
+    # Copy only the events used in this run
+    gst_copy = gst.CopyTree(selection_string)
+    gst_copy.Write()
+
+    f_input.Close()
+    f_output.Close()
 
 # ------------------------------------------------------------------------
 import checkMagFields

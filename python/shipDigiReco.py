@@ -114,15 +114,15 @@ class ShipDigiReco:
    self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
    self.eventHeader.Fill()
-   self.digiSBT.process()
+   #self.digiSBT.process()
    self.strawtubes.process()
-   self.timeDetector.process()
-   self.upstreamTaggerDetector.process()
+   #self.timeDetector.process()
+   #self.upstreamTaggerDetector.process()
    # adding digitization of SND/MTC
-   if self.sTree.GetBranch("MTCDetPoint"):
-    self.digiMTC.process()
-   if self.sTree.GetBranch("splitcalPoint"):
-    self.splitcalDetector.process()
+   #if self.sTree.GetBranch("MTCDetPoint"):
+    #self.digiMTC.process()
+   #if self.sTree.GetBranch("splitcalPoint"):
+    #self.splitcalDetector.process()
 
  def findTracks(self):
   hitPosLists    = {}

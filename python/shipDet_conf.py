@@ -257,11 +257,21 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubesDigi.v_drift,
         ship_geo.strawtubesDigi.sigma_spatial,
     )
-    Prestrawdetector = ROOT.prestrawdetector('Prestrawdetector', True)
-    Prestrawdetector.SetZ(ship_geo.psd)
-    detectorList.append(Prestrawdetector)
     detectorList.append(strawtubes)
 
+
+def configure_prestrawdetector(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.prestrawdetector_geo = AttrDict(config['PSD'])
+
+    Prestrawdetector = ROOT.prestrawdetector(ship_geo.prestrawdetector_geo.material)
+    Prestrawdetector.SetZ(ship_geo.prestrawdetector_geo.z_position)
+    Prestrawdetector.SetX(ship_geo.prestrawdetector_geo.width)
+    Prestrawdetector.SetY(ship_geo.prestrawdetector_geo.height)
+    Prestrawdetector.SetThickness(ship_geo.prestrawdetector_geo.wall_thickness)
+    detectorList.append(Prestrawdetector)
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
@@ -395,6 +405,13 @@ def configure(run, ship_geo):
         ship_geo,
     )
 
+    if hasattr(ship_geo, "PSD"):
+        if ship_geo.PSD:
+            configure_prestrawdetector(
+                os.path.join(os.environ["FAIRSHIP"], "geometry", "prestrawdetector_config.yaml"),
+                ship_geo,
+            )
+
     if ship_geo.EcalOption == 2:  # splitCal with pointing information
         SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
         x = ship_geo.SplitCal
@@ -484,6 +501,9 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
+    if ship_geo.decouple:
+        exclusionList = ["Muon","Ecal","Hcal","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
+                 "Veto","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
