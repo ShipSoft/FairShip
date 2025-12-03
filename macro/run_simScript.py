@@ -3,7 +3,7 @@ import os
 import sys
 import ROOT
 
-import time 
+import time
 t0 = time.perf_counter()
 c0 = time.process_time()
 

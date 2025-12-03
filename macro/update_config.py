@@ -2,7 +2,7 @@ import json
 from ShipGeoConfig import AttrDict
 
 def update_config(global_config, my_config, name):
-    with open(my_config, 'r') as f:
+    with open(my_config) as f:
         data = json.load(f)
     new_values = AttrDict(data[name])
     if name == 'geometry':
