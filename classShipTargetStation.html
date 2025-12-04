@@ -525,9 +525,9 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  258</span> </div>
 <div class="line"><span class="lineno">  259</span>    target_vacuum_box-&gt;AddNode(proximity_shielding, 1, proximity_shielding_centre);</div>
 <div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>    <span class="comment">// Iron shielding</span></div>
+<div class="line"><span class="lineno">  261</span>    <span class="comment">// Top/bottom copper shielding</span></div>
 <div class="line"><span class="lineno">  262</span>    <span class="keyword">auto</span> top_shielding = gGeoManager-&gt;MakeBox(</div>
-<div class="line"><span class="lineno">  263</span>        <span class="stringliteral">&quot;top_shielding&quot;</span>, iron, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);</div>
+<div class="line"><span class="lineno">  263</span>        <span class="stringliteral">&quot;top_shielding&quot;</span>, copper, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);</div>
 <div class="line"><span class="lineno">  264</span>    target_vacuum_box-&gt;AddNode(top_shielding,</div>
 <div class="line"><span class="lineno">  265</span>                               1,</div>
 <div class="line"><span class="lineno">  266</span>                               <span class="keyword">new</span> TGeoTranslation(0.,</div>
@@ -535,7 +535,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  268</span>                                                       - proximity_shielding_hole_height + target_box_shift,</div>
 <div class="line"><span class="lineno">  269</span>                                                   0));</div>
 <div class="line"><span class="lineno">  270</span>    <span class="keyword">auto</span> bottom_shielding = gGeoManager-&gt;MakeBox(</div>
-<div class="line"><span class="lineno">  271</span>        <span class="stringliteral">&quot;bottom_shielding&quot;</span>, iron, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);</div>
+<div class="line"><span class="lineno">  271</span>        <span class="stringliteral">&quot;bottom_shielding&quot;</span>, copper, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);</div>
 <div class="line"><span class="lineno">  272</span>    target_vacuum_box-&gt;AddNode(</div>
 <div class="line"><span class="lineno">  273</span>        bottom_shielding,</div>
 <div class="line"><span class="lineno">  274</span>        1,</div>
