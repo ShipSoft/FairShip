@@ -121,7 +121,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
+          python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
