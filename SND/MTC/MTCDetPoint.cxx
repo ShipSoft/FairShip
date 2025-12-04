@@ -41,13 +41,3 @@ void MTCDetPoint::Print() const
          << endl;
 }
 // -------------------------------------------------------------------------
-
-Int_t MTCDetPoint::GetLayer() const
-{
-    return (fDetectorID / 100000) % 100;
-}
-
-Int_t MTCDetPoint::GetLayerType() const
-{
-    return fDetectorID / 10000000;
-}
