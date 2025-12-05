@@ -428,22 +428,6 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
-    Muon = ROOT.muon("Muon", ROOT.kTRUE)
-    Muon.SetZStationPositions(
-        ship_geo.MuonStation0.z,
-        ship_geo.MuonStation1.z,
-        ship_geo.MuonStation2.z,
-        ship_geo.MuonStation3.z,
-    )
-    Muon.SetZFilterPositions(
-        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z
-    )
-    Muon.SetXMax(ship_geo.Muon.XMax)
-    Muon.SetYMax(ship_geo.Muon.YMax)
-    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
-    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
-    detectorList.append(Muon)
-
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
     upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
     upstreamTagger.SetBoxDimensions(
