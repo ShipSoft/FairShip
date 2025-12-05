@@ -66,9 +66,6 @@ Bool_t Pythia6Generator::ReadEvent(FairPrimaryGenerator* primGen) {
 
   // Read event header line from input file
 
-  Int_t max_nr = 0;
-
-  Text_t buffer[200];
   ncols = fscanf(fInputFile,"%d\t%d", &eventID, &ntracks);
 
   if (ncols && ntracks>0) {

@@ -139,7 +139,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      cout << "Info GenieGenerator: vessel length heig<ht width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
      cout << "Info GenieGenerator: scint thickness " << fScintDz << endl;
      cout << "Info GenieGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
-     for (int j = 0; j < m_boxes.size(); j++) {
+     for (size_t j = 0; j < m_boxes.size(); j++) {
          cout << "Info GenieGenerator: nuMu X" << j << " - " << -m_boxes[j].X() + dVecs[j].X() << " "
               << m_boxes[j].X() + dVecs[j].X() << endl;
          cout << "Info GenieGenerator: nuMu Y" << j << " - " << -m_boxes[j].Y() + dVecs[j].Y() << " "
@@ -297,10 +297,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 // Incoming neutrino, get a random px,py
     //cout << "Info GenieGenerator: neutrino " << neu << "p-in "<< pzv << " nf "<< nf << endl;
     //cout << "Info GenieGenerator: ztarget " << ztarget << endl;
-    Double_t bparam=0.;
     Double_t mparam[10];
-    Double_t pout[3];
-    pout[2]=-1.;
+    Double_t pout[3] = {0., 0., -1.};
     Double_t txnu=0;
     Double_t tynu=0;
     //Does this neutrino fly through material? Otherwise draw another pt..
@@ -346,15 +344,15 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         end[1]=tynu*(end[2]-ztarget);
         //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" << end[1] << "-" << end[2] << endl;
         //get material density between these two points
-        bparam=shipgen::MeanMaterialBudget(start, end, mparam);
+        shipgen::MeanMaterialBudget(start, end, mparam);
         //printf("param %e %e %e \n",bparam,mparam[6],mparam[7]);
        }
     }
     //loop over trajectory between start and end to pick an interaction point
     Double_t prob2int = -1.;
-    Double_t x;
-    Double_t y;
-    Double_t z;
+    Double_t x = 0.;
+    Double_t y = 0.;
+    Double_t z = 0.;
     Int_t count=0;
     while (prob2int<gRandom->Uniform(0.,1.)) {
       //place x,y,z uniform along path

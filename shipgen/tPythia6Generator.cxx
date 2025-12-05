@@ -79,7 +79,6 @@ Bool_t tPythia6Generator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t pz = fPythia->GetP(ii,3);
     Double_t px = fPythia->GetP(ii,1);
     Double_t py = fPythia->GetP(ii,2);
-    Double_t t  = fPythia->GetP(ii,2); // time of production, in mm/c (¼ 3.33 × 10−12 s).
     Int_t    im = fPythia->GetV(ii,4);
     // cout << "debug p6 "<<id<<" "<< pz << endl;
 // copy blind complete pythia event

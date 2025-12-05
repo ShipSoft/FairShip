@@ -67,9 +67,9 @@ veto::veto()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fvetoPointCollection(new TClonesArray("vetoPoint"))
     , fFastMuon(kFALSE)
     , fFollowMuon(kFALSE)
+    , fvetoPointCollection(new TClonesArray("vetoPoint"))
 {
     fUseSupport = 1;
     fLiquidVeto = 1;

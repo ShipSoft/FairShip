@@ -469,7 +469,7 @@ void ShipMuonShield::ConstructGeometry()
 
       // Absorber
 
-      auto abs = new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);
+      [[maybe_unused]] auto abs = new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);
       auto *absorber_shift = new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
       absorber_shift->RegisterYourself();
 

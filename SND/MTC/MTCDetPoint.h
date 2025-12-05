@@ -42,6 +42,7 @@ class MTCDetPoint : public FairMCPoint
     MTCDetPoint& operator=(const MTCDetPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
     Int_t GetStationType() const { return static_cast<int>(fDetectorID / 100000) % 10; }

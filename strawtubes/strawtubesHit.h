@@ -32,6 +32,7 @@ class strawtubesHit : public ShipHit
     Int_t GetStrawNumber() const;
 
     /** Output to screen **/
+    using ShipHit::Print;
     virtual void Print() const;
     Float_t GetTDC() const { return fdigi; }
     void setInvalid() { flag = false; }

@@ -53,7 +53,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   const auto& firstPoint = points[0];
   double pointX =  firstPoint.GetX();
   double pointY =  firstPoint.GetY();
-  double pointZ =  firstPoint.GetZ();
   int detID =  firstPoint.GetDetectorID();
 
   // Sum energy from all points
@@ -90,8 +89,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   double yHalfLength = box->GetDY();
   double zHalfLength = box->GetDZ();
 
-  TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
-  TGeoBBox* boxPassive = dynamic_cast<TGeoBBox*>(passiveLayer->GetVolume()->GetShape());
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;

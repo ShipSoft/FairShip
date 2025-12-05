@@ -230,7 +230,6 @@ Bool_t FixedTargetGenerator::Init()
 
    TString ParticleFile = TString(evtgendata) + "/evt.pdl";
    std::cout << "Using $EVTGENDATA " << evtgendata << std::endl;
-   EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
 #if PYTHIA_VERSION_INTEGER < 8315
@@ -327,7 +326,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   Double_t zinter=0;
   Double_t ZoverA = 1.;
-  if (targetName.Data() !=""){
+  if (!targetName.IsNull()){
 // calculate primary proton interaction point:
 // loop over trajectory between start and end to pick an interaction point, copied from GenieGenerator and adapted to hadrons
    Double_t prob2int = -1.;

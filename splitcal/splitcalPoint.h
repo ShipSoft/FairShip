@@ -41,6 +41,7 @@ class splitcalPoint : public FairMCPoint
     splitcalPoint& operator=(const splitcalPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     /* virtual void Print(const Option_t* opt) const; */
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}

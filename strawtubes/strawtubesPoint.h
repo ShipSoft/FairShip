@@ -37,6 +37,7 @@ class strawtubesPoint : public FairMCPoint
     strawtubesPoint& operator=(const strawtubesPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}

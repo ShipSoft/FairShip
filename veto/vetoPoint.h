@@ -49,6 +49,7 @@ class vetoPoint : public FairMCPoint
     vetoPoint& operator=(const vetoPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
     TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }

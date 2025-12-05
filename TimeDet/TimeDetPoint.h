@@ -41,6 +41,7 @@ class TimeDetPoint : public FairMCPoint
     TimeDetPoint& operator=(const TimeDetPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }

@@ -43,6 +43,7 @@ class SiliconTargetPoint : public FairMCPoint
     SiliconTargetPoint& operator=(const SiliconTargetPoint& point) = default;
 
     /** Output to screen **/
+    using FairMCPoint::Print;
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
 

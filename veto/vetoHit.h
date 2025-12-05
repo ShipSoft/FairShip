@@ -34,7 +34,7 @@ class vetoHit : public ShipHit
     void SetTDC(Double_t val) { ft = val; }
 
     /** Output to screen **/
-
+    using ShipHit::Print;
     virtual void Print(Int_t detID) const;
     Float_t GetADC() const { return fdigi; }
     Float_t GetTDC() const { return ft; }

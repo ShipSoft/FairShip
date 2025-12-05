@@ -45,6 +45,7 @@ class TimeDetHit : public ShipHit
     void SetTDC(Float_t val1, Float_t val2){t_1=val1;t_2=val2;}
 
     /** Output to screen **/
+    using ShipHit::Print;
     virtual void Print() const;
 
     void Dist(Float_t x, Float_t& lpos, Float_t& lneg) const;

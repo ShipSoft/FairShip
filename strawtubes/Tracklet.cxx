@@ -17,7 +17,7 @@ Tracklet::Tracklet() : flag(0)
 
 // -----   Constructor with indices   -------------------------------------------
 Tracklet::Tracklet(Int_t fl, const std::vector<unsigned int>& indices)
-    : flag(fl), aTracklet(indices)
+    : aTracklet(indices), flag(fl)
 {
 }
 

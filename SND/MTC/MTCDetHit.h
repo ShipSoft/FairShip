@@ -27,6 +27,7 @@ class MTCDetHit : public ShipHit
     virtual ~MTCDetHit();
 
     /** Output to screen **/
+    using ShipHit::Print;
     void Print();
     Float_t GetSignal() const { return signals; };
     Float_t GetTime() const { return time; };

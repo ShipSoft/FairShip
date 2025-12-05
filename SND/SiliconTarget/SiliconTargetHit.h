@@ -27,6 +27,7 @@ class SiliconTargetHit : public ShipHit
     SiliconTargetHit& operator=(const SiliconTargetHit& hit) = default;
 
     /** Output to screen **/
+    using ShipHit::Print;
     void Print();
     // void Print() const;
     Float_t GetSignal() const { return fSignal; };

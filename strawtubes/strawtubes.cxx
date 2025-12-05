@@ -278,12 +278,6 @@ void strawtubes::ConstructGeometry()
       implement here you own way of constructing the geometry. */
 
     TGeoVolume *top               = gGeoManager->GetTopVolume();
-    InitMedium("air");
-    TGeoMedium *air               = gGeoManager->GetMedium("air");
-    InitMedium("ShipSens");
-    TGeoMedium *Se                = gGeoManager->GetMedium("ShipSens");
-    InitMedium("aluminium");
-    TGeoMedium *Al                = gGeoManager->GetMedium("aluminium");
     InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
     InitMedium("STTmix8020_1bar");
@@ -310,9 +304,9 @@ void strawtubes::ConstructGeometry()
     Double_t rmin, rmax, T_station_z;
 
     // Arguments of boxes are half-lengths
-    TGeoBBox* detbox1 = new TGeoBBox(
+    [[maybe_unused]] TGeoBBox* detbox1 = new TGeoBBox(
         "detbox1", f_aperture_width + frame_width, f_aperture_height + frame_width - floor_offset / 2., f_station_length);
-    TGeoBBox* detbox2 = new TGeoBBox(
+    [[maybe_unused]] TGeoBBox* detbox2 = new TGeoBBox(
 	"detbox2",
 	straw_length + eps,
 	f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * straw_length * 2 + f_offset_layer / TMath::Cos(f_view_angle * TMath::Pi() / 180.0) + eps,
