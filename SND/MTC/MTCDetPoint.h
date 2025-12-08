@@ -48,7 +48,7 @@ class MTCDetPoint : public FairMCPoint
     {
         return static_cast<int>(fDetectorID / 1000000) % 100;
     }
-    Int_t GetStationType() const
+    Int_t GetLayerType() const
     {
         return static_cast<int>(fDetectorID / 100000) % 10;
     }
