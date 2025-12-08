@@ -135,8 +135,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abf23325a14275a4aa74cd5b1c638b1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a115f3d43a2671b1e31fae33fa100717d" id="r_a115f3d43a2671b1e31fae33fa100717d"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetPoint.html#a115f3d43a2671b1e31fae33fa100717d">PdgCode</a> () const</td></tr>
 <tr class="separator:a115f3d43a2671b1e31fae33fa100717d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3890840a8e1d11b7d92d1e267623d32" id="r_ac3890840a8e1d11b7d92d1e267623d32"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetPoint.html#ac3890840a8e1d11b7d92d1e267623d32">GetStationType</a> () const</td></tr>
-<tr class="separator:ac3890840a8e1d11b7d92d1e267623d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d5a2645f97542018a3819e3a448f285" id="r_a8d5a2645f97542018a3819e3a448f285"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetPoint.html#a8d5a2645f97542018a3819e3a448f285">GetLayer</a> () const</td></tr>
 <tr class="separator:a8d5a2645f97542018a3819e3a448f285"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dbfa793b609fe98e98632c5c6136f5d" id="r_a8dbfa793b609fe98e98632c5c6136f5d"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetPoint.html#a8dbfa793b609fe98e98632c5c6136f5d">GetLayerType</a> () const</td></tr>
@@ -251,7 +249,7 @@ Public Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   24</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
 <div class="line"><span class="lineno">   25</span>    , <a class="code hl_variable" href="classMTCDetPoint.html#a06100ddb006c56d1656d43d465b74ed3">fPdgCode</a>(pdgcode)</div>
 <div class="line"><span class="lineno">   26</span>{}</div>
-<div class="ttc" id="aclassMTCDetPoint_html_a06100ddb006c56d1656d43d465b74ed3"><div class="ttname"><a href="classMTCDetPoint.html#a06100ddb006c56d1656d43d465b74ed3">MTCDetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="MTCDetPoint_8h_source.html#l00050">MTCDetPoint.h:50</a></div></div>
+<div class="ttc" id="aclassMTCDetPoint_html_a06100ddb006c56d1656d43d465b74ed3"><div class="ttname"><a href="classMTCDetPoint.html#a06100ddb006c56d1656d43d465b74ed3">MTCDetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="MTCDetPoint_8h_source.html#l00049">MTCDetPoint.h:49</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -317,56 +315,12 @@ Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Int_t MTCDetPoint::GetLayer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="MTCDetPoint_8cxx_source.html#l00045">45</a> of file <a class="el" href="MTCDetPoint_8cxx_source.html">MTCDetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> (fDetectorID / 100000) % 100;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a8dbfa793b609fe98e98632c5c6136f5d" name="a8dbfa793b609fe98e98632c5c6136f5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dbfa793b609fe98e98632c5c6136f5d">&#9670;&#160;</a></span>GetLayerType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Int_t MTCDetPoint::GetLayerType </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="MTCDetPoint_8cxx_source.html#l00050">50</a> of file <a class="el" href="MTCDetPoint_8cxx_source.html">MTCDetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> fDetectorID / 10000000;</div>
-<div class="line"><span class="lineno">   53</span>}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ac3890840a8e1d11b7d92d1e267623d32" name="ac3890840a8e1d11b7d92d1e267623d32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3890840a8e1d11b7d92d1e267623d32">&#9670;&#160;</a></span>GetStationType()</h2>
-
-<div class="memitem">
-<div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Int_t MTCDetPoint::GetStationType </td>
+          <td class="memname">Int_t MTCDetPoint::GetLayer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -380,7 +334,35 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MTCDetPoint_8h_source.html#l00047">47</a> of file <a class="el" href="MTCDetPoint_8h_source.html">MTCDetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 100000) % 10; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1000000) % 100; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8dbfa793b609fe98e98632c5c6136f5d" name="a8dbfa793b609fe98e98632c5c6136f5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dbfa793b609fe98e98632c5c6136f5d">&#9670;&#160;</a></span>GetLayerType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Int_t MTCDetPoint::GetLayerType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="MTCDetPoint_8h_source.html#l00048">48</a> of file <a class="el" href="MTCDetPoint_8h_source.html">MTCDetPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 100000) % 10; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -486,7 +468,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetPoint_8h_source.html#l00050">50</a> of file <a class="el" href="MTCDetPoint_8h_source.html">MTCDetPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MTCDetPoint_8h_source.html#l00049">49</a> of file <a class="el" href="MTCDetPoint_8h_source.html">MTCDetPoint.h</a>.</p>
 
 </div>
 </div>
