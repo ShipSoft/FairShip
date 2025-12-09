@@ -18,18 +18,18 @@ from pathlib import Path
 from typing import Any, Optional, Union
 
 import ROOT
-import tomllib
+import yaml
 
 ROOT.gROOT.SetBatch(True)
 
 
 def load_config(config_path: Optional[Union[str, Path]] = None) -> dict[str, Any]:
-    """Load configuration from TOML file."""
+    """Load configuration from YAML file."""
     if config_path is None:
-        config_path = Path(__file__).parent / "metrics_config.toml"
+        config_path = Path(__file__).parent / "metrics_config.yaml"
 
-    with open(config_path, "rb") as f:
-        config = tomllib.load(f)
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
 
     # Validate required configuration sections
     required_keys = {
@@ -289,7 +289,7 @@ def main() -> int:
         "--config",
         help=(
             "Path to configuration file "
-            "(default: metrics_config.toml in script directory)"
+            "(default: metrics_config.yaml in script directory)"
         ),
     )
 
