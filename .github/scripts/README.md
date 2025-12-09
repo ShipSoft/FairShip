@@ -40,34 +40,36 @@ Each metric in the JSON specifies its comparison mode:
 
 ## Configuration
 
-### `metrics_config.toml`
+### `metrics_config.yaml`
 
 The configuration file controls what metrics are extracted and comparison tolerances.
 
-```toml
-[files]
-# ROOT files to process
-process = [
-    "ship.conical.Pythia8-TGeant4.root",
-    "ship.conical.Pythia8-TGeant4_rec.root",
-    "ship.conical.Pythia8-TGeant4_ana.root",
-    "recohists.root",
-]
+```yaml
+files:
+  # ROOT files to process
+  process:
+    - ship.conical.Pythia8-TGeant4.root
+    - ship.conical.Pythia8-TGeant4_rec.root
+    - ship.conical.Pythia8-TGeant4_ana.root
+    - recohists.root
 
-[extraction]
-max_histogram_depth = 2              # Directory recursion depth
-fit_functions = ["gaus", "pol1", "expo"]  # Fit functions to search for
+extraction:
+  max_histogram_depth: 2              # Directory recursion depth
+  fit_functions:                      # Fit functions to search for
+    - gaus
+    - pol1
+    - expo
 
-[comparison]
-float_tolerance = 1e-9  # Relative tolerance for float comparisons
-n_sigma = 3.0          # Sigma threshold for statistical comparisons
+comparison:
+  float_tolerance: 1.0e-9  # Relative tolerance for float comparisons
+  n_sigma: 3.0             # Sigma threshold for statistical comparisons
 ```
 
 **Customization:**
-- Add/remove files in `[files].process` to change which ROOT files are processed
+- Add/remove files in `files.process` to change which ROOT files are processed
 - Modify `fit_functions` to search for different fit function names
 - Adjust `max_histogram_depth` to control how deep into directory structures to search
-- Change default comparison tolerances in `[comparison]` section
+- Change default comparison tolerances in `comparison` section
 
 ## Scripts
 
@@ -95,7 +97,7 @@ python extract_physics_metrics.py . -o metrics.json --pretty
 python extract_physics_metrics.py test_output/ -o test_metrics.json
 
 # Use custom config file
-python extract_physics_metrics.py . -o metrics.json --config custom_config.toml
+python extract_physics_metrics.py . -o metrics.json --config custom_config.yaml
 ```
 
 ### `compare_metrics.py`
@@ -119,7 +121,7 @@ python compare_metrics.py <reference.json> <new.json> [options]
 
 **Example:**
 ```bash
-# Default comparison (uses tolerances from metrics_config.toml)
+# Default comparison (uses tolerances from metrics_config.yaml)
 python compare_metrics.py reference.json new.json
 
 # Override float tolerance
@@ -129,7 +131,7 @@ python compare_metrics.py reference.json new.json --float-tolerance 1e-6
 python compare_metrics.py reference.json new.json --n-sigma 2.0
 
 # Use custom config file
-python compare_metrics.py reference.json new.json --config custom_config.toml
+python compare_metrics.py reference.json new.json --config custom_config.yaml
 
 # Fail CI if differences found
 python compare_metrics.py reference.json new.json --fail-on-diff
@@ -200,12 +202,12 @@ python .github/scripts/compare_metrics.py reference.json current.json
 
 ### Configuration Changes (No Code Required)
 
-Most customizations can be made by editing `metrics_config.toml`:
+Most customizations can be made by editing `metrics_config.yaml`:
 
-1. **Change which files are processed**: Modify `[files].process` list
-2. **Add/remove fit functions**: Modify `[extraction].fit_functions` list
-3. **Adjust histogram search depth**: Change `[extraction].max_histogram_depth`
-4. **Change default tolerances**: Modify `[comparison]` values
+1. **Change which files are processed**: Modify `files.process` list
+2. **Add/remove fit functions**: Modify `extraction.fit_functions` list
+3. **Adjust histogram search depth**: Change `extraction.max_histogram_depth`
+4. **Change default tolerances**: Modify `comparison` values
 
 These changes take effect immediately without modifying Python code.
 
