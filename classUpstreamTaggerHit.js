@@ -12,6 +12,7 @@ var classUpstreamTaggerHit =
     [ "GetZ", "classUpstreamTaggerHit.html#a62a921f9c5972a4f3d4392be89a87c02", null ],
     [ "operator=", "classUpstreamTaggerHit.html#acdee8e543648a3d6d5bca87f8ce04aca", null ],
     [ "Print", "classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0", null ],
+    [ "Print", "classUpstreamTaggerHit.html#ae558418d02986544eaaa5898d3c7c5a4", null ],
     [ "fTime", "classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed", null ],
     [ "fX", "classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7", null ],
     [ "fY", "classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c", null ],

@@ -379,7 +379,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  469</span> </div>
 <div class="line"><span class="lineno">  470</span>      <span class="comment">// Absorber</span></div>
 <div class="line"><span class="lineno">  471</span> </div>
-<div class="line"><span class="lineno">  472</span>      <span class="keyword">auto</span> abs = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;absorber&quot;</span>, 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);</div>
+<div class="line"><span class="lineno">  472</span>      [[maybe_unused]] <span class="keyword">auto</span> abs = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;absorber&quot;</span>, 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);</div>
 <div class="line"><span class="lineno">  473</span>      <span class="keyword">auto</span> *absorber_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;absorber_shift&quot;</span>, 1.435 * m, 2.05 * m, 0);</div>
 <div class="line"><span class="lineno">  474</span>      absorber_shift-&gt;RegisterYourself();</div>
 <div class="line"><span class="lineno">  475</span> </div>

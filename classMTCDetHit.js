@@ -18,6 +18,7 @@ var classMTCDetHit =
     [ "n_pixels_to_qdc", "classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8", null ],
     [ "operator=", "classMTCDetHit.html#afb02e0ae751ce734df0f1b439326a2d8", null ],
     [ "Print", "classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425", null ],
+    [ "Print", "classMTCDetHit.html#ae558418d02986544eaaa5898d3c7c5a4", null ],
     [ "setInvalid", "classMTCDetHit.html#aa44b6ab6ff5420be8a73853b53c1c672", null ],
     [ "sipm_saturation", "classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42", null ],
     [ "flag", "classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b", null ],

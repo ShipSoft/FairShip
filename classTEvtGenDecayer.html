@@ -459,7 +459,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  186</span>        EvtId evtId = EvtPDL::evtIdFromStdHep(pdg);</div>
 <div class="line"><span class="lineno">  187</span> </div>
 <div class="line"><span class="lineno">  188</span>        <span class="comment">// Check if EvtId is valid before creating particle</span></div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (evtId.getId() &lt; 0 || evtId.getId() &gt;= EvtPDL::entries()) {</div>
+<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (evtId.getId() &lt; 0 || <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(evtId.getId()) &gt;= EvtPDL::entries()) {</div>
 <div class="line"><span class="lineno">  190</span>            LOG(warning) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Invalid EvtId for PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5bba68d8a49d0e499d10871520efe7c5">pdg</a></div>
 <div class="line"><span class="lineno">  191</span>                        &lt;&lt; <span class="stringliteral">&quot; (EvtId: &quot;</span> &lt;&lt; evtId.getId() &lt;&lt; <span class="stringliteral">&quot;), falling back to Pythia8&quot;</span>;</div>
 <div class="line"><span class="lineno">  192</span>            <a class="code hl_function" href="classTEvtGenDecayer.html#a4ea7b63d0aac963501c8f8fc0ff89f75">DecayWithPythia8</a>(pdg, p);</div>
@@ -701,7 +701,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  277</span>        <span class="keywordtype">int</span> nParticles = <a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;GetEntriesFast();</div>
 <div class="line"><span class="lineno">  278</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nParticles; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">  279</span>            TParticle* srcParticle = <span class="keyword">static_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTEvtGenDecayer.html#a68413f4a9bfd9c06b72dd38bf26e4a5e">fEvtGenProducts</a>-&gt;At(i));</div>
-<div class="line"><span class="lineno">  280</span>            TParticle* destParticle = <span class="keyword">new</span> ((*particles)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle(*srcParticle);</div>
+<div class="line"><span class="lineno">  280</span>            <span class="keyword">new</span> ((*particles)[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]) TParticle(*srcParticle);</div>
 <div class="line"><span class="lineno">  281</span>        }</div>
 <div class="line"><span class="lineno">  282</span> </div>
 <div class="line"><span class="lineno">  283</span>        <span class="comment">// Reset the flag for next decay</span></div>

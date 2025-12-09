@@ -488,14 +488,14 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classsplitcalPoint.html">splitcalPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00459">459</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  463</span>{</div>
-<div class="line"><span class="lineno">  464</span>  TClonesArray&amp; clref = *<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
-<div class="line"><span class="lineno">  465</span>  Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  466</span>  <span class="comment">// cout &lt;&lt; &quot;splitcal hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  467</span>  <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classsplitcalPoint.html">splitcalPoint</a>(trackID, detID, pos, mom,</div>
-<div class="line"><span class="lineno">  468</span>         time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  469</span>}</div>
+<p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00446">446</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  450</span>{</div>
+<div class="line"><span class="lineno">  451</span>  TClonesArray&amp; clref = *<a class="code hl_variable" href="classsplitcal.html#abcac5a2dd5708574a18eae34a38d7282">fsplitcalPointCollection</a>;</div>
+<div class="line"><span class="lineno">  452</span>  Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  453</span>  <span class="comment">// cout &lt;&lt; &quot;splitcal hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
+<div class="line"><span class="lineno">  454</span>  <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classsplitcalPoint.html">splitcalPoint</a>(trackID, detID, pos, mom,</div>
+<div class="line"><span class="lineno">  455</span>         time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  456</span>}</div>
 <div class="ttc" id="aclasssplitcalPoint_html"><div class="ttname"><a href="classsplitcalPoint.html">splitcalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalPoint_8h_source.html#l00013">splitcalPoint.h:14</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -609,168 +609,155 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  293</span> </div>
 <div class="line"><span class="lineno">  294</span> </div>
 <div class="line"><span class="lineno">  295</span>    Double_t z_splitcal=0;</div>
-<div class="line"><span class="lineno">  296</span>    Int_t i_nlayECAL_gas;</div>
-<div class="line"><span class="lineno">  297</span> </div>
-<div class="line"><span class="lineno">  298</span>    <span class="comment">// logical volume for the absorbing layers</span></div>
-<div class="line"><span class="lineno">  299</span>    <span class="comment">// first absorbing layer can have different thinkens from the others</span></div>
-<div class="line"><span class="lineno">  300</span>    newECALfilter_first = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter_first&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2);</div>
-<div class="line"><span class="lineno">  301</span>    newECALfilter_first-&gt;SetLineColor(kGray);</div>
-<div class="line"><span class="lineno">  302</span>    newECALfilter = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  303</span>    newECALfilter-&gt;SetLineColor(kGray);</div>
-<div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>    stripGivingX = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingX&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  306</span>    stripGivingX-&gt;SetVisibility(kTRUE);</div>
-<div class="line"><span class="lineno">  307</span>    AddSensitiveVolume(stripGivingX);</div>
-<div class="line"><span class="lineno">  308</span>    stripGivingX-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>    stripGivingY = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingY&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  311</span>    stripGivingY-&gt;SetVisibility(kTRUE);</div>
-<div class="line"><span class="lineno">  312</span>    AddSensitiveVolume(stripGivingY);</div>
-<div class="line"><span class="lineno">  313</span>    stripGivingY-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  314</span> </div>
-<div class="line"><span class="lineno">  315</span>    <span class="comment">// logical volume for the high precision sensitive layers</span></div>
-<div class="line"><span class="lineno">  316</span>    newECALdet_gas = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALdet_gas&quot;</span>, A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2);</div>
-<div class="line"><span class="lineno">  317</span>    AddSensitiveVolume(newECALdet_gas);</div>
-<div class="line"><span class="lineno">  318</span>    newECALdet_gas-&gt;SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  296</span> </div>
+<div class="line"><span class="lineno">  297</span>    <span class="comment">// logical volume for the absorbing layers</span></div>
+<div class="line"><span class="lineno">  298</span>    <span class="comment">// first absorbing layer can have different thinkens from the others</span></div>
+<div class="line"><span class="lineno">  299</span>    newECALfilter_first = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter_first&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2);</div>
+<div class="line"><span class="lineno">  300</span>    newECALfilter_first-&gt;SetLineColor(kGray);</div>
+<div class="line"><span class="lineno">  301</span>    newECALfilter = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALfilter&quot;</span>, A3, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  302</span>    newECALfilter-&gt;SetLineColor(kGray);</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>    stripGivingX = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingX&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  305</span>    stripGivingX-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  306</span>    AddSensitiveVolume(stripGivingX);</div>
+<div class="line"><span class="lineno">  307</span>    stripGivingX-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>    stripGivingY = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;stripGivingY&quot;</span>, A1, <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a>, <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a>, <a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  310</span>    stripGivingY-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  311</span>    AddSensitiveVolume(stripGivingY);</div>
+<div class="line"><span class="lineno">  312</span>    stripGivingY-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  314</span>    <span class="comment">// logical volume for the high precision sensitive layers</span></div>
+<div class="line"><span class="lineno">  315</span>    newECALdet_gas = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;ECALdet_gas&quot;</span>, A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2);</div>
+<div class="line"><span class="lineno">  316</span>    AddSensitiveVolume(newECALdet_gas);</div>
+<div class="line"><span class="lineno">  317</span>    newECALdet_gas-&gt;SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  318</span> </div>
 <div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment">// now position layer volumes in tSplitCal mother volume</span></div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">for</span> (Int_t i_nlayECAL=0; i_nlayECAL&lt;<a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>; i_nlayECAL++){</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>      <span class="comment">// position absorber layers</span></div>
-<div class="line"><span class="lineno">  325</span>      <span class="comment">// thinkness of first layer can be different from others</span></div>
-<div class="line"><span class="lineno">  326</span>      <span class="keywordflow">if</span> (i_nlayECAL==0){</div>
-<div class="line"><span class="lineno">  327</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
-<div class="line"><span class="lineno">  328</span>        tSplitCal-&gt;AddNode(newECALfilter_first, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  329</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
-<div class="line"><span class="lineno">  330</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  331</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  332</span>    tSplitCal-&gt;AddNode(newECALfilter, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  333</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  334</span>      }</div>
-<div class="line"><span class="lineno">  335</span>      <span class="comment">// std::cout&lt;&lt; &quot;--- i_nlayECAL*1e5 = &quot;&lt;&lt; i_nlayECAL*1e5 &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">if</span>(i_nlayECAL==0) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>; <span class="comment">// space after first layer? set to 0 in the config file? for whar is it for?</span></div>
-<div class="line"><span class="lineno">  338</span>      <span class="keywordflow">if</span>(i_nlayECAL==7) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>;</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>      <span class="comment">// position high precision sensitive layers</span></div>
-<div class="line"><span class="lineno">  341</span>      i_nlayECAL_gas=-1000;</div>
-<div class="line"><span class="lineno">  342</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
-<div class="line"><span class="lineno">  343</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=0;</div>
-<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> ){</div>
-<div class="line"><span class="lineno">  346</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=3;</div>
-<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=1;</div>
-<div class="line"><span class="lineno">  348</span>    }</div>
-<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
-<div class="line"><span class="lineno">  350</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2) i_nlayECAL_gas=4;</div>
-<div class="line"><span class="lineno">  351</span>      <span class="keywordflow">else</span> i_nlayECAL_gas=2;</div>
-<div class="line"><span class="lineno">  352</span>    }</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>    tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  355</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2){</div>
-<div class="line"><span class="lineno">  357</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>;</div>
-<div class="line"><span class="lineno">  358</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  359</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a>) i_nlayECAL_gas=1;</div>
-<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a>) i_nlayECAL_gas=3;</div>
-<div class="line"><span class="lineno">  361</span>      tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  362</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
-<div class="line"><span class="lineno">  363</span>    }</div>
-<div class="line"><span class="lineno">  364</span>    <span class="comment">// std::cout&lt;&lt; &quot;--- index high precision layer = &quot;&lt;&lt; 1e8+(i_nlayECAL+1)*1e5 &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  365</span>      }</div>
-<div class="line"><span class="lineno">  366</span>      <span class="keywordflow">else</span>{</div>
-<div class="line"><span class="lineno">  367</span>    <span class="comment">// position sensitive layers</span></div>
-<div class="line"><span class="lineno">  368</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> (i_nlayECAL%2==0) {</div>
-<div class="line"><span class="lineno">  370</span>      <span class="comment">//strips giving x information</span></div>
-<div class="line"><span class="lineno">  371</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
-<div class="line"><span class="lineno">  372</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
-<div class="line"><span class="lineno">  373</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
-<div class="line"><span class="lineno">  374</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
-<div class="line"><span class="lineno">  375</span>        <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*mx + j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
-<div class="line"><span class="lineno">  376</span>        <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (my+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
-<div class="line"><span class="lineno">  377</span>        tSplitCal-&gt;AddNode(stripGivingX, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
-<div class="line"><span class="lineno">  378</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  379</span>          }<span class="comment">//end loop on strips</span></div>
-<div class="line"><span class="lineno">  380</span>        }<span class="comment">//end loop on modules in y</span></div>
-<div class="line"><span class="lineno">  381</span>      }<span class="comment">//end loop on modules in x</span></div>
-<div class="line"><span class="lineno">  382</span>    }<span class="comment">//end layer stripped in X</span></div>
-<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  384</span>      <span class="comment">//strips giving y information</span></div>
-<div class="line"><span class="lineno">  385</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
-<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
-<div class="line"><span class="lineno">  387</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
-<div class="line"><span class="lineno">  389</span>                <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (mx+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
-<div class="line"><span class="lineno">  390</span>                <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*my+ j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
-<div class="line"><span class="lineno">  391</span>                tSplitCal-&gt;AddNode(stripGivingY, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
-<div class="line"><span class="lineno">  392</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  393</span>          }<span class="comment">//end loop on strips</span></div>
-<div class="line"><span class="lineno">  394</span>        }<span class="comment">//end loop on modules in y</span></div>
-<div class="line"><span class="lineno">  395</span>      }<span class="comment">//end loop on modules in x</span></div>
-<div class="line"><span class="lineno">  396</span>    }<span class="comment">//end layer stripped in Y</span></div>
-<div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  399</span>      }<span class="comment">// end loop on sensitive scintillator layers</span></div>
+<div class="line"><span class="lineno">  320</span>    <span class="comment">// now position layer volumes in tSplitCal mother volume</span></div>
+<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">for</span> (Int_t i_nlayECAL=0; i_nlayECAL&lt;<a class="code hl_variable" href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">fnECALSamplings</a>; i_nlayECAL++){</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>      <span class="comment">// position absorber layers</span></div>
+<div class="line"><span class="lineno">  324</span>      <span class="comment">// thinkness of first layer can be different from others</span></div>
+<div class="line"><span class="lineno">  325</span>      <span class="keywordflow">if</span> (i_nlayECAL==0){</div>
+<div class="line"><span class="lineno">  326</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
+<div class="line"><span class="lineno">  327</span>        tSplitCal-&gt;AddNode(newECALfilter_first, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  328</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a39f8004ff40db02dfe5f37e34bdbdc46">fFilterECALThickness_first</a>/2;</div>
+<div class="line"><span class="lineno">  329</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  330</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  331</span>    tSplitCal-&gt;AddNode(newECALfilter, i_nlayECAL*1e5, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  332</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">fFilterECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  333</span>      }</div>
+<div class="line"><span class="lineno">  334</span>      <span class="comment">// std::cout&lt;&lt; &quot;--- i_nlayECAL*1e5 = &quot;&lt;&lt; i_nlayECAL*1e5 &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  335</span> </div>
+<div class="line"><span class="lineno">  336</span>      <span class="keywordflow">if</span>(i_nlayECAL==0) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#aaa3deb10d20b116daa1d99b5a5ad7c54">fEmpty</a>; <span class="comment">// space after first layer? set to 0 in the config file? for whar is it for?</span></div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">if</span>(i_nlayECAL==7) z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8cef7012d60e7ac5533fc340a808051b">fBigGap</a>;</div>
+<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span>      <span class="comment">// position high precision sensitive layers</span></div>
+<div class="line"><span class="lineno">  340</span>      <span class="keywordflow">if</span>(i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac9dfe52c8af80a6f236ebe6a76842d3e">ffirst_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#ac6c8d7bd252d1cf822f4dc8b2c534198">fsecond_precision_layer</a> || i_nlayECAL==<a class="code hl_variable" href="classsplitcal.html#a4d550ce25d29eab8f3b862f6a354ff6c">fthird_precision_layer</a>){</div>
+<div class="line"><span class="lineno">  341</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  342</span> </div>
+<div class="line"><span class="lineno">  343</span>    tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  344</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">fnum_precision_layers</a>==2){</div>
+<div class="line"><span class="lineno">  346</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a8bb277b6b9934291ff7f167b199c617e">fActiveECAL_gas_gap</a>;</div>
+<div class="line"><span class="lineno">  347</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  348</span>      tSplitCal-&gt;AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  349</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a9a6ed695dd0f86bead82ab820acc4a94">fActiveECAL_gas_Thickness</a>/2;</div>
+<div class="line"><span class="lineno">  350</span>    }</div>
+<div class="line"><span class="lineno">  351</span>    <span class="comment">// std::cout&lt;&lt; &quot;--- index high precision layer = &quot;&lt;&lt; 1e8+(i_nlayECAL+1)*1e5 &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  352</span>      }</div>
+<div class="line"><span class="lineno">  353</span>      <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">  354</span>    <span class="comment">// position sensitive layers</span></div>
+<div class="line"><span class="lineno">  355</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (i_nlayECAL%2==0) {</div>
+<div class="line"><span class="lineno">  357</span>      <span class="comment">//strips giving x information</span></div>
+<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
+<div class="line"><span class="lineno">  360</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
+<div class="line"><span class="lineno">  361</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
+<div class="line"><span class="lineno">  362</span>        <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*mx + j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
+<div class="line"><span class="lineno">  363</span>        <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (my+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
+<div class="line"><span class="lineno">  364</span>        tSplitCal-&gt;AddNode(stripGivingX, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
+<div class="line"><span class="lineno">  365</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  366</span>          }<span class="comment">//end loop on strips</span></div>
+<div class="line"><span class="lineno">  367</span>        }<span class="comment">//end loop on modules in y</span></div>
+<div class="line"><span class="lineno">  368</span>      }<span class="comment">//end loop on modules in x</span></div>
+<div class="line"><span class="lineno">  369</span>    }<span class="comment">//end layer stripped in X</span></div>
+<div class="line"><span class="lineno">  370</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  371</span>      <span class="comment">//strips giving y information</span></div>
+<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mx=0; mx&lt;<a class="code hl_variable" href="classsplitcal.html#a8ad1e152576510dc3dcd5500d9bdcfc2">fNModulesInX</a>; mx++){</div>
+<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> my=0; my&lt;<a class="code hl_variable" href="classsplitcal.html#a2d1e53e1900fe1d7350527c821f029d4">fNModulesInY</a>; my++){</div>
+<div class="line"><span class="lineno">  374</span>          <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j=0;j&lt;<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>;j++){</div>
+<div class="line"><span class="lineno">  375</span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;</div>
+<div class="line"><span class="lineno">  376</span>                <span class="keywordtype">double</span> xCoordinate = -<a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a> + (mx+0.5) * <a class="code hl_variable" href="classsplitcal.html#aa13f5ddd726364fc8f6b7654b36adaed">fStripHalfLength</a> * 2; <span class="comment">// the times 2 is to get the total length from the half-length</span></div>
+<div class="line"><span class="lineno">  377</span>                <span class="keywordtype">double</span> yCoordinate = -<a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a> + (<a class="code hl_variable" href="classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5">fNStripsPerModule</a>*my+ j+0.5) * <a class="code hl_variable" href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">fStripHalfWidth</a> * 2; <span class="comment">// the times 2 is to get the total width from the half-width</span></div>
+<div class="line"><span class="lineno">  378</span>                tSplitCal-&gt;AddNode(stripGivingY, index, <span class="keyword">new</span> TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));</div>
+<div class="line"><span class="lineno">  379</span>        <span class="comment">// std::cout&lt;&lt; &quot;--- index = &quot;&lt;&lt; index &lt;&lt; std::endl;</span></div>
+<div class="line"><span class="lineno">  380</span>          }<span class="comment">//end loop on strips</span></div>
+<div class="line"><span class="lineno">  381</span>        }<span class="comment">//end loop on modules in y</span></div>
+<div class="line"><span class="lineno">  382</span>      }<span class="comment">//end loop on modules in x</span></div>
+<div class="line"><span class="lineno">  383</span>    }<span class="comment">//end layer stripped in Y</span></div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span>    z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a3baab192e3fc15f0d160e1f975dad547">fActiveECALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  386</span>      }<span class="comment">// end loop on sensitive scintillator layers</span></div>
+<div class="line"><span class="lineno">  387</span> </div>
+<div class="line"><span class="lineno">  388</span>    } <span class="comment">//end loop in ecal layers</span></div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;1; i_nlayHCAL++){</div>
+<div class="line"><span class="lineno">  391</span>      labelHCALfilter=<span class="stringliteral">&quot;HCALfilter_&quot;</span>;</div>
+<div class="line"><span class="lineno">  392</span>      labelHCALfilter+=i_nlayHCAL;</div>
+<div class="line"><span class="lineno">  393</span>      char_labelHCALfilter[i_nlayHCAL]=labelHCALfilter;</div>
+<div class="line"><span class="lineno">  394</span>      labelHCALdet=<span class="stringliteral">&quot;HCAL_det&quot;</span>;</div>
+<div class="line"><span class="lineno">  395</span>      labelHCALdet+=i_nlayHCAL;</div>
+<div class="line"><span class="lineno">  396</span>      char_labelHCALdet[i_nlayHCAL]=labelHCALdet;</div>
+<div class="line"><span class="lineno">  397</span>      newHCALfilter[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2);</div>
+<div class="line"><span class="lineno">  398</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>){</div>
+<div class="line"><span class="lineno">  399</span>    newHCALdet[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALdet[i_nlayHCAL], A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2);</div>
 <div class="line"><span class="lineno">  400</span> </div>
-<div class="line"><span class="lineno">  401</span>    } <span class="comment">//end loop in ecal layers</span></div>
+<div class="line"><span class="lineno">  401</span>    AddSensitiveVolume(newHCALdet[i_nlayHCAL]);</div>
 <div class="line"><span class="lineno">  402</span> </div>
-<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;1; i_nlayHCAL++){</div>
-<div class="line"><span class="lineno">  404</span>      labelHCALfilter=<span class="stringliteral">&quot;HCALfilter_&quot;</span>;</div>
-<div class="line"><span class="lineno">  405</span>      labelHCALfilter+=i_nlayHCAL;</div>
-<div class="line"><span class="lineno">  406</span>      char_labelHCALfilter[i_nlayHCAL]=labelHCALfilter;</div>
-<div class="line"><span class="lineno">  407</span>      labelHCALdet=<span class="stringliteral">&quot;HCAL_det&quot;</span>;</div>
-<div class="line"><span class="lineno">  408</span>      labelHCALdet+=i_nlayHCAL;</div>
-<div class="line"><span class="lineno">  409</span>      char_labelHCALdet[i_nlayHCAL]=labelHCALdet;</div>
-<div class="line"><span class="lineno">  410</span>      newHCALfilter[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  411</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>){</div>
-<div class="line"><span class="lineno">  412</span>    newHCALdet[i_nlayHCAL] = gGeoManager-&gt;MakeBox(char_labelHCALdet[i_nlayHCAL], A4, <a class="code hl_variable" href="classsplitcal.html#ab60249cb3e04631eac6495be02224fc6">fXMax</a>, <a class="code hl_variable" href="classsplitcal.html#aae35906587cc2eb7e76f277038195fde">fYMax</a>, <a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2);</div>
-<div class="line"><span class="lineno">  413</span> </div>
-<div class="line"><span class="lineno">  414</span>    AddSensitiveVolume(newHCALdet[i_nlayHCAL]);</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>    newHCALdet[i_nlayHCAL]-&gt;SetLineColor(kRed);</div>
-<div class="line"><span class="lineno">  417</span>      }</div>
-<div class="line"><span class="lineno">  418</span>      newHCALfilter[i_nlayHCAL]-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  419</span>    }</div>
-<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;<a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>; i_nlayHCAL++){</div>
-<div class="line"><span class="lineno">  421</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  422</span>      tSplitCal-&gt;AddNode(newHCALfilter[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  423</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  424</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
-<div class="line"><span class="lineno">  425</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>) tSplitCal-&gt;AddNode(newHCALdet[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
-<div class="line"><span class="lineno">  427</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
-<div class="line"><span class="lineno">  428</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
+<div class="line"><span class="lineno">  403</span>    newHCALdet[i_nlayHCAL]-&gt;SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  404</span>      }</div>
+<div class="line"><span class="lineno">  405</span>      newHCALfilter[i_nlayHCAL]-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  406</span>    }</div>
+<div class="line"><span class="lineno">  407</span>    <span class="keywordflow">for</span> (Int_t i_nlayHCAL=0; i_nlayHCAL&lt;<a class="code hl_variable" href="classsplitcal.html#aaf7a62ff903e68d8cf4b0b78551d4a7b">fnHCALSamplings</a>; i_nlayHCAL++){</div>
+<div class="line"><span class="lineno">  408</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  409</span>      tSplitCal-&gt;AddNode(newHCALfilter[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  410</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">fFilterHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  411</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
+<div class="line"><span class="lineno">  412</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  413</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="classsplitcal.html#a50bacc663be1e50ac41b8da45ced33d5">fActiveHCAL</a>) tSplitCal-&gt;AddNode(newHCALdet[i_nlayHCAL], 1, <span class="keyword">new</span> TGeoTranslation(0, 0, z_splitcal));</div>
+<div class="line"><span class="lineno">  414</span>      z_splitcal+=<a class="code hl_variable" href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">fActiveHCALThickness</a>/2;</div>
+<div class="line"><span class="lineno">  415</span>      <span class="comment">// z_splitcal+=fEmpty;</span></div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span> </div>
+<div class="line"><span class="lineno">  418</span>    }</div>
+<div class="line"><span class="lineno">  419</span> </div>
+<div class="line"><span class="lineno">  420</span> </div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>    <span class="comment">//finish assembly and position</span></div>
+<div class="line"><span class="lineno">  423</span>    TGeoShapeAssembly* asmb = <span class="keyword">dynamic_cast&lt;</span>TGeoShapeAssembly*<span class="keyword">&gt;</span>(tSplitCal-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  424</span>    Double_t totLength = asmb-&gt;GetDZ();</div>
+<div class="line"><span class="lineno">  425</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tSplitCal, 1, <span class="keyword">new</span> TGeoTranslation(0, 0,zStartSplitCal+totLength));</div>
+<div class="line"><span class="lineno">  426</span> </div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span> </div>
 <div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span>    }</div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span> </div>
+<div class="line"><span class="lineno">  430</span>    <span class="comment">// //gROOT-&gt;SetBatch(true);</span></div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>    <span class="comment">//    TCanvas* c1 = new TCanvas(&quot;splitcalCanvas&quot;, &quot;&quot;, 800, 800);</span></div>
+<div class="line"><span class="lineno">  433</span>    <span class="comment">//    c1-&gt;cd();</span></div>
 <div class="line"><span class="lineno">  434</span> </div>
-<div class="line"><span class="lineno">  435</span>    <span class="comment">//finish assembly and position</span></div>
-<div class="line"><span class="lineno">  436</span>    TGeoShapeAssembly* asmb = <span class="keyword">dynamic_cast&lt;</span>TGeoShapeAssembly*<span class="keyword">&gt;</span>(tSplitCal-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  437</span>    Double_t totLength = asmb-&gt;GetDZ();</div>
-<div class="line"><span class="lineno">  438</span>    <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tSplitCal, 1, <span class="keyword">new</span> TGeoTranslation(0, 0,zStartSplitCal+totLength));</div>
-<div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span> </div>
+<div class="line"><span class="lineno">  435</span>    <span class="comment">//    TView3D* tview = (TView3D*) TView::CreateView();</span></div>
+<div class="line"><span class="lineno">  436</span>    <span class="comment">//    tview-&gt;SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);</span></div>
+<div class="line"><span class="lineno">  437</span>    <span class="comment">//    tview-&gt;RotateView(0, 90, c1);</span></div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    <span class="comment">//    tSplitCal-&gt;Draw(&quot;ogle&quot;);</span></div>
+<div class="line"><span class="lineno">  440</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.eps&quot;));</span></div>
+<div class="line"><span class="lineno">  441</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.pdf&quot;));</span></div>
 <div class="line"><span class="lineno">  442</span> </div>
-<div class="line"><span class="lineno">  443</span>    <span class="comment">// //gROOT-&gt;SetBatch(true);</span></div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">//    TCanvas* c1 = new TCanvas(&quot;splitcalCanvas&quot;, &quot;&quot;, 800, 800);</span></div>
-<div class="line"><span class="lineno">  446</span>    <span class="comment">//    c1-&gt;cd();</span></div>
-<div class="line"><span class="lineno">  447</span> </div>
-<div class="line"><span class="lineno">  448</span>    <span class="comment">//    TView3D* tview = (TView3D*) TView::CreateView();</span></div>
-<div class="line"><span class="lineno">  449</span>    <span class="comment">//    tview-&gt;SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);</span></div>
-<div class="line"><span class="lineno">  450</span>    <span class="comment">//    tview-&gt;RotateView(0, 90, c1);</span></div>
-<div class="line"><span class="lineno">  451</span> </div>
-<div class="line"><span class="lineno">  452</span>    <span class="comment">//    tSplitCal-&gt;Draw(&quot;ogle&quot;);</span></div>
-<div class="line"><span class="lineno">  453</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.eps&quot;));</span></div>
-<div class="line"><span class="lineno">  454</span>    <span class="comment">//    c1-&gt;SaveAs(TString(&quot;splitcal.pdf&quot;));</span></div>
-<div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span> </div>
-<div class="line"><span class="lineno">  457</span>}</div>
+<div class="line"><span class="lineno">  443</span> </div>
+<div class="line"><span class="lineno">  444</span>}</div>
 <div class="ttc" id="aclasssplitcal_html_a0a52b109d3101a37adf69374e1ff7c79"><div class="ttname"><a href="classsplitcal.html#a0a52b109d3101a37adf69374e1ff7c79">splitcal::fFilterHCALThickness</a></div><div class="ttdeci">Double_t fFilterHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
 <div class="ttc" id="aclasssplitcal_html_a10e73539932d9757f648a6a8a6b49252"><div class="ttname"><a href="classsplitcal.html#a10e73539932d9757f648a6a8a6b49252">splitcal::fnum_precision_layers</a></div><div class="ttdeci">Double_t fnum_precision_layers</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00121">splitcal.h:121</a></div></div>
 <div class="ttc" id="aclasssplitcal_html_a22b1ca6ecccf01f853476b733e403f89"><div class="ttname"><a href="classsplitcal.html#a22b1ca6ecccf01f853476b733e403f89">splitcal::fActiveHCALThickness</a></div><div class="ttdeci">Double_t fActiveHCALThickness</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8h_source.html#l00112">splitcal.h:112</a></div></div>
@@ -1205,7 +1192,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><span class="lineno">  150</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00049">ShipStack.h:50</a></div></div>
-<div class="ttc" id="aclasssplitcal_html_a2472a223fb4a41eb2550780d6a6de6c5"><div class="ttname"><a href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">splitcal::AddHit</a></div><div class="ttdeci">splitcalPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00459">splitcal.cxx:459</a></div></div>
+<div class="ttc" id="aclasssplitcal_html_a2472a223fb4a41eb2550780d6a6de6c5"><div class="ttname"><a href="classsplitcal.html#a2472a223fb4a41eb2550780d6a6de6c5">splitcal::AddHit</a></div><div class="ttdeci">splitcalPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode)</div><div class="ttdef"><b>Definition</b> <a href="splitcal_8cxx_source.html#l00446">splitcal.cxx:446</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00252">makeCascade.py:252</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00255">make_nTuple_SBT.py:255</a></div></div>

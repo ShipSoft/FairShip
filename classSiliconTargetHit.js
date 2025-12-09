@@ -18,6 +18,7 @@ var classSiliconTargetHit =
     [ "isValid", "classSiliconTargetHit.html#afe9367183151d164847b27991b381424", null ],
     [ "operator=", "classSiliconTargetHit.html#a90dff85bf1518d5827dc47973d73ea70", null ],
     [ "Print", "classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c", null ],
+    [ "Print", "classSiliconTargetHit.html#ae558418d02986544eaaa5898d3c7c5a4", null ],
     [ "flag", "classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8", null ],
     [ "fSignal", "classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b", null ],
     [ "fX", "classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3", null ],

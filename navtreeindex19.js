@@ -1,5 +1,12 @@
 var NAVTREEINDEX19 =
 {
+"muonShieldOptimization_2LinkDef_8h_source.html":[6,0,8,10],
+"muonShieldOptimization_2makeMuonDIS_8py.html":[6,0,8,11],
+"muonShieldOptimization_2makeMuonDIS_8py.html#a0b59935c502dda77201f6c39411212ca":[6,0,8,11,23],
+"muonShieldOptimization_2makeMuonDIS_8py.html#a0baff85fde4aefea404a4f1933e8dcfb":[6,0,8,11,37],
+"muonShieldOptimization_2makeMuonDIS_8py.html#a0ffbb942174fb3db82b4bbdd7ee684e2":[6,0,8,11,44],
+"muonShieldOptimization_2makeMuonDIS_8py.html#a167283eebd6aab628dc0adeb258817fb":[6,0,8,11,40],
+"muonShieldOptimization_2makeMuonDIS_8py.html#a16de65b10d01632918b323be05dea6af":[6,0,8,11,29],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a1baa1871f9caf8718228af457e8da3b3":[6,0,8,11,9],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a26aa2d2f4969d3eeb816781e0da12ee0":[6,0,8,11,28],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a2b4e630f0163fb403afd6440c31de817":[6,0,8,11,50],
@@ -242,12 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceadd__muonresponse.html#a1b17e738af7056681fff19e69b693ac3":[4,0,1,6],
 "namespaceadd__muonresponse.html#a52981cb8fd991a0b5e889fdbcedd5cb7":[4,0,1,3],
 "namespaceadd__muonresponse.html#a55e193298dc5f0f17334eee4e4568886":[4,0,1,5],
-"namespaceadd__muonresponse.html#a66189585055e1991c4d7ac3e1be16a1c":[4,0,1,0],
-"namespaceadd__muonresponse.html#aac7731f940c514fafd1ff48518e20131":[4,0,1,8],
-"namespaceadd__muonresponse.html#ac9143fefa7ded9bda1efd01ab465a7cb":[4,0,1,7],
-"namespaceadd__muonresponse.html#aea92d8a3ac2013544f2c902db5c01714":[4,0,1,1],
-"namespaceadd__muonresponse.html#af5d46a3b2e105010a458541395bd0d40":[4,0,1,4],
-"namespaceadd__noise__to__field.html":[4,0,2],
-"namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48":[4,0,2,7],
-"namespaceadd__noise__to__field.html#a0c9f7358e4b40f6222907cf9737b120d":[4,0,2,3]
+"namespaceadd__muonresponse.html#a66189585055e1991c4d7ac3e1be16a1c":[4,0,1,0]
 };

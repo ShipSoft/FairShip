@@ -158,6 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa44b6ab6ff5420be8a73853b53c1c672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51adfde65e24f2895a47d43fa868aa8b" id="r_a51adfde65e24f2895a47d43fa868aa8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetHit.html#a51adfde65e24f2895a47d43fa868aa8b">isValid</a> () const</td></tr>
 <tr class="separator:a51adfde65e24f2895a47d43fa868aa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae558418d02986544eaaa5898d3c7c5a4" id="r_ae558418d02986544eaaa5898d3c7c5a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMTCDetHit.html#ae558418d02986544eaaa5898d3c7c5a4">Print</a> (const Option_t *opt=&quot;&quot;) const</td></tr>
+<tr class="separator:ae558418d02986544eaaa5898d3c7c5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classShipHit"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classShipHit')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classShipHit.html">ShipHit</a></td></tr>
 <tr class="memitem:a1916d57d722314c27531a77a49ef655f inherit pub_methods_classShipHit" id="r_a1916d57d722314c27531a77a49ef655f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a> ()</td></tr>
 <tr class="separator:a1916d57d722314c27531a77a49ef655f inherit pub_methods_classShipHit"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,8 +175,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acecbb9b3e5dcddbb1a2d6fbab5ec4bea inherit pub_methods_classShipHit"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7be5496a0ce802332c685f59b75b7586 inherit pub_methods_classShipHit" id="r_a7be5496a0ce802332c685f59b75b7586"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipHit.html#a7be5496a0ce802332c685f59b75b7586">SetDetectorID</a> (Int_t detID)</td></tr>
 <tr class="separator:a7be5496a0ce802332c685f59b75b7586 inherit pub_methods_classShipHit"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae558418d02986544eaaa5898d3c7c5a4 inherit pub_methods_classShipHit" id="r_ae558418d02986544eaaa5898d3c7c5a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipHit.html#ae558418d02986544eaaa5898d3c7c5a4">Print</a> (const Option_t *opt=&quot;&quot;) const</td></tr>
-<tr class="separator:ae558418d02986544eaaa5898d3c7c5a4 inherit pub_methods_classShipHit"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -235,7 +235,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   31</span>{</div>
 <div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   33</span>}</div>
-<div class="ttc" id="aclassMTCDetHit_html_a159b24738b91eb8fe6389e2237399e6b"><div class="ttname"><a href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">MTCDetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00066">MTCDetHit.h:66</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a159b24738b91eb8fe6389e2237399e6b"><div class="ttname"><a href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">MTCDetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00067">MTCDetHit.h:67</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a1916d57d722314c27531a77a49ef655f"><div class="ttname"><a href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a></div><div class="ttdeci">ShipHit()</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8cxx_source.html#l00008">ShipHit.cxx:8</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -368,9 +368,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  103</span>}</div>
 <div class="ttc" id="aclassMTCDetHit_html_a13661a6c759c125b37654095f61af4b8"><div class="ttname"><a href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">MTCDetHit::n_pixels_to_qdc</a></div><div class="ttdeci">Float_t n_pixels_to_qdc(Float_t npix)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00129">MTCDetHit.cxx:129</a></div></div>
 <div class="ttc" id="aclassMTCDetHit_html_a162956dea791783ba63cd6458ccb5a42"><div class="ttname"><a href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">MTCDetHit::sipm_saturation</a></div><div class="ttdeci">Float_t sipm_saturation(Float_t ly)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00122">MTCDetHit.cxx:122</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a541e56fa8abea47621f8c6fdcdda5fdb"><div class="ttname"><a href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">MTCDetHit::time</a></div><div class="ttdeci">Float_t time</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00062">MTCDetHit.h:62</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a64c40a4143c5fe2b59571b8325d2a12c"><div class="ttname"><a href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">MTCDetHit::GetStationType</a></div><div class="ttdeci">Int_t GetStationType() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00050">MTCDetHit.h:50</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a6b33710eec297647716726c01558093c"><div class="ttname"><a href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">MTCDetHit::signals</a></div><div class="ttdeci">Float_t signals</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00061">MTCDetHit.h:61</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a541e56fa8abea47621f8c6fdcdda5fdb"><div class="ttname"><a href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">MTCDetHit::time</a></div><div class="ttdeci">Float_t time</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00063">MTCDetHit.h:63</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a64c40a4143c5fe2b59571b8325d2a12c"><div class="ttname"><a href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">MTCDetHit::GetStationType</a></div><div class="ttdeci">Int_t GetStationType() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00051">MTCDetHit.h:51</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a6b33710eec297647716726c01558093c"><div class="ttname"><a href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">MTCDetHit::signals</a></div><div class="ttdeci">Float_t signals</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00062">MTCDetHit.h:62</a></div></div>
 <div class="ttc" id="aclassMTCDetHit_html_ab928296c1f42721d6b7b91dad6de71fc"><div class="ttname"><a href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">MTCDetHit::light_attenuation</a></div><div class="ttdeci">Float_t light_attenuation(Float_t distance)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00116">MTCDetHit.cxx:116</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
 <div class="ttc" id="anamespaceMTCDetector_html"><div class="ttname"><a href="namespaceMTCDetector.html">MTCDetector</a></div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8py_source.html#l00001">MTCDetector.py:1</a></div></div>
@@ -472,8 +472,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00048">48</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00049">49</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -523,8 +523,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00049">49</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 1000000) % 100; }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00050">50</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 1000000) % 100; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -551,8 +551,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00031">31</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>; };</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00032">32</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>; };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -579,8 +579,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00051">51</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 1000) % 10); }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00052">52</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 1000) % 10); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -607,8 +607,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00052">52</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 1000); }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00053">53</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 1000); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -635,8 +635,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00050">50</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000) % 10; }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00051">51</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000) % 10; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -663,8 +663,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00032">32</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a>; };</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00033">33</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a>; };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -691,8 +691,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00055">55</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00056">56</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -790,7 +790,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a0d802ce501b1d9cbc3ee26dedbee9425" name="a0d802ce501b1d9cbc3ee26dedbee9425"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d802ce501b1d9cbc3ee26dedbee9425">&#9670;&#160;</a></span>Print()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d802ce501b1d9cbc3ee26dedbee9425">&#9670;&#160;</a></span>Print() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -803,7 +803,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Output to screen </p>
 
 <p class="definition">Definition at line <a class="el" href="MTCDetHit_8cxx_source.html#l00138">138</a> of file <a class="el" href="MTCDetHit_8cxx_source.html">MTCDetHit.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  139</span>{</div>
@@ -817,9 +816,41 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  147</span>        <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>,</div>
 <div class="line"><span class="lineno">  148</span>        <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a>);</div>
 <div class="line"><span class="lineno">  149</span>}</div>
-<div class="ttc" id="aclassMTCDetHit_html_a45aa27849676c5a7852b4f467d45367f"><div class="ttname"><a href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">MTCDetHit::GetSiPMChan</a></div><div class="ttdeci">Int_t GetSiPMChan() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00052">MTCDetHit.h:52</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_ade88908ae8d4bded7c05bfb9107ddb2d"><div class="ttname"><a href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">MTCDetHit::GetSiPM</a></div><div class="ttdeci">Int_t GetSiPM() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00051">MTCDetHit.h:51</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_adec45e495568fe3478081b7f413c8d4c"><div class="ttname"><a href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">MTCDetHit::GetLayer</a></div><div class="ttdeci">Int_t GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00049">MTCDetHit.h:49</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a45aa27849676c5a7852b4f467d45367f"><div class="ttname"><a href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">MTCDetHit::GetSiPMChan</a></div><div class="ttdeci">Int_t GetSiPMChan() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00053">MTCDetHit.h:53</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_ade88908ae8d4bded7c05bfb9107ddb2d"><div class="ttname"><a href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">MTCDetHit::GetSiPM</a></div><div class="ttdeci">Int_t GetSiPM() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00052">MTCDetHit.h:52</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_adec45e495568fe3478081b7f413c8d4c"><div class="ttname"><a href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">MTCDetHit::GetLayer</a></div><div class="ttdeci">Int_t GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00050">MTCDetHit.h:50</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae558418d02986544eaaa5898d3c7c5a4" name="ae558418d02986544eaaa5898d3c7c5a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae558418d02986544eaaa5898d3c7c5a4">&#9670;&#160;</a></span>Print() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ShipHit::Print </td>
+          <td>(</td>
+          <td class="paramtype">const Option_t *&#160;</td>
+          <td class="paramname"><em>opt</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Output to screen </p>
+
+<p>Reimplemented from <a class="el" href="classShipHit.html#ae558418d02986544eaaa5898d3c7c5a4">ShipHit</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="ShipHit_8h_source.html#l00040">40</a> of file <a class="el" href="ShipHit_8h_source.html">ShipHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -846,8 +877,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00054">54</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00055">55</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -907,7 +938,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>flag </p>
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00066">66</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00067">67</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
 
 </div>
 </div>
@@ -931,7 +962,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00061">61</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00062">62</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
 
 </div>
 </div>
@@ -955,7 +986,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00062">62</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MTCDetHit_8h_source.html#l00063">63</a> of file <a class="el" href="MTCDetHit_8h_source.html">MTCDetHit.h</a>.</p>
 
 </div>
 </div>

@@ -29,6 +29,7 @@ var classsplitcalHit =
     [ "IsY", "classsplitcalHit.html#a497360c5944fa4d0d45e538f8b3ecfdb", null ],
     [ "operator=", "classsplitcalHit.html#ab7ff996ea9d8f2006aa17d60f11e403d", null ],
     [ "Print", "classsplitcalHit.html#a6cd2f23c0bc01c6b10ea290ba2ad69be", null ],
+    [ "Print", "classsplitcalHit.html#ae558418d02986544eaaa5898d3c7c5a4", null ],
     [ "SetEnergy", "classsplitcalHit.html#aa6c22cfab2a17004d647d62ecd0d0dc1", null ],
     [ "SetIDs", "classsplitcalHit.html#ab47f3ddd4402f6ef04fdc6fb3ebfc4d7", null ],
     [ "setInvalid", "classsplitcalHit.html#a81543d2e7f937d5a943041aae432caca", null ],
