@@ -137,12 +137,9 @@ jobs:
           path: physics_metrics.json
 
   store-metrics:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: run-sim-chain
     if: github.ref == 'refs/heads/master'
-
-    container:
-      image: registry.cern.ch/ship/gha-runner:latest
 
     strategy:
       fail-fast: false
@@ -200,12 +197,9 @@ jobs:
           exit 1
 
   compare-metrics:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: run-sim-chain
     if: github.event_name == 'pull_request'
-
-    container:
-      image: registry.cern.ch/ship/gha-runner:latest
 
     strategy:
       matrix:
@@ -250,12 +244,9 @@ jobs:
           path: comparison_*.txt
 
   comment-pr:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: compare-metrics
     if: github.event_name == 'pull_request'
-
-    container:
-      image: registry.cern.ch/ship/gha-runner:latest
 
     steps:
       - name: Checkout
