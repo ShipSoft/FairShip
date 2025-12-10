@@ -129,6 +129,9 @@ it in future.
 
 ### Changed
 
+* Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ
+  following GEANT4 team recommendation and studies by Hanae Tilquin presented
+  at Nov. 2025 collaboration meeting and following software meetings.
 * Replace ConfigRegistry with function-based geometry configuration API. Use `geometry_config.create_config(**params)` instead of `ConfigRegistry.loadpy()`
 * Move `geometry_config.py` from `geometry/` to `python/` directory and update all imports from `from geometry import geometry_config` to `import geometry_config`
 * Refactor strawtubes digitisation to use dedicated detector class
