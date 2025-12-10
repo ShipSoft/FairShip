@@ -223,6 +223,7 @@ Fixed</h2>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Changed</h2>
 <ul>
+<li>Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ following GEANT4 team recommendation and studies by Hanae Tilquin presented at Nov. 2025 collaboration meeting and following software meetings.</li>
 <li>Replace ConfigRegistry with function-based geometry configuration API. Use <code>geometry_config.create_config(**params)</code> instead of <code>ConfigRegistry.loadpy()</code></li>
 <li>Move <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code> from <code>geometry/</code> to <code>python/</code> directory and update all imports from <code>from geometry import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code> to <code>import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code></li>
 <li>Refactor strawtubes digitisation to use dedicated detector class<ul>
