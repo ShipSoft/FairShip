@@ -19,7 +19,6 @@
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 
-#include "TClonesArray.h"
 #include "TVirtualMC.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
@@ -54,7 +53,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     fzPos(3E8),
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
-    fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
+    fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>())
 {}
 
 exitHadronAbsorber::exitHadronAbsorber()
@@ -74,13 +73,12 @@ exitHadronAbsorber::exitHadronAbsorber()
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
     fUseCaveCoordinates(kFALSE),
-    fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
+    fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>())
 {}
 
 exitHadronAbsorber::~exitHadronAbsorber()
 {
   if (fexitHadronAbsorberPointCollection) {
-    fexitHadronAbsorberPointCollection->Delete();
     delete fexitHadronAbsorberPointCollection;
   }
 }
@@ -161,7 +159,7 @@ void exitHadronAbsorber::Initialize()
 void exitHadronAbsorber::EndOfEvent()
 {
 
-  fexitHadronAbsorberPointCollection->Clear();
+  fexitHadronAbsorberPointCollection->clear();
 
 }
 
@@ -308,27 +306,37 @@ vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom, Int_t eventID)
 {
-  TClonesArray& clref = *fexitHadronAbsorberPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
-         time, length, eLoss, pdgCode,Lpos,Lmom, eventID);
+  fexitHadronAbsorberPointCollection->emplace_back(trackID, detID, pos, mom,
+         time, length, eLoss, pdgCode, Lpos, Lmom, eventID);
+  return &(fexitHadronAbsorberPointCollection->back());
 }
 
 void exitHadronAbsorber::Register()
 {
 
   TString name  = fVetoName+"Point";
-  TString title = fVetoName;
-  FairRootManager::Instance()->Register(name, title,
-                                        fexitHadronAbsorberPointCollection, kTRUE);
+  FairRootManager::Instance()->RegisterAny(name.Data(),
+                                           fexitHadronAbsorberPointCollection, kTRUE);
 }
 
 TClonesArray* exitHadronAbsorber::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fexitHadronAbsorberPointCollection; }
-  else { return NULL; }
+  return nullptr;
 }
+
 void exitHadronAbsorber::Reset()
 {
-  fexitHadronAbsorberPointCollection->Clear();
+  fexitHadronAbsorberPointCollection->clear();
+}
+
+void exitHadronAbsorber::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fexitHadronAbsorberPointCollection) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
