@@ -141,60 +141,34 @@ jobs:
     needs: run-sim-chain
     if: github.ref == 'refs/heads/master'
 
-    strategy:
-      fail-fast: false
-      matrix:
-        vessel_option: [vacuums, helium]
-        SND_option: [all]
-        muon_shield: [warm_opt, New_HA_Design]
-        target: [old, Jun25]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Download physics metrics
+      - name: Download all physics metrics
         uses: actions/download-artifact@v4
         with:
-          name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+          pattern: metrics-*
+          path: metrics/
 
-      - name: Store metrics in git notes
+      - name: Store all metrics in git notes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          NOTES_REF="refs/notes/ci/physics-metrics/${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}"
-
-          # Create notes ref if it doesn't exist
-          git notes --ref=ci/physics-metrics/${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }} add -f -F physics_metrics.json ${{ github.sha }} || true
-
-          # Push notes to remote with retry logic
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          SLEEP_TIME=2
-
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            # Fetch latest notes to avoid conflicts
-            git fetch origin "${NOTES_REF}:${NOTES_REF}" 2>/dev/null || true
-
-            # Try to push
-            if git push origin "${NOTES_REF}"; then
-              echo "Successfully pushed notes"
-              exit 0
-            fi
-
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              echo "Push failed, retrying in ${SLEEP_TIME}s (attempt $RETRY_COUNT/$MAX_RETRIES)"
-              sleep $SLEEP_TIME
-              SLEEP_TIME=$((SLEEP_TIME * 2))
+          # Store metrics for each configuration
+          for dir in metrics/metrics-*; do
+            if [ -d "$dir" ]; then
+              config=$(basename "$dir" | sed 's/^metrics-//')
+              echo "Storing metrics for configuration: $config"
+              git notes --ref=ci/physics-metrics/$config add -f -F "$dir/physics_metrics.json" ${{ github.sha }}
             fi
           done
 
-          echo "Failed to push notes after $MAX_RETRIES attempts"
-          exit 1
+          # Push all notes refs at once
+          git push origin 'refs/notes/ci/physics-metrics/*'
 
   compare-metrics:
     runs-on: ubuntu-latest
