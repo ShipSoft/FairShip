@@ -23,7 +23,7 @@ def merge():
    tca_vec.ResizeTo(sTree.InMuon[0])
    ROOT.std.swap(tca_vec, sTree.InMuon[0])
    for part in sTree.Particles:
-      nPart = dPart.GetEntries()
+      nPart = len(dPart)
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
       tca_vec = dPart.ConstructedAt(nPart)
       tca_vec.ResizeTo(part)
@@ -49,7 +49,7 @@ def makePlots(sTree):
    w = inMu[8]
    P = ROOT.TMath.Sqrt(inMu[1]**2+inMu[2]**2+inMu[3]**2)
    rc = h['muP'].Fill(P,w)
-   rc = h['nOut'].Fill(sTree.Particles.GetEntries() )
+   rc = h['nOut'].Fill(len(sTree.Particles))
    rc = h['pos'].Fill(inMu[7],inMu[5],inMu[6] )
 def test(fn = "test.root"):
  fm    = ROOT.TFile(fn)
