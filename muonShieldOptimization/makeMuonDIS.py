@@ -106,7 +106,7 @@ for k in range(nStart,nEnd):
       m = array('d',[did,dpx,dpy,dpz,E])
       part = ROOT.TVectorD(5,m)
 # copy to branch
-      nPart = dPart.GetEntries()
+      nPart = len(dPart)
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
       tca_vec = dPart.ConstructedAt(nPart)
       tca_vec.ResizeTo(part)
