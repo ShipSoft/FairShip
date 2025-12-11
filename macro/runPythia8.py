@@ -97,7 +97,7 @@ for n in range(int(options.NPoT)):
     py = generators[g]
     rc = py.next()
     nmu = {}
-    for ii in range(1,py.event.size()):
+    for ii in range(1,len(py.event)):
        if options.DrellYan and py.event[ii].id()!=23: continue
        if options.PhotonCollision and py.event[ii].id()!=22: continue
        for m in py.event.daughterList(ii):

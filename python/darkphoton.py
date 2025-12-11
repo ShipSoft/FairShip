@@ -57,7 +57,7 @@ class DarkPhoton:
 
     def interpolatePDGtable(self):
         """ Find the best value for R for the given center-of-mass energy """
-        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)
+        fun = r.Math.Interpolator(len(self.dataEcm),r.Math.Interpolation.kLINEAR)
         fun.SetData(self.dataEcm,self.dataR);
         return fun
 
