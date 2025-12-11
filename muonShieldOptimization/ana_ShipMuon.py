@@ -617,7 +617,7 @@ def executeOneFile(fn,output=None,pid=None):
   for n in range(nEvents):
    rc = sTree.GetEntry(n)
    theMuon = sTree.MCTrack[0]
-   if sTree.MCTrack.GetEntries() > 1:
+   if len(sTree.MCTrack) > 1:
     w = sTree.MCTrack[1].GetWeight() # also works for neutrinos
    else:
     print('should not happen with new files',n,fn)
@@ -789,7 +789,7 @@ def AnaEventLoop():
   for n in range(nEvents):
    sTree.GetEntry(n)
    if n==0 : print('now at event ',n,f.GetName())
-   if sTree.MCTrack.GetEntries() > 1:
+   if len(sTree.MCTrack) > 1:
     wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
    else:
     wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
@@ -824,7 +824,7 @@ def muDISntuple(fn):
   nEvents = sTree.GetEntries()
   for n in range(nEvents):
    sTree.GetEntry(n)
-   if sTree.MCTrack.GetEntries() > 1:
+   if len(sTree.MCTrack) > 1:
       wg = sTree.MCTrack[1].GetWeight()
    else:
       wg = sTree.MCTrack[0].GetWeight()
@@ -862,7 +862,7 @@ def analyzeConcrete():
   ROOT.gROOT.cd()
   for n in range(nEvents):
    rc=sTree.GetEntry(n)
-   if sTree.MCTrack.GetEntries() > 1:
+   if len(sTree.MCTrack) > 1:
       wg = sTree.MCTrack[1].GetWeight()
    else:
       wg = sTree.MCTrack[0].GetWeight()
@@ -927,7 +927,7 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
      x = ahit.GetX()
      y = ahit.GetY()
      z = ahit.GetZ()
-     if sTree.MCTrack.GetEntries() > 1:
+     if len(sTree.MCTrack) > 1:
       wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
      else:
       wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
@@ -1074,7 +1074,7 @@ def eventsWithStrawPoints(i):
  mom = ROOT.TVector3()
  for i in range(sTree.GetEntries()):
    sTree.GetEntry(i)
-   nS = sTree.strawtubesPoint.GetEntries()
+   nS = len(sTree.strawtubesPoint)
    if nS>0:
      mu = sTree.MCTrack[0]
      mu.GetMomentum(mom)
