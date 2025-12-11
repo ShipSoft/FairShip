@@ -444,38 +444,37 @@ $(document).ready(function(){initNavTree('run__fixedTarget_8py_source.html','');
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3">  343</a></span>nEvents = 0</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    rc = t.GetEvent(n)</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">if</span> (t.PlaneHAPoint.GetEntries() &gt; 0) <span class="keywordflow">or</span> (args.AddCylindricalSensPlane <span class="keywordflow">and</span> t.PlaneTPoint.GetEntries() &gt; 0):</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">if</span> (len(t.PlaneHAPoint) &gt; 0) <span class="keywordflow">or</span> (args.AddCylindricalSensPlane <span class="keywordflow">and</span> len(t.PlaneTPoint) &gt; 0):</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        rc = sTree.Fill()</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        nEvents += 1</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="comment">#t.Clear()</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>fout.cd()</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  352</a></span>    x = fin.Get(k.GetName())</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  353</a></span>    className = x.Class().GetName()</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>) &lt; 0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>) &lt; 0:</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  355</a></span>        xcopy = x.Clone()</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        rc = xcopy.Write()</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>sTree.AutoSave()</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  358</a></span>ff = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>].Clone(fout.GetName())</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>fout.cd()</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>sTree.Write()</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>fout.Close()</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  364</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  365</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>, rc1, rc2)</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>print(f<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber: {nEvents}&quot;</span>)</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="keywordflow">if</span> checkOverlap:</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  372</a></span>    sGeo = ROOT.gGeoManager</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    sGeo.CheckOverlaps()</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    sGeo.PrintOverlaps()</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keyword">import</span> saveBasicParameters</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir), ship_geo)</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>fout.cd()</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  351</a></span>    x = fin.Get(k.GetName())</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  352</a></span>    className = x.Class().GetName()</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>) &lt; 0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>) &lt; 0:</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  354</a></span>        xcopy = x.Clone()</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        rc = xcopy.Write()</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>sTree.AutoSave()</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  357</a></span>ff = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>].Clone(fout.GetName())</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>fout.cd()</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>sTree.Write()</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>fout.Close()</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  363</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  364</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>, rc1, rc2)</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>print(f<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber: {nEvents}&quot;</span>)</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="keywordflow">if</span> checkOverlap:</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  371</a></span>    sGeo = ROOT.gGeoManager</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    sGeo.CheckOverlaps()</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    sGeo.PrintOverlaps()</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keyword">import</span> saveBasicParameters</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir), ship_geo)</div>
 <div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a3fdf0d174d3eccaaa0e4daa18e8c8119"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">Initialize(p8)</div><div class="ttdef"><b>Definition</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00009">AddDiMuonDecayChannelsToG4.py:9</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00231">geometry_config.py:241</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_adfab540557e98157435b5bf6dd57d3fd"><div class="ttname"><a href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">run_fixedTarget.get_work_dir</a></div><div class="ttdeci">get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00033">run_fixedTarget.py:33</a></div></div>
