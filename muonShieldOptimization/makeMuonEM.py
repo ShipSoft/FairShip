@@ -46,7 +46,7 @@ for k in range(sTree.GetEntries()):
      m = array('d',[pid,px,py,pz,E])
      part = ROOT.TVectorD(5,m)
 # copy to branch
-     nPart = dPart.GetEntries()
+     nPart = len(dPart)
      dPart[nPart] = part
      dTree.Fill()
 fout.cd()
