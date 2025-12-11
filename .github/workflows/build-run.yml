@@ -158,6 +158,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Fetch existing notes first to avoid conflicts
+          echo "Fetching existing notes..."
+          git fetch origin 'refs/notes/ci/physics-metrics/*:refs/notes/ci/physics-metrics/*' || echo "No existing notes found"
+
           # Store metrics for each configuration
           for dir in metrics/metrics-*; do
             if [ -d "$dir" ]; then
