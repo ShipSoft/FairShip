@@ -184,7 +184,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
             atrack = atracklet.getList()
 
-            if atrack.size() == 0:
+            if len(atrack) == 0:
                 continue
 
             hits = {'X': [], 'Y': [], 'Z': [],

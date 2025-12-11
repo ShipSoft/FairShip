@@ -204,7 +204,7 @@ class ShipDigiReco:
     pdg = 13 # assume all tracks are muons
     meas = hitPosLists[atrack]
     detIDs = hit_detector_ids[atrack]
-    nM = meas.size()
+    nM = len(meas)
     if nM < 25 : continue                          # not enough hits to make a good trackfit
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit
     if global_variables.debug:
@@ -326,8 +326,8 @@ class ShipDigiReco:
   if global_variables.debug:
    print('save tracklets:')
    for x in self.recoTree.Tracklets:
-    print(x.getType(),x.getList().size())
-  return self.fGenFitArray.size()
+    print(x.getType(),len(x.getList()))
+  return len(self.fGenFitArray)
 
  def findGoodTracks(self):
    self.goodTracksVect.clear()
