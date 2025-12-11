@@ -332,9 +332,9 @@ class DrawTracks(ROOT.FairTask):
         self.comp.DestroyElements()
         self.comp.OpenCompound()
         if sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR"):
-            if sTree.FitTracks.GetEntries() > 0:
+            if len(sTree.FitTracks) > 0:
                 self.DrawFittedTracks()
-        if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0:
+        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0:
             if globals()["withMCTracks"]:
                 if top.GetNode("Tunnel_1"):
                     DrawSimpleMCTracks()  # for sndlhc, until more details are simulated

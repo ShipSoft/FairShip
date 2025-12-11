@@ -116,10 +116,10 @@ def inspect_file(filename):
         fix_target = Fixtarget.get(isProton, "unknown")
         cross_sec = muon[10]
 
-        nParticles = event.DISParticles.GetEntries()
-        nSoftTracks = event.SoftParticles.GetEntries()
-        nSBThits = event.muon_vetoPoints.GetEntries()
-        nUBThits = event.muon_UpstreamTaggerPoints.GetEntries()
+        nParticles = len(event.DISParticles)
+        nSoftTracks = len(event.SoftParticles)
+        nSBThits = len(event.muon_vetoPoints)
+        nUBThits = len(event.muon_UpstreamTaggerPoints)
 
         table_rows.append(
             [i, fix_target, nParticles, nSoftTracks, nSBThits, nUBThits, cross_sec]
