@@ -81,7 +81,7 @@ class Task:
   self.fPartArray.clear()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
   goodTracks = getattr(self.sTree,self.goodTracksLoc)
-  if goodTracks.size() < 2: return
+  if len(goodTracks) < 2: return
   PosDirCharge,CovMat,scalFac = {},{},{}
   for tr in goodTracks:
    fitStatus = fittedTracks[tr].getFitStatus()
