@@ -4,6 +4,7 @@
 // MTC detector specific headers
 #include "MTCDetector.h"
 
+#include "FairLink.h"
 #include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
@@ -155,7 +156,7 @@ MTCDetector::MTCDetector()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
+    , fMTCDetectorPoints(nullptr)
 {}
 
 MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int_t DetId)
@@ -167,14 +168,14 @@ MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
+    , fMTCDetectorPoints(nullptr)
 {}
 
 MTCDetector::~MTCDetector()
 {
-    if (fMTCDetectorPointCollection) {
-        fMTCDetectorPointCollection->Delete();
-        delete fMTCDetectorPointCollection;
+    if (fMTCDetectorPoints) {
+        fMTCDetectorPoints->clear();
+        delete fMTCDetectorPoints;
     }
 }
 
@@ -775,29 +776,38 @@ void MTCDetector::SiPMmapping()
 
 void MTCDetector::Register()
 {
-    TString name = "MTCDetPoint";
-    TString title = "MTC";
-    FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
-    LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
+    if (!fMTCDetectorPoints) {
+        fMTCDetectorPoints = new std::vector<MTCDetPoint>();
+    }
+    FairRootManager::Instance()->RegisterAny("MTCDetPoint", fMTCDetectorPoints, kTRUE);
+    LOG(debug) << this->GetName() << ", Register() says: registered MTCDetPoint collection";
 }
 
 TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fMTCDetectorPointCollection;
-    } else {
-        return nullptr;
+    return nullptr;
+}
+
+void MTCDetector::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fMTCDetectorPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
     }
 }
 
 void MTCDetector::Reset()
 {
-    fMTCDetectorPointCollection->Clear();
+    fMTCDetectorPoints->clear();
 }
 
 void MTCDetector::EndOfEvent()
 {
-    fMTCDetectorPointCollection->Clear();
+    fMTCDetectorPoints->clear();
 }
 
 MTCDetPoint* MTCDetector::AddHit(Int_t trackID,
@@ -809,8 +819,6 @@ MTCDetPoint* MTCDetector::AddHit(Int_t trackID,
                                  Double_t eLoss,
                                  Int_t pdgCode)
 {
-    TClonesArray& clref = *fMTCDetectorPointCollection;
-    Int_t size = clref.GetEntriesFast();
-
-    return new (clref[size]) MTCDetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    fMTCDetectorPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return &(fMTCDetectorPoints->back());
 }

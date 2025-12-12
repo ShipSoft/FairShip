@@ -12,9 +12,9 @@
 #include "TNtuple.h"
 #include "TFile.h"
 #include <map>
+#include <vector>
 
 class FairVolume;
-class TClonesArray;
 
 class exitHadronAbsorber: public FairDetector
 {
@@ -45,10 +45,13 @@ class exitHadronAbsorber: public FairDetector
     virtual void   Register();
 
     /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const ;
+    virtual TClonesArray* GetCollection(Int_t iColl) const;
 
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
+
+    /**      Update track indices in points after track pruning      */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
@@ -110,7 +113,7 @@ class exitHadronAbsorber: public FairDetector
     TClonesArray* fElectrons; //!
     Int_t index;
     /** container for data points */
-    TClonesArray*  fexitHadronAbsorberPointCollection;
+    std::vector<vetoPoint>*  fexitHadronAbsorberPointCollection;
     ClassDef(exitHadronAbsorber, 0)
 };
 
