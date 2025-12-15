@@ -53,7 +53,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   const auto& firstPoint = points[0];
   double pointX =  firstPoint.GetX();
   double pointY =  firstPoint.GetY();
-  double pointZ =  firstPoint.GetZ();
   int detID =  firstPoint.GetDetectorID();
 
   // Sum energy from all points
@@ -91,13 +90,11 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   double zHalfLength = box->GetDZ();
 
   TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
-  TGeoBBox* boxPassive = dynamic_cast<TGeoBBox*>(passiveLayer->GetVolume()->GetShape());
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;
   // std::cout<< "-- pointX = " << pointX << std::endl;
   // std::cout<< "-- pointY = " << pointY << std::endl;
-  // std::cout<< "-- pointZ = " << pointZ << std::endl;
   // std::cout<< "-- detID = " << detID << std::endl;
   // std::cout<< "-- stripName = " << stripName << std::endl;
   // std::cout<< "-- isPrec = " << isPrec << std::endl;
@@ -113,7 +110,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   // std::cout<< "-- stripCoordinatesMaster[2] = " << stripCoordinatesMaster[2] << std::endl;
 
 
-  // TGeoNode* check = navigator->FindNode(pointX,pointY,pointZ);
 
   SetEnergy(pointE);
   if (isPrec==1) SetXYZ(pointX,pointY,stripCoordinatesMaster[2]);

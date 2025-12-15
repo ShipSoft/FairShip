@@ -26,6 +26,7 @@ enum DetectorId
     kPreshower,
     kTRSTATION,
     kSplitCal,
+    kHCAL,
     kBox1,
     kSpectrometer,
     kPixelModules,

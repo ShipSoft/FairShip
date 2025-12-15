@@ -492,6 +492,23 @@ def create_config(
         + c.SplitCal.BigGap
     )
 
+
+    c.HCAL = AttrDict()
+    c.HCAL.ZStart = (
+        38.450 * u.m + c.decayVolume.z
+    )  # Relative start z of split cal to decay vessel centre
+    c.HCAL.TotalXDim = 4.32 * u.m / 2  # half length
+    c.HCAL.TotalYDim = 6.48 * u.m / 2  # half length
+    c.HCAL.ScintBarX = 216 * u.cm #For horizontal bars
+    c.HCAL.ScintBarY = 6 * u.cm
+    c.HCAL.ScintBarZ = 1. * u.cm
+    c.HCAL.PassiveLayerZ = 17. * u.cm
+    c.HCAL.nSamplings = 5
+    c.HCAL.ActiveHCALMaterial = 1
+    c.HCAL.NBarsPerLayer = 36 
+    c.HCAL.NmodulesX = 2
+    c.HCAL.NmodulesY = 3
+
     c.MuonStation0 = AttrDict(
         z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
     )

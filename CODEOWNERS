@@ -12,6 +12,7 @@ python/detectors/MTCDetector.py @eduard322
 
 passive/ShipMuonShield.* @Gfrisella  # Guglielmo Frisella (U Zürich)
 
-splitcal/* @matclim  # Matei Climescu (JGU Mainz)
+splitcal/* @matclim  # Matei Climescu (UGent)
+HCAL/* @matclim  # Matei Climescu (UGent)
 
 strawtubes/* @wcmartylee  # Wei-Chieh Marty Lee (U Hamburg)
