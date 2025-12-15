@@ -1,21 +1,23 @@
 <map id="muonShieldOptimization/exitHadronAbsorber.h" name="muonShieldOptimization/exitHadronAbsorber.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="379,5,562,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="445,5,627,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,93,117,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="380,47,131,94,130,89,379,41"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="445,44,131,96,131,91,444,39"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="177,167,268,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="379,38,320,47,261,59,212,75,194,85,182,95,177,109,180,124,201,155,197,158,175,127,171,109,178,92,191,80,210,70,260,54,319,41,379,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="445,34,368,40,290,52,223,70,198,82,182,95,177,109,180,125,202,155,197,159,175,127,171,109,178,92,196,77,221,65,289,47,368,35,444,28"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="192,93,323,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="420,48,303,91,301,86,419,43"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="470,48,312,92,311,87,469,43"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="347,93,464,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="457,47,426,84,422,81,453,44"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="506,48,438,88,435,84,503,43"/>
 <area shape="rect" id="Node000006" href="$vetoPoint_8h.html" title=" " alt="" coords="488,93,584,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="489,44,520,81,516,84,484,47"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="539,46,539,79,533,79,533,46"/>
 <area shape="rect" id="Node000010" title=" " alt="" coords="608,93,693,119"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="515,43,613,85,611,90,513,48"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="565,43,624,83,621,88,562,48"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="718,93,783,119"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="538,43,705,89,704,94,537,48"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="588,43,707,86,706,91,587,48"/>
 <area shape="rect" id="Node000012" title=" " alt="" coords="808,93,859,119"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="563,40,670,62,795,91,794,96,669,67,562,46"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="613,43,795,90,794,96,612,48"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="883,93,946,119"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="628,41,870,91,869,96,627,46"/>
 <area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="488,121,282,167,281,162,487,116"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="359,167,470,192"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="518,121,447,162,445,157,515,116"/>

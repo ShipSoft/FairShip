@@ -8,7 +8,7 @@ var classTracklet =
     [ "getIndices", "classTracklet.html#a6a7ff9a04fb7440f85ac65653056fda7", null ],
     [ "getList", "classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8", null ],
     [ "getType", "classTracklet.html#a5338fe0de6b6b5e1318ea032b74e32c3", null ],
-    [ "link2MCTrack", "classTracklet.html#a4c6acb8a5decfa7032ca7fdd4a0d92ad", null ],
+    [ "link2MCTrack", "classTracklet.html#a16c9f258818cd65eaf2bca71e6c052e4", null ],
     [ "Print", "classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd", null ],
     [ "setType", "classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f", null ],
     [ "aTracklet", "classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8", null ],

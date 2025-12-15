@@ -118,6 +118,7 @@ var annotated_dup =
     [ "FixedTargetGenerator", "classFixedTargetGenerator.html", "classFixedTargetGenerator" ],
     [ "GenieGenerator", "classGenieGenerator.html", "classGenieGenerator" ],
     [ "HNLPythia8Generator", "classHNLPythia8Generator.html", "classHNLPythia8Generator" ],
+    [ "ISTLPointContainer", "classISTLPointContainer.html", "classISTLPointContainer" ],
     [ "MTCDetector", "classMTCDetector.html", "classMTCDetector" ],
     [ "MTCDetHit", "classMTCDetHit.html", "classMTCDetHit" ],
     [ "MTCDetPoint", "classMTCDetPoint.html", "classMTCDetPoint" ],
