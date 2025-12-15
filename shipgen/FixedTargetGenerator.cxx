@@ -9,6 +9,7 @@
 #include "Pythia8Plugins/EvtGen.h"
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
+#include "MeanMaterialBudget.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
@@ -229,7 +230,6 @@ Bool_t FixedTargetGenerator::Init()
 
    TString ParticleFile = TString(evtgendata) + "/evt.pdl";
    std::cout << "Using $EVTGENDATA " << evtgendata << std::endl;
-   EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
 #if PYTHIA_VERSION_INTEGER < 8315
@@ -265,7 +265,7 @@ Bool_t FixedTargetGenerator::Init()
    end[2]=endZ;
    LOG(info) << "FixedTargetGenerator: Using geometry-based target coordinates startZ=" << startZ << " endZ=" << endZ;
    //find maximum interaction length
-   bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
+   bparam = shipgen::MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
   } else if (targetName!=""){
    // Fallback to fragile TGeo navigation for backward compatibility
@@ -301,7 +301,7 @@ Bool_t FixedTargetGenerator::Init()
    end[1]=yOff;
    end[2]=endZ;
 //find maximum interaction length
-   bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
+   bparam = shipgen::MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
   } else {
       LOG(fatal) << "No target set.";
@@ -326,7 +326,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   Double_t zinter=0;
   Double_t ZoverA = 1.;
-  if (targetName.Data() !=""){
+  if (!targetName.IsNull()){
 // calculate primary proton interaction point:
 // loop over trajectory between start and end to pick an interaction point, copied from GenieGenerator and adapted to hadrons
    Double_t prob2int = -1.;
@@ -344,7 +344,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
  //place x,y,z uniform along path
       zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
-      bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
+      bparam = shipgen::MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8];
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
       TGeoMaterial *mat = 0;

@@ -31,8 +31,9 @@ jobs:
 
       - name: Build
         run: |
+          set -o pipefail
           source /cvmfs/ship.cern.ch/$version/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs $(nproc) --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
 
       - name: Run tests
         run: |
@@ -116,12 +117,165 @@ jobs:
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/examples/analysis_example.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 
+      - name: Extract physics metrics
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
+
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
         with:
           name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
           path: |
             *.root
+
+      - name: Upload physics metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+          path: physics_metrics.json
+
+  store-metrics:
+    runs-on: ubuntu-latest
+    needs: run-sim-chain
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all physics metrics
+        uses: actions/download-artifact@v4
+        with:
+          pattern: metrics-*
+          path: metrics/
+
+      - name: Store all metrics in git notes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Fetch existing notes first to avoid conflicts
+          echo "Fetching existing notes..."
+          git fetch origin 'refs/notes/ci/physics-metrics/*:refs/notes/ci/physics-metrics/*' || echo "No existing notes found"
+
+          # Store metrics for each configuration
+          for dir in metrics/metrics-*; do
+            if [ -d "$dir" ]; then
+              config=$(basename "$dir" | sed 's/^metrics-//')
+              echo "Storing metrics for configuration: $config"
+              git notes --ref=ci/physics-metrics/$config add -f -F "$dir/physics_metrics.json" ${{ github.sha }}
+            fi
+          done
+
+          # Push all notes refs at once
+          git push origin 'refs/notes/ci/physics-metrics/*'
+
+  compare-metrics:
+    runs-on: ubuntu-latest
+    needs: run-sim-chain
+    if: github.event_name == 'pull_request'
+
+    strategy:
+      matrix:
+        vessel_option: [vacuums, helium]
+        SND_option: [all]
+        muon_shield: [warm_opt, New_HA_Design]
+        target: [old, Jun25]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch git notes
+        run: |
+          git fetch origin 'refs/notes/ci/physics-metrics/*:refs/notes/ci/physics-metrics/*' || echo "No notes found yet"
+
+      - name: Download physics metrics
+        uses: actions/download-artifact@v4
+        with:
+          name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+
+      - name: Compare with reference metrics
+        run: |
+          # Get base commit (target branch)
+          BASE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
+
+          # Try to get reference metrics from git notes
+          if git notes --ref=ci/physics-metrics/${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }} show $BASE_SHA > reference_metrics.json 2>/dev/null; then
+            echo "Found reference metrics from commit $BASE_SHA"
+            python3 .github/scripts/compare_metrics.py reference_metrics.json physics_metrics.json > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}_${{ matrix.target }}.txt
+          else
+            echo "No reference metrics found for configuration ${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}" > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}_${{ matrix.target }}.txt
+            echo "This is expected for the first run with this configuration."
+          fi
+
+      - name: Upload comparison results
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparison-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+          path: comparison_*.txt
+
+  comment-pr:
+    runs-on: ubuntu-latest
+    needs: compare-metrics
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all comparison results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: comparison-*
+          path: comparisons/
+          merge-multiple: true
+
+      - name: Generate PR comment
+        run: |
+          python3 .github/scripts/generate_pr_comment.py comparisons/ -o comment.md
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('comment.md', 'utf8');
+
+            // Find existing comment
+            const {data: comments} = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Physics Metrics Comparison')
+            );
+
+            // Create or update comment
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
 
   run-fixed-target:
     runs-on: self-hosted

@@ -19,6 +19,7 @@
 #include "FairGeoNode.h"
 #include "FairGeoTransform.h"
 #include "FairGeoVolume.h"
+#include "FairLink.h"
 #include "FairRootManager.h"
 #include "FairRun.h"   // for FairRun
 #include "FairRun.h"
@@ -67,7 +68,7 @@ TargetTracker::TargetTracker()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fTTPointCollection(new TClonesArray("TTPoint"))
+    , fTTPoints(nullptr)
 {}
 
 TargetTracker::TargetTracker(const char* name,
@@ -84,7 +85,7 @@ TargetTracker::TargetTracker(const char* name,
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fTTPointCollection(new TClonesArray("TTPoint"))
+    , fTTPoints(nullptr)
 {
     TTrackerX = TTX;
     TTrackerY = TTY;
@@ -93,9 +94,9 @@ TargetTracker::TargetTracker(const char* name,
 
 TargetTracker::~TargetTracker()
 {
-    if (fTTPointCollection) {
-        fTTPointCollection->Delete();
-        delete fTTPointCollection;
+    if (fTTPoints) {
+        fTTPoints->clear();
+        delete fTTPoints;
     }
 }
 
@@ -337,7 +338,7 @@ void TargetTracker::DecodeTTID(Int_t detID, Int_t& NTT, int& nplane, Bool_t& ish
 
 void TargetTracker::EndOfEvent()
 {
-    fTTPointCollection->Clear();
+    fTTPoints->clear();
 }
 
 void TargetTracker::Register()
@@ -349,21 +350,32 @@ void TargetTracker::Register()
      only during the simulation.
      */
 
-    FairRootManager::Instance()->Register("TTPoint", "TargetTracker", fTTPointCollection, kTRUE);
+    if (!fTTPoints) {
+        fTTPoints = new std::vector<TTPoint>();
+    }
+    FairRootManager::Instance()->RegisterAny("TTPoint", fTTPoints, kTRUE);
 }
 
 TClonesArray* TargetTracker::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fTTPointCollection;
-    } else {
-        return NULL;
+    return nullptr;
+}
+
+void TargetTracker::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fTTPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
     }
 }
 
 void TargetTracker::Reset()
 {
-    fTTPointCollection->Clear();
+    fTTPoints->clear();
 }
 
 TTPoint* TargetTracker::AddHit(Int_t trackID,
@@ -375,8 +387,6 @@ TTPoint* TargetTracker::AddHit(Int_t trackID,
                                Double_t eLoss,
                                Int_t pdgCode)
 {
-    TClonesArray& clref = *fTTPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    // cout << "brick hit called"<< pos.z()<<endl;
-    return new (clref[size]) TTPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    fTTPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return &(fTTPoints->back());
 }

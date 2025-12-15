@@ -12,12 +12,24 @@ it in future.
 
 ## Unreleased
 
+### Changed
+
+* **Migrate detector MC point storage from TClonesArray to std::vector**
+  Ten detector classes now use `std::vector<PointType>` instead of `TClonesArray` for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages `FairRootManager::RegisterAny()` for ROOT I/O. Affected detectors: TimeDet, UpstreamTagger, strawtubes, splitcal, veto, Target, TargetTracker, SiliconTarget, MTCDetector, and simpleTarget.
+
+* **Migrate ShipStack MC track storage from TClonesArray to std::vector**
+  ShipStack now uses `std::vector<ShipMCTrack>` instead of `TClonesArray` for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables `RegisterAny()` for MCTrack I/O. Includes bounds checking in ShipAna.py for all MCTrack vector accesses to handle the stricter indexing behaviour of std::vector compared to TClonesArray.
+* Migrate Tracklet container in shipDigiReco from TClonesArray to std::vector
+
 ### Added
 
 * Add HCAL with bars
+* **Add ISTLPointContainer interface for STL-based detector track index updating**
+  Introduces ISTLPointContainer interface enabling polymorphic track index updating for detectors using std::vector storage. ShipStack now automatically detects and handles both STL-based and TClonesArray-based detectors, ensuring MC points maintain correct track references after track filtering. Also adds missing parameterised constructors to simpleTarget and exitHadronAbsorber.
 * Add EventId and TrackID for MCTrack and HAPoint #944
 * **Data classes now support ROOT RNtuple I/O**
   All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of ShipParticle to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.
+* Add RNtuple conversion and inspection utilities (`macro/convertTreeToRNTuple.py`, `macro/inspect_tree_branches.py`) for testing and validation. Note that FairRoot I/O currently uses TClonesArray which is not supported by RNtuple.
 + Add option for an additional sensitive plane around the target in run_fixedTarget
 * Add CI job to run fixed target simulation (run_fixedTarget.py)
 * feat(python): Add experimental script to compare histograms
@@ -78,6 +90,10 @@ it in future.
 
 * Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for SiliconTarget, MTC, and Strawtubes.
 
+### Removed
+
+* Removed custom logger utilities (python/logger.py, utils/logger.hxx) in favour of Python's standard logging module
+
 ### Fixed
 
 * refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor
@@ -122,9 +138,13 @@ it in future.
 * Add flags for `python/ScifiMapping.py`
 * Fixed SiliconTarget detector identifier.
 * fix(muon): Make muonHit copy constructor public for std::vector compatibility
+* Fix the wrong methods in SND/MTC/MTCDetPoint.cxx to extract layer_id and layer_type for the MCPoint.
 
 ### Changed
 
+* Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ
+  following GEANT4 team recommendation and studies by Hanae Tilquin presented
+  at Nov. 2025 collaboration meeting and following software meetings.
 * Replace ConfigRegistry with function-based geometry configuration API. Use `geometry_config.create_config(**params)` instead of `ConfigRegistry.loadpy()`
 * Move `geometry_config.py` from `geometry/` to `python/` directory and update all imports from `from geometry import geometry_config` to `import geometry_config`
 * Refactor strawtubes digitisation to use dedicated detector class
@@ -209,6 +229,7 @@ it in future.
   - Update Python code in shipDigiReco.py to use modern constructors
   - Bump ClassDef versions to 2 for schema evolution
   - Add TrackInfo to RNTuple I/O test suite
+  - Move MeanMaterialBudget to standalone function to reduce duplication and allow proper attribution of code to ALICE
 
 ### Removed
 

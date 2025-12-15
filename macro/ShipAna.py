@@ -246,14 +246,16 @@ def checkHNLorigin(sTree):
  flag = False
 # only makes sense for signal == HNL
  hnlkey = -1
- for n in range(sTree.MCTrack.GetEntries()):
+ for n in range(sTree.MCTrack.size()):
    mo = sTree.MCTrack[n].GetMotherId()
-   if mo <0: continue
+   if mo < 0 or mo >= sTree.MCTrack.size(): continue
    if abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015:
        hnlkey = n
        break
  if hnlkey<0 :
   ut.reportError("ShipAna: checkHNLorigin, no HNL found")
+ elif hnlkey >= sTree.MCTrack.size():
+  ut.reportError("ShipAna: checkHNLorigin, HNL key out of bounds")
  else:
   # MCTrack after HNL should be first daughter
   theHNLVx = sTree.MCTrack[hnlkey]
@@ -385,6 +387,7 @@ def match2HNL(p):
     for t in [p.GetDaughter(0),p.GetDaughter(1)]:
       mcp = sTree.fitTrack2MC[t]
       while mcp > -0.5:
+        if mcp >= sTree.MCTrack.size(): break
         mo = sTree.MCTrack[mcp]
         if abs(mo.GetPdgCode()) == 9900015:
            hnlKey.append(mcp)
@@ -490,7 +493,8 @@ def myEventLoop(n):
   if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
   if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
   if not checkHNLorigin(sTree): return
-  if not sTree.MCTrack.GetEntries()>1: wg = 1.
+  if not sTree.MCTrack.size() > 1:
+      wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 
@@ -538,8 +542,8 @@ def myEventLoop(n):
    cov = fittedState.get6DCov()
    if len(sTree.fitTrack2MC)-1<key: continue
    mcPartKey = sTree.fitTrack2MC[key]
+   if mcPartKey < 0 or mcPartKey >= sTree.MCTrack.size(): continue
    mcPart    = sTree.MCTrack[mcPartKey]
-   if not mcPart : continue
    Ptruth_start     = mcPart.GetP()
    Ptruthz_start    = mcPart.GetPz()
    # get p truth from first strawpoint
@@ -621,7 +625,9 @@ def myEventLoop(n):
     h['nrtracks'].Fill(vetoDets['TRA'][2])
     h['nrSBT'].Fill(vetoDets['SBT'][2])
 #   HNL true
-    mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]
+    mcTrackIdx = sTree.fitTrack2MC[t1]
+    if mcTrackIdx < 0 or mcTrackIdx >= sTree.MCTrack.size(): continue
+    mctrack = sTree.MCTrack[mcTrackIdx]
     h['Vzresol'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )
     h['Vxresol'].Fill( (mctrack.GetStartX()-HNLPos.X())/u.cm )
     h['Vyresol'].Fill( (mctrack.GetStartY()-HNLPos.Y())/u.cm )
@@ -674,10 +680,12 @@ def HNLKinematics():
  for n in range(sTree.GetEntries()):
   rc = sTree.GetEntry(n)
   for hnlkey in [1,2]:
+   if hnlkey >= sTree.MCTrack.size(): continue
    if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:
     theHNL = sTree.MCTrack[hnlkey]
     wg = theHNL.GetWeight()
     if not wg>0.: wg=1.
+    if hnlkey-1 < 0 or hnlkey-1 >= sTree.MCTrack.size(): continue
     idMother = abs(sTree.MCTrack[hnlkey-1].GetPdgCode())
     if idMother not in HNLorigin: HNLorigin[idMother]=0
     HNLorigin[idMother]+=wg

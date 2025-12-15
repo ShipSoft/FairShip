@@ -441,22 +441,6 @@ def configure(run, ship_geo):
     HCAL.SetNmodulesXY(inHCAL.NmodulesX,inHCAL.NmodulesY)  #Define the amount of modules in X and in Y, by default 2 and 3
     HCAL.SetModuleSize(inHCAL.Module_size_X ,inHCAL.Module_size_Y) #How big are the modules? By default 216cm * 216cm
 
-    Muon = ROOT.muon("Muon", ROOT.kTRUE)
-    Muon.SetZStationPositions(
-        ship_geo.MuonStation0.z,
-        ship_geo.MuonStation1.z,
-        ship_geo.MuonStation2.z,
-        ship_geo.MuonStation3.z,
-    )
-    Muon.SetZFilterPositions(
-        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z
-    )
-    Muon.SetXMax(ship_geo.Muon.XMax)
-    Muon.SetYMax(ship_geo.Muon.YMax)
-    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
-    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
-    detectorList.append(Muon)
-
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
     upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
     upstreamTagger.SetBoxDimensions(

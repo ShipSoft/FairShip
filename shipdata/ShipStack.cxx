@@ -12,6 +12,7 @@
 #include "ShipMCTrack.h"                // for ShipMCTrack
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "ISTLPointContainer.h"         // for STL-based detector interface
 
 #include <iosfwd>                    // for ostream
 #include "TClonesArray.h"               // for TClonesArray
@@ -36,7 +37,7 @@ ShipStack::ShipStack(Int_t size)
   : FairGenericStack(),
     fStack(),
     fParticles(new TClonesArray("TParticle", size)),
-    fTracks(new TClonesArray("ShipMCTrack", size)),
+    fTracks(nullptr),
     fStoreMap(),
     fStoreIter(),
     fIndexMap(),
@@ -52,6 +53,8 @@ ShipStack::ShipStack(Int_t size)
     fEnergyCut(0.),
     fStoreMothers(kTRUE)
 {
+  fTracks = new std::vector<ShipMCTrack>();
+  fTracks->reserve(size);
 }
 
 // -------------------------------------------------------------------------
@@ -66,7 +69,6 @@ ShipStack::~ShipStack()
     delete fParticles;
   }
   if (fTracks) {
-    fTracks->Delete();
     delete fTracks;
   }
 }
@@ -252,15 +254,16 @@ void ShipStack::FillTrackArray()
     Bool_t store = (*fStoreIter).second;
 
     if (store) {
-      ShipMCTrack* track = new( (*fTracks)[fNTracks]) ShipMCTrack(dynamic_cast<TParticle*>(GetParticle(iPart)));
+      fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
+      ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
       for (Int_t iDet=kVETO; iDet<kEndOfList; iDet++) {
         pair<Int_t, Int_t> a(iPart, iDet);
-        track->SetNPoints(iDet, fPointsMap[a]);
+        track.SetNPoints(iDet, fPointsMap[a]);
       }
-      track->SetTrackID(fNTracks);
-      track->SetEventID(evtNo);
+      track.SetTrackID(fNTracks);
+      track.SetEventID(evtNo);
       fNTracks++;
     } else { fIndexMap[iPart] = -2; }
 
@@ -286,13 +289,13 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
   // First update mother ID in MCTracks
   for (Int_t i=0; i<fNTracks; i++) {
-    ShipMCTrack* track = dynamic_cast<ShipMCTrack*>(fTracks->At(i));
-    Int_t iMotherOld = track->GetMotherId();
+    ShipMCTrack& track = (*fTracks)[i];
+    Int_t iMotherOld = track.GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
       LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
     }
-    track->SetMotherId( (*fIndexIter).second );
+    track.SetMotherId( (*fIndexIter).second );
   }
 
 
@@ -307,28 +310,34 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
   FairDetector* det = NULL;
   while( (det = dynamic_cast<FairDetector*>(fDetIter->Next()) ) ) {
 
-
-    // --> Get hit collections from detector
-    Int_t iColl = 0;
-    TClonesArray* hitArray;
-    while ( (hitArray = det->GetCollection(iColl++)) ) {
+    // --> Check if detector uses STL containers (std::vector)
+    if (auto* stlDet = dynamic_cast<ISTLPointContainer*>(det)) {
+      // Use new interface for STL-based detectors
+      stlDet->UpdatePointTrackIndices(fIndexMap);
       nColl++;
-      Int_t nPoints = hitArray->GetEntriesFast();
+    } else {
+      // --> Get hit collections from detector (legacy TClonesArray approach)
+      Int_t iColl = 0;
+      TClonesArray* hitArray;
+      while ( (hitArray = det->GetCollection(iColl++)) ) {
+        nColl++;
+        Int_t nPoints = hitArray->GetEntriesFast();
 
-      // --> Update track index for all MCPoints in the collection
-      for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-        FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
-        Int_t iTrack = point->GetTrackID();
+        // --> Update track index for all MCPoints in the collection
+        for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
+          FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
+          Int_t iTrack = point->GetTrackID();
 
-        fIndexIter = fIndexMap.find(iTrack);
-        if (fIndexIter == fIndexMap.end()) {
-          LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
+          fIndexIter = fIndexMap.find(iTrack);
+          if (fIndexIter == fIndexMap.end()) {
+            LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
+          }
+          point->SetTrackID((*fIndexIter).second);
+          point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
         }
-        point->SetTrackID((*fIndexIter).second);
-        point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
-      }
 
-    }   // Collections of this detector
+      }   // Collections of this detector
+    }
   }     // List of active detectors
   LOGF(debug, "...stack and  %i collections updated.", nColl);
 }
@@ -344,7 +353,7 @@ void ShipStack::Reset()
   fNPrimaries = fNParticles = fNTracks = 0;
   while (! fStack.empty() ) { fStack.pop(); }
   fParticles->Clear();
-  fTracks->Clear();
+  fTracks->clear();
   fPointsMap.clear();
 }
 // -------------------------------------------------------------------------
@@ -354,7 +363,7 @@ void ShipStack::Reset()
 // -----   Public method Register   ----------------------------------------
 void ShipStack::Register()
 {
-  FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
+  FairRootManager::Instance()->RegisterAny("MCTrack", fTracks, kTRUE);
 }
 // -------------------------------------------------------------------------
 
@@ -371,7 +380,7 @@ void ShipStack::Print(Int_t iVerbose) const
        << fNTracks << endl;
   if (iVerbose) {
     for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
-        dynamic_cast<ShipMCTrack*>(fTracks->At(iTrack))->Print(iTrack);
+        (*fTracks)[iTrack].Print(iTrack);
     }
   }
 }

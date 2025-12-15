@@ -3,6 +3,14 @@ SPDX-PackageName = "FairShip"
 SPDX-PackageSupplier = "CERN for the benefit of the SHiP Collaboration"
 SPDX-PackageDownloadLocation = "https://github.com/ShipSoft/FairShip"
 
+# MeanMaterialBudget function from ALICE AliRoot (BSD-3-Clause)
+[[annotations]]
+path = ["shipgen/MeanMaterialBudget.h", "shipgen/MeanMaterialBudget.cxx"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "ALICE Experiment at CERN, All rights reserved"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+# Default FairShip licence for all other files
 [[annotations]]
 path = "**"
 precedence = "aggregate"

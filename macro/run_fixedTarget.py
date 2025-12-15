@@ -343,10 +343,9 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if (t.PlaneHAPoint.GetEntries() > 0) or (args.AddCylindricalSensPlane and t.PlaneTPoint.GetEntries() > 0):
+    if (len(t.PlaneHAPoint) > 0) or (args.AddCylindricalSensPlane and len(t.PlaneTPoint) > 0):
         rc = sTree.Fill()
         nEvents += 1
-    #t.Clear()
 fout.cd()
 for k in fin.GetListOfKeys():
     x = fin.Get(k.GetName())

@@ -7,6 +7,7 @@
 
 #include "strawtubes.h"
 
+#include "FairLink.h"
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -49,7 +50,7 @@ strawtubes::strawtubes()
     , fLength(-1.)
     , fELoss(-1)
     , fMedium("air")
-    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    , fstrawtubesPoints(nullptr)
 {}
 
 strawtubes::strawtubes(std::string medium)
@@ -62,7 +63,7 @@ strawtubes::strawtubes(std::string medium)
     , fLength(-1.)
     , fELoss(-1)
     , fMedium(medium)
-    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    , fstrawtubesPoints(nullptr)
 {
 }
 
@@ -75,15 +76,15 @@ strawtubes::strawtubes(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    fstrawtubesPoints(nullptr)
 {
 }
 
 strawtubes::~strawtubes()
 {
-  if (fstrawtubesPointCollection) {
-    fstrawtubesPointCollection->Delete();
-    delete fstrawtubesPointCollection;
+  if (fstrawtubesPoints) {
+    fstrawtubesPoints->clear();
+    delete fstrawtubesPoints;
   }
 }
 
@@ -183,7 +184,7 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
 
 void strawtubes::EndOfEvent()
 {
-  fstrawtubesPointCollection->Clear();
+  fstrawtubesPoints->clear();
 }
 
 
@@ -197,20 +198,31 @@ void strawtubes::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("strawtubesPoint", "strawtubes",
-                                        fstrawtubesPointCollection, kTRUE);
+  fstrawtubesPoints = new std::vector<strawtubesPoint>();
+  FairRootManager::Instance()->RegisterAny("strawtubesPoint", fstrawtubesPoints, kTRUE);
 }
 
 
 TClonesArray* strawtubes::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fstrawtubesPointCollection; }
-  else { return NULL; }
+  return nullptr;
+}
+
+void strawtubes::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fstrawtubesPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 void strawtubes::Reset()
 {
-  fstrawtubesPointCollection->Clear();
+  fstrawtubesPoints->clear();
 }
 void strawtubes::SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4)
 {
@@ -278,12 +290,6 @@ void strawtubes::ConstructGeometry()
       implement here you own way of constructing the geometry. */
 
     TGeoVolume *top               = gGeoManager->GetTopVolume();
-    InitMedium("air");
-    TGeoMedium *air               = gGeoManager->GetMedium("air");
-    InitMedium("ShipSens");
-    TGeoMedium *Se                = gGeoManager->GetMedium("ShipSens");
-    InitMedium("aluminium");
-    TGeoMedium *Al                = gGeoManager->GetMedium("aluminium");
     InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
     InitMedium("STTmix8020_1bar");
@@ -310,9 +316,9 @@ void strawtubes::ConstructGeometry()
     Double_t rmin, rmax, T_station_z;
 
     // Arguments of boxes are half-lengths
-    TGeoBBox* detbox1 = new TGeoBBox(
+    [[maybe_unused]] TGeoBBox* detbox1 = new TGeoBBox(
         "detbox1", f_aperture_width + frame_width, f_aperture_height + frame_width - floor_offset / 2., f_station_length);
-    TGeoBBox* detbox2 = new TGeoBBox(
+    [[maybe_unused]] TGeoBBox* detbox2 = new TGeoBBox(
 	"detbox2",
 	straw_length + eps,
 	f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * straw_length * 2 + f_offset_layer / TMath::Cos(f_view_angle * TMath::Pi() / 180.0) + eps,
@@ -557,9 +563,7 @@ strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode, Double_t dist2Wire)
 {
-  TClonesArray& clref = *fstrawtubesPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  //std::cout << "adding hit detid " <<detID<<std::endl;
-  return new(clref[size]) strawtubesPoint(trackID, detID, pos, mom,
+  fstrawtubesPoints->emplace_back(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode, dist2Wire);
+  return &(fstrawtubesPoints->back());
 }

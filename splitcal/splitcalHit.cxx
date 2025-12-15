@@ -89,7 +89,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   double yHalfLength = box->GetDY();
   double zHalfLength = box->GetDZ();
 
-  TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;

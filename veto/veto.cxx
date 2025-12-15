@@ -20,6 +20,7 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
+#include "FairLink.h"
 #include "FairLogger.h"   /// for FairLogger, MESSAGE_ORIGIN
 #include "FairRootManager.h"
 #include "FairRun.h"
@@ -67,9 +68,9 @@ veto::veto()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fvetoPointCollection(new TClonesArray("vetoPoint"))
     , fFastMuon(kFALSE)
     , fFollowMuon(kFALSE)
+    , fvetoPoints(nullptr)
 {
     fUseSupport = 1;
     fLiquidVeto = 1;
@@ -82,9 +83,9 @@ veto::veto()
  */
 veto::~veto()
 {
-    if (fvetoPointCollection) {
-        fvetoPointCollection->Delete();
-        delete fvetoPointCollection;
+    if (fvetoPoints) {
+        fvetoPoints->clear();
+        delete fvetoPoints;
     }
 }
 
@@ -998,7 +999,7 @@ Bool_t veto::ProcessHits(FairVolume* vol)
 void veto::EndOfEvent()
 {
 
-    fvetoPointCollection->Clear();
+    fvetoPoints->clear();
 }
 
 void veto::PreTrack()
@@ -1013,25 +1014,33 @@ void veto::PreTrack()
 void veto::Register()   // create a branch in the output tree
 {
 
-    FairRootManager::Instance()->Register(
+    fvetoPoints = new std::vector<vetoPoint>();
+    FairRootManager::Instance()->RegisterAny(
         "vetoPoint",
-        "veto",
-        fvetoPointCollection,
+        fvetoPoints,
         kTRUE);   // kFALSE -> this collection will not be written to the file, will exist only during simulation.
 }
 
 TClonesArray* veto::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fvetoPointCollection;
-    } else {
-        return NULL;
+    return nullptr;
+}
+
+void veto::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fvetoPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
     }
 }
 
 void veto::Reset()
 {
-    fvetoPointCollection->Clear();
+    fvetoPoints->clear();
 }
 
 /**
@@ -1099,7 +1108,6 @@ vetoPoint* veto::AddHit(Int_t trackID,
                         TVector3 Lpos,
                         TVector3 Lmom)
 {
-    TClonesArray& clref = *fvetoPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    return new (clref[size]) vetoPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
+    fvetoPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
+    return &(fvetoPoints->back());
 }

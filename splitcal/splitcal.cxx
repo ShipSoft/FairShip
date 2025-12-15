@@ -5,7 +5,7 @@
 
 #include "splitcalPoint.h"
 
-
+#include "FairLink.h"
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
 #include "FairGeoNode.h"
@@ -48,7 +48,7 @@ splitcal::splitcal()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fsplitcalPointCollection(new TClonesArray("splitcalPoint"))
+    fsplitcalPoints(nullptr)
 {
 }
 
@@ -61,15 +61,15 @@ splitcal::splitcal(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fsplitcalPointCollection(new TClonesArray("splitcalPoint"))
+    fsplitcalPoints(nullptr)
 {
 }
 
 splitcal::~splitcal()
 {
-  if (fsplitcalPointCollection) {
-    fsplitcalPointCollection->Delete();
-    delete fsplitcalPointCollection;
+  if (fsplitcalPoints) {
+    fsplitcalPoints->clear();
+    delete fsplitcalPoints;
   }
 }
 
@@ -152,7 +152,7 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
 void splitcal::EndOfEvent()
 {
 
-  fsplitcalPointCollection->Clear();
+  fsplitcalPoints->clear();
 
 }
 
@@ -167,21 +167,32 @@ void splitcal::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("splitcalPoint", "splitcal",
-                                        fsplitcalPointCollection, kTRUE);
+  fsplitcalPoints = new std::vector<splitcalPoint>();
+  FairRootManager::Instance()->RegisterAny("splitcalPoint", fsplitcalPoints, kTRUE);
 
 }
 
 
 TClonesArray* splitcal::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fsplitcalPointCollection; }
-  else { return NULL; }
+  return nullptr;
+}
+
+void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fsplitcalPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 void splitcal::Reset()
 {
-  fsplitcalPointCollection->Clear();
+  fsplitcalPoints->clear();
 }
 
 void splitcal::SetZStart(Double_t ZStart)
@@ -293,7 +304,6 @@ void splitcal::ConstructGeometry()
 
 
     Double_t z_splitcal=0;
-    Int_t i_nlayECAL_gas;
 
     // logical volume for the absorbing layers
     // first absorbing layer can have different thinkens from the others
@@ -338,26 +348,14 @@ void splitcal::ConstructGeometry()
       if(i_nlayECAL==7) z_splitcal+=fBigGap;
 
       // position high precision sensitive layers
-      i_nlayECAL_gas=-1000;
       if(i_nlayECAL==ffirst_precision_layer || i_nlayECAL==fsecond_precision_layer || i_nlayECAL==fthird_precision_layer){
 	z_splitcal+=fActiveECAL_gas_Thickness/2;
-	if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=0;
-	else if(i_nlayECAL==fsecond_precision_layer ){
-	  if(fnum_precision_layers==2) i_nlayECAL_gas=3;
-	  else i_nlayECAL_gas=1;
-	}
-	else if(i_nlayECAL==fthird_precision_layer){
-	  if(fnum_precision_layers==2) i_nlayECAL_gas=4;
-	  else i_nlayECAL_gas=2;
-	}
 
 	tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal));
 	z_splitcal+=fActiveECAL_gas_Thickness/2;
 	if(fnum_precision_layers==2){
 	  z_splitcal+=fActiveECAL_gas_gap;
 	  z_splitcal+=fActiveECAL_gas_Thickness/2;
-	  if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=1;
-	  if(i_nlayECAL==fsecond_precision_layer) i_nlayECAL_gas=3;
 	  tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal));
 	  z_splitcal+=fActiveECAL_gas_Thickness/2;
 	}
@@ -461,9 +459,7 @@ splitcalPoint* splitcal::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode)
 {
-  TClonesArray& clref = *fsplitcalPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  // cout << "splitcal hit called"<< pos.z()<<endl;
-  return new(clref[size]) splitcalPoint(trackID, detID, pos, mom,
+  fsplitcalPoints->emplace_back(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
+  return &(fsplitcalPoints->back());
 }

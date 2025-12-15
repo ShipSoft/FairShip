@@ -16,16 +16,16 @@ repos:
   - id: check-executables-have-shebangs
   - id: mixed-line-ending
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.6
+  rev: v0.14.8
   hooks:
   - id: ruff-check
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
-    files: ^(\.github/scripts/annotate_build\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py|python/experimental/.*\.py)$
+    files: ^(\.github/scripts/.*\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py|python/experimental/.*\.py)$
   - id: ruff-format
-    files: ^(python/experimental/.*\.py|python/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py)$
+    files: ^(\.github/scripts/.*\.py|python/experimental/.*\.py|python/geometry_config\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py)$
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v21.1.6
+  rev: v21.1.7
   hooks:
   - id: clang-format
     types_or: [c++, c, cuda]
@@ -47,12 +47,12 @@ repos:
   - id: pyupgrade
     args: [--py39-plus]
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.18.2
+  rev: v1.19.0
   hooks:
     - id: mypy
       name: mypy (type-check)
       types_or: [python, pyi]
-      files: ^(python/experimental/|python/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
+      files: ^(\.github/scripts/.*\.py|python/experimental/|python/geometry_config\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py)$
       args:
         - --python-version=3.9
         - --ignore-missing-imports
@@ -71,7 +71,7 @@ repos:
   hooks:
     - id: validate-cff
 - repo: https://github.com/fsfe/reuse-tool
-  rev: v6.0.0
+  rev: v6.2.0
   hooks:
     - id: reuse
 

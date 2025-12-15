@@ -19,7 +19,6 @@
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 
-#include "TClonesArray.h"
 #include "TVirtualMC.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
@@ -40,6 +39,23 @@ Double_t cm  = 1;       // cm
 Double_t m   = 100*cm;  //  m
 Double_t mm  = 0.1*cm;  //  mm
 
+exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
+  : FairDetector(Name, Active, kVETO),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fOnlyMuons(kFALSE),
+    fSkipNeutrinos(kFALSE),
+    fVetoName("veto"),
+    fzPos(3E8),
+    withNtuple(kFALSE),
+    fCylindricalPlane(kFALSE),
+    fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>())
+{}
+
 exitHadronAbsorber::exitHadronAbsorber()
   : FairDetector("exitHadronAbsorber", kTRUE, kVETO),
     fUniqueID(-1),
@@ -57,13 +73,12 @@ exitHadronAbsorber::exitHadronAbsorber()
     withNtuple(kFALSE),
     fCylindricalPlane(kFALSE),
     fUseCaveCoordinates(kFALSE),
-    fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
+    fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>())
 {}
 
 exitHadronAbsorber::~exitHadronAbsorber()
 {
   if (fexitHadronAbsorberPointCollection) {
-    fexitHadronAbsorberPointCollection->Delete();
     delete fexitHadronAbsorberPointCollection;
   }
 }
@@ -127,13 +142,13 @@ void exitHadronAbsorber::Initialize()
     TString name=PDG->GetParticle(idw)->GetName();
     TString title = name;title+=" momentum (GeV)";
     TString key = fVetoName;key+=idhnu;
-    TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
+    [[maybe_unused]] TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
     title = name;title+="  log10-p vs log10-pt";
     key = fVetoName;key+=idhnu+1000;
-    TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
+    [[maybe_unused]] TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
     title = name;title+="  log10-p vs log10-pt";
     key = fVetoName;key+=idhnu+2000;
-    TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
+    [[maybe_unused]] TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
      }
    }
   if(withNtuple) {
@@ -144,7 +159,7 @@ void exitHadronAbsorber::Initialize()
 void exitHadronAbsorber::EndOfEvent()
 {
 
-  fexitHadronAbsorberPointCollection->Clear();
+  fexitHadronAbsorberPointCollection->clear();
 
 }
 
@@ -228,7 +243,7 @@ void exitHadronAbsorber::ConstructGeometry()
    if (vac==NULL)
      geoBuild->createMedium(ShipMedium);
    vac =gGeoManager->GetMedium("vacuums");
-   TGeoVolume *top=gGeoManager->GetTopVolume();
+   gGeoManager->GetTopVolume();
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    Double_t zLoc;
    if (fzPos>1E8){
@@ -291,27 +306,37 @@ vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom, Int_t eventID)
 {
-  TClonesArray& clref = *fexitHadronAbsorberPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
-         time, length, eLoss, pdgCode,Lpos,Lmom, eventID);
+  fexitHadronAbsorberPointCollection->emplace_back(trackID, detID, pos, mom,
+         time, length, eLoss, pdgCode, Lpos, Lmom, eventID);
+  return &(fexitHadronAbsorberPointCollection->back());
 }
 
 void exitHadronAbsorber::Register()
 {
 
   TString name  = fVetoName+"Point";
-  TString title = fVetoName;
-  FairRootManager::Instance()->Register(name, title,
-                                        fexitHadronAbsorberPointCollection, kTRUE);
+  FairRootManager::Instance()->RegisterAny(name.Data(),
+                                           fexitHadronAbsorberPointCollection, kTRUE);
 }
 
 TClonesArray* exitHadronAbsorber::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fexitHadronAbsorberPointCollection; }
-  else { return NULL; }
+  return nullptr;
 }
+
 void exitHadronAbsorber::Reset()
 {
-  fexitHadronAbsorberPointCollection->Clear();
+  fexitHadronAbsorberPointCollection->clear();
+}
+
+void exitHadronAbsorber::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fexitHadronAbsorberPointCollection) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }

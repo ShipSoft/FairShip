@@ -186,7 +186,7 @@ void TEvtGenDecayer::DecayWithEvtGen(Int_t pdg, TLorentzVector* p)
         EvtId evtId = EvtPDL::evtIdFromStdHep(pdg);
 
         // Check if EvtId is valid before creating particle
-        if (evtId.getId() < 0 || evtId.getId() >= EvtPDL::entries()) {
+        if (evtId.getId() < 0 || static_cast<size_t>(evtId.getId()) >= EvtPDL::entries()) {
             LOG(warning) << "TEvtGenDecayer: Invalid EvtId for PDG " << pdg
                         << " (EvtId: " << evtId.getId() << "), falling back to Pythia8";
             DecayWithPythia8(pdg, p);
@@ -277,7 +277,7 @@ Int_t TEvtGenDecayer::ImportParticles(TClonesArray *particles)
         int nParticles = fEvtGenProducts->GetEntriesFast();
         for (int i = 0; i < nParticles; i++) {
             TParticle* srcParticle = static_cast<TParticle*>(fEvtGenProducts->At(i));
-            TParticle* destParticle = new ((*particles)[i]) TParticle(*srcParticle);
+            new ((*particles)[i]) TParticle(*srcParticle);
         }
 
         // Reset the flag for next decay

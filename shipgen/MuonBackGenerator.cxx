@@ -107,7 +107,7 @@ Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex){
 Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     auto* pdgBase = TDatabasePDG::Instance();
-    Double_t mass, e, tof, phi;
+    Double_t mass = 0., e = 0., tof = 0.;
     std::unordered_map<int, int> muList;
     std::unordered_map<int, std::vector<int>> moList;
     while (fn < fNevents) {

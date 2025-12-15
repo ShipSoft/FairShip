@@ -142,9 +142,9 @@ void ShipTargetStation::ConstructGeometry()
     double enclosure_cutout_width_y = 280 * mm;  // Width in y direction
     double enclosure_length = fTargetLength;
 
-    auto enclosure_outer_tube = new TGeoTube(
+    [[maybe_unused]] auto enclosure_outer_tube = new TGeoTube(
         "enclosure_outer_tube", enclosure_inner_radius, enclosure_outer_radius, enclosure_length / 2.);
-    auto enclosure_cutout_box = new TGeoBBox(
+    [[maybe_unused]] auto enclosure_cutout_box = new TGeoBBox(
         "enclosure_cutout_box", enclosure_cutout_width_x / 2., enclosure_cutout_width_y / 2., enclosure_length / 2.);
     auto enclosure_shape = new TGeoCompositeShape(
         "enclosure_shape", "enclosure_outer_tube - enclosure_cutout_box");
@@ -166,13 +166,12 @@ void ShipTargetStation::ConstructGeometry()
         nmi += i + 1;
         //TString sm = "Slit_";
         //sm += i + 1;
-        TGeoMedium* material;
+        TGeoMedium* material = nullptr;
         if (fM.at(i) == "molybdenum") {
             material = mo;
-        };
-        if (fM.at(i) == "tungsten") {
+        } else if (fM.at(i) == "tungsten") {
             material = tungsten;
-        };
+        }
 
         target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2., fL.at(i) / 2.);
         if (fM.at(i) == "molybdenum") {
@@ -213,16 +212,16 @@ void ShipTargetStation::ConstructGeometry()
     double shielding_position = start_of_target + fTargetLength + proximity_shielding_distance_after_target
                                              + proximity_shielding_thickness - shielding_length / 2;
     double target_box_shift = 14.45 * cm;
-    auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
+    [[maybe_unused]] auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
                                                      shielding_width / 2,
                                                      proximity_shielding_height / 2,
                                                      shielding_length / 2);
-    auto proximity_shielding_inner = new TGeoBBox(
+    [[maybe_unused]] auto proximity_shielding_inner = new TGeoBBox(
         "proximity_shielding_inner",
         shielding_width / 2 - proximity_shielding_thickness,
         proximity_shielding_height / 2,
         (shielding_length - (proximity_shielding_thickness_front + proximity_shielding_thickness)) / 2);
-    auto proximity_shielding_hole = new TGeoTube(
+    [[maybe_unused]] auto proximity_shielding_hole = new TGeoTube(
         "proximity_shielding_hole", 0, proximity_shielding_hole_diameter / 2, proximity_shielding_thickness_front / 2);
     auto proximity_shielding_inner_shift = new TGeoTranslation(
         "proximity_shielding_inner_shift", 0, 0, (proximity_shielding_thickness_front - proximity_shielding_thickness) / 2);
@@ -258,9 +257,9 @@ void ShipTargetStation::ConstructGeometry()
 
     target_vacuum_box->AddNode(proximity_shielding, 1, proximity_shielding_centre);
 
-    // Iron shielding
+    // Top/bottom copper shielding
     auto top_shielding = gGeoManager->MakeBox(
-        "top_shielding", iron, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);
+        "top_shielding", copper, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);
     target_vacuum_box->AddNode(top_shielding,
                                1,
                                new TGeoTranslation(0.,
@@ -268,7 +267,7 @@ void ShipTargetStation::ConstructGeometry()
                                                        - proximity_shielding_hole_height + target_box_shift,
                                                    0));
     auto bottom_shielding = gGeoManager->MakeBox(
-        "bottom_shielding", iron, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
+        "bottom_shielding", copper, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
     target_vacuum_box->AddNode(
         bottom_shielding,
         1,

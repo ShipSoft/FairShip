@@ -4,6 +4,7 @@
 // MTC detector specific headers
 #include "MTCDetector.h"
 
+#include "FairLink.h"
 #include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
@@ -155,7 +156,7 @@ MTCDetector::MTCDetector()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
+    , fMTCDetectorPoints(nullptr)
 {}
 
 MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int_t DetId)
@@ -167,14 +168,14 @@ MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
+    , fMTCDetectorPoints(nullptr)
 {}
 
 MTCDetector::~MTCDetector()
 {
-    if (fMTCDetectorPointCollection) {
-        fMTCDetectorPointCollection->Delete();
-        delete fMTCDetectorPointCollection;
+    if (fMTCDetectorPoints) {
+        fMTCDetectorPoints->clear();
+        delete fMTCDetectorPoints;
     }
 }
 
@@ -474,14 +475,14 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol)
             z = (fPos.Z() + Pos.Z()) / 2.;
         }
 
-        auto hit = AddHit(fTrackID,
-                          fVolumeID,
-                          TVector3(x, y, z),
-                          TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
-                          fTime,
-                          fLength,
-                          fELoss,
-                          pdgCode);
+        AddHit(fTrackID,
+               fVolumeID,
+               TVector3(x, y, z),
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
+               fTime,
+               fLength,
+               fELoss,
+               pdgCode);
         // hit->Print();
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMTC);
@@ -546,7 +547,6 @@ void MTCDetector::SiPMOverlap()
         - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
     */
 
-    int N = fNMats == 1 ? 1 : 0;
     Double_t pos = fEdge + firstChannelX;
     for (int imat = 0; imat < fNMats; imat++) {
         for (int isipms = 0; isipms < fNSiPMs; isipms++) {
@@ -583,7 +583,6 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 
     Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
     Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -611,7 +610,6 @@ TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob)
 {
     Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
     Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -695,7 +693,6 @@ void MTCDetector::SiPMmapping()
             continue;
         for (int imat = 0; imat < plane->GetNodes()->GetEntries(); imat++) {
             auto mat = static_cast<TGeoNode*>(plane->GetNodes()->At(imat));
-            Float_t t1 = mat->GetMatrix()->GetTranslation()[0];
             auto vmat = mat->GetVolume();
             for (int ifibre = 0; ifibre < vmat->GetNodes()->GetEntriesFast(); ifibre++) {
                 fibre = static_cast<TGeoNode*>(vmat->GetNodes()->At(ifibre));
@@ -779,29 +776,38 @@ void MTCDetector::SiPMmapping()
 
 void MTCDetector::Register()
 {
-    TString name = "MTCDetPoint";
-    TString title = "MTC";
-    FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
-    LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
+    if (!fMTCDetectorPoints) {
+        fMTCDetectorPoints = new std::vector<MTCDetPoint>();
+    }
+    FairRootManager::Instance()->RegisterAny("MTCDetPoint", fMTCDetectorPoints, kTRUE);
+    LOG(debug) << this->GetName() << ", Register() says: registered MTCDetPoint collection";
 }
 
 TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fMTCDetectorPointCollection;
-    } else {
-        return nullptr;
+    return nullptr;
+}
+
+void MTCDetector::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fMTCDetectorPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
     }
 }
 
 void MTCDetector::Reset()
 {
-    fMTCDetectorPointCollection->Clear();
+    fMTCDetectorPoints->clear();
 }
 
 void MTCDetector::EndOfEvent()
 {
-    fMTCDetectorPointCollection->Clear();
+    fMTCDetectorPoints->clear();
 }
 
 MTCDetPoint* MTCDetector::AddHit(Int_t trackID,
@@ -813,8 +819,6 @@ MTCDetPoint* MTCDetector::AddHit(Int_t trackID,
                                  Double_t eLoss,
                                  Int_t pdgCode)
 {
-    TClonesArray& clref = *fMTCDetectorPointCollection;
-    Int_t size = clref.GetEntriesFast();
-
-    return new (clref[size]) MTCDetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    fMTCDetectorPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return &(fMTCDetectorPoints->back());
 }

@@ -165,7 +165,6 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    int iDP = 0; // index of the chosen DP, also ensures that at least 1 DP is produced
    std::vector<int> dec_chain; // pythia indices of the particles to be stored on the stack
    std::vector<int> dpvec; // pythia indices of DP particles
-   bool hadDecay = false;
    do {
 
      if (fextFile && *fextFile){
