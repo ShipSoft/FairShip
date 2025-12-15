@@ -497,17 +497,21 @@ def create_config(
     c.HCAL.ZStart = (
         38.450 * u.m + c.decayVolume.z
     )  # Relative start z of split cal to decay vessel centre
-    c.HCAL.TotalXDim = 4.32 * u.m / 2  # half length
-    c.HCAL.TotalYDim = 6.48 * u.m / 2  # half length
     c.HCAL.ScintBarX = 216 * u.cm #For horizontal bars
     c.HCAL.ScintBarY = 6 * u.cm
     c.HCAL.ScintBarZ = 1. * u.cm
-    c.HCAL.PassiveLayerZ = 17. * u.cm
     c.HCAL.nSamplings = 5
     c.HCAL.ActiveHCALMaterial = 1
     c.HCAL.NBarsPerLayer = 36 
     c.HCAL.NmodulesX = 2
     c.HCAL.NmodulesY = 3
+    c.HCAL.Module_size_X = 216.
+    c.HCAL.Module_size_Y = 216.
+    c.HCAL.PassiveLayerX = c.HCAL.Module_size_X 
+    c.HCAL.PassiveLayerY = c.HCAL.Module_size_Y
+    c.HCAL.PassiveLayerZ = 17. * u.cm
+    c.HCAL.TotalXDim = c.HCAL.ScintBarX * c.HCAL.NmodulesX #unused at the moment but probably nice to have
+    c.HCAL.TotalYDim = c.HCAL.ScintBarY * c.HCAL.NBarsPerLayer * c.HCAL.NmodulesY #unused at the moment but probably nice to have
 
     c.MuonStation0 = AttrDict(
         z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness

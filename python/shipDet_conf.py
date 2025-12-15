@@ -428,6 +428,19 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
+    #Detector is built in modules
+    HCAL = ROOT.HCAL("HCAL", ROOT.kTRUE)
+    inHCAL = ship_geo.HCAL
+    HCAL.SetNSamplings(inHCAL.nSamplings);
+    HCAL.SetMaterial(inHCAL.ActiveHCALMaterial);
+    HCAL.SetBarSize(inHCAL.ScintBarX,inHCAL.ScintBarY,inHCAL.ScintBarZ);
+    HCAL.SetZStart(inHCAL.ZStart)
+    HCAL.SetNBars(inHCAL.NBarsPerLayer)
+    HCAL.SetPassiveLayerXYZ(inHCAL.PassiveLayerX,inHCAL.PassiveLayerY,inHCAL.PassiveLayerZ)
+   
+    HCAL.SetNmodulesXY(inHCAL.NmodulesX,inHCAL.NmodulesY)  #Define the amount of modules in X and in Y, by default 2 and 3
+    HCAL.SetModuleSize(inHCAL.Module_size_X ,inHCAL.Module_size_Y) #How big are the modules? By default 216cm * 216cm
+
     Muon = ROOT.muon("Muon", ROOT.kTRUE)
     Muon.SetZStationPositions(
         ship_geo.MuonStation0.z,
