@@ -1,0 +1,801 @@
+{
+  "timestamp": "2025-12-16T22:38:39.839831Z",
+  "configuration": "",
+  "files": {
+    "ship.conical.Pythia8-TGeant4.root": {
+      "file_size": 1421537,
+      "trees": {
+        "cbmsim": {
+          "entries": {
+            "value": 100,
+            "compare": "exact"
+          },
+          "branches": {
+            "value": 11,
+            "compare": "exact"
+          }
+        }
+      },
+      "histograms": {}
+    },
+    "ship.conical.Pythia8-TGeant4_rec.root": {
+      "file_size": 4318860,
+      "trees": {
+        "ship_reco_sim": {
+          "entries": {
+            "value": 100,
+            "compare": "exact"
+          },
+          "branches": {
+            "value": 15,
+            "compare": "exact"
+          }
+        }
+      },
+      "histograms": {}
+    },
+    "ship.conical.Pythia8-TGeant4_ana.root": {
+      "file_size": 43502,
+      "trees": {},
+      "histograms": {
+        "chi2": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.9257624572198114,
+            "uncertainty": 0.04135792722904344,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.1662495778627536,
+            "uncertainty": 0.02924447079947638,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.002163714483685908,
+            "compare": "float"
+          }
+        },
+        "prob": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.4773322289375499,
+            "uncertainty": 0.045731852708551235,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.24199021852212438,
+            "uncertainty": 0.03233730316644096,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 28.0,
+            "compare": "float"
+          }
+        },
+        "IP": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vzresol": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vxresol": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vyresol": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vzpull": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vxpull": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Vypull": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "Doca": {
+          "entries": {
+            "value": 6.0,
+            "uncertainty": 2.449489742783178,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 3.786428986774838,
+            "uncertainty": 1.3113545104972086,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 3.2121494226153677,
+            "uncertainty": 0.9272676669121418,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 6.0,
+            "compare": "float"
+          }
+        },
+        "IP0": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 1.9015404823717708,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 2.0,
+            "compare": "float"
+          }
+        },
+        "HNL": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.9970836914542122,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 2.0,
+            "compare": "float"
+          },
+          "fit": {
+            "type": {
+              "value": "myGauss_HNL",
+              "compare": "exact"
+            },
+            "parameters": {
+              "Signal": {
+                "value": 0.6,
+                "uncertainty": NaN,
+                "compare": "statistical"
+              },
+              "Mean": {
+                "value": 0.9970836914542122,
+                "uncertainty": NaN,
+                "compare": "statistical"
+              },
+              "Sigma": {
+                "value": 0.0006562499999999988,
+                "uncertainty": NaN,
+                "compare": "statistical"
+              },
+              "bckgr": {
+                "value": 1.0,
+                "uncertainty": NaN,
+                "compare": "statistical"
+              }
+            }
+          }
+        },
+        "HNLw": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.9970836914542122,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.00016570445677643875,
+            "compare": "float"
+          }
+        },
+        "meas": {
+          "entries": {
+            "value": 38.0,
+            "uncertainty": 6.164414002968976,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 24.42105262740115,
+            "uncertainty": 0.9316172892332294,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 5.742874663157318,
+            "uncertainty": 0.6587529026874457,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 38.0,
+            "compare": "float"
+          }
+        },
+        "meas2": {
+          "entries": {
+            "value": 38.0,
+            "uncertainty": 6.164414002968976,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 24.42105262740115,
+            "uncertainty": 0.9316172892332294,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 5.742874663157318,
+            "uncertainty": 0.6587529026874457,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 38.0,
+            "compare": "float"
+          }
+        },
+        "distu": {
+          "entries": {
+            "value": 733.0,
+            "uncertainty": 27.073972741361768,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.5007135115215562,
+            "uncertainty": 0.010306129419291122,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.2790278669668344,
+            "uncertainty": 0.007287534000166927,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 733.0,
+            "compare": "float"
+          }
+        },
+        "distv": {
+          "entries": {
+            "value": 789.0,
+            "uncertainty": 28.089143810376278,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.49400053789055254,
+            "uncertainty": 0.009963287371058033,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.2798602117897549,
+            "uncertainty": 0.0070451080629854255,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 789.0,
+            "compare": "float"
+          }
+        },
+        "disty": {
+          "entries": {
+            "value": 541.0,
+            "uncertainty": 23.259406699226016,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.49657815238340736,
+            "uncertainty": 0.011872653065870514,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.2761508662578949,
+            "uncertainty": 0.008395233493552295,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 541.0,
+            "compare": "float"
+          }
+        },
+        "meanhits": {
+          "entries": {
+            "value": 79.0,
+            "uncertainty": 8.888194417315589,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 23.139240506329113,
+            "uncertainty": 1.1773831617220245,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 10.464810445059076,
+            "uncertainty": 0.8325356177085012,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 79.0,
+            "compare": "float"
+          }
+        },
+        "oa": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.9992725858821525,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 2.0,
+            "compare": "float"
+          }
+        },
+        "nrtracks": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 2.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 2.0,
+            "compare": "float"
+          }
+        },
+        "nrSBT": {
+          "entries": {
+            "value": 2.0,
+            "uncertainty": 1.4142135623730951,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 2.0,
+            "compare": "float"
+          }
+        },
+        "delPOverPz_py": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": -0.004999999999999986,
+            "uncertainty": 0.1772004514666935,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.3069201850644561,
+            "uncertainty": 0.12529964086141668,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 3.0,
+            "compare": "float"
+          },
+          "fit": {
+            "type": {
+              "value": "gaus",
+              "compare": "exact"
+            },
+            "parameters": {
+              "Constant": {
+                "value": 1.0047961554469056,
+                "uncertainty": 0.6055829440572721,
+                "compare": "statistical"
+              },
+              "Mean": {
+                "value": 0.013658623270840775,
+                "uncertainty": 17.1512147930316,
+                "compare": "statistical"
+              },
+              "Sigma": {
+                "value": 3.060356959237163,
+                "uncertainty": 2.064898132065417,
+                "compare": "statistical"
+              }
+            }
+          }
+        },
+        "delPOverP2z_py": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": -0.004999999999999986,
+            "uncertainty": 0.1772004514666935,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.3069201850644561,
+            "uncertainty": 0.12529964086141668,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 3.0,
+            "compare": "float"
+          },
+          "fit": {
+            "type": {
+              "value": "myGauss_delPOverP2z_proj",
+              "compare": "exact"
+            },
+            "parameters": {
+              "Signal": {
+                "value": 4.557860622986517,
+                "uncertainty": 882.0555788491048,
+                "compare": "statistical"
+              },
+              "Mean": {
+                "value": 0.1464900514546532,
+                "uncertainty": 243.14225578481447,
+                "compare": "statistical"
+              },
+              "Sigma": {
+                "value": 0.7624272407474514,
+                "uncertainty": 200.97648464435704,
+                "compare": "statistical"
+              },
+              "bckgr": {
+                "value": 0.9781340661249199,
+                "uncertainty": 8.507712900430432,
+                "compare": "statistical"
+              }
+            }
+          }
+        },
+        "pullPOverPx_py": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "pullPOverPy_py": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        },
+        "pullPOverPz_py": {
+          "entries": {
+            "value": 28.0,
+            "uncertainty": 5.291502622129181,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.0,
+            "uncertainty": 0.0,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 0.0,
+            "compare": "float"
+          }
+        }
+      }
+    },
+    "recohists.root": {
+      "file_size": 5398,
+      "trees": {},
+      "histograms": {
+        "distu": {
+          "entries": {
+            "value": 717.0,
+            "uncertainty": 26.77685567799177,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.4990375346318664,
+            "uncertainty": 0.010430105593476529,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.2792854321827357,
+            "uncertainty": 0.007375198393638994,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 717.0,
+            "compare": "float"
+          }
+        },
+        "distv": {
+          "entries": {
+            "value": 765.0,
+            "uncertainty": 27.65863337187866,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.48920422621054094,
+            "uncertainty": 0.010136382130525238,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.28035847706545985,
+            "uncertainty": 0.0071675045411925395,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 765.0,
+            "compare": "float"
+          }
+        },
+        "disty": {
+          "entries": {
+            "value": 518.0,
+            "uncertainty": 22.759613353482084,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.4897612484360583,
+            "uncertainty": 0.012096863011388752,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.27531992492924695,
+            "uncertainty": 0.008553773866437707,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 518.0,
+            "compare": "float"
+          }
+        },
+        "nmeas": {
+          "entries": {
+            "value": 45.0,
+            "uncertainty": 6.708203932499369,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 25.288888885551856,
+            "uncertainty": 0.6422354647635385,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 4.3082464703173295,
+            "uncertainty": 0.45412905225279215,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 45.0,
+            "compare": "float"
+          }
+        },
+        "chi2": {
+          "entries": {
+            "value": 45.0,
+            "uncertainty": 6.708203932499369,
+            "compare": "statistical"
+          },
+          "mean": {
+            "value": 0.99635869080593,
+            "uncertainty": 0.04338843310892242,
+            "compare": "statistical"
+          },
+          "rms": {
+            "value": 0.2910584576062592,
+            "uncertainty": 0.03068025527637796,
+            "compare": "statistical"
+          },
+          "integral": {
+            "value": 45.0,
+            "compare": "float"
+          }
+        }
+      }
+    }
+  }
+}
