@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #include "TTPoint.h"
 
@@ -8,22 +9,13 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-TTPoint::TTPoint()
-    : FairMCPoint()
-{}
+TTPoint::TTPoint() : FairMCPoint() {}
 // -------------------------------------------------------------------------
 
-TTPoint::TTPoint(Int_t trackID,
-                 Int_t detID,
-                 TVector3 pos,
-                 TVector3 mom,
-                 Double_t tof,
-                 Double_t length,
-                 Double_t eLoss,
-                 Int_t pdgcode)
-    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
-    , fPdgCode(pdgcode)
-{}
+TTPoint::TTPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                 Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode)
+    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
+      fPdgCode(pdgcode) {}
 
 // -------------------------------------------------------------------------
 
@@ -32,12 +24,13 @@ TTPoint::~TTPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void TTPoint::Print(const Option_t* opt) const
-{
-    cout << "-I- TargetPoint: ShipRpc point for track " << fTrackID << " in detector " << fDetectorID << endl;
-    cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
-    cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" << endl;
-    cout << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06 << " keV"
-         << endl;
+void TTPoint::Print(const Option_t* opt) const {
+  cout << "-I- TargetPoint: ShipRpc point for track " << fTrackID
+       << " in detector " << fDetectorID << endl;
+  cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
+  cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV"
+       << endl;
+  cout << "    Time " << fTime << " ns,  Length " << fLength
+       << " cm,  Energy loss " << fELoss * 1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
