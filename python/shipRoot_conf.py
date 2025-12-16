@@ -12,31 +12,9 @@ if os.environ.get('FAIRSHIP_ROOT', '') == '':
    print("FairShip environment not found, quitting.")
    quit()
 
-# When on Darwin load all needed shared libs as DYLD_LIBRARY_PATH is not
-# passed to system Python out of security reasons...
-if sys.platform == 'darwin':
-   # Load FairRoot libraries
-   ROOT.gSystem.Load('libFairTools')
-   ROOT.gSystem.Load('libParBase')
-   ROOT.gSystem.Load('libGeoBase')
-   ROOT.gSystem.Load('libMbsAPI')
-   ROOT.gSystem.Load('libBase')
-   # Load FairShip libraries
-   ROOT.gSystem.Load('libShipPassive')
-   ROOT.gSystem.Load('libShipField')
-   ROOT.gSystem.Load('libveto')
-   ROOT.gSystem.Load('libstrawtubes')
-   ROOT.gSystem.Load('libmuon')
-   ROOT.gSystem.Load('libpid')
-   ROOT.gSystem.Load('libgenfit')
-   ROOT.gSystem.Load("libPythia6")
-   ROOT.gSystem.Load("libpythia8")
-   ROOT.gSystem.Load('libShipGen')
-   ROOT.gSystem.Load('libShipData')
-else:
-    ROOT.gSystem.Load("libPythia6")
-    ROOT.gSystem.Load("libpythia8")
-    ROOT.gSystem.Load("libG4clhep")
+ROOT.gSystem.Load("libPythia6")
+ROOT.gSystem.Load("libpythia8")
+ROOT.gSystem.Load("libG4clhep")
 
 def forReadingOldFile():
     ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
