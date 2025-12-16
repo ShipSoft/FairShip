@@ -14,6 +14,8 @@ it in future.
 
 ### Changed
 
+* Consolidate basiclibs module into eventDisplay.py as it was only used by that single script
+
 * **Migrate detector MC point storage from TClonesArray to std::vector**
   Ten detector classes now use `std::vector<PointType>` instead of `TClonesArray` for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages `FairRootManager::RegisterAny()` for ROOT I/O. Affected detectors: TimeDet, UpstreamTagger, strawtubes, splitcal, veto, Target, TargetTracker, SiliconTarget, MTCDetector, and simpleTarget.
 
