@@ -261,7 +261,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00030">30</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00031">31</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8227ecd370dfb40ea0a30893a7e2616e" name="a8227ecd370dfb40ea0a30893a7e2616e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8227ecd370dfb40ea0a30893a7e2616e">&#9670;&#160;</a></span>TargetTracker() <span class="overload">[1/3]</span></h2>
@@ -313,33 +313,32 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00074">74</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>    : FairDetector(name, <span class="keyword">true</span>, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>)</div>
-<div class="line"><span class="lineno">   81</span>    , <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>(-1)</div>
-<div class="line"><span class="lineno">   82</span>    , <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>(-1)</div>
-<div class="line"><span class="lineno">   83</span>    , <a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>()</div>
-<div class="line"><span class="lineno">   84</span>    , <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>()</div>
-<div class="line"><span class="lineno">   85</span>    , <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>(-1.)</div>
-<div class="line"><span class="lineno">   86</span>    , <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>(-1.)</div>
-<div class="line"><span class="lineno">   87</span>    , <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>(-1)</div>
-<div class="line"><span class="lineno">   88</span>    , <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   89</span>{</div>
-<div class="line"><span class="lineno">   90</span>    <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> = TTX;</div>
-<div class="line"><span class="lineno">   91</span>    <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> = TTY;</div>
-<div class="line"><span class="lineno">   92</span>    <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> = TTZ;</div>
-<div class="line"><span class="lineno">   93</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00075">75</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>    : FairDetector(name, <span class="keyword">true</span>, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>),</div>
+<div class="line"><span class="lineno">   78</span>      <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>(-1),</div>
+<div class="line"><span class="lineno">   79</span>      <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>(-1),</div>
+<div class="line"><span class="lineno">   80</span>      <a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>(),</div>
+<div class="line"><span class="lineno">   81</span>      <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>(),</div>
+<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>(-1.),</div>
+<div class="line"><span class="lineno">   83</span>      <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>(-1.),</div>
+<div class="line"><span class="lineno">   84</span>      <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>(-1),</div>
+<div class="line"><span class="lineno">   85</span>      <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>(<span class="keyword">nullptr</span>) {</div>
+<div class="line"><span class="lineno">   86</span>  <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> = TTX;</div>
+<div class="line"><span class="lineno">   87</span>  <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> = TTY;</div>
+<div class="line"><span class="lineno">   88</span>  <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> = TTZ;</div>
+<div class="line"><span class="lineno">   89</span>}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a></div><div class="ttdeci">@ ktauTT</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00022">ShipDetectorList.h:22</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a1eed77b3ce14a25532c36d7393adcec6"><div class="ttname"><a href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">TargetTracker::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00119">TargetTracker.h:119</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a48fde000e0fce71225dabcfe02cbe77d"><div class="ttname"><a href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TargetTracker::TTrackerX</a></div><div class="ttdeci">Double_t TTrackerX</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00128">TargetTracker.h:128</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a72cf6b433a91f4265777f5188c32c78a"><div class="ttname"><a href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TargetTracker::TTrackerY</a></div><div class="ttdeci">Double_t TTrackerY</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00129">TargetTracker.h:129</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a836dec5179699991721b3c9246eaa349"><div class="ttname"><a href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">TargetTracker::fTTPoints</a></div><div class="ttdeci">std::vector&lt; TTPoint &gt; * fTTPoints</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00125">TargetTracker.h:125</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a86afa822fb9373e8359e5701ffbcfaba"><div class="ttname"><a href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">TargetTracker::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00117">TargetTracker.h:117</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_aa2afe326eae366d210147f5cdce1c4db"><div class="ttname"><a href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">TargetTracker::fLength</a></div><div class="ttdeci">Double32_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00121">TargetTracker.h:121</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_aa8c5dcce48baf9948ab89a7debbbc9a7"><div class="ttname"><a href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">TargetTracker::fTime</a></div><div class="ttdeci">Double32_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00120">TargetTracker.h:120</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_ab40db0ddcdbdb9adb223cf16a5eef3ac"><div class="ttname"><a href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TargetTracker::TTrackerZ</a></div><div class="ttdeci">Double_t TTrackerZ</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00130">TargetTracker.h:130</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_ab7d663a32da9fac5b0a6174a16af2271"><div class="ttname"><a href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">TargetTracker::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00116">TargetTracker.h:116</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_ac2b99325c0850dde01cfde02e192741c"><div class="ttname"><a href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">TargetTracker::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00118">TargetTracker.h:118</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_afd174318951d346614cf0e6b22f3e859"><div class="ttname"><a href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">TargetTracker::fELoss</a></div><div class="ttdeci">Double32_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00122">TargetTracker.h:122</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a1eed77b3ce14a25532c36d7393adcec6"><div class="ttname"><a href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">TargetTracker::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00107">TargetTracker.h:107</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a48fde000e0fce71225dabcfe02cbe77d"><div class="ttname"><a href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TargetTracker::TTrackerX</a></div><div class="ttdeci">Double_t TTrackerX</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00116">TargetTracker.h:116</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a72cf6b433a91f4265777f5188c32c78a"><div class="ttname"><a href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TargetTracker::TTrackerY</a></div><div class="ttdeci">Double_t TTrackerY</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00117">TargetTracker.h:117</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a836dec5179699991721b3c9246eaa349"><div class="ttname"><a href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">TargetTracker::fTTPoints</a></div><div class="ttdeci">std::vector&lt; TTPoint &gt; * fTTPoints</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00113">TargetTracker.h:113</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a86afa822fb9373e8359e5701ffbcfaba"><div class="ttname"><a href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">TargetTracker::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00105">TargetTracker.h:105</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_aa2afe326eae366d210147f5cdce1c4db"><div class="ttname"><a href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">TargetTracker::fLength</a></div><div class="ttdeci">Double32_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00109">TargetTracker.h:109</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_aa8c5dcce48baf9948ab89a7debbbc9a7"><div class="ttname"><a href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">TargetTracker::fTime</a></div><div class="ttdeci">Double32_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00108">TargetTracker.h:108</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_ab40db0ddcdbdb9adb223cf16a5eef3ac"><div class="ttname"><a href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TargetTracker::TTrackerZ</a></div><div class="ttdeci">Double_t TTrackerZ</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00118">TargetTracker.h:118</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_ab7d663a32da9fac5b0a6174a16af2271"><div class="ttname"><a href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">TargetTracker::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00104">TargetTracker.h:104</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_ac2b99325c0850dde01cfde02e192741c"><div class="ttname"><a href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">TargetTracker::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00106">TargetTracker.h:106</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_afd174318951d346614cf0e6b22f3e859"><div class="ttname"><a href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">TargetTracker::fELoss</a></div><div class="ttdeci">Double32_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00110">TargetTracker.h:110</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -358,17 +357,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00062">62</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>    : FairDetector(<span class="stringliteral">&quot;TargetTracker&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, kTRUE)</div>
-<div class="line"><span class="lineno">   64</span>    , <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>(-1)</div>
-<div class="line"><span class="lineno">   65</span>    , <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>(-1)</div>
-<div class="line"><span class="lineno">   66</span>    , <a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>()</div>
-<div class="line"><span class="lineno">   67</span>    , <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>()</div>
-<div class="line"><span class="lineno">   68</span>    , <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>(-1.)</div>
-<div class="line"><span class="lineno">   69</span>    , <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>(-1.)</div>
-<div class="line"><span class="lineno">   70</span>    , <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>(-1)</div>
-<div class="line"><span class="lineno">   71</span>    , <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   72</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00064">64</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>    : FairDetector(<span class="stringliteral">&quot;TargetTracker&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, kTRUE),</div>
+<div class="line"><span class="lineno">   66</span>      <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>(-1),</div>
+<div class="line"><span class="lineno">   67</span>      <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>(-1),</div>
+<div class="line"><span class="lineno">   68</span>      <a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>(),</div>
+<div class="line"><span class="lineno">   69</span>      <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>(),</div>
+<div class="line"><span class="lineno">   70</span>      <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>(-1.),</div>
+<div class="line"><span class="lineno">   71</span>      <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>(-1.),</div>
+<div class="line"><span class="lineno">   72</span>      <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>(-1),</div>
+<div class="line"><span class="lineno">   73</span>      <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>(<span class="keyword">nullptr</span>) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -395,13 +393,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00095">95</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
-<div class="line"><span class="lineno">   98</span>        <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear();</div>
-<div class="line"><span class="lineno">   99</span>        <span class="keyword">delete</span> <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>;</div>
-<div class="line"><span class="lineno">  100</span>    }</div>
-<div class="line"><span class="lineno">  101</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00091">91</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>                              {</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear();</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>;</div>
+<div class="line"><span class="lineno">   95</span>  }</div>
+<div class="line"><span class="lineno">   96</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -487,11 +485,12 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classTTPoint.html">TTPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00381">381</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  389</span>{</div>
-<div class="line"><span class="lineno">  390</span>    <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  391</span>    <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;back());</div>
-<div class="line"><span class="lineno">  392</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00359">359</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  361</span>                                                              {</div>
+<div class="line"><span class="lineno">  362</span>  <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;emplace_back(trackID, detID, pos, mom, time, length, eLoss,</div>
+<div class="line"><span class="lineno">  363</span>                          pdgCode);</div>
+<div class="line"><span class="lineno">  364</span>  <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;back());</div>
+<div class="line"><span class="lineno">  365</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -518,8 +517,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00105">105</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00093">93</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -546,8 +545,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00102">102</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00090">90</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -594,115 +593,134 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00176">176</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  177</span>{</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>    <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
-<div class="line"><span class="lineno">  180</span>    TGeoMedium* vacuum = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00150">150</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>                                      {</div>
+<div class="line"><span class="lineno">  151</span>  <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
+<div class="line"><span class="lineno">  152</span>  TGeoMedium* vacuum = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>  <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><span class="lineno">  155</span>  TGeoMedium* CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><span class="lineno">  158</span>  TGeoMedium* SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>  <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><span class="lineno">  161</span>  TGeoMedium* Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  <span class="comment">// Target Tracker</span></div>
+<div class="line"><span class="lineno">  164</span>  TGeoVolume* volTarget = gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>  TGeoBBox* TT_box =</div>
+<div class="line"><span class="lineno">  167</span>      <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2);</div>
+<div class="line"><span class="lineno">  168</span>  TGeoVolume* TT_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT&quot;</span>, TT_box, vacuum);</div>
+<div class="line"><span class="lineno">  169</span>  TT_volume-&gt;SetLineColor(kBlue - 1);</div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// TT_volume-&gt;SetTransparency(1);</span></div>
+<div class="line"><span class="lineno">  171</span>  TT_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  172</span>  TT_volume-&gt;SetVisDaughters(1);</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>  <span class="comment">// Support Carbon Composite</span></div>
+<div class="line"><span class="lineno">  175</span>  TGeoBBox* TT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_support_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2,</div>
+<div class="line"><span class="lineno">  176</span>                                          <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2);</div>
+<div class="line"><span class="lineno">  177</span>  TGeoVolume* TT_support_volume =</div>
+<div class="line"><span class="lineno">  178</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_support&quot;</span>, TT_support_box, CarbonComposite);</div>
+<div class="line"><span class="lineno">  179</span>  TT_support_volume-&gt;SetLineColor(kGray - 2);</div>
+<div class="line"><span class="lineno">  180</span>  TT_support_volume-&gt;SetVisibility(1);</div>
 <div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>    <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><span class="lineno">  183</span>    TGeoMedium* CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span>    <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  186</span>    TGeoMedium* SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    <a class="code hl_function" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><span class="lineno">  189</span>    TGeoMedium* Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>    <span class="comment">// Target Tracker</span></div>
-<div class="line"><span class="lineno">  192</span>    TGeoVolume* volTarget = gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>    TGeoBBox* TT_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2);</div>
-<div class="line"><span class="lineno">  195</span>    TGeoVolume* TT_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT&quot;</span>, TT_box, vacuum);</div>
-<div class="line"><span class="lineno">  196</span>    TT_volume-&gt;SetLineColor(kBlue - 1);</div>
-<div class="line"><span class="lineno">  197</span>    <span class="comment">// TT_volume-&gt;SetTransparency(1);</span></div>
-<div class="line"><span class="lineno">  198</span>    TT_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  199</span>    TT_volume-&gt;SetVisDaughters(1);</div>
-<div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>    <span class="comment">// Support Carbon Composite</span></div>
-<div class="line"><span class="lineno">  202</span>    TGeoBBox* TT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_support_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2);</div>
-<div class="line"><span class="lineno">  203</span>    TGeoVolume* TT_support_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_support&quot;</span>, TT_support_box, CarbonComposite);</div>
-<div class="line"><span class="lineno">  204</span>    TT_support_volume-&gt;SetLineColor(kGray - 2);</div>
-<div class="line"><span class="lineno">  205</span>    TT_support_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>    <span class="comment">// Honeycomb Airex (or Nomex)</span></div>
-<div class="line"><span class="lineno">  208</span>    TGeoBBox* TT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_honeycomb_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2);</div>
-<div class="line"><span class="lineno">  209</span>    TGeoVolume* TT_honeycomb_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_honeycomb&quot;</span>, TT_honeycomb_box, Airex);</div>
-<div class="line"><span class="lineno">  210</span>    TT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
-<div class="line"><span class="lineno">  211</span>    TT_honeycomb_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>    <span class="comment">// SciFi planes</span></div>
-<div class="line"><span class="lineno">  214</span>    TGeoBBox* TT_scifi_plane_hor_box =</div>
-<div class="line"><span class="lineno">  215</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_hor_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  216</span>    TGeoVolume* TT_scifi_plane_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_hor&quot;</span>, TT_scifi_plane_hor_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  217</span>    TT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span>    TGeoBBox* TT_scifi_plane_vert_box =</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_vert_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  221</span>    TGeoVolume* TT_scifi_plane_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_vert&quot;</span>, TT_scifi_plane_vert_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  222</span>    TT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="comment">// SciFi mats for X and Y</span></div>
-<div class="line"><span class="lineno">  225</span>    TGeoBBox* TT_scifimat_hor_box =</div>
-<div class="line"><span class="lineno">  226</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_hor_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  227</span>    TGeoVolume* TT_scifimat_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_hor&quot;</span>, TT_scifimat_hor_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  228</span>    TT_scifimat_hor_volume-&gt;SetLineColor(kCyan - 9);</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    TGeoBBox* TT_scifimat_vert_box =</div>
-<div class="line"><span class="lineno">  231</span>        <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_vert_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  232</span>    TGeoVolume* TT_scifimat_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_vert&quot;</span>, TT_scifimat_vert_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  233</span>    TT_scifimat_vert_volume-&gt;SetLineColor(kGreen - 7);</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>    <span class="comment">// Add SciFi mat as sensitive unit</span></div>
-<div class="line"><span class="lineno">  236</span>    AddSensitiveVolume(TT_scifimat_hor_volume);</div>
-<div class="line"><span class="lineno">  237</span>    AddSensitiveVolume(TT_scifimat_vert_volume);</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>    <span class="comment">// Creating physical volumes and multiply</span></div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  241</span>        TT_scifi_plane_hor_volume-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  242</span>            TT_scifimat_hor_volume, i + 1, <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a> - 1) / 2.0 + i) * <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0));</div>
-<div class="line"><span class="lineno">  243</span>    }</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  245</span>        TT_scifi_plane_vert_volume-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  246</span>            TT_scifimat_vert_volume,</div>
-<div class="line"><span class="lineno">  247</span>            100 + i + 1,</div>
-<div class="line"><span class="lineno">  248</span>            <span class="keyword">new</span> TGeoTranslation((-(<a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a> - 1) / 2.0 + i) * <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0, 0));</div>
-<div class="line"><span class="lineno">  249</span>    }</div>
-<div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    TT_volume-&gt;AddNode(TT_support_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2));</div>
-<div class="line"><span class="lineno">  252</span>    TT_volume-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  253</span>        TT_scifi_plane_hor_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2));</div>
-<div class="line"><span class="lineno">  254</span>    TT_volume-&gt;AddNode(TT_scifi_plane_vert_volume,</div>
-<div class="line"><span class="lineno">  255</span>                       0,</div>
-<div class="line"><span class="lineno">  256</span>                       <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2));</div>
-<div class="line"><span class="lineno">  257</span>    TT_volume-&gt;AddNode(TT_honeycomb_volume,</div>
-<div class="line"><span class="lineno">  258</span>                       0,</div>
-<div class="line"><span class="lineno">  259</span>                       <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2 * <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2));</div>
-<div class="line"><span class="lineno">  260</span>    TT_volume-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  261</span>        TT_support_volume,</div>
-<div class="line"><span class="lineno">  262</span>        1,</div>
-<div class="line"><span class="lineno">  263</span>        <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2 * <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2));</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    Double_t first_tt_position = -<a class="code hl_variable" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2;</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>    <span class="comment">// fNTT - number of TT walls</span></div>
-<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a>; ++<a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>) {</div>
-<div class="line"><span class="lineno">  269</span>        volTarget-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  270</span>            TT_volume, 1000 * (l + 1), <span class="keyword">new</span> TGeoTranslation(0, 0, first_tt_position + l * (<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> + <a class="code hl_variable" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a>)));</div>
-<div class="line"><span class="lineno">  271</span>    }</div>
-<div class="line"><span class="lineno">  272</span>}</div>
-<div class="ttc" id="aclassTargetTracker_html_a35fd674cb4d201518f74439d2afa20df"><div class="ttname"><a href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">TargetTracker::ZDimension</a></div><div class="ttdeci">Double_t ZDimension</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00142">TargetTracker.h:142</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a42ab1011aad3bbb2168974d07b1eafbb"><div class="ttname"><a href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">TargetTracker::support_z</a></div><div class="ttdeci">Double_t support_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00136">TargetTracker.h:136</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a4b1f189be15fc79d2c94866b8aceed40"><div class="ttname"><a href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">TargetTracker::n_hor_planes</a></div><div class="ttdeci">Int_t n_hor_planes</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00138">TargetTracker.h:138</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a4f48c845daed59950dae4aecef7a6d99"><div class="ttname"><a href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">TargetTracker::scifimat_z</a></div><div class="ttdeci">Double_t scifimat_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00135">TargetTracker.h:135</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a512b75ce4c628999d04a108edabc2671"><div class="ttname"><a href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">TargetTracker::scifimat_width</a></div><div class="ttdeci">Double_t scifimat_width</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00132">TargetTracker.h:132</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a5e2f51fa3a7a9ca28903f1231e17597e"><div class="ttname"><a href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">TargetTracker::fNTT</a></div><div class="ttdeci">Int_t fNTT</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00144">TargetTracker.h:144</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a7bde2cd76b734c91a30d08df100fac6c"><div class="ttname"><a href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">TargetTracker::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8cxx_source.html#l00109">TargetTracker.cxx:109</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a8797d0786b93bd3662d0a460487bc00a"><div class="ttname"><a href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">TargetTracker::scifimat_vert</a></div><div class="ttdeci">Double_t scifimat_vert</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00134">TargetTracker.h:134</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_aadd3f35ee4725d41690a660687b83f6f"><div class="ttname"><a href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">TargetTracker::CellWidth</a></div><div class="ttdeci">Double_t CellWidth</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00141">TargetTracker.h:141</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_ab74d178aa34284794e312a26121c6f4a"><div class="ttname"><a href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">TargetTracker::honeycomb_z</a></div><div class="ttdeci">Double_t honeycomb_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00137">TargetTracker.h:137</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_ae5d14bfca6fbb7914b13db53fe324ff3"><div class="ttname"><a href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">TargetTracker::n_vert_planes</a></div><div class="ttdeci">Int_t n_vert_planes</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00139">TargetTracker.h:139</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_af1b5a66c41452d1db2dd2ec74835d9b4"><div class="ttname"><a href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">TargetTracker::scifimat_hor</a></div><div class="ttdeci">Double_t scifimat_hor</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00133">TargetTracker.h:133</a></div></div>
+<div class="line"><span class="lineno">  182</span>  <span class="comment">// Honeycomb Airex (or Nomex)</span></div>
+<div class="line"><span class="lineno">  183</span>  TGeoBBox* TT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_honeycomb_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2,</div>
+<div class="line"><span class="lineno">  184</span>                                            <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2);</div>
+<div class="line"><span class="lineno">  185</span>  TGeoVolume* TT_honeycomb_volume =</div>
+<div class="line"><span class="lineno">  186</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_honeycomb&quot;</span>, TT_honeycomb_box, Airex);</div>
+<div class="line"><span class="lineno">  187</span>  TT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
+<div class="line"><span class="lineno">  188</span>  TT_honeycomb_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span>  <span class="comment">// SciFi planes</span></div>
+<div class="line"><span class="lineno">  191</span>  TGeoBBox* TT_scifi_plane_hor_box = <span class="keyword">new</span> TGeoBBox(</div>
+<div class="line"><span class="lineno">  192</span>      <span class="stringliteral">&quot;TT_scifi_plane_hor_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  193</span>  TGeoVolume* TT_scifi_plane_hor_volume =</div>
+<div class="line"><span class="lineno">  194</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_hor&quot;</span>, TT_scifi_plane_hor_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  195</span>  TT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>  TGeoBBox* TT_scifi_plane_vert_box = <span class="keyword">new</span> TGeoBBox(</div>
+<div class="line"><span class="lineno">  198</span>      <span class="stringliteral">&quot;TT_scifi_plane_vert_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  199</span>  TGeoVolume* TT_scifi_plane_vert_volume =</div>
+<div class="line"><span class="lineno">  200</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_vert&quot;</span>, TT_scifi_plane_vert_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  201</span>  TT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  202</span> </div>
+<div class="line"><span class="lineno">  203</span>  <span class="comment">// SciFi mats for X and Y</span></div>
+<div class="line"><span class="lineno">  204</span>  TGeoBBox* TT_scifimat_hor_box =</div>
+<div class="line"><span class="lineno">  205</span>      <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_hor_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2,</div>
+<div class="line"><span class="lineno">  206</span>                   <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  207</span>  TGeoVolume* TT_scifimat_hor_volume =</div>
+<div class="line"><span class="lineno">  208</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_hor&quot;</span>, TT_scifimat_hor_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  209</span>  TT_scifimat_hor_volume-&gt;SetLineColor(kCyan - 9);</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>  TGeoBBox* TT_scifimat_vert_box =</div>
+<div class="line"><span class="lineno">  212</span>      <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_vert_box&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2,</div>
+<div class="line"><span class="lineno">  213</span>                   <a class="code hl_variable" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> / 2, <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  214</span>  TGeoVolume* TT_scifimat_vert_volume =</div>
+<div class="line"><span class="lineno">  215</span>      <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_vert&quot;</span>, TT_scifimat_vert_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  216</span>  TT_scifimat_vert_volume-&gt;SetLineColor(kGreen - 7);</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>  <span class="comment">// Add SciFi mat as sensitive unit</span></div>
+<div class="line"><span class="lineno">  219</span>  AddSensitiveVolume(TT_scifimat_hor_volume);</div>
+<div class="line"><span class="lineno">  220</span>  AddSensitiveVolume(TT_scifimat_vert_volume);</div>
+<div class="line"><span class="lineno">  221</span> </div>
+<div class="line"><span class="lineno">  222</span>  <span class="comment">// Creating physical volumes and multiply</span></div>
+<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  224</span>    TT_scifi_plane_hor_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  225</span>        TT_scifimat_hor_volume, i + 1,</div>
+<div class="line"><span class="lineno">  226</span>        <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a> - 1) / 2.0 + i) * <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>,</div>
+<div class="line"><span class="lineno">  227</span>                            0));</div>
+<div class="line"><span class="lineno">  228</span>  }</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  230</span>    TT_scifi_plane_vert_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  231</span>        TT_scifimat_vert_volume, 100 + i + 1,</div>
+<div class="line"><span class="lineno">  232</span>        <span class="keyword">new</span> TGeoTranslation((-(<a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a> - 1) / 2.0 + i) * <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>,</div>
+<div class="line"><span class="lineno">  233</span>                            0, 0));</div>
+<div class="line"><span class="lineno">  234</span>  }</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>  TT_volume-&gt;AddNode(TT_support_volume, 0,</div>
+<div class="line"><span class="lineno">  237</span>                     <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2));</div>
+<div class="line"><span class="lineno">  238</span>  TT_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  239</span>      TT_scifi_plane_hor_volume, 0,</div>
+<div class="line"><span class="lineno">  240</span>      <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2));</div>
+<div class="line"><span class="lineno">  241</span>  TT_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  242</span>      TT_scifi_plane_vert_volume, 0,</div>
+<div class="line"><span class="lineno">  243</span>      <span class="keyword">new</span> TGeoTranslation(</div>
+<div class="line"><span class="lineno">  244</span>          0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2));</div>
+<div class="line"><span class="lineno">  245</span>  TT_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  246</span>      TT_honeycomb_volume, 0,</div>
+<div class="line"><span class="lineno">  247</span>      <span class="keyword">new</span> TGeoTranslation(</div>
+<div class="line"><span class="lineno">  248</span>          0, 0, -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2 * <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2));</div>
+<div class="line"><span class="lineno">  249</span>  TT_volume-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  250</span>      TT_support_volume, 1,</div>
+<div class="line"><span class="lineno">  251</span>      <span class="keyword">new</span> TGeoTranslation(0, 0,</div>
+<div class="line"><span class="lineno">  252</span>                          -<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2 * <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> +</div>
+<div class="line"><span class="lineno">  253</span>                              <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> + <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2));</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>  Double_t first_tt_position = -<a class="code hl_variable" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> / 2 + <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2;</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>  <span class="comment">// fNTT - number of TT walls</span></div>
+<div class="line"><span class="lineno">  258</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a> &lt; <a class="code hl_variable" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a>; ++<a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>) {</div>
+<div class="line"><span class="lineno">  259</span>    volTarget-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  260</span>        TT_volume, 1000 * (l + 1),</div>
+<div class="line"><span class="lineno">  261</span>        <span class="keyword">new</span> TGeoTranslation(0, 0,</div>
+<div class="line"><span class="lineno">  262</span>                            first_tt_position + l * (<a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> + <a class="code hl_variable" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a>)));</div>
+<div class="line"><span class="lineno">  263</span>  }</div>
+<div class="line"><span class="lineno">  264</span>}</div>
+<div class="ttc" id="aclassTargetTracker_html_a35fd674cb4d201518f74439d2afa20df"><div class="ttname"><a href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">TargetTracker::ZDimension</a></div><div class="ttdeci">Double_t ZDimension</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00130">TargetTracker.h:130</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a42ab1011aad3bbb2168974d07b1eafbb"><div class="ttname"><a href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">TargetTracker::support_z</a></div><div class="ttdeci">Double_t support_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00124">TargetTracker.h:124</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a4b1f189be15fc79d2c94866b8aceed40"><div class="ttname"><a href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">TargetTracker::n_hor_planes</a></div><div class="ttdeci">Int_t n_hor_planes</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00126">TargetTracker.h:126</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a4f48c845daed59950dae4aecef7a6d99"><div class="ttname"><a href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">TargetTracker::scifimat_z</a></div><div class="ttdeci">Double_t scifimat_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00123">TargetTracker.h:123</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a512b75ce4c628999d04a108edabc2671"><div class="ttname"><a href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">TargetTracker::scifimat_width</a></div><div class="ttdeci">Double_t scifimat_width</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00120">TargetTracker.h:120</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a5e2f51fa3a7a9ca28903f1231e17597e"><div class="ttname"><a href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">TargetTracker::fNTT</a></div><div class="ttdeci">Int_t fNTT</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00132">TargetTracker.h:132</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a7bde2cd76b734c91a30d08df100fac6c"><div class="ttname"><a href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">TargetTracker::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8cxx_source.html#l00101">TargetTracker.cxx:101</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a8797d0786b93bd3662d0a460487bc00a"><div class="ttname"><a href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">TargetTracker::scifimat_vert</a></div><div class="ttdeci">Double_t scifimat_vert</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00122">TargetTracker.h:122</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_aadd3f35ee4725d41690a660687b83f6f"><div class="ttname"><a href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">TargetTracker::CellWidth</a></div><div class="ttdeci">Double_t CellWidth</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00129">TargetTracker.h:129</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_ab74d178aa34284794e312a26121c6f4a"><div class="ttname"><a href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">TargetTracker::honeycomb_z</a></div><div class="ttdeci">Double_t honeycomb_z</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00125">TargetTracker.h:125</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_ae5d14bfca6fbb7914b13db53fe324ff3"><div class="ttname"><a href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">TargetTracker::n_vert_planes</a></div><div class="ttdeci">Int_t n_vert_planes</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00127">TargetTracker.h:127</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_af1b5a66c41452d1db2dd2ec74835d9b4"><div class="ttname"><a href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">TargetTracker::scifimat_hor</a></div><div class="ttdeci">Double_t scifimat_hor</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00121">TargetTracker.h:121</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00094">ShipAna.py:94</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a368dc3d523e04b368da1981e73859f4c"><div class="ttname"><a href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">ana_ShipMuon.l</a></div><div class="ttdeci">dict l</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00478">ana_ShipMuon.py:478</a></div></div>
 </div><!-- fragment -->
@@ -749,8 +767,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The following methods can be implemented if you need to make any optional action in your detector during the transport. </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00097">97</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00083">83</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span>                                                                              {</div>
+<div class="line"><span class="lineno">   84</span>    ;</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -792,18 +812,18 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00326">326</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  327</span>{</div>
-<div class="line"><span class="lineno">  328</span>    NTT = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> / 1000;</div>
-<div class="line"><span class="lineno">  329</span>    <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT * 1000) / 100;</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">if</span> (idir == 1)</div>
-<div class="line"><span class="lineno">  332</span>        ishor = kFALSE;</div>
-<div class="line"><span class="lineno">  333</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0)</div>
-<div class="line"><span class="lineno">  334</span>        ishor = kTRUE;</div>
-<div class="line"><span class="lineno">  335</span> </div>
-<div class="line"><span class="lineno">  336</span>    nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT * 1000 - idir * 100);</div>
-<div class="line"><span class="lineno">  337</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00313">313</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  314</span>                                              {</div>
+<div class="line"><span class="lineno">  315</span>  NTT = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> / 1000;</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT * 1000) / 100;</div>
+<div class="line"><span class="lineno">  317</span> </div>
+<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">if</span> (idir == 1)</div>
+<div class="line"><span class="lineno">  319</span>    ishor = kFALSE;</div>
+<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0)</div>
+<div class="line"><span class="lineno">  321</span>    ishor = kTRUE;</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>  nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT * 1000 - idir * 100);</div>
+<div class="line"><span class="lineno">  324</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00255">make_nTuple_SBT.py:255</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -831,10 +851,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00339">339</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  340</span>{</div>
-<div class="line"><span class="lineno">  341</span>    <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear();</div>
-<div class="line"><span class="lineno">  342</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00326">326</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  326</span>{ <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -861,8 +879,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00100">100</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00088">88</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -889,8 +907,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00101">101</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00089">89</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -919,10 +937,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00359">359</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  360</span>{</div>
-<div class="line"><span class="lineno">  361</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  362</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00341">341</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  341</span>                                                            {</div>
+<div class="line"><span class="lineno">  342</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  343</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -951,10 +969,8 @@ Private Attributes</h2></td></tr>
 <p>Initialization of the detector is done here <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00103">103</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
-<div class="line"><span class="lineno">  105</span>    FairDetector::Initialize();</div>
-<div class="line"><span class="lineno">  106</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00098">98</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{ FairDetector::Initialize(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -982,24 +998,23 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00109">109</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keyword">static</span> FairGeoLoader* geoLoad = FairGeoLoader::Instance();</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keyword">static</span> FairGeoInterface* geoFace = geoLoad-&gt;getGeoInterface();</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keyword">static</span> FairGeoMedia* media = geoFace-&gt;getMedia();</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keyword">static</span> FairGeoBuilder* geoBuild = geoLoad-&gt;getGeoBuilder();</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>    FairGeoMedium* ShipMedium = media-&gt;getMedium(name);</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (!ShipMedium) {</div>
-<div class="line"><span class="lineno">  119</span>        Fatal(<span class="stringliteral">&quot;InitMedium&quot;</span>, <span class="stringliteral">&quot;Material %s not defined in media file.&quot;</span>, name);</div>
-<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">  121</span>    }</div>
-<div class="line"><span class="lineno">  122</span>    TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">if</span> (medium != NULL)</div>
-<div class="line"><span class="lineno">  124</span>        <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
-<div class="line"><span class="lineno">  126</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00101">101</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span>                                                {</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keyword">static</span> FairGeoLoader* geoLoad = FairGeoLoader::Instance();</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keyword">static</span> FairGeoInterface* geoFace = geoLoad-&gt;getGeoInterface();</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keyword">static</span> FairGeoMedia* media = geoFace-&gt;getMedia();</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keyword">static</span> FairGeoBuilder* geoBuild = geoLoad-&gt;getGeoBuilder();</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  FairGeoMedium* ShipMedium = media-&gt;getMedium(name);</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">if</span> (!ShipMedium) {</div>
+<div class="line"><span class="lineno">  110</span>    Fatal(<span class="stringliteral">&quot;InitMedium&quot;</span>, <span class="stringliteral">&quot;Material %s not defined in media file.&quot;</span>, name);</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
+<div class="line"><span class="lineno">  113</span>  TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">if</span> (medium != NULL) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
+<div class="line"><span class="lineno">  116</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1044,8 +1059,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00103">103</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00091">91</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1072,8 +1087,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00104">104</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00092">92</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1103,58 +1118,54 @@ Private Attributes</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00274">274</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span>{</div>
-<div class="line"><span class="lineno">  277</span>    <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
-<div class="line"><span class="lineno">  279</span>        <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">  280</span>        <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  281</span>        <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  282</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>);</div>
-<div class="line"><span class="lineno">  283</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>);</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00266">266</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>                                                 {</div>
+<div class="line"><span class="lineno">  268</span>  <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
+<div class="line"><span class="lineno">  270</span>    <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">  271</span>    <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  272</span>    <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  273</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>);</div>
+<div class="line"><span class="lineno">  274</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>);</div>
+<div class="line"><span class="lineno">  275</span>  }</div>
+<div class="line"><span class="lineno">  276</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  277</span>  <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>  <span class="comment">// Create TTPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
+<div class="line"><span class="lineno">  281</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0.) {</div>
+<div class="line"><span class="lineno">  283</span>      <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  284</span>    }</div>
-<div class="line"><span class="lineno">  285</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  286</span>    <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
-<div class="line"><span class="lineno">  287</span> </div>
-<div class="line"><span class="lineno">  288</span>    <span class="comment">// Create TTPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">  290</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0.) {</div>
-<div class="line"><span class="lineno">  291</span>            <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  292</span>        }</div>
-<div class="line"><span class="lineno">  293</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  294</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  295</span>        <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>);</div>
-<div class="line"><span class="lineno">  298</span>        Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
-<div class="line"><span class="lineno">  299</span>        Int_t TTstationID;</div>
-<div class="line"><span class="lineno">  300</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
-<div class="line"><span class="lineno">  301</span>        <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>        TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">  304</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">  305</span>        Double_t xmean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.X() + Pos.X()) / 2.;</div>
-<div class="line"><span class="lineno">  306</span>        Double_t ymean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Y() + Pos.Y()) / 2.;</div>
-<div class="line"><span class="lineno">  307</span>        Double_t zmean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Z() + Pos.Z()) / 2.;</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>        <a class="code hl_function" href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">AddHit</a>(<a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>,</div>
-<div class="line"><span class="lineno">  310</span>               <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>,</div>
-<div class="line"><span class="lineno">  311</span>               TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">  312</span>               TVector3(<a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Px(), <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Py(), <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Pz()),</div>
-<div class="line"><span class="lineno">  313</span>               <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>,</div>
-<div class="line"><span class="lineno">  314</span>               <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>,</div>
-<div class="line"><span class="lineno">  315</span>               <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>,</div>
-<div class="line"><span class="lineno">  316</span>               pdgCode);</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>        <span class="comment">// Increment number of muon det points in TParticle</span></div>
-<div class="line"><span class="lineno">  319</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  320</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>);</div>
-<div class="line"><span class="lineno">  321</span>    }</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  324</span>}</div>
+<div class="line"><span class="lineno">  285</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  286</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  287</span>    <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  288</span> </div>
+<div class="line"><span class="lineno">  289</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>);</div>
+<div class="line"><span class="lineno">  290</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
+<div class="line"><span class="lineno">  291</span>    Int_t TTstationID;</div>
+<div class="line"><span class="lineno">  292</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
+<div class="line"><span class="lineno">  293</span>    <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  294</span> </div>
+<div class="line"><span class="lineno">  295</span>    TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">  296</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">  297</span>    Double_t xmean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.X() + Pos.X()) / 2.;</div>
+<div class="line"><span class="lineno">  298</span>    Double_t ymean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Y() + Pos.Y()) / 2.;</div>
+<div class="line"><span class="lineno">  299</span>    Double_t zmean = (<a class="code hl_variable" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>    <a class="code hl_function" href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">AddHit</a>(<a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>, <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>, TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">  302</span>           TVector3(<a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Px(), <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Py(), <a class="code hl_variable" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Pz()), <a class="code hl_variable" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>, <a class="code hl_variable" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>, <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>,</div>
+<div class="line"><span class="lineno">  303</span>           pdgCode);</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>    <span class="comment">// Increment number of muon det points in TParticle</span></div>
+<div class="line"><span class="lineno">  306</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  307</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>);</div>
+<div class="line"><span class="lineno">  308</span>  }</div>
+<div class="line"><span class="lineno">  309</span> </div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  311</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00051">ShipStack.h:52</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a8011000196ebfa6d416c5abca878cdaa"><div class="ttname"><a href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">TargetTracker::AddHit</a></div><div class="ttdeci">TTPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8cxx_source.html#l00381">TargetTracker.cxx:381</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a8011000196ebfa6d416c5abca878cdaa"><div class="ttname"><a href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">TargetTracker::AddHit</a></div><div class="ttdeci">TTPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8cxx_source.html#l00359">TargetTracker.cxx:359</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00252">makeCascade.py:252</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00273">run_fixedTarget.py:273</a></div></div>
@@ -1187,14 +1198,13 @@ Private Attributes</h2></td></tr>
  </p>
 <p>This will create a branch in the output tree called <a class="el" href="classTargetPoint.html">TargetPoint</a>, setting the last parameter to kFALSE means: this collection will not be written to the file, it will exist only during the simulation.</p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00344">344</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  345</span>{</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
-<div class="line"><span class="lineno">  354</span>        <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a> = <span class="keyword">new</span> std::vector&lt;TTPoint&gt;();</div>
-<div class="line"><span class="lineno">  355</span>    }</div>
-<div class="line"><span class="lineno">  356</span>    FairRootManager::Instance()-&gt;RegisterAny(<span class="stringliteral">&quot;TTPoint&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  357</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00328">328</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  328</span>                             {</div>
+<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
+<div class="line"><span class="lineno">  336</span>    <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a> = <span class="keyword">new</span> std::vector&lt;TTPoint&gt;();</div>
+<div class="line"><span class="lineno">  337</span>  }</div>
+<div class="line"><span class="lineno">  338</span>  FairRootManager::Instance()-&gt;RegisterAny(<span class="stringliteral">&quot;TTPoint&quot;</span>, <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  339</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1223,10 +1233,8 @@ Private Attributes</h2></td></tr>
 <p>has to be called after each event to reset the containers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00376">376</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  377</span>{</div>
-<div class="line"><span class="lineno">  378</span>    <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear();</div>
-<div class="line"><span class="lineno">  379</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00357">357</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  357</span>{ <a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>-&gt;clear(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1246,10 +1254,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00156">156</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_variable" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a> = CellW;</div>
-<div class="line"><span class="lineno">  159</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00142">142</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{ <a class="code hl_variable" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a> = CellW; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1269,11 +1275,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00171">171</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
-<div class="line"><span class="lineno">  173</span>    <a class="code hl_variable" href="classTargetTracker.html#afec7f43ca4d69856465998bdd6f5eddc">fDesign</a> = Design;</div>
-<div class="line"><span class="lineno">  174</span>}</div>
-<div class="ttc" id="aclassTargetTracker_html_afec7f43ca4d69856465998bdd6f5eddc"><div class="ttname"><a href="classTargetTracker.html#afec7f43ca4d69856465998bdd6f5eddc">TargetTracker::fDesign</a></div><div class="ttdeci">Int_t fDesign</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00146">TargetTracker.h:146</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00148">148</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{ <a class="code hl_variable" href="classTargetTracker.html#afec7f43ca4d69856465998bdd6f5eddc">fDesign</a> = Design; }</div>
+<div class="ttc" id="aclassTargetTracker_html_afec7f43ca4d69856465998bdd6f5eddc"><div class="ttname"><a href="classTargetTracker.html#afec7f43ca4d69856465998bdd6f5eddc">TargetTracker::fDesign</a></div><div class="ttdeci">Int_t fDesign</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8h_source.html#l00134">TargetTracker.h:134</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1303,11 +1307,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00143">143</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span>{</div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a> = n_hor_planes_;</div>
-<div class="line"><span class="lineno">  146</span>    <a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a> = n_vert_planes_;</div>
-<div class="line"><span class="lineno">  147</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00130">130</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>                                                                            {</div>
+<div class="line"><span class="lineno">  131</span>  <a class="code hl_variable" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a> = n_hor_planes_;</div>
+<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a> = n_vert_planes_;</div>
+<div class="line"><span class="lineno">  133</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1327,10 +1331,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00166">166</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
-<div class="line"><span class="lineno">  168</span>    <a class="code hl_variable" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a> = <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>;</div>
-<div class="line"><span class="lineno">  169</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00146">146</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  146</span>{ <a class="code hl_variable" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a> = <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; }</div>
 <div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1385,15 +1387,15 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00128">128</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span>{</div>
-<div class="line"><span class="lineno">  135</span>    <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> = scifimat_width_;</div>
-<div class="line"><span class="lineno">  136</span>    <a class="code hl_variable" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> = scifimat_hor_;</div>
-<div class="line"><span class="lineno">  137</span>    <a class="code hl_variable" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> = scifimat_vert_;</div>
-<div class="line"><span class="lineno">  138</span>    <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> = scifimat_z_;</div>
-<div class="line"><span class="lineno">  139</span>    <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> = support_z_;</div>
-<div class="line"><span class="lineno">  140</span>    <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> = honeycomb_z_;</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00118">118</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>                                                                              {</div>
+<div class="line"><span class="lineno">  122</span>  <a class="code hl_variable" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> = scifimat_width_;</div>
+<div class="line"><span class="lineno">  123</span>  <a class="code hl_variable" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> = scifimat_hor_;</div>
+<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> = scifimat_vert_;</div>
+<div class="line"><span class="lineno">  125</span>  <a class="code hl_variable" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> = scifimat_z_;</div>
+<div class="line"><span class="lineno">  126</span>  <a class="code hl_variable" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> = support_z_;</div>
+<div class="line"><span class="lineno">  127</span>  <a class="code hl_variable" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> = honeycomb_z_;</div>
+<div class="line"><span class="lineno">  128</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1420,8 +1422,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00098">98</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{ ; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00086">86</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1457,12 +1459,12 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00149">149</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
-<div class="line"><span class="lineno">  151</span>    <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> = TTX;</div>
-<div class="line"><span class="lineno">  152</span>    <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> = TTY;</div>
-<div class="line"><span class="lineno">  153</span>    <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> = TTZ;</div>
-<div class="line"><span class="lineno">  154</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00135">135</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>                                                        {</div>
+<div class="line"><span class="lineno">  137</span>  <a class="code hl_variable" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> = TTX;</div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> = TTY;</div>
+<div class="line"><span class="lineno">  139</span>  <a class="code hl_variable" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> = TTZ;</div>
+<div class="line"><span class="lineno">  140</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1482,10 +1484,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00161">161</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
-<div class="line"><span class="lineno">  163</span>    <a class="code hl_variable" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> = Zdim;</div>
-<div class="line"><span class="lineno">  164</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00144">144</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>{ <a class="code hl_variable" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> = Zdim; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1516,17 +1516,17 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b">ISTLPointContainer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00364">364</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  365</span>{</div>
-<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; point : *<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
-<div class="line"><span class="lineno">  367</span>        Int_t oldTrackID = point.GetTrackID();</div>
-<div class="line"><span class="lineno">  368</span>        <span class="keyword">auto</span> iter = indexMap.find(oldTrackID);</div>
-<div class="line"><span class="lineno">  369</span>        <span class="keywordflow">if</span> (iter != indexMap.end()) {</div>
-<div class="line"><span class="lineno">  370</span>            point.SetTrackID(iter-&gt;second);</div>
-<div class="line"><span class="lineno">  371</span>            point.SetLink(FairLink(<span class="stringliteral">&quot;MCTrack&quot;</span>, iter-&gt;second));</div>
-<div class="line"><span class="lineno">  372</span>        }</div>
-<div class="line"><span class="lineno">  373</span>    }</div>
-<div class="line"><span class="lineno">  374</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00345">345</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  346</span>                                          {</div>
+<div class="line"><span class="lineno">  347</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; point : *<a class="code hl_variable" href="classTargetTracker.html#a836dec5179699991721b3c9246eaa349">fTTPoints</a>) {</div>
+<div class="line"><span class="lineno">  348</span>    Int_t oldTrackID = point.GetTrackID();</div>
+<div class="line"><span class="lineno">  349</span>    <span class="keyword">auto</span> iter = indexMap.find(oldTrackID);</div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">if</span> (iter != indexMap.end()) {</div>
+<div class="line"><span class="lineno">  351</span>      point.SetTrackID(iter-&gt;second);</div>
+<div class="line"><span class="lineno">  352</span>      point.SetLink(FairLink(<span class="stringliteral">&quot;MCTrack&quot;</span>, iter-&gt;second));</div>
+<div class="line"><span class="lineno">  353</span>    }</div>
+<div class="line"><span class="lineno">  354</span>  }</div>
+<div class="line"><span class="lineno">  355</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1551,7 +1551,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00141">141</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00129">129</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1575,7 +1575,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00146">146</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00134">134</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1601,7 +1601,7 @@ Private Attributes</h2></td></tr>
 
 <p>length </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00122">122</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00110">110</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1627,7 @@ Private Attributes</h2></td></tr>
 
 <p>time </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00121">121</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00109">109</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1653,7 +1653,7 @@ Private Attributes</h2></td></tr>
 
 <p>position at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00119">119</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00107">107</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1677,7 +1677,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00144">144</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00132">132</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1703,7 +1703,7 @@ Private Attributes</h2></td></tr>
 
 <p>volume id </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00118">118</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00106">106</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1729,7 +1729,7 @@ Private Attributes</h2></td></tr>
 
 <p>momentum at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00120">120</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00108">108</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1754,7 +1754,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Track information to be stored until the track leaves the active volume. </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00116">116</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00104">104</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1781,7 +1781,7 @@ Private Attributes</h2></td></tr>
 <p>energy loss </p>
 <p>container for data points </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00125">125</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00113">113</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1807,7 +1807,7 @@ Private Attributes</h2></td></tr>
 
 <p>track index </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00117">117</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00105">105</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1831,7 +1831,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00137">137</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00125">125</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1855,7 +1855,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00138">138</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00126">126</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1879,7 +1879,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00139">139</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00127">127</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1903,7 +1903,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00133">133</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00121">121</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1927,7 +1927,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00134">134</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00122">122</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1951,7 +1951,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00132">132</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00120">120</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1975,7 +1975,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00135">135</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00123">123</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -1999,7 +1999,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00136">136</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00124">124</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -2023,7 +2023,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00128">128</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00116">116</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -2047,7 +2047,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00129">129</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00117">117</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -2071,7 +2071,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00130">130</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00118">118</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>
@@ -2095,7 +2095,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00142">142</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8h_source.html#l00130">130</a> of file <a class="el" href="TargetTracker_8h_source.html">TargetTracker.h</a>.</p>
 
 </div>
 </div>

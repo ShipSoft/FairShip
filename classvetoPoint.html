@@ -151,7 +151,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00013">13</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00014">14</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aead4d18523559cd3e9cd89454f10572d" name="aead4d18523559cd3e9cd89454f10572d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aead4d18523559cd3e9cd89454f10572d">&#9670;&#160;</a></span>vetoPoint() <span class="overload">[1/3]</span></h2>
@@ -169,9 +169,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00011">11</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span>    : FairMCPoint()</div>
-<div class="line"><span class="lineno">   13</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00012">12</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span>: FairMCPoint() {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -267,15 +266,14 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00017">17</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID)</div>
-<div class="line"><span class="lineno">   29</span>    , <a class="code hl_variable" href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">fPdgCode</a>(pdgcode)</div>
-<div class="line"><span class="lineno">   30</span>    , <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>{Lpos.X(), Lpos.Y(), Lpos.Z()}</div>
-<div class="line"><span class="lineno">   31</span>    , <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>{Lmom.X(), Lmom.Y(), Lmom.Z()}</div>
-<div class="line"><span class="lineno">   32</span>{}</div>
-<div class="ttc" id="aclassvetoPoint_html_a10e73f2d6ea569b4f209d078dddaa297"><div class="ttname"><a href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">vetoPoint::fLmom</a></div><div class="ttdeci">std::array&lt; Double_t, 3 &gt; fLmom</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00060">vetoPoint.h:60</a></div></div>
-<div class="ttc" id="aclassvetoPoint_html_a33d0d3716983a6903c78e75ad5eaf53d"><div class="ttname"><a href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">vetoPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00059">vetoPoint.h:59</a></div></div>
-<div class="ttc" id="aclassvetoPoint_html_aea02b8ea0f649b8050bedc3d8ede8fd6"><div class="ttname"><a href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">vetoPoint::fLpos</a></div><div class="ttdeci">std::array&lt; Double_t, 3 &gt; fLpos</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00060">vetoPoint.h:60</a></div></div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00016">16</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   19</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID),</div>
+<div class="line"><span class="lineno">   20</span>      <a class="code hl_variable" href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">fPdgCode</a>(pdgcode),</div>
+<div class="line"><span class="lineno">   21</span>      <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>{Lpos.X(), Lpos.Y(), Lpos.Z()},</div>
+<div class="line"><span class="lineno">   22</span>      <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>{Lmom.X(), Lmom.Y(), Lmom.Z()} {}</div>
+<div class="ttc" id="aclassvetoPoint_html_a10e73f2d6ea569b4f209d078dddaa297"><div class="ttname"><a href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">vetoPoint::fLmom</a></div><div class="ttdeci">std::array&lt; Double_t, 3 &gt; fLmom</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00051">vetoPoint.h:51</a></div></div>
+<div class="ttc" id="aclassvetoPoint_html_a33d0d3716983a6903c78e75ad5eaf53d"><div class="ttname"><a href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">vetoPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00050">vetoPoint.h:50</a></div></div>
+<div class="ttc" id="aclassvetoPoint_html_aea02b8ea0f649b8050bedc3d8ede8fd6"><div class="ttname"><a href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">vetoPoint::fLpos</a></div><div class="ttdeci">std::array&lt; Double_t, 3 &gt; fLpos</div><div class="ttdef"><b>Definition</b> <a href="vetoPoint_8h_source.html#l00051">vetoPoint.h:51</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,8 +301,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00036">36</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00026">26</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -359,8 +357,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00056">56</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[0], <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[1], <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[2]); }</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00047">47</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[0], <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[1], <a class="code hl_variable" href="classvetoPoint.html#a10e73f2d6ea569b4f209d078dddaa297">fLmom</a>[2]); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -387,8 +385,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00055">55</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[0], <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[1], <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[2]); }</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00046">46</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> TVector3(<a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[0], <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[1], <a class="code hl_variable" href="classvetoPoint.html#aea02b8ea0f649b8050bedc3d8ede8fd6">fLpos</a>[2]); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -441,8 +439,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00054">54</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">fPdgCode</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00045">45</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classvetoPoint.html#a33d0d3716983a6903c78e75ad5eaf53d">fPdgCode</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -469,14 +467,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00041">41</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;    vetoPoint: veto point for track &quot;</span> &lt;&lt; fTrackID &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID;</div>
-<div class="line"><span class="lineno">   44</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span>;</div>
-<div class="line"><span class="lineno">   45</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span>;</div>
-<div class="line"><span class="lineno">   46</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06</div>
-<div class="line"><span class="lineno">   47</span>              &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span>;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8cxx_source.html#l00031">31</a> of file <a class="el" href="vetoPoint_8cxx_source.html">vetoPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>                            {</div>
+<div class="line"><span class="lineno">   32</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    vetoPoint: veto point for track &quot;</span> &lt;&lt; fTrackID</div>
+<div class="line"><span class="lineno">   33</span>            &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID;</div>
+<div class="line"><span class="lineno">   34</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span>;</div>
+<div class="line"><span class="lineno">   35</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span>;</div>
+<div class="line"><span class="lineno">   36</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength</div>
+<div class="line"><span class="lineno">   37</span>            &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span>;</div>
+<div class="line"><span class="lineno">   38</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -501,7 +500,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00060">60</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00051">51</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
 
 </div>
 </div>
@@ -525,7 +524,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00060">60</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00051">51</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
 
 </div>
 </div>
@@ -549,7 +548,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00059">59</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoPoint_8h_source.html#l00050">50</a> of file <a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>.</p>
 
 </div>
 </div>

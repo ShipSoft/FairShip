@@ -98,185 +98,175 @@ $(document).ready(function(){initNavTree('MTCDetHit_8cxx_source.html',''); initR
 </div><!--header-->
 <div class="contents">
 <a href="MTCDetHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetHit_8h.html">MTCDetHit.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetPoint_8h.html">MTCDetPoint.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetector_8h.html">MTCDetector.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;TGeoBBox.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TGeoNavigator.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;TRandom.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetHit_8h.html">MTCDetHit.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;TRandom.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetPoint_8h.html">MTCDetPoint.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="MTCDetector_8h.html">MTCDetector.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TGeoBBox.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TGeoNavigator.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">constexpr</span> Float_t n_photons_min = 3.5f;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">constexpr</span> Float_t n_photons_max = 104.0f;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">constexpr</span> Float_t time_res = 150e-3f;     <span class="comment">// 150 ps</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">constexpr</span> Float_t signal_speed = 15.0f;   <span class="comment">// cm/ns</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">constexpr</span> Float_t time_res = 150e-3f;    <span class="comment">// 150 ps</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">constexpr</span> Float_t signal_speed = 15.0f;  <span class="comment">// cm/ns</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">const</span> Float_t inv_signal_speed = 1.0f / signal_speed;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// parameters for simulating the digitized information</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">constexpr</span> Float_t light_attenuation_params[2] = {20., 300.};                 <span class="comment">// x_0, lambda</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">constexpr</span> Float_t n_pixels_to_qdc_params[4] = {0.172, -1.31, 0.006, 0.33};   <span class="comment">// A, B, sigma_A, sigma_B</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}   <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">   29</a></span><a class="code hl_function" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a>()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">constexpr</span> Float_t light_attenuation_params[2] = {20., 300.};  <span class="comment">// x_0, lambda</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">constexpr</span> Float_t n_pixels_to_qdc_params[4] = {0.172, -1.31, 0.006,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                                               0.33};  <span class="comment">// A, B, sigma_A, sigma_B</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">   30</a></span><a class="code hl_function" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a>() : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() { <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// Optimized MTCDetHit Constructor</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a7c86ac5b342de0f8bea667d1d5a13ef6">   34</a></span><a class="code hl_function" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a>(<span class="keywordtype">int</span> SiPMChan, <span class="keyword">const</span> std::vector&lt;MTCDetPoint*&gt;&amp; points,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                     <span class="keyword">const</span> std::vector&lt;Float_t&gt;&amp; weights) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// Retrieve detector once</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">static</span> <span class="keyword">auto</span>* MTCDet =</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="keyword">dynamic_cast&lt;</span><a class="code hl_namespace" href="namespaceMTCDetector.html">MTCDetector</a>*<span class="keyword">&gt;</span>(gROOT-&gt;GetListOfGlobals()-&gt;FindObject(<span class="stringliteral">&quot;MTC&quot;</span>));</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// Constants</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = SiPMChan;  <span class="comment">// Set the detector ID</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// Determine plane type once</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> plane_type = <a class="code hl_function" href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">GetStationType</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  Float_t total_light_yield = 0.0f;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  Float_t earliest_to_A = std::numeric_limits&lt;Float_t&gt;::max();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  Float_t earliest_to_B = std::numeric_limits&lt;Float_t&gt;::max();</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  Float_t signal_sum = 0.0f;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">bool</span> hit_flag = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// Separate handling for scintillating mat (plane_type == 2)</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">if</span> (plane_type == 2) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>* pt : points) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      signal_sum += pt-&gt;GetEnergyLoss();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="comment">// Track earliest arrival time</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      Float_t arrival = pt-&gt;GetTime();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      earliest_to_B = std::min(earliest_to_B, arrival);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a> = gRandom-&gt;Gaus(earliest_to_B, time_res);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a> = signal_sum;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// Fiber hit processing</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = points.size();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  total_light_yield = 0.0f;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  TVector3 sipmA, sipmB;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  MTCDet-&gt;GetSiPMPosition(SiPMChan, sipmA, sipmB);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keyword">auto</span>* pt = points[i];</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    Float_t energy = pt-&gt;GetEnergyLoss();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    Float_t weight = weights[i];</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    Float_t signal = energy * weight;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// Distance from deposit to SiPM</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    TVector3 impact(pt-&gt;GetX(), pt-&gt;GetY(), pt-&gt;GetZ());</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keyword">const</span> Float_t distance = (sipmB - impact).Mag();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// Light yield before attenuation</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    Float_t light_yield = signal * 1e6f * 0.16f;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    light_yield *= <a class="code hl_function" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">light_attenuation</a>(distance);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    total_light_yield += light_yield;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment">// Track earliest arrival time</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    Float_t arrival = pt-&gt;GetTime() + distance * inv_signal_speed;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    earliest_to_A = std::min(earliest_to_A, arrival);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// Apply statistical smearing and saturation</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">const</span> Int_t smeared_light_yield = gRandom-&gt;Poisson(total_light_yield);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">const</span> Float_t n_pixels = <a class="code hl_function" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">sipm_saturation</a>(smeared_light_yield);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a> = <a class="code hl_function" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">n_pixels_to_qdc</a>(n_pixels);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">// Final hit decision and time</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  hit_flag = (smeared_light_yield &gt; n_photons_min);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = hit_flag;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a> = gRandom-&gt;Gaus(earliest_to_A, time_res);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
 </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// Optimized MTCDetHit Constructor</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a7c86ac5b342de0f8bea667d1d5a13ef6">   37</a></span><a class="code hl_function" href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a>(<span class="keywordtype">int</span> SiPMChan, <span class="keyword">const</span> std::vector&lt;MTCDetPoint*&gt;&amp; points, <span class="keyword">const</span> std::vector&lt;Float_t&gt;&amp; weights)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// Retrieve detector once</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">static</span> <span class="keyword">auto</span>* MTCDet = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_namespace" href="namespaceMTCDetector.html">MTCDetector</a>*<span class="keyword">&gt;</span>(gROOT-&gt;GetListOfGlobals()-&gt;FindObject(<span class="stringliteral">&quot;MTC&quot;</span>));</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment">// Constants</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = SiPMChan;   <span class="comment">// Set the detector ID</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="comment">// Determine plane type once</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> plane_type = <a class="code hl_function" href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">GetStationType</a>();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    Float_t total_light_yield = 0.0f;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Float_t earliest_to_A = std::numeric_limits&lt;Float_t&gt;::max();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    Float_t earliest_to_B = std::numeric_limits&lt;Float_t&gt;::max();</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    Float_t signal_sum = 0.0f;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">bool</span> hit_flag = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">// Separate handling for scintillating mat (plane_type == 2)</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (plane_type == 2) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>* pt : points) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            signal_sum += pt-&gt;GetEnergyLoss();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="comment">// Track earliest arrival time</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            Float_t arrival = pt-&gt;GetTime();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            earliest_to_B = std::min(earliest_to_B, arrival);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a> = gRandom-&gt;Gaus(earliest_to_B, time_res);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a> = signal_sum;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">// Fiber hit processing</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = points.size();</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    total_light_yield = 0.0f;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    TVector3 sipmA, sipmB;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    MTCDet-&gt;GetSiPMPosition(SiPMChan, sipmA, sipmB);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i) {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keyword">auto</span>* pt = points[i];</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        Float_t energy = pt-&gt;GetEnergyLoss();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        Float_t weight = weights[i];</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        Float_t signal = energy * weight;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="comment">// Distance from deposit to SiPM</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        TVector3 impact(pt-&gt;GetX(), pt-&gt;GetY(), pt-&gt;GetZ());</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keyword">const</span> Float_t distance = (sipmB - impact).Mag();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// Light yield before attenuation</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        Float_t light_yield = signal * 1e6f * 0.16f;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        light_yield *= <a class="code hl_function" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">light_attenuation</a>(distance);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        total_light_yield += light_yield;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="comment">// Track earliest arrival time</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        Float_t arrival = pt-&gt;GetTime() + distance * inv_signal_speed;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        earliest_to_A = std::min(earliest_to_A, arrival);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// Apply statistical smearing and saturation</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keyword">const</span> Int_t smeared_light_yield = gRandom-&gt;Poisson(total_light_yield);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keyword">const</span> Float_t n_pixels = <a class="code hl_function" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">sipm_saturation</a>(smeared_light_yield);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a> = <a class="code hl_function" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">n_pixels_to_qdc</a>(n_pixels);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Final hit decision and time</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    hit_flag = (smeared_light_yield &gt; n_photons_min);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <a class="code hl_variable" href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">flag</a> = hit_flag;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a> = gRandom-&gt;Gaus(earliest_to_A, time_res);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">  104</a></span><a class="code hl_function" href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">MTCDetHit::~MTCDetHit</a>() {}</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// -----   Public method GetEnergy   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">  108</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">MTCDetHit::GetEnergy</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// to be calculated from digis and calibration constants, missing!</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">  106</a></span><a class="code hl_function" href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">MTCDetHit::~MTCDetHit</a>() {}</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// -----   Public method GetEnergy   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">  110</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">MTCDetHit::GetEnergy</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="comment">// to be calculated from digis and calibration constants, missing!</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">  113</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">MTCDetHit::light_attenuation</a>(Float_t distance) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">//    It returns the light yield attenuation depending on the distance to SiPM</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> TMath::Exp(-(distance - light_attenuation_params[0]) /</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                    light_attenuation_params[1]);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
 </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">  116</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">MTCDetHit::light_attenuation</a>(Float_t distance)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>{</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">//  It returns the light yield attenuation depending on the distance to SiPM</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">return</span> TMath::Exp(-(distance - light_attenuation_params[0]) / light_attenuation_params[1]);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">  119</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">MTCDetHit::sipm_saturation</a>(Float_t ly) {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">//    It returns the number of fired pixels per channel</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  Float_t factor = 1 - TMath::Exp(-ly / n_photons_max);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">return</span> n_photons_max * factor;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
 </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">  122</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">MTCDetHit::sipm_saturation</a>(Float_t ly)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>{</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">//  It returns the number of fired pixels per channel</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    Float_t factor = 1 - TMath::Exp(-ly / n_photons_max);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> n_photons_max * factor;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">  125</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">MTCDetHit::n_pixels_to_qdc</a>(Float_t npix) {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">//    It returns QDC per channel after Gaussian smearing of the parameters</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  Float_t A =</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      gRandom-&gt;Gaus(n_pixels_to_qdc_params[0], n_pixels_to_qdc_params[2]);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  Float_t B =</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      gRandom-&gt;Gaus(n_pixels_to_qdc_params[1], n_pixels_to_qdc_params[3]);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">return</span> A * npix + B;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>}</div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">  129</a></span>Float_t <a class="code hl_function" href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">MTCDetHit::n_pixels_to_qdc</a>(Float_t npix)</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>{</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="comment">//  It returns QDC per channel after Gaussian smearing of the parameters</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    Float_t A = gRandom-&gt;Gaus(n_pixels_to_qdc_params[0], n_pixels_to_qdc_params[2]);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    Float_t B = gRandom-&gt;Gaus(n_pixels_to_qdc_params[1], n_pixels_to_qdc_params[3]);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">return</span> A * npix + B;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
-</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">  138</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">MTCDetHit::Print</a>()</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>{</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    std::cout &lt;&lt; Form(</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="stringliteral">&quot;MTCDetHit: Detector ID %d, Layer %d, Station Type %d, SiPM %d, Channel %d, Signal %.2f, Time %.3f \n&quot;</span>,</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>,</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <a class="code hl_function" href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">GetLayer</a>(),</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <a class="code hl_function" href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">GetStationType</a>(),</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <a class="code hl_function" href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">GetSiPM</a>(),</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <a class="code hl_function" href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">GetSiPMChan</a>(),</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>,</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a>);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">  135</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">MTCDetHit::Print</a>() {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  std::cout &lt;&lt; Form(</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      <span class="stringliteral">&quot;MTCDetHit: Detector ID %d, Layer %d, Station Type %d, SiPM %d, Channel &quot;</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="stringliteral">&quot;%d, Signal %.2f, Time %.3f \n&quot;</span>,</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>, <a class="code hl_function" href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">GetLayer</a>(), <a class="code hl_function" href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">GetStationType</a>(), <a class="code hl_function" href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">GetSiPM</a>(), <a class="code hl_function" href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">GetSiPMChan</a>(),</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <a class="code hl_variable" href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">signals</a>, <a class="code hl_variable" href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">time</a>);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
 </div>
 <div class="ttc" id="aMTCDetHit_8h_html"><div class="ttname"><a href="MTCDetHit_8h.html">MTCDetHit.h</a></div></div>
 <div class="ttc" id="aMTCDetPoint_8h_html"><div class="ttname"><a href="MTCDetPoint_8h.html">MTCDetPoint.h</a></div></div>
 <div class="ttc" id="aMTCDetector_8h_html"><div class="ttname"><a href="MTCDetector_8h.html">MTCDetector.h</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a0d802ce501b1d9cbc3ee26dedbee9425"><div class="ttname"><a href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">MTCDetHit::Print</a></div><div class="ttdeci">void Print()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00138">MTCDetHit.cxx:138</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a13661a6c759c125b37654095f61af4b8"><div class="ttname"><a href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">MTCDetHit::n_pixels_to_qdc</a></div><div class="ttdeci">Float_t n_pixels_to_qdc(Float_t npix)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00129">MTCDetHit.cxx:129</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a159b24738b91eb8fe6389e2237399e6b"><div class="ttname"><a href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">MTCDetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00067">MTCDetHit.h:67</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a162956dea791783ba63cd6458ccb5a42"><div class="ttname"><a href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">MTCDetHit::sipm_saturation</a></div><div class="ttdeci">Float_t sipm_saturation(Float_t ly)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00122">MTCDetHit.cxx:122</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a45aa27849676c5a7852b4f467d45367f"><div class="ttname"><a href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">MTCDetHit::GetSiPMChan</a></div><div class="ttdeci">Int_t GetSiPMChan() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00053">MTCDetHit.h:53</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a541e56fa8abea47621f8c6fdcdda5fdb"><div class="ttname"><a href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">MTCDetHit::time</a></div><div class="ttdeci">Float_t time</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00063">MTCDetHit.h:63</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a64c40a4143c5fe2b59571b8325d2a12c"><div class="ttname"><a href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">MTCDetHit::GetStationType</a></div><div class="ttdeci">Int_t GetStationType() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00051">MTCDetHit.h:51</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a6b33710eec297647716726c01558093c"><div class="ttname"><a href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">MTCDetHit::signals</a></div><div class="ttdeci">Float_t signals</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00062">MTCDetHit.h:62</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a99702f859fa3d15106a1229fd7b78f4e"><div class="ttname"><a href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">MTCDetHit::GetEnergy</a></div><div class="ttdeci">Float_t GetEnergy() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00110">MTCDetHit.cxx:110</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_a9e3052c20946b9585ede85f89f4012fa"><div class="ttname"><a href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a></div><div class="ttdeci">MTCDetHit()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00029">MTCDetHit.cxx:29</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_ab928296c1f42721d6b7b91dad6de71fc"><div class="ttname"><a href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">MTCDetHit::light_attenuation</a></div><div class="ttdeci">Float_t light_attenuation(Float_t distance)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00116">MTCDetHit.cxx:116</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_ade88908ae8d4bded7c05bfb9107ddb2d"><div class="ttname"><a href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">MTCDetHit::GetSiPM</a></div><div class="ttdeci">Int_t GetSiPM() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00052">MTCDetHit.h:52</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_adec45e495568fe3478081b7f413c8d4c"><div class="ttname"><a href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">MTCDetHit::GetLayer</a></div><div class="ttdeci">Int_t GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00050">MTCDetHit.h:50</a></div></div>
-<div class="ttc" id="aclassMTCDetHit_html_aed6ac5fb39f0b320a7d777b09ad5724c"><div class="ttname"><a href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">MTCDetHit::~MTCDetHit</a></div><div class="ttdeci">virtual ~MTCDetHit()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00106">MTCDetHit.cxx:106</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a0d802ce501b1d9cbc3ee26dedbee9425"><div class="ttname"><a href="classMTCDetHit.html#a0d802ce501b1d9cbc3ee26dedbee9425">MTCDetHit::Print</a></div><div class="ttdeci">void Print()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00135">MTCDetHit.cxx:135</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a13661a6c759c125b37654095f61af4b8"><div class="ttname"><a href="classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8">MTCDetHit::n_pixels_to_qdc</a></div><div class="ttdeci">Float_t n_pixels_to_qdc(Float_t npix)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00125">MTCDetHit.cxx:125</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a159b24738b91eb8fe6389e2237399e6b"><div class="ttname"><a href="classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b">MTCDetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00074">MTCDetHit.h:74</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a162956dea791783ba63cd6458ccb5a42"><div class="ttname"><a href="classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42">MTCDetHit::sipm_saturation</a></div><div class="ttdeci">Float_t sipm_saturation(Float_t ly)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00119">MTCDetHit.cxx:119</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a45aa27849676c5a7852b4f467d45367f"><div class="ttname"><a href="classMTCDetHit.html#a45aa27849676c5a7852b4f467d45367f">MTCDetHit::GetSiPMChan</a></div><div class="ttdeci">Int_t GetSiPMChan() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00059">MTCDetHit.h:59</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a541e56fa8abea47621f8c6fdcdda5fdb"><div class="ttname"><a href="classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb">MTCDetHit::time</a></div><div class="ttdeci">Float_t time</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00070">MTCDetHit.h:70</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a64c40a4143c5fe2b59571b8325d2a12c"><div class="ttname"><a href="classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c">MTCDetHit::GetStationType</a></div><div class="ttdeci">Int_t GetStationType() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00055">MTCDetHit.h:55</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a6b33710eec297647716726c01558093c"><div class="ttname"><a href="classMTCDetHit.html#a6b33710eec297647716726c01558093c">MTCDetHit::signals</a></div><div class="ttdeci">Float_t signals</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00069">MTCDetHit.h:69</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a99702f859fa3d15106a1229fd7b78f4e"><div class="ttname"><a href="classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e">MTCDetHit::GetEnergy</a></div><div class="ttdeci">Float_t GetEnergy() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00108">MTCDetHit.cxx:108</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_a9e3052c20946b9585ede85f89f4012fa"><div class="ttname"><a href="classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa">MTCDetHit::MTCDetHit</a></div><div class="ttdeci">MTCDetHit()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00030">MTCDetHit.cxx:30</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_ab928296c1f42721d6b7b91dad6de71fc"><div class="ttname"><a href="classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc">MTCDetHit::light_attenuation</a></div><div class="ttdeci">Float_t light_attenuation(Float_t distance)</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00113">MTCDetHit.cxx:113</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_ade88908ae8d4bded7c05bfb9107ddb2d"><div class="ttname"><a href="classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d">MTCDetHit::GetSiPM</a></div><div class="ttdeci">Int_t GetSiPM() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00058">MTCDetHit.h:58</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_adec45e495568fe3478081b7f413c8d4c"><div class="ttname"><a href="classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c">MTCDetHit::GetLayer</a></div><div class="ttdeci">Int_t GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8h_source.html#l00052">MTCDetHit.h:52</a></div></div>
+<div class="ttc" id="aclassMTCDetHit_html_aed6ac5fb39f0b320a7d777b09ad5724c"><div class="ttname"><a href="classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c">MTCDetHit::~MTCDetHit</a></div><div class="ttdeci">virtual ~MTCDetHit()</div><div class="ttdef"><b>Definition</b> <a href="MTCDetHit_8cxx_source.html#l00104">MTCDetHit.cxx:104</a></div></div>
 <div class="ttc" id="aclassShipHit_html"><div class="ttname"><a href="classShipHit.html">ShipHit</a></div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00015">ShipHit.h:16</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
 <div class="ttc" id="anamespaceMTCDetector_html"><div class="ttname"><a href="namespaceMTCDetector.html">MTCDetector</a></div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8py_source.html#l00001">MTCDetector.py:1</a></div></div>

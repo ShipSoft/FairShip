@@ -98,87 +98,79 @@ $(document).ready(function(){initNavTree('SiliconTargetHit_8cxx_source.html','')
 </div><!--header-->
 <div class="contents">
 <a href="SiliconTargetHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTargetHit_8h.html">SiliconTargetHit.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="ShipUnit_8h.html">ShipUnit.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTarget_8h.html">SiliconTarget.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;TGeoBBox.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TGeoNavigator.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">   16</a></span><a class="code hl_function" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a>()</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTargetHit_8h.html">SiliconTargetHit.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="ShipUnit_8h.html">ShipUnit.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTarget_8h.html">SiliconTarget.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TGeoBBox.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TGeoNavigator.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TROOT.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">   17</a></span><a class="code hl_function" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a>() : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() { <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8">   19</a></span><a class="code hl_function" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a>(Int_t detID,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                   <span class="keyword">const</span> std::vector&lt;SiliconTargetPoint*&gt;&amp; V) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// Set detectorID.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = detID;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="comment">// Sum up signal from all points within the hit</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  std::vector&lt;double&gt; _signals;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">double</span> totalSig = 0;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>* point : V) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    _signals.push_back(point-&gt;GetEnergyLoss());</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">fX</a> = point-&gt;GetX();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">fY</a> = point-&gt;GetY();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">fZ</a> = point-&gt;GetZ();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; _signals.size(); i++) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    totalSig += _signals[i];</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_variable" href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">fSignal</a> = totalSig;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
 </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8">   22</a></span><a class="code hl_function" href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a>(Int_t detID, <span class="keyword">const</span> std::vector&lt;SiliconTargetPoint*&gt;&amp; V)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="comment">// Set detectorID.</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = detID;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="comment">// Sum up signal from all points within the hit</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::vector&lt;double&gt; _signals;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">double</span> totalSig = 0;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>* point : V) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        _signals.push_back(point-&gt;GetEnergyLoss());</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">fX</a> = point-&gt;GetX();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">fY</a> = point-&gt;GetY();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">fZ</a> = point-&gt;GetZ();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; _signals.size(); i++) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        totalSig += _signals[i];</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">fSignal</a> = totalSig;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
-</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">   45</a></span><a class="code hl_function" href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">SiliconTargetHit::~SiliconTargetHit</a>() {}</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">   49</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">SiliconTargetHit::Print</a>()</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::cout &lt;&lt; Form(<span class="stringliteral">&quot;SiliconTargetHit: Detector ID %d, Layer %d, Plane %d, Module %d, Strip %d, Signal %.2f \n&quot;</span>,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                      <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">GetLayer</a>(),</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">GetPlane</a>(),</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">GetModule</a>(),</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">GetStrip</a>(),</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">GetSignal</a>());</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">   42</a></span><a class="code hl_function" href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">SiliconTargetHit::~SiliconTargetHit</a>() {}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">SiliconTargetHit::Print</a>() {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  std::cout &lt;&lt; Form(</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="stringliteral">&quot;SiliconTargetHit: Detector ID %d, Layer %d, Plane %d, Module %d, Strip &quot;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="stringliteral">&quot;%d, Signal %.2f \n&quot;</span>,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>, <a class="code hl_function" href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">GetLayer</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">GetPlane</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">GetModule</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">GetStrip</a>(),</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_function" href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">GetSignal</a>());</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 </div>
 <div class="ttc" id="aShipUnit_8h_html"><div class="ttname"><a href="ShipUnit_8h.html">ShipUnit.h</a></div></div>
 <div class="ttc" id="aSiliconTargetHit_8h_html"><div class="ttname"><a href="SiliconTargetHit_8h.html">SiliconTargetHit.h</a></div></div>
 <div class="ttc" id="aSiliconTarget_8h_html"><div class="ttname"><a href="SiliconTarget_8h.html">SiliconTarget.h</a></div></div>
 <div class="ttc" id="aclassShipHit_html"><div class="ttname"><a href="classShipHit.html">ShipHit</a></div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00015">ShipHit.h:16</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a331f1f02a1d37e5c110e08dc8253aa28"><div class="ttname"><a href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">SiliconTargetHit::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00051">SiliconTargetHit.h:51</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a3531efd9f5b0bbb3e84fb66834697661"><div class="ttname"><a href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">SiliconTargetHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00050">SiliconTargetHit.h:50</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a45abd01a7f87f822f26672cf19c516d3"><div class="ttname"><a href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">SiliconTargetHit::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00049">SiliconTargetHit.h:49</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a784bebb6578a12e73fb25972aec5f45b"><div class="ttname"><a href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">SiliconTargetHit::fSignal</a></div><div class="ttdeci">Float_t fSignal</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00048">SiliconTargetHit.h:48</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a8d530979990d6a1fb975f253aae90707"><div class="ttname"><a href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">SiliconTargetHit::~SiliconTargetHit</a></div><div class="ttdeci">virtual ~SiliconTargetHit()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00045">SiliconTargetHit.cxx:45</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a8d71b08a363f89987dcfeac3d9ae5b8c"><div class="ttname"><a href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">SiliconTargetHit::Print</a></div><div class="ttdeci">void Print()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00049">SiliconTargetHit.cxx:49</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_aab173ae2e4b275aa71b206a48a6fd073"><div class="ttname"><a href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">SiliconTargetHit::GetModule</a></div><div class="ttdeci">constexpr int GetModule() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00043">SiliconTargetHit.h:43</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a331f1f02a1d37e5c110e08dc8253aa28"><div class="ttname"><a href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">SiliconTargetHit::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00059">SiliconTargetHit.h:59</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a3531efd9f5b0bbb3e84fb66834697661"><div class="ttname"><a href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">SiliconTargetHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00058">SiliconTargetHit.h:58</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a45abd01a7f87f822f26672cf19c516d3"><div class="ttname"><a href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">SiliconTargetHit::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00057">SiliconTargetHit.h:57</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a784bebb6578a12e73fb25972aec5f45b"><div class="ttname"><a href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">SiliconTargetHit::fSignal</a></div><div class="ttdeci">Float_t fSignal</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00056">SiliconTargetHit.h:56</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a8d530979990d6a1fb975f253aae90707"><div class="ttname"><a href="classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707">SiliconTargetHit::~SiliconTargetHit</a></div><div class="ttdeci">virtual ~SiliconTargetHit()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00042">SiliconTargetHit.cxx:42</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a8d71b08a363f89987dcfeac3d9ae5b8c"><div class="ttname"><a href="classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c">SiliconTargetHit::Print</a></div><div class="ttdeci">void Print()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00046">SiliconTargetHit.cxx:46</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_aab173ae2e4b275aa71b206a48a6fd073"><div class="ttname"><a href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">SiliconTargetHit::GetModule</a></div><div class="ttdeci">constexpr int GetModule() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00051">SiliconTargetHit.h:51</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_aafa2b916823196655f34bbf9c97c9c78"><div class="ttname"><a href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">SiliconTargetHit::GetLayer</a></div><div class="ttdeci">constexpr int GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00038">SiliconTargetHit.h:38</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ab5d9bf43eaaedb11acbe416f279322a8"><div class="ttname"><a href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">SiliconTargetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00052">SiliconTargetHit.h:52</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ab5d9bf43eaaedb11acbe416f279322a8"><div class="ttname"><a href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">SiliconTargetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00060">SiliconTargetHit.h:60</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_ab6e1f3816b414e583a5fbec57e09b161"><div class="ttname"><a href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">SiliconTargetHit::GetSignal</a></div><div class="ttdeci">Float_t GetSignal() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00033">SiliconTargetHit.h:33</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ad03ccf966402caa85d2bd5a9a78619fb"><div class="ttname"><a href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">SiliconTargetHit::GetStrip</a></div><div class="ttdeci">constexpr int GetStrip() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00042">SiliconTargetHit.h:42</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ad03ccf966402caa85d2bd5a9a78619fb"><div class="ttname"><a href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">SiliconTargetHit::GetStrip</a></div><div class="ttdeci">constexpr int GetStrip() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00048">SiliconTargetHit.h:48</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_ae2c94711a20970818bfff09450c3ced3"><div class="ttname"><a href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">SiliconTargetHit::GetPlane</a></div><div class="ttdeci">constexpr int GetPlane() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00039">SiliconTargetHit.h:39</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ae39bbd8eefb9191fe5d7b37d6458ea9e"><div class="ttname"><a href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a></div><div class="ttdeci">SiliconTargetHit()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00016">SiliconTargetHit.cxx:16</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ae39bbd8eefb9191fe5d7b37d6458ea9e"><div class="ttname"><a href="classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e">SiliconTargetHit::SiliconTargetHit</a></div><div class="ttdeci">SiliconTargetHit()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8cxx_source.html#l00017">SiliconTargetHit.cxx:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

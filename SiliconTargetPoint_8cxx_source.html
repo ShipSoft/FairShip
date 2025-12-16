@@ -98,58 +98,51 @@ $(document).ready(function(){initNavTree('SiliconTargetPoint_8cxx_source.html','
 </div><!--header-->
 <div class="contents">
 <a href="SiliconTargetPoint_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTargetPoint_8h.html">SiliconTargetPoint.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">using </span>std::cout;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>std::endl;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">   11</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a>()</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : FairMCPoint()</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{}</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="SiliconTargetPoint_8h.html">SiliconTargetPoint.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>std::cout;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span>std::endl;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">   12</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a>() : FairMCPoint() {}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#af473db5cf8bbe74709e354ec9eb51517">   15</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a>(Int_t trackID, Int_t detID, TVector3 pos,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                       TVector3 mom, Double_t tof,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                       Double_t length, Double_t eLoss,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                                       Int_t pdgcode)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      fPdgCode(pdgcode) {}</div>
 </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#af473db5cf8bbe74709e354ec9eb51517">   16</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a>(Int_t trackID,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                       Int_t detID,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                                       TVector3 pos,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                       TVector3 mom,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                       Double_t tof,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                       Double_t length,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                                       Double_t eLoss,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                                       Int_t pdgcode)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    , fPdgCode(pdgcode)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{}</div>
-</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">   25</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">SiliconTargetPoint::~SiliconTargetPoint</a>() {}</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">   31</a></span><a class="code hl_function" href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">SiliconTargetPoint::~SiliconTargetPoint</a>() {}</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">SiliconTargetPoint::Print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    cout &lt;&lt; <span class="stringliteral">&quot;-I- SiliconTargetPoint: point for track &quot;</span> &lt;&lt; fTrackID &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID &lt;&lt; endl;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>         &lt;&lt; endl;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">SiliconTargetPoint::Print</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- SiliconTargetPoint: point for track &quot;</span> &lt;&lt; fTrackID</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>       &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID &lt;&lt; endl;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>       &lt;&lt; endl;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>       &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="ttc" id="aSiliconTargetPoint_8h_html"><div class="ttname"><a href="SiliconTargetPoint_8h.html">SiliconTargetPoint.h</a></div></div>
-<div class="ttc" id="aclassSiliconTargetPoint_html_aac42e79d87f4e62808f2708115df4357"><div class="ttname"><a href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a></div><div class="ttdeci">SiliconTargetPoint()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00011">SiliconTargetPoint.cxx:11</a></div></div>
-<div class="ttc" id="aclassSiliconTargetPoint_html_ab2ca661857d53fd6d82fd14e28c51cee"><div class="ttname"><a href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">SiliconTargetPoint::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00035">SiliconTargetPoint.cxx:35</a></div></div>
-<div class="ttc" id="aclassSiliconTargetPoint_html_afe51827bf4d9a7fd732251e6145856f6"><div class="ttname"><a href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">SiliconTargetPoint::~SiliconTargetPoint</a></div><div class="ttdeci">virtual ~SiliconTargetPoint()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00031">SiliconTargetPoint.cxx:31</a></div></div>
+<div class="ttc" id="aclassSiliconTargetPoint_html_aac42e79d87f4e62808f2708115df4357"><div class="ttname"><a href="classSiliconTargetPoint.html#aac42e79d87f4e62808f2708115df4357">SiliconTargetPoint::SiliconTargetPoint</a></div><div class="ttdeci">SiliconTargetPoint()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00012">SiliconTargetPoint.cxx:12</a></div></div>
+<div class="ttc" id="aclassSiliconTargetPoint_html_ab2ca661857d53fd6d82fd14e28c51cee"><div class="ttname"><a href="classSiliconTargetPoint.html#ab2ca661857d53fd6d82fd14e28c51cee">SiliconTargetPoint::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00029">SiliconTargetPoint.cxx:29</a></div></div>
+<div class="ttc" id="aclassSiliconTargetPoint_html_afe51827bf4d9a7fd732251e6145856f6"><div class="ttname"><a href="classSiliconTargetPoint.html#afe51827bf4d9a7fd732251e6145856f6">SiliconTargetPoint::~SiliconTargetPoint</a></div><div class="ttdeci">virtual ~SiliconTargetPoint()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8cxx_source.html#l00025">SiliconTargetPoint.cxx:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

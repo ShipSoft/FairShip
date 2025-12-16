@@ -98,152 +98,140 @@ $(document).ready(function(){initNavTree('vetoHit_8cxx_source.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <a href="vetoHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="vetoHit_8h.html">vetoHit.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;FairLogger.h&quot;</span>   <span class="comment">// for FairLogger, etc</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;FairRun.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;TGeoArb8.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TGeoPhysicalNode.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;TRandom1.h&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TRandom3.h&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TVector3.h&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="veto_8h.html">veto.h</a>&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="vetoPoint_8h.html">vetoPoint.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">   23</a></span><a class="code hl_function" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a>()</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_variable" href="classvetoHit.html#a0eba79d46341d7448729a86e949c768c">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="vetoHit_8h.html">vetoHit.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;FairLogger.h&quot;</span>  <span class="comment">// for FairLogger, etc</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;FairRun.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;FairRunSim.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;TGeoArb8.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;TGeoPhysicalNode.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;TRandom1.h&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;TRandom3.h&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;TVector3.h&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="veto_8h.html">veto.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="vetoPoint_8h.html">vetoPoint.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">   25</a></span><a class="code hl_function" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a>() : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() { <a class="code hl_variable" href="classvetoHit.html#a0eba79d46341d7448729a86e949c768c">flag</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d">   27</a></span><a class="code hl_function" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a>(Int_t detID, Float_t adc) : <a class="code hl_class" href="classShipHit.html">ShipHit</a>(detID, adc) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_variable" href="classvetoHit.html#a5ee40a489b0d2248c9c8cdcea37aead8">ft</a> = -1;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_variable" href="classvetoHit.html#a0eba79d46341d7448729a86e949c768c">flag</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d">   29</a></span><a class="code hl_function" href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a>(Int_t detID, Float_t adc)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>(detID, adc)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_variable" href="classvetoHit.html#a5ee40a489b0d2248c9c8cdcea37aead8">ft</a> = -1;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_variable" href="classvetoHit.html#a0eba79d46341d7448729a86e949c768c">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
-</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">   35</a></span><a class="code hl_function" href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">vetoHit::~vetoHit</a>() {}</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">   39</a></span><a class="code hl_function" href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">vetoHit::~vetoHit</a>() {}</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">   42</a></span>TVector3 <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit::GetXYZ</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    TGeoNode* node = <a class="code hl_function" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">GetNode</a>();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    TGeoVolume* volume = node-&gt;GetVolume();</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    TGeoBBox* shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(volume-&gt;GetShape());</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Double_t origin[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1], shape-&gt;GetOrigin()[2]};</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    Double_t master[3] = {0, 0, 0};</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    nav-&gt;LocalToMaster(origin, master);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    TVector3 pos = TVector3(master[0], master[1], master[2]);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> pos;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">   38</a></span>TVector3 <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit::GetXYZ</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  TGeoNode* node = <a class="code hl_function" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">GetNode</a>();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  TGeoVolume* volume = node-&gt;GetVolume();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  TGeoBBox* shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(volume-&gt;GetShape());</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  Double_t origin[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1],</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                        shape-&gt;GetOrigin()[2]};</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  Double_t master[3] = {0, 0, 0};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  nav-&gt;LocalToMaster(origin, master);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  TVector3 pos = TVector3(master[0], master[1], master[2]);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> pos;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">   51</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">vetoHit::GetX</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">return</span> pos.X();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+</div>
 <div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">   55</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">vetoHit::GetX</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">return</span> pos.X();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">   55</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">vetoHit::GetY</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">return</span> pos.Y();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">   60</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">vetoHit::GetY</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> pos.Y();</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">   59</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">vetoHit::GetZ</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> pos.Z();</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">   65</a></span>Double_t <a class="code hl_function" href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">vetoHit::GetZ</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    TVector3 pos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">GetXYZ</a>();</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> pos.Z();</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
-</div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">   70</a></span>TGeoNode* <a class="code hl_function" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">vetoHit::GetNode</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    TGeoNode* node;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    TString path = <span class="stringliteral">&quot;cave/DecayVolume_1/T2_1/VetoLiSc_0/&quot;</span>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment">// id = ShapeType*100000 + blockNr*10000 + Zlayer*100 + number*10 + position;</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    Int_t ShapeType = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    Int_t blockNr = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100000) / 10000;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    Int_t Zlayer = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 10000) / 100;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    Int_t number = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100) / 10;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// Int_t position    = (fDetectorID % 10);</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">if</span> (ShapeType == 1)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        path += <span class="stringliteral">&quot;LiScX_&quot;</span>;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 2)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        path += <span class="stringliteral">&quot;LiScY_&quot;</span>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 3)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        path += <span class="stringliteral">&quot;LiSc_S3_&quot;</span>;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 4)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        path += <span class="stringliteral">&quot;LiSc_S4_&quot;</span>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 5)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        path += <span class="stringliteral">&quot;LiSc_S5_&quot;</span>;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 6)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        path += <span class="stringliteral">&quot;LiSc_S6_&quot;</span>;</div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">   63</a></span>TGeoNode* <a class="code hl_function" href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">vetoHit::GetNode</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  TGeoNode* node;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  TString path = <span class="stringliteral">&quot;cave/DecayVolume_1/T2_1/VetoLiSc_0/&quot;</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// id = ShapeType*100000 + blockNr*10000 + Zlayer*100 + number*10 + position;</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  Int_t ShapeType = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  Int_t blockNr = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100000) / 10000;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  Int_t Zlayer = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 10000) / 100;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  Int_t number = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100) / 10;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// Int_t position    = (fDetectorID % 10);</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (ShapeType == 1)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    path += <span class="stringliteral">&quot;LiScX_&quot;</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 2)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    path += <span class="stringliteral">&quot;LiScY_&quot;</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 3)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    path += <span class="stringliteral">&quot;LiSc_S3_&quot;</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 4)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    path += <span class="stringliteral">&quot;LiSc_S4_&quot;</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 5)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    path += <span class="stringliteral">&quot;LiSc_S5_&quot;</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 6)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    path += <span class="stringliteral">&quot;LiSc_S6_&quot;</span>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  path += ShapeType;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  path += blockNr;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">if</span> (Zlayer &lt; 10) path += <span class="stringliteral">&quot;0&quot;</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  path += Zlayer;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  path += number;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  path += <span class="stringliteral">&quot;0_&quot;</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  path += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    path += ShapeType;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    path += blockNr;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">if</span> (Zlayer &lt; 10)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        path += <span class="stringliteral">&quot;0&quot;</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    path += Zlayer;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    path += number;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    path += <span class="stringliteral">&quot;0_&quot;</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    path += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    nav-&gt;cd(path);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    node = nav-&gt;GetCurrentNode();</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">return</span> node;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  nav-&gt;cd(path);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  node = nav-&gt;GetCurrentNode();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> node;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
 </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">  111</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">vetoHit::Print</a>(Int_t detID)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;vetoHit: veto hit &quot;</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>              &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;  ADC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span>;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">  102</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">vetoHit::Print</a>(Int_t detID)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;vetoHit: veto hit &quot;</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;  ADC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
 </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="ttc" id="aclassShipHit_html"><div class="ttname"><a href="classShipHit.html">ShipHit</a></div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00015">ShipHit.h:16</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a1353d789e08ea991cc25a3724131c8e9"><div class="ttname"><a href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">ShipHit::fdigi</a></div><div class="ttdeci">Float_t fdigi</div><div class="ttdoc">digitized detector hit</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00043">ShipHit.h:43</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
 <div class="ttc" id="aclassvetoHit_html_a0eba79d46341d7448729a86e949c768c"><div class="ttname"><a href="classvetoHit.html#a0eba79d46341d7448729a86e949c768c">vetoHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8h_source.html#l00051">vetoHit.h:51</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_a1791cec3ef66d0f4b927cc4856c0577f"><div class="ttname"><a href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a></div><div class="ttdeci">vetoHit()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00023">vetoHit.cxx:23</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_a33992eb16a5fada4299767224c04fd3a"><div class="ttname"><a href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">vetoHit::GetX</a></div><div class="ttdeci">Double_t GetX() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00055">vetoHit.cxx:55</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_a1791cec3ef66d0f4b927cc4856c0577f"><div class="ttname"><a href="classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f">vetoHit::vetoHit</a></div><div class="ttdeci">vetoHit()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00025">vetoHit.cxx:25</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_a33992eb16a5fada4299767224c04fd3a"><div class="ttname"><a href="classvetoHit.html#a33992eb16a5fada4299767224c04fd3a">vetoHit::GetX</a></div><div class="ttdeci">Double_t GetX() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00051">vetoHit.cxx:51</a></div></div>
 <div class="ttc" id="aclassvetoHit_html_a5ee40a489b0d2248c9c8cdcea37aead8"><div class="ttname"><a href="classvetoHit.html#a5ee40a489b0d2248c9c8cdcea37aead8">vetoHit::ft</a></div><div class="ttdeci">Double_t ft</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8h_source.html#l00050">vetoHit.h:50</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_a8934e3284171c1b158749334d99ed7ed"><div class="ttname"><a href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">vetoHit::GetZ</a></div><div class="ttdeci">Double_t GetZ() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00065">vetoHit.cxx:65</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_a9218ccf1aac64809630111df37738014"><div class="ttname"><a href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00042">vetoHit.cxx:42</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_abfe4b714c3d35c5e057c5d9c5819b86a"><div class="ttname"><a href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">vetoHit::~vetoHit</a></div><div class="ttdeci">virtual ~vetoHit()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00039">vetoHit.cxx:39</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_ac85226d3bdd855cabfb589ff9983a54e"><div class="ttname"><a href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">vetoHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00070">vetoHit.cxx:70</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_ad6f626737403bcc1d0438f291cd6ff10"><div class="ttname"><a href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">vetoHit::GetY</a></div><div class="ttdeci">Double_t GetY() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00060">vetoHit.cxx:60</a></div></div>
-<div class="ttc" id="aclassvetoHit_html_aed0c193a3159e56cda7377012272d233"><div class="ttname"><a href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">vetoHit::Print</a></div><div class="ttdeci">virtual void Print(Int_t detID) const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00111">vetoHit.cxx:111</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_a8934e3284171c1b158749334d99ed7ed"><div class="ttname"><a href="classvetoHit.html#a8934e3284171c1b158749334d99ed7ed">vetoHit::GetZ</a></div><div class="ttdeci">Double_t GetZ() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00059">vetoHit.cxx:59</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_a9218ccf1aac64809630111df37738014"><div class="ttname"><a href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00038">vetoHit.cxx:38</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_abfe4b714c3d35c5e057c5d9c5819b86a"><div class="ttname"><a href="classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a">vetoHit::~vetoHit</a></div><div class="ttdeci">virtual ~vetoHit()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00035">vetoHit.cxx:35</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_ac85226d3bdd855cabfb589ff9983a54e"><div class="ttname"><a href="classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e">vetoHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00063">vetoHit.cxx:63</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_ad6f626737403bcc1d0438f291cd6ff10"><div class="ttname"><a href="classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10">vetoHit::GetY</a></div><div class="ttdeci">Double_t GetY() const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00055">vetoHit.cxx:55</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_aed0c193a3159e56cda7377012272d233"><div class="ttname"><a href="classvetoHit.html#aed0c193a3159e56cda7377012272d233">vetoHit::Print</a></div><div class="ttdeci">virtual void Print(Int_t detID) const</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00102">vetoHit.cxx:102</a></div></div>
 <div class="ttc" id="avetoHit_8h_html"><div class="ttname"><a href="vetoHit_8h.html">vetoHit.h</a></div></div>
 <div class="ttc" id="avetoPoint_8h_html"><div class="ttname"><a href="vetoPoint_8h.html">vetoPoint.h</a></div></div>
 <div class="ttc" id="aveto_8h_html"><div class="ttname"><a href="veto_8h.html">veto.h</a></div></div>

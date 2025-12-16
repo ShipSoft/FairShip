@@ -211,7 +211,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00012">12</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00013">13</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae39bbd8eefb9191fe5d7b37d6458ea9e" name="ae39bbd8eefb9191fe5d7b37d6458ea9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae39bbd8eefb9191fe5d7b37d6458ea9e">&#9670;&#160;</a></span>SiliconTargetHit() <span class="overload">[1/3]</span></h2>
@@ -229,13 +229,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00016">16</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>    : <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>()</div>
-<div class="line"><span class="lineno">   18</span>{</div>
-<div class="line"><span class="lineno">   19</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   20</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00017">17</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span>: <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>() { <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a> = <span class="keyword">true</span>; }</div>
 <div class="ttc" id="aclassShipHit_html_a1916d57d722314c27531a77a49ef655f"><div class="ttname"><a href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a></div><div class="ttdeci">ShipHit()</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8cxx_source.html#l00008">ShipHit.cxx:8</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ab5d9bf43eaaedb11acbe416f279322a8"><div class="ttname"><a href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">SiliconTargetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00052">SiliconTargetHit.h:52</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ab5d9bf43eaaedb11acbe416f279322a8"><div class="ttname"><a href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">SiliconTargetHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00060">SiliconTargetHit.h:60</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -265,33 +262,33 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00022">22</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
-<div class="line"><span class="lineno">   24</span>    <span class="comment">// Set detectorID.</span></div>
-<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    <span class="comment">// Sum up signal from all points within the hit</span></div>
-<div class="line"><span class="lineno">   28</span>    std::vector&lt;double&gt; _signals;</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordtype">double</span> totalSig = 0;</div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>* point : V) {</div>
-<div class="line"><span class="lineno">   32</span>        _signals.push_back(point-&gt;GetEnergyLoss());</div>
-<div class="line"><span class="lineno">   33</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">fX</a> = point-&gt;GetX();</div>
-<div class="line"><span class="lineno">   34</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">fY</a> = point-&gt;GetY();</div>
-<div class="line"><span class="lineno">   35</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">fZ</a> = point-&gt;GetZ();</div>
-<div class="line"><span class="lineno">   36</span>    }</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; _signals.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">   39</span>        totalSig += _signals[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
-<div class="line"><span class="lineno">   40</span>    }</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">fSignal</a> = totalSig;</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00019">19</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span>                                                                            {</div>
+<div class="line"><span class="lineno">   21</span>  <span class="comment">// Set detectorID.</span></div>
+<div class="line"><span class="lineno">   22</span>  <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">   23</span> </div>
+<div class="line"><span class="lineno">   24</span>  <span class="comment">// Sum up signal from all points within the hit</span></div>
+<div class="line"><span class="lineno">   25</span>  std::vector&lt;double&gt; _signals;</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordtype">double</span> totalSig = 0;</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>* point : V) {</div>
+<div class="line"><span class="lineno">   29</span>    _signals.push_back(point-&gt;GetEnergyLoss());</div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">fX</a> = point-&gt;GetX();</div>
+<div class="line"><span class="lineno">   31</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">fY</a> = point-&gt;GetY();</div>
+<div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">fZ</a> = point-&gt;GetZ();</div>
+<div class="line"><span class="lineno">   33</span>  }</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; _signals.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">   36</span>    totalSig += _signals[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
+<div class="line"><span class="lineno">   37</span>  }</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_variable" href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">fSignal</a> = totalSig;</div>
+<div class="line"><span class="lineno">   40</span>}</div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a331f1f02a1d37e5c110e08dc8253aa28"><div class="ttname"><a href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">SiliconTargetHit::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00051">SiliconTargetHit.h:51</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a3531efd9f5b0bbb3e84fb66834697661"><div class="ttname"><a href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">SiliconTargetHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00050">SiliconTargetHit.h:50</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a45abd01a7f87f822f26672cf19c516d3"><div class="ttname"><a href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">SiliconTargetHit::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00049">SiliconTargetHit.h:49</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a784bebb6578a12e73fb25972aec5f45b"><div class="ttname"><a href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">SiliconTargetHit::fSignal</a></div><div class="ttdeci">Float_t fSignal</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00048">SiliconTargetHit.h:48</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a331f1f02a1d37e5c110e08dc8253aa28"><div class="ttname"><a href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">SiliconTargetHit::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00059">SiliconTargetHit.h:59</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a3531efd9f5b0bbb3e84fb66834697661"><div class="ttname"><a href="classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661">SiliconTargetHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00058">SiliconTargetHit.h:58</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a45abd01a7f87f822f26672cf19c516d3"><div class="ttname"><a href="classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3">SiliconTargetHit::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00057">SiliconTargetHit.h:57</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a784bebb6578a12e73fb25972aec5f45b"><div class="ttname"><a href="classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b">SiliconTargetHit::fSignal</a></div><div class="ttdeci">Float_t fSignal</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00056">SiliconTargetHit.h:56</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00094">ShipAna.py:94</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00255">make_nTuple_SBT.py:255</a></div></div>
 </div><!-- fragment -->
@@ -321,8 +318,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00045">45</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00042">42</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -413,8 +410,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00040">40</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 14) % 4; }</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00042">42</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>                                  {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 14) % 4;</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -469,10 +468,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00043">43</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classSiliconTargetHit.html#a4039b0e32ea65f61961f1556e0876ab9">GetRow</a>() + 1 + 2 * <a class="code hl_function" href="classSiliconTargetHit.html#ab9c2953a2441d6b27c10174403bad890">GetColumn</a>(); }</div>
-<div class="ttc" id="aclassSiliconTargetHit_html_a4039b0e32ea65f61961f1556e0876ab9"><div class="ttname"><a href="classSiliconTargetHit.html#a4039b0e32ea65f61961f1556e0876ab9">SiliconTargetHit::GetRow</a></div><div class="ttdeci">constexpr int GetRow() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00041">SiliconTargetHit.h:41</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ab9c2953a2441d6b27c10174403bad890"><div class="ttname"><a href="classSiliconTargetHit.html#ab9c2953a2441d6b27c10174403bad890">SiliconTargetHit::GetColumn</a></div><div class="ttdeci">constexpr int GetColumn() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00040">SiliconTargetHit.h:40</a></div></div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00051">51</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classSiliconTargetHit.html#a4039b0e32ea65f61961f1556e0876ab9">GetRow</a>() + 1 + 2 * <a class="code hl_function" href="classSiliconTargetHit.html#ab9c2953a2441d6b27c10174403bad890">GetColumn</a>(); }</div>
+<div class="ttc" id="aclassSiliconTargetHit_html_a4039b0e32ea65f61961f1556e0876ab9"><div class="ttname"><a href="classSiliconTargetHit.html#a4039b0e32ea65f61961f1556e0876ab9">SiliconTargetHit::GetRow</a></div><div class="ttdeci">constexpr int GetRow() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00045">SiliconTargetHit.h:45</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ab9c2953a2441d6b27c10174403bad890"><div class="ttname"><a href="classSiliconTargetHit.html#ab9c2953a2441d6b27c10174403bad890">SiliconTargetHit::GetColumn</a></div><div class="ttdeci">constexpr int GetColumn() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00042">SiliconTargetHit.h:42</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -500,7 +499,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00039">39</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 16) % 2; }   <span class="comment">// 0 is X-plane, 1 is Y-pane</span></div>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>                                 {</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 16) % 2;</div>
+<div class="line"><span class="lineno">   41</span>  }  <span class="comment">// 0 is X-plane, 1 is Y-pane</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -527,8 +528,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00041">41</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 13) % 2; }</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00045">45</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>                               {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &gt;&gt; 13) % 2;</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -583,8 +586,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00042">42</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 4096); }</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00048">48</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                                 {</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 4096);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -695,8 +700,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00045">45</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00053">53</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8">flag</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -741,20 +746,18 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00049">49</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>    std::cout &lt;&lt; Form(<span class="stringliteral">&quot;SiliconTargetHit: Detector ID %d, Layer %d, Plane %d, Module %d, Strip %d, Signal %.2f \n&quot;</span>,</div>
-<div class="line"><span class="lineno">   52</span>                      <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>,</div>
-<div class="line"><span class="lineno">   53</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">GetLayer</a>(),</div>
-<div class="line"><span class="lineno">   54</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">GetPlane</a>(),</div>
-<div class="line"><span class="lineno">   55</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">GetModule</a>(),</div>
-<div class="line"><span class="lineno">   56</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">GetStrip</a>(),</div>
-<div class="line"><span class="lineno">   57</span>                      <a class="code hl_function" href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">GetSignal</a>());</div>
-<div class="line"><span class="lineno">   58</span>}</div>
-<div class="ttc" id="aclassSiliconTargetHit_html_aab173ae2e4b275aa71b206a48a6fd073"><div class="ttname"><a href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">SiliconTargetHit::GetModule</a></div><div class="ttdeci">constexpr int GetModule() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00043">SiliconTargetHit.h:43</a></div></div>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8cxx_source.html#l00046">46</a> of file <a class="el" href="SiliconTargetHit_8cxx_source.html">SiliconTargetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>                             {</div>
+<div class="line"><span class="lineno">   47</span>  std::cout &lt;&lt; Form(</div>
+<div class="line"><span class="lineno">   48</span>      <span class="stringliteral">&quot;SiliconTargetHit: Detector ID %d, Layer %d, Plane %d, Module %d, Strip &quot;</span></div>
+<div class="line"><span class="lineno">   49</span>      <span class="stringliteral">&quot;%d, Signal %.2f \n&quot;</span>,</div>
+<div class="line"><span class="lineno">   50</span>      <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>, <a class="code hl_function" href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">GetLayer</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">GetPlane</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">GetModule</a>(), <a class="code hl_function" href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">GetStrip</a>(),</div>
+<div class="line"><span class="lineno">   51</span>      <a class="code hl_function" href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">GetSignal</a>());</div>
+<div class="line"><span class="lineno">   52</span>}</div>
+<div class="ttc" id="aclassSiliconTargetHit_html_aab173ae2e4b275aa71b206a48a6fd073"><div class="ttname"><a href="classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073">SiliconTargetHit::GetModule</a></div><div class="ttdeci">constexpr int GetModule() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00051">SiliconTargetHit.h:51</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_aafa2b916823196655f34bbf9c97c9c78"><div class="ttname"><a href="classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78">SiliconTargetHit::GetLayer</a></div><div class="ttdeci">constexpr int GetLayer() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00038">SiliconTargetHit.h:38</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_ab6e1f3816b414e583a5fbec57e09b161"><div class="ttname"><a href="classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161">SiliconTargetHit::GetSignal</a></div><div class="ttdeci">Float_t GetSignal() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00033">SiliconTargetHit.h:33</a></div></div>
-<div class="ttc" id="aclassSiliconTargetHit_html_ad03ccf966402caa85d2bd5a9a78619fb"><div class="ttname"><a href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">SiliconTargetHit::GetStrip</a></div><div class="ttdeci">constexpr int GetStrip() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00042">SiliconTargetHit.h:42</a></div></div>
+<div class="ttc" id="aclassSiliconTargetHit_html_ad03ccf966402caa85d2bd5a9a78619fb"><div class="ttname"><a href="classSiliconTargetHit.html#ad03ccf966402caa85d2bd5a9a78619fb">SiliconTargetHit::GetStrip</a></div><div class="ttdeci">constexpr int GetStrip() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00048">SiliconTargetHit.h:48</a></div></div>
 <div class="ttc" id="aclassSiliconTargetHit_html_ae2c94711a20970818bfff09450c3ced3"><div class="ttname"><a href="classSiliconTargetHit.html#ae2c94711a20970818bfff09450c3ced3">SiliconTargetHit::GetPlane</a></div><div class="ttdeci">constexpr int GetPlane() const</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetHit_8h_source.html#l00039">SiliconTargetHit.h:39</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -812,7 +815,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00052">52</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00060">60</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 
 </div>
 </div>
@@ -836,7 +839,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00048">48</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00056">56</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 
 </div>
 </div>
@@ -860,7 +863,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00049">49</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00057">57</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 
 </div>
 </div>
@@ -884,7 +887,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00050">50</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00058">58</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 
 </div>
 </div>
@@ -908,7 +911,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00051">51</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetHit_8h_source.html#l00059">59</a> of file <a class="el" href="SiliconTargetHit_8h_source.html">SiliconTargetHit.h</a>.</p>
 
 </div>
 </div>
