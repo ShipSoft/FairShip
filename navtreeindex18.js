@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"makeDecay_8py.html#a97147c649e3e1cfd894b38f64fd37533":[6,0,6,17,11],
-"makeDecay_8py.html#a9c90b95001a4909a6c5383da1b3066d9":[6,0,6,17,28],
 "makeDecay_8py.html#aabc207b3a8656d874bd06f6f24d1214e":[6,0,6,17,41],
 "makeDecay_8py.html#aca7567b2e4113ef4a009953543cb27f9":[6,0,6,17,6],
 "makeDecay_8py.html#acdd2c7879db37638956f0510818ee455":[6,0,6,17,26],
@@ -245,9 +243,11 @@ var NAVTREEINDEX18 =
 "mergeMbias_8py.html#aecbed99f072995cde06221015f615f6d":[6,0,6,19,23],
 "mergeMbias_8py.html#af0bee5d03f6eab7bea29fc1cbb4e25ea":[6,0,6,19,20],
 "mergeMbias_8py_source.html":[6,0,6,19],
-"method__logger_8py.html":[6,0,10,20],
-"method__logger_8py_source.html":[6,0,10,20],
+"method__logger_8py.html":[6,0,10,19],
+"method__logger_8py_source.html":[6,0,10,19],
 "muDIS__mergeFiles_8py.html":[6,0,8,13],
 "muDIS__mergeFiles_8py.html#a1a441eb731971198a418bf5e43b8498f":[6,0,8,13,0],
-"muDIS__mergeFiles_8py.html#a2ad4e59b5b770f5e8954ae02a12b75c0":[6,0,8,13,3]
+"muDIS__mergeFiles_8py.html#a2ad4e59b5b770f5e8954ae02a12b75c0":[6,0,8,13,3],
+"muDIS__mergeFiles_8py.html#a500b25fa8ced3622c7a6fb33f4a5c4a9":[6,0,8,13,2],
+"muDIS__mergeFiles_8py.html#a83f94c211fdeec0f62c2f112ef51da13":[6,0,8,13,4]
 };

@@ -124,9 +124,6 @@ var namespaces_dup =
       [ "main", "namespaceanalysis__example.html#a0c6c11891bec942ba89192f6fbef9a1a", null ]
     ] ],
     [ "BaseDetector", "namespaceBaseDetector.html", "namespaceBaseDetector" ],
-    [ "basiclibs", "namespacebasiclibs.html", [
-      [ "root_version", "namespacebasiclibs.html#a05cc1bb0049c8bb7a9db364b721255af", null ]
-    ] ],
     [ "checkMagFields", "namespacecheckMagFields.html", [
       [ "run", "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249", null ]
     ] ],

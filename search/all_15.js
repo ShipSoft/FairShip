@@ -71,7 +71,7 @@ var searchData=
   ['rightview_68',['rightView',['../classeventDisplay_1_1EventLoop.html#a6be9f403d751d8a9aaf6fa8a807ef448',1,'eventDisplay::EventLoop']]],
   ['rng_69',['rng',['../classPyTr3Rng.html#a54228ecd0280635bce243ce860cf7885',1,'PyTr3Rng::rng'],['../classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d',1,'PyTr1Rng::rng'],['../classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2',1,'Co3Rng::rng']]],
   ['rnr_70',['rnr',['../namespaceg4Ex__gap.html#a67986bb573cd58fb46bbd0c12e07ced3',1,'g4Ex_gap.rnr'],['../namespacemergeMbias.html#a9a94ea0085e090e0c8254d8a9ff77483',1,'mergeMbias.rnr'],['../namespaceg4Ex.html#a09d1d48cede5caf4a30a156d956511a4',1,'g4Ex.rnr'],['../namespaceg4Ex__args.html#aa2c4118a21a696f3f0a53d4fcc396090',1,'g4Ex_args.rnr']]],
-  ['root_5fversion_71',['root_version',['../namespacebasiclibs.html#a05cc1bb0049c8bb7a9db364b721255af',1,'basiclibs']]],
+  ['root_5fversion_71',['root_version',['../namespaceeventDisplay.html#ac2769e8601c29d28e8a08e735b69f6f4',1,'eventDisplay']]],
   ['rootutils_72',['rootUtils',['../namespacerootUtils.html',1,'']]],
   ['rootutils_2epy_73',['rootUtils.py',['../rootUtils_8py.html',1,'']]],
   ['rotate_74',['rotate',['../classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902',1,'GenieGenerator::Rotate()'],['../namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab',1,'makeMuonDIS.rotate(px, py, pz, theta, phi)'],['../namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647',1,'makeMuonDIS.rotate(ctheta, stheta, cphi, sphi, px, py, pz)']]],

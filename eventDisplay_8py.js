@@ -59,6 +59,7 @@ var eventDisplay_8py =
     [ "pdg", "eventDisplay_8py.html#a5bba68d8a49d0e499d10871520efe7c5", null ],
     [ "recoFile", "eventDisplay_8py.html#adba141c1a1c4d0b578c4334a40346649", null ],
     [ "required", "eventDisplay_8py.html#a634deb6cb1584bf45b4ed7a4be8da532", null ],
+    [ "root_version", "eventDisplay_8py.html#ac2769e8601c29d28e8a08e735b69f6f4", null ],
     [ "rtdb", "eventDisplay_8py.html#a03c547b4464c9c1e6b71675fd6e7ed48", null ],
     [ "rulers", "eventDisplay_8py.html#a90f6f709f9a2e3553cddc17c5ffe8449", null ],
     [ "sGeo", "eventDisplay_8py.html#aaf2053c8cc36259b66b6ae4e1874601e", null ],
