@@ -70,6 +70,8 @@ void ShipTargetStation::ConstructGeometry()
 
     InitMedium("tungsten");
     TGeoMedium* tungsten = gGeoManager->GetMedium("tungsten");
+    InitMedium("tantalum");
+    TGeoMedium* tantalum = gGeoManager->GetMedium("tantalum");
     InitMedium("molybdenum");
     TGeoMedium* mo = gGeoManager->GetMedium("molybdenum");
     InitMedium("iron");
@@ -110,33 +112,33 @@ void ShipTargetStation::ConstructGeometry()
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
 
-    //Target vessel
+    //Target vessel, inner dimensions for diameter, shifts and length
     double vessel_thickness = 8 * mm;
     double vessel_diameter = fDiameter + 150 * mm;
-    double vessel_shift = 76 * mm;
+    double vessel_shift = 62 * mm;//shift in z at y=0 (round shape not implemented for vessel lids)
     double vessel_length = fTargetLength + 2*vessel_shift;
 
     TGeoVolume* vessel;
-    vessel = gGeoManager->MakeTube("TargetVessel", inc718, vessel_diameter / 2. - vessel_thickness, vessel_diameter / 2., vessel_length / 2.);
+    vessel = gGeoManager->MakeTube("TargetVessel", inc718, vessel_diameter / 2., vessel_diameter / 2. + vessel_thickness, vessel_length / 2.);
     vessel->SetLineColor(28);
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
     //Front face
-    vessel = gGeoManager->MakeTube("TargetVesselFront", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
+    vessel = gGeoManager->MakeTube("TargetVesselFront", inc718, 0, vessel_diameter / 2. + vessel_thickness, vessel_thickness / 2.);
     vessel->SetLineColor(28);
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift - vessel_thickness / 2.));
     //Back face
-    vessel = gGeoManager->MakeTube("TargetVesselBack", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
+    vessel = gGeoManager->MakeTube("TargetVesselBack", inc718, 0, vessel_diameter / 2. + vessel_thickness, vessel_thickness / 2.);
     vessel->SetLineColor(28);
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length + vessel_thickness/2.));
     //He inside
-    vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
+    vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2., vessel_length / 2.);
     vessel->SetLineColor(7);
 
     // Steel enclosure around target inside He volume
     // Inner radius must be larger than target radius (fDiameter/2) to avoid overlaps
-    double enclosure_clearance = 2 * mm;  // Clearance between target and enclosure
+    double enclosure_clearance = 0.1 * mm;  // Clearance between target and enclosure
     double enclosure_inner_radius = fDiameter / 2. + enclosure_clearance;
-    double enclosure_thickness = 40 * mm;
+    double enclosure_thickness = 66.9 * mm;
     double enclosure_outer_radius = enclosure_inner_radius + enclosure_thickness;
     double enclosure_cutout_width_x = 160 * mm;  // Width in x direction
     double enclosure_cutout_width_y = 280 * mm;  // Width in y direction
@@ -153,17 +155,28 @@ void ShipTargetStation::ConstructGeometry()
     vessel->AddNode(enclosure, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + enclosure_length / 2.));
 
     //now place target inside He volume (and inside steel enclosure)
+
+    double cladding_width = 1.5*mm;
+    
     Double_t zPos = 0.;
     unsigned slots = fnS;
     if(slots > 0)
         slots = slots - 1;
 
-    TGeoVolume* target;
+    TGeoVolume* target=0;
+    //3 volumes for cladding: entrance face, surrounding cylinder, exit face
+    TGeoVolume* cladding=0;
     //TGeoVolume* slit;
     // Double_t zPos =  fTargetZ - fTargetLength/2.;
     for (unsigned i = 0; i < fnS; i++) {   // loop on layers
         TString nmi = "Target_";
         nmi += i + 1;
+        TString nmicl = "Cladding_";
+        nmicl += i + 1;
+        TString nmiclI = "CladdingI_";
+        nmiclI += i + 1;
+        TString nmiclO = "CladdingO_";
+        nmiclO += i + 1;
         //TString sm = "Slit_";
         //sm += i + 1;
         TGeoMedium* material = nullptr;
@@ -173,13 +186,24 @@ void ShipTargetStation::ConstructGeometry()
             material = tungsten;
         }
 
-        target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2., fL.at(i) / 2.);
+        target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2. - cladding_width, (fL.at(i)-2*cladding_width) / 2.);
         if (fM.at(i) == "molybdenum") {
             target->SetLineColor(28);
         } else {
             target->SetLineColor(38);
         };   // silver/blue
         vessel->AddNode(target, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
+
+        cladding = gGeoManager->MakeTube(nmicl, tantalum, fDiameter / 2. - cladding_width,fDiameter / 2., fL.at(i) / 2.);
+	cladding->SetLineColor(8);
+        vessel->AddNode(cladding, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
+        cladding = gGeoManager->MakeTube(nmiclI, tantalum, 0, fDiameter / 2., cladding_width / 2.);
+	cladding->SetLineColor(8);
+        vessel->AddNode(cladding, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + cladding_width / 2.));
+        cladding = gGeoManager->MakeTube(nmiclO, tantalum, 0, fDiameter / 2., cladding_width / 2.);
+	cladding->SetLineColor(8);
+        vessel->AddNode(cladding, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) - cladding_width / 2.));
+
         if (i < slots) {
 	  //slits will already be filled with He, no need to define volume
 	  //  slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
