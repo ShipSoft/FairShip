@@ -157,7 +157,7 @@ void ShipTargetStation::ConstructGeometry()
     //now place target inside He volume (and inside steel enclosure)
 
     double cladding_width = 1.5*mm;
-    
+
     Double_t zPos = 0.;
     unsigned slots = fnS;
     if(slots > 0)
