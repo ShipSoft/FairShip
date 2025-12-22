@@ -95,93 +95,93 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="splitcalHit_8h_source.html">splitcalHit.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="splitcal_8h_source.html">splitcal.h</a>&quot;</code><br />
-<code>#include &quot;TVector3.h&quot;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &quot;FairLogger.h&quot;</code><br />
 <code>#include &quot;FairRun.h&quot;</code><br />
 <code>#include &quot;FairRunSim.h&quot;</code><br />
-<code>#include &quot;FairLogger.h&quot;</code><br />
+<code>#include &quot;TGeoBBox.h&quot;</code><br />
+<code>#include &quot;TGeoManager.h&quot;</code><br />
+<code>#include &quot;TGeoMatrix.h&quot;</code><br />
+<code>#include &quot;TGeoNavigator.h&quot;</code><br />
+<code>#include &quot;TGeoNode.h&quot;</code><br />
+<code>#include &quot;TGeoShape.h&quot;</code><br />
+<code>#include &quot;TGeoVolume.h&quot;</code><br />
 <code>#include &quot;TMath.h&quot;</code><br />
 <code>#include &quot;TRandom1.h&quot;</code><br />
 <code>#include &quot;TRandom3.h&quot;</code><br />
-<code>#include &quot;TGeoManager.h&quot;</code><br />
-<code>#include &quot;TGeoNode.h&quot;</code><br />
-<code>#include &quot;TGeoMatrix.h&quot;</code><br />
-<code>#include &quot;TGeoVolume.h&quot;</code><br />
-<code>#include &quot;TGeoNavigator.h&quot;</code><br />
-<code>#include &quot;TGeoShape.h&quot;</code><br />
-<code>#include &quot;TGeoBBox.h&quot;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;math.h&gt;</code><br />
+<code>#include &quot;TVector3.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="splitcal_8h_source.html">splitcal.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for splitcalHit.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="splitcalHit_8cxx__incl.png" border="0" usemap="#asplitcal_2splitcalHit_8cxx" alt=""/></div>
 <map name="asplitcal_2splitcalHit_8cxx" id="asplitcal_2splitcalHit_8cxx">
-<area shape="rect" title=" " alt="" coords="1305,5,1472,31"/>
-<area shape="rect" href="splitcalHit_8h.html" title=" " alt="" coords="271,79,371,104"/>
-<area shape="poly" title=" " alt="" coords="1305,25,918,44,666,60,410,81,384,84,384,79,410,76,665,55,918,39,1305,20"/>
-<area shape="rect" title=" " alt="" coords="359,225,450,251"/>
-<area shape="poly" title=" " alt="" coords="1305,22,1131,26,916,35,709,52,625,65,561,81,528,95,503,109,456,154,434,184,417,214,413,212,429,181,452,150,500,105,525,90,560,76,624,60,708,47,915,29,1131,20,1305,17"/>
-<area shape="rect" href="splitcal_8h.html" title=" " alt="" coords="573,79,655,104"/>
-<area shape="poly" title=" " alt="" coords="1305,25,1027,43,850,59,669,81,668,76,849,54,1026,38,1305,20"/>
-<area shape="rect" title=" " alt="" coords="679,79,762,104"/>
-<area shape="poly" title=" " alt="" coords="1305,27,1071,46,926,61,776,81,776,76,925,56,1071,41,1305,22"/>
-<area shape="rect" title=" " alt="" coords="786,79,893,104"/>
-<area shape="poly" title=" " alt="" coords="1306,31,1122,53,906,81,906,81,905,76,906,76,1122,47,1305,26"/>
-<area shape="rect" title=" " alt="" coords="917,79,1017,104"/>
-<area shape="poly" title=" " alt="" coords="1318,33,1032,81,1031,76,1317,28"/>
-<area shape="rect" title=" " alt="" coords="1041,79,1115,104"/>
-<area shape="poly" title=" " alt="" coords="1339,33,1130,81,1129,76,1338,28"/>
-<area shape="rect" title=" " alt="" coords="1139,79,1243,104"/>
-<area shape="poly" title=" " alt="" coords="1358,33,1237,76,1236,71,1356,28"/>
-<area shape="rect" title=" " alt="" coords="1267,79,1371,104"/>
-<area shape="poly" title=" " alt="" coords="1379,33,1342,71,1338,67,1375,29"/>
-<area shape="rect" title=" " alt="" coords="1396,79,1520,104"/>
-<area shape="poly" title=" " alt="" coords="1402,29,1439,67,1435,71,1398,33"/>
-<area shape="rect" title=" " alt="" coords="1544,79,1647,104"/>
-<area shape="poly" title=" " alt="" coords="1423,28,1550,72,1548,77,1421,33"/>
-<area shape="rect" title=" " alt="" coords="1671,79,1781,104"/>
-<area shape="poly" title=" " alt="" coords="1443,28,1658,73,1657,78,1442,33"/>
-<area shape="rect" title=" " alt="" coords="1806,79,1923,104"/>
-<area shape="poly" title=" " alt="" coords="1469,28,1793,76,1792,81,1468,33"/>
-<area shape="rect" title=" " alt="" coords="1947,79,2078,104"/>
-<area shape="poly" title=" " alt="" coords="1472,25,1678,46,1934,76,1934,81,1677,51,1472,30"/>
-<area shape="rect" title=" " alt="" coords="2103,79,2211,104"/>
-<area shape="poly" title=" " alt="" coords="1472,21,1742,41,1913,56,2089,76,2089,81,1913,62,1742,46,1472,27"/>
-<area shape="rect" title=" " alt="" coords="2235,79,2337,104"/>
-<area shape="poly" title=" " alt="" coords="1473,20,1797,37,2006,53,2221,76,2221,81,2006,59,1797,42,1472,25"/>
-<area shape="rect" title=" " alt="" coords="2362,79,2442,104"/>
-<area shape="poly" title=" " alt="" coords="1472,18,1632,21,1848,31,2095,48,2349,76,2348,81,2095,54,1848,36,1632,27,1472,23"/>
-<area shape="rect" title=" " alt="" coords="2467,79,2535,104"/>
-<area shape="poly" title=" " alt="" coords="1472,16,1648,18,1890,26,2168,44,2312,58,2454,76,2453,82,2311,64,2168,49,1890,31,1648,23,1472,21"/>
-<area shape="rect" href="ShipHit_8h.html" title=" " alt="" coords="259,152,340,177"/>
-<area shape="poly" title=" " alt="" coords="320,105,309,140,304,138,315,104"/>
+<area shape="rect" title=" " alt="" coords="1264,5,1431,31"/>
+<area shape="rect" href="splitcalHit_8h.html" title=" " alt="" coords="264,79,364,104"/>
+<area shape="poly" title=" " alt="" coords="1264,28,473,81,378,88,377,83,472,76,1263,22"/>
+<area shape="rect" title=" " alt="" coords="351,225,442,251"/>
+<area shape="poly" title=" " alt="" coords="1264,23,1072,28,839,39,632,56,559,67,518,81,498,101,489,124,482,150,467,179,426,218,422,215,463,176,477,148,484,123,493,99,515,76,558,62,631,51,839,33,1072,23,1264,18"/>
+<area shape="rect" title=" " alt="" coords="529,79,597,104"/>
+<area shape="poly" title=" " alt="" coords="1264,24,979,40,797,57,611,82,610,76,797,52,978,35,1264,19"/>
+<area shape="rect" title=" " alt="" coords="622,79,702,104"/>
+<area shape="poly" title=" " alt="" coords="1264,27,1022,45,871,61,716,81,715,76,870,55,1022,40,1264,21"/>
+<area shape="rect" title=" " alt="" coords="727,79,827,104"/>
+<area shape="poly" title=" " alt="" coords="1264,30,1074,50,840,81,840,76,1074,45,1263,25"/>
+<area shape="rect" title=" " alt="" coords="850,79,933,104"/>
+<area shape="poly" title=" " alt="" coords="1264,33,1120,53,947,81,946,76,1119,48,1263,27"/>
+<area shape="rect" title=" " alt="" coords="957,79,1063,104"/>
+<area shape="poly" title=" " alt="" coords="1294,33,1077,79,1076,73,1293,28"/>
+<area shape="rect" title=" " alt="" coords="1088,79,1191,104"/>
+<area shape="poly" title=" " alt="" coords="1315,33,1187,77,1185,72,1313,28"/>
+<area shape="rect" title=" " alt="" coords="1215,79,1339,104"/>
+<area shape="poly" title=" " alt="" coords="1338,33,1300,71,1296,67,1334,29"/>
+<area shape="rect" title=" " alt="" coords="1363,79,1473,104"/>
+<area shape="poly" title=" " alt="" coords="1361,29,1399,67,1395,71,1357,33"/>
+<area shape="rect" title=" " alt="" coords="1498,79,1629,104"/>
+<area shape="poly" title=" " alt="" coords="1383,28,1516,72,1515,77,1381,33"/>
+<area shape="rect" title=" " alt="" coords="1653,79,1756,104"/>
+<area shape="poly" title=" " alt="" coords="1405,28,1640,75,1639,80,1404,33"/>
+<area shape="rect" title=" " alt="" coords="1780,79,1888,104"/>
+<area shape="poly" title=" " alt="" coords="1431,28,1767,76,1766,81,1430,33"/>
+<area shape="rect" title=" " alt="" coords="1913,79,2030,104"/>
+<area shape="poly" title=" " alt="" coords="1431,24,1639,45,1899,76,1898,81,1638,51,1430,30"/>
+<area shape="rect" title=" " alt="" coords="2054,79,2129,104"/>
+<area shape="poly" title=" " alt="" coords="1431,20,1699,37,1868,53,2041,76,2040,81,1867,59,1699,42,1431,25"/>
+<area shape="rect" title=" " alt="" coords="2153,79,2257,104"/>
+<area shape="poly" title=" " alt="" coords="1431,20,1739,38,1936,54,2139,76,2139,81,1936,60,1738,44,1431,25"/>
+<area shape="rect" title=" " alt="" coords="2281,79,2385,104"/>
+<area shape="poly" title=" " alt="" coords="1431,19,1790,35,2026,52,2267,76,2266,81,2025,57,1790,41,1431,24"/>
+<area shape="rect" href="splitcal_8h.html" title=" " alt="" coords="2409,79,2491,104"/>
+<area shape="poly" title=" " alt="" coords="1431,17,1604,20,1842,29,2115,47,2395,76,2395,81,2115,52,1841,35,1604,26,1431,22"/>
+<area shape="rect" title=" " alt="" coords="391,152,453,177"/>
+<area shape="poly" title=" " alt="" coords="333,102,394,142,391,147,330,106"/>
+<area shape="rect" href="ShipHit_8h.html" title=" " alt="" coords="233,152,315,177"/>
+<area shape="poly" title=" " alt="" coords="310,106,290,141,285,139,305,103"/>
 <area shape="rect" title=" " alt="" coords="140,225,224,251"/>
-<area shape="poly" title=" " alt="" coords="271,102,176,122,134,137,109,154,105,162,105,170,112,186,128,202,148,216,145,220,125,206,108,189,99,171,100,160,105,150,132,132,174,117,270,97"/>
-<area shape="poly" title=" " alt="" coords="330,103,393,212,389,215,325,106"/>
-<area shape="rect" href="splitcalPoint_8h.html" title=" " alt="" coords="119,152,234,177"/>
-<area shape="poly" title=" " alt="" coords="299,106,214,148,211,143,296,102"/>
-<area shape="rect" title=" " alt="" coords="467,152,529,177"/>
-<area shape="poly" title=" " alt="" coords="350,102,458,144,456,149,348,106"/>
-<area shape="poly" title=" " alt="" coords="282,180,214,220,212,216,279,175"/>
-<area shape="rect" title=" " alt="" coords="256,225,335,251"/>
-<area shape="poly" title=" " alt="" coords="301,178,299,212,294,212,296,178"/>
-<area shape="poly" title=" " alt="" coords="318,175,378,215,375,220,315,180"/>
-<area shape="poly" title=" " alt="" coords="180,177,183,212,177,212,175,178"/>
-<area shape="poly" title=" " alt="" coords="214,175,355,219,354,224,213,180"/>
+<area shape="poly" title=" " alt="" coords="289,107,255,126,223,154,204,183,191,213,187,211,199,181,219,150,252,122,286,102"/>
+<area shape="poly" title=" " alt="" coords="323,103,386,212,381,215,318,106"/>
+<area shape="rect" href="splitcalPoint_8h.html" title=" " alt="" coords="43,152,158,177"/>
+<area shape="poly" title=" " alt="" coords="281,107,149,150,147,145,279,101"/>
+<area shape="rect" title=" " alt="" coords="248,225,327,251"/>
+<area shape="poly" title=" " alt="" coords="279,177,285,211,280,212,274,178"/>
+<area shape="poly" title=" " alt="" coords="261,179,209,219,206,215,258,175"/>
+<area shape="poly" title=" " alt="" coords="295,175,366,216,364,221,292,180"/>
+<area shape="poly" title=" " alt="" coords="115,175,160,214,157,218,112,179"/>
+<area shape="poly" title=" " alt="" coords="149,175,339,220,337,225,148,180"/>
 <area shape="rect" title=" " alt="" coords="5,225,116,251"/>
-<area shape="poly" title=" " alt="" coords="159,180,93,220,90,216,157,175"/>
-<area shape="poly" title=" " alt="" coords="608,106,582,142,542,179,500,205,457,223,454,218,497,200,539,175,578,138,604,103"/>
-<area shape="poly" title=" " alt="" coords="597,106,530,147,527,142,594,102"/>
-<area shape="rect" title=" " alt="" coords="605,152,717,177"/>
-<area shape="poly" title=" " alt="" coords="624,103,648,139,643,142,619,106"/>
-<area shape="rect" href="ISTLPointContainer_8h.html" title=" " alt="" coords="947,152,1103,177"/>
-<area shape="poly" title=" " alt="" coords="655,99,668,101,937,147,936,152,667,107,654,104"/>
-<area shape="rect" title=" " alt="" coords="941,225,991,251"/>
-<area shape="poly" title=" " alt="" coords="656,99,884,150,923,180,952,213,948,216,920,184,882,154,655,104"/>
-<area shape="rect" title=" " alt="" coords="741,152,871,177"/>
-<area shape="poly" title=" " alt="" coords="646,102,763,144,761,149,644,107"/>
-<area shape="poly" title=" " alt="" coords="1017,179,986,217,982,213,1013,176"/>
+<area shape="poly" title=" " alt="" coords="96,179,76,215,72,212,92,176"/>
+<area shape="poly" title=" " alt="" coords="2409,105,2397,107,2212,123,1966,136,1381,153,821,162,467,166,467,160,821,157,1381,148,1966,130,2212,117,2396,101,2408,100"/>
+<area shape="poly" title=" " alt="" coords="2409,105,2397,107,2105,142,1806,171,1512,194,1232,211,754,231,456,238,456,233,754,226,1231,205,1512,188,1806,166,2104,137,2396,101,2408,99"/>
+<area shape="rect" title=" " alt="" coords="2533,225,2583,251"/>
+<area shape="poly" title=" " alt="" coords="2461,103,2543,213,2539,216,2457,106"/>
+<area shape="rect" title=" " alt="" coords="2197,152,2309,177"/>
+<area shape="poly" title=" " alt="" coords="2419,107,2299,150,2297,145,2417,102"/>
+<area shape="rect" href="ISTLPointContainer_8h.html" title=" " alt="" coords="2539,152,2695,177"/>
+<area shape="poly" title=" " alt="" coords="2478,102,2578,144,2576,149,2476,106"/>
+<area shape="rect" title=" " alt="" coords="2333,152,2463,177"/>
+<area shape="poly" title=" " alt="" coords="2444,106,2417,142,2412,139,2439,103"/>
+<area shape="poly" title=" " alt="" coords="2609,179,2578,217,2574,213,2605,176"/>
 </map>
 </div>
 </div>
@@ -189,7 +189,7 @@ Include dependency graph for splitcalHit.cxx:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a2a4e3defa01c68456688479ba32a6a02" id="r_a2a4e3defa01c68456688479ba32a6a02"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a> = TMath::C() *100./1000000000.0</td></tr>
+<tr class="memitem:a2a4e3defa01c68456688479ba32a6a02" id="r_a2a4e3defa01c68456688479ba32a6a02"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a></td></tr>
 <tr class="separator:a2a4e3defa01c68456688479ba32a6a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -200,12 +200,14 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t speedOfLight = TMath::C() *100./1000000000.0</td>
+          <td class="memname">Double_t speedOfLight</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="splitcalHit_8cxx_source.html#l00026">26</a> of file <a class="el" href="splitcalHit_8cxx_source.html">splitcalHit.cxx</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    TMath::C() * 100. / 1000000000.0</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="splitcalHit_8cxx_source.html#l00029">29</a> of file <a class="el" href="splitcalHit_8cxx_source.html">splitcalHit.cxx</a>.</p>
 
 </div>
 </div>

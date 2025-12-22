@@ -206,7 +206,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Hit class for <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a> scoring plane. </p>
 <p>Simple hit class for UBT scoring plane detector. Stores smeared position and time from MC truth. Does not store MC truth information directly. </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8h_source.html#l00019">19</a> of file <a class="el" href="UpstreamTaggerHit_8h_source.html">UpstreamTaggerHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8h_source.html#l00020">20</a> of file <a class="el" href="UpstreamTaggerHit_8h_source.html">UpstreamTaggerHit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2ff8bf1fd46d705a3684d1f9808ba1b7" name="a2ff8bf1fd46d705a3684d1f9808ba1b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ff8bf1fd46d705a3684d1f9808ba1b7">&#9670;&#160;</a></span>UpstreamTaggerHit() <span class="overload">[1/3]</span></h2>
@@ -224,14 +224,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00013">13</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>  : <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>(),</div>
-<div class="line"><span class="lineno">   15</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a>(0.),</div>
-<div class="line"><span class="lineno">   16</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a>(0.),</div>
-<div class="line"><span class="lineno">   17</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a>(0.),</div>
-<div class="line"><span class="lineno">   18</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a>(0.)</div>
-<div class="line"><span class="lineno">   19</span>{</div>
-<div class="line"><span class="lineno">   20</span>}</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00016">16</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span>    : <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>(), <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a>(0.), <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a>(0.), <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a>(0.), <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a>(0.) {}</div>
 <div class="ttc" id="aclassShipHit_html_a1916d57d722314c27531a77a49ef655f"><div class="ttname"><a href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a></div><div class="ttdeci">ShipHit()</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8cxx_source.html#l00008">ShipHit.cxx:8</a></div></div>
 <div class="ttc" id="aclassUpstreamTaggerHit_html_a25b7e0952c71e1c21a490b2d64661aed"><div class="ttname"><a href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">UpstreamTaggerHit::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">Smeared time (ns)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00058">UpstreamTaggerHit.h:58</a></div></div>
 <div class="ttc" id="aclassUpstreamTaggerHit_html_a263f47258c9d788aa521dddbd3baff7c"><div class="ttname"><a href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">UpstreamTaggerHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdoc">Smeared y position (cm)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00056">UpstreamTaggerHit.h:56</a></div></div>
@@ -287,20 +281,19 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00023">23</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>  : <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>()</div>
-<div class="line"><span class="lineno">   26</span>{</div>
-<div class="line"><span class="lineno">   27</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetDetectorID();</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span>    <span class="comment">// Smear position with Gaussian resolution</span></div>
-<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), pos_res);</div>
-<div class="line"><span class="lineno">   31</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), pos_res);</div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetZ(), pos_res);</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>    <span class="comment">// Smear time with Gaussian resolution</span></div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetTime() + t0, time_res);</div>
-<div class="line"><span class="lineno">   36</span>}</div>
-<div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00044">ShipHit.h:44</a></div></div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00020">20</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>    : <a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit</a>() {</div>
+<div class="line"><span class="lineno">   23</span>  <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetDetectorID();</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>  <span class="comment">// Smear position with Gaussian resolution</span></div>
+<div class="line"><span class="lineno">   26</span>  <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), pos_res);</div>
+<div class="line"><span class="lineno">   27</span>  <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), pos_res);</div>
+<div class="line"><span class="lineno">   28</span>  <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetZ(), pos_res);</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>  <span class="comment">// Smear time with Gaussian resolution</span></div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> = gRandom-&gt;Gaus(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetTime() + t0, time_res);</div>
+<div class="line"><span class="lineno">   32</span>}</div>
+<div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00039">ShipHit.h:39</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -329,8 +322,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00039">39</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ }</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00035">35</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -589,12 +582,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00042">42</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>    cout &lt;&lt; <span class="stringliteral">&quot;-I- UpstreamTaggerHit: detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   45</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Position: (&quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   46</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Time: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   47</span>}</div>
+<p class="definition">Definition at line <a class="el" href="UpstreamTaggerHit_8cxx_source.html#l00038">38</a> of file <a class="el" href="UpstreamTaggerHit_8cxx_source.html">UpstreamTaggerHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>                                    {</div>
+<div class="line"><span class="lineno">   39</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- UpstreamTaggerHit: detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   40</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Position: (&quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   41</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Time: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -625,8 +618,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classShipHit.html#ae558418d02986544eaaa5898d3c7c5a4">ShipHit</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ShipHit_8h_source.html#l00040">40</a> of file <a class="el" href="ShipHit_8h_source.html">ShipHit.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{;}</div>
+<p class="definition">Definition at line <a class="el" href="ShipHit_8h_source.html#l00035">35</a> of file <a class="el" href="ShipHit_8h_source.html">ShipHit.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>

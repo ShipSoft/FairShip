@@ -102,17 +102,17 @@ Include dependency graph for BeamSmearingUtils.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="BeamSmearingUtils_8cxx__incl.png" border="0" usemap="#ashipgen_2BeamSmearingUtils_8cxx" alt=""/></div>
 <map name="ashipgen_2BeamSmearingUtils_8cxx" id="ashipgen_2BeamSmearingUtils_8cxx">
-<area shape="rect" title=" " alt="" coords="118,5,353,31"/>
-<area shape="rect" href="BeamSmearingUtils_8h.html" title=" " alt="" coords="9,79,173,104"/>
-<area shape="poly" title=" " alt="" coords="213,33,128,75,126,70,211,28"/>
-<area shape="rect" title=" " alt="" coords="198,79,273,104"/>
-<area shape="poly" title=" " alt="" coords="238,31,238,65,233,65,233,31"/>
-<area shape="rect" title=" " alt="" coords="297,79,393,104"/>
-<area shape="poly" title=" " alt="" coords="254,28,317,69,314,73,251,33"/>
-<area shape="rect" title=" " alt="" coords="5,152,84,177"/>
-<area shape="poly" title=" " alt="" coords="86,106,62,142,58,139,81,103"/>
-<area shape="rect" title=" " alt="" coords="108,152,168,177"/>
-<area shape="poly" title=" " alt="" coords="101,103,125,139,121,142,97,106"/>
+<area shape="rect" title=" " alt="" coords="114,5,349,31"/>
+<area shape="rect" href="BeamSmearingUtils_8h.html" title=" " alt="" coords="5,79,169,104"/>
+<area shape="poly" title=" " alt="" coords="209,33,124,75,122,70,207,28"/>
+<area shape="rect" title=" " alt="" coords="194,79,269,104"/>
+<area shape="poly" title=" " alt="" coords="234,31,234,65,229,65,229,31"/>
+<area shape="rect" title=" " alt="" coords="293,79,389,104"/>
+<area shape="poly" title=" " alt="" coords="250,28,313,69,310,73,247,33"/>
+<area shape="rect" title=" " alt="" coords="11,152,71,177"/>
+<area shape="poly" title=" " alt="" coords="82,106,58,142,54,139,77,103"/>
+<area shape="rect" title=" " alt="" coords="95,152,173,177"/>
+<area shape="poly" title=" " alt="" coords="97,103,121,139,117,142,93,106"/>
 </map>
 </div>
 </div>
@@ -158,26 +158,26 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::pair&lt;Double_t, Double_t&gt; containing (dx, dy) offsets in same units as input parameters </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BeamSmearingUtils_8cxx_source.html#l00009">9</a> of file <a class="el" href="BeamSmearingUtils_8cxx_source.html">BeamSmearingUtils.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span>{</div>
-<div class="line"><span class="lineno">   11</span>    Double_t dx = 0.0;</div>
-<div class="line"><span class="lineno">   12</span>    Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = 0.0;</div>
-<div class="line"><span class="lineno">   13</span> </div>
-<div class="line"><span class="lineno">   14</span>    <span class="comment">// Gaussian beam smearing</span></div>
-<div class="line"><span class="lineno">   15</span>    <span class="keywordflow">if</span> (smearBeam &gt; 0) {</div>
-<div class="line"><span class="lineno">   16</span>        dx = gRandom-&gt;Gaus(0, smearBeam);</div>
-<div class="line"><span class="lineno">   17</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = gRandom-&gt;Gaus(0, smearBeam);</div>
-<div class="line"><span class="lineno">   18</span>    }</div>
-<div class="line"><span class="lineno">   19</span> </div>
-<div class="line"><span class="lineno">   20</span>    <span class="comment">// Uniform circular beam painting</span></div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">if</span> (paintBeam &gt; 0) {</div>
-<div class="line"><span class="lineno">   22</span>        Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = gRandom-&gt;Uniform(0., 2 * TMath::Pi());</div>
-<div class="line"><span class="lineno">   23</span>        dx += paintBeam * TMath::Cos(phi);</div>
-<div class="line"><span class="lineno">   24</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> += paintBeam * TMath::Sin(phi);</div>
-<div class="line"><span class="lineno">   25</span>    }</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">return</span> {dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a>};</div>
-<div class="line"><span class="lineno">   28</span>}</div>
+<p class="definition">Definition at line <a class="el" href="BeamSmearingUtils_8cxx_source.html#l00010">10</a> of file <a class="el" href="BeamSmearingUtils_8cxx_source.html">BeamSmearingUtils.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span>                                                                      {</div>
+<div class="line"><span class="lineno">   12</span>  Double_t dx = 0.0;</div>
+<div class="line"><span class="lineno">   13</span>  Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = 0.0;</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span>  <span class="comment">// Gaussian beam smearing</span></div>
+<div class="line"><span class="lineno">   16</span>  <span class="keywordflow">if</span> (smearBeam &gt; 0) {</div>
+<div class="line"><span class="lineno">   17</span>    dx = gRandom-&gt;Gaus(0, smearBeam);</div>
+<div class="line"><span class="lineno">   18</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = gRandom-&gt;Gaus(0, smearBeam);</div>
+<div class="line"><span class="lineno">   19</span>  }</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>  <span class="comment">// Uniform circular beam painting</span></div>
+<div class="line"><span class="lineno">   22</span>  <span class="keywordflow">if</span> (paintBeam &gt; 0) {</div>
+<div class="line"><span class="lineno">   23</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = gRandom-&gt;Uniform(0., 2 * TMath::Pi());</div>
+<div class="line"><span class="lineno">   24</span>    dx += paintBeam * TMath::Cos(phi);</div>
+<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> += paintBeam * TMath::Sin(phi);</div>
+<div class="line"><span class="lineno">   26</span>  }</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">return</span> {dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a>};</div>
+<div class="line"><span class="lineno">   29</span>}</div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00086">makeMuonDIS.py:86</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a268fb420d1b4cf832469ab372827e014"><div class="ttname"><a href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">run_fixedTarget.dy</a></div><div class="ttdeci">int dy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00015">run_fixedTarget.py:15</a></div></div>
 </div><!-- fragment -->

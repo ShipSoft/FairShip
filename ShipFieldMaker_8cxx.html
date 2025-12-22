@@ -93,103 +93,103 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ShipFieldMaker_8h_source.html">ShipFieldMaker.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ShipBFieldMap_8h_source.html">ShipBFieldMap.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ShipConstField_8h_source.html">ShipConstField.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ShipBellField_8h_source.html">ShipBellField.h</a>&quot;</code><br />
-<code>#include &quot;TGeoManager.h&quot;</code><br />
-<code>#include &quot;TGeoChecker.h&quot;</code><br />
-<code>#include &quot;TGeoPhysicalNode.h&quot;</code><br />
-<code>#include &quot;TGeoUniformMagField.h&quot;</code><br />
-<code>#include &quot;TGeoMatrix.h&quot;</code><br />
-<code>#include &quot;TGeoNode.h&quot;</code><br />
-<code>#include &quot;TGeoVolume.h&quot;</code><br />
-<code>#include &quot;TVirtualMC.h&quot;</code><br />
-<code>#include &quot;TObjArray.h&quot;</code><br />
-<code>#include &quot;TH2.h&quot;</code><br />
-<code>#include &quot;TCanvas.h&quot;</code><br />
-<code>#include &quot;TStyle.h&quot;</code><br />
-<code>#include &quot;TROOT.h&quot;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &quot;<a class="el" href="ShipBFieldMap_8h_source.html">ShipBFieldMap.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ShipBellField_8h_source.html">ShipBellField.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ShipConstField_8h_source.html">ShipConstField.h</a>&quot;</code><br />
+<code>#include &quot;TCanvas.h&quot;</code><br />
+<code>#include &quot;TGeoChecker.h&quot;</code><br />
+<code>#include &quot;TGeoManager.h&quot;</code><br />
+<code>#include &quot;TGeoMatrix.h&quot;</code><br />
+<code>#include &quot;TGeoNode.h&quot;</code><br />
+<code>#include &quot;TGeoPhysicalNode.h&quot;</code><br />
+<code>#include &quot;TGeoUniformMagField.h&quot;</code><br />
+<code>#include &quot;TGeoVolume.h&quot;</code><br />
+<code>#include &quot;TH2.h&quot;</code><br />
+<code>#include &quot;TObjArray.h&quot;</code><br />
+<code>#include &quot;TROOT.h&quot;</code><br />
+<code>#include &quot;TStyle.h&quot;</code><br />
+<code>#include &quot;TVirtualMC.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ShipFieldMaker.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="ShipFieldMaker_8cxx__incl.png" border="0" usemap="#afield_2ShipFieldMaker_8cxx" alt=""/></div>
 <map name="afield_2ShipFieldMaker_8cxx" id="afield_2ShipFieldMaker_8cxx">
-<area shape="rect" title=" " alt="" coords="2209,5,2387,31"/>
-<area shape="rect" href="ShipFieldMaker_8h.html" title=" " alt="" coords="687,79,819,104"/>
-<area shape="poly" title=" " alt="" coords="2208,26,832,89,832,84,2208,21"/>
-<area shape="rect" title=" " alt="" coords="977,225,1035,251"/>
-<area shape="poly" title=" " alt="" coords="2209,23,1973,27,1678,37,1412,54,1317,66,1263,81,1248,91,1238,102,1224,127,1211,154,1186,179,1153,199,1117,214,1050,232,1048,227,1115,209,1150,194,1183,175,1207,150,1220,124,1233,99,1245,87,1261,76,1316,61,1411,49,1678,32,1973,22,2209,18"/>
-<area shape="rect" href="ShipBFieldMap_8h.html" title=" " alt="" coords="98,152,229,177"/>
-<area shape="poly" title=" " alt="" coords="2208,21,1947,22,1568,29,1125,47,897,62,674,81,551,96,429,115,231,152,230,147,429,110,551,91,674,76,897,57,1125,42,1567,24,1947,17,2208,16"/>
-<area shape="rect" title=" " alt="" coords="5,225,116,251"/>
-<area shape="poly" title=" " alt="" coords="2208,23,1356,40,854,57,645,69,486,81,423,85,367,84,269,80,225,84,181,95,136,117,88,154,78,166,71,181,64,212,59,211,66,179,73,163,84,150,133,113,179,90,224,78,269,75,367,79,423,80,486,76,644,63,854,52,1356,35,2208,18"/>
-<area shape="rect" href="ShipConstField_8h.html" title=" " alt="" coords="1417,79,1547,104"/>
-<area shape="poly" title=" " alt="" coords="2208,27,1925,48,1561,81,1561,76,1924,42,2208,22"/>
-<area shape="rect" href="ShipBellField_8h.html" title=" " alt="" coords="1275,79,1393,104"/>
-<area shape="poly" title=" " alt="" coords="2208,25,1861,43,1637,59,1407,81,1407,76,1637,54,1861,38,2208,20"/>
-<area shape="rect" title=" " alt="" coords="1572,79,1696,104"/>
-<area shape="poly" title=" " alt="" coords="2209,30,1987,50,1710,81,1709,76,1986,45,2208,24"/>
-<area shape="rect" title=" " alt="" coords="1720,79,1839,104"/>
-<area shape="poly" title=" " alt="" coords="2209,33,1853,81,1852,76,2208,28"/>
-<area shape="rect" title=" " alt="" coords="1863,79,2019,104"/>
-<area shape="poly" title=" " alt="" coords="2241,33,2012,79,2011,73,2240,28"/>
-<area shape="rect" title=" " alt="" coords="2043,79,2223,104"/>
-<area shape="poly" title=" " alt="" coords="2272,33,2173,76,2171,71,2270,28"/>
-<area shape="rect" title=" " alt="" coords="2247,79,2349,104"/>
-<area shape="poly" title=" " alt="" coords="2301,31,2301,65,2295,65,2295,31"/>
-<area shape="rect" title=" " alt="" coords="2374,79,2491,104"/>
-<area shape="poly" title=" " alt="" coords="2321,28,2400,70,2397,74,2318,33"/>
-<area shape="rect" title=" " alt="" coords="2515,79,2622,104"/>
-<area shape="poly" title=" " alt="" coords="2342,28,2512,73,2511,78,2341,33"/>
-<area shape="rect" title=" " alt="" coords="2647,79,2744,104"/>
-<area shape="poly" title=" " alt="" coords="2364,28,2633,76,2632,81,2363,33"/>
-<area shape="rect" title=" " alt="" coords="2768,79,2828,104"/>
-<area shape="poly" title=" " alt="" coords="2388,25,2555,44,2755,76,2754,81,2554,49,2387,30"/>
-<area shape="rect" title=" " alt="" coords="2852,79,2941,104"/>
-<area shape="poly" title=" " alt="" coords="2388,24,2590,44,2838,76,2838,81,2590,49,2387,29"/>
-<area shape="rect" title=" " alt="" coords="2966,79,3041,104"/>
-<area shape="poly" title=" " alt="" coords="2388,21,2638,39,2793,55,2952,76,2952,81,2793,60,2638,44,2387,26"/>
-<area shape="rect" title=" " alt="" coords="3065,79,3144,104"/>
-<area shape="poly" title=" " alt="" coords="2388,20,2679,37,2863,53,3052,76,3051,81,2863,58,2679,42,2388,25"/>
-<area shape="rect" title=" " alt="" coords="3168,79,3241,104"/>
-<area shape="poly" title=" " alt="" coords="2388,18,2532,23,2721,32,2935,49,3154,76,3154,81,2935,55,2721,38,2532,28,2387,23"/>
-<area shape="rect" title=" " alt="" coords="3266,79,3346,104"/>
-<area shape="poly" title=" " alt="" coords="2387,18,2548,22,2761,31,3004,49,3253,76,3252,81,3003,54,2760,37,2547,27,2387,23"/>
-<area shape="rect" title=" " alt="" coords="3371,79,3436,104"/>
-<area shape="poly" title=" " alt="" coords="2388,16,2564,18,2803,26,3077,44,3218,58,3357,76,3356,82,3217,63,3076,49,2803,31,2564,23,2388,21"/>
-<area shape="rect" href="ShipCompField_8h.html" title=" " alt="" coords="637,152,767,177"/>
-<area shape="poly" title=" " alt="" coords="746,106,720,142,716,139,742,103"/>
-<area shape="rect" title=" " alt="" coords="630,225,774,251"/>
-<area shape="poly" title=" " alt="" coords="764,103,782,137,786,158,782,178,763,203,740,221,737,216,760,199,777,176,781,158,777,138,759,105"/>
-<area shape="poly" title=" " alt="" coords="819,90,910,92,1013,101,1061,109,1104,119,1139,133,1163,150,1171,166,1169,181,1158,194,1141,205,1097,221,1050,232,1048,227,1095,216,1139,200,1155,190,1164,179,1166,167,1159,154,1137,137,1103,124,1060,114,1012,106,910,98,819,95"/>
-<area shape="rect" title=" " alt="" coords="235,225,297,251"/>
-<area shape="poly" title=" " alt="" coords="686,95,585,98,469,107,362,125,321,138,293,154,283,166,276,181,269,212,264,211,271,179,278,163,290,150,319,133,361,119,468,102,585,93,686,90"/>
-<area shape="rect" title=" " alt="" coords="303,152,383,177"/>
-<area shape="poly" title=" " alt="" coords="687,105,397,154,396,149,686,100"/>
-<area shape="rect" title=" " alt="" coords="407,152,498,177"/>
-<area shape="poly" title=" " alt="" coords="705,107,512,152,511,147,704,101"/>
-<area shape="rect" title=" " alt="" coords="522,152,613,177"/>
-<area shape="poly" title=" " alt="" coords="724,107,611,149,609,145,722,102"/>
-<area shape="rect" title=" " alt="" coords="842,152,1074,177"/>
-<area shape="poly" title=" " alt="" coords="787,101,913,145,911,150,785,107"/>
-<area shape="rect" title=" " alt="" coords="1098,152,1149,177"/>
-<area shape="poly" title=" " alt="" coords="819,99,939,119,1085,149,1084,155,938,124,818,105"/>
-<area shape="poly" title=" " alt="" coords="705,178,705,212,699,212,699,178"/>
-<area shape="poly" title=" " alt="" coords="751,175,964,224,963,229,750,180"/>
-<area shape="poly" title=" " alt="" coords="637,179,312,232,311,227,636,174"/>
-<area shape="poly" title=" " alt="" coords="229,172,617,223,616,228,228,177"/>
-<area shape="poly" title=" " alt="" coords="229,169,292,175,963,231,963,236,291,180,229,175"/>
-<area shape="poly" title=" " alt="" coords="181,175,239,215,236,219,178,180"/>
-<area shape="poly" title=" " alt="" coords="148,180,90,219,87,215,145,175"/>
-<area shape="rect" title=" " alt="" coords="140,225,200,251"/>
-<area shape="poly" title=" " alt="" coords="167,177,170,212,165,212,162,178"/>
-<area shape="rect" title=" " alt="" coords="1365,152,1453,177"/>
-<area shape="poly" title=" " alt="" coords="1472,106,1432,144,1429,140,1468,102"/>
-<area shape="poly" title=" " alt="" coords="1348,102,1388,141,1385,144,1344,106"/>
+<area shape="rect" title=" " alt="" coords="1801,5,1980,31"/>
+<area shape="rect" href="ShipFieldMaker_8h.html" title=" " alt="" coords="398,79,530,104"/>
+<area shape="poly" title=" " alt="" coords="1801,26,544,89,544,83,1801,21"/>
+<area shape="rect" title=" " alt="" coords="935,225,993,251"/>
+<area shape="poly" title=" " alt="" coords="1801,22,1598,26,1352,35,1235,42,1134,52,1058,65,1032,73,1016,81,992,109,977,145,969,181,967,212,961,212,964,180,972,143,987,107,1013,77,1030,68,1057,60,1133,47,1234,37,1351,29,1598,20,1801,17"/>
+<area shape="rect" title=" " alt="" coords="1027,79,1093,104"/>
+<area shape="poly" title=" " alt="" coords="1801,24,1668,28,1497,38,1304,55,1107,81,1106,76,1303,50,1496,33,1668,23,1801,18"/>
+<area shape="rect" title=" " alt="" coords="1117,79,1190,104"/>
+<area shape="poly" title=" " alt="" coords="1801,26,1537,43,1373,59,1204,81,1203,76,1372,54,1537,38,1801,20"/>
+<area shape="rect" title=" " alt="" coords="1215,79,1295,104"/>
+<area shape="poly" title=" " alt="" coords="1801,29,1579,49,1314,81,1309,82,1308,77,1313,76,1579,44,1801,23"/>
+<area shape="rect" href="ShipBFieldMap_8h.html" title=" " alt="" coords="1027,152,1157,177"/>
+<area shape="poly" title=" " alt="" coords="1801,24,1709,29,1599,39,1481,56,1365,81,1336,93,1308,106,1229,132,1155,151,1154,146,1227,126,1306,102,1334,88,1363,76,1480,51,1599,34,1709,24,1801,19"/>
+<area shape="rect" title=" " alt="" coords="1237,225,1347,251"/>
+<area shape="poly" title=" " alt="" coords="1801,25,1698,30,1584,41,1481,57,1441,68,1411,81,1374,110,1344,145,1321,182,1305,214,1300,211,1316,179,1340,142,1370,106,1408,76,1439,63,1480,52,1584,35,1698,25,1801,19"/>
+<area shape="rect" href="ShipBellField_8h.html" title=" " alt="" coords="1421,79,1539,104"/>
+<area shape="poly" title=" " alt="" coords="1825,33,1554,80,1553,75,1824,28"/>
+<area shape="rect" href="ShipConstField_8h.html" title=" " alt="" coords="1563,79,1693,104"/>
+<area shape="poly" title=" " alt="" coords="1849,33,1685,78,1683,72,1848,28"/>
+<area shape="rect" title=" " alt="" coords="1718,79,1807,104"/>
+<area shape="poly" title=" " alt="" coords="1871,33,1797,74,1795,69,1869,28"/>
+<area shape="rect" title=" " alt="" coords="1831,79,1950,104"/>
+<area shape="poly" title=" " alt="" coords="1893,31,1893,65,1888,65,1888,31"/>
+<area shape="rect" title=" " alt="" coords="1974,79,2098,104"/>
+<area shape="poly" title=" " alt="" coords="1915,28,2001,70,1999,75,1913,33"/>
+<area shape="rect" title=" " alt="" coords="2122,79,2225,104"/>
+<area shape="poly" title=" " alt="" coords="1937,28,2115,73,2114,78,1935,33"/>
+<area shape="rect" title=" " alt="" coords="2249,79,2405,104"/>
+<area shape="poly" title=" " alt="" coords="1961,28,2244,74,2243,79,1960,33"/>
+<area shape="rect" title=" " alt="" coords="2429,79,2609,104"/>
+<area shape="poly" title=" " alt="" coords="1981,27,2415,76,2415,81,1980,32"/>
+<area shape="rect" title=" " alt="" coords="2633,79,2751,104"/>
+<area shape="poly" title=" " alt="" coords="1980,22,2261,41,2620,76,2619,81,2261,47,1980,27"/>
+<area shape="rect" title=" " alt="" coords="2775,79,2835,104"/>
+<area shape="poly" title=" " alt="" coords="1981,17,2128,21,2320,30,2539,47,2762,76,2761,82,2538,53,2320,35,2127,26,1980,22"/>
+<area shape="rect" title=" " alt="" coords="2859,79,2957,104"/>
+<area shape="poly" title=" " alt="" coords="1980,18,2354,34,2597,51,2846,76,2845,81,2596,56,2353,39,1980,24"/>
+<area shape="rect" title=" " alt="" coords="2981,79,3059,104"/>
+<area shape="poly" title=" " alt="" coords="1980,17,2160,19,2403,28,2682,46,2826,59,2967,76,2967,81,2825,64,2681,51,2403,33,2159,25,1980,22"/>
+<area shape="rect" title=" " alt="" coords="3084,79,3159,104"/>
+<area shape="poly" title=" " alt="" coords="1980,16,2175,17,2444,25,2753,43,2913,57,3071,76,3070,81,2912,63,2753,48,2443,30,2175,22,1980,21"/>
+<area shape="rect" title=" " alt="" coords="3183,79,3289,104"/>
+<area shape="poly" title=" " alt="" coords="1980,17,2190,20,2482,29,2821,46,3169,76,3169,81,2821,52,2482,34,2189,25,1980,22"/>
+<area shape="rect" title=" " alt="" coords="120,152,171,177"/>
+<area shape="poly" title=" " alt="" coords="409,107,190,155,185,156,184,151,189,149,408,101"/>
+<area shape="poly" title=" " alt="" coords="530,92,628,97,740,107,843,124,885,136,915,150,930,163,942,179,959,211,954,213,938,181,926,166,912,154,883,141,842,129,739,112,627,102,530,97"/>
+<area shape="rect" title=" " alt="" coords="266,225,329,251"/>
+<area shape="poly" title=" " alt="" coords="398,97,365,103,331,113,300,130,276,153,270,167,271,182,283,213,278,215,265,183,265,166,271,151,297,125,329,108,364,97,397,92"/>
+<area shape="rect" href="ShipCompField_8h.html" title=" " alt="" coords="296,152,427,177"/>
+<area shape="poly" title=" " alt="" coords="449,106,391,146,388,142,446,102"/>
+<area shape="rect" title=" " alt="" coords="353,225,497,251"/>
+<area shape="poly" title=" " alt="" coords="398,99,368,105,337,115,309,131,286,154,281,165,281,175,286,184,295,192,322,208,356,219,354,224,320,212,291,197,281,187,276,176,276,164,282,150,305,127,335,110,366,100,397,93"/>
+<area shape="rect" title=" " alt="" coords="451,152,683,177"/>
+<area shape="poly" title=" " alt="" coords="482,102,540,142,537,146,479,106"/>
+<area shape="rect" title=" " alt="" coords="707,152,787,177"/>
+<area shape="poly" title=" " alt="" coords="510,101,694,147,693,153,509,107"/>
+<area shape="rect" title=" " alt="" coords="811,152,901,177"/>
+<area shape="poly" title=" " alt="" coords="531,101,797,149,796,154,530,107"/>
+<area shape="rect" title=" " alt="" coords="5,152,96,177"/>
+<area shape="poly" title=" " alt="" coords="398,106,110,154,109,149,397,100"/>
+<area shape="poly" title=" " alt="" coords="427,173,439,175,714,207,921,230,921,235,713,213,438,180,426,178"/>
+<area shape="poly" title=" " alt="" coords="353,179,319,217,315,213,349,176"/>
+<area shape="poly" title=" " alt="" coords="374,176,408,213,404,217,370,179"/>
+<area shape="poly" title=" " alt="" coords="1073,180,998,221,996,216,1070,175"/>
+<area shape="poly" title=" " alt="" coords="1026,173,664,200,343,228,342,223,663,194,1026,168"/>
+<area shape="poly" title=" " alt="" coords="1027,176,511,230,511,225,1026,170"/>
+<area shape="rect" title=" " alt="" coords="1062,225,1122,251"/>
+<area shape="poly" title=" " alt="" coords="1095,178,1095,212,1089,212,1089,178"/>
+<area shape="poly" title=" " alt="" coords="1125,175,1247,218,1245,223,1123,180"/>
+<area shape="rect" title=" " alt="" coords="1511,152,1599,177"/>
+<area shape="poly" title=" " alt="" coords="1494,102,1534,141,1531,144,1490,106"/>
+<area shape="poly" title=" " alt="" coords="1618,106,1578,144,1575,140,1614,102"/>
 </map>
 </div>
 </div>

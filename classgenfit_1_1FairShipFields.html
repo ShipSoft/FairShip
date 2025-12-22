@@ -166,9 +166,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00016">16</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>    : AbsBField()</div>
-<div class="line"><span class="lineno">   18</span>  { ; }</div>
+<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00020">20</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span>: AbsBField() { ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,24 +222,24 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00028">28</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>                                                                                                                    {</div>
-<div class="line"><span class="lineno">   29</span>  Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>[3] = {<a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>,<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>,<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>};</div>
-<div class="line"><span class="lineno">   30</span>  Double_t B[3] = {Bx,By,Bz};</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (!gMC &amp;&amp; !<a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a>){</div>
-<div class="line"><span class="lineno">   32</span>   cout&lt;&lt;<span class="stringliteral">&quot;no Field Manager instantiated&quot;</span>&lt;&lt;endl;</div>
-<div class="line"><span class="lineno">   33</span>   <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   34</span>  }</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (gMC){</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetMagField()-&gt;Field(X,B);</div>
-<div class="line"><span class="lineno">   37</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   38</span>    <a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(X,B);</div>
-<div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span>  Bx = B[0];</div>
-<div class="line"><span class="lineno">   41</span>  By = B[1];</div>
-<div class="line"><span class="lineno">   42</span>  Bz = B[2];</div>
-<div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="aclassShipCompField_html_ac5af42fbec6900837d97fc74af653082"><div class="ttname"><a href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">ShipCompField::Field</a></div><div class="ttdeci">virtual void Field(const Double_t *position, Double_t *B)</div><div class="ttdoc">The total magnetic field from all of the composite sources (linear superposition)</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00044">ShipCompField.cxx:44</a></div></div>
+<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00029">29</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>                                                                   {</div>
+<div class="line"><span class="lineno">   31</span>  Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>[3] = {<a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>, <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>, <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>};</div>
+<div class="line"><span class="lineno">   32</span>  Double_t B[3] = {Bx, By, Bz};</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!gMC &amp;&amp; !<a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a>) {</div>
+<div class="line"><span class="lineno">   34</span>    cout &lt;&lt; <span class="stringliteral">&quot;no Field Manager instantiated&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (gMC) {</div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetMagField()-&gt;Field(X, B);</div>
+<div class="line"><span class="lineno">   39</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(X, B);</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
+<div class="line"><span class="lineno">   42</span>  Bx = B[0];</div>
+<div class="line"><span class="lineno">   43</span>  By = B[1];</div>
+<div class="line"><span class="lineno">   44</span>  Bz = B[2];</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="aclassShipCompField_html_ac5af42fbec6900837d97fc74af653082"><div class="ttname"><a href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">ShipCompField::Field</a></div><div class="ttdeci">virtual void Field(const Double_t *position, Double_t *B)</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00037">ShipCompField.cxx:37</a></div></div>
 <div class="ttc" id="aclassgenfit_1_1FairShipFields_html_a9fa3da2454ac2d1ed277e4f555d9a537"><div class="ttname"><a href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">genfit::FairShipFields::gField_</a></div><div class="ttdeci">ShipCompField * gField_</div><div class="ttdef"><b>Definition</b> <a href="FairShipFields_8h_source.html#l00035">FairShipFields.h:35</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00419">make_nTuple_SBT.py:419</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ad74ad296dc1b3ef42e2efe98600c7a05"><div class="ttname"><a href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">runPythia8.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00030">runPythia8.py:30</a></div></div>
@@ -268,14 +267,14 @@ Private Attributes</h2></td></tr>
 
 <p>return value at position </p>
 
-<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00021">21</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>                                                      {</div>
-<div class="line"><span class="lineno">   22</span>  Double_t bx,by,bz;</div>
-<div class="line"><span class="lineno">   23</span>  <a class="code hl_function" href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">get</a>(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X(),<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y(),<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z(),bx,by,bz);</div>
-<div class="line"><span class="lineno">   24</span>  TVector3 field_(bx,by,bz);</div>
-<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">return</span> field_;</div>
-<div class="line"><span class="lineno">   26</span>}</div>
-<div class="ttc" id="aclassgenfit_1_1FairShipFields_html_a6952f3a14dcbfae9437cff7fbbdfcd64"><div class="ttname"><a href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">genfit::FairShipFields::get</a></div><div class="ttdeci">TVector3 get(const TVector3 &amp;pos) const</div><div class="ttdoc">return value at position</div><div class="ttdef"><b>Definition</b> <a href="FairShipFields_8cxx_source.html#l00021">FairShipFields.cxx:21</a></div></div>
+<p class="definition">Definition at line <a class="el" href="FairShipFields_8cxx_source.html#l00022">22</a> of file <a class="el" href="FairShipFields_8cxx_source.html">FairShipFields.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>                                                      {</div>
+<div class="line"><span class="lineno">   23</span>  Double_t bx, by, bz;</div>
+<div class="line"><span class="lineno">   24</span>  <a class="code hl_function" href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">get</a>(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z(), bx, by, bz);</div>
+<div class="line"><span class="lineno">   25</span>  TVector3 field_(bx, by, bz);</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">return</span> field_;</div>
+<div class="line"><span class="lineno">   27</span>}</div>
+<div class="ttc" id="aclassgenfit_1_1FairShipFields_html_a6952f3a14dcbfae9437cff7fbbdfcd64"><div class="ttname"><a href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">genfit::FairShipFields::get</a></div><div class="ttdeci">TVector3 get(const TVector3 &amp;pos) const</div><div class="ttdoc">return value at position</div><div class="ttdef"><b>Definition</b> <a href="FairShipFields_8cxx_source.html#l00022">FairShipFields.cxx:22</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00530">ana_ShipMuon.py:530</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -306,8 +305,8 @@ Private Attributes</h2></td></tr>
 
 <p>set field if not gMC present </p>
 
-<p class="definition">Definition at line <a class="el" href="FairShipFields_8h_source.html#l00028">28</a> of file <a class="el" href="FairShipFields_8h_source.html">FairShipFields.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{ <a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a> = gField; }</div>
+<p class="definition">Definition at line <a class="el" href="FairShipFields_8h_source.html#l00027">27</a> of file <a class="el" href="FairShipFields_8h_source.html">FairShipFields.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <a class="code hl_variable" href="classgenfit_1_1FairShipFields.html#a9fa3da2454ac2d1ed277e4f555d9a537">gField_</a> = gField; }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -337,7 +337,7 @@ var searchData=
   ['fsink_334',['fSink',['../namespacerun__simScript.html#a93ba36fd021df754186946c4f0364058',1,'run_simScript']]],
   ['fskipneutrinos_335',['fSkipNeutrinos',['../classexitHadronAbsorber.html#ac793f753d95381d47a457cdb6d685204',1,'exitHadronAbsorber']]],
   ['fsmearbeam_336',['fsmearbeam',['../classMuonBackGenerator.html#a9375f25805c6831c65a6a43c7ee3efea',1,'MuonBackGenerator::fsmearBeam'],['../classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4',1,'DPPythia8Generator::fsmearBeam'],['../classFixedTargetGenerator.html#a1f932a57ac5562bdcb34123db2700ccb',1,'FixedTargetGenerator::fsmearBeam'],['../classHNLPythia8Generator.html#ae100aa882ebf4a38c74a6e12993a87c1',1,'HNLPythia8Generator::fsmearBeam']]],
-  ['fspecmagz_337',['fSpecMagz',['../classShipMagnet.html#a663c8b56d73cdcabb49c95fc7ad9c020',1,'ShipMagnet']]],
+  ['fspecmagz_337',['fSpecMagz',['../classShipMagnet.html#ab7bcafd2047e57d22e890d6c546c5f73',1,'ShipMagnet']]],
   ['fspectrumh_338',['fSpectrumH',['../classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db',1,'Co3Rng']]],
   ['fspectruml_339',['fSpectrumL',['../classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d',1,'Co3Rng']]],
   ['fsplitcalpoints_340',['fsplitcalPoints',['../classsplitcal.html#a45bb60358b84372e7cf1bbdb077b788b',1,'splitcal']]],

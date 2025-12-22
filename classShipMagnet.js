@@ -10,7 +10,7 @@ var classShipMagnet =
     [ "fDx", "classShipMagnet.html#a91b20d6375a19395285636a34e8977b8", null ],
     [ "fDy", "classShipMagnet.html#a7870fe90a770109100735cbec7cb946d", null ],
     [ "floorheight", "classShipMagnet.html#a1be7d95feae98eb5777a949b56def8ff", null ],
-    [ "fSpecMagz", "classShipMagnet.html#a663c8b56d73cdcabb49c95fc7ad9c020", null ],
+    [ "fSpecMagz", "classShipMagnet.html#ab7bcafd2047e57d22e890d6c546c5f73", null ],
     [ "YokeDepth", "classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c", null ],
     [ "YokeWidth", "classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d", null ]
 ];

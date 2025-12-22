@@ -1,13 +1,13 @@
 <map id="field/ShipBFieldMap.h" name="field/ShipBFieldMap.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="257,5,419,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,116,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="294,33,120,78,118,73,293,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="141,79,285,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="319,33,246,74,244,69,317,28"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="309,79,367,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="341,31,341,65,335,65,335,31"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="392,79,452,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="353,29,399,67,396,72,350,33"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="476,79,539,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="366,28,468,71,466,76,364,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="123,5,285,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,33,76,76,74,71,176,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="89,79,149,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,33,145,72,141,68,189,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="173,79,235,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="207,31,207,65,201,65,201,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="259,79,370,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="223,28,286,69,283,73,220,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="395,79,539,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="247,28,412,72,410,78,246,33"/>
 </map>
