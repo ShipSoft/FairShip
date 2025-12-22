@@ -98,8 +98,8 @@ Bool_t DPPythia8Generator::Init() {
     fPythia->settings.parm("Beams:eB", 0.);    // codespell:ignore parm
 
     if (fdy)
-      fPythia->settings.parm("PhaseSpace:mHatMin",
-                             fDPminM);  // codespell:ignore parm
+      fPythia->settings.parm("PhaseSpace:mHatMin",  // codespell:ignore parm
+                             fDPminM);
 
   } else {
     if (!fpbremPDF) {
