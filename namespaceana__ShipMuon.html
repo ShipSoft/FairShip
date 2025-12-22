@@ -293,7 +293,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  789</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><span class="lineno">  790</span>   sTree.GetEntry(n)</div>
 <div class="line"><span class="lineno">  791</span>   <span class="keywordflow">if</span> n==0 : print(<span class="stringliteral">&#39;now at event &#39;</span>,n,f.GetName())</div>
-<div class="line"><span class="lineno">  792</span>   <span class="keywordflow">if</span> sTree.MCTrack.GetEntries() &gt; 1:</div>
+<div class="line"><span class="lineno">  792</span>   <span class="keywordflow">if</span> len(sTree.MCTrack) &gt; 1:</div>
 <div class="line"><span class="lineno">  793</span>    wg = sTree.MCTrack[1].GetWeight() <span class="comment"># also works for neutrinos</span></div>
 <div class="line"><span class="lineno">  794</span>   <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  795</span>    wg = sTree.MCTrack[0].GetWeight() <span class="comment"># also works for neutrinos</span></div>
@@ -361,7 +361,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  862</span>  ROOT.gROOT.cd()</div>
 <div class="line"><span class="lineno">  863</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><span class="lineno">  864</span>   rc=sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">  865</span>   <span class="keywordflow">if</span> sTree.MCTrack.GetEntries() &gt; 1:</div>
+<div class="line"><span class="lineno">  865</span>   <span class="keywordflow">if</span> len(sTree.MCTrack) &gt; 1:</div>
 <div class="line"><span class="lineno">  866</span>      wg = sTree.MCTrack[1].GetWeight()</div>
 <div class="line"><span class="lineno">  867</span>   <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  868</span>      wg = sTree.MCTrack[0].GetWeight()</div>
@@ -723,7 +723,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno"> 1074</span> mom = ROOT.TVector3()</div>
 <div class="line"><span class="lineno"> 1075</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><span class="lineno"> 1076</span>   sTree.GetEntry(i)</div>
-<div class="line"><span class="lineno"> 1077</span>   nS = sTree.strawtubesPoint.GetEntries()</div>
+<div class="line"><span class="lineno"> 1077</span>   nS = len(sTree.strawtubesPoint)</div>
 <div class="line"><span class="lineno"> 1078</span>   <span class="keywordflow">if</span> nS&gt;0:</div>
 <div class="line"><span class="lineno"> 1079</span>     mu = sTree.MCTrack[0]</div>
 <div class="line"><span class="lineno"> 1080</span>     mu.GetMomentum(mom)</div>
@@ -780,7 +780,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  617</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><span class="lineno">  618</span>   rc = sTree.GetEntry(n)</div>
 <div class="line"><span class="lineno">  619</span>   theMuon = sTree.MCTrack[0]</div>
-<div class="line"><span class="lineno">  620</span>   <span class="keywordflow">if</span> sTree.MCTrack.GetEntries() &gt; 1:</div>
+<div class="line"><span class="lineno">  620</span>   <span class="keywordflow">if</span> len(sTree.MCTrack) &gt; 1:</div>
 <div class="line"><span class="lineno">  621</span>    w = sTree.MCTrack[1].GetWeight() <span class="comment"># also works for neutrinos</span></div>
 <div class="line"><span class="lineno">  622</span>   <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  623</span>    print(<span class="stringliteral">&#39;should not happen with new files&#39;</span>,n,fn)</div>
@@ -1300,7 +1300,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  824</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  825</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><span class="lineno">  826</span>   sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">  827</span>   <span class="keywordflow">if</span> sTree.MCTrack.GetEntries() &gt; 1:</div>
+<div class="line"><span class="lineno">  827</span>   <span class="keywordflow">if</span> len(sTree.MCTrack) &gt; 1:</div>
 <div class="line"><span class="lineno">  828</span>      wg = sTree.MCTrack[1].GetWeight()</div>
 <div class="line"><span class="lineno">  829</span>   <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  830</span>      wg = sTree.MCTrack[0].GetWeight()</div>
@@ -1556,7 +1556,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  927</span>     x = ahit.GetX()</div>
 <div class="line"><span class="lineno">  928</span>     y = ahit.GetY()</div>
 <div class="line"><span class="lineno">  929</span>     z = ahit.GetZ()</div>
-<div class="line"><span class="lineno">  930</span>     <span class="keywordflow">if</span> sTree.MCTrack.GetEntries() &gt; 1:</div>
+<div class="line"><span class="lineno">  930</span>     <span class="keywordflow">if</span> len(sTree.MCTrack) &gt; 1:</div>
 <div class="line"><span class="lineno">  931</span>      wg = sTree.MCTrack[1].GetWeight() <span class="comment"># also works for neutrinos</span></div>
 <div class="line"><span class="lineno">  932</span>     <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  933</span>      wg = sTree.MCTrack[0].GetWeight() <span class="comment"># also works for neutrinos</span></div>

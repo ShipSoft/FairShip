@@ -492,7 +492,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  204</span>    pdg = 13 <span class="comment"># assume all tracks are muons</span></div>
 <div class="line"><span class="lineno">  205</span>    meas = hitPosLists[atrack]</div>
 <div class="line"><span class="lineno">  206</span>    detIDs = hit_detector_ids[atrack]</div>
-<div class="line"><span class="lineno">  207</span>    nM = meas.size()</div>
+<div class="line"><span class="lineno">  207</span>    nM = len(meas)</div>
 <div class="line"><span class="lineno">  208</span>    <span class="keywordflow">if</span> nM &lt; 25 : <span class="keywordflow">continue</span>                          <span class="comment"># not enough hits to make a good trackfit</span></div>
 <div class="line"><span class="lineno">  209</span>    <span class="keywordflow">if</span> len(stationCrossed[atrack]) &lt; 3 : <span class="keywordflow">continue</span>  <span class="comment"># not enough stations crossed to make a good trackfit</span></div>
 <div class="line"><span class="lineno">  210</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
@@ -614,8 +614,8 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  326</span>  <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><span class="lineno">  327</span>   print(<span class="stringliteral">&#39;save tracklets:&#39;</span>)</div>
 <div class="line"><span class="lineno">  328</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.recoTree.Tracklets:</div>
-<div class="line"><span class="lineno">  329</span>    print(x.getType(),x.getList().size())</div>
-<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">return</span> self.fGenFitArray.size()</div>
+<div class="line"><span class="lineno">  329</span>    print(x.getType(),len(x.getList()))</div>
+<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">return</span> len(self.fGenFitArray)</div>
 <div class="line"><span class="lineno">  331</span> </div>
 <div class="ttc" id="anamespaceshipPatRec_html_af0ccef68f17f3989d7870e3c793a33e1"><div class="ttname"><a href="namespaceshipPatRec.html#af0ccef68f17f3989d7870e3c793a33e1">shipPatRec.execute</a></div><div class="ttdeci">execute(smeared_hits, ship_geo, method='')</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00020">shipPatRec.py:20</a></div></div>
 </div><!-- fragment -->

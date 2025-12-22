@@ -433,7 +433,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>  self.fPartArray.clear()</div>
 <div class="line"><span class="lineno">   82</span>  fittedTracks = getattr(self.sTree,self.fitTrackLoc)</div>
 <div class="line"><span class="lineno">   83</span>  goodTracks = getattr(self.sTree,self.goodTracksLoc)</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> goodTracks.size() &lt; 2: <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> len(goodTracks) &lt; 2: <span class="keywordflow">return</span></div>
 <div class="line"><span class="lineno">   85</span>  PosDirCharge,CovMat,scalFac = {},{},{}</div>
 <div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> goodTracks:</div>
 <div class="line"><span class="lineno">   87</span>   fitStatus = fittedTracks[tr].getFitStatus()</div>

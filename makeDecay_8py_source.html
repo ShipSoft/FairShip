@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('makeDecay_8py_source.html',''); initRe
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  P8.event.append(int(sTree.id),1,0,0,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,0.,9.)</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  next(P8)</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">#P8.event.list()</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P8.event.size()):</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(P8.event)):</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="comment">#ask for stable particles</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">if</span> P8.event[n].isFinal():</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="comment">#select neutrinos and mu</span></div>

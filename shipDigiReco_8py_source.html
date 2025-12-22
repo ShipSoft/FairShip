@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    pdg = 13 <span class="comment"># assume all tracks are muons</span></div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    meas = hitPosLists[atrack]</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    detIDs = hit_detector_ids[atrack]</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    nM = meas.size()</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    nM = len(meas)</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordflow">if</span> nM &lt; 25 : <span class="keywordflow">continue</span>                          <span class="comment"># not enough hits to make a good trackfit</span></div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keywordflow">if</span> len(stationCrossed[atrack]) &lt; 3 : <span class="keywordflow">continue</span>  <span class="comment"># not enough stations crossed to make a good trackfit</span></div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
@@ -433,8 +433,8 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   print(<span class="stringliteral">&#39;save tracklets:&#39;</span>)</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a7a0466251339c28ca5776a47e10d5219">recoTree</a>.Tracklets:</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    print(x.getType(),x.getList().size())</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="keywordflow">return</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>.size()</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    print(x.getType(),len(x.getList()))</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="keywordflow">return</span> len(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>)</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
 </div>
 <div class="foldopen" id="foldopen00332" data-start="" data-end="">

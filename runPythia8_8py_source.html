@@ -198,7 +198,7 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">   97</a></span>    py = generators[g]</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    rc = py.next()</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a1a8d7ca59e772a0a5007e9cb0463ac57">   99</a></span>    nmu = {}</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">for</span> ii <span class="keywordflow">in</span> range(1,py.event.size()):</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">for</span> ii <span class="keywordflow">in</span> range(1,len(py.event)):</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>       <span class="keywordflow">if</span> options.DrellYan <span class="keywordflow">and</span> py.event[ii].id()!=23: <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>       <span class="keywordflow">if</span> options.PhotonCollision <span class="keywordflow">and</span> py.event[ii].id()!=22: <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>       <span class="keywordflow">for</span> m <span class="keywordflow">in</span> py.event.daughterList(ii):</div>

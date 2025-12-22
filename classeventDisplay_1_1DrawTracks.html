@@ -536,9 +536,9 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  332</span>        self.comp.DestroyElements()</div>
 <div class="line"><span class="lineno">  333</span>        self.comp.OpenCompound()</div>
 <div class="line"><span class="lineno">  334</span>        <span class="keywordflow">if</span> sTree.FindBranch(<span class="stringliteral">&quot;FitTracks&quot;</span>) <span class="keywordflow">or</span> sTree.FindBranch(<span class="stringliteral">&quot;FitTracks_PR&quot;</span>):</div>
-<div class="line"><span class="lineno">  335</span>            <span class="keywordflow">if</span> sTree.FitTracks.GetEntries() &gt; 0:</div>
+<div class="line"><span class="lineno">  335</span>            <span class="keywordflow">if</span> len(sTree.FitTracks) &gt; 0:</div>
 <div class="line"><span class="lineno">  336</span>                self.DrawFittedTracks()</div>
-<div class="line"><span class="lineno">  337</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.FindBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>) <span class="keywordflow">and</span> sTree.MCTrack.GetEntries() &gt; 0:</div>
+<div class="line"><span class="lineno">  337</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.FindBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>) <span class="keywordflow">and</span> len(sTree.MCTrack) &gt; 0:</div>
 <div class="line"><span class="lineno">  338</span>            <span class="keywordflow">if</span> globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>]:</div>
 <div class="line"><span class="lineno">  339</span>                <span class="keywordflow">if</span> top.GetNode(<span class="stringliteral">&quot;Tunnel_1&quot;</span>):</div>
 <div class="line"><span class="lineno">  340</span>                    DrawSimpleMCTracks()  <span class="comment"># for sndlhc, until more details are simulated</span></div>

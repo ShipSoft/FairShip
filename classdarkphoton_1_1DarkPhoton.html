@@ -362,7 +362,7 @@ Public Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="darkphoton_8py_source.html#l00058">58</a> of file <a class="el" href="darkphoton_8py_source.html">darkphoton.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>    <span class="keyword">def </span>interpolatePDGtable(self):</div>
 <div class="line"><span class="lineno">   59</span>        <span class="stringliteral">&quot;&quot;&quot; Find the best value for R for the given center-of-mass energy &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   60</span>        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)</div>
+<div class="line"><span class="lineno">   60</span>        fun = r.Math.Interpolator(len(self.dataEcm),r.Math.Interpolation.kLINEAR)</div>
 <div class="line"><span class="lineno">   61</span>        fun.SetData(self.dataEcm,self.dataR);</div>
 <div class="line"><span class="lineno">   62</span>        <span class="keywordflow">return</span> fun</div>
 <div class="line"><span class="lineno">   63</span> </div>

@@ -235,7 +235,7 @@ Variables</h2></td></tr>
 <tr class="separator:aa99a2f52abfa189d36df4219394a2336"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af53ab65dcde57682f1b0355504e714c7" id="r_af53ab65dcde57682f1b0355504e714c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a> = ROOT.TVectorD(5,<a class="el" href="namespacemakeMuonDIS.html#aa99a2f52abfa189d36df4219394a2336">m</a>)</td></tr>
 <tr class="separator:af53ab65dcde57682f1b0355504e714c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26aa2d2f4969d3eeb816781e0da12ee0" id="r_a26aa2d2f4969d3eeb816781e0da12ee0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemakeMuonDIS.html#a26aa2d2f4969d3eeb816781e0da12ee0">nPart</a> = dPart.GetEntries()</td></tr>
+<tr class="memitem:a26aa2d2f4969d3eeb816781e0da12ee0" id="r_a26aa2d2f4969d3eeb816781e0da12ee0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemakeMuonDIS.html#a26aa2d2f4969d3eeb816781e0da12ee0">nPart</a> = <a class="el" href="namespacemakeMuonDIS.html#a2b4e630f0163fb403afd6440c31de817">len</a>(<a class="el" href="namespacemakeMuonDIS.html#a727205ecfa4b92c88595ade1bb6f8c7d">dPart</a>)</td></tr>
 <tr class="separator:a26aa2d2f4969d3eeb816781e0da12ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -296,10 +296,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  116</span>        fix_target = Fixtarget.get(isProton, <span class="stringliteral">&quot;unknown&quot;</span>)</div>
 <div class="line"><span class="lineno">  117</span>        cross_sec = muon[10]</div>
 <div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>        nParticles = event.DISParticles.GetEntries()</div>
-<div class="line"><span class="lineno">  120</span>        nSoftTracks = event.SoftParticles.GetEntries()</div>
-<div class="line"><span class="lineno">  121</span>        nSBThits = event.muon_vetoPoints.GetEntries()</div>
-<div class="line"><span class="lineno">  122</span>        nUBThits = event.muon_UpstreamTaggerPoints.GetEntries()</div>
+<div class="line"><span class="lineno">  119</span>        nParticles = len(event.DISParticles)</div>
+<div class="line"><span class="lineno">  120</span>        nSoftTracks = len(event.SoftParticles)</div>
+<div class="line"><span class="lineno">  121</span>        nSBThits = len(event.muon_vetoPoints)</div>
+<div class="line"><span class="lineno">  122</span>        nUBThits = len(event.muon_UpstreamTaggerPoints)</div>
 <div class="line"><span class="lineno">  123</span> </div>
 <div class="line"><span class="lineno">  124</span>        table_rows.append(</div>
 <div class="line"><span class="lineno">  125</span>            [i, fix_target, nParticles, nSoftTracks, nSBThits, nUBThits, cross_sec]</div>
@@ -467,7 +467,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  268</span>                E = r.TMath.Sqrt(masssq + psq)</div>
 <div class="line"><span class="lineno">  269</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E])</div>
 <div class="line"><span class="lineno">  270</span>                part = r.TVectorD(5, m)</div>
-<div class="line"><span class="lineno">  271</span>                nPart = dPartDIS.GetEntries()</div>
+<div class="line"><span class="lineno">  271</span>                nPart = len(dPartDIS)</div>
 <div class="line"><span class="lineno">  272</span>                <span class="keywordflow">if</span> dPartDIS.GetSize() == nPart:</div>
 <div class="line"><span class="lineno">  273</span>                    dPartDIS.Expand(nPart + 10)</div>
 <div class="line"><span class="lineno">  274</span>                <span class="comment"># dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
@@ -495,7 +495,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  296</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E, softx, softy, softz, time_])</div>
 <div class="line"><span class="lineno">  297</span> </div>
 <div class="line"><span class="lineno">  298</span>                part = r.TVectorD(9, m)</div>
-<div class="line"><span class="lineno">  299</span>                nPart = dPartSoft.GetEntries()</div>
+<div class="line"><span class="lineno">  299</span>                nPart = len(dPartSoft)</div>
 <div class="line"><span class="lineno">  300</span>                <span class="keywordflow">if</span> dPartSoft.GetSize() == nPart:</div>
 <div class="line"><span class="lineno">  301</span>                    dPartSoft.Expand(nPart + 10)</div>
 <div class="line"><span class="lineno">  302</span>                <span class="comment"># dPartSoft.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
@@ -1322,7 +1322,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">makeMuonDIS.nPart = dPart.GetEntries()</td>
+          <td class="memname">makeMuonDIS.nPart = <a class="el" href="namespacemakeMuonDIS.html#a2b4e630f0163fb403afd6440c31de817">len</a>(<a class="el" href="namespacemakeMuonDIS.html#a727205ecfa4b92c88595ade1bb6f8c7d">dPart</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">

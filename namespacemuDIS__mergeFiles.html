@@ -164,7 +164,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>   w = inMu[8]</div>
 <div class="line"><span class="lineno">   50</span>   P = ROOT.TMath.Sqrt(inMu[1]**2+inMu[2]**2+inMu[3]**2)</div>
 <div class="line"><span class="lineno">   51</span>   rc = h[<span class="stringliteral">&#39;muP&#39;</span>].Fill(P,w)</div>
-<div class="line"><span class="lineno">   52</span>   rc = h[<span class="stringliteral">&#39;nOut&#39;</span>].Fill(sTree.Particles.GetEntries() )</div>
+<div class="line"><span class="lineno">   52</span>   rc = h[<span class="stringliteral">&#39;nOut&#39;</span>].Fill(len(sTree.Particles))</div>
 <div class="line"><span class="lineno">   53</span>   rc = h[<span class="stringliteral">&#39;pos&#39;</span>].Fill(inMu[7],inMu[5],inMu[6] )</div>
 </div><!-- fragment -->
 </div>
@@ -204,7 +204,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   23</span>   tca_vec.ResizeTo(sTree.InMuon[0])</div>
 <div class="line"><span class="lineno">   24</span>   ROOT.std.swap(tca_vec, sTree.InMuon[0])</div>
 <div class="line"><span class="lineno">   25</span>   <span class="keywordflow">for</span> part <span class="keywordflow">in</span> sTree.Particles:</div>
-<div class="line"><span class="lineno">   26</span>      nPart = dPart.GetEntries()</div>
+<div class="line"><span class="lineno">   26</span>      nPart = len(dPart)</div>
 <div class="line"><span class="lineno">   27</span>      <span class="keywordflow">if</span> dPart.GetSize() == nPart: dPart.Expand(nPart+10)</div>
 <div class="line"><span class="lineno">   28</span>      tca_vec = dPart.ConstructedAt(nPart)</div>
 <div class="line"><span class="lineno">   29</span>      tca_vec.ResizeTo(part)</div>
