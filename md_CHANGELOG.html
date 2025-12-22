@@ -98,66 +98,18 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <h1><a class="anchor" id="autotoc_md1"></a>
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
-Changed</h2>
-<ul>
-<li><b><a class="el" href="classTarget.html">Target</a> station geometry updated with nested volume approach</b> Implemented tantalum cladding (1.5mm) around tungsten target layers using nested volumes instead of separate shell and disc volumes. This reduces geometry complexity from 4N to 2N volumes per N layers, eliminates overlaps between layers, and improves GEANT4 navigation efficiency. Updated vessel dimensions (inner diameter semantics, 62mm lid distance) and steel enclosure thickness (66.9mm) to match BDF Fluka model. Tantalum density updated to 16.7 g/cm³.</li>
-<li>Consolidate basiclibs module into <a class="el" href="eventDisplay_8py.html">eventDisplay.py</a> as it was only used by that single script</li>
-<li><b>Migrate detector MC point storage from TClonesArray to std::vector</b> Ten detector classes now use <code>std::vector&lt;PointType&gt;</code> instead of <code>TClonesArray</code> for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages <code>FairRootManager::RegisterAny()</code> for ROOT I/O. Affected detectors: <a class="el" href="classTimeDet.html">TimeDet</a>, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal, veto, <a class="el" href="classTarget.html">Target</a>, <a class="el" href="classTargetTracker.html">TargetTracker</a>, <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, <a class="el" href="classMTCDetector.html">MTCDetector</a>, and simpleTarget.</li>
-<li><b>Migrate <a class="el" href="classShipStack.html">ShipStack</a> MC track storage from TClonesArray to std::vector</b> <a class="el" href="classShipStack.html">ShipStack</a> now uses <code>std::vector&lt;<a class="el" href="classShipMCTrack.html">ShipMCTrack</a>&gt;</code> instead of <code>TClonesArray</code> for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables <code>RegisterAny()</code> for MCTrack I/O. Includes bounds checking in <a class="el" href="ShipAna_8py.html">ShipAna.py</a> for all MCTrack vector accesses to handle the stricter indexing behaviour of std::vector compared to TClonesArray.</li>
-<li>Migrate <a class="el" href="classTracklet.html">Tracklet</a> container in <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a> from TClonesArray to std::vector</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
+<h3><a class="anchor" id="autotoc_md3"></a>
+Physics and Simulation</h3>
 <ul>
-<li><b>Add <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface for STL-based detector track index updating</b> Introduces <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface enabling polymorphic track index updating for detectors using std::vector storage. <a class="el" href="classShipStack.html">ShipStack</a> now automatically detects and handles both STL-based and TClonesArray-based detectors, ensuring MC points maintain correct track references after track filtering. Also adds missing parameterised constructors to simpleTarget and <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a>.</li>
-<li>Add EventId and TrackID for MCTrack and HAPoint #944</li>
-<li><b>Data classes now support ROOT RNtuple I/O</b> All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of <a class="el" href="classShipParticle.html">ShipParticle</a> to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.</li>
-<li>Add RNtuple conversion and inspection utilities (<code><a class="el" href="convertTreeToRNTuple_8py.html">macro/convertTreeToRNTuple.py</a></code>, <code><a class="el" href="inspect__tree__branches_8py.html">macro/inspect_tree_branches.py</a></code>) for testing and validation. Note that FairRoot I/O currently uses TClonesArray which is not supported by RNtuple.</li>
-<li>Add option for an additional sensitive plane around the target in <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></li>
-<li>Add CI job to run fixed target simulation (<a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a>)</li>
-<li>feat(python): Add experimental script to compare histograms</li>
-<li>feat(python): Add experimental script to check overlaps quickly</li>
+<li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
 <li><b>Corrections in MuonDIS simulation</b> The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using <a class="el" href="add__muonresponse_8py.html">add_muonresponse.py</a>, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.</li>
 <li>Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.</li>
-<li>Added new warm muon shield <code>warm_opt</code> in <a class="el" href="namespacegeometry__config.html">geometry_config</a></li>
-<li>Added new parameters to muon shield to support configurations from current optimisation campaign</li>
-<li>Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.</li>
-<li>Add (optional) MgB2 field map</li>
-<li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
-<li>Folder <code>SND</code> is added for new versions of SND integrated to the Muon Shield</li>
-<li>First version of <code>MTC</code> (<code>SND/MTC</code>) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of <code>MTC</code> are stored in <code>geometry/MTC_config.yaml</code> file</li>
-<li>New key for <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> for choosing SND options is added: <code>--SND_design</code></li>
-<li>Geometry_config.py: Added MS design <code>New_HA_Design</code> based on the MS <code>warm_opt</code> with new version of HA</li>
-<li>Add access to decoded numbers (stations, views etc.) of strawtubes hits</li>
-<li>Add June 2025 target configuration</li>
-<li>Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.</li>
-<li>Add backport for new TFile/TDirectory <code>__get_item__</code> pythonisation</li>
-<li>SND/EmulsionTarget folder, with the <a class="el" href="classTarget.html">Target</a> and <a class="el" href="classTargetTracker.html">TargetTracker</a> classes from nutaudet</li>
-<li>Added fibre structure for MTC and digitization. Fibre &lt;-&gt; SiPM mapping is done in <code><a class="el" href="MTCDetector_8cxx.html">SND/MTC/MTCDetector.cxx</a></code>, can be extracted and tested in <code><a class="el" href="SciFiMapping_8py.html">python/SciFiMapping.py</a></code>, that is subsequently used in <code><a class="el" href="shipDigiReco_8py.html">python/shipDigiReco.py</a></code></li>
-<li>Implement proximity shielding design from 26/06/2025 by G. Humphreys</li>
-<li>Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)</li>
-<li>Implement vacuum in target facility</li>
-<li>Implement target helium vessel</li>
-<li>feat(python): Add z-offset to <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
-<li>Add missing &ndash;FixedTarget option to <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
-<li>feat: Support for multiple SND designs in simulation setup<ul>
-<li>The <code>--SND_design</code> option in <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> now accepts multiple values and an 'all' option to enable all available SND designs.</li>
-<li>The geometry configuration and detector setup (<code>geometry/geometry_config.py</code>, <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>) have been updated to instantiate all requested SND detectors.</li>
-<li>This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.</li>
-</ul>
-</li>
-<li>Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.</li>
-<li>Add dedicated &ndash;print-fields and &ndash;check-overlaps flags to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use these debug tools.</li>
-<li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
-<li>Add enough straws to cover aperture entirely</li>
-<li>Add SST frame option (4 = aluminium, 10 = steel [default])</li>
-<li>Fix EvtGen library linking order for old autotools-based EvtGen installations</li>
-<li>feat: Unified beam smearing implementation across all generators<ul>
+<li><b>Unified beam smearing implementation across all generators</b><ul>
 <li>Updated <code><a class="el" href="classHNLPythia8Generator.html">HNLPythia8Generator</a></code> to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation</li>
 <li>Added beam smearing and painting support to <code><a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></code></li>
 <li>All generators (<code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code>, <code><a class="el" href="classHNLPythia8Generator.html">HNLPythia8Generator</a></code>, <code><a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></code>) now use the same beam smearing algorithm: Gaussian smearing with <code>--SmearBeam</code> parameter and uniform circular painting with <code>--PaintRadius</code> parameter</li>
 <li>The <code>--SmearBeam</code> and <code>--PaintBeam</code> command-line options in <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> now apply to all generators, not just muon background simulation</li>
-<li>Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator</li>
 <li>Implemented shared <code>BeamSmearingUtils</code> utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication</li>
 </ul>
 </li>
@@ -168,158 +120,90 @@ Added</h2>
 </ul>
 </li>
 <li>Adding new keys specifically for genie regime in <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> and copying <code>gst</code> TTree from the genie input file to the output file of the <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code>:<ul>
-<li>Adjust the z range where to simulate the neutrino interactions via <code>--z_start_nu and</code>&ndash;z_end_nu<code>keys</code></li>
-<li><code>Replacing the</code>&ndash;Genie<code>key with</code>Genie<code>as a subparser</code></li>
-<li><code>Copying</code>gst<code>TTree is similar to</code>sndsw`</li>
+<li>Adjust the z range where to simulate the neutrino interactions via <code>--z_start_nu</code> and <code>--z_end_nu</code> keys</li>
+<li>Replacing the <code>--Genie</code> key with <code>Genie</code> as a subparser</li>
+<li>Copying <code>gst</code> TTree is similar to <code>sndsw</code></li>
 </ul>
 </li>
-<li>Enclose target in steel (316L) cylinder</li>
-<li>First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.</li>
-<li>Add visualization methods to <a class="el" href="SciFiMapping_8py.html">SciFiMapping.py</a> to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()</li>
+<li>Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.</li>
 <li>Support using TPythia6 provided by ROOTEGPythia6 for ROOT ≥ 6.32</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md4"></a>
+SND Detector System</h3>
+<ul>
+<li>Folder <code>SND</code> is added for new versions of SND integrated to the Muon Shield</li>
+<li>First version of <code>MTC</code> (<code>SND/MTC</code>) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of <code>MTC</code> are stored in <code>geometry/MTC_config.yaml</code> file</li>
+<li>Added fibre structure for MTC and digitization. Fibre &lt;-&gt; SiPM mapping is done in <code><a class="el" href="MTCDetector_8cxx.html">SND/MTC/MTCDetector.cxx</a></code>, can be extracted and tested in <code><a class="el" href="SciFiMapping_8py.html">python/SciFiMapping.py</a></code>, that is subsequently used in <code><a class="el" href="shipDigiReco_8py.html">python/shipDigiReco.py</a></code></li>
+<li>Add visualization methods to <a class="el" href="SciFiMapping_8py.html">SciFiMapping.py</a> to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()</li>
+<li>First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.</li>
+<li>SND/EmulsionTarget folder, with the <a class="el" href="classTarget.html">Target</a> and <a class="el" href="classTargetTracker.html">TargetTracker</a> classes from nutaudet</li>
+<li>New key for <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> for choosing SND options is added: <code>--SND_design</code></li>
+<li>Support for multiple SND designs in simulation setup<ul>
+<li>The <code>--SND_design</code> option in <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> now accepts multiple values and an 'all' option to enable all available SND designs.</li>
+<li>The geometry configuration and detector setup (<code>geometry/geometry_config.py</code>, <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>) have been updated to instantiate all requested SND detectors.</li>
+<li>This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.</li>
+</ul>
+</li>
+<li>Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md5"></a>
+Geometry and Target Station</h3>
+<ul>
+<li>Add June 2025 target configuration</li>
+<li>Geometry: Make the tungsten target the default (Jun25 config)</li>
+<li>Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.</li>
+<li>Implement vacuum in target facility</li>
+<li>Implement target helium vessel</li>
+<li>Enclose target in steel (316L) cylinder</li>
+<li>Add option for an additional sensitive plane around the target in <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></li>
+<li>Implement proximity shielding design from 26/06/2025 by G. Humphreys</li>
+<li>Added new warm muon shield <code>warm_opt</code> in <a class="el" href="namespacegeometry__config.html">geometry_config</a></li>
+<li>Added new parameters to muon shield to support configurations from current optimisation campaign</li>
+<li>Geometry_config.py: Added MS design <code>New_HA_Design</code> based on the MS <code>warm_opt</code> with new version of HA</li>
+<li>Add (optional) MgB2 field map</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md6"></a>
+Data Classes and I/O</h3>
+<ul>
+<li><b>Data classes now support ROOT RNtuple I/O</b> All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of <a class="el" href="classShipParticle.html">ShipParticle</a> to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.</li>
+<li>Add RNtuple conversion and inspection utilities (<code><a class="el" href="convertTreeToRNTuple_8py.html">macro/convertTreeToRNTuple.py</a></code>, <code><a class="el" href="inspect__tree__branches_8py.html">macro/inspect_tree_branches.py</a></code>) for testing and validation. Note that FairRoot I/O currently uses TClonesArray which is not supported by RNtuple.</li>
+<li>Add EventId and TrackID for MCTrack and HAPoint #944</li>
+<li><b>Add <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface for STL-based detector track index updating</b> Introduces <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface enabling polymorphic track index updating for detectors using std::vector storage. <a class="el" href="classShipStack.html">ShipStack</a> now automatically detects and handles both STL-based and TClonesArray-based detectors, ensuring MC points maintain correct track references after track filtering. Also adds missing parameterised constructors to simpleTarget and <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a>.</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md7"></a>
+Tools and Utilities</h3>
+<ul>
+<li>Add dedicated &ndash;print-fields and &ndash;check-overlaps flags to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use these debug tools.</li>
+<li>Add experimental script to compare histograms</li>
+<li>Add experimental script to check overlaps quickly</li>
+<li>Add CI job to run fixed target simulation (<a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a>)</li>
+<li>Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.</li>
+<li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
+<li>Add backport for new TFile/TDirectory <code>__get_item__</code> pythonisation</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md8"></a>
+Detector Improvements</h3>
+<ul>
+<li>Add access to decoded numbers (stations, views etc.) of strawtubes hits</li>
+<li>Add enough straws to cover aperture entirely</li>
+<li>Add SST frame option (4 = aluminium, 10 = steel [default])</li>
+<li>Add z-offset to <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
+<li>Add missing &ndash;FixedTarget option to <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
+</ul>
+<h3><a class="anchor" id="autotoc_md9"></a>
+Reconstruction</h3>
+<ul>
 <li>Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, MTC, and Strawtubes.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
-Removed</h2>
-<ul>
-<li>Removed custom logger utilities (python/logger.py, utils/logger.hxx) in favour of Python's standard logging module</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
-Fixed</h2>
-<ul>
-<li>Changes to g4config.in to ensure it works with newer versions of GEANT4</li>
-<li>refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor</li>
-<li>fix(splitcal): Move energy weights from Hit to Cluster, eliminating internal vectors</li>
-<li>Fix <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> to ensure it works with newer versions of Pythia</li>
-<li>fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization</li>
-<li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
-<li>fix(digi): Make TTree branch split level configurable in <a class="el" href="namespaceBaseDetector.html">BaseDetector</a>, set splitLevel=1 for MTC</li>
-<li>chore: Fix file endings</li>
-<li>chore: trim trailing whitespace</li>
-<li>Fix mismatch dimension cavern ECN3 TCC8</li>
-<li>fix: use standard library to expand env</li>
-<li>fix: autoload Pythia8 instead of manually loading in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
-<li>fix(geometry): fix typo of "vacuums" for strawtubes medium</li>
-<li>fix(reco): Fix segmentation fault due to dummy containers (#453, #519)</li>
-<li>fix: don't use TFile's deprecated attribute syntax</li>
-<li>fix(digi): Fix logic of SST digitisation (#662)</li>
-<li>Fix double append of recognized stracks</li>
-<li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): The fieldmap offset was calibrated with the old version of MS</li>
-<li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield</li>
-<li>fix(<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>): changing paths to yaml files to more pythonic (<code>os.path.join()</code> now)</li>
-<li>Fix splitcal strip dimensions and number of modules</li>
-<li>fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for <a href="https://github.com/root-project/root/issues/18881">https://github.com/root-project/root/issues/18881</a>)</li>
-<li>fix(EvtCalc): Fix crash due to string formatting</li>
-<li>Fix: Field direction of first magnet section 2 was wrong</li>
-<li>Fix: How the cavern is translated in z direction</li>
-<li>Fix: Preliminary fix of the length of the <a class="el" href="classTarget.html">Target</a> (to be refine)</li>
-<li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
-<li>Fix <code>beam smearing</code>: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
-<li>Reconstruction: reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
-<li>Fix: MTC geometry overlap</li>
-<li>fix(FixedTargetGenerator): Don't assume anything about the target substructure</li>
-<li>Fix crash in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
-<li>Fix crash caused by <a class="el" href="decorators_8py.html">decorators.py</a></li>
-<li>Use lowercase FairLogger severities (uppercase ones are deprecated)</li>
-<li>Correct paths for default input files</li>
-<li>Fix missing decays of J/psi by using EvtGenDecayer</li>
-<li>Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault</li>
-<li>Correct extraction of SiPM channel positions in MTC</li>
-<li>Fix refactoring issue that broke MTC digitization</li>
-<li>Fix the condition in the sipm channel &lt;-&gt; fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.</li>
-<li>Add flags for <code>python/ScifiMapping.py</code></li>
-<li>Fixed <a class="el" href="classSiliconTarget.html">SiliconTarget</a> detector identifier.</li>
-<li>fix(muon): Make muonHit copy constructor public for std::vector compatibility</li>
-<li>Fix the wrong methods in <a class="el" href="MTCDetPoint_8cxx.html">SND/MTC/MTCDetPoint.cxx</a> to extract layer_id and layer_type for the MCPoint.</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Changed</h2>
+<h3><a class="anchor" id="autotoc_md11"></a>
+Data Structure Modernization</h3>
 <ul>
-<li>Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ following GEANT4 team recommendation and studies by Hanae Tilquin presented at Nov. 2025 collaboration meeting and following software meetings.</li>
-<li>Replace ConfigRegistry with function-based geometry configuration API. Use <code>geometry_config.create_config(**params)</code> instead of <code>ConfigRegistry.loadpy()</code></li>
-<li>Move <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code> from <code>geometry/</code> to <code>python/</code> directory and update all imports from <code>from geometry import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code> to <code>import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code></li>
-<li>Refactor strawtubes digitisation to use dedicated detector class<ul>
-<li>Created <code><a class="el" href="namespacestrawtubesDetector.html">strawtubesDetector</a></code> class inheriting from <code><a class="el" href="namespaceBaseDetector.html">BaseDetector</a></code></li>
-<li>Moved digitisation logic from <code>ShipDigiReco</code> to <code><a class="el" href="strawtubesDetector_8py.html">detectors/strawtubesDetector.py</a></code></li>
-<li>Updated naming from "Strawtubes" to "strawtubes" for consistency</li>
-<li>Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"</li>
-</ul>
-</li>
-<li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
-<li>Complete refactoring of all digitisation to use <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> pattern (MTC, muon, time, SBT, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal)</li>
-<li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
-<li>Remove TClonesArray support from digitisation framework. <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> now exclusively uses std::vector, removing branchType parameter</li>
-<li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
+<li><b>Migrate detector MC point storage from TClonesArray to std::vector</b> Ten detector classes now use <code>std::vector&lt;PointType&gt;</code> instead of <code>TClonesArray</code> for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages <code>FairRootManager::RegisterAny()</code> for ROOT I/O. Affected detectors: <a class="el" href="classTimeDet.html">TimeDet</a>, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal, veto, <a class="el" href="classTarget.html">Target</a>, <a class="el" href="classTargetTracker.html">TargetTracker</a>, <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, <a class="el" href="classMTCDetector.html">MTCDetector</a>, and simpleTarget.</li>
+<li><b>Migrate <a class="el" href="classShipStack.html">ShipStack</a> MC track storage from TClonesArray to std::vector</b> <a class="el" href="classShipStack.html">ShipStack</a> now uses <code>std::vector&lt;<a class="el" href="classShipMCTrack.html">ShipMCTrack</a>&gt;</code> instead of <code>TClonesArray</code> for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables <code>RegisterAny()</code> for MCTrack I/O. Includes bounds checking in <a class="el" href="ShipAna_8py.html">ShipAna.py</a> for all MCTrack vector accesses to handle the stricter indexing behaviour of std::vector compared to TClonesArray.</li>
+<li>Migrate <a class="el" href="classTracklet.html">Tracklet</a> container in <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a> from TClonesArray to std::vector</li>
 <li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, muonDetector, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
-<li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>
-<li>refactor(splitcal): Use value storage for both hits and clusters instead of pointer storage</li>
-<li>refactor(splitcal): Replace TVector3 with std::array and hit pointers with indices in <a class="el" href="classsplitcalCluster.html">splitcalCluster</a> for RNtuple compatibility</li>
-<li>refactor(digi): Use maximum splitting (99) for vector branches instead of no splitting (-1)</li>
-<li>Don't special case EOS paths (fix #566)</li>
-<li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
-<li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>
-<li>Allow using standalone TPythia for use with ROOT 6.32+</li>
-<li>Use git-lfs to track ROOT files</li>
-<li><a class="el" href="namespaceshipDet__conf.html">shipDet_conf</a> behaviour no longer depends on the muon shield version.</li>
-<li>feat(digi): Use STL vectors for SST digitisation</li>
-<li>feat(digi): Use STL vectors for SBT digitisation</li>
-<li>Change max x of stereo hits to match straw length</li>
-<li>Get rid of straw diameter dependency in scale factor</li>
-<li>Assume all tracks are muons during track fit (avoid using MC truth)</li>
-<li>Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m</li>
-<li>Allow specifying spectrometer field map</li>
-<li>Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers</li>
-<li>Update tracker station z positions, fix UBT, <a class="el" href="classTimeDet.html">TimeDet</a> &amp; SplitCal position (s. integration layout EDMS 3287817 v1)</li>
-<li>feat(geometry): Make SplitCal the default calorimeter</li>
-<li>Resize SplitCal to 4×6 m²</li>
-<li>feat(geometry): Define target configuration in yaml</li>
-<li>strawtubes detID is now 7-digit! (without plane number)</li>
-<li>Change strawtubes detID decode function to tuple output</li>
-<li>Change separate constructions of tracker stations 1/2 and 3/4 to being identical</li>
-<li><code>fWithConstShieldFiel</code> Defined as input flag for MS design in <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code></li>
-<li>MS design have B field as parameter</li>
-<li>Changed the parametrization of the field in <code><a class="el" href="ShipMuonShield_8cxx.html">ShipMuonShield.cxx</a></code></li>
-<li>Make the warm muon shield with new hadron absorber the default option</li>
-<li>feat(geometry): Change coordinate system to z_0 := start of target</li>
-<li>Insert Proximity shield in the geometry</li>
-<li>Removed old stuff legacy in <code>shipMuonShield.cxx</code> (like LE and fFloor)</li>
-<li>Event Display: Don't try to recreate geometry config</li>
-<li>Geometry: Make the tungsten target the default (Jun25 config)</li>
-<li>Change EmulsionTarget detID decode function to tuple output</li>
-<li>Particle Gun has been updated: now user can set the coordinates of the PG via keys &ndash;V{x,y,z} and use &ndash;D{x,y} to uniformly smear the signal in a given x and y range</li>
-<li><a class="el" href="namespacemakeCascade.html">makeCascade</a>: Added new default target, moved to argparse</li>
-<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> use options directly internally instead of using intermediate variables</li>
-<li>Update spectrometer yoke pit size according to EDMS no. 3309666</li>
-<li>feat: Improve <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> geometry handling<ul>
-<li>Replace fragile hardcoded TGeo navigation paths with geometry constants from <code>ship_geo.target</code></li>
-<li>Add <code>SetTargetCoordinates()</code> method to accept geometry-based start/end z-coordinates from <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code></li>
-<li>Use robust <code>ship_geo.target.z0</code> and <code>ship_geo.target.length</code> instead of brittle <code>"cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1"</code> path</li>
-<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
-</ul>
-</li>
-<li>feat: Improve <a class="el" href="classPythia8Generator.html">Pythia8Generator</a> geometry handling<ul>
-<li>Apply same geometry robustness improvements as <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
-<li>Replace fragile <code>"volTarget_1"</code> TGeo navigation with geometry constants from <code>ship_geo.target</code></li>
-<li>Add <code>SetTargetCoordinates()</code> method for robust geometry-based target configuration</li>
-<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
-</ul>
-</li>
-<li>The decorators from <a class="el" href="decorators_8py.html">decorators.py</a> now need to be applied explicitly using the new <code>apply_decorators</code> function.</li>
-<li>The &ndash;debug flag to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> now controls the severity that FairLogger logs.</li>
-<li>J/psi are no longer decayed using Geant4 when using the &ndash;EvtGenDecayer option</li>
-<li>Move SST geometry parameters to yaml</li>
-<li>Update strawtubes class</li>
-<li>Change SST gas mixture to Ar/CO2 80%/20% at 1 bar</li>
-<li>FairShip is now licensed under LGPLv3+</li>
-<li>UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via <a class="el" href="geometry__config_8py.html">geometry_config.py</a> instead of hardcoded</li>
-<li>Configuration storage modernized from pickle to JSON<ul>
-<li>Geometry configurations are now saved as JSON strings (using <code>std::string</code>) instead of pickled Python objects in ROOT files</li>
-<li>Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention</li>
-</ul>
-</li>
-<li>Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.</li>
-<li>Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.</li>
-<li>Placement of <a class="el" href="classSiliconTarget.html">SiliconTarget</a> has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.</li>
 <li>Modernise data classes by removing obsolete BOOST serialisation (<a class="el" href="classTracklet.html">Tracklet</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, <a class="el" href="classShipHit.html">ShipHit</a>, <a class="el" href="classTrackInfo.html">TrackInfo</a>)<ul>
 <li>Replace BOOST serialisation with native ROOT 6 serialisation</li>
 <li>Modernise <a class="el" href="classTracklet.html">Tracklet</a> constructor to accept <code>std::vector&lt;unsigned int&gt;</code> indices</li>
@@ -328,63 +212,307 @@ Changed</h2>
 <li>Update Python code in <a class="el" href="shipDigiReco_8py.html">shipDigiReco.py</a> to use modern constructors</li>
 <li>Bump ClassDef versions to 2 for schema evolution</li>
 <li>Add <a class="el" href="classTrackInfo.html">TrackInfo</a> to RNTuple I/O test suite</li>
-<li>Move MeanMaterialBudget to standalone function to reduce duplication and allow proper attribution of code to ALICE</li>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
+Physics and Simulation</h3>
+<ul>
+<li>Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ following GEANT4 team recommendation and studies by Hanae Tilquin presented at Nov. 2025 collaboration meeting and following software meetings.</li>
+<li>J/psi are no longer decayed using Geant4 when using the &ndash;EvtGenDecayer option</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md13"></a>
+Target Station Geometry</h3>
+<ul>
+<li><b><a class="el" href="classTarget.html">Target</a> station geometry updated with nested volume approach</b> Implemented tantalum cladding (1.5mm) around tungsten target layers using nested volumes instead of separate shell and disc volumes. This reduces geometry complexity from 4N to 2N volumes per N layers, eliminates overlaps between layers, and improves GEANT4 navigation efficiency. Updated vessel dimensions (inner diameter semantics, 62mm lid distance) and steel enclosure thickness (66.9mm) to match BDF Fluka model. Tantalum density updated to 16.7 g/cm³.</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Digitisation Framework</h3>
+<ul>
+<li>Refactor strawtubes digitisation to use dedicated detector class<ul>
+<li>Created <code><a class="el" href="namespacestrawtubesDetector.html">strawtubesDetector</a></code> class inheriting from <code><a class="el" href="namespaceBaseDetector.html">BaseDetector</a></code></li>
+<li>Moved digitisation logic from <code>ShipDigiReco</code> to <code><a class="el" href="strawtubesDetector_8py.html">detectors/strawtubesDetector.py</a></code></li>
+<li>Updated naming from "Strawtubes" to "strawtubes" for consistency</li>
+<li>Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"</li>
+</ul>
+</li>
+<li>Complete refactoring of all digitisation to use <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> pattern (MTC, muon, time, SBT, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal)</li>
+<li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
+<li>Remove TClonesArray support from digitisation framework. <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> now exclusively uses std::vector, removing branchType parameter</li>
+<li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>
+<li>Use STL vectors for SST digitisation</li>
+<li>Use STL vectors for SBT digitisation</li>
+<li>Use maximum splitting (99) for vector branches instead of no splitting (-1)</li>
+<li>Make TTree branch split level configurable in <a class="el" href="namespaceBaseDetector.html">BaseDetector</a>, set splitLevel=1 for MTC</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md15"></a>
+Geometry Configuration System</h3>
+<ul>
+<li>Replace ConfigRegistry with function-based geometry configuration API. Use <code>geometry_config.create_config(**params)</code> instead of <code>ConfigRegistry.loadpy()</code></li>
+<li>Move <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code> from <code>geometry/</code> to <code>python/</code> directory and update all imports from <code>from geometry import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code> to <code>import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code></li>
+<li>Configuration storage modernized from pickle to JSON<ul>
+<li>Geometry configurations are now saved as JSON strings (using <code>std::string</code>) instead of pickled Python objects in ROOT files</li>
+<li>Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention</li>
+</ul>
+</li>
+<li>Define target configuration in yaml</li>
+<li>Move SST geometry parameters to yaml</li>
+<li>Change coordinate system to z_0 := start of target</li>
+<li>Event Display: Don't try to recreate geometry config</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md16"></a>
+Muon Shield and Field Maps</h3>
+<ul>
+<li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
+<li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>
+<li><a class="el" href="namespaceshipDet__conf.html">shipDet_conf</a> behaviour no longer depends on the muon shield version.</li>
+<li><code>fWithConstShieldField</code> Defined as input flag for MS design in <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code></li>
+<li>MS design have B field as parameter</li>
+<li>Changed the parametrization of the field in <code><a class="el" href="ShipMuonShield_8cxx.html">ShipMuonShield.cxx</a></code></li>
+<li>Make the warm muon shield with new hadron absorber the default option</li>
+<li>Insert Proximity shield in the geometry</li>
+<li>Removed old stuff legacy in <code>shipMuonShield.cxx</code> (like LE and fFloor)</li>
+<li>Allow specifying spectrometer field map</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md17"></a>
+Detector Geometry Updates</h3>
+<ul>
+<li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
+<li>Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m</li>
+<li>UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via <a class="el" href="geometry__config_8py.html">geometry_config.py</a> instead of hardcoded</li>
+<li>Make SplitCal the default calorimeter</li>
+<li>Resize SplitCal to 4×6 m²</li>
+<li>Update tracker station z positions, fix UBT, <a class="el" href="classTimeDet.html">TimeDet</a> &amp; SplitCal position (s. integration layout EDMS 3287817 v1)</li>
+<li>Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers</li>
+<li>Update spectrometer yoke pit size according to EDMS no. 3309666</li>
+<li>Change separate constructions of tracker stations 1/2 and 3/4 to being identical</li>
+<li>Update strawtubes class</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md18"></a>
+Strawtubes and SST</h3>
+<ul>
+<li>strawtubes detID is now 7-digit! (without plane number)</li>
+<li>Change strawtubes detID decode function to tuple output</li>
+<li>Change max x of stereo hits to match straw length</li>
+<li>Get rid of straw diameter dependency in scale factor</li>
+<li>Change SST gas mixture to Ar/CO2 80%/20% at 1 bar</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md19"></a>
+SND and MTC</h3>
+<ul>
+<li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
+<li>Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.</li>
+<li>Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.</li>
+<li>Placement of <a class="el" href="classSiliconTarget.html">SiliconTarget</a> has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.</li>
+<li>Change EmulsionTarget detID decode function to tuple output</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md20"></a>
+Generators</h3>
+<ul>
+<li>Improve <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> geometry handling<ul>
+<li>Replace fragile hardcoded TGeo navigation paths with geometry constants from <code>ship_geo.target</code></li>
+<li>Add <code>SetTargetCoordinates()</code> method to accept geometry-based start/end z-coordinates from <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code></li>
+<li>Use robust <code>ship_geo.target.z0</code> and <code>ship_geo.target.length</code> instead of brittle <code>"cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1"</code> path</li>
+<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
+</ul>
+</li>
+<li>Improve <a class="el" href="classPythia8Generator.html">Pythia8Generator</a> geometry handling<ul>
+<li>Apply same geometry robustness improvements as <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
+<li>Replace fragile <code>"volTarget_1"</code> TGeo navigation with geometry constants from <code>ship_geo.target</code></li>
+<li>Add <code>SetTargetCoordinates()</code> method for robust geometry-based target configuration</li>
+<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
+</ul>
+</li>
+<li>Particle Gun has been updated: now user can set the coordinates of the PG via keys &ndash;V{x,y,z} and use &ndash;D{x,y} to uniformly smear the signal in a given x and y range</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md21"></a>
+Reconstruction</h3>
+<ul>
+<li>Assume all tracks are muons during track fit (avoid using MC truth)</li>
+<li>Reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md22"></a>
+Data Classes</h3>
+<ul>
+<li>Use value storage for both hits and clusters instead of pointer storage (splitcal)</li>
+<li>Replace TVector3 with std::array and hit pointers with indices in <a class="el" href="classsplitcalCluster.html">splitcalCluster</a> for RNtuple compatibility</li>
+<li>Replace splitcalPoint* constructor with vector-based constructor</li>
+<li>Move energy weights from Hit to Cluster, eliminating internal vectors (splitcal)</li>
+<li>Move MeanMaterialBudget to standalone function to reduce duplication and allow proper attribution of code to ALICE</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md23"></a>
+Build System and Dependencies</h3>
+<ul>
+<li>Use git-lfs to track ROOT files</li>
+<li>Allow using standalone TPythia for use with ROOT 6.32+</li>
+<li>FairShip is now licensed under LGPLv3+</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md24"></a>
+Code Quality and Maintenance</h3>
+<ul>
+<li>Consolidate basiclibs module into <a class="el" href="eventDisplay_8py.html">eventDisplay.py</a> as it was only used by that single script</li>
+<li>Don't special case EOS paths (fix #566)</li>
+<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> use options directly internally instead of using intermediate variables</li>
+<li><a class="el" href="namespacemakeCascade.html">makeCascade</a>: Added new default target, moved to argparse</li>
+<li>The decorators from <a class="el" href="decorators_8py.html">decorators.py</a> now need to be applied explicitly using the new <code>apply_decorators</code> function.</li>
+<li>The &ndash;debug flag to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> now controls the severity that FairLogger logs.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md25"></a>
+Fixed</h2>
+<h3><a class="anchor" id="autotoc_md26"></a>
+Geometry</h3>
+<ul>
+<li>Changes to g4config.in to ensure it works with newer versions of GEANT4</li>
+<li>Fix mismatch dimension cavern ECN3 TCC8</li>
+<li>Fix typo of "vacuums" for strawtubes medium</li>
+<li>Ensure the web viewer is disabled when checking for geometry overlaps (workaround for <a href="https://github.com/root-project/root/issues/18881">https://github.com/root-project/root/issues/18881</a>)</li>
+<li>Fix: Field direction of first magnet section 2 was wrong</li>
+<li>Fix: How the cavern is translated in z direction</li>
+<li>Fix: Preliminary fix of the length of the <a class="el" href="classTarget.html">Target</a> (to be refine)</li>
+<li>Fix splitcal strip dimensions and number of modules</li>
+<li>Fix: MTC geometry overlap</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md27"></a>
+Simulation and Generators</h3>
+<ul>
+<li>Fix <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> to ensure it works with newer versions of Pythia</li>
+<li>Don't assume anything about the target substructure (<a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a>)</li>
+<li>Fix crash in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
+<li>Fix crash caused by <a class="el" href="decorators_8py.html">decorators.py</a></li>
+<li>Fix missing decays of J/psi by using EvtGenDecayer</li>
+<li>Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault</li>
+<li>Fix beam smearing: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
+<li>Fix EvtCalc crash due to string formatting</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md28"></a>
+MTC and SND</h3>
+<ul>
+<li>Correct extraction of SiPM channel positions in MTC</li>
+<li>Fix refactoring issue that broke MTC digitization</li>
+<li>Fix the condition in the sipm channel &lt;-&gt; fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.</li>
+<li>Add flags for <code>python/ScifiMapping.py</code></li>
+<li>Fixed <a class="el" href="classSiliconTarget.html">SiliconTarget</a> detector identifier.</li>
+<li>Fix the wrong methods in <a class="el" href="MTCDetPoint_8cxx.html">SND/MTC/MTCDetPoint.cxx</a> to extract layer_id and layer_type for the MCPoint.</li>
+<li>Use GetLayerType instead of GetStationType in <a class="el" href="classMTCDetector.html">MTCDetector</a></li>
+</ul>
+<h3><a class="anchor" id="autotoc_md29"></a>
+Muon Shield and Field</h3>
+<ul>
+<li>The fieldmap offset was calibrated with the old version of MS (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
+<li>Changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
+<li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
+<li>Changing paths to yaml files to more pythonic (<code>os.path.join()</code> now) (<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>)</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md30"></a>
+Data Classes and I/O</h3>
+<ul>
+<li>Make muonHit copy constructor public for std::vector compatibility</li>
+<li>Fix segmentation fault due to dummy containers (#453, #519)</li>
+<li>Fix logic of SST digitisation (#662)</li>
+<li>Fix double append of recognized stracks</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md31"></a>
+Event Display and Reconstruction</h3>
+<ul>
+<li>Fix event display crash caused by premature ROOT object initialization</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md32"></a>
+Build System</h3>
+<ul>
+<li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
+<li>Fix EvtGen library linking order for old autotools-based EvtGen installations</li>
+<li>Use standard library to expand env</li>
+<li>Autoload Pythia8 instead of manually loading in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
+</ul>
+<h3><a class="anchor" id="autotoc_md33"></a>
+Code Quality</h3>
+<ul>
+<li>Fix file endings</li>
+<li>Trim trailing whitespace</li>
+<li>Don't use TFile's deprecated attribute syntax</li>
+<li>Use lowercase FairLogger severities (uppercase ones are deprecated)</li>
+<li>Correct paths for default input files</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md34"></a>
 Removed</h2>
+<h3><a class="anchor" id="autotoc_md35"></a>
+Custom Utilities</h3>
+<ul>
+<li>Removed custom logger utilities (python/logger.py, utils/logger.hxx) in favour of Python's standard logging module</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md36"></a>
+Build System</h3>
 <ul>
 <li>Remove BOOST dependency from CMake build system - no longer required as ROOT 6 provides native serialisation</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md37"></a>
+Obsolete Detector Configurations</h3>
+<ul>
 <li>Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)</li>
-<li>fix: Remove unused, unrunnable shipPatRec_prev.py</li>
-<li>feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).</li>
+<li>Dropped support for old geometries without DecayVolumeMedium explicitly set (pre 24.11 release case).</li>
+<li>Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)</li>
+<li>Remove 2018, 2022 global designs</li>
+<li>Remove deprecated NuTauDet field map</li>
+<li>Remove target versions older than CDR</li>
+<li>Remove nutaudet folder, replaced by SND folder</li>
+<li>Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
+<li>Remove ecal and hcal geometry files</li>
+<li>Removed unused class ShipChamber (leftover from TP design)</li>
+<li>Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)</li>
+<li>Remove TP liquid scintillator variables</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md38"></a>
+Muon Shield</h3>
+<ul>
 <li>MS: Removed old options 7, 9, 10</li>
 <li>MS: Removed cobalt option</li>
 <li>MS: Removed stepGeo option</li>
 <li>MS: Removed the flag constant field in Absorber (HS) -&gt; fixed to 1.7 T</li>
 <li>MS: <a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
-<li>Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)</li>
-<li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
-<li>feat(geometry): Remove 2018, 2022 global designs</li>
 <li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> remove &ndash;muShieldDesign flag</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md39"></a>
+Detector Components</h3>
+<ul>
 <li>Remove unused straw veto station</li>
-<li><a class="el" href="ShipAna_8py.html">ShipAna.py</a>: remove broken calorimetry</li>
 <li>Remove strawtubes_single class</li>
 <li>Removed outdated version <code>sc_v6</code> since it is not fitting in the Cavern (also in the build-run)</li>
-<li>feat(geometry): remove TP liquid scintillator variables</li>
+<li>Removed 38 unused RPC geometry parameters from <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a> configuration (legacy from pre-simplification)</li>
+<li>Remove tankDesign variable, options</li>
+<li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
+<li>Remove muon system</li>
+<li>Remove simpleTarget and personal study study_muEloss.py</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md40"></a>
+Obsolete Code</h3>
+<ul>
+<li>Remove unused, unrunnable shipPatRec_prev.py</li>
+<li><a class="el" href="ShipAna_8py.html">ShipAna.py</a>: remove broken calorimetry</li>
 <li>Remove unused python/shipMuShield_only.py</li>
 <li>Remove (broken?) support for Nuage generator</li>
 <li>Remove nuTauTargetDesign variable, options</li>
 <li>Remove reloading of the <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code> in <code><a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a></code></li>
-<li>Remove nutaudet folder, replaced by SND folder</li>
-<li>Removed 38 unused RPC geometry parameters from <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a> configuration (legacy from pre-simplification)</li>
-<li>Remove deprecated NuTauDet field map</li>
-<li>Remove tankDesign variable, options</li>
-<li>Remove target versions older than CDR</li>
-<li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
-<li>Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
+<li>Removed unused run_simPgun.py</li>
+<li>Remove TTCluster.py</li>
+<li>Remove pid class</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md41"></a>
+Build System</h3>
+<ul>
 <li>Remove unused files for FLUKA</li>
 <li>Remove unused CMake modules</li>
 <li>Remove globalDesigns dictionary from <a class="el" href="run__simScript_8py.html">run_simScript.py</a> and <a class="el" href="create__field__perturbation_8py.html">create_field_perturbation.py</a>, use inline defaults instead</li>
-<li>Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)</li>
-<li>Removed unused class ShipChamber (leftover from TP design)</li>
-<li>Removed unused run_simPgun.py</li>
-<li>Remove ecal and hcal geometry files</li>
-<li>Remove simpleTarget and personal study study_muEloss.py</li>
-<li>Remove TTCluster.py</li>
-<li>Remove pid class</li>
-<li>Remove muon system</li>
+<li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 25.01</h1>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Added</h2>
 <ul>
 <li>Add prototype of a new analysis toolkit in the <code>experimental</code> package.</li>
 <li>Add a simple analysis example script in the <code>examples/</code> directory.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 Fixed</h2>
 <ul>
 <li>Use <code>ConstructedAt</code> and <code>std::swap</code> to replace removed pythonization for <code>TClonesArray</code>.</li>
@@ -395,7 +523,7 @@ Fixed</h2>
 <li>Fix drawing of Monte Carlo and geometry tracks in the event display.</li>
 <li>Replace outdated <code>AddressOf</code> ROOT function with <code>addressof</code> in the <code>field/</code> directory.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 Changed</h2>
 <ul>
 <li>Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation <a href="https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf">here</a>.</li>
@@ -404,36 +532,36 @@ Changed</h2>
 <li>Disable track pruning (see #533).</li>
 <li>Accommodate generic N-body LLP decays in the EventCalc interface.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 Removed</h2>
 <ul>
 <li>Remove Millepede.</li>
 <li>Remove the outdated <code>shipEvent_ex.py</code> example.</li>
 <li>Remove the ALPACA generator.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 24.11</h1>
 <p>This release follows the first round of breaking changes and is tagged for the launch of background simulations. It requires a CVMFS release of 24.10 or later.</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Added</h2>
 <ul>
 <li>Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
 <li>Add a conversion script, <code><a class="el" href="convertEvtCalc_8py.html">FairShip/macro/convertEvtCalc.py</a></code>, to convert EventCalc's output kinematics to a format compatible with the simulation script.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Fixed</h2>
 <ul>
 <li>Add missing includes in <code>ecalMatch</code> and <code>ecalReco</code>.</li>
 <li>Fix compilation warnings for unused or uninitialized variables (see #481).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Changed</h2>
 <ul>
 <li>Migrate <code><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a></code> to use <code>argparse</code>.</li>
 <li>Update CMake to use an external <code>genfit2</code>.</li>
 <li>Ensure <code><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a></code>, <code><a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a></code>, and <code><a class="el" href="namespaceshipVertex.html">shipVertex</a></code> are compatible with the current version of <code>genfit</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete renaming scripts.</li>
@@ -443,10 +571,10 @@ Removed</h2>
 <li>Remove the bundled <code>genfit</code>.</li>
 <li>Remove the conditions database.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 24.10 - Freiburg</h1>
 <p>This release prepares for breaking changes and is the last to include charm cross-section measurement code and obsolete detector configurations.</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 Added</h2>
 <ul>
 <li>Add an option for a helium-filled decay volume.</li>
@@ -458,7 +586,7 @@ Added</h2>
 <li>Add separate configuration files for vacuum and helium in the decay vessel.</li>
 <li>Add an option to enable or disable the SND.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Fixed</h2>
 <ul>
 <li>Remove trailing whitespace and fix line endings.</li>
@@ -469,7 +597,7 @@ Fixed</h2>
 <li>Ensure the <code><a class="el" href="ShipReco_8py.html">ShipReco.py</a></code> output file is closed correctly.</li>
 <li>Remove an unused argument for <code><a class="el" href="classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4">MuDISGenerator::SetPositions</a></code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Changed</h2>
 <ul>
 <li>Update the <code><a class="el" href="namespacegetGeoInformation.html">getGeoInformation</a></code> command-line interface.</li>
@@ -483,7 +611,7 @@ Changed</h2>
 <li>Use <code>find_package</code> to find Boost.</li>
 <li>Set the FairLogger dependency instead of using manual includes.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete installation and testing files.</li>
