@@ -18,8 +18,10 @@
 //
 // SHiP enhancements:
 //   Thomas Ruf, Thomas.Ruf@cern.ch (added interaction length and cross section
-//                                   calculations for hadronic physics, Dec 2016)
-//   Anupama Reghunath, anupama.reghunath@cern.ch (improved error logging, Nov 2024)
+//                                   calculations for hadronic physics, Dec
+//                                   2016)
+//   Anupama Reghunath, anupama.reghunath@cern.ch (improved error logging, Nov
+//   2024)
 //
 
 namespace shipgen {
@@ -31,7 +33,8 @@ namespace shipgen {
 // Parameters:
 //   start  - starting point coordinates [x, y, z] in cm
 //   end    - ending point coordinates [x, y, z] in cm
-//   mparam - output array with material parameters (must have at least 10 elements):
+//   mparam - output array with material parameters (must have at least 10
+//   elements):
 //
 // mparam[0] - mean density: sum(x_i*rho_i)/sum(x_i) [g/cm3]
 // mparam[1] - equivalent rad length fraction: sum(x_i/X0_i) [dimensionless]
@@ -41,13 +44,14 @@ namespace shipgen {
 // mparam[5] - Z/A mean: sum(x_i*Z_i/A_i)/sum(x_i) [dimensionless]
 // mparam[6] - number of boundary crosses
 // mparam[7] - maximum density encountered (g/cm^3)
-// mparam[8] - equivalent interaction length fraction: sum(x_i/I0_i) [dimensionless]
-// mparam[9] - maximum cross section encountered (mbarn)
+// mparam[8] - equivalent interaction length fraction: sum(x_i/I0_i)
+// [dimensionless] mparam[9] - maximum cross section encountered (mbarn)
 //
 // Returns: mean density along the path
 //
-double MeanMaterialBudget(const double* start, const double* end, double* mparam);
+double MeanMaterialBudget(const double* start, const double* end,
+                          double* mparam);
 
-}   // namespace shipgen
+}  // namespace shipgen
 
-#endif   // SHIPGEN_MEANMATERIALBUDGET_H_
+#endif  // SHIPGEN_MEANMATERIALBUDGET_H_

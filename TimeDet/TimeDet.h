@@ -1,141 +1,132 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #ifndef TIMEDET_TIMEDET_H_
 #define TIMEDET_TIMEDET_H_
 
-#include "FairDetector.h"
-#include "ISTLPointContainer.h"
-
-#include "TVector3.h"
-#include "TLorentzVector.h"
-
 #include <map>
 #include <vector>
+
+#include "FairDetector.h"
+#include "ISTLPointContainer.h"
+#include "TLorentzVector.h"
+#include "TVector3.h"
 
 class TimeDetPoint;
 class FairVolume;
 class TClonesArray;
 
+class TimeDet : public FairDetector, public ISTLPointContainer {
+ public:
+  /**      Name :  Detector Name
+   *       Active: kTRUE for active detectors (ProcessHits() will be called)
+   *               kFALSE for inactive detectors
+   */
+  TimeDet(const char* Name, Bool_t Active);
 
-class TimeDet: public FairDetector, public ISTLPointContainer
-{
+  /** default constructor */
+  TimeDet();
 
-  public:
+  /** destructor */
+  virtual ~TimeDet();
 
-    /**      Name :  Detector Name
-     *       Active: kTRUE for active detectors (ProcessHits() will be called)
-     *               kFALSE for inactive detectors
-    */
-    TimeDet(const char* Name, Bool_t Active);
+  /** Initialization of the detector is done here */
+  virtual void Initialize();
 
-    /** default constructor */
-    TimeDet();
+  /**   this method is called for each step during simulation
+   *    (see FairMCApplication::Stepping())
+   */
+  virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-    /** destructor */
-    virtual ~TimeDet();
+  /**       Registers the produced collections in FAIRRootManager. */
+  virtual void Register();
 
-    /** Initialization of the detector is done here */
-    virtual void   Initialize();
+  /** Gets the produced collections */
+  virtual TClonesArray* GetCollection(Int_t iColl) const;
 
-    /**   this method is called for each step during simulation
-     *    (see FairMCApplication::Stepping())
-    */
-    virtual Bool_t ProcessHits( FairVolume* v=0);
+  /** Update track indices in point collection (for std::vector migration) */
+  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
-    /**       Registers the produced collections in FAIRRootManager. */
-    virtual void Register();
+  /** has to be called after each event to reset the containers */
+  virtual void Reset();
 
-    /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const;
+  /** Sets detector position along z */
+  void SetZposition(Double_t z) { fzPos = z; }
+  void SetBarZspacing(Double_t row, Double_t column) {
+    fdzBarRow = row;
+    fdzBarCol = column;
+  }
+  void SetBarZ(Double_t dz) { fzBar = dz; }
+  void SetSizeX(Double_t x) { fxSize = x; }
+  void SetSizeY(Double_t y) { fySize = y; }
 
-    /** Update track indices in point collection (for std::vector migration) */
-    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
+  double GetXCol(int ic) const;
+  double GetYRow(int ir) const;
+  void GetBarRowCol(int ib, int& irow, int& icol) const;
+  double GetZBar(int ir, int ic) const;
 
-    /** has to be called after each event to reset the containers */
-    virtual void Reset();
+  /**  Create the detector geometry */
+  void ConstructGeometry();
 
-    /** Sets detector position along z */
-    void SetZposition(Double_t z) {fzPos = z;}
-    void SetBarZspacing(Double_t row, Double_t column)
-    {
-       fdzBarRow = row;
-       fdzBarCol = column;
-    }
-    void SetBarZ(Double_t dz) {fzBar = dz;}
-    void SetSizeX(Double_t x) {fxSize = x;}
-    void SetSizeY(Double_t y) {fySize = y;}
+  /**      This method is an example of how to add your own point
+   *       of type TimeDetPoint to the clones array
+   */
+  TimeDetPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                       Double_t time, Double_t length, Double_t eLoss,
+                       Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
 
-    double GetXCol(int ic) const;
-    double GetYRow(int ir) const;
-    void GetBarRowCol(int ib,int &irow,int& icol) const;
-    double GetZBar(int ir,int ic) const;
+  virtual void EndOfEvent();
+  virtual void FinishPrimary() { ; }
+  virtual void FinishRun() { ; }
+  virtual void BeginPrimary() { ; }
+  virtual void PostTrack() { ; }
+  virtual void PreTrack() { ; }
+  virtual void BeginEvent() { ; }
 
-    /**  Create the detector geometry */
-    void ConstructGeometry();
+ private:
+  /** Track information to be stored until the track leaves the active volume.*/
+  Int_t fTrackID;       //!  track index
+  Int_t fVolumeID;      //!  volume id
+  TLorentzVector fPos;  //!  position at entrance
+  TLorentzVector fMom;  //!  momentum at entrance
+  Double_t fTime;       //!  time
+  Double_t fLength;     //!  length
+  Double_t fELoss;      //!  energy loss
 
-    /**      This method is an example of how to add your own point
-     *       of type TimeDetPoint to the clones array
-    */
-    TimeDetPoint* AddHit(Int_t trackID, Int_t detID,
-			 TVector3 pos, TVector3 mom,
-			 Double_t time, Double_t length,
-			 Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom);
+  /** Detector parameters.*/
+  Double_t fzPos;  //!  z-position of veto station
 
-    virtual void   EndOfEvent();
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
+  Double_t fxSize;  //! width of the detector
+  Double_t fySize;  //! height of the detector
 
+  Double_t fxBar;  //! length of the bar
+  Double_t fyBar;  //! width of the bar
+  Double_t fzBar;  //! depth of the bar
 
-  private:
+  Double_t fdzBarCol;  //! z-distance between columns
+  Double_t fdzBarRow;  //! z-distance between rows
 
-    /** Track information to be stored until the track leaves the active volume.*/
-    Int_t          fTrackID;            //!  track index
-    Int_t          fVolumeID;           //!  volume id
-    TLorentzVector fPos;                //!  position at entrance
-    TLorentzVector fMom;                //!  momentum at entrance
-    Double_t       fTime;               //!  time
-    Double_t       fLength;             //!  length
-    Double_t       fELoss;              //!  energy loss
+  Int_t fNCol;  //! Number of columns
+  Int_t fNRow;  //! Number of rows
 
-    /** Detector parameters.*/
-    Double_t     fzPos;     //!  z-position of veto station
+  Double_t fxCenter;  //! x-position of the detector center
+  Double_t fyCenter;  //! y-position of the detector center
 
-    Double_t fxSize; //! width of the detector
-    Double_t fySize; //! height of the detector
+  Int_t fNBars;   //! Number of bars
+  Double_t fxOv;  //! Overlap along x
+  Double_t fyOv;  //! Overlap along y
 
-    Double_t fxBar;  //! length of the bar
-    Double_t fyBar;  //! width of the bar
-    Double_t fzBar;  //! depth of the bar
+  TGeoVolume* fDetector;  // Timing detector object
 
-    Double_t fdzBarCol; //! z-distance between columns
-    Double_t fdzBarRow; //! z-distance between rows
+  /** container for data points */
+  std::vector<TimeDetPoint>* fTimeDetPoints;
 
-    Int_t fNCol;    //! Number of columns
-    Int_t fNRow;    //! Number of rows
+  TimeDet(const TimeDet&);
+  TimeDet& operator=(const TimeDet&);
+  Int_t InitMedium(const char* name);
 
-    Double_t fxCenter; //! x-position of the detector center
-    Double_t fyCenter; //! y-position of the detector center
-
-    Int_t fNBars;    //! Number of bars
-    Double_t fxOv;   //! Overlap along x
-    Double_t fyOv;   //! Overlap along y
-
-    TGeoVolume* fDetector; // Timing detector object
-
-    /** container for data points */
-    std::vector<TimeDetPoint>* fTimeDetPoints;
-
-    TimeDet(const TimeDet&);
-    TimeDet& operator=(const TimeDet&);
-    Int_t InitMedium(const char* name);
-
-
-    ClassDef(TimeDet,3)
+  ClassDef(TimeDet, 3)
 };
 
 #endif  // TIMEDET_TIMEDET_H_

@@ -1,17 +1,20 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #include "splitcalCluster.h"
+
+#include <math.h>
+
+#include <functional>
+#include <iostream>
+#include <map>
+#include <numeric>
+
 #include "TMath.h"
 
-#include <iostream>
-#include <math.h>
-#include <functional>
-#include <numeric>
-#include <map>
-
-
-// -----   constructor from list/vector of splitcalHit   ------------------------------------------
+// -----   constructor from list/vector of splitcalHit
+// ------------------------------------------
 // splitcalCluster::splitcalCluster(boost::python::list& l)
 // {
 //   std::vector<splitcalHit > v;
@@ -22,15 +25,9 @@
 // }
 
 // -----   Default constructor   -------------------------------------------
-splitcalCluster::splitcalCluster()
-{
-}
+splitcalCluster::splitcalCluster() {}
 
-
-void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
-{
-
-
+void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
   // Compute energy weighted average for hits in the same layer
   // This is in preparation of the linear fit to get the cluster eta and phi
 
@@ -42,62 +39,67 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
   std::map<int, double> mapLayerSumWeigthsX;
   std::map<int, double> mapLayerSumWeigthsY;
 
-  // loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer
+  // loop over hits to compute cluster energy sum and to compute the coordinates
+  // weighted average per layer
   double energy = 0.;
-  for (size_t i = 0; i < _hitIndices.size(); ++i){
+  for (size_t i = 0; i < _hitIndices.size(); ++i) {
     const auto& hit = hits[_hitIndices[i]];
-    double hitEnergy = hit.GetEnergy() * _hitWeights[i];  // Use weight from cluster
+    double hitEnergy =
+        hit.GetEnergy() * _hitWeights[i];  // Use weight from cluster
     energy += hitEnergy;
     int layer = hit.GetLayerNumber();
-    // hits from high precision layers give both x and y coordinates --> use if-if instead of if-else
-    if (hit.IsX()){
-      if (mapLayerWeigthedX.count(layer)==0) { //if key is not yet in map, initialise element to 0
-	mapLayerWeigthedX[layer] = 0.;
-	mapLayerSumWeigthsX[layer] = 0.;
+    // hits from high precision layers give both x and y coordinates --> use
+    // if-if instead of if-else
+    if (hit.IsX()) {
+      if (mapLayerWeigthedX.count(layer) ==
+          0) {  // if key is not yet in map, initialise element to 0
+        mapLayerWeigthedX[layer] = 0.;
+        mapLayerSumWeigthsX[layer] = 0.;
       }
       mapLayerWeigthedX[layer] += hit.GetX() * hitEnergy;
       mapLayerSumWeigthsX[layer] += hitEnergy;
       mapLayerZ1[layer] = hit.GetZ();
     }
-    if (hit.IsY()){
-      if (mapLayerWeigthedY.count(layer)==0) { //if key is not yet in map, initialise element to 0
-	mapLayerWeigthedY[layer] = 0.;
-	mapLayerSumWeigthsY[layer] = 0.;
+    if (hit.IsY()) {
+      if (mapLayerWeigthedY.count(layer) ==
+          0) {  // if key is not yet in map, initialise element to 0
+        mapLayerWeigthedY[layer] = 0.;
+        mapLayerSumWeigthsY[layer] = 0.;
       }
       mapLayerWeigthedY[layer] += hit.GetY() * hitEnergy;
       mapLayerSumWeigthsY[layer] += hitEnergy;
       mapLayerZ2[layer] = hit.GetZ();
     }
-  }//end loop on hit
+  }  // end loop on hit
 
-
-  // FIXME: regression fit seems instable --> for the moment commented it out in favour of simple direction from initial and end point
+  // FIXME: regression fit seems instable --> for the moment commented it out in
+  // favour of simple direction from initial and end point
 
   auto const& firstElementX = mapLayerWeigthedX.begin();
   int minLayerX = firstElementX->first;
-  double minX = firstElementX->second/mapLayerSumWeigthsX[minLayerX];
+  double minX = firstElementX->second / mapLayerSumWeigthsX[minLayerX];
   double minZ1 = mapLayerZ1[minLayerX];
 
   auto const& firstElementY = mapLayerWeigthedY.begin();
   int minLayerY = firstElementY->first;
-  double minY = firstElementY->second/mapLayerSumWeigthsY[minLayerY];
+  double minY = firstElementY->second / mapLayerSumWeigthsY[minLayerY];
   double minZ2 = mapLayerZ1[minLayerY];
 
-  double minZ = (minZ1+minZ2)/2.;
+  double minZ = (minZ1 + minZ2) / 2.;
 
   SetStartPoint(minX, minY, minZ);
 
   auto const& lastElementX = mapLayerWeigthedX.rbegin();
   int maxLayerX = lastElementX->first;
-  double maxX = lastElementX->second/mapLayerSumWeigthsX[maxLayerX];
+  double maxX = lastElementX->second / mapLayerSumWeigthsX[maxLayerX];
   double maxZ1 = mapLayerZ1[maxLayerX];
 
   auto const& lastElementY = mapLayerWeigthedY.rbegin();
   int maxLayerY = lastElementY->first;
-  double maxY = lastElementY->second/mapLayerSumWeigthsY[maxLayerY];
+  double maxY = lastElementY->second / mapLayerSumWeigthsY[maxLayerY];
   double maxZ2 = mapLayerZ1[maxLayerY];
 
-  double maxZ = (maxZ1+maxZ2)/2.;
+  double maxZ = (maxZ1 + maxZ2) / 2.;
 
   SetEndPoint(maxX, maxY, maxZ);
 
@@ -109,12 +111,9 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
   double phi = direction.Phi();
   SetEtaPhiE(eta, phi, energy);
 
-
-  // // vectors holding the weighted coordinates per layer: x and z for the eta fit, and y and z for the phi fit
-  // std::vector<double > x;
-  // std::vector<double > z1;
-  // std::vector<double > y;
-  // std::vector<double > z2;
+  // // vectors holding the weighted coordinates per layer: x and z for the eta
+  // fit, and y and z for the phi fit std::vector<double > x; std::vector<double
+  // > z1; std::vector<double > y; std::vector<double > z2;
 
   // for (auto const& element : mapLayerWeigthedX){
   //   int key = element.first;
@@ -141,9 +140,10 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
   // _start.Print();
   // _end.Print();
 
-  // // replace the x and y of start and end points with the re-evaluated values from the corresponding fit
-  // _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept );
-  // _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept );
+  // // replace the x and y of start and end points with the re-evaluated values
+  // from the corresponding fit _start.SetX( resultZX.slope * _start.Z() +
+  // resultZX.intercept ); _start.SetY( resultZY.slope * _start.Z() +
+  // resultZY.intercept );
 
   // _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept );
   // _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept );
@@ -174,13 +174,11 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
   return;
 }
 
-
-
-regression splitcalCluster::LinearRegression(std::vector<double >& x, std::vector<double >& y) {
-
-  const auto n    = x.size();
-  const auto s_x  = std::accumulate(x.begin(), x.end(), 0.);
-  const auto s_y  = std::accumulate(y.begin(), y.end(), 0.);
+regression splitcalCluster::LinearRegression(std::vector<double>& x,
+                                             std::vector<double>& y) {
+  const auto n = x.size();
+  const auto s_x = std::accumulate(x.begin(), x.end(), 0.);
+  const auto s_y = std::accumulate(y.begin(), y.end(), 0.);
   const auto s_xx = std::inner_product(x.begin(), x.end(), x.begin(), 0.);
   const auto s_xy = std::inner_product(x.begin(), x.end(), y.begin(), 0.);
 
@@ -189,38 +187,28 @@ regression splitcalCluster::LinearRegression(std::vector<double >& x, std::vecto
   result.slope = (n * s_xy - s_x * s_y) / (n * s_xx - s_x * s_x);
   result.intercept = (s_x * s_x * s_y - s_xy * s_x) / (n * s_xx - s_x * s_x);
 
-  std::cout<< "--- LinearRegression ---" <<std::endl;
-  std::cout<< "--------- slope = " <<  result.slope <<std::endl;
-  std::cout<< "--------- intercept = " <<  result.intercept <<std::endl;
+  std::cout << "--- LinearRegression ---" << std::endl;
+  std::cout << "--------- slope = " << result.slope << std::endl;
+  std::cout << "--------- intercept = " << result.intercept << std::endl;
 
   return result;
-
 }
-
 
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-splitcalCluster::~splitcalCluster() { }
+splitcalCluster::~splitcalCluster() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void splitcalCluster::Print() const
-{
-
-  std::cout<< "-I- splitcalCluster: " <<std::endl;
-  std::cout<< "    (eta,phi,energy) = "
-	   << _eta << " ,  "
-	   << _phi << " ,  "
-	   << _energy << std::endl;
-  std::cout<< "    start(x,y,z) = "
-	   << _start[0] << " ,  "
-	   << _start[1] << " ,  "
-	   << _start[2] << std::endl;
-  std::cout<< "    end(x,y,z) = "
-	   << _end[0] << " ,  "
-	   << _end[1] << " ,  "
-	   << _end[2] << std::endl;
-   std::cout<< "------- " <<std::endl;
+void splitcalCluster::Print() const {
+  std::cout << "-I- splitcalCluster: " << std::endl;
+  std::cout << "    (eta,phi,energy) = " << _eta << " ,  " << _phi << " ,  "
+            << _energy << std::endl;
+  std::cout << "    start(x,y,z) = " << _start[0] << " ,  " << _start[1]
+            << " ,  " << _start[2] << std::endl;
+  std::cout << "    end(x,y,z) = " << _end[0] << " ,  " << _end[1] << " ,  "
+            << _end[2] << std::endl;
+  std::cout << "------- " << std::endl;
 }
 // -------------------------------------------------------------------------

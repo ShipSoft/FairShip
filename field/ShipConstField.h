@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 // -------------------------------------------------------------------------
 // -----                    ShipConstField header file                  -----
 // -----                Created 25/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
-
 
 /** ShipConstField.h
  ** @author M.Al-Turany <m.al/turany@gsi.de>
@@ -15,25 +15,17 @@
  ** A constant (homogeneous) magnetic field
  **/
 
-
 #ifndef FIELD_SHIPCONSTFIELD_H_
 #define FIELD_SHIPCONSTFIELD_H_ 1
 
-
 #include "FairField.h"
-
 
 class ShipFieldPar;
 
-
-class ShipConstField : public FairField
-{
-
+class ShipConstField : public FairField {
  public:
-
   /** Default constructor **/
   ShipConstField();
-
 
   /** Standard constructor
    ** @param name   Object name
@@ -43,17 +35,14 @@ class ShipConstField : public FairField
    ** @param bX,bY,bZ    Field values [kG]
    **/
   explicit ShipConstField(const char* name, Double_t xMin, Double_t xMax,
-		Double_t yMin, Double_t yMax, Double_t zMin,
-		Double_t zMax, Double_t bX, Double_t bY, Double_t bZ);
-
+                          Double_t yMin, Double_t yMax, Double_t zMin,
+                          Double_t zMax, Double_t bX, Double_t bY, Double_t bZ);
 
   /** Constructor from ShipFieldPar **/
   explicit ShipConstField(ShipFieldPar* fieldPar);
 
-
   /** Destructor **/
   virtual ~ShipConstField();
-
 
   /** Set the field region
    ** @param xMin,xMax   x region of field (global coordinates)
@@ -61,14 +50,12 @@ class ShipConstField : public FairField
    ** @param zMin,zMax   z region of field (global coordinates)
    **/
   void SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin,
-		      Double_t yMax, Double_t zMin, Double_t zMax);
-
+                      Double_t yMax, Double_t zMin, Double_t zMax);
 
   /** Set the field values
    ** @param bX,bY,bZ    Field values [kG]
    **/
   void SetField(Double_t bX, Double_t bY, Double_t bZ);
-
 
   /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
@@ -76,7 +63,6 @@ class ShipConstField : public FairField
   virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
   virtual Double_t GetBy(Double_t x, Double_t y, Double_t z);
   virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
-
 
   /** Accessors to field region **/
   Double_t GetXmin() const { return fXmin; }
@@ -86,19 +72,15 @@ class ShipConstField : public FairField
   Double_t GetZmin() const { return fZmin; }
   Double_t GetZmax() const { return fZmax; }
 
-
   /** Accessors to field values **/
   Double_t GetBx() const { return fBx; }
   Double_t GetBy() const { return fBy; }
   Double_t GetBz() const { return fBz; }
 
-
   /** Screen output **/
   virtual void Print();
 
-
  private:
-
   /** Limits of the field region **/
   Double_t fXmin;
   Double_t fXmax;
@@ -113,8 +95,6 @@ class ShipConstField : public FairField
   Double_t fBz;
 
   ClassDef(ShipConstField, 1);
-
 };
-
 
 #endif  // FIELD_SHIPCONSTFIELD_H_

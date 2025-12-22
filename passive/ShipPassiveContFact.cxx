@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 //*-- AUTHOR : Denis Bertini
 //*-- Created : 21/06/2005
@@ -13,54 +14,48 @@
 /////////////////////////////////////////////////////////////
 #include "ShipPassiveContFact.h"
 
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include <string.h>  // for strcmp, NULL
 
-#include "TList.h"                      // for TList
-#include "TString.h"                    // for TString
-
-#include <string.h>                     // for strcmp, NULL
+#include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "TList.h"          // for TList
+#include "TString.h"        // for TString
 
 class FairParSet;
 
 using namespace std;
 
+// static ShipPassiveContFact gShipPassiveContFact;
 
-//static ShipPassiveContFact gShipPassiveContFact;
-
-ShipPassiveContFact::ShipPassiveContFact()
-  : FairContFact()
-{
+ShipPassiveContFact::ShipPassiveContFact() : FairContFact() {
   // Constructor (called when the library is loaded)
-  fName="ShipPassiveContFact";
-  fTitle="Factory for parameter containers in libPassive";
+  fName = "ShipPassiveContFact";
+  fTitle = "Factory for parameter containers in libPassive";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void ShipPassiveContFact::setAllContainers()
-{
+void ShipPassiveContFact::setAllContainers() {
   /** Creates the Container objects with all accepted contexts and adds them to
    *  the list of containers for the STS library.*/
 
-  FairContainer* p= new FairContainer("FairGeoPassivePar",
-                                      "Passive Geometry Parameters",
-                                      "TestDefaultContext");
+  FairContainer* p = new FairContainer(
+      "FairGeoPassivePar", "Passive Geometry Parameters", "TestDefaultContext");
   p->addContext("TestNonDefaultContext");
 
   containers->Add(p);
 }
 
-FairParSet* ShipPassiveContFact::createContainer(FairContainer* c)
-{
-    /** Calls the constructor of the corresponding parameter container.
-     * For an actual context, which is not an empty string and not the default context
-     * of this container, the name is concatenated with the context. */
-    /* const char* name=c->GetName();
-     FairParSet* p=NULL;
-     if (strcmp(name,"FairGeoPassivePar")==0) {
-       p=new FairGeoPassivePar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
-     }
-     return p;
-   */
-    return 0;
+FairParSet* ShipPassiveContFact::createContainer(FairContainer* c) {
+  /** Calls the constructor of the corresponding parameter container.
+   * For an actual context, which is not an empty string and not the default
+   * context of this container, the name is concatenated with the context. */
+  /* const char* name=c->GetName();
+   FairParSet* p=NULL;
+   if (strcmp(name,"FairGeoPassivePar")==0) {
+     p=new
+   FairGeoPassivePar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+   }
+   return p;
+ */
+  return 0;
 }
