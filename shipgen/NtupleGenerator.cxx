@@ -38,7 +38,7 @@ Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent) {
   }  // parent id
   if (fTree->FindBranch("tof")) {
     fTree->SetBranchAddress("tof", &tof);
-  }                                          // time of flight
+  }  // time of flight
   fTree->SetBranchAddress("Nmeas", &Nmeas);  // number of Geant4 points
   fTree->SetBranchAddress("Ezero", &Ezero);  // incoming muon energy
   fTree->SetBranchAddress("w", &w);          // weight of event
