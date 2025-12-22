@@ -45,7 +45,8 @@ class MTCDetector(BaseDetector):
         norm = {}
         for k, mc_point in enumerate(self.intree.MTCDetPoint):
             det_id = mc_point.GetDetectorID()
-            station_type = mc_point.GetStationType()  # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
+            # 0: +5 deg, 1: -5 deg, 2: scint plane
+            station_type = mc_point.GetLayerType()
             energy_loss = mc_point.GetEnergyLoss()
 
             if station_type == 0:
