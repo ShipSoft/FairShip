@@ -6,6 +6,6 @@ var searchData=
   ['qcd_5fcorrection_3',['QCD_correction',['../classhnl_1_1HNLbranchings.html#a193ceb512abd3845ee899ee96682a69f',1,'hnl::HNLbranchings']]],
   ['qcdprodrate_4',['qcdprodRate',['../namespacedpProductionRates.html#a38e9e0cde17b3f7e8e777cdaddf97bb4',1,'dpProductionRates']]],
   ['qedlist_5',['qedlist',['../namespaceg4Ex__gap.html#acc293a3be1ff4341cc236915f239bda3',1,'g4Ex_gap']]],
-  ['quality_6',['Code Quality',['../md_CHANGELOG.html#autotoc_md33',1,'']]],
-  ['quality_20and_20maintenance_7',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md24',1,'']]]
+  ['quality_6',['Code Quality',['../md_CHANGELOG.html#autotoc_md38',1,'']]],
+  ['quality_20and_20maintenance_7',['Code Quality and Maintenance',['../md_CHANGELOG.html#autotoc_md29',1,'']]]
 ];

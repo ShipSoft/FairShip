@@ -99,7 +99,17 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
-<h3><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Changed</h2>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Fixed</h2>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Removed</h2>
+<h1><a class="anchor" id="autotoc_md6"></a>
+25.12 - 2025-12-22</h1>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Added</h2>
+<h3><a class="anchor" id="autotoc_md8"></a>
 Physics and Simulation</h3>
 <ul>
 <li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
@@ -128,7 +138,7 @@ Physics and Simulation</h3>
 <li>Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.</li>
 <li>Support using TPythia6 provided by ROOTEGPythia6 for ROOT ≥ 6.32</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md4"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
 SND Detector System</h3>
 <ul>
 <li>Folder <code>SND</code> is added for new versions of SND integrated to the Muon Shield</li>
@@ -146,7 +156,7 @@ SND Detector System</h3>
 </li>
 <li>Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md5"></a>
+<h3><a class="anchor" id="autotoc_md10"></a>
 Geometry and Target Station</h3>
 <ul>
 <li>Add June 2025 target configuration</li>
@@ -162,7 +172,7 @@ Geometry and Target Station</h3>
 <li>Geometry_config.py: Added MS design <code>New_HA_Design</code> based on the MS <code>warm_opt</code> with new version of HA</li>
 <li>Add (optional) MgB2 field map</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md6"></a>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Data Classes and I/O</h3>
 <ul>
 <li><b>Data classes now support ROOT RNtuple I/O</b> All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of <a class="el" href="classShipParticle.html">ShipParticle</a> to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.</li>
@@ -170,7 +180,7 @@ Data Classes and I/O</h3>
 <li>Add EventId and TrackID for MCTrack and HAPoint #944</li>
 <li><b>Add <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface for STL-based detector track index updating</b> Introduces <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> interface enabling polymorphic track index updating for detectors using std::vector storage. <a class="el" href="classShipStack.html">ShipStack</a> now automatically detects and handles both STL-based and TClonesArray-based detectors, ensuring MC points maintain correct track references after track filtering. Also adds missing parameterised constructors to simpleTarget and <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Tools and Utilities</h3>
 <ul>
 <li>Add dedicated &ndash;print-fields and &ndash;check-overlaps flags to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use these debug tools.</li>
@@ -181,7 +191,7 @@ Tools and Utilities</h3>
 <li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
 <li>Add backport for new TFile/TDirectory <code>__get_item__</code> pythonisation</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Detector Improvements</h3>
 <ul>
 <li>Add access to decoded numbers (stations, views etc.) of strawtubes hits</li>
@@ -190,14 +200,14 @@ Detector Improvements</h3>
 <li>Add z-offset to <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
 <li>Add missing &ndash;FixedTarget option to <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
 Reconstruction</h3>
 <ul>
 <li>Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, MTC, and Strawtubes.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Changed</h2>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md16"></a>
 Data Structure Modernization</h3>
 <ul>
 <li><b>Migrate detector MC point storage from TClonesArray to std::vector</b> Ten detector classes now use <code>std::vector&lt;PointType&gt;</code> instead of <code>TClonesArray</code> for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages <code>FairRootManager::RegisterAny()</code> for ROOT I/O. Affected detectors: <a class="el" href="classTimeDet.html">TimeDet</a>, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal, veto, <a class="el" href="classTarget.html">Target</a>, <a class="el" href="classTargetTracker.html">TargetTracker</a>, <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, <a class="el" href="classMTCDetector.html">MTCDetector</a>, and simpleTarget.</li>
@@ -215,18 +225,18 @@ Data Structure Modernization</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md17"></a>
 Physics and Simulation</h3>
 <ul>
 <li>Change GEANT4 Physics list from QGSP_BERT_HP_PEN to FTFP_BERT_HP_EMZ following GEANT4 team recommendation and studies by Hanae Tilquin presented at Nov. 2025 collaboration meeting and following software meetings.</li>
 <li>J/psi are no longer decayed using Geant4 when using the &ndash;EvtGenDecayer option</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md13"></a>
+<h3><a class="anchor" id="autotoc_md18"></a>
 Target Station Geometry</h3>
 <ul>
 <li><b><a class="el" href="classTarget.html">Target</a> station geometry updated with nested volume approach</b> Implemented tantalum cladding (1.5mm) around tungsten target layers using nested volumes instead of separate shell and disc volumes. This reduces geometry complexity from 4N to 2N volumes per N layers, eliminates overlaps between layers, and improves GEANT4 navigation efficiency. Updated vessel dimensions (inner diameter semantics, 62mm lid distance) and steel enclosure thickness (66.9mm) to match BDF Fluka model. Tantalum density updated to 16.7 g/cm³.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md19"></a>
 Digitisation Framework</h3>
 <ul>
 <li>Refactor strawtubes digitisation to use dedicated detector class<ul>
@@ -245,7 +255,7 @@ Digitisation Framework</h3>
 <li>Use maximum splitting (99) for vector branches instead of no splitting (-1)</li>
 <li>Make TTree branch split level configurable in <a class="el" href="namespaceBaseDetector.html">BaseDetector</a>, set splitLevel=1 for MTC</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md15"></a>
+<h3><a class="anchor" id="autotoc_md20"></a>
 Geometry Configuration System</h3>
 <ul>
 <li>Replace ConfigRegistry with function-based geometry configuration API. Use <code>geometry_config.create_config(**params)</code> instead of <code>ConfigRegistry.loadpy()</code></li>
@@ -260,7 +270,7 @@ Geometry Configuration System</h3>
 <li>Change coordinate system to z_0 := start of target</li>
 <li>Event Display: Don't try to recreate geometry config</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md16"></a>
+<h3><a class="anchor" id="autotoc_md21"></a>
 Muon Shield and Field Maps</h3>
 <ul>
 <li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
@@ -274,7 +284,7 @@ Muon Shield and Field Maps</h3>
 <li>Removed old stuff legacy in <code>shipMuonShield.cxx</code> (like LE and fFloor)</li>
 <li>Allow specifying spectrometer field map</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md17"></a>
+<h3><a class="anchor" id="autotoc_md22"></a>
 Detector Geometry Updates</h3>
 <ul>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
@@ -288,7 +298,7 @@ Detector Geometry Updates</h3>
 <li>Change separate constructions of tracker stations 1/2 and 3/4 to being identical</li>
 <li>Update strawtubes class</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md18"></a>
+<h3><a class="anchor" id="autotoc_md23"></a>
 Strawtubes and SST</h3>
 <ul>
 <li>strawtubes detID is now 7-digit! (without plane number)</li>
@@ -297,7 +307,7 @@ Strawtubes and SST</h3>
 <li>Get rid of straw diameter dependency in scale factor</li>
 <li>Change SST gas mixture to Ar/CO2 80%/20% at 1 bar</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md19"></a>
+<h3><a class="anchor" id="autotoc_md24"></a>
 SND and MTC</h3>
 <ul>
 <li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
@@ -306,7 +316,7 @@ SND and MTC</h3>
 <li>Placement of <a class="el" href="classSiliconTarget.html">SiliconTarget</a> has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.</li>
 <li>Change EmulsionTarget detID decode function to tuple output</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md20"></a>
+<h3><a class="anchor" id="autotoc_md25"></a>
 Generators</h3>
 <ul>
 <li>Improve <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> geometry handling<ul>
@@ -325,13 +335,13 @@ Generators</h3>
 </li>
 <li>Particle Gun has been updated: now user can set the coordinates of the PG via keys &ndash;V{x,y,z} and use &ndash;D{x,y} to uniformly smear the signal in a given x and y range</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md21"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 Reconstruction</h3>
 <ul>
 <li>Assume all tracks are muons during track fit (avoid using MC truth)</li>
 <li>Reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md22"></a>
+<h3><a class="anchor" id="autotoc_md27"></a>
 Data Classes</h3>
 <ul>
 <li>Use value storage for both hits and clusters instead of pointer storage (splitcal)</li>
@@ -340,14 +350,14 @@ Data Classes</h3>
 <li>Move energy weights from Hit to Cluster, eliminating internal vectors (splitcal)</li>
 <li>Move MeanMaterialBudget to standalone function to reduce duplication and allow proper attribution of code to ALICE</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md23"></a>
+<h3><a class="anchor" id="autotoc_md28"></a>
 Build System and Dependencies</h3>
 <ul>
 <li>Use git-lfs to track ROOT files</li>
 <li>Allow using standalone TPythia for use with ROOT 6.32+</li>
 <li>FairShip is now licensed under LGPLv3+</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md24"></a>
+<h3><a class="anchor" id="autotoc_md29"></a>
 Code Quality and Maintenance</h3>
 <ul>
 <li>Consolidate basiclibs module into <a class="el" href="eventDisplay_8py.html">eventDisplay.py</a> as it was only used by that single script</li>
@@ -357,9 +367,9 @@ Code Quality and Maintenance</h3>
 <li>The decorators from <a class="el" href="decorators_8py.html">decorators.py</a> now need to be applied explicitly using the new <code>apply_decorators</code> function.</li>
 <li>The &ndash;debug flag to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> now controls the severity that FairLogger logs.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Fixed</h2>
-<h3><a class="anchor" id="autotoc_md26"></a>
+<h3><a class="anchor" id="autotoc_md31"></a>
 Geometry</h3>
 <ul>
 <li>Changes to g4config.in to ensure it works with newer versions of GEANT4</li>
@@ -372,7 +382,7 @@ Geometry</h3>
 <li>Fix splitcal strip dimensions and number of modules</li>
 <li>Fix: MTC geometry overlap</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md27"></a>
+<h3><a class="anchor" id="autotoc_md32"></a>
 Simulation and Generators</h3>
 <ul>
 <li>Fix <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> to ensure it works with newer versions of Pythia</li>
@@ -384,7 +394,7 @@ Simulation and Generators</h3>
 <li>Fix beam smearing: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
 <li>Fix EvtCalc crash due to string formatting</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md28"></a>
+<h3><a class="anchor" id="autotoc_md33"></a>
 MTC and SND</h3>
 <ul>
 <li>Correct extraction of SiPM channel positions in MTC</li>
@@ -395,7 +405,7 @@ MTC and SND</h3>
 <li>Fix the wrong methods in <a class="el" href="MTCDetPoint_8cxx.html">SND/MTC/MTCDetPoint.cxx</a> to extract layer_id and layer_type for the MCPoint.</li>
 <li>Use GetLayerType instead of GetStationType in <a class="el" href="classMTCDetector.html">MTCDetector</a></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md29"></a>
+<h3><a class="anchor" id="autotoc_md34"></a>
 Muon Shield and Field</h3>
 <ul>
 <li>The fieldmap offset was calibrated with the old version of MS (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
@@ -403,7 +413,7 @@ Muon Shield and Field</h3>
 <li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 <li>Changing paths to yaml files to more pythonic (<code>os.path.join()</code> now) (<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>)</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md30"></a>
+<h3><a class="anchor" id="autotoc_md35"></a>
 Data Classes and I/O</h3>
 <ul>
 <li>Make muonHit copy constructor public for std::vector compatibility</li>
@@ -411,12 +421,12 @@ Data Classes and I/O</h3>
 <li>Fix logic of SST digitisation (#662)</li>
 <li>Fix double append of recognized stracks</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md31"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 Event Display and Reconstruction</h3>
 <ul>
 <li>Fix event display crash caused by premature ROOT object initialization</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md32"></a>
+<h3><a class="anchor" id="autotoc_md37"></a>
 Build System</h3>
 <ul>
 <li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
@@ -424,7 +434,7 @@ Build System</h3>
 <li>Use standard library to expand env</li>
 <li>Autoload Pythia8 instead of manually loading in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md33"></a>
+<h3><a class="anchor" id="autotoc_md38"></a>
 Code Quality</h3>
 <ul>
 <li>Fix file endings</li>
@@ -433,19 +443,19 @@ Code Quality</h3>
 <li>Use lowercase FairLogger severities (uppercase ones are deprecated)</li>
 <li>Correct paths for default input files</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Removed</h2>
-<h3><a class="anchor" id="autotoc_md35"></a>
+<h3><a class="anchor" id="autotoc_md40"></a>
 Custom Utilities</h3>
 <ul>
 <li>Removed custom logger utilities (python/logger.py, utils/logger.hxx) in favour of Python's standard logging module</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md41"></a>
 Build System</h3>
 <ul>
 <li>Remove BOOST dependency from CMake build system - no longer required as ROOT 6 provides native serialisation</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md37"></a>
+<h3><a class="anchor" id="autotoc_md42"></a>
 Obsolete Detector Configurations</h3>
 <ul>
 <li>Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)</li>
@@ -461,7 +471,7 @@ Obsolete Detector Configurations</h3>
 <li>Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)</li>
 <li>Remove TP liquid scintillator variables</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md38"></a>
+<h3><a class="anchor" id="autotoc_md43"></a>
 Muon Shield</h3>
 <ul>
 <li>MS: Removed old options 7, 9, 10</li>
@@ -471,7 +481,7 @@ Muon Shield</h3>
 <li>MS: <a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
 <li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> remove &ndash;muShieldDesign flag</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md39"></a>
+<h3><a class="anchor" id="autotoc_md44"></a>
 Detector Components</h3>
 <ul>
 <li>Remove unused straw veto station</li>
@@ -483,7 +493,7 @@ Detector Components</h3>
 <li>Remove muon system</li>
 <li>Remove simpleTarget and personal study study_muEloss.py</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md40"></a>
+<h3><a class="anchor" id="autotoc_md45"></a>
 Obsolete Code</h3>
 <ul>
 <li>Remove unused, unrunnable shipPatRec_prev.py</li>
@@ -496,7 +506,7 @@ Obsolete Code</h3>
 <li>Remove TTCluster.py</li>
 <li>Remove pid class</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md41"></a>
+<h3><a class="anchor" id="autotoc_md46"></a>
 Build System</h3>
 <ul>
 <li>Remove unused files for FLUKA</li>
@@ -504,15 +514,15 @@ Build System</h3>
 <li>Remove globalDesigns dictionary from <a class="el" href="run__simScript_8py.html">run_simScript.py</a> and <a class="el" href="create__field__perturbation_8py.html">create_field_perturbation.py</a>, use inline defaults instead</li>
 <li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 25.01</h1>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Added</h2>
 <ul>
 <li>Add prototype of a new analysis toolkit in the <code>experimental</code> package.</li>
 <li>Add a simple analysis example script in the <code>examples/</code> directory.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Fixed</h2>
 <ul>
 <li>Use <code>ConstructedAt</code> and <code>std::swap</code> to replace removed pythonization for <code>TClonesArray</code>.</li>
@@ -523,7 +533,7 @@ Fixed</h2>
 <li>Fix drawing of Monte Carlo and geometry tracks in the event display.</li>
 <li>Replace outdated <code>AddressOf</code> ROOT function with <code>addressof</code> in the <code>field/</code> directory.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Changed</h2>
 <ul>
 <li>Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation <a href="https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf">here</a>.</li>
@@ -532,36 +542,36 @@ Changed</h2>
 <li>Disable track pruning (see #533).</li>
 <li>Accommodate generic N-body LLP decays in the EventCalc interface.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Removed</h2>
 <ul>
 <li>Remove Millepede.</li>
 <li>Remove the outdated <code>shipEvent_ex.py</code> example.</li>
 <li>Remove the ALPACA generator.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 24.11</h1>
 <p>This release follows the first round of breaking changes and is tagged for the launch of background simulations. It requires a CVMFS release of 24.10 or later.</p>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 Added</h2>
 <ul>
 <li>Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
 <li>Add a conversion script, <code><a class="el" href="convertEvtCalc_8py.html">FairShip/macro/convertEvtCalc.py</a></code>, to convert EventCalc's output kinematics to a format compatible with the simulation script.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Fixed</h2>
 <ul>
 <li>Add missing includes in <code>ecalMatch</code> and <code>ecalReco</code>.</li>
 <li>Fix compilation warnings for unused or uninitialized variables (see #481).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Changed</h2>
 <ul>
 <li>Migrate <code><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a></code> to use <code>argparse</code>.</li>
 <li>Update CMake to use an external <code>genfit2</code>.</li>
 <li>Ensure <code><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a></code>, <code><a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a></code>, and <code><a class="el" href="namespaceshipVertex.html">shipVertex</a></code> are compatible with the current version of <code>genfit</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete renaming scripts.</li>
@@ -571,10 +581,10 @@ Removed</h2>
 <li>Remove the bundled <code>genfit</code>.</li>
 <li>Remove the conditions database.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 24.10 - Freiburg</h1>
 <p>This release prepares for breaking changes and is the last to include charm cross-section measurement code and obsolete detector configurations.</p>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md58"></a>
 Added</h2>
 <ul>
 <li>Add an option for a helium-filled decay volume.</li>
@@ -586,7 +596,7 @@ Added</h2>
 <li>Add separate configuration files for vacuum and helium in the decay vessel.</li>
 <li>Add an option to enable or disable the SND.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 Fixed</h2>
 <ul>
 <li>Remove trailing whitespace and fix line endings.</li>
@@ -597,7 +607,7 @@ Fixed</h2>
 <li>Ensure the <code><a class="el" href="ShipReco_8py.html">ShipReco.py</a></code> output file is closed correctly.</li>
 <li>Remove an unused argument for <code><a class="el" href="classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4">MuDISGenerator::SetPositions</a></code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md60"></a>
 Changed</h2>
 <ul>
 <li>Update the <code><a class="el" href="namespacegetGeoInformation.html">getGeoInformation</a></code> command-line interface.</li>
@@ -611,7 +621,7 @@ Changed</h2>
 <li>Use <code>find_package</code> to find Boost.</li>
 <li>Set the FairLogger dependency instead of using manual includes.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md56"></a>
+<h2><a class="anchor" id="autotoc_md61"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete installation and testing files.</li>

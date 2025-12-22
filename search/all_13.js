@@ -56,7 +56,7 @@ var searchData=
   ['phi_53',['phi',['../namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3',1,'makeMuonDIS']]],
   ['phi_5f_54',['phi_',['../structShipFieldMaker_1_1transformInfo.html#a685fb2207223e45ff16199c21e45d073',1,'ShipFieldMaker::transformInfo::phi_'],['../classShipBFieldMap.html#adb382221b8f751522035674bbc15a340',1,'ShipBFieldMap::phi_']]],
   ['photoncollision_55',['PhotonCollision',['../classFixedTargetGenerator.html#a3c8a1ece10b7c2aa4af76842eb19cbce',1,'FixedTargetGenerator']]],
-  ['physics_20and_20simulation_56',['physics and simulation',['../md_CHANGELOG.html#autotoc_md12',1,'Physics and Simulation'],['../md_CHANGELOG.html#autotoc_md3',1,'Physics and Simulation']]],
+  ['physics_20and_20simulation_56',['physics and simulation',['../md_CHANGELOG.html#autotoc_md17',1,'Physics and Simulation'],['../md_CHANGELOG.html#autotoc_md8',1,'Physics and Simulation']]],
   ['physlist_57',['physlist',['../namespaceg4Ex.html#a18e42763458a6c08c4947663991fa8b7',1,'g4Ex.physList'],['../namespaceg4Ex__args.html#ab6b094f53d0cc08e12518d09c07fb940',1,'g4Ex_args.physList']]],
   ['pi_58',['pi',['../namespaceshipunit.html#a71ef8a10dfad433ae7dbd75e540c7083',1,'shipunit.pi'],['../namespacehepunit.html#a472221173b87c7c34ea22a3bd8564eeb',1,'hepunit.pi']]],
   ['pi0mass_59',['pi0mass',['../namespacepythia8darkphoton__conf.html#a30ec2a38b1c060549969ba2c6703c113',1,'pythia8darkphoton_conf']]],
