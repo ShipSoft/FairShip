@@ -1,6 +1,6 @@
 # FairShip
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![.github/workflows/build-run.yml](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![.github/workflows/build-run.yml](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020629.svg)](https://doi.org/10.5281/zenodo.18020629)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of contents**
