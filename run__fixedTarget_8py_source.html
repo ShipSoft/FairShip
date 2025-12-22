@@ -368,113 +368,114 @@ $(document).ready(function(){initNavTree('run__fixedTarget_8py_source.html','');
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>primGen.AddGenerator(P8gen)</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">#</span></div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>run.Init()</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">  273</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8b3958f41a9355cc2ab1476704f2a57a">  274</a></span>fStack = gMC.GetStack()</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>fStack.SetMinPoints(1)</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>fStack.SetEnergyCut(-1.)</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">#</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><a class="code hl_function" href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"># boost gamma2muon conversion</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="keywordflow">if</span> args.boostFactor &gt; 1:</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3f5a459d05255f9750f0c2702c91d797">  286</a></span>    gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3ba880960fbeb4e7f53ff21552681253">  287</a></span>    procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad6ca6f36ed32945c8895a26fc6d8853b">  288</a></span>    procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    procGMuPair.SetCrossSecFactor(args.boostFactor)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>run.Init()</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">  274</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8b3958f41a9355cc2ab1476704f2a57a">  275</a></span>fStack = gMC.GetStack()</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>fStack.SetMinPoints(1)</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>fStack.SetEnergyCut(-1.)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">#</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><a class="code hl_function" href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment"># boost gamma2muon conversion</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="keywordflow">if</span> args.boostFactor &gt; 1:</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3f5a459d05255f9750f0c2702c91d797">  287</a></span>    gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3ba880960fbeb4e7f53ff21552681253">  288</a></span>    procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad6ca6f36ed32945c8895a26fc6d8853b">  289</a></span>    procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    procAnnihil.SetCrossSecFactor(args.boostFactor)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>run.Run(args.nev)</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>timer.Stop()</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a377f1147cada3a57c93399ababf6e9bb">  297</a></span>rtime = timer.RealTime()</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8dcf429ee35cfb45c4d1bb5bbf5d74fb">  298</a></span>ctime = timer.CpuTime()</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>print(f<span class="stringliteral">&quot;Output file is {outFile}&quot;</span>)</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>print(f<span class="stringliteral">&quot;Real time {rtime} s, CPU time {ctime} s&quot;</span>)</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a4bae912e73b74a6d75fa0ff9f485e1c1">  304</a></span>tmpFile = outFile + <span class="stringliteral">&quot;tmp&quot;</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="keywordflow">if</span> ROOT.gROOT.GetListOfFiles().GetEntries() &gt; 0:</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  306</a></span>    fin = ROOT.gROOT.GetListOfFiles()[0]</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    fin = ROOT.TFile.Open(outFile)</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4">  309</a></span>fHeader = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>]</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>fHeader.SetRunId(args.runnr)</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="keywordflow">if</span> args.charm <span class="keywordflow">or</span> args.beauty:</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <span class="comment"># normalization for charm</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4">  313</a></span>    poteq = P8gen.GetPotForCharm()</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">  314</a></span>    info = <span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq)</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    info = f<span class="stringliteral">&quot;POT = {args.nev}&quot;</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a62a9948af399f795f01daab99f043429">  318</a></span>conditions = <span class="stringliteral">&quot; with ecut=&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.ecut)</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keywordflow">if</span> args.JpsiMainly: conditions += <span class="stringliteral">&quot; J&quot;</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="keywordflow">if</span> args.tauOnly:    conditions += <span class="stringliteral">&quot; T&quot;</span></div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="keywordflow">if</span> withEvtGen: conditions += <span class="stringliteral">&quot; V&quot;</span></div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keywordflow">if</span> args.boostDiMuon &gt; 1: conditions += <span class="stringliteral">&quot; diMu&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostDiMuon)</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="keywordflow">if</span> args.boostFactor &gt; 1: conditions += <span class="stringliteral">&quot; X&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostFactor)</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>info += conditions</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>fHeader.SetTitle(info)</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>print(f<span class="stringliteral">&quot;Data generated {fHeader.GetTitle()}&quot;</span>)</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95">  329</a></span>nt = fin.Get(<span class="stringliteral">&quot;4DP&quot;</span>)</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="keywordflow">if</span> nt:</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    nt = fin[<span class="stringliteral">&quot;4DP&quot;</span>]</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a88c2881ae5560e00e9d2f1a3662f992f">  332</a></span>    tf = ROOT.TFile(<span class="stringliteral">&#39;FourDP.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8c4fa759e68132c5a6896a17a4990205">  333</a></span>    tnt = nt.CloneTree(0)</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nt.GetEntries()):</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0c6e1d5540b535413850b214f3d1fd40">  335</a></span>        rc = nt.GetEvent(i)</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>        rc = tnt.Fill(nt.id, nt.px, nt.py, nt.pz, nt.x, nt.y, nt.z)</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    tnt.Write()</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    tf.Close()</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">  340</a></span>t = fin[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6376fe83a15eb0340f4c7576008e11da">  341</a></span>fout  = ROOT.TFile(tmpFile, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a121ee77eefea42758a993374b2aa16ad">  342</a></span>sTree = t.CloneTree(0)</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3">  343</a></span>nEvents = 0</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    rc = t.GetEvent(n)</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">if</span> (len(t.PlaneHAPoint) &gt; 0) <span class="keywordflow">or</span> (args.AddCylindricalSensPlane <span class="keywordflow">and</span> len(t.PlaneTPoint) &gt; 0):</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        rc = sTree.Fill()</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        nEvents += 1</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>fout.cd()</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  351</a></span>    x = fin.Get(k.GetName())</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  352</a></span>    className = x.Class().GetName()</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>) &lt; 0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>) &lt; 0:</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  354</a></span>        xcopy = x.Clone()</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        rc = xcopy.Write()</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>sTree.AutoSave()</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  357</a></span>ff = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>].Clone(fout.GetName())</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>fout.cd()</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>sTree.Write()</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>fout.Close()</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  363</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  364</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>, rc1, rc2)</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>print(f<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber: {nEvents}&quot;</span>)</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="keywordflow">if</span> checkOverlap:</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  371</a></span>    sGeo = ROOT.gGeoManager</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    sGeo.CheckOverlaps()</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    sGeo.PrintOverlaps()</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keyword">import</span> saveBasicParameters</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir), ship_geo)</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    procGMuPair.SetCrossSecFactor(args.boostFactor)</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>run.Run(args.nev)</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>timer.Stop()</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a377f1147cada3a57c93399ababf6e9bb">  298</a></span>rtime = timer.RealTime()</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8dcf429ee35cfb45c4d1bb5bbf5d74fb">  299</a></span>ctime = timer.CpuTime()</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>print(f<span class="stringliteral">&quot;Output file is {outFile}&quot;</span>)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>print(f<span class="stringliteral">&quot;Real time {rtime} s, CPU time {ctime} s&quot;</span>)</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a4bae912e73b74a6d75fa0ff9f485e1c1">  305</a></span>tmpFile = outFile + <span class="stringliteral">&quot;tmp&quot;</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="keywordflow">if</span> ROOT.gROOT.GetListOfFiles().GetEntries() &gt; 0:</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  307</a></span>    fin = ROOT.gROOT.GetListOfFiles()[0]</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    fin = ROOT.TFile.Open(outFile)</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4">  310</a></span>fHeader = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>]</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>fHeader.SetRunId(args.runnr)</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="keywordflow">if</span> args.charm <span class="keywordflow">or</span> args.beauty:</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="comment"># normalization for charm</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4">  314</a></span>    poteq = P8gen.GetPotForCharm()</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">  315</a></span>    info = <span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq)</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    info = f<span class="stringliteral">&quot;POT = {args.nev}&quot;</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a62a9948af399f795f01daab99f043429">  319</a></span>conditions = <span class="stringliteral">&quot; with ecut=&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.ecut)</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="keywordflow">if</span> args.JpsiMainly: conditions += <span class="stringliteral">&quot; J&quot;</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="keywordflow">if</span> args.tauOnly:    conditions += <span class="stringliteral">&quot; T&quot;</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keywordflow">if</span> withEvtGen: conditions += <span class="stringliteral">&quot; V&quot;</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="keywordflow">if</span> args.boostDiMuon &gt; 1: conditions += <span class="stringliteral">&quot; diMu&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostDiMuon)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="keywordflow">if</span> args.boostFactor &gt; 1: conditions += <span class="stringliteral">&quot; X&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostFactor)</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>info += conditions</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>fHeader.SetTitle(info)</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>print(f<span class="stringliteral">&quot;Data generated {fHeader.GetTitle()}&quot;</span>)</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95">  330</a></span>nt = fin.Get(<span class="stringliteral">&quot;4DP&quot;</span>)</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="keywordflow">if</span> nt:</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    nt = fin[<span class="stringliteral">&quot;4DP&quot;</span>]</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a88c2881ae5560e00e9d2f1a3662f992f">  333</a></span>    tf = ROOT.TFile(<span class="stringliteral">&#39;FourDP.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8c4fa759e68132c5a6896a17a4990205">  334</a></span>    tnt = nt.CloneTree(0)</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nt.GetEntries()):</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0c6e1d5540b535413850b214f3d1fd40">  336</a></span>        rc = nt.GetEvent(i)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        rc = tnt.Fill(nt.id, nt.px, nt.py, nt.pz, nt.x, nt.y, nt.z)</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    tnt.Write()</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    tf.Close()</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">  341</a></span>t = fin[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6376fe83a15eb0340f4c7576008e11da">  342</a></span>fout  = ROOT.TFile(tmpFile, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a121ee77eefea42758a993374b2aa16ad">  343</a></span>sTree = t.CloneTree(0)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3">  344</a></span>nEvents = 0</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    rc = t.GetEvent(n)</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="keywordflow">if</span> (len(t.PlaneHAPoint) &gt; 0) <span class="keywordflow">or</span> (args.AddCylindricalSensPlane <span class="keywordflow">and</span> len(t.PlaneTPoint) &gt; 0):</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        rc = sTree.Fill()</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        nEvents += 1</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>fout.cd()</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  352</a></span>    x = fin.Get(k.GetName())</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  353</a></span>    className = x.Class().GetName()</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>) &lt; 0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>) &lt; 0:</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  355</a></span>        xcopy = x.Clone()</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        rc = xcopy.Write()</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>sTree.AutoSave()</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  358</a></span>ff = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>].Clone(fout.GetName())</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>fout.cd()</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>sTree.Write()</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>fout.Close()</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  364</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  365</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>, rc1, rc2)</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>print(f<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber: {nEvents}&quot;</span>)</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="keywordflow">if</span> checkOverlap:</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  372</a></span>    sGeo = ROOT.gGeoManager</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    sGeo.CheckOverlaps()</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    sGeo.PrintOverlaps()</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keyword">import</span> saveBasicParameters</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir), ship_geo)</div>
 <div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a3fdf0d174d3eccaaa0e4daa18e8c8119"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">Initialize(p8)</div><div class="ttdef"><b>Definition</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00009">AddDiMuonDecayChannelsToG4.py:9</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00231">geometry_config.py:241</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_adfab540557e98157435b5bf6dd57d3fd"><div class="ttname"><a href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">run_fixedTarget.get_work_dir</a></div><div class="ttdeci">get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00033">run_fixedTarget.py:33</a></div></div>
