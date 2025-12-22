@@ -97,6 +97,7 @@ it in future.
 
 ### Fixed
 
+* Changes to g4config.in to ensure it works with newer versions of GEANT4
 * refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor
 * fix(splitcal): Move energy weights from Hit to Cluster, eliminating internal vectors
 + Fix FixedTargetGenerator to ensure it works with newer versions of Pythia
