@@ -105,9 +105,9 @@ class DPPythia8Generator : public FairGenerator {
   Bool_t fdy;        // flag to do Drell-Yan QCD production
   Double_t fDPminM;  // Minimum mass, in GeV, for the DP produced in ffbar to DP
                      // QCD production.
-  Double_t fLmin;   // m minimum  decay position z
-  Double_t fLmax;   // m maximum decay position z
-  Int_t fnRetries;  // number of events without any DP
+  Double_t fLmin;    // m minimum  decay position z
+  Double_t fLmax;    // m maximum decay position z
+  Int_t fnRetries;   // number of events without any DP
   Int_t fnDPtot;  // total number of DP from multiple mesons in single collision
   Double_t fctau;  // dark photon lifetime
   Double_t fFDs;   // correction for Pythia6 to match measured Ds production
