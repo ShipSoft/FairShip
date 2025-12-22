@@ -1,54 +1,51 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #include "strawtubesContFact.h"
-#include "FairRuntimeDb.h"
 
 #include <iostream>
 
+#include "FairRuntimeDb.h"
 
 // static strawtubesContFact gstrawtubesContFact;
 
-strawtubesContFact::strawtubesContFact()
-  : FairContFact()
-{
+strawtubesContFact::strawtubesContFact() : FairContFact() {
   /** Constructor (called when the library is loaded) */
-  fName="strawtubesContFact";
-  fTitle="Factory for parameter containers in libstrawtubes";
+  fName = "strawtubesContFact";
+  fTitle = "Factory for parameter containers in libstrawtubes";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void strawtubesContFact::setAllContainers()
-{
+void strawtubesContFact::setAllContainers() {
   /** Creates the Container objects with all accepted
       contexts and adds them to
       the list of containers for the strawtubes library.
   */
-/*
-  FairContainer* p= new FairContainer("strawtubesGeoPar",
-                                      "strawtubes Geometry Parameters",
-                                      "TestDefaultContext");
-  p->addContext("TestNonDefaultContext");
+  /*
+    FairContainer* p= new FairContainer("strawtubesGeoPar",
+                                        "strawtubes Geometry Parameters",
+                                        "TestDefaultContext");
+    p->addContext("TestNonDefaultContext");
 
-  containers->Add(p);
-*/
- }
+    containers->Add(p);
+  */
+}
 
-FairParSet* strawtubesContFact::createContainer(FairContainer* c)
-{
-    /** Calls the constructor of the corresponding parameter container.
-        For an actual context, which is not an empty string and not
-        the default context
-        of this container, the name is concatenated with the context.
-    */
-    /* const char* name=c->GetName();
-     FairParSet* p=NULL;
-     if (strcmp(name,"strawtubesGeoPar")==0) {
-       p=new strawtubesGeoPar(c->getConcatName().Data(),
-                               c->GetTitle(),c->getContext());
-     }
-     return p;
-   */
-    return 0;
-  }
+FairParSet* strawtubesContFact::createContainer(FairContainer* c) {
+  /** Calls the constructor of the corresponding parameter container.
+      For an actual context, which is not an empty string and not
+      the default context
+      of this container, the name is concatenated with the context.
+  */
+  /* const char* name=c->GetName();
+   FairParSet* p=NULL;
+   if (strcmp(name,"strawtubesGeoPar")==0) {
+     p=new strawtubesGeoPar(c->getConcatName().Data(),
+                             c->GetTitle(),c->getContext());
+   }
+   return p;
+ */
+  return 0;
+}

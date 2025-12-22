@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 // -------------------------------------------------------------------------
 // -----                    ShipFieldCreator header file                  -----
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
-
 
 #ifndef FIELD_SHIPFIELDCREATOR_H_
 #define FIELD_SHIPFIELDCREATOR_H_
@@ -16,15 +16,13 @@ class ShipFieldPar;
 
 class FairField;
 
-class ShipFieldCreator : public FairFieldFactory
-{
-
+class ShipFieldCreator : public FairFieldFactory {
  public:
   ShipFieldCreator();
   virtual ~ShipFieldCreator();
   virtual FairField* createFairField();
   virtual void SetParm();
-  ClassDef(ShipFieldCreator,1);
+  ClassDef(ShipFieldCreator, 1);
 
  protected:
   ShipFieldPar* fFieldPar;
@@ -32,6 +30,5 @@ class ShipFieldCreator : public FairFieldFactory
  private:
   ShipFieldCreator(const ShipFieldCreator&);
   ShipFieldCreator& operator=(const ShipFieldCreator&);
-
 };
 #endif  // FIELD_SHIPFIELDCREATOR_H_

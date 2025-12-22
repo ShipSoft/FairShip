@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #include "strawtubesHit.h"
+
+#include <math.h>
+
+#include <iostream>
+#include <tuple>
 
 #include "FairLogger.h"
 #include "FairRun.h"
@@ -14,85 +20,72 @@
 #include "TRandom3.h"
 #include "TVector3.h"
 #include "strawtubes.h"
-
-#include <iostream>
-#include <math.h>
-#include <tuple>
 using std::cout;
 using std::endl;
 
-Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
+Double_t speedOfLight =
+    TMath::C() * 100. / 1000000000.0;  // from m/sec to cm/ns
 // -----   Default constructor   -------------------------------------------
-strawtubesHit::strawtubesHit()
-  : ShipHit()
-{
- flag = true;
-}
+strawtubesHit::strawtubesHit() : ShipHit() { flag = true; }
 // -----   Standard constructor   ------------------------------------------
-strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
-  : ShipHit(detID,tdc)
-{
- flag = true;
+strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {
+  flag = true;
 }
-// -----   constructor from strawtubesPoint   ------------------------------------------
-strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
-  : ShipHit()
-{
-    TVector3 start = TVector3();
-    TVector3 stop = TVector3();
-    fDetectorID = p->GetDetectorID();
-    strawtubes* module =
-        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("strawtubes"));
-    Double_t v_drift = module->StrawVdrift();
-    Double_t sigma_spatial = module->StrawSigmaSpatial();
-    strawtubes::StrawEndPoints(fDetectorID, start, stop);
-    Double_t t_drift = fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
-    fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
-    flag = true;
+// -----   constructor from strawtubesPoint
+// ------------------------------------------
+strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0) : ShipHit() {
+  TVector3 start = TVector3();
+  TVector3 stop = TVector3();
+  fDetectorID = p->GetDetectorID();
+  strawtubes* module = dynamic_cast<strawtubes*>(
+      FairRunSim::Instance()->GetListOfModules()->FindObject("strawtubes"));
+  Double_t v_drift = module->StrawVdrift();
+  Double_t sigma_spatial = module->StrawSigmaSpatial();
+  strawtubes::StrawEndPoints(fDetectorID, start, stop);
+  Double_t t_drift =
+      fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
+  fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
+  flag = true;
 }
 
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-strawtubesHit::~strawtubesHit() { }
+strawtubesHit::~strawtubesHit() {}
 // -------------------------------------------------------------------------
 
-Int_t strawtubesHit::GetStationNumber() const
-{
-    Int_t detID = GetDetectorID();
-    const auto decode = strawtubes::StrawDecode(detID);
+Int_t strawtubesHit::GetStationNumber() const {
+  Int_t detID = GetDetectorID();
+  const auto decode = strawtubes::StrawDecode(detID);
 
-    return std::get<0>(decode);
+  return std::get<0>(decode);
 }
 
-Int_t strawtubesHit::GetViewNumber() const
-{
-    Int_t detID = GetDetectorID();
-    const auto decode = strawtubes::StrawDecode(detID);
+Int_t strawtubesHit::GetViewNumber() const {
+  Int_t detID = GetDetectorID();
+  const auto decode = strawtubes::StrawDecode(detID);
 
-    return std::get<1>(decode);
+  return std::get<1>(decode);
 }
 
-Int_t strawtubesHit::GetLayerNumber() const
-{
-    Int_t detID = GetDetectorID();
-    const auto decode = strawtubes::StrawDecode(detID);
+Int_t strawtubesHit::GetLayerNumber() const {
+  Int_t detID = GetDetectorID();
+  const auto decode = strawtubes::StrawDecode(detID);
 
-    return std::get<2>(decode);
+  return std::get<2>(decode);
 }
 
-Int_t strawtubesHit::GetStrawNumber() const
-{
-    Int_t detID = GetDetectorID();
-    const auto decode = strawtubes::StrawDecode(detID);
+Int_t strawtubesHit::GetStrawNumber() const {
+  Int_t detID = GetDetectorID();
+  const auto decode = strawtubes::StrawDecode(detID);
 
-    return std::get<3>(decode);
+  return std::get<3>(decode);
 }
 
 // -----   Public method Print   -------------------------------------------
-void strawtubesHit::Print() const
-{
-  cout << "-I- strawtubesHit: strawtubes hit " << " in detector " << fDetectorID << endl;
+void strawtubesHit::Print() const {
+  cout << "-I- strawtubesHit: strawtubes hit " << " in detector " << fDetectorID
+       << endl;
   cout << "  TDC " << fdigi << " ns" << endl;
 }
 // -------------------------------------------------------------------------

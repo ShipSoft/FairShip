@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 // -------------------------------------------------------------------------
 // -----                    ShipBellField header file                  -----
 // -----                Created 25/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
-
 
 /** ShipBellField.h
  ** @author M.Al-Turany <m.al/turany@gsi.de>
@@ -16,25 +16,17 @@
  ** Bpeak/(1+abs((z-zmiddle)/2.1)**6)
  **/
 
-
 #ifndef FIELD_SHIPBELLFIELD_H_
 #define FIELD_SHIPBELLFIELD_H_ 1
 
-
 #include "FairField.h"
-
 
 class ShipFieldPar;
 
-
-class ShipBellField : public FairField
-{
-
+class ShipBellField : public FairField {
  public:
-
   /** Default constructor **/
   ShipBellField();
-
 
   /** Standard constructor
    ** @param name   Object name
@@ -42,16 +34,14 @@ class ShipBellField : public FairField
    ** @param Zmiddle     middle of the magnet (global coordinates)
    ** @param Btube      largest radius of the tube ellips (inside)
    **/
-  explicit ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1, Double_t Btube=500. );
-
+  explicit ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,
+                         Int_t fOrient = 1, Double_t Btube = 500.);
 
   /** Constructor from ShipFieldPar **/
   explicit ShipBellField(ShipFieldPar* fieldPar);
 
-
   /** Destructor **/
   virtual ~ShipBellField();
-
 
   /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
@@ -65,9 +55,7 @@ class ShipBellField : public FairField
   /** Screen output **/
   virtual void Print();
 
-
  private:
-
   /** Field parameters **/
   Double_t fPeak;
   Double_t fMiddle;
@@ -79,8 +67,6 @@ class ShipBellField : public FairField
   Double_t targetL;
 
   ClassDef(ShipBellField, 2);
-
 };
-
 
 #endif  // FIELD_SHIPBELLFIELD_H_
