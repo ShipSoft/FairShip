@@ -14,6 +14,16 @@ it in future.
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+## 25.12 - 2025-12-22
+
+### Added
+
 #### Physics and Simulation
 
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
