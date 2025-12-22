@@ -14,6 +14,9 @@ it in future.
 
 ### Changed
 
+* **Target station geometry updated with nested volume approach**
+  Implemented tantalum cladding (1.5mm) around tungsten target layers using nested volumes instead of separate shell and disc volumes. This reduces geometry complexity from 4N to 2N volumes per N layers, eliminates overlaps between layers, and improves GEANT4 navigation efficiency. Updated vessel dimensions (inner diameter semantics, 62mm lid distance) and steel enclosure thickness (66.9mm) to match BDF Fluka model. Tantalum density updated to 16.7 g/cm³.
+
 * Consolidate basiclibs module into eventDisplay.py as it was only used by that single script
 
 * **Migrate detector MC point storage from TClonesArray to std::vector**
