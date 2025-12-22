@@ -267,6 +267,7 @@ if args.charm or args.beauty:
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
+
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -286,8 +287,8 @@ if args.boostFactor > 1:
     gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
     procAnnihil = gProcessTable.FindProcess(ROOT.G4String('AnnihiToMuPair'), ROOT.G4String('e+'))
     procGMuPair = gProcessTable.FindProcess(ROOT.G4String('GammaToMuPair'), ROOT.G4String('gamma'))
-    procGMuPair.SetCrossSecFactor(args.boostFactor)
     procAnnihil.SetCrossSecFactor(args.boostFactor)
+    procGMuPair.SetCrossSecFactor(args.boostFactor)
 
 # -----Start run----------------------------------------------------
 run.Run(args.nev)
