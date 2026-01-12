@@ -1,9 +1,11 @@
 <map id="exitHadronAbsorber" name="exitHadronAbsorber">
-<area shape="rect" id="Node000001" title=" " alt="" coords="115,108,267,133"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="205,108,357,133"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,5,107,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,37,177,106,174,110,81,41"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="131,5,250,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,45,193,108,188,108,188,45"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="275,5,328,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="284,43,240,86,209,110,206,106,237,82,280,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,34,257,106,255,110,93,39"/>
+<area shape="rect" id="Node000003" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="131,5,277,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,40,275,106,270,110,219,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="301,5,419,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="345,43,292,110,288,106,340,40"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="444,5,497,31"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="447,42,415,64,379,86,320,110,318,105,376,82,412,60,444,37"/>
 </map>

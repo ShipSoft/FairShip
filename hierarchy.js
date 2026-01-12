@@ -131,6 +131,7 @@ var hierarchy =
       [ "TargetTracker", "classTargetTracker.html", null ],
       [ "TimeDet", "classTimeDet.html", null ],
       [ "UpstreamTagger", "classUpstreamTagger.html", null ],
+      [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
       [ "splitcal", "classsplitcal.html", null ],
       [ "strawtubes", "classstrawtubes.html", null ],
       [ "veto", "classveto.html", null ]
