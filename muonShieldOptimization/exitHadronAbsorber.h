@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 #include "TFile.h"
 #include "TGeoVolume.h"
 #include "TLorentzVector.h"
@@ -18,7 +19,7 @@
 
 class FairVolume;
 
-class exitHadronAbsorber : public FairDetector {
+class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
  public:
   /**      Name :  Detector Name
    *       Active: kTRUE for active detectors (ProcessHits() will be called)

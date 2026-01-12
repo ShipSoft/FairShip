@@ -24,6 +24,7 @@ set(LIBRARY_NAME ShipMuonShieldBackground)
 set(DEPENDENCIES
     Base
     veto
+    ShipData
     GeoBase
     ParBase
     Geom
