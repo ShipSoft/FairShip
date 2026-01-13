@@ -89,12 +89,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     fUniqueID = p->GetUniqueID();
     Int_t pdgCode = p->GetPdgCode();
+    Int_t idabs = TMath::Abs(pdgCode);
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode) != 13)) {
+    if (!(fOnlyMuons && idabs != 13)) {
       fTime = gMC->TrackTime() * 1.0e09;
       fLength = gMC->TrackLength();
       gMC->TrackPosition(fPos);
-      if ((fMom.E() - fMom.M()) > EMax) {
+      if ( ((fMom.E() - fMom.M()) > EMax) || (idabs == 12 || idabs == 14 || idabs == 16) ) {
         AddHit(fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
                pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
@@ -185,15 +186,18 @@ void exitHadronAbsorber::EndOfEvent() {
 
 void exitHadronAbsorber::PreTrack() {
   gMC->TrackMomentum(fMom);
-  if ((fMom.E() - fMom.M()) < EMax) {
+
+  TParticle* p = gMC->GetStack()->GetCurrentTrack();
+  Int_t pdgCode = p->GetPdgCode();
+  Int_t idabs = TMath::Abs(pdgCode);
+
+  if (((fMom.E() - fMom.M()) < EMax) && (idabs != 12) && (idabs != 14) && (idabs != 16)) {
     gMC->StopTrack();
     return;
   }
-  TParticle* p = gMC->GetStack()->GetCurrentTrack();
-  Int_t pdgCode = p->GetPdgCode();
+
   // record statistics for neutrinos, electrons and photons
   // add pi0 111 eta 221 eta' 331  omega 223
-  Int_t idabs = TMath::Abs(pdgCode);
   if (idabs < 18 || idabs == 22 || idabs == 111 || idabs == 221 ||
       idabs == 223 || idabs == 331 || idabs == 211 || idabs == 321 ||
       idabs == 2212) {

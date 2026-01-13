@@ -473,13 +473,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t m = fPythia->event[ii].m();
     Double_t pz = fPythia->event[ii].pz();
     Int_t id = fPythia->event[ii].id();
+    Int_t absid = fabs(id);
     Bool_t wanttracking = kTRUE;
-    if (e - m < EMax || !fPythia->event[ii].isFinal() || pz < 0) {
+    if (((e - m < EMax) && (absid != 12) && (absid != 14) && (absid != 16)) || !fPythia->event[ii].isFinal() || pz < 0) {
       wanttracking = kFALSE;
     }
     if (DrellYan || PhotonCollision || OnlyMuons) {
       // don't track underlying event
-      if (fabs(id) != 13) {
+      if (absid != 13) {
         wanttracking = kFALSE;
       }
     }
