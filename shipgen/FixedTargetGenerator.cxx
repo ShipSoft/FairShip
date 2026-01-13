@@ -475,7 +475,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Int_t id = fPythia->event[ii].id();
     Int_t absid = fabs(id);
     Bool_t wanttracking = kTRUE;
-    if (((e - m < EMax) && (absid != 12) && (absid != 14) && (absid != 16)) || !fPythia->event[ii].isFinal() || pz < 0) {
+    if (((e - m < EMax) && (absid != 12) && (absid != 14) && (absid != 16)) ||
+        !fPythia->event[ii].isFinal() || pz < 0) {
       wanttracking = kFALSE;
     }
     if (DrellYan || PhotonCollision || OnlyMuons) {

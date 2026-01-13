@@ -95,7 +95,8 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       fTime = gMC->TrackTime() * 1.0e09;
       fLength = gMC->TrackLength();
       gMC->TrackPosition(fPos);
-      if ( ((fMom.E() - fMom.M()) > EMax) || (idabs == 12 || idabs == 14 || idabs == 16) ) {
+      if (((fMom.E() - fMom.M()) > EMax) ||
+          (idabs == 12 || idabs == 14 || idabs == 16)) {
         AddHit(fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
                pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
@@ -191,7 +192,8 @@ void exitHadronAbsorber::PreTrack() {
   Int_t pdgCode = p->GetPdgCode();
   Int_t idabs = TMath::Abs(pdgCode);
 
-  if (((fMom.E() - fMom.M()) < EMax) && (idabs != 12) && (idabs != 14) && (idabs != 16)) {
+  if (((fMom.E() - fMom.M()) < EMax) && (idabs != 12) && (idabs != 14) &&
+      (idabs != 16)) {
     gMC->StopTrack();
     return;
   }
