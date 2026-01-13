@@ -18,6 +18,7 @@ it in future.
 
 ### Fixed
 
++ Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
 
 ### Removed
