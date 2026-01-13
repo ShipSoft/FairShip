@@ -344,7 +344,7 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if (len(t.PlaneHAPoint) > 0) or (args.AddCylindricalSensPlane and len(t.PlaneTPoint) > 0):
+    if (len(t.PlaneHAPoint) > 0) or (args.AddCylindricalSensPlane and len(t.PlaneTPoint) > 0) or (args.AddPostTargetSensPlane and len(t.PlanePostTPoint) > 0):
         rc = sTree.Fill()
         nEvents += 1
 fout.cd()
