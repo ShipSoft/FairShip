@@ -21,7 +21,7 @@ endforeach()
 
 # Set name of our project to "ShipRoot". Has to be done after check of cmake
 # version since this is a new feature
-project(ShipRoot)
+project(FairShip LANGUAGES CXX)
 
 find_path(
   FAIRBASE
