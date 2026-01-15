@@ -84,38 +84,38 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer
+          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer --tag ci-test
 
       - name: Overlap check
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/python/experimental/check_overlaps.py --geofile geofile_full.conical.Pythia8-TGeant4.root | tee log
+          python $FAIRSHIP/python/experimental/check_overlaps.py --geofile geo_ci-test.root | tee log
           ! grep "Overlap" log
 
       - name: Geo information
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/getGeoInformation.py --geometry geofile_full.conical.Pythia8-TGeant4.root --level 2
+          python $FAIRSHIP/macro/getGeoInformation.py --geometry geo_ci-test.root --level 2
 
       - name: Run Reco
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root --Debug
+          python $FAIRSHIP/macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --Debug
 
       - name: Run Ana
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+          python $FAIRSHIP/macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root
 
       - name: Run examples
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/examples/analysis_example.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+          python $FAIRSHIP/examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root
 
       # - name: Extract physics metrics
       #   run: |

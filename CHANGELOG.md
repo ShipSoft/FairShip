@@ -16,6 +16,9 @@ it in future.
 
 ### Changed
 
+
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+
 ### Fixed
 
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
