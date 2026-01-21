@@ -139,25 +139,26 @@ alienv enter FairShip/latest
 Now you can for example simulate some events, run reconstruction and analysis:
 
 ```bash
-python $FAIRSHIP/macro/run_simScript.py
+python $FAIRSHIP/macro/run_simScript.py --tag my-simulation
 >> [...]
 >> Macro finished successfully.
 >> [...]
->> Output file is  ./ship.conical.Pythia8-TGeant4.root
+>> Output file is  sim_my-simulation.root
+>> Geometry file is geo_my-simulation.root
 >> [...]
 
-python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
+python $FAIRSHIP/macro/ShipReco.py -f sim_my-simulation.root -g geo_my-simulation.root
 >> [...]
 >> finished writing tree
 >> Exit normally
->> (This creates ship.conical.Pythia8-TGeant4_rec.root with digitisation and reconstruction data)
+>> (This creates sim_my-simulation_rec.root with digitisation and reconstruction data)
 
-python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/ShipAna.py -f sim_my-simulation.root -r sim_my-simulation_rec.root -g geo_my-simulation.root
 >> finished making plots
 >> Exit normally
 ```
 
-**Note**: ShipReco now creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
+**Note**: Simulation output files use the naming convention `{sim,geo,params}_{identifier}.root`, where the identifier is either a UUID (auto-generated) or a custom tag specified with `--tag`. ShipReco creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
 
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
@@ -174,7 +175,7 @@ python $FAIRSHIP/macro/run_simScript.py --evtcalc -n 1 -o test_folder -f test_fo
 Run the event display:
 
 ```bash
-python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/eventDisplay.py -f sim_my-simulation.root -r sim_my-simulation_rec.root -g geo_my-simulation.root
 // use SHiP Event Display GUI
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```

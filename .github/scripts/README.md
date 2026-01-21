@@ -48,9 +48,9 @@ The configuration file controls what metrics are extracted and comparison tolera
 files:
   # ROOT files to process
   process:
-    - ship.conical.Pythia8-TGeant4.root
-    - ship.conical.Pythia8-TGeant4_rec.root
-    - ship.conical.Pythia8-TGeant4_ana.root
+    - sim_ci-test.root
+    - sim_ci-test_rec.root
+    - sim_ci-test_ana.root
     - recohists.root
 
 extraction:
