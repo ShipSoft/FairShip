@@ -16,12 +16,12 @@ import json
 import math
 import sys
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 import yaml
 
 
-def load_config(config_path: Optional[Union[str, Path]] = None) -> dict[str, Any]:
+def load_config(config_path: str | Path | None = None) -> dict[str, Any]:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "metrics_config.yaml"
