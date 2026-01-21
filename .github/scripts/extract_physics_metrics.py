@@ -15,7 +15,7 @@ import math
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 import ROOT
 import yaml
@@ -23,7 +23,7 @@ import yaml
 ROOT.gROOT.SetBatch(True)
 
 
-def load_config(config_path: Optional[Union[str, Path]] = None) -> dict[str, Any]:
+def load_config(config_path: str | Path | None = None) -> dict[str, Any]:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "metrics_config.yaml"
@@ -48,7 +48,7 @@ def load_config(config_path: Optional[Union[str, Path]] = None) -> dict[str, Any
     return config
 
 
-def extract_tree_info(root_file: Any, tree_name: str) -> Optional[dict[str, Any]]:
+def extract_tree_info(root_file: Any, tree_name: str) -> dict[str, Any] | None:
     """Extract basic information from a TTree."""
     tree = root_file.Get(tree_name)
     if not tree or not isinstance(tree, ROOT.TTree):
@@ -61,8 +61,8 @@ def extract_tree_info(root_file: Any, tree_name: str) -> Optional[dict[str, Any]
 
 
 def extract_histogram_stats(
-    hist: Any, fit_functions: Optional[list[str]] = None
-) -> Optional[dict[str, Any]]:
+    hist: Any, fit_functions: list[str] | None = None
+) -> dict[str, Any] | None:
     """
     Extract statistical summary from a histogram.
 
@@ -144,7 +144,7 @@ def extract_histograms_recursive(
     directory: Any,
     path: str = "",
     max_depth: int = 3,
-    fit_functions: Optional[list[str]] = None,
+    fit_functions: list[str] | None = None,
 ) -> dict[str, dict[str, Any]]:
     """
     Recursively extract histogram statistics from ROOT directory.
@@ -184,7 +184,7 @@ def extract_histograms_recursive(
 
 def extract_metrics_from_file(
     file_path: Path, config: dict[str, Any]
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """
     Extract all relevant metrics from a ROOT file.
 
@@ -231,8 +231,8 @@ def extract_metrics_from_file(
 
 
 def extract_all_metrics(
-    config_dir: Union[str, Path], config: dict[str, Any]
-) -> Optional[dict[str, Any]]:
+    config_dir: str | Path, config: dict[str, Any]
+) -> dict[str, Any] | None:
     """
     Extract metrics from all relevant files in a configuration directory.
 

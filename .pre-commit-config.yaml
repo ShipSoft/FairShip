@@ -45,7 +45,7 @@ repos:
   rev: v3.21.2
   hooks:
   - id: pyupgrade
-    args: [--py39-plus]
+    args: [--py312-plus]
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v1.19.1
   hooks:
@@ -54,7 +54,7 @@ repos:
       types_or: [python, pyi]
       files: ^(\.github/scripts/.*\.py|python/experimental/|python/geometry_config\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/.*\.py)$
       args:
-        - --python-version=3.9
+        - --python-version=3.12
         - --ignore-missing-imports
         - --show-column-numbers
         - --pretty
