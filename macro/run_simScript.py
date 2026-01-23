@@ -479,7 +479,7 @@ if options.muonback:
  MuonBackgen.Init(inputFile, options.firstEvent)
  MuonBackgen.SetPaintRadius(options.PaintBeam*u.cm)
  MuonBackgen.SetSmearBeam(options.SmearBeam*u.cm)
- MuonBackgen.SetPhiRandom(options.phiRandom)
+ MuonBackgen.SetPhiRandomize(options.phiRandom)
  if DownScaleDiMuon:
     testf = ROOT.TFile.Open(inputFile)
     if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
