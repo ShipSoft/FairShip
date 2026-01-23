@@ -21,6 +21,7 @@ it in future.
 
 ### Fixed
 
+* Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
