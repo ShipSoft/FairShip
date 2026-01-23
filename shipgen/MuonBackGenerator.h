@@ -5,6 +5,8 @@
 #ifndef SHIPGEN_MUONBACKGENERATOR_H_
 #define SHIPGEN_MUONBACKGENERATOR_H_ 1
 
+#include <vector>
+
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "TClonesArray.h"
@@ -12,6 +14,8 @@
 #include "TTree.h"  // for TTree
 
 class FairPrimaryGenerator;
+class ShipMCTrack;
+class vetoPoint;
 
 class MuonBackGenerator : public FairGenerator {
  public:
@@ -41,10 +45,13 @@ class MuonBackGenerator : public FairGenerator {
  private:
  protected:
   Float_t id, parentid, pythiaid, w, px, py, pz, vx, vy, vz, ecut;
-  TClonesArray* MCTrack;     //!
-  TClonesArray* vetoPoints;  //!
-  TFile* fInputFile;         //!
-  TTree* fTree;              //!
+  TClonesArray* MCTrack;                   //!
+  TClonesArray* vetoPoints;                //!
+  std::vector<ShipMCTrack>* MCTrack_vec;   //!
+  std::vector<vetoPoint>* vetoPoints_vec;  //!
+  Bool_t fUseSTL;     //! flag to indicate if using STL vectors
+  TFile* fInputFile;  //!
+  TTree* fTree;       //!
   int fNevents;
   float f_zOffset;  //!
   int fn;
