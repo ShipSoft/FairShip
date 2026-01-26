@@ -644,18 +644,25 @@ if options.muonback:
 
  sTree = t.CloneTree(0)
  nEvents = 0
+ # Collect branch names containing 'Point' - these are the sensitive detector hit containers
  pointContainers = []
- for x in sTree.GetListOfBranches():
-   name = x.GetName()
-   if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
- for n in range(t.GetEntries()):
-     rc = t.GetEvent(n)
+ for branch in sTree.GetListOfBranches():
+   name = branch.GetName()
+   if 'Point' in name:
+      pointContainers.append(name)
+
+ # Filter out empty events (events with no hits in any Point container)
+ for event in t:
      empty = True
-     for x in pointContainers:
-        if eval(x)>0: empty = False
+     for containerName in pointContainers:
+        container = getattr(sTree, containerName)
+        if container.size() > 0:
+           empty = False
+           break
+
      if not empty:
-        rc = sTree.Fill()
-        nEvents+=1
+        sTree.Fill()
+        nEvents += 1
 
  branches = ROOT.TList()
  branches.SetName('BranchList')
