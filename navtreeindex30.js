@@ -1,5 +1,8 @@
 var NAVTREEINDEX30 =
 {
+"saveBasicParameters_8py_source.html":[6,0,10,28],
+"shipDet__conf_8py.html":[6,0,10,31],
+"shipDet__conf_8py.html#a0507a6f94174d43157cb96b2984eb98d":[6,0,10,31,6],
 "shipDet__conf_8py.html#a39dd79c9e985fa7e9faf4c68d305525b":[6,0,10,31,5],
 "shipDet__conf_8py.html#a478210005461058986ea79d2f13e6ee9":[6,0,10,31,2],
 "shipDet__conf_8py.html#a66d88267d500973a8eada3f77e213076":[6,0,10,31,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX30 =
 "strawtubesDetector_8py.html":[6,0,10,1,3],
 "strawtubesDetector_8py_source.html":[6,0,10,1,3],
 "strawtubesHit_8cxx.html":[6,0,15,5],
-"strawtubesHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02":[6,0,15,5,0],
-"strawtubesHit_8cxx_source.html":[6,0,15,5],
-"strawtubesHit_8h.html":[6,0,15,6],
-"strawtubesHit_8h_source.html":[6,0,15,6]
+"strawtubesHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02":[6,0,15,5,0]
 };

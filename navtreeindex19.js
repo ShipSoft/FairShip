@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"md_README.html#autotoc_md67":[3,2],
+"md_README.html#autotoc_md68":[3,3],
+"md_README.html#autotoc_md69":[3,4],
 "md_README.html#autotoc_md70":[3,5],
 "md_README.html#autotoc_md71":[3,6],
 "md_README.html#autotoc_md72":[3,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb":[4,0,89,6],
 "namespaceShipReco.html#a0e633b86c4896f37150fcf869b3fd59e":[4,0,89,9],
 "namespaceShipReco.html#a12a2a5b10f4a5325badc347d78021ee1":[4,0,89,2],
-"namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798":[4,0,89,10],
-"namespaceShipReco.html#a19251702830556320d73755869bd74b3":[4,0,89,19],
-"namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20":[4,0,89,36],
-"namespaceShipReco.html#a32e56e9a25dc0bc56652844ee7f9ee9b":[4,0,89,26]
+"namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798":[4,0,89,10]
 };

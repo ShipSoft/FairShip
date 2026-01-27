@@ -1,5 +1,8 @@
 var NAVTREEINDEX21 =
 {
+"namespacedarkphoton.html#aa9a7ae7611093f1a0d1188bee9d843df":[4,0,21,3],
+"namespacedecorators.html":[4,0,22],
+"namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba":[4,0,22,3],
 "namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3":[4,0,22,9],
 "namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774":[4,0,22,4],
 "namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab":[4,0,22,6],
@@ -246,8 +249,5 @@ var NAVTREEINDEX21 =
 "namespaceg4Ex__args.html#aa2c4118a21a696f3f0a53d4fcc396090":[4,0,36,35],
 "namespaceg4Ex__args.html#aa8e92eaa31dc03a84b844b26de5b8a97":[4,0,36,23],
 "namespaceg4Ex__args.html#aac191792dad70e2cd93bbbca9da7cb0a":[4,0,36,19],
-"namespaceg4Ex__args.html#ab5809f5fbf5e9dfd8a17bc45889bc558":[4,0,36,9],
-"namespaceg4Ex__args.html#ab6b094f53d0cc08e12518d09c07fb940":[4,0,36,30],
-"namespaceg4Ex__args.html#ab87d45f56f5bb9ea64b956fa667d01e7":[4,0,36,18],
-"namespaceg4Ex__args.html#ab8c8639b46b8aad33019b3f554a69d60":[4,0,36,14]
+"namespaceg4Ex__args.html#ab5809f5fbf5e9dfd8a17bc45889bc558":[4,0,36,9]
 };
