@@ -170,9 +170,7 @@ class SciFiMapping:
         ymin = 999.0
         ymax = -999.0
         fibre_positions = []
-        fibresSiPM = (
-            self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
-        )
+        fibresSiPM = self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
         for fibre in fibresSiPM[locChannel]:
             globfiberID = (
                 fibre + 100000000 + 1000000 + 0 * 100000
@@ -197,9 +195,7 @@ class SciFiMapping:
         ax.set_xlim(x0 - D / 2, x0 + D / 2)
         ax.set_ylim(ymin - 1.5 * R, ymax + 1.5 * R)
         for i, (x, y) in enumerate(fibre_positions):
-            ellipse = patches.Ellipse(
-                (x, y), width=2 * R, height=2 * R, color="orange", alpha=0.6
-            )
+            ellipse = patches.Ellipse((x, y), width=2 * R, height=2 * R, color="orange", alpha=0.6)
             ax.add_patch(ellipse)
         self.scifi.GetSiPMPosition(locChannel, AF, BF)
         loc = self.scifi.GetLocalPos(globfiberID, BF)
@@ -274,12 +270,8 @@ class SciFiMapping:
         # channelsV = sorted(self.fibre_to_simp_map_V.keys())[::-1][86:96]
 
         # Find SiPM channel in the center of the U and V planes
-        center_channel_U = [
-            chan for chan, x_pos in self.sipm_pos_U.items() if abs(x_pos) <= DX - 0.001
-        ][0]
-        center_channel_V = [
-            chan for chan, x_pos in self.sipm_pos_V.items() if abs(x_pos) <= DX - 0.001
-        ][0]
+        center_channel_U = [chan for chan, x_pos in self.sipm_pos_U.items() if abs(x_pos) <= DX - 0.001][0]
+        center_channel_V = [chan for chan, x_pos in self.sipm_pos_V.items() if abs(x_pos) <= DX - 0.001][0]
 
         def get_surrounding_keys(d: dict, target_key, N: int):
             """Return neighbors of `target_key` in value-sorted order.
@@ -323,12 +315,8 @@ class SciFiMapping:
 
             return before + [target_key] + after
 
-        channelsU = get_surrounding_keys(
-            self.sipm_pos_U, center_channel_U, number_of_channels
-        )
-        channelsV = get_surrounding_keys(
-            self.sipm_pos_V, center_channel_V, number_of_channels
-        )
+        channelsU = get_surrounding_keys(self.sipm_pos_U, center_channel_U, number_of_channels)
+        channelsV = get_surrounding_keys(self.sipm_pos_V, center_channel_V, number_of_channels)
 
         channels = channelsU + channelsV
         n_chan = len(channels)
@@ -344,11 +332,7 @@ class SciFiMapping:
 
             # collect fibre positions
             xs, ys = [], []
-            for fibreID in (
-                self.fibre_to_simp_map_U
-                if chan in channelsU
-                else self.fibre_to_simp_map_V
-            )[locChan]:
+            for fibreID in (self.fibre_to_simp_map_U if chan in channelsU else self.fibre_to_simp_map_V)[locChan]:
                 globfiberID = (
                     fibreID + 100000000 + 1000000 + 0 * 100000
                     if chan in channelsU
@@ -382,9 +366,7 @@ class SciFiMapping:
                 2 * DZ,
                 linewidth=1,
                 edgecolor="black",
-                facecolor="blue"
-                if isU
-                else "red",  # override with solid colors for clarity,
+                facecolor="blue" if isU else "red",  # override with solid colors for clarity,
                 alpha=alpha_fibre * 0.8,
                 hatch="//" if isU else "\\\\",
             )
@@ -476,18 +458,10 @@ class SciFiMapping:
         else:
             alpha_sipm, alpha_fibre = 0.1, 0.1
             # find the channels corresponding to x_coords
-            channels_x_U = next(
-                c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX
-            )
-            channel_x_U = [
-                c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX
-            ][0]
-            channels_x_V = next(
-                c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX
-            )
-            channel_x_V = [
-                c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX
-            ][0]
+            channels_x_U = next(c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX)
+            channel_x_U = [c for c, x in self.sipm_pos_U.items() if abs(x - x_coords[0]) < DX][0]
+            channels_x_V = next(c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX)
+            channel_x_V = [c for c, x in self.sipm_pos_V.items() if abs(x - x_coords[1]) < DX][0]
         # 1) Figure setup
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
@@ -684,12 +658,8 @@ class SciFiMapping:
         R = fibreVol.GetShape().GetDX()
         DX, DZ = 0.025, 0.135 / 2
 
-        center_U = [
-            chan for chan, x in self.sipm_pos_U.items() if abs(x) <= DX - 0.001
-        ][0]
-        center_V = [
-            chan for chan, x in self.sipm_pos_V.items() if abs(x) <= DX - 0.001
-        ][0]
+        center_U = [chan for chan, x in self.sipm_pos_U.items() if abs(x) <= DX - 0.001][0]
+        center_V = [chan for chan, x in self.sipm_pos_V.items() if abs(x) <= DX - 0.001][0]
 
         def get_keys(d, target, N):
             ks = sorted(d, key=lambda k: d[k])
@@ -711,9 +681,7 @@ class SciFiMapping:
         for idx, chan in enumerate(channels):
             col = colors[idx]
             locChan = chan % 1000000
-            fmap = (
-                self.fibre_to_simp_map_U if chan in chansU else self.fibre_to_simp_map_V
-            )
+            fmap = self.fibre_to_simp_map_U if chan in chansU else self.fibre_to_simp_map_V
             xs, zs = [], []
             for fid in fmap[locChan]:
                 gid = fid + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
@@ -722,9 +690,7 @@ class SciFiMapping:
                 xs.append(loc[0])
                 zs.append(loc[2])
             for x, z in zip(xs, zs):
-                ell = patches.Ellipse(
-                    (x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre
-                )
+                ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)
             loc = self.scifi.GetLocalPos(fid, BF)
@@ -756,14 +722,8 @@ class SciFiMapping:
         chansU = get_keys(self.sipm_pos_U, centerU, number_of_channels)
         chansV = get_keys(self.sipm_pos_V, centerV, number_of_channels)
         all_ch = chansU + chansV
-        colorsU = [
-            plt.get_cmap("Blues")(i / max(len(chansU) - 1, 1))
-            for i in range(len(chansU))
-        ]
-        colorsV = [
-            plt.get_cmap("Reds")(i / max(len(chansV) - 1, 1))
-            for i in range(len(chansV))
-        ]
+        colorsU = [plt.get_cmap("Blues")(i / max(len(chansU) - 1, 1)) for i in range(len(chansU))]
+        colorsV = [plt.get_cmap("Reds")(i / max(len(chansV) - 1, 1)) for i in range(len(chansV))]
 
         for chan in all_ch:
             isU = chan in chansU
@@ -780,9 +740,7 @@ class SciFiMapping:
                 (x0 - dx - shift, -dy),
             ]
             col = colorsU[chansU.index(chan)] if isU else colorsV[chansV.index(chan)]
-            poly = patches.Polygon(
-                coords, closed=True, facecolor=col, edgecolor="black", alpha=0.5
-            )
+            poly = patches.Polygon(coords, closed=True, facecolor=col, edgecolor="black", alpha=0.5)
             ax2.add_patch(poly)
             y_top = dy
             box = patches.Rectangle(
@@ -884,9 +842,7 @@ if __name__ == "__main__":
 
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    run.SetSink(
-        ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate"))
-    )  # Output file
+    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Output file
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used
     rtdb = run.GetRuntimeDb()
     modules = shipDet_conf.configure(run, ship_geo)

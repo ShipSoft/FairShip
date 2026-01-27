@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+
 def find_shield_center(ship_geo):
     zEndOfPassiveShield = ship_geo.muShield.z
     dZ = [None] * 7
     Z = [None] * 7
-    zgap = 10.
+    zgap = 10.0
     dZ[0] = ship_geo.muShield.dZ1 - zgap / 2
     Z[0] = zEndOfPassiveShield + dZ[0] + zgap
 
@@ -26,7 +27,6 @@ def find_shield_center(ship_geo):
 
     dZ[6] = ship_geo.muShield.dZ7 - zgap / 2
     Z[6] = Z[5] + dZ[5] + dZ[6] + zgap
-
 
     shield_center = (Z[1] + Z[6] + dZ[6] - dZ[1]) / 2
     shield_half_length = abs((Z[1] - dZ[1]) - (Z[6] + dZ[6])) / 2

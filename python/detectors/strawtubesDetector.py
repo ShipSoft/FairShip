@@ -77,7 +77,6 @@ class strawtubesDetector(BaseDetector):
         start = ROOT.TVector3()
         v_drift = global_variables.modules["strawtubes"].StrawVdrift()
         global_variables.modules["strawtubes"].StrawEndPoints(1002001, start, stop)
-        z1 = stop.z()
         for aDigi in self.det:
             key += 1
             if not aDigi.isValid():
@@ -87,12 +86,7 @@ class strawtubesDetector(BaseDetector):
             p = self.intree.strawtubesPoint[key]
             # use true t0  construction:
             #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
-            smear = (
-                aDigi.GetDigi()
-                - self.intree.t0
-                - p.GetTime()
-                - (stop[0] - p.GetX()) / u.speedOfLight
-            ) * v_drift
+            smear = (aDigi.GetDigi() - self.intree.t0 - p.GetTime() - (stop[0] - p.GetX()) / u.speedOfLight) * v_drift
             if no_amb:
                 smear = p.dist2Wire()
             SmearedHits.append(

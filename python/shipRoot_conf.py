@@ -8,16 +8,18 @@ import os
 from pythia8_conf_utils import addHNLtoROOT
 from pythia8darkphoton_conf import addDPtoROOT
 
-if os.environ.get('FAIRSHIP_ROOT', '') == '':
-   print("FairShip environment not found, quitting.")
-   quit()
+if os.environ.get("FAIRSHIP_ROOT", "") == "":
+    print("FairShip environment not found, quitting.")
+    quit()
 
 ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libG4clhep")
 
+
 def forReadingOldFile():
-    ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
+    ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
+
 
 # -----prepare python exit-----------------------------------------------
 
@@ -25,46 +27,50 @@ def forReadingOldFile():
 def pyExit():
     for module in sys.modules:
         if "ROOT.genfit" in module:
-            x = sys.modules['__main__']
-            if hasattr(x, 'run'):
+            x = sys.modules["__main__"]
+            if hasattr(x, "run"):
                 del x.run
-                print(
-                    "make suicid, until better solution found to ROOT/genfit interference")
+                print("make suicid, until better solution found to ROOT/genfit interference")
                 for f in ROOT.gROOT.GetListOfFiles():
-                    if f.IsWritable() and f.IsOpen(): f.Close()
-                os.system('kill '+str(os.getpid()))
-            if hasattr(x,'fMan'): del x.fMan
-            if hasattr(x,'fRun'): del x.fRun
+                    if f.IsWritable() and f.IsOpen():
+                        f.Close()
+                os.system("kill " + str(os.getpid()))
+            if hasattr(x, "fMan"):
+                del x.fMan
+            if hasattr(x, "fRun"):
+                del x.fRun
             return
     print("Exit normally")
 
-def configure(darkphoton=None):
-   ROOT.gROOT.ProcessLine('#include "'+os.environ["FAIRSHIP"]+'/shipdata/ShipGlobals.h"')
-   pdg = ROOT.TDatabasePDG.Instance()
-   # pythia stuff not known to ROOT
-   pdg.AddParticle('system','system',     0., False, 0., 0., 'XXX', 90)
-   pdg.AddParticle('Pomeron','Pomeron',   0., False, 0., 0., 'Pomeron', 990)
-   pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
-   pdg.AddParticle('n_diffr0','n_diffr0', 0., False, 0., 0., 'XXX', 9902110)
-   pdg.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
-   pdg.AddParticle("C13", "Carbon-13", 13.003355, True, 0, 6.0, "nucleus", 1000060130)
-   pdg.AddParticle('J/psi[3PJ(8)]'    ,'J/psi[3PJ(8)]'    ,3.29692,False,0.,      0.,'Meson', 9942003)
-   pdg.AddParticle('J/psi[1S0(8)]'    ,'J/psi[1S0(8)]'    ,3.29692,False,0.,      0.,'Meson', 9941003)
-   pdg.AddParticle('f0(980)'          ,'f0(980)'          ,1.0,    False,0.0,     0.,'Meson', 9010221)
-   pdg.AddParticle('psi(3770)'        ,'psi(3770)'        ,3.77315,False,0.02720, 0, 'Meson', 30443)
-   pdg.AddParticle('psi(3770)[3PJ(8)]','psi(3770)[3PJ(8)]',3.97315,False,0.0,     0, 'Meson', 9942033)
-   pdg.AddParticle('J/psi[3S1(8)]'    ,'J/psi[3S1(8)]'    ,3.29692,False,0.0,     0, 'Meson', 9940003)
-   pdg.AddParticle('chi_0c[3S1(8)]'    ,'chi_0c[3S1(8)]'  ,3.61475,False,0.0,     0, 'Meson', 9940011)
-   pdg.AddParticle('psi(2S)[1S0(8)]'   ,'psi(2S)[1S0(8)]' ,3.88611,False,0.0,     0, 'Meson', 9941103)
-   pdg.AddParticle('psi(2S)[3S1(8)]'   ,'psi(2S)[3S1(8)]' ,3.88611,False,0.0,     0, 'Meson', 9940103)
-   pdg.AddParticle('psi(2S)[3PJ(8)]'   ,'psi(2S)[3PJ(8)]' ,3.88611,False,0.0,     0, 'Meson', 9942103)
-   pdg.AddParticle('chi_1c[3S1(8)]'    ,'chi_1c[3S1(8)]'  ,3.71066,False,0.0,     0, 'Meson', 9940023)
-   pdg.AddParticle('chi_2c[3S1(8)]'    ,'chi_2c[3S1(8)]'  ,3.75620,False,0.0,     0, 'Meson', 9940005)
-   pdg.AddParticle('Upsilon[3S1(8)]'   ,'Upsilon[3S1(8)]' ,9.66030,False,0.0,     0, 'Meson', 9950003)
 
-   atexit.register(pyExit)
-   if darkphoton==0: return # will be added by pythia8_conf
-   if (darkphoton):
-      addDPtoROOT()
-   else:
-      addHNLtoROOT()
+def configure(darkphoton=None):
+    ROOT.gROOT.ProcessLine('#include "' + os.environ["FAIRSHIP"] + '/shipdata/ShipGlobals.h"')
+    pdg = ROOT.TDatabasePDG.Instance()
+    # pythia stuff not known to ROOT
+    pdg.AddParticle("system", "system", 0.0, False, 0.0, 0.0, "XXX", 90)
+    pdg.AddParticle("Pomeron", "Pomeron", 0.0, False, 0.0, 0.0, "Pomeron", 990)
+    pdg.AddParticle("p_diffr+", "p_diffr+", 0.0, False, 0.0, 0.0, "XXX", 9902210)
+    pdg.AddParticle("n_diffr0", "n_diffr0", 0.0, False, 0.0, 0.0, "XXX", 9902110)
+    pdg.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
+    pdg.AddParticle("C13", "Carbon-13", 13.003355, True, 0, 6.0, "nucleus", 1000060130)
+    pdg.AddParticle("J/psi[3PJ(8)]", "J/psi[3PJ(8)]", 3.29692, False, 0.0, 0.0, "Meson", 9942003)
+    pdg.AddParticle("J/psi[1S0(8)]", "J/psi[1S0(8)]", 3.29692, False, 0.0, 0.0, "Meson", 9941003)
+    pdg.AddParticle("f0(980)", "f0(980)", 1.0, False, 0.0, 0.0, "Meson", 9010221)
+    pdg.AddParticle("psi(3770)", "psi(3770)", 3.77315, False, 0.02720, 0, "Meson", 30443)
+    pdg.AddParticle("psi(3770)[3PJ(8)]", "psi(3770)[3PJ(8)]", 3.97315, False, 0.0, 0, "Meson", 9942033)
+    pdg.AddParticle("J/psi[3S1(8)]", "J/psi[3S1(8)]", 3.29692, False, 0.0, 0, "Meson", 9940003)
+    pdg.AddParticle("chi_0c[3S1(8)]", "chi_0c[3S1(8)]", 3.61475, False, 0.0, 0, "Meson", 9940011)
+    pdg.AddParticle("psi(2S)[1S0(8)]", "psi(2S)[1S0(8)]", 3.88611, False, 0.0, 0, "Meson", 9941103)
+    pdg.AddParticle("psi(2S)[3S1(8)]", "psi(2S)[3S1(8)]", 3.88611, False, 0.0, 0, "Meson", 9940103)
+    pdg.AddParticle("psi(2S)[3PJ(8)]", "psi(2S)[3PJ(8)]", 3.88611, False, 0.0, 0, "Meson", 9942103)
+    pdg.AddParticle("chi_1c[3S1(8)]", "chi_1c[3S1(8)]", 3.71066, False, 0.0, 0, "Meson", 9940023)
+    pdg.AddParticle("chi_2c[3S1(8)]", "chi_2c[3S1(8)]", 3.75620, False, 0.0, 0, "Meson", 9940005)
+    pdg.AddParticle("Upsilon[3S1(8)]", "Upsilon[3S1(8)]", 9.66030, False, 0.0, 0, "Meson", 9950003)
+
+    atexit.register(pyExit)
+    if darkphoton == 0:
+        return  # will be added by pythia8_conf
+    if darkphoton:
+        addDPtoROOT()
+    else:
+        addHNLtoROOT()

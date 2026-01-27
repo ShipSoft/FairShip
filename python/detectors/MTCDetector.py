@@ -18,9 +18,7 @@ class MTCDetector(BaseDetector):
                 lsOfGlobals.Add(global_variables.modules["MTC"])
             mapping = SciFiMapping.SciFiMapping(global_variables.modules)
             mapping.make_mapping()
-            self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = (
-                mapping.get_sipm_to_fibre_map()
-            )
+            self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 
     def digitize(self):
         """Digitize SND/MTC MC hits.

@@ -18,4 +18,4 @@ ignore = [
 "python/proton_bremsstrahlung.py" = ["F403", "F405"]
 
 [tool.codespell]
-ignore-words-list = 'Millepede,Gaus,gaus,dYIn'
+ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'
