@@ -192,30 +192,24 @@ def addVMCFields(shipGeo, controlFile="", verbose=False, withVirtualMC=True):
         fieldMaker.defineFieldMap("MainSpecMap", shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
         fieldsList.append("MainSpecMap")
 
-        if not shipGeo.hadronAbsorber.WithConstField:
-            fieldMaker.defineFieldMap(
-                "HadronAbsorberMap",
-                "files/FieldHadronStopper_raised_20190411.root",
-                ROOT.TVector3(0.0, 0.0, shipGeo.hadronAbsorber.z),
-            )
-            fieldsList.append("HadronAbsorberMap")
+    if not shipGeo.muShield.WithConstField:
+        offset = shipGeo.muShield.Entrance[0]
+        quadSymm = True
+        file_name = f"files/{shipGeo.shieldName}.root"
+        fieldMaker.defineFieldMap('muonShieldField', file_name,
+                                ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm)
+        fieldsList.append('muonShieldField')
 
-        if not shipGeo.muShield.WithConstField:
-            field_center, _ = ShieldUtils.find_shield_center(shipGeo)
-            fieldMaker.defineFieldMap(
-                "muonShieldField",
-                "files/MuonShieldField.root",
-                ROOT.TVector3(0.0, 0.0, field_center),
-                ROOT.TVector3(0.0, 0.0, 0.0),
-                True,
-            )
-            fieldsList.append("muonShieldField")
-        # Combine the fields to obtain the global field
-        if len(fieldsList) > 1:
-            fieldMaker.defineComposite("TotalField", *fieldsList)  # fieldsList MUST have length <=4
-            fieldMaker.defineGlobalField("TotalField")
-        else:
-            fieldMaker.defineGlobalField("MainSpecMap")
+    elif not shipGeo.hadronAbsorber.WithConstField:
+        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
+        fieldsList.append('HadronAbsorberMap')
+
+    # Combine the fields to obtain the global field
+    if len(fieldsList) > 1:
+        fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
+        fieldMaker.defineGlobalField('TotalField')
+    else:
+        fieldMaker.defineGlobalField('MainSpecMap')
     if withVirtualMC:
         # Force the VMC to update/reset the fields defined by the fieldMaker object.
         # Get the ROOT/Geant4 geometry manager
