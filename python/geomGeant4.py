@@ -176,7 +176,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
                               ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm)
         fieldsList.append('muonShieldField')
         print(f"               from {file_name} using offset z = {str(offset)} cm")
-      
+
       elif not shipGeo.hadronAbsorber.WithConstField:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
        fieldsList.append('HadronAbsorberMap')

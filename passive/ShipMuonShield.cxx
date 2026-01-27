@@ -36,7 +36,7 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
                                const Bool_t SC_key)
     : FairModule("MuonShield", "ShipMuonShield") {
   LOG(info) << " Function ShipMuonShield MS ";
-    
+
   for (size_t i = 0; i < in_params.size(); i++) {
     shield_params.push_back(in_params[i]);
   }
@@ -76,29 +76,28 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
   snd_hole_dy = hole_dy;
 }
 
-void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
-				Double_t dZ, std::array<Double_t, 16> corners,
-				Int_t color, TGeoUniformMagField *magField,
-				TGeoVolume *tShield, Double_t x_translation,
-				Double_t y_translation,
-				Double_t z_translation) {
+void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
+                                Double_t dZ, std::array<Double_t, 16> corners,
+                                Int_t color, TGeoUniformMagField* magField,
+                                TGeoVolume* tShield, Double_t x_translation,
+                                Double_t y_translation,
+                                Double_t z_translation) {
   LOG(info) << " Create CreateArb8 of the MS ";
-  TGeoVolume *magF =
-      gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
+  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
   if (fWithConstShieldField) {
-      magF->SetField(magField);
+    magF->SetField(magField);
   }
-  tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
-						z_translation));
+  tShield->AddNode(
+      magF, 1,
+      new TGeoTranslation(x_translation, y_translation, z_translation));
 }
 
-
 // void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
-//                                 Double_t dZ, std::array<Double_t, 16> corners,
-//                                 Int_t color, TGeoUniformMagField* magField,
-//                                 TGeoVolume* tShield, Double_t x_translation,
-//                                 Double_t y_translation,
+//                                 Double_t dZ, std::array<Double_t, 16>
+//                                 corners, Int_t color, TGeoUniformMagField*
+//                                 magField, TGeoVolume* tShield, Double_t
+//                                 x_translation, Double_t y_translation,
 //                                 Double_t z_translation) {
 //   TGeoVolume* magVol = nullptr;
 
@@ -332,35 +331,33 @@ void ShipMuonShield::CreateMagnet(
       break;
   }
 }
-void ShipMuonShield::Initialize(std::vector<TString> &magnetName,
-				std::vector<FieldDirection> &fieldDirection,
-				std::vector<Double_t> &dXIn, std::vector<Double_t> &dYIn,
-				std::vector<Double_t> &dXOut, std::vector<Double_t> &dYOut,
-        std::vector<Double_t> &ratio_yokesIn, std::vector<Double_t> &ratio_yokesOut,
-        std::vector<Double_t> &dY_yokeIn, std::vector<Double_t> &dY_yokeOut,
-				std::vector<Double_t> &dZ, std::vector<Double_t> &Z_rel,
-        std::vector<Double_t> &midGapIn,
-				std::vector<Double_t> &midGapOut,
-        std::vector<Double_t> &Bgoal,
-				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
-				std::vector<Double_t> &Z) {
-
+void ShipMuonShield::Initialize(
+    std::vector<TString>& magnetName,
+    std::vector<FieldDirection>& fieldDirection, std::vector<Double_t>& dXIn,
+    std::vector<Double_t>& dYIn, std::vector<Double_t>& dXOut,
+    std::vector<Double_t>& dYOut, std::vector<Double_t>& ratio_yokesIn,
+    std::vector<Double_t>& ratio_yokesOut, std::vector<Double_t>& dY_yokeIn,
+    std::vector<Double_t>& dY_yokeOut, std::vector<Double_t>& dZ,
+    std::vector<Double_t>& Z_rel, std::vector<Double_t>& midGapIn,
+    std::vector<Double_t>& midGapOut, std::vector<Double_t>& Bgoal,
+    std::vector<Double_t>& gapIn, std::vector<Double_t>& gapOut,
+    std::vector<Double_t>& Z) {
   LOG(info) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
-  for (auto i :
-       {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &Z_rel, &midGapIn, &midGapOut,
-	&ratio_yokesIn , &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
+  for (auto i : {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &Z_rel, &midGapIn,
+                 &midGapOut, &ratio_yokesIn, &ratio_yokesOut, &dY_yokeIn,
+                 &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
     i->reserve(nMagnets);
   }
 
   magnetName = {"MagnAbsorb", "Magn1", "Magn2", "Magn3",
-    "Magn4",       "Magn5",       "Magn6"};
+                "Magn4",      "Magn5", "Magn6"};
 
-  fieldDirection = {
-FieldDirection::up,   FieldDirection::up,   FieldDirection::up,
-FieldDirection::up,   FieldDirection::down,   FieldDirection::down,
-FieldDirection::down };
+  fieldDirection = {FieldDirection::up,   FieldDirection::up,
+                    FieldDirection::up,   FieldDirection::up,
+                    FieldDirection::down, FieldDirection::down,
+                    FieldDirection::down};
 
   std::vector<Double_t> params;
   params = shield_params;
@@ -369,50 +366,43 @@ FieldDirection::down };
 
   for (size_t i = 0; i < nMagnets; ++i) {
     // --- Load parameters for each magnet ---
-    dZ[i]           = params[offset + i * nParams + 0];
-    Z_rel[i]        = params[offset + i * nParams + 1];
-    dXIn[i]         = params[offset + i * nParams + 2];
-    dXOut[i]        = params[offset + i * nParams + 3];
-    dYIn[i]         = params[offset + i * nParams + 4];
-    dYOut[i]        = params[offset + i * nParams + 5];
-    gapIn[i]        = params[offset + i * nParams + 6];
-    gapOut[i]       = params[offset + i * nParams + 7];
-    ratio_yokesIn[i]  = params[offset + i * nParams + 8];
+    dZ[i] = params[offset + i * nParams + 0];
+    Z_rel[i] = params[offset + i * nParams + 1];
+    dXIn[i] = params[offset + i * nParams + 2];
+    dXOut[i] = params[offset + i * nParams + 3];
+    dYIn[i] = params[offset + i * nParams + 4];
+    dYOut[i] = params[offset + i * nParams + 5];
+    gapIn[i] = params[offset + i * nParams + 6];
+    gapOut[i] = params[offset + i * nParams + 7];
+    ratio_yokesIn[i] = params[offset + i * nParams + 8];
     ratio_yokesOut[i] = params[offset + i * nParams + 9];
-    dY_yokeIn[i]    = params[offset + i * nParams + 10];
-    dY_yokeOut[i]   = params[offset + i * nParams + 11];
-    midGapIn[i]     = params[offset + i * nParams + 12];
-    midGapOut[i]    = params[offset + i * nParams + 13];
-    Bgoal[i]        = params[offset + i * nParams + 14];
+    dY_yokeIn[i] = params[offset + i * nParams + 10];
+    dY_yokeOut[i] = params[offset + i * nParams + 11];
+    midGapIn[i] = params[offset + i * nParams + 12];
+    midGapOut[i] = params[offset + i * nParams + 13];
+    Bgoal[i] = params[offset + i * nParams + 14];
 
     // --- Compute Z position for each magnet ---
     if (i == 0) {
-        // First magnet uses the initial offset
-        Z[i] = z_end_of_proximity_shielding + dZ[i] + Z_rel[i];
+      // First magnet uses the initial offset
+      Z[i] = z_end_of_proximity_shielding + dZ[i] + Z_rel[i];
     } else {
-        // Subsequent magnets are placed relative to the previous one
-        Z[i] = Z[i - 1] + Z_rel[i - 1] + dZ[i] + Z_rel[i];
+      // Subsequent magnets are placed relative to the previous one
+      Z[i] = Z[i - 1] + Z_rel[i - 1] + dZ[i] + Z_rel[i];
     }
-// --- Print all values for this magnet ---
-    LOG(info) << "Magnet " << i
-              << ": dZ=" << dZ[i]
-              << ", Z_rel=" << Z_rel[i]
-              << ", dXIn=" << dXIn[i]
-              << ", dXOut=" << dXOut[i]
-              << ", dYIn=" << dYIn[i]
-              << ", dYOut=" << dYOut[i]
-              << ", gapIn=" << gapIn[i]
-              << ", gapOut=" << gapOut[i]
+    // --- Print all values for this magnet ---
+    LOG(info) << "Magnet " << i << ": dZ=" << dZ[i] << ", Z_rel=" << Z_rel[i]
+              << ", dXIn=" << dXIn[i] << ", dXOut=" << dXOut[i]
+              << ", dYIn=" << dYIn[i] << ", dYOut=" << dYOut[i]
+              << ", gapIn=" << gapIn[i] << ", gapOut=" << gapOut[i]
               << ", ratio_yokesIn=" << ratio_yokesIn[i]
               << ", ratio_yokesOut=" << ratio_yokesOut[i]
               << ", dY_yokeIn=" << dY_yokeIn[i]
               << ", dY_yokeOut=" << dY_yokeOut[i]
-              << ", midGapIn=" << midGapIn[i]
-              << ", midGapOut=" << midGapOut[i]
-              << ", Bgoal=" << Bgoal[i]
-              << ", Z=" << Z[i];
-}
-LOG(info) << " ending of Initialize the MS ";
+              << ", midGapIn=" << midGapIn[i] << ", midGapOut=" << midGapOut[i]
+              << ", Bgoal=" << Bgoal[i] << ", Z=" << Z[i];
+  }
+  LOG(info) << " ending of Initialize the MS ";
 }
 void ShipMuonShield::ConstructGeometry() {
   LOG(info) << " Construct Geometry of the MS ";
@@ -423,12 +413,12 @@ void ShipMuonShield::ConstructGeometry() {
 
   std::vector<TString> magnetName;
   std::vector<FieldDirection> fieldDirection;
-  std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, Z_relf, midGapIn, midGapOut,
-      ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn, gapOut,
-      Bgoal, Z;
+  std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, Z_relf, midGapIn,
+      midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn,
+      gapOut, Bgoal, Z;
   Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut,
-                 ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, dZf, Z_relf,
-                 midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);
+             ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, dZf, Z_relf,
+             midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);
 
   std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
   for (size_t nM = 0; nM < nMagnets; ++nM) {
@@ -447,12 +437,9 @@ void ShipMuonShield::ConstructGeometry() {
     TGeoUniformMagField* fields_s[4] = {magFieldIron_s, RetField_s, ConRField_s,
                                         ConLField_s};
     // Create the magnet
-    CreateMagnet(magnetName[nM], iron, tShield, 
-                fields_s, fieldDirection[nM],
-                 dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], 
-                 ratio_yokesIn[nM],ratio_yokesOut[nM], 
-                 dY_yokeIn[nM], dY_yokeOut[nM], 
-                 Z_relf[nM],
+    CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
+                 dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], ratio_yokesIn[nM],
+                 ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], Z_relf[nM],
                  midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM],
                  nM == 0, nM == 3 && fSC_mag);
   }
