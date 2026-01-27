@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import pandas as pd
-import numpy as np
-import matplotlib.pylab as plt
-from scipy.ndimage import gaussian_filter
-import random
 import argparse
 import os
+import random
+
+import matplotlib.pylab as plt
+import numpy as np
+import pandas as pd
+from scipy.ndimage import gaussian_filter
 
 
 def plot_my_hist(datum):

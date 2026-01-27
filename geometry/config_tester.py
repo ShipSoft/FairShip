@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os
-import json
-import importlib.util
-import logging
 import argparse
+import importlib.util
+import json
+import logging
+import os
 
 logging.info("")
 logger = logging.getLogger()
