@@ -6,7 +6,6 @@ import ROOT
 import os
 import shipunit as u
 from ShipGeoConfig import AttrDict
-from ShieldUtils import find_shield_center
 from array import array
 import yaml
 
@@ -133,9 +132,8 @@ def configure_snd_mtc(yaml_file, ship_geo):
     # Initialize detector
     if ship_geo.mtc_geo.zPosition == "auto":
         # Get the the center of the *last* magnet
-        ship_geo.mtc_geo.zPosition = find_shield_center(ship_geo)[2][-1]
-        print("MTC zPosition set to ", ship_geo.mtc_geo.zPosition)
-    mtc = ROOT.MTCDetector("MTC", ROOT.kTRUE)
+        mtc_total_length = (ship_geo.mtc_geo.ironThick + ship_geo.mtc_geo.sciFiThick + ship_geo.mtc_geo.scintThick) * ship_geo.mtc_geo.nLayers
+        ship_geo.mtc_geo.zPosition = ship_geo.muShield.Entrance[-1] +  mtc_total_length / 2
     mtc.SetMTCParameters(
         ship_geo.mtc_geo.width,
         ship_geo.mtc_geo.height,
@@ -160,7 +158,8 @@ def configure_snd_siliconTarget(yaml_file, ship_geo):
         # Get the the center of the next to last magnet (temporary placement)
         # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
         # 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.
-        ship_geo.SiliconTarget_geo.zPosition = find_shield_center(ship_geo)[2][-2] + 140
+        SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
+        ship_geo.SiliconTarget_geo.zPosition = ship_geo.muShield.Entrance[-1] -  ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2 
         print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)
     SiliconTarget = ROOT.SiliconTarget("SiliconTarget", ROOT.kTRUE)
     SiliconTarget.SetSiliconTargetParameters(

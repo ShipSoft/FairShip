@@ -14,9 +14,13 @@ it in future.
 
 ### Added
 
+* New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
+
 ### Changed
 
-
+* Change function SND in shipDet_conf.py
+* Cahnge disable magnetic field in the MS and remove field map upload in run_fixedTarget.py
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
@@ -26,6 +30,9 @@ it in future.
 * Set correct trackIDs for exitHadronAbsorber class
 
 ### Removed
+
+* New_HA_Design and warm_opt muon shield configuration are no longer supported
+* CI check for old target version
 
 ## 25.12 - 2025-12-22
 

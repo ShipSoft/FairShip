@@ -35,19 +35,19 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
                                const Bool_t WithConstShieldField,
                                const Bool_t SC_key)
     : FairModule("MuonShield", "ShipMuonShield") {
+  LOG(debug) << " Function ShipMuonShield MS ";
   for (size_t i = 0; i < in_params.size(); i++) {
     shield_params.push_back(in_params[i]);
   }
+  nParams = 15;
+  nMagnets = in_params.size() / nParams;  // integer division
+
+  if (in_params.size() % 15 != 0) {
+    LOG(error) << "Warning: incomplete magnet data!";
+  }
+
   fWithConstShieldField = WithConstShieldField;
   fSC_mag = SC_key;
-  dZ1 = in_params[0];
-  dZ2 = in_params[1];
-  dZ3 = in_params[2];
-  dZ4 = in_params[3];
-  dZ5 = in_params[4];
-  dZ6 = in_params[5];
-  dZ7 = in_params[6];
-  fMuonShieldHalfLength = dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7;
   z_end_of_proximity_shielding = z;
 }
 
@@ -83,9 +83,17 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
                                 Double_t z_translation) {
   TGeoVolume* magVol = nullptr;
 
-  if (snd_hole &&
-      ((arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR") ||
-       (arbName == "Magn5_MiddleMagL" || arbName == "Magn5_MiddleMagR"))) {
+  LOG(debug) << " Create CreateArb8 of the MS ";
+
+  TString magnLast = Form("Magn%zu", nMagnets - 1);
+  TString magnPrev = Form("Magn%zu", nMagnets - 2);
+
+  bool snd_magnet = (arbName == magnLast + "_MiddleMagL") ||
+                    (arbName == magnLast + "_MiddleMagR") ||
+                    (arbName == magnPrev + "_MiddleMagL") ||
+                    (arbName == magnPrev + "_MiddleMagR");
+
+  if (snd_hole && snd_magnet) {
     //
     // 1) Raw Arb8 “shape”
     //
@@ -120,6 +128,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
     //
     // 5) Wrap the composite in a volume
     //
+    LOG(debug) << " Create CreateArb8 of the MS 5";
     magVol = new TGeoVolume(arbName, compShape, medium);
   } else {
     // original uncut magnet
@@ -143,6 +152,7 @@ void ShipMuonShield::CreateMagnet(
     Double_t ratio_yoke_2, Double_t dY_yoke_1, Double_t dY_yoke_2, Double_t dZ,
     Double_t middleGap, Double_t middleGap2, Double_t gap, Double_t gap2,
     Double_t Z, Bool_t NotMagnet, Bool_t SC_key = false) {
+  LOG(debug) << " Create a magnet of the MS ";
   Double_t coil_gap, coil_gap2;
   Int_t color[4] = {45, 31, 30, 38};
   gap = std::ceil(std::max(100. / dY, gap));
@@ -312,31 +322,31 @@ void ShipMuonShield::CreateMagnet(
       break;
   }
 }
-
-Int_t ShipMuonShield::Initialize(
+void ShipMuonShield::Initialize(
     std::vector<TString>& magnetName,
     std::vector<FieldDirection>& fieldDirection, std::vector<Double_t>& dXIn,
     std::vector<Double_t>& dYIn, std::vector<Double_t>& dXOut,
     std::vector<Double_t>& dYOut, std::vector<Double_t>& ratio_yokesIn,
     std::vector<Double_t>& ratio_yokesOut, std::vector<Double_t>& dY_yokeIn,
     std::vector<Double_t>& dY_yokeOut, std::vector<Double_t>& dZ,
-    std::vector<Double_t>& midGapIn, std::vector<Double_t>& midGapOut,
-    std::vector<Double_t>& Bgoal, std::vector<Double_t>& gapIn,
-    std::vector<Double_t>& gapOut, std::vector<Double_t>& Z) {
-  const Int_t nMagnets = 7;
-  LOG(info) << " Initialize the MS ";
+    std::vector<Double_t>& Z_rel, std::vector<Double_t>& midGapIn,
+    std::vector<Double_t>& midGapOut, std::vector<Double_t>& Bgoal,
+    std::vector<Double_t>& gapIn, std::vector<Double_t>& gapOut,
+    std::vector<Double_t>& Z) {
+  LOG(debug) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
-  for (auto i : {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &midGapIn, &midGapOut,
-                 &ratio_yokesIn, &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut,
-                 &Bgoal, &gapIn, &gapOut, &Z}) {
+  for (auto i : {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &Z_rel, &midGapIn,
+                 &midGapOut, &ratio_yokesIn, &ratio_yokesOut, &dY_yokeIn,
+                 &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
     i->reserve(nMagnets);
   }
-
-  Double_t z_gap = 10 * cm;  // fixed distance between magnets in Z-axis
-
-  magnetName = {"MagnAbsorb", "Magn1", "Magn2", "Magn3",
-                "Magn4",      "Magn5", "Magn6"};
+  magnetName.push_back("MagnAbsorb");
+  for (size_t i = 1; i < nMagnets; ++i) {
+    TString name = Form("Magn%zu", i);
+    magnetName.push_back(name);
+    LOG(debug) << "magnet i: " << name;
+  }
 
   fieldDirection = {FieldDirection::up,   FieldDirection::up,
                     FieldDirection::up,   FieldDirection::up,
@@ -346,43 +356,49 @@ Int_t ShipMuonShield::Initialize(
   std::vector<Double_t> params;
   params = shield_params;
 
-  const int offset = nMagnets;
-  const int nParams = 13;
+  for (size_t i = 0; i < nMagnets; ++i) {
+    // --- Load parameters for each magnet ---
 
-  for (Int_t i = 0; i < nMagnets; ++i) {
-    dXIn[i] = params[offset + i * nParams + 0];
-    dXOut[i] = params[offset + i * nParams + 1];
-    dYIn[i] = params[offset + i * nParams + 2];
-    dYOut[i] = params[offset + i * nParams + 3];
-    gapIn[i] = params[offset + i * nParams + 4];
-    gapOut[i] = params[offset + i * nParams + 5];
-    ratio_yokesIn[i] = params[offset + i * nParams + 6];
-    ratio_yokesOut[i] = params[offset + i * nParams + 7];
-    dY_yokeIn[i] = params[offset + i * nParams + 8];
-    dY_yokeOut[i] = params[offset + i * nParams + 9];
-    midGapIn[i] = params[offset + i * nParams + 10];
-    midGapOut[i] = params[offset + i * nParams + 11];
-    Bgoal[i] = params[offset + i * nParams + 12];
+    dZ[i] = params[i * nParams + 0];
+    Z_rel[i] = params[i * nParams + 1];
+    dXIn[i] = params[i * nParams + 2];
+    dXOut[i] = params[i * nParams + 3];
+    dYIn[i] = params[i * nParams + 4];
+    dYOut[i] = params[i * nParams + 5];
+    gapIn[i] = params[i * nParams + 6];
+    gapOut[i] = params[i * nParams + 7];
+    ratio_yokesIn[i] = params[i * nParams + 8];
+    ratio_yokesOut[i] = params[i * nParams + 9];
+    dY_yokeIn[i] = params[i * nParams + 10];
+    dY_yokeOut[i] = params[i * nParams + 11];
+    midGapIn[i] = params[i * nParams + 12];
+    midGapOut[i] = params[i * nParams + 13];
+    Bgoal[i] = params[i * nParams + 14];
+
+    // --- Compute Z position for each magnet ---
+    if (i == 0) {
+      // First magnet uses the initial offset
+      Z[i] = z_end_of_proximity_shielding + dZ[i] + Z_rel[i];
+    } else {
+      // Subsequent magnets are placed relative to the previous one
+      Z[i] = Z[i - 1] + Z_rel[i - 1] + dZ[i] + Z_rel[i];
+    }
+    // --- Print all values for this magnet ---
+    LOG(debug) << "Magnet " << i << ": dZ=" << dZ[i] << ", Z_rel=" << Z_rel[i]
+               << ", dXIn=" << dXIn[i] << ", dXOut=" << dXOut[i]
+               << ", dYIn=" << dYIn[i] << ", dYOut=" << dYOut[i]
+               << ", gapIn=" << gapIn[i] << ", gapOut=" << gapOut[i]
+               << ", ratio_yokesIn=" << ratio_yokesIn[i]
+               << ", ratio_yokesOut=" << ratio_yokesOut[i]
+               << ", dY_yokeIn=" << dY_yokeIn[i]
+               << ", dY_yokeOut=" << dY_yokeOut[i]
+               << ", midGapIn=" << midGapIn[i] << ", midGapOut=" << midGapOut[i]
+               << ", Bgoal=" << Bgoal[i] << ", Z=" << Z[i];
   }
-
-  dZ[0] = dZ1 - z_gap / 2;
-  Z[0] = z_end_of_proximity_shielding + dZ[0] + z_gap;
-  dZ[1] = dZ2 - z_gap / 2;
-  Z[1] = Z[0] + dZ[0] + dZ[1] + z_gap;
-  dZ[2] = dZ3 - z_gap / 2;
-  Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * z_gap;
-  dZ[3] = dZ4 - z_gap / 2;
-  Z[3] = Z[2] + dZ[2] + dZ[3] + z_gap;
-  dZ[4] = dZ5 - z_gap / 2;
-  Z[4] = Z[3] + dZ[3] + dZ[4] + z_gap;
-  dZ[5] = dZ6 - z_gap / 2;
-  Z[5] = Z[4] + dZ[4] + dZ[5] + z_gap;
-  dZ[6] = dZ7 - z_gap / 2;
-  Z[6] = Z[5] + dZ[5] + dZ[6] + z_gap;
-
-  return nMagnets;
+  LOG(debug) << " ending of Initialize the MS ";
 }
 void ShipMuonShield::ConstructGeometry() {
+  LOG(debug) << " Construct Geometry of the MS ";
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
   InitMedium("iron");
@@ -390,22 +406,18 @@ void ShipMuonShield::ConstructGeometry() {
 
   std::vector<TString> magnetName;
   std::vector<FieldDirection> fieldDirection;
-  std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut,
-      ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn, gapOut,
-      Bgoal, Z;
-  const Int_t nMagnets =
-      Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut,
-                 ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, dZf,
-                 midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);
+  std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, Z_relf, midGapIn,
+      midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn,
+      gapOut, Bgoal, Z;
+  Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut,
+             ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, dZf, Z_relf,
+             midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);
 
-  // Create TCC8 tunnel around muon shield
-
-  std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
-  for (Int_t nM = 0; nM < (nMagnets); nM++) {
-    if (dZf[nM] < 1e-5 || dXIn[nM] == 0) {
+  for (size_t nM = 0; nM < nMagnets; ++nM) {
+    if (Z_relf[nM] < 1e-5 || dXIn[nM] == 0) {
       continue;
     }
-    Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * tesla;
+    Double_t ironField_s = Bgoal[nM] * tesla;
     TGeoUniformMagField* magFieldIron_s =
         new TGeoUniformMagField(0., ironField_s, 0.);
     TGeoUniformMagField* RetField_s =
@@ -419,7 +431,7 @@ void ShipMuonShield::ConstructGeometry() {
     // Create the magnet
     CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
                  dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], ratio_yokesIn[nM],
-                 ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], dZf[nM],
+                 ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], Z_relf[nM],
                  midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM],
                  nM == 0, nM == 3 && fSC_mag);
   }
@@ -427,9 +439,8 @@ void ShipMuonShield::ConstructGeometry() {
   // Place in origin of SHiP coordinate system as subnodes placed correctly
   top->AddNode(tShield, 1);
 
-  Double_t z_gap = 10 * cm;
-  Double_t absorber_offset = z_gap;
-  Double_t absorber_half_length = (dZf[0]);
+  Double_t absorber_offset = dZf[0];
+  Double_t absorber_half_length = (Z_relf[0]);
 
   // Absorber
 
