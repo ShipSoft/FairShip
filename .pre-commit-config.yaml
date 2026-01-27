@@ -39,7 +39,6 @@ repos:
   rev: "v2.4.1"
   hooks:
     - id: codespell
-      exclude: muon
       additional_dependencies: [tomli]
 - repo: https://github.com/asottile/pyupgrade
   rev: v3.21.2
