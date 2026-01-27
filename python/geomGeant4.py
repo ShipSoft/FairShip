@@ -155,15 +155,32 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
       fieldsList.append('MainSpecMap')
 
-      if not shipGeo.hadronAbsorber.WithConstField:
+      if not shipGeo.muShield.WithConstField:
+        offset = shipGeo.muShield.Z[0] - shipGeo.muShield.Z_rel[0]
+        quadSymm = True
+        vmc_work_dir = ROOT.gSystem.Getenv("VMCWORKDIR")
+        file_name = f"{vmc_work_dir}/files/{shipGeo.shieldName}.root"
+        try:
+            # Check if the file exists by trying to open it
+            file = ROOT.TFile.Open(file_name)
+
+            if file and not file.IsZombie():  # If the file exists and is not corrupted
+              print(f"Muon Shield field map file {file_name} exists.")
+              file_name = f"files/{shipGeo.shieldName}.root"
+              file.Close()
+            else:
+              raise OSError(f"File {file_name} is corrupted or invalid.")
+        except OSError as e:
+            raise OSError(f"Error: {e}. Using default file instead.")
+        fieldMaker.defineFieldMap('muonShieldField', file_name,
+                              ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm)
+        fieldsList.append('muonShieldField')
+        print(f"               from {file_name} using offset z = {str(offset)} cm")
+      
+      elif not shipGeo.hadronAbsorber.WithConstField:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
        fieldsList.append('HadronAbsorberMap')
 
-      if not shipGeo.muShield.WithConstField:
-       field_center, _ = ShieldUtils.find_shield_center(shipGeo)
-       fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
-                                 ROOT.TVector3(0.0, 0.0, field_center), ROOT.TVector3(0.0, 0.0, 0.0), True)
-       fieldsList.append('muonShieldField')
     # Combine the fields to obtain the global field
       if len(fieldsList) > 1:
        fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4

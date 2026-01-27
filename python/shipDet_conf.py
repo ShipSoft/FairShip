@@ -302,7 +302,7 @@ def configure(run, ship_geo):
 
 
     # For SND: support multiple designs
-    if ship_geo.SND:
+    if ship_geo.SND and 0:
         for design in ship_geo.SND_design:
             if design == 2:
                 # SND design 2 -- MTC/SiliconTarget
@@ -333,7 +333,7 @@ def configure(run, ship_geo):
         ship_geo.SC_mag,
     )
 
-    if ship_geo.SND:
+    if ship_geo.SND and 0:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
         if 2 in getattr(ship_geo, 'SND_design', []):
             MuonShield.SetSNDSpace(

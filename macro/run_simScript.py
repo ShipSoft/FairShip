@@ -139,7 +139,7 @@ parser.add_argument("-F", dest="deepCopy", help="default = False: copy only stab
 parser.add_argument("-t", "--test", dest="testFlag", help="quick test", action="store_true")
 parser.add_argument("--dry-run", dest="dryrun", help="stop after initialize", action="store_true")
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", action="store_true")
-parser.add_argument("--shieldName", help="The name of the muon shield in the database to use.", default="New_HA_Design", choices=["New_HA_Design", "warm_opt"])
+parser.add_argument("--shieldName", help="The name of the muon shield in the database to use.", default="New_HA_Design", choices=["New_HA_Design", "warm_opt","stellatryon_v2"])
 parser.add_argument("--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default='pi0')
 parser.add_argument("--debug", help="Control FairLogger verbosity: 0=info (default), 1=+debug, 2=+debug1, 3=+debug2", default=0, type=int, choices=range(0,4))
 parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")

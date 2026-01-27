@@ -13,14 +13,12 @@ it in future.
 ## Unreleased
 
 ### Added
-
+* New warm MS option Stellatryon v.2 added to the config and its field map
 ### Changed
-
-
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
-
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
