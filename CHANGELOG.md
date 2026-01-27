@@ -16,6 +16,8 @@ it in future.
 
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork
 
+* New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
+
 ### Changed
 
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
@@ -23,6 +25,9 @@ it in future.
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
+* Change function SND in shipDet_conf.py
+* Change disable magnetic field in the MS and remove field map upload in run_fixedTarget.py
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
@@ -48,6 +53,7 @@ it in future.
 * Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
 * Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
 * Remove unused create_field_perturbation.py script
+* New_HA_Design and warm_opt muon shield configuration are no longer supported
 
 ## 25.12 - 2025-12-22
 

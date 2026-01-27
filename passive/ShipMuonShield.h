@@ -29,11 +29,11 @@ class ShipMuonShield : public FairModule {
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy);
 
  protected:
-  Double_t fMuonShieldHalfLength;  // FIXME: HA_field to be removed in the next
-                                   // workshop meeting
   Double_t dZ0, dZ1, dZ2, dZ3, dZ4, dZ5, dZ6, dZ7, dXgap,
       z_end_of_proximity_shielding;
+  size_t nMagnets;
   Int_t InitMedium(TString name);
+  Int_t nParams;
   Bool_t fWithConstShieldField;
   Bool_t fSC_mag;
   std::vector<Double_t> shield_params;
@@ -46,18 +46,18 @@ class ShipMuonShield : public FairModule {
                   Double_t x_translation, Double_t y_translation,
                   Double_t z_translation);
 
-  Int_t Initialize(std::vector<TString>& magnetName,
-                   std::vector<FieldDirection>& fieldDirection,
-                   std::vector<Double_t>& dXIn, std::vector<Double_t>& dYIn,
-                   std::vector<Double_t>& dXOut, std::vector<Double_t>& dYOut,
-                   std::vector<Double_t>& ratio_yokesIn,
-                   std::vector<Double_t>& ratio_yokesOut,
-                   std::vector<Double_t>& dY_yokeIn,
-                   std::vector<Double_t>& dY_yokeOut, std::vector<Double_t>& dZ,
-                   std::vector<Double_t>& midGapIn,
-                   std::vector<Double_t>& midGapOut,
-                   std::vector<Double_t>& Bgoal, std::vector<Double_t>& gapIn,
-                   std::vector<Double_t>& gapOut, std::vector<Double_t>& Z);
+  void Initialize(std::vector<TString>& magnetName,
+                  std::vector<FieldDirection>& fieldDirection,
+                  std::vector<Double_t>& dXIn, std::vector<Double_t>& dYIn,
+                  std::vector<Double_t>& dXOut, std::vector<Double_t>& dYOut,
+                  std::vector<Double_t>& ratio_yokesIn,
+                  std::vector<Double_t>& ratio_yokesOut,
+                  std::vector<Double_t>& dY_yokeIn,
+                  std::vector<Double_t>& dY_yokeOut, std::vector<Double_t>& dZ,
+                  std::vector<Double_t>& Z_rel, std::vector<Double_t>& midGapIn,
+                  std::vector<Double_t>& midGapOut,
+                  std::vector<Double_t>& Bgoal, std::vector<Double_t>& gapIn,
+                  std::vector<Double_t>& gapOut, std::vector<Double_t>& Z);
 
   void CreateMagnet(TString magnetName, TGeoMedium* medium, TGeoVolume* tShield,
                     TGeoUniformMagField* fields[4],

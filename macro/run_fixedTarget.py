@@ -117,8 +117,8 @@ ap.add_argument(
 ap.add_argument(
     "--shieldName",
     help="Name of the shield in the database. New_HA_Design or warm_opt.",
-    default="New_HA_Design",
-    choices=["New_HA_Design", "warm_opt"],
+    default="TRY_2025",
+    choices=["TRY_2025"],
 )
 ap.add_argument(
     "--AddMuonShield",
@@ -308,19 +308,17 @@ if args.AddPostTargetSensPlane:
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
-    n_magnets = 7
-    n_params = 13
+    n_params = 15
     if not args.AddMuonShieldField:
-        for i in range(n_magnets):
-            ship_geo.muShield.params[n_magnets + i * n_params + 12] = 0  # set B field to 0
+        for i in range(ship_geo.muShield.nMagnets):
+            ship_geo.muShield.params[i * n_params + 14] = 0  # set B field to 0
     if args.AddHadronAbsorberOnly:
-        for i in range(1, n_magnets):
-            ship_geo.muShield.params[n_magnets + i * n_params] = 0  # set dXIn to 0
+        ship_geo.muShield.params = ship_geo.muShield.params[:15]  # set dXIn to 0
 
     MuonShield = ROOT.ShipMuonShield(
         in_params=list(ship_geo.muShield.params),
         z=ship_geo.muShield.z,
-        WithConstShieldField=ship_geo.muShield.WithConstField,
+        WithConstShieldField=True,
         SC_key=ship_geo.SC_mag,
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane

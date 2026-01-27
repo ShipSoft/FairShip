@@ -208,8 +208,8 @@ parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajecto
 parser.add_argument(
     "--shieldName",
     help="The name of the muon shield in the database to use.",
-    default="New_HA_Design",
-    choices=["New_HA_Design", "warm_opt"],
+    default="TRY_2025",
+    choices=["TRY_2025"],
 )
 parser.add_argument(
     "--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default="pi0"

@@ -64,7 +64,8 @@ jobs:
       matrix:
         vessel_option: [vacuums, helium]
         SND_option: [all]
-        muon_shield: [warm_opt, New_HA_Design]
+        muon_shield: [TRY_2025]
+        target: [Jun25]
 
     steps:
       - name: Checkout

@@ -17,212 +17,112 @@ from ShipGeoConfig import AttrDict, Config
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
-    "warm_opt": {
+    "TRY_2025": {
         "hybrid": False,
-        "WithConstField": True,
+        "WithConstField": False,
         "params": [
-            231.0,
-            208.0,
-            207.0,
-            281.0,
-            172.82,
-            212.54,
-            168.64,
-            50.0,
-            50.0,
-            119.0,
-            119.0,
-            2.0,
-            2.0,
-            1.0,
-            1.0,
-            50.0,
-            50.0,
-            0.0,
-            0.0,
-            1.6,
-            72.0,
-            51.0,
-            29.0,
-            46.0,
-            10.0,
-            7.0,
-            1.0,
-            1.0,
-            72.0,
-            51.0,
-            0.0,
-            0.0,
-            1.7,
-            54.0,
-            38.0,
-            46.0,
-            122.0,
-            14.0,
-            9.0,
-            1.0,
-            1.0,
-            54.0,
-            38.0,
-            0.0,
-            0.0,
-            1.7,
-            10.0,
-            31.0,
-            35.0,
-            31.0,
-            51.0,
-            11.0,
-            1.0,
-            1.0,
-            0.0,
-            31.0,
-            0.0,
-            0.0,
-            1.7,
-            3.0,
-            32.0,
-            54.0,
-            24.0,
-            8.0,
-            8.0,
-            3.0,
-            1.0,
-            1.0,
-            32.0,
-            0.0,
-            0.0,
-            1.7,
-            22.0,
-            32.0,
-            209.0,
-            35.0,
-            8.0,
-            13.0,
-            1.0,
-            1.0,
-            22.0,
-            32.0,
-            0.0,
-            0.0,
-            1.7,
-            33.0,
-            77.0,
-            85.0,
-            241.0,
-            9.0,
-            26.0,
-            1.0,
-            1.0,
-            33.0,
-            77.0,
-            0.0,
-            0.0,
-            1.7,
-        ],
-    },
-    "New_HA_Design": {
-        "hybrid": False,
-        "WithConstField": True,
-        "params": [
-            231.0 / 2,
-            208.0 + 231.0 / 2,
-            207.0,
-            281.0,
-            172.82,
-            212.54,
-            168.64,
-            50.0,
-            50.0,
-            119.0,
-            119.0,
-            2.0,
-            2.0,
-            1.0,
-            1.0,
-            50.0,
-            50.0,
-            0.0,
-            0.0,
-            1.9,
-            72.0,
-            51.0,
-            29.0,
-            46.0,
-            10.0,
-            7.0,
-            1.0,
-            1.0,
-            72.0,
-            51.0,
-            0.0,
-            0.0,
-            1.7,
-            54.0,
-            38.0,
-            46.0,
-            122.0,
-            14.0,
-            9.0,
-            1.0,
-            1.0,
-            54.0,
-            38.0,
-            0.0,
-            0.0,
-            1.7,
-            10.0,
-            31.0,
-            35.0,
-            31.0,
-            51.0,
-            11.0,
-            1.0,
-            1.0,
-            0.0,
-            31.0,
-            0.0,
-            0.0,
-            1.7,
-            3.0,
-            32.0,
-            54.0,
-            24.0,
-            8.0,
-            8.0,
-            3.0,
-            1.0,
-            1.0,
-            32.0,
-            0.0,
-            0.0,
-            1.7,
-            22.0,
-            32.0,
-            209.0,
-            35.0,
-            8.0,
-            13.0,
-            1.0,
-            1.0,
-            22.0,
-            32.0,
-            0.0,
-            0.0,
-            1.7,
-            33.0,
-            77.0,
-            85.0,
-            241.0,
-            9.0,
-            26.0,
-            1.0,
-            1.0,
-            33.0,
-            77.0,
-            0.0,
-            0.0,
-            1.7,
+            [
+                0,
+                115.5,
+                50.00,
+                50.00,
+                119.00,
+                119.00,
+                2.00,
+                2.00,
+                1.00,
+                1.00,
+                50.00,
+                50.00,
+                0.00,
+                0.00,
+                1.90,
+            ],
+            [
+                20,
+                495.00,
+                67.10,
+                79.92,
+                27.00,
+                43.00,
+                5.00,
+                5.00,
+                1.38,
+                1.06,
+                67.10,
+                79.92,
+                0.00,
+                0.00,
+                1.90,
+            ],
+            [
+                10,
+                280.48,
+                53.12,
+                49.56,
+                43.00,
+                56.00,
+                5.03,
+                5.00,
+                2.11,
+                2.40,
+                53.12,
+                49.56,
+                0.00,
+                0.00,
+                1.90,
+            ],
+            [
+                10,
+                232.53,
+                2.73,
+                3.68,
+                56.00,
+                56.00,
+                5.00,
+                5.21,
+                60.44,
+                45.63,
+                2.73,
+                3.68,
+                0.50,
+                0.50,
+                -1.91,
+            ],
+            [
+                10,
+                85.00,
+                31.00,
+                107.12,
+                56.00,
+                56.00,
+                5.27,
+                5.00,
+                4.55,
+                0.63,
+                1.00,
+                77.12,
+                0.00,
+                0.00,
+                -1.91,
+            ],
+            [
+                10,
+                233.82,
+                30.03,
+                40.00,
+                56.00,
+                56.00,
+                5.00,
+                5.01,
+                4.83,
+                3.37,
+                30.03,
+                40.00,
+                0.00,
+                0.00,
+                -1.91,
+            ],
         ],
     },
 }
@@ -327,42 +227,6 @@ def create_config(
 
     c.target.z0 = 0  # Origin of SHiP coordinate system
     c.target.z = c.target.z0 + c.target.length / 2.0
-    c.chambers = AttrDict()
-    magnetIncrease = 100.0 * u.cm
-    c.muShield = AttrDict()
-    c.muShield.Field = 1.7  # in units of Tesla expected by ShipMuonShield
-    c.muShield.LE = (
-        7 * u.m
-    )  # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 1 * u.m
-
-    # zGap to compensate automatic shortening of magnets
-    0.05 * u.m  # halflengh of gap
-
-    params = shield_db[shieldName]["params"]
-    c.muShield.params = params
-    c.muShield.dZ1 = params[0]
-    c.muShield.dZ2 = params[1]
-    c.muShield.dZ3 = params[2]
-    c.muShield.dZ4 = params[3]
-    c.muShield.dZ5 = params[4]
-    c.muShield.dZ6 = params[5]
-    c.muShield.dZ7 = params[6]
-    c.muShield.dXgap = 0.0 * u.m
-
-    c.muShield.length = (
-        2
-        * (
-            c.muShield.dZ1
-            + c.muShield.dZ2
-            + c.muShield.dZ3
-            + c.muShield.dZ4
-            + c.muShield.dZ5
-            + c.muShield.dZ6
-            + c.muShield.dZ7
-        )
-        + c.muShield.LE
-    )
 
     c.hadronAbsorber = AttrDict()
 
@@ -374,7 +238,42 @@ def create_config(
         + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
         - 10 * u.cm  # Remove spacing internal to hadron absorber
     )
+
+    # DEFINITION OF THE MUON SHIELD
+    c.muShield = AttrDict()
+
     c.muShield.z = c.hadronAbsorber.z
+
+    params = shield_db[shieldName]["params"]
+    c.muShield.params = params
+
+    # MS length
+    c.muShield.length = sum(line[0] + line[1] * 2 for line in params)
+    c.muShield.nMagnets = len(params)
+
+    c.muShield.Zgap = []
+    c.muShield.half_length = []
+    c.muShield.Entrance = []
+
+    for line in params:
+        c.muShield.Zgap.append(line[0])
+        c.muShield.half_length.append(line[1])
+
+    # Compute Z position for each magnet
+    for i in range(len(c.muShield.Zgap)):
+        if i == 0:
+            # First magnet uses the initial offset
+            c.muShield.Entrance.append(c.muShield.z + c.muShield.Zgap[i])
+        else:
+            # Subsequent magnets are placed relative to the previous one
+            c.muShield.Entrance.append(
+                c.muShield.Entrance[i - 1]
+                + c.muShield.half_length[i - 1] * 2
+                + c.muShield.Zgap[i]
+            )
+    # Flatten the params list
+    c.muShield.params = [item for sublist in params for item in sublist]
+
     c.decayVolume = AttrDict()
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
@@ -385,6 +284,10 @@ def create_config(
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
+
+    c.chambers = AttrDict()
+    magnetIncrease = 100.0 * u.cm
+
     if strawDesign != 4 and strawDesign != 10:
         print("this design ", strawDesign, " is not supported, use strawDesign = 4 or 10")
         1 / 0
@@ -495,7 +398,9 @@ def create_config(
     c.Muon.ActiveThickness = 0.5 * u.cm
     c.Muon.FilterThickness = 30.0 * u.cm
 
-    c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]  # TO BE CHECKED: NOT SURE IT IS NEEDED
+    c.hadronAbsorber.WithConstField = shield_db[shieldName][
+        "WithConstField"
+    ]
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
