@@ -26,7 +26,7 @@ def main():
 
         print(f"ERROR: Cannot open MC simulation file: {options.simfile}")
         print(f"Current working directory: {os.getcwd()}")
-        print(f"Files in current directory:")
+        print("Files in current directory:")
         os.system("ls -lh *.root")
         raise RuntimeError(f"Cannot open MC simulation file: {options.simfile}")
 
@@ -37,7 +37,7 @@ def main():
     if "cbmsim" not in keys:
         print(f"ERROR: MC simulation file {options.simfile} does not contain 'cbmsim' tree")
         print(f"Available keys: {keys}")
-        raise RuntimeError(f"MC simulation file does not contain 'cbmsim' tree")
+        raise RuntimeError("MC simulation file does not contain 'cbmsim' tree")
 
     tree = f["cbmsim"]
 

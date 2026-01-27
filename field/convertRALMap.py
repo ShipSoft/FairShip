@@ -232,7 +232,6 @@ def createRootMap(inFileName, outFileName):
     Nx = 0
     Ny = 0
     Nz = 0
-    Nzy = 0
 
     with open(inFileName) as f:
         for line in f:
@@ -254,7 +253,6 @@ def createRootMap(inFileName, outFileName):
                 Nx = int(((rStruct.xMax - rStruct.xMin) / rStruct.dx) + 1.0)
                 Ny = int(((rStruct.yMax - rStruct.yMin) / rStruct.dy) + 1.0)
                 Nz = int(((rStruct.zMax - rStruct.zMin) / rStruct.dz) + 1.0)
-                Nzy = Nz * Ny
 
                 print(f"Nx = {Nx}, Ny = {Ny}, Nz = {Nz}")
 
