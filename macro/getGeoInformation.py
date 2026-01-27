@@ -9,7 +9,8 @@
 import operator
 from argparse import ArgumentParser
 from array import array
-import os, ROOT
+
+import ROOT
 
 
 def local2Global(n):

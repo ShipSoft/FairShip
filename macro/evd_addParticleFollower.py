@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, evd_fillEnergy
+from array import array
+
+import evd_fillEnergy
+import ROOT
 
 gEve = ROOT.gEve
 import eveGlobal

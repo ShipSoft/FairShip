@@ -5,8 +5,10 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
 ignore = [
+    "E402",  # Module import not at top - common in simulation scripts
     "E501",  # Line too long - handled by formatter where possible
     "E701",  # Multiple statements on one line - common in physics code
+    "E741",  # Ambiguous variable name (l, O, I) - common in physics (l=length)
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -16,6 +18,9 @@ ignore = [
 "python/pythia8_conf.py" = ["F403", "F405"]
 "python/readDecayTable.py" = ["F403", "F405"]
 "python/proton_bremsstrahlung.py" = ["F403", "F405"]
+# Interactive script snippets that depend on runtime context
+"macro/getInteractionAndRadiationLength.py" = ["F821"]
+"macro/ShipAna.py" = ["F821"]
 
 [tool.codespell]
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'

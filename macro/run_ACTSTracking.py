@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from argparse import ArgumentParser
-import sys
 import os
+from argparse import ArgumentParser
+
 import global_variables
 import ROOT
 

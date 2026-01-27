@@ -2,21 +2,22 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT
+import atexit
 import os
 import tkinter
-import atexit
+
+import ROOT
 
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
 from argparse import ArgumentParser
-from ShipGeoConfig import load_from_root_file
 from array import array
-import shipunit as u
-import shipRoot_conf
-import shipDet_conf
+
 import decorators
+import shipRoot_conf
+import shipunit as u
+from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
 decorators.apply_decorators()
@@ -1099,7 +1100,7 @@ def mydebug():
         t.GetEntry(i)
         for gTr in t.GeoTracks:
             gTr.Print()
-            part = gTr.GetParticle()
+            gTr.GetParticle()
             lorv = ROOT.TLorentzVector()
             print(
                 "xyz E pxpypz",

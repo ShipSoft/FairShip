@@ -22,10 +22,11 @@ def mem_monitor():
     print(f"memory: virtual = {vmsize / 1.0e3:5.2F} MB  physical = {pmsize / 1.0e3:5.2F} MB")
 
 
-import ROOT, os, sys
+import os
+
 import global_variables
+import ROOT
 import rootUtils as ut
-import shipunit as u
 import shipRoot_conf
 
 shipRoot_conf.configure()
@@ -83,7 +84,7 @@ if not options.dy:
     tmp = options.inputFile.split(".")
     try:
         dy = float(tmp[1] + "." + tmp[2])
-    except:
+    except (ValueError, IndexError):
         dy = None
 
 print(

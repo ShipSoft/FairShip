@@ -1,8 +1,15 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, time, os, sys, random, copy, argparse
+import argparse
+import copy
+import os
+import random
+import sys
+import time
 from array import array
+
+import ROOT
 import rootUtils as ut
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
@@ -234,7 +241,7 @@ print("Get chi vs momentum for all beam+target particles")
 for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
         idw = idbeam[idp] * idpm
-        if PDG.GetParticle(idw) != None:  # if particle exists, book hists etc.
+        if PDG.GetParticle(idw) is not None:  # if particle exists, book hists etc.
             name = PDG.GetParticle(idw).GetName()
             id = id + 1
             for idnp in range(2):

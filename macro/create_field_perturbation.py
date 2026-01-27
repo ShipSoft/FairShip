@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT as r
-import shipunit as u
-import geomGeant4
-import geometry_config
-import shipDet_conf
-import saveBasicParameters
 import os
-import ShieldUtils
 from argparse import ArgumentParser
+
+import geometry_config
+import geomGeant4
+import ROOT as r
+import ShieldUtils
+import shipDet_conf
+import shipunit as u
 
 
 def create_csv_field_map(options):
@@ -24,10 +24,10 @@ def create_csv_field_map(options):
 
     run = r.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    run.SetSink(ROOT.FairRootFileSink("tmp_file"))  # Output file
+    run.SetSink(r.FairRootFileSink("tmp_file"))  # Output file
     # user configuration file default g4Config.C
     run.SetUserConfig("g4Config.C")
-    modules = shipDet_conf.configure(run, ship_geo)
+    shipDet_conf.configure(run, ship_geo)
     primGen = r.FairPrimaryGenerator()
     primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #

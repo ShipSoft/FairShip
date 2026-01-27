@@ -3,7 +3,11 @@
 
 # Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 # Output is an ntuple with muon/neutrinos
-import ROOT, time, os, sys, random, getopt
+import getopt
+import os
+import sys
+
+import ROOT
 import rootUtils as ut
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
@@ -68,11 +72,11 @@ P8.readString("ProcessLevel:all = off")
 # let strange particle decay in Geant4
 n = 1
 while n != 0:
-    n = p8.particleData.nextId(n)
-    p = p8.particleData.particleDataEntryPtr(n)
+    n = P8.particleData.nextId(n)
+    p = P8.particleData.particleDataEntryPtr(n)
     if p.tau0() > 1:
         command = str(n) + ":mayDecay = false"
-        p8.readString(command)
+        P8.readString(command)
         print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4", p.name())
 P8.init()
 

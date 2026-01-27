@@ -2,10 +2,12 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os, sys, time, shipRoot_conf
-import shipunit as u
-import geometry_config
+import os
 
+import geometry_config
+import ROOT
+import shipRoot_conf
+import shipunit as u
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -21,9 +23,9 @@ ds = 8  # 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=op
 #                                                               increase di-muon BRs for resonances < 1.1GeV by a factor 50
 
 # ----------------------------- Yandex production ------------------------------
-import shutil
 import argparse
 import logging
+import shutil
 
 logging.info("")
 logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])
