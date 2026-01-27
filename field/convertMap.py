@@ -18,7 +18,7 @@ import ROOT
 # Struct for the ROOT file TTree data: coord range and field binning
 
 ROOT.gROOT.ProcessLine(
-"struct rangeStruct{\
+    "struct rangeStruct{\
    float xMin;\
    float xMax;\
    float dx;\
@@ -28,78 +28,75 @@ ROOT.gROOT.ProcessLine(
    float zMin;\
    float zMax;\
    float dz;\
-};");
-
+};"
+)
 # The field map is assumed to obey the following coordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
 # where Ny and Nz are the number of y and z bins
 
 ROOT.gROOT.ProcessLine(
-"struct dataStruct{\
+    "struct dataStruct{\
    float x;\
    float y;\
    float z;\
    float Bx;\
    float By;\
    float Bz;\
-};");
+};"
+)
 
 
-def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root',
-        cmScale = 1.0, storeCoords = False):
-
+def run(inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale=1.0, storeCoords=False):
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
 
 
 def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
-
-    print('Create map {} from {} using cmScale = {}'.format(rootFileName,
-                                                                 inFileName, cmScale))
+    print(f"Create map {rootFileName} from {inFileName} using cmScale = {cmScale}")
     if storeCoords is True:
-        print(f'We will also store the x,y,z field coordinates in {rootFileName}')
+        print(f"We will also store the x,y,z field coordinates in {rootFileName}")
 
     rangeInfo = findRanges(inFileName, cmScale)
 
     # Define ROOT file and its TTree
-    theFile = ROOT.TFile.Open(rootFileName, 'recreate')
+    theFile = ROOT.TFile.Open(rootFileName, "recreate")
 
-    rangeTree = ROOT.TTree('Range', 'Range')
+    rangeTree = ROOT.TTree("Range", "Range")
     rangeTree.SetDirectory(theFile)
 
     # Coordinate ranges
     rStruct = ROOT.rangeStruct()
-    rangeTree.Branch('xMin', ROOT.addressof(rStruct, 'xMin'), 'xMin/F')
-    rangeTree.Branch('xMax', ROOT.addressof(rStruct, 'xMax'), 'xMax/F')
-    rangeTree.Branch('dx', ROOT.addressof(rStruct, 'dx'), 'dx/F')
-    rangeTree.Branch('yMin', ROOT.addressof(rStruct, 'yMin'), 'yMin/F')
-    rangeTree.Branch('yMax', ROOT.addressof(rStruct, 'yMax'), 'yMax/F')
-    rangeTree.Branch('dy', ROOT.addressof(rStruct, 'dy'), 'dy/F')
-    rangeTree.Branch('zMin', ROOT.addressof(rStruct, 'zMin'), 'zMin/F')
-    rangeTree.Branch('zMax', ROOT.addressof(rStruct, 'zMax'), 'zMax/F')
-    rangeTree.Branch('dz', ROOT.addressof(rStruct, 'dz'), 'dz/F')
+    rangeTree.Branch("xMin", ROOT.addressof(rStruct, "xMin"), "xMin/F")
+    rangeTree.Branch("xMax", ROOT.addressof(rStruct, "xMax"), "xMax/F")
+    rangeTree.Branch("dx", ROOT.addressof(rStruct, "dx"), "dx/F")
+    rangeTree.Branch("yMin", ROOT.addressof(rStruct, "yMin"), "yMin/F")
+    rangeTree.Branch("yMax", ROOT.addressof(rStruct, "yMax"), "yMax/F")
+    rangeTree.Branch("dy", ROOT.addressof(rStruct, "dy"), "dy/F")
+    rangeTree.Branch("zMin", ROOT.addressof(rStruct, "zMin"), "zMin/F")
+    rangeTree.Branch("zMax", ROOT.addressof(rStruct, "zMax"), "zMax/F")
+    rangeTree.Branch("dz", ROOT.addressof(rStruct, "dz"), "dz/F")
 
-    rStruct.xMin = rangeInfo['xMin']
-    rStruct.xMax = rangeInfo['xMax']
-    rStruct.dx = rangeInfo['dx']
-    rStruct.yMin = rangeInfo['yMin']
-    rStruct.yMax = rangeInfo['yMax']
-    rStruct.dy = rangeInfo['dy']
-    rStruct.zMin = rangeInfo['zMin']
-    rStruct.zMax = rangeInfo['zMax']
-    rStruct.dz = rangeInfo['dz']
+    rStruct.xMin = rangeInfo["xMin"]
+    rStruct.xMax = rangeInfo["xMax"]
+    rStruct.dx = rangeInfo["dx"]
+    rStruct.yMin = rangeInfo["yMin"]
+    rStruct.yMax = rangeInfo["yMax"]
+    rStruct.dy = rangeInfo["dy"]
+    rStruct.zMin = rangeInfo["zMin"]
+    rStruct.zMax = rangeInfo["zMax"]
+    rStruct.dz = rangeInfo["dz"]
 
     # Centre the field map on the local origin (cm)
-    x0 = 0.5*(rStruct.xMin + rStruct.xMax)
-    y0 = 0.5*(rStruct.yMin + rStruct.yMax)
-    z0 = 0.5*(rStruct.zMin + rStruct.zMax)
+    x0 = 0.5 * (rStruct.xMin + rStruct.xMax)
+    y0 = 0.5 * (rStruct.yMin + rStruct.yMax)
+    z0 = 0.5 * (rStruct.zMin + rStruct.zMax)
 
     # Use this if we don't want to centre the field map
-    #x0 = 0.0
-    #y0 = 0.0
-    #z0 = 0.0
+    # x0 = 0.0
+    # y0 = 0.0
+    # z0 = 0.0
 
-    print(f'Centering field map using coordinate shift {x0} {y0} {z0} cm')
+    print(f"Centering field map using coordinate shift {x0} {y0} {z0} cm")
 
     # Center coordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
@@ -111,15 +108,15 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rStruct.zMin = rStruct.zMin - z0
     rStruct.zMax = rStruct.zMax - z0
 
-    print(f'x range = {rStruct.xMin} to {rStruct.xMax}')
-    print(f'y range = {rStruct.yMin} to {rStruct.yMax}')
-    print(f'z range = {rStruct.zMin} to {rStruct.zMax}')
+    print(f"x range = {rStruct.xMin} to {rStruct.xMax}")
+    print(f"y range = {rStruct.yMin} to {rStruct.yMax}")
+    print(f"z range = {rStruct.zMin} to {rStruct.zMax}")
 
     # Fill info into range tree
     rangeTree.Fill()
 
     # Store field data components
-    dataTree = ROOT.TTree('Data', 'Data')
+    dataTree = ROOT.TTree("Data", "Data")
     dataTree.SetDirectory(theFile)
 
     # Field components with (x,y,z) coordinate binning ordered such that
@@ -128,30 +125,27 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     # of y and z bins
     dStruct = ROOT.dataStruct()
     if storeCoords is True:
-        dataTree.Branch('x', ROOT.addressof(dStruct, 'x'), 'x/F')
-        dataTree.Branch('y', ROOT.addressof(dStruct, 'y'), 'y/F')
-        dataTree.Branch('z', ROOT.addressof(dStruct, 'z'), 'z/F')
+        dataTree.Branch("x", ROOT.addressof(dStruct, "x"), "x/F")
+        dataTree.Branch("y", ROOT.addressof(dStruct, "y"), "y/F")
+        dataTree.Branch("z", ROOT.addressof(dStruct, "z"), "z/F")
 
-    dataTree.Branch('Bx', ROOT.addressof(dStruct, 'Bx'), 'Bx/F')
-    dataTree.Branch('By', ROOT.addressof(dStruct, 'By'), 'By/F')
-    dataTree.Branch('Bz', ROOT.addressof(dStruct, 'Bz'), 'Bz/F')
+    dataTree.Branch("Bx", ROOT.addressof(dStruct, "Bx"), "Bx/F")
+    dataTree.Branch("By", ROOT.addressof(dStruct, "By"), "By/F")
+    dataTree.Branch("Bz", ROOT.addressof(dStruct, "Bz"), "Bz/F")
 
     # Reopen the file and store the information in the ROOT file
     with open(inFileName) as f:
-
         # Read each line
         for line in f:
-
             # Ignore comment lines which begin with "#"
-            if '#' not in line:
-
+            if "#" not in line:
                 sLine = line.split()
 
                 # Bin centre coordinates with origin shift (all in cm)
                 if storeCoords is True:
-                    dStruct.x = float(sLine[0])*cmScale - x0
-                    dStruct.y = float(sLine[1])*cmScale - y0
-                    dStruct.z = float(sLine[2])*cmScale - z0
+                    dStruct.x = float(sLine[0]) * cmScale - x0
+                    dStruct.y = float(sLine[1]) * cmScale - y0
+                    dStruct.z = float(sLine[2]) * cmScale - z0
 
                 # B field components (Tesla)
                 dStruct.Bx = float(sLine[3])
@@ -160,7 +154,6 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 
                 dataTree.Fill()
 
-
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()
@@ -168,7 +161,6 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 
 
 def findRanges(inFileName, cmScale):
-
     # First read the data file to find the binning and coordinate ranges.
     # Store the unique (ordered) x, y and z values so we can then find the
     # bin widths, min/max limits and central offset
@@ -178,18 +170,15 @@ def findRanges(inFileName, cmScale):
     zArray = []
 
     with open(inFileName) as f:
-
         # Read each line
         for line in f:
-
             # Ignore comment lines which begin with "#"
-            if '#' not in line:
-
+            if "#" not in line:
                 sLine = line.split()
 
-                x = float(sLine[0])*cmScale
-                y = float(sLine[1])*cmScale
-                z = float(sLine[2])*cmScale
+                x = float(sLine[0]) * cmScale
+                y = float(sLine[1]) * cmScale
+                z = float(sLine[2]) * cmScale
 
                 if x not in xArray:
                     xArray.append(x)
@@ -212,31 +201,41 @@ def findRanges(inFileName, cmScale):
         xMin = xArray[0]
         Nx1 = Nx - 1
         xMax = xArray[Nx1]
-        dx = (xMax - xMin)/(Nx1*1.0)
+        dx = (xMax - xMin) / (Nx1 * 1.0)
 
     if Ny > 0:
         yMin = yArray[0]
         Ny1 = Ny - 1
         yMax = yArray[Ny1]
-        dy = (yMax - yMin)/(Ny1*1.0)
+        dy = (yMax - yMin) / (Ny1 * 1.0)
 
     if Nz > 0:
         zMin = zArray[0]
         Nz1 = Nz - 1
         zMax = zArray[Nz1]
-        dz = (zMax - zMin)/(Nz1*1.0)
+        dz = (zMax - zMin) / (Nz1 * 1.0)
 
-    rangeInfo = {'Nx': Nx, 'xMin': xMin, 'xMax': xMax, 'dx': dx,
-                 'Ny': Ny, 'yMin': yMin, 'yMax': yMax, 'dy': dy,
-                 'Nz': Nz, 'zMin': zMin, 'zMax': zMax, 'dz': dz}
+    rangeInfo = {
+        "Nx": Nx,
+        "xMin": xMin,
+        "xMax": xMax,
+        "dx": dx,
+        "Ny": Ny,
+        "yMin": yMin,
+        "yMax": yMax,
+        "dy": dy,
+        "Nz": Nz,
+        "zMin": zMin,
+        "zMax": zMax,
+        "dz": dz,
+    }
 
-    #print 'rangeInfo = {0}'.format(rangeInfo)
+    # print 'rangeInfo = {0}'.format(rangeInfo)
 
     return rangeInfo
 
 
 if __name__ == "__main__":
-
     # Example usage (Goliath field map removed):
     # run('GoliathFieldMap.txt', 'GoliathFieldMap.root', 0.1, True)
     # run('BFieldTest.txt', 'BFieldTest.root', 1.0)

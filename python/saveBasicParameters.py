@@ -5,37 +5,41 @@ from ShipGeoConfig import AttrDict
 import ROOT
 import os
 import subprocess
+
+
 def retrieveGitTags(o):
     # record some basic information about version of software:
     if "FAIRSHIP_HASH" in os.environ:
-        o.FairShip = os.environ['FAIRSHIP_HASH']
-        o.FairRoot = os.environ['FAIRROOT_HASH']
+        o.FairShip = os.environ["FAIRSHIP_HASH"]
+        o.FairRoot = os.environ["FAIRROOT_HASH"]
     else:
-      tmp = os.environ['FAIRSHIP']+'/.git/refs/remotes/origin/master'
-      if os.path.isfile(tmp):
-        x = subprocess.check_output(['more',tmp]).replace('\n','')
-        o.FairShip = AttrDict(origin=x)
-        tmp = os.environ['FAIRSHIP']+'/.git/refs/heads/master'
-      if os.path.isfile(tmp):
-        x = subprocess.check_output(['more',tmp]).replace('\n','')
-        o.FairShip = AttrDict(local=x)
-        tmp = os.environ['FAIRROOTPATH']+'/../FairRoot/.git/refs/heads/dev'
-      if os.path.isfile(tmp):
-        x = subprocess.check_output(['more',tmp]).replace('\n','')
-        o.FairRoot = AttrDict(dev=x)
-        tmp = os.environ['FAIRROOTPATH']+'/../FairRoot/.git/refs/heads/master'
-      if os.path.isfile(tmp):
-        x = subprocess.check_output(['more',tmp]).replace('\n','')
-        o.FairRoot = AttrDict(master=x)
+        tmp = os.environ["FAIRSHIP"] + "/.git/refs/remotes/origin/master"
+        if os.path.isfile(tmp):
+            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            o.FairShip = AttrDict(origin=x)
+            tmp = os.environ["FAIRSHIP"] + "/.git/refs/heads/master"
+        if os.path.isfile(tmp):
+            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            o.FairShip = AttrDict(local=x)
+            tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/dev"
+        if os.path.isfile(tmp):
+            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            o.FairRoot = AttrDict(dev=x)
+            tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/master"
+        if os.path.isfile(tmp):
+            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            o.FairRoot = AttrDict(master=x)
     return o
-def execute(f, ox, name='ShipGeo'):
+
+
+def execute(f, ox, name="ShipGeo"):
     """Save geometry configuration to ROOT file as JSON string"""
     if type(ox) == str:
         ox = AttrDict()
     o = retrieveGitTags(ox)
 
     if type(f) == str:
-        fg = ROOT.TFile.Open(f, 'update')
+        fg = ROOT.TFile.Open(f, "update")
     else:
         fg = f
 

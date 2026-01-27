@@ -70,15 +70,11 @@ transparentMaterials = {
 
 parser = ArgumentParser()
 
-parser.add_argument(
-    "-f", "--inputFile", dest="InputFile", help="Input file (MC simulation)", required=True
-)
+parser.add_argument("-f", "--inputFile", dest="InputFile", help="Input file (MC simulation)", required=True)
 parser.add_argument(
     "-r", "--recoFile", dest="recoFile", help="Reconstruction file (will be used as friend tree)", required=False
 )
-parser.add_argument(
-    "-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True
-)
+parser.add_argument("-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True)
 parser.add_argument(
     "-p",
     "--paramFile",
@@ -117,11 +113,11 @@ if options.InputFile.find("_D") > 0:
 # Determine reconstruction file
 if not options.recoFile:
     # Default: replace .root with _rec.root, or if already _rec.root use as-is
-    if options.InputFile.find('_rec.root') > 0:
+    if options.InputFile.find("_rec.root") > 0:
         options.recoFile = options.InputFile
-        options.InputFile = options.InputFile.replace('_rec.root', '.root')
+        options.InputFile = options.InputFile.replace("_rec.root", ".root")
     else:
-        options.recoFile = options.InputFile.replace('.root', '_rec.root')
+        options.recoFile = options.InputFile.replace(".root", "_rec.root")
 
 
 def printMCTrack(n, MCTrack):
@@ -182,9 +178,7 @@ def printParticles():
         doca = -1.0
         if aP.GetMother(1) == 99:  # DOCA is set
             doca = aP.T()
-        Rsq = (aP.Vx() / (2.45 * u.m)) ** 2 + (
-            aP.Vy() / ((10.0 / 2.0 - 0.05) * u.m)
-        ) ** 2
+        Rsq = (aP.Vx() / (2.45 * u.m)) ** 2 + (aP.Vy() / ((10.0 / 2.0 - 0.05) * u.m)) ** 2
         print(
             "%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F %4i  %4i "
             % (
@@ -247,7 +241,6 @@ class DrawVetoDigi(ROOT.FairTask):
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
-
     def DrawParticle(self, n):
         self.comp.OpenCompound()
         DTrack = ROOT.TEveLine()
@@ -259,9 +252,7 @@ class DrawVetoDigi(ROOT.FairTask):
         DTrack.SetName("Prtcle_" + str(n))
         DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())
         lam = (self.Targetz - aP.Vz()) / aP.Pz()
-        DTrack.SetNextPoint(
-            aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz
-        )
+        DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)
         self.comp.AddElement(DTrack)
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
@@ -294,17 +285,12 @@ class DrawTracks(ROOT.FairTask):
             self.z_start = 0
         muonDet = top.GetNode("MuonDetector_1")
         if muonDet:
-            self.z_end = (
-                muonDet.GetMatrix().GetTranslation()[2]
-                + muonDet.GetVolume().GetShape().GetDZ()
-            )
+            self.z_end = muonDet.GetMatrix().GetTranslation()[2] + muonDet.GetVolume().GetShape().GetDZ()
         elif hasattr(ShipGeo, "MuonStation3"):
             self.z_end = ShipGeo["MuonStation3"].z
         elif top.GetNode("VMuonBox_1"):
             xx = top.GetNode("VMuonBox_1")
-            self.z_end = (
-                xx.GetMatrix().GetTranslation()[2] + xx.GetVolume().GetShape().GetDZ()
-            )
+            self.z_end = xx.GetMatrix().GetTranslation()[2] + xx.GetVolume().GetShape().GetDZ()
         magNode = top.GetNode("MCoil_1")
         if magNode:
             self.z_mag = magNode.GetMatrix().GetTranslation()[2]
@@ -354,9 +340,7 @@ class DrawTracks(ROOT.FairTask):
         DTrack.SetName("Prtcle_" + str(n))
         DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())
         lam = (self.Targetz - aP.Vz()) / aP.Pz()
-        DTrack.SetNextPoint(
-            aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz
-        )
+        DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)
         self.comp.AddElement(DTrack)
 
     def DrawMCTrack(self, n):
@@ -389,9 +373,7 @@ class DrawTracks(ROOT.FairTask):
             if evVx:
                 zEx = -10 * u.m
             lam = (zEx + fPos.Z()) / fMom.Z()
-            DTrack.SetNextPoint(
-                fPos.X() + lam * fMom.X(), fPos.Y() + lam * fMom.Y(), zEx + fPos.Z()
-            )
+            DTrack.SetNextPoint(fPos.X() + lam * fMom.X(), fPos.Y() + lam * fMom.Y(), zEx + fPos.Z())
         c = ROOT.kYellow
         DTrack.SetMainColor(c)
         DTrack.SetLineWidth(3)
@@ -451,10 +433,7 @@ class DrawTracks(ROOT.FairTask):
             if len(hitlist) == 1:
                 if fT.GetMotherId() < 0:
                     continue
-                if (
-                    abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode())
-                    == options.HiddenParticleID
-                ):
+                if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == options.HiddenParticleID:
                     # still would like to draw track stub
                     # check for end vertex
                     evVx = False
@@ -559,9 +538,7 @@ class DrawTracks(ROOT.FairTask):
             DTrack.SetTitle(aP.__repr__())
             DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())
             lam = (self.Targetz - aP.Vz()) / aP.Pz()
-            DTrack.SetNextPoint(
-                aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz
-            )
+            DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)
             self.comp.AddElement(DTrack)
 
 
@@ -600,9 +577,7 @@ class IO:
             a.set(1)
         else:
             a.set(0)
-        self.lbut[x] = tkinter.Checkbutton(
-            self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a
-        )
+        self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
         self.lbut[x].var = a
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
@@ -615,9 +590,7 @@ class IO:
                 a.set(1)
             else:
                 a.set(0)
-            self.lbut[x] = tkinter.Checkbutton(
-                self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a
-            )
+            self.lbut[x] = tkinter.Checkbutton(self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a)
             self.lbut[x].var = a
             self.lbut[x]["command"] = lambda: self.toggle(x)
             self.lbut[x].pack(side=tkinter.BOTTOM)
@@ -645,40 +618,22 @@ class IO:
         b = ROOT.TGTextButton(guiFrame, "Add particle follower")
         b.SetWidth(150)
         b.SetToolTipText("start new window with top projection and energy loss")
-        b.SetCommand(
-            'TPython::ExecScript("'
-            + os.environ["FAIRSHIP"]
-            + '/macro/evd_addParticleFollower.py")'
-        )
+        b.SetCommand('TPython::ExecScript("' + os.environ["FAIRSHIP"] + '/macro/evd_addParticleFollower.py")')
         guiFrame.AddFrame(b, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
         bn = ROOT.TGTextButton(guiFrame, "fill histogram")
         bn.SetWidth(150)
         bn.SetToolTipText("Fill histogram with energy along flight path")
-        bn.SetCommand(
-            'TPython::ExecScript("'
-            + os.environ["FAIRSHIP"]
-            + '/macro/evd_fillEnergy.py")'
-        )
+        bn.SetCommand('TPython::ExecScript("' + os.environ["FAIRSHIP"] + '/macro/evd_fillEnergy.py")')
         guiFrame.AddFrame(bn, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
         bt = ROOT.TGTextButton(guiFrame, "switch transparent mode on/off")
         bt.SetWidth(150)
-        bt.SetToolTipText(
-            "switch transparent mode on/off for better visibility of tracks"
-        )
-        bt.SetCommand(
-            'TPython::ExecScript("'
-            + os.environ["FAIRSHIP"]
-            + '/macro/evd_transparentMode.py")'
-        )
+        bt.SetToolTipText("switch transparent mode on/off for better visibility of tracks")
+        bt.SetCommand('TPython::ExecScript("' + os.environ["FAIRSHIP"] + '/macro/evd_transparentMode.py")')
         guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
         bnx = ROOT.TGTextButton(guiFrame, "next event")
         bnx.SetWidth(150)
         bnx.SetToolTipText("click for next event")
-        bnx.SetCommand(
-            'TPython::ExecScript("'
-            + os.environ["FAIRSHIP"]
-            + '/macro/evd_nextEvent.py")'
-        )
+        bnx.SetCommand('TPython::ExecScript("' + os.environ["FAIRSHIP"] + '/macro/evd_nextEvent.py")')
         guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
         #
         cf.MapSubwindows()
@@ -1222,9 +1177,7 @@ if options.ParFile:
     rtdb.setFirstInput(parInput1)
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
-fMan.SetEvtMaxEnergy(
-    400.0
-)  # what is the difference between EvtMaxEnergy and MaxEnergy ?
+fMan.SetEvtMaxEnergy(400.0)  # what is the difference between EvtMaxEnergy and MaxEnergy ?
 fMan.SetPriOnly(False)  # display everything
 
 # ----------------------Tracks and points -------------------------------------
@@ -1240,45 +1193,23 @@ ShipGeo = load_from_root_file(fRun.GetGeoFile(), "ShipGeo")
 
 mcHits = {}
 if hasattr(ShipGeo, "MuFilter"):
-    mcHits["ScifiPoints"] = ROOT.FairMCPointDraw(
-        "ScifiPoint", ROOT.kRed, ROOT.kFullDiamond
-    )
-    mcHits["MuFilterPoints"] = ROOT.FairMCPointDraw(
-        "MuFilterPoint", ROOT.kGreen, ROOT.kFullCircle
-    )
-    mcHits["EmulsionDetPoints"] = ROOT.FairMCPointDraw(
-        "EmulsionDetPoint", ROOT.kMagenta, ROOT.kCircle
-    )
+    mcHits["ScifiPoints"] = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kRed, ROOT.kFullDiamond)
+    mcHits["MuFilterPoints"] = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kGreen, ROOT.kFullCircle)
+    mcHits["EmulsionDetPoints"] = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kCircle)
 else:
-    mcHits["VetoPoints"] = ROOT.FairMCPointDraw(
-        "vetoPoint", ROOT.kBlue, ROOT.kFullDiamond
-    )
-    mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw(
-        "TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond
-    )
-    mcHits["StrawPoints"] = ROOT.FairMCPointDraw(
-        "strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle
-    )
-    mcHits["RpcPoints"] = ROOT.FairMCPointDraw(
-        "ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare
-    )
-    mcHits["TargetPoints"] = ROOT.FairMCPointDraw(
-        "TargetPoint", ROOT.kRed, ROOT.kFullSquare
-    )
-    mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw(
-        "MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare
-    )
-    mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw(
-        "SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare
-    )
+    mcHits["VetoPoints"] = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+    mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
+    mcHits["StrawPoints"] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
+    mcHits["RpcPoints"] = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+    mcHits["TargetPoints"] = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+    mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare)
+    mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare)
 
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])
 
-fMan.Init(
-    1, 4, 10
-)  # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1, 4, 10)  # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 # visopt, set drawing mode :
 # option=0 (default) all nodes drawn down to vislevel
 # option=1           leaves and nodes at vislevel drawn
@@ -1305,9 +1236,7 @@ if hasattr(ShipGeo, "Bfield"):
         bfield = ROOT.genfit.FairShipFields()
         bfield.setField(fieldMaker.getGlobalField())
     else:
-        bfield = ROOT.genfit.BellField(
-            ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m
-        )
+        bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m)
     geoMat = ROOT.genfit.TGeoMaterialInterface()
     ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
     fM = ROOT.genfit.FieldManager.getInstance()
@@ -1333,9 +1262,7 @@ SHiPDisplay.InitTask()
 
 # SHiPDisplay.NextEvent(0)
 
-print(
-    "Help on GL viewer can be found by pressing Help button followed by help on GL viewer"
-)
+print("Help on GL viewer can be found by pressing Help button followed by help on GL viewer")
 print("With the camera button, you can switch to different views.")
 # short cuts
 # w go to wire frame
@@ -1518,9 +1445,7 @@ def PRVersion():
         200,
         ROOT.kGray + 1,
     )
-    positionText(
-        r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, "Target", 200, ROOT.kBlue
-    )
+    positionText(r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, "Target", 200, ROOT.kBlue)
     positionText(
         r,
         0.0,
@@ -1561,9 +1486,7 @@ def PRVersion():
         200,
         ROOT.kRed + 2,
     )
-    positionText(
-        r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, "Muon", 200, ROOT.kGreen + 2
-    )
+    positionText(r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, "Muon", 200, ROOT.kGreen + 2)
     r.CloseCompound()
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")

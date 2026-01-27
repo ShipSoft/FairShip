@@ -387,9 +387,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Entry point for the command-line interface."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        prog="genie-utils", description="GENIE helpers with per-call env overrides"
-    )
+    parser = argparse.ArgumentParser(prog="genie-utils", description="GENIE helpers with per-call env overrides")
     parser.add_argument(
         "--env",
         metavar="KEY=VALUE",
@@ -404,9 +402,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=[],
         help="Unset environment variable(s) for the child process (repeatable).",
     )
-    parser.add_argument(
-        "-v", "--verbose", action="count", default=0, help="Increase verbosity."
-    )
+    parser.add_argument("-v", "--verbose", action="count", default=0, help="Increase verbosity.")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_spl = sub.add_parser("splines", help="Run gmkspl")

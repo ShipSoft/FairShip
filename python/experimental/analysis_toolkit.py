@@ -49,10 +49,7 @@ class selection_check:
         time_vtx_from_strawhits = []
 
         for hit in self.tree.strawtubesPoint:
-            if not (
-                int(str(hit.GetDetectorID())[:1]) == 1
-                or int(str(hit.GetDetectorID())[:1]) == 2
-            ):
+            if not (int(str(hit.GetDetectorID())[:1]) == 1 or int(str(hit.GetDetectorID())[:1]) == 2):
                 continue
 
             if not (hit.GetTrackID() == d1_mc or hit.GetTrackID() == d2_mc):
@@ -93,17 +90,11 @@ class selection_check:
         else:
             P = candidate_mom.Mag()
         for i in range(3):
-            projection_factor += (
-                candidate_mom(i) / P * (target_point(i) - candidate_pos(i))
-            )
+            projection_factor += candidate_mom(i) / P * (target_point(i) - candidate_pos(i))
 
         dist = 0
         for i in range(3):
-            dist += (
-                target_point(i)
-                - candidate_pos(i)
-                - projection_factor * candidate_mom(i) / P
-            ) ** 2
+            dist += (target_point(i) - candidate_pos(i) - projection_factor * candidate_mom(i) / P) ** 2
         dist = ROOT.TMath.Sqrt(dist)
 
         return dist  # in cm
@@ -152,9 +143,7 @@ class selection_check:
 
         for tr in [t1, t2]:
             fit_status = self.tree.FitTracks[tr].getFitStatus()
-            nmeas.append(
-                int(round(fit_status.getNdf()))
-            )  # nmeas.append(fit_status.getNdf())
+            nmeas.append(int(round(fit_status.getNdf())))  # nmeas.append(fit_status.getNdf())
 
         return np.array(nmeas)
 
@@ -189,9 +178,7 @@ class selection_check:
 
         # if self.dist2InnerWall(candidate)<=5*u.cm: return False
 
-        vertex_node = ROOT.gGeoManager.FindNode(
-            candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z()
-        )
+        vertex_node = ROOT.gGeoManager.FindNode(candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())
         vertex_elem = vertex_node.GetVolume().GetName()
         if not vertex_elem.startswith("DecayVacuum_"):
             return False
@@ -303,9 +290,7 @@ class selection_check:
 
             for row in table:
                 row[3] = (
-                    f"\033[1;32m{row[3]}\033[0m"
-                    if row[3]
-                    else f"\033[1;31m{row[3]}\033[0m"
+                    f"\033[1;32m{row[3]}\033[0m" if row[3] else f"\033[1;31m{row[3]}\033[0m"
                 )  # Green for True, Red for False
 
             print(
@@ -365,8 +350,4 @@ class event_inspector:
                 ]
             )
 
-        print(
-            tabulate(
-                event_table, headers=headers, floatfmt=".3f", tablefmt="simple_outline"
-            )
-        )
+        print(tabulate(event_table, headers=headers, floatfmt=".3f", tablefmt="simple_outline"))

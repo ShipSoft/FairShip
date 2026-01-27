@@ -110,19 +110,10 @@ def create_annotation(parsed, repo_dir="FairShip"):
     title = parsed["flag"] if parsed["flag"] else parsed["severity"]
 
     # Escape special characters in message
-    message = (
-        parsed["message"].replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-    )
+    message = parsed["message"].replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
 
     # Create annotation command
-    annotation = (
-        f"::{severity} "
-        f"file={rel_path},"
-        f"line={parsed['line']},"
-        f"col={parsed['col']},"
-        f"title={title}"
-        f"::{message}"
-    )
+    annotation = f"::{severity} file={rel_path},line={parsed['line']},col={parsed['col']},title={title}::{message}"
 
     return annotation
 

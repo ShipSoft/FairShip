@@ -13,37 +13,42 @@ import yaml
 detectorList = []
 
 
-def configure_snd_old(yaml_file,
-                      emulsion_target_z_end,
-                      cave_floorHeightMuonShield):
-
+def configure_snd_old(yaml_file, emulsion_target_z_end, cave_floorHeightMuonShield):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
-    nuTarget_geo = AttrDict(config['nuTarget'])
-    nuTauTT_geo = AttrDict(config['nuTauTT'])
+    nuTarget_geo = AttrDict(config["nuTarget"])
+    nuTauTT_geo = AttrDict(config["nuTauTT"])
 
-    #specific parameters
+    # specific parameters
     # nu Target Tracker
-    snd_nuTauTT_TTX = nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm  # endpieces (~2.9cm from previous geom)
-    snd_nuTauTT_TTY = nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 # u.cm  # endpieces (~2.9cm from previous geom)
+    snd_nuTauTT_TTX = (
+        nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm
+    )  # endpieces (~2.9cm from previous geom)
+    snd_nuTauTT_TTY = (
+        nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9
+    )  # u.cm  # endpieces (~2.9cm from previous geom)
 
     snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z
 
     # nuTau target
-    snd_nuTarget_BrZ = nuTarget_geo.n_plates * nuTarget_geo.LeadTh + (nuTarget_geo.n_plates+1) * (2* nuTarget_geo.EmTh + nuTarget_geo.PBTh) + nuTarget_geo.BrPackZ
+    snd_nuTarget_BrZ = (
+        nuTarget_geo.n_plates * nuTarget_geo.LeadTh
+        + (nuTarget_geo.n_plates + 1) * (2 * nuTarget_geo.EmTh + nuTarget_geo.PBTh)
+        + nuTarget_geo.BrPackZ
+    )
     snd_nuTarget_BrX = nuTarget_geo.BrPackX + nuTarget_geo.EmX
     snd_nuTarget_BrY = nuTarget_geo.BrPackY + nuTarget_geo.EmY
 
-    snd_nuTarget_zdim = nuTarget_geo.wall* snd_nuTarget_BrZ + (nuTarget_geo.wall+1)*snd_nuTauTT_TTZ
+    snd_nuTarget_zdim = nuTarget_geo.wall * snd_nuTarget_BrZ + (nuTarget_geo.wall + 1) * snd_nuTauTT_TTZ
     snd_nuTarget_xdim = snd_nuTauTT_TTX
     snd_nuTarget_ydim = snd_nuTauTT_TTY
 
-    snd_nuTarget_zC = emulsion_target_z_end - snd_nuTarget_zdim / 2.
+    snd_nuTarget_zC = emulsion_target_z_end - snd_nuTarget_zdim / 2.0
 
-    snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield
-    NuTauTarget = ROOT.Target(
-        "NuTauTarget", nuTarget_geo.Ydist, ROOT.kTRUE
+    snd_nuTarget_PillarY = (
+        10 * u.m - snd_nuTarget_ydim / 2 - nuTarget_geo.BaseY - 0.1 * u.mm - cave_floorHeightMuonShield
     )
+    NuTauTarget = ROOT.Target("NuTauTarget", nuTarget_geo.Ydist, ROOT.kTRUE)
     NuTauTarget.MakeNuTargetPassive(nuTarget_geo.nuTargetPassive)
     NuTauTarget.MergeTopBot(nuTarget_geo.SingleEmFilm)
     NuTauTarget.SetDetectorDesign(nuTarget_geo.Design)
@@ -59,18 +64,18 @@ def configure_snd_old(yaml_file,
         snd_nuTarget_zdim,
     )
     NuTauTarget.SetTargetWallDimension(
-        nuTarget_geo.col*snd_nuTarget_BrX,
-        nuTarget_geo.row*snd_nuTarget_BrY+(nuTarget_geo.row-1)*nuTarget_geo.Ydist,
-        snd_nuTarget_BrZ
+        nuTarget_geo.col * snd_nuTarget_BrX,
+        nuTarget_geo.row * snd_nuTarget_BrY + (nuTarget_geo.row - 1) * nuTarget_geo.Ydist,
+        snd_nuTarget_BrZ,
     )
     NuTauTarget.SetEmulsionParam(
         nuTarget_geo.EmTh,
         nuTarget_geo.EmX,
         nuTarget_geo.EmY,
         nuTarget_geo.PBTh,
-        2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,
+        2 * nuTarget_geo.EmTh + nuTarget_geo.PBTh,
         nuTarget_geo.LeadTh,
-        nuTarget_geo.LeadTh +2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,
+        nuTarget_geo.LeadTh + 2 * nuTarget_geo.EmTh + nuTarget_geo.PBTh,
     )
     NuTauTarget.SetBrickParam(
         snd_nuTarget_BrX,
@@ -82,16 +87,8 @@ def configure_snd_old(yaml_file,
         nuTarget_geo.n_plates,
     )
     NuTauTarget.SetCellParam(snd_nuTarget_BrZ)
-    NuTauTarget.SetPillarDimension(
-        nuTarget_geo.PillarX,
-        snd_nuTarget_PillarY,
-        nuTarget_geo.PillarZ
-    )
-    NuTauTarget.SetBaseDimension(
-        snd_nuTarget_xdim+20,
-        nuTarget_geo.BaseY,
-        snd_nuTarget_zdim+10
-    )
+    NuTauTarget.SetPillarDimension(nuTarget_geo.PillarX, snd_nuTarget_PillarY, nuTarget_geo.PillarZ)
+    NuTauTarget.SetBaseDimension(snd_nuTarget_xdim + 20, nuTarget_geo.BaseY, snd_nuTarget_zdim + 10)
     # Target Tracker
     NuTauTT = ROOT.TargetTracker(
         "TargetTrackers",
@@ -109,15 +106,11 @@ def configure_snd_old(yaml_file,
         nuTauTT_geo.support_z,
         nuTauTT_geo.honeycomb_z,
     )
-    NuTauTT.SetNumberSciFi(
-        nuTauTT_geo.n_hor_planes, nuTauTT_geo.n_vert_planes
-    )
-    NuTauTT.SetTargetTrackerParam(
-        snd_nuTauTT_TTX, snd_nuTauTT_TTY, snd_nuTauTT_TTZ
-    )
+    NuTauTT.SetNumberSciFi(nuTauTT_geo.n_hor_planes, nuTauTT_geo.n_vert_planes)
+    NuTauTT.SetTargetTrackerParam(snd_nuTauTT_TTX, snd_nuTauTT_TTY, snd_nuTauTT_TTZ)
     NuTauTT.SetBrickParam(snd_nuTarget_BrZ)
     NuTauTT.SetTotZDimension(snd_nuTarget_zdim)
-    NuTauTT.SetNumberTT(nuTarget_geo.wall+1)
+    NuTauTT.SetNumberTT(nuTarget_geo.wall + 1)
     # method of nutau target that must be called after TT parameter definition
     NuTauTarget.SetTTzdimension(snd_nuTauTT_TTZ)
 
@@ -129,7 +122,7 @@ def configure_snd_mtc(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.mtc_geo = AttrDict(config['MTC'])
+    ship_geo.mtc_geo = AttrDict(config["MTC"])
     # Initialize detector
     if ship_geo.mtc_geo.zPosition == "auto":
         # Get the the center of the *last* magnet
@@ -146,15 +139,16 @@ def configure_snd_mtc(yaml_file, ship_geo):
         ship_geo.mtc_geo.scintThick,
         ship_geo.mtc_geo.nLayers,
         ship_geo.mtc_geo.zPosition,
-        ship_geo.mtc_geo.fieldY
+        ship_geo.mtc_geo.fieldY,
     )
     detectorList.append(mtc)
+
 
 def configure_snd_siliconTarget(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.SiliconTarget_geo = AttrDict(config['SiliconTarget'])
+    ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
         # Get the the center of the next to last magnet (temporary placement)
@@ -172,9 +166,10 @@ def configure_snd_siliconTarget(yaml_file, ship_geo):
         ship_geo.SiliconTarget_geo.zPosition,
         ship_geo.SiliconTarget_geo.targetThickness,
         ship_geo.SiliconTarget_geo.targetSpacing,
-        ship_geo.SiliconTarget_geo.moduleOffset
+        ship_geo.SiliconTarget_geo.moduleOffset,
     )
     detectorList.append(SiliconTarget)
+
 
 def configure_veto(yaml_file, z0):
     with open(yaml_file) as file:
@@ -207,11 +202,12 @@ def configure_veto(yaml_file, z0):
 
     detectorList.append(Veto)
 
+
 def configure_strawtubes(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.strawtubes_geo = AttrDict(config['SST'])
+    ship_geo.strawtubes_geo = AttrDict(config["SST"])
 
     # Straw tubes in decay vessel if vacuum, otherwise outside in air
     ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
@@ -252,7 +248,7 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubes_geo.station_length,
     )
 
-    #For digitization
+    # For digitization
     strawtubes.SetStrawResolution(
         ship_geo.strawtubesDigi.v_drift,
         ship_geo.strawtubesDigi.sigma_spatial,
@@ -264,9 +260,7 @@ def configure_strawtubes(yaml_file, ship_geo):
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
-        raise ValueError(
-            "DecayVolumeMedium is not defined, possibly old (incompatible) geometry!"
-        )
+        raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
     if not hasattr(ship_geo, "muShieldGeo"):
         ship_geo.muShieldGeo = None
     if not hasattr(ship_geo.Bfield, "x"):
@@ -293,35 +287,33 @@ def configure(run, ship_geo):
         ship_geo.target.length,
         ship_geo.target.z,
         ship_geo.target.nS,
-        ship_geo.target.HeT
+        ship_geo.target.HeT,
     )
 
-    TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
+    TargetStation.SetLayerPosMat(
+        ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material
+    )
     detectorList.append(TargetStation)
-
 
     # For SND: support multiple designs
     if ship_geo.SND:
         for design in ship_geo.SND_design:
             if design == 2:
                 # SND design 2 -- MTC/SiliconTarget
-                configure_snd_mtc(
-                    os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
-                    ship_geo
-                )
+                configure_snd_mtc(os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"), ship_geo)
                 configure_snd_siliconTarget(
-                    os.path.join(os.environ["FAIRSHIP"], "geometry", "SiliconTarget_config.yaml"),
-                    ship_geo
+                    os.path.join(os.environ["FAIRSHIP"], "geometry", "SiliconTarget_config.yaml"), ship_geo
                 )
             elif design == 1:
                 configure_snd_old(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-                    ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #16 cm width of UpstreamTagger (8 cm half-width)
+                    ship_geo.UpstreamTagger.Z_Position
+                    - 8 * u.cm
+                    - 5 * u.cm,  # 16 cm width of UpstreamTagger (8 cm half-width)
                     ship_geo.cave.floorHeightMuonShield,
                 )
             else:
                 print(f"Warning: SND design {design} is not recognized.")
-
 
     in_params = list(ship_geo.muShield.params)
 
@@ -334,11 +326,11 @@ def configure(run, ship_geo):
 
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
-        if 2 in getattr(ship_geo, 'SND_design', []):
+        if 2 in getattr(ship_geo, "SND_design", []):
             MuonShield.SetSNDSpace(
-                hole = True,
-                hole_dx = (ship_geo.mtc_geo.width + 5. * u.cm) / 2.,
-                hole_dy = (ship_geo.mtc_geo.height + 5. * u.cm) / 2.
+                hole=True,
+                hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,
+                hole_dy=(ship_geo.mtc_geo.height + 5.0 * u.cm) / 2.0,
             )
     detectorList.append(MuonShield)
 
@@ -381,9 +373,7 @@ def configure(run, ship_geo):
     fairship = os.environ["FAIRSHIP"]
 
     configure_veto(
-        os.path.join(
-            fairship, f"geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml"
-        ),
+        os.path.join(fairship, f"geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml"),
         ship_geo.decayVolume.z0,
     )
 
@@ -430,9 +420,7 @@ def configure(run, ship_geo):
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
     upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
     upstreamTagger.SetBoxDimensions(
-        ship_geo.UpstreamTagger.BoxX,
-        ship_geo.UpstreamTagger.BoxY,
-        ship_geo.UpstreamTagger.BoxZ
+        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
     )
     detectorList.append(upstreamTagger)
 
