@@ -2,16 +2,14 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # example for accessing smeared hits and fitted tracks
-import os
-import sys
+from argparse import ArgumentParser
+
+import decorators
 import ROOT
-import ctypes
 import rootUtils as ut
+import shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import load_from_root_file
-import shipRoot_conf
-from argparse import ArgumentParser
-import decorators
 
 shipRoot_conf.configure()
 decorators.apply_decorators()
@@ -224,18 +222,18 @@ def dist2InnerWall(X, Y, Z):
     dist = 0
     # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
     node = sGeo.FindNode(X, Y, Z)
-    if not "DecayVacuum" in node.GetName():
+    if "DecayVacuum" not in node.GetName():
         return dist
     start = array("d", [X, Y, Z])
     nsteps = 8
     dalpha = 2 * ROOT.TMath.Pi() / nsteps
-    rsq = X**2 + Y**2
+    X**2 + Y**2
     minDistance = 100 * u.m
     for n in range(nsteps):
         alpha = n * dalpha
         sdir = array("d", [ROOT.TMath.Sin(alpha), ROOT.TMath.Cos(alpha), 0.0])
         node = sGeo.InitTrack(start, sdir)
-        nxt = sGeo.FindNextBoundary()
+        sGeo.FindNextBoundary()
         distance = sGeo.GetStep()
         if distance < minDistance:
             minDistance = distance
@@ -364,7 +362,7 @@ def RedoVertexing(t1, t2):
     # as we have learned, need iterative procedure
     dz = 99999.0
     reps, states, newPosDir = {}, {}, {}
-    parallelToZ = ROOT.TVector3(0.0, 0.0, 1.0)
+    ROOT.TVector3(0.0, 0.0, 1.0)
     rc = True
     step = 0
     while dz > 0.1:
@@ -378,8 +376,8 @@ def RedoVertexing(t1, t2):
             reps[tr].setPosMom(states[tr], xx.getPos(), xx.getMom())
             try:
                 reps[tr].extrapolateToPoint(states[tr], newPos, False)
-            except:
-                print("SHiPAna: extrapolation did not worked")
+            except Exception:
+                print("SHiPAna: extrapolation did not work")
                 rc = False
                 break
             newPosDir[tr] = [reps[tr].getPos(states[tr]), reps[tr].getDir(states[tr])]
@@ -488,7 +486,7 @@ def makePlots():
             h["pi0Mass"].SetXTitle("#gamma #gamma invariant mass   [GeV/c^{2}]")
             h["pi0Mass"].SetYTitle("N/" + str(int(h["pi0Mass"].GetBinWidth(1) * 1000)) + "MeV")
             h["pi0Mass"].Draw()
-            fitResult = h["pi0Mass"].Fit("gaus", "S", "", 0.08, 0.19)
+            h["pi0Mass"].Fit("gaus", "S", "", 0.08, 0.19)
         cv = h["fitresults2" + x].cd(2)
         h["IP0" + x].SetXTitle("impact parameter to p-target   [cm]")
         h["IP0" + x].SetYTitle("N/1cm")
@@ -615,8 +613,8 @@ def myEventLoop(n):
         if mcPartKey < 0 or mcPartKey >= len(sTree.MCTrack):
             continue
         mcPart = sTree.MCTrack[mcPartKey]
-        Ptruth_start = mcPart.GetP()
-        Ptruthz_start = mcPart.GetPz()
+        mcPart.GetP()
+        mcPart.GetPz()
         # get p truth from first strawpoint
         Ptruth, Ptruthx, Ptruthy, Ptruthz = getPtruthFirst(sTree, mcPartKey)
         delPOverP = (Ptruth - P) / Ptruth
@@ -712,7 +710,7 @@ def myEventLoop(n):
         h["Vzresol"].Fill((mctrack.GetStartZ() - HNLPos.Z()) / u.cm)
         h["Vxresol"].Fill((mctrack.GetStartX() - HNLPos.X()) / u.cm)
         h["Vyresol"].Fill((mctrack.GetStartY() - HNLPos.Y()) / u.cm)
-        PosDir, newPosDir, CovMat, scalFac = {}, {}, {}, {}
+        PosDir, newPosDir, CovMat, _scalFac = {}, {}, {}, {}
         # opening angle at vertex
         newPos = ROOT.TVector3(HNLPos.X(), HNLPos.Y(), HNLPos.Z())
         st1, st2 = sTree.FitTracks[t1].getFittedState(), sTree.FitTracks[t2].getFittedState()
@@ -728,7 +726,7 @@ def myEventLoop(n):
             rep1.extrapolateToPoint(state1, newPos, False)
             rep2.extrapolateToPoint(state2, newPos, False)
             mom1, mom2 = rep1.getMom(state1), rep2.getMom(state2)
-        except:
+        except Exception:
             mom1, mom2 = st1.getMom(), st2.getMom()
         newPosDir[t1] = {"position": rep1.getPos(state1), "direction": rep1.getDir(state1), "momentum": mom1}
         newPosDir[t2] = {"position": rep2.getPos(state2), "direction": rep2.getDir(state2), "momentum": mom2}
@@ -761,7 +759,7 @@ def HNLKinematics():
     ut.bookHist(h, "HNLmom_recTracks", "momentum", 100, 0.0, 300.0)
     ut.bookHist(h, "HNLmomNoW_recTracks", "momentum unweighted", 100, 0.0, 300.0)
     for n in range(sTree.GetEntries()):
-        rc = sTree.GetEntry(n)
+        sTree.GetEntry(n)
         for hnlkey in [1, 2]:
             if hnlkey >= len(sTree.MCTrack):
                 continue

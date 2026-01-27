@@ -2,9 +2,10 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import sys
+
 import ROOT
-from ShipGeoConfig import load_from_root_file
 import shipRoot_conf
+from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
 

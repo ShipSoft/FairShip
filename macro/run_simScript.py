@@ -5,14 +5,14 @@
 import os
 import sys
 import uuid
-import ROOT
-
-import shipunit as u
-import shipRoot_conf
-import rootUtils as ut
-import geometry_config
 from argparse import ArgumentParser
 from array import array
+
+import geometry_config
+import ROOT
+import rootUtils as ut
+import shipRoot_conf
+import shipunit as u
 
 DownScaleDiMuon = False
 

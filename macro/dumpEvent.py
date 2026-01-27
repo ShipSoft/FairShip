@@ -2,9 +2,10 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # example for dumping an MC event
-import ROOT, os, sys
-import shipunit as u
+
+import ROOT
 import ShipGeoConfig
+import shipunit as u
 
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 PDG = ROOT.TDatabasePDG.Instance()
@@ -44,6 +45,6 @@ def dumpStraw(i):
     tree = ROOT.gROOT.FindObjectAny("cbmsim")
     tree.GetEntry(i)
     for aStraw in tree.strawtubesPoint:
-        trID = astraw.GetTrackID()
+        trID = aStraw.GetTrackID()
         if not trID < 0:
             printMCTrack(trID, tree.MCTrack)

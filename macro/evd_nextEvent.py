@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT  # ,evd_fillEnergy
+import evd_fillEnergy
 import eveGlobal
+import ROOT
 
 
 def execute():
-    lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+    ROOT.gROOT.GetListOfGlobals()
     SHiPDisplay = eveGlobal.SHiPDisplay
     SHiPDisplay.NextEvent()
     if ROOT.gROOT.FindObject("Root Canvas"):
