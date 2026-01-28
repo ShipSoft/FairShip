@@ -1,20 +1,20 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, ROOT, shipVertex, shipDet_conf
+from array import array
+
 import global_variables
+import ROOT
+import rootUtils as ut
 import shipPatRec
 import shipunit as u
-import rootUtils as ut
-from array import array
-import sys
-from math import fabs
-from detectors.timeDetector import timeDetector
+import shipVertex
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
-from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
-from detectors.strawtubesDetector import strawtubesDetector
 from detectors.splitcalDetector import splitcalDetector
+from detectors.strawtubesDetector import strawtubesDetector
+from detectors.timeDetector import timeDetector
+from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 
 
 class ShipDigiReco:
@@ -78,7 +78,6 @@ class ShipDigiReco:
         self.sTree.GetEvent(0)
         #
         # init geometry and mag. field
-        gMan = ROOT.gGeoManager
         self.geoMat = ROOT.genfit.TGeoMaterialInterface()
         #
         self.bfield = ROOT.genfit.FairShipFields()
@@ -100,8 +99,8 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
     def reconstruct(self):
-        ntracks = self.findTracks()
-        nGoodTracks = self.findGoodTracks()
+        self.findTracks()
+        self.findGoodTracks()
         self.linkVetoOnTracks()
         if global_variables.vertexing:
             # now go for 2-track combinations
@@ -127,7 +126,6 @@ class ShipDigiReco:
         hitPosLists = {}
         hit_detector_ids = {}
         stationCrossed = {}
-        fittedtrackids = []
         listOfIndices = {}
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
@@ -213,7 +211,7 @@ class ShipDigiReco:
             if len(stationCrossed[atrack]) < 3:
                 continue  # not enough stations crossed to make a good trackfit
             if global_variables.debug:
-                mctrack = self.sTree.MCTrack[atrack]
+                self.sTree.MCTrack[atrack]
             # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 5812.0)  # seed is at decay vessel centre
             momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
@@ -287,7 +285,7 @@ class ShipDigiReco:
                 ut.reportError(error)
             try:
                 fittedState = theTrack.getFittedState()
-                fittedMom = fittedState.getMomMag()
+                fittedState.getMomMag()
             except:
                 error = "Problem with fittedstate"
                 ut.reportError(error)
@@ -295,7 +293,7 @@ class ShipDigiReco:
             fitStatus = theTrack.getFitStatus()
             try:
                 fitStatus.isFitConverged()
-            except ROOT.genfit.Exception as e:
+            except ROOT.genfit.Exception:
                 error = "Fit not converged"
                 ut.reportError(error)
             nmeas = fitStatus.getNdf()

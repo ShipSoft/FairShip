@@ -1,34 +1,24 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import sys
 import os
-import global_variables
 
 import acts
 import acts.examples
+import global_variables
 import ROOT
-
+from acts.examples.reconstruction import (
+    SeedingAlgorithm,
+    TrackSmearingSigmas,
+    VertexFinder,
+    addKalmanTracks,
+    addSeeding,
+    addVertexFitting,
+)
 from acts.examples.simulation import (
-    EtaConfig,
-    PhiConfig,
-    MomentumConfig,
-    ParticleConfig,
-    addDigitization,
     ParticleSelectorConfig,
     addDigiParticleSelection,
-)
-
-from acts.examples.reconstruction import (
-    addSeeding,
-    SeedFinderConfigArg,
-    SeedFinderOptionsArg,
-    SeedingAlgorithm,
-    addKalmanTracks,
-    addVertexFitting,
-    VertexFinder,
-    addTrackWriters,
-    TrackSmearingSigmas,
+    addDigitization,
 )
 
 currentPath = os.path.dirname(__file__)

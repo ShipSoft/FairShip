@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, time, ROOT
+import os
+import time
+
+import ROOT
 
 
 def makeProd(prefix, DY, y=False, phiRandom=False, X=None):

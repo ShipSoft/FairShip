@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, time, os, sys
+import sys
+import time
+
+import ROOT
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -36,7 +39,7 @@ masssq = {}
 
 def getMasssq(pid):
     apid = abs(int(pid))
-    if not apid in masssq:
+    if apid not in masssq:
         masssq[apid] = PDG.GetParticle(apid).Mass() ** 2
     return masssq[apid]
 

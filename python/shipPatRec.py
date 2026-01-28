@@ -3,8 +3,8 @@
 
 __author__ = "Mikhail Hushchyn"
 
-import numpy as np
 import global_variables
+import numpy as np
 
 # Globals
 ReconstructibleMCTracks = []
@@ -749,7 +749,7 @@ def retina_func(track_prams, x, y, sigma, sample_weight=None):
 
     rs = track_prams[0] * x + track_prams[1] - y
 
-    if sample_weight == None:
+    if sample_weight is None:
         exps = np.exp(-((rs / sigma) ** 2))
     else:
         exps = np.exp(-((rs / sigma) ** 2)) * sample_weight
@@ -782,7 +782,7 @@ def retina_grad(track_prams, x, y, sigma, sample_weight=None):
 
     rs = track_prams[0] * x + track_prams[1] - y
 
-    if sample_weight == None:
+    if sample_weight is None:
         exps = np.exp(-((rs / sigma) ** 2))
     else:
         exps = np.exp(-((rs / sigma) ** 2)) * sample_weight

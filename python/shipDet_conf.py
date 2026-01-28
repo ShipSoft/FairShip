@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT
 import os
+
+import ROOT
 import shipunit as u
-from ShipGeoConfig import AttrDict
-from ShieldUtils import find_shield_center
-from array import array
 import yaml
+from ShieldUtils import find_shield_center
+from ShipGeoConfig import AttrDict
 
 detectorList = []
 

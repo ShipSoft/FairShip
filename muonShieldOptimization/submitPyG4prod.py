@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, time
+import os
+import time
 
 path = "../"
 if not os.uname()[1].find("Ubuntu") < 0:

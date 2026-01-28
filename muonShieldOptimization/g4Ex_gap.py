@@ -3,6 +3,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os
+
 import saveBasicParameters
 
 local = False
@@ -40,9 +41,9 @@ qedlist = [22, 11, -11, 12, -12, 14, 14, 2212, 2112, 13, -13]
 rangeCut = False
 trackHistory = {}
 # ----------------------------- Yandex production ------------------------------
-import shutil
 import argparse
 import logging
+import shutil
 
 logging.info("")
 logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])
@@ -111,15 +112,17 @@ os.chdir(work_dir)
 # ==================================================================
 #                         ROOT IMPORT                               #
 # ==================================================================
-import ROOT, time
+import time
+
+import g4py.ezgeom
+import g4py.NISTmaterials
+import ROOT
+from g4py.ezgeom import G4EzVolume
 
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
 from Geant4 import *
-import g4py.NISTmaterials
-import g4py.ezgeom
-from g4py.ezgeom import G4EzVolume
 
 # ==================================================================
 #                         PYTHIA8 PART                              #
@@ -354,7 +357,7 @@ class MyTrackingActionD(G4UserTrackingAction):
                 pid = part.GetPDGcode()
                 vx = atrack.GetVertexPosition()
                 mom = atrack.GetMomentum()
-                ekin = atrack.GetKineticEnergy() / GeV
+                atrack.GetKineticEnergy() / GeV
                 pos = atrack.GetPosition()
                 w = atrack.GetWeight()
                 parentid = int(w) / 100000 - 10000
@@ -441,7 +444,7 @@ class ScoreSD(G4VSensitiveDetector):
         G4VSensitiveDetector.__init__(self, Name)
 
     def ProcessHits(self, step, rohist):
-        preStepPoint = step.GetPreStepPoint()
+        step.GetPreStepPoint()
         track = step.GetTrack()
         part = track.GetDynamicParticle()
         pid = part.GetPDGcode()
@@ -451,7 +454,7 @@ class ScoreSD(G4VSensitiveDetector):
         M = part.GetMass()
         Pvx = ROOT.TMath.Sqrt(ekinvx * (ekinvx + 2 * M))
         mom = track.GetMomentum()
-        ekin = track.GetKineticEnergy() / GeV
+        track.GetKineticEnergy() / GeV
         pos = track.GetPosition()
         #
         # primPart = part.GetPrimaryParticle()
@@ -507,16 +510,16 @@ def ConstructGeom():
     snoopy = G4EzVolume("Snoopy")
     snoopy.CreateTubeVolume(vac, 0.0, 20 * m, world_r / 2.0)
     snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.0, 0.0, 0.0 * m))
-    snoopyLog = snoopyPhys.GetLogicalVolume()
+    snoopyPhys.GetLogicalVolume()
     snoopy.SetVisibility(False)
     # a target box is placed
     global target, targetPhys
     iron = G4Material.GetMaterial("G4_Fe")
-    air = G4Material.GetMaterial("G4_AIR")
+    G4Material.GetMaterial("G4_AIR")
     water = G4Material.GetMaterial("G4_WATER")
     tungsten = G4Material.GetMaterial("G4_W")
-    lead = G4Material.GetMaterial("G4_Pb")
-    alum = G4Material.GetMaterial("G4_Al")
+    G4Material.GetMaterial("G4_Pb")
+    G4Material.GetMaterial("G4_Al")
     elementMo = G4Element("Molybdenum", "Mo", 42.0, 95.94 * g / mole)
     molybdenum = G4Material("molybdenum", 10.22 * g / cm3, 1)
     molybdenum.AddElement(elementMo, 1.00)
@@ -550,7 +553,7 @@ def ConstructGeom():
         # put iron around
         moreShielding = G4EzVolume("moreShielding")
         moreShielding.CreateTubeVolume(iron, 30.0 * cm, 400.0 * cm, targetL / 2.0)
-        moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.0, 0.0, z0Pos + targetL / 2.0), 1, snoopy)
+        moreShielding.PlaceIt(G4ThreeVector(0.0, 0.0, z0Pos + targetL / 2.0), 1, snoopy)
     #
     else:  # new design with mixture Molybdaen and Tungsten
         slitDZ = 0.5 * cm
@@ -608,18 +611,18 @@ def ConstructGeom():
         yTot = 400.0 * cm
         moreShieldingTopBot = G4EzVolume("moreShieldingTopBot")
         moreShieldingTopBot.CreateBoxVolume(iron, xTot, yTot / 2.0, targetL)
-        moreShieldingTopPhys = moreShieldingTopBot.PlaceIt(
+        moreShieldingTopBot.PlaceIt(
             G4ThreeVector(0.0, diameter / 2.0 + spaceTopBot + yTot / 4.0, z0Pos + targetL / 2.0), 1, snoopy
         )
-        moreShieldingBotPhys = moreShieldingTopBot.PlaceIt(
+        moreShieldingTopBot.PlaceIt(
             G4ThreeVector(0.0, -diameter / 2.0 - spaceTopBot - yTot / 4.0, z0Pos + targetL / 2.0), 1, snoopy
         )
         moreShieldingSide = G4EzVolume("moreShieldingSide")
         moreShieldingSide.CreateBoxVolume(iron, xTot / 2.0, diameter + 1.9 * spaceTopBot, targetL)
-        moreShieldingLeftPhys = moreShieldingSide.PlaceIt(
+        moreShieldingSide.PlaceIt(
             G4ThreeVector(diameter / 2.0 + spaceSide + xTot / 4.0, 0.0, z0Pos + targetL / 2.0), 1, snoopy
         )
-        moreShieldingRightPhys = moreShieldingSide.PlaceIt(
+        moreShieldingSide.PlaceIt(
             G4ThreeVector(-diameter / 2.0 - spaceSide - xTot / 4.0, 0.0, z0Pos + targetL / 2.0), 1, snoopy
         )
     # = 0.1m3 = 2t
@@ -695,7 +698,6 @@ for x in myTimer:
 
 logger.info("output directory: %s" % work_dir)
 # save arguments and GIT tags
-import saveBasicParameters
 
 saveBasicParameters.execute(f, args, "SHiP-Params")
 

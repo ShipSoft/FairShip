@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os
+import os
+
+import ROOT
 import rootUtils as ut
 
 h = {}
@@ -52,13 +54,13 @@ def makePlots(sTree):
     ut.bookHist(h, "nOut", "outgoing part", 100, -0.5, 99.5)
     ut.bookHist(h, "pos", "position", 100, -25.0, 100.0, 100, -12.0, 12.0, 100, -13.0, 13.0)
     for n in range(sTree.GetEntries()):
-        rc = sTree.GetEvent(n)
+        sTree.GetEvent(n)
         inMu = sTree.InMuon[0]
         w = inMu[8]
         P = ROOT.TMath.Sqrt(inMu[1] ** 2 + inMu[2] ** 2 + inMu[3] ** 2)
-        rc = h["muP"].Fill(P, w)
-        rc = h["nOut"].Fill(len(sTree.Particles))
-        rc = h["pos"].Fill(inMu[7], inMu[5], inMu[6])
+        h["muP"].Fill(P, w)
+        h["nOut"].Fill(len(sTree.Particles))
+        h["pos"].Fill(inMu[7], inMu[5], inMu[6])
 
 
 def test(fn="test.root"):

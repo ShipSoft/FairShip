@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, ROOT
+import os
+
+import ROOT
+
 path = "/eos/experiment/ship/data/Mbias/background-prod-2018/"
 
 # functions, should extract events with muons, update weight based on process/decay and PoT
@@ -107,7 +110,7 @@ def processFile(fin, noCharm=True):
         sTree.GetEntry(n)
         nMu = muonUpdateWeight(sTree, diMuboost, xSecboost, noCharm)
         if nMu > 0:
-            rc = newTree.Fill()
+            newTree.Fill()
     ff = f.FileHeader.Clone("Extracted Muon Background File")
     txt = ff.GetTitle()
     tmp = txt.split("=")[1]
@@ -183,10 +186,8 @@ def mergeCharm():
             fname = tmp.replace("XX", str(crun)).replace("YY", str(crun + 19))
             fmu = " $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/" + fname.replace(".root", "_mu.root")
             cmd += fmu
-    rc = os.system(cmd)
-    rc = os.system(
-        "xrdcp " + mergedFile + " $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/" + mergedFile
-    )
+    os.system(cmd)
+    os.system("xrdcp " + mergedFile + " $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/" + mergedFile)
 
 
 def mergeMbiasAndCharm(flavour="charm"):
@@ -211,7 +212,6 @@ def mergeMbiasAndCharm(flavour="charm"):
         nEntries[x] = f.Get("cbmsim").GetEntries()
         Nall += nEntries[x]
     nCharm = 0
-    nDone = 0
     frac = nEntries[flavour] / float(Nall)
     print("debug", frac)
     os.system("xrdcp " + pp + allFiles[flavour] + " " + allFiles[flavour])
@@ -237,7 +237,6 @@ def mergeMbiasAndCharm(flavour="charm"):
         # randomList = ROOT.TEntryList(chain)
         myList = []
         while nMbias < nEntries[k]:
-            copyEvent = True
             if Rndm.Rndm() > frac:
                 # rc = randomList.Enter(nMbias+nEntries['charm'])
                 myList.append(nMbias + nEntries[flavour])
@@ -248,7 +247,7 @@ def mergeMbiasAndCharm(flavour="charm"):
                     myList.append(nCharm)
                     nCharm += 1
                 else:
-                    copyEvent = False
+                    pass
         # chain.SetEntryList(randomList)
         # nev = randomList.GetN()
         nev = len(myList)
@@ -266,7 +265,7 @@ def mergeMbiasAndCharm(flavour="charm"):
             ff = f.FileHeader.Clone("With Charm Merged Muon Background File")
         else:
             ff = f.FileHeader.Clone("With Charm and Beauty Merged Muon Background File")
-        txt = ff.GetTitle()
+        ff.GetTitle()
         fmu.cd()
         ff.Write("FileHeader", ROOT.TObject.kSingleKey)
         fmu.Close()
@@ -284,7 +283,7 @@ def testRatio(fname):
     Nall = sTree.GetEntries()
     charm = 0
     for n in range(Nall):
-        rc = sTree.GetEvent(n)
+        sTree.GetEvent(n)
         for m in sTree.MCTrack:
             pdgID = abs(m.GetPdgCode())
             if pdgID in charmExtern:

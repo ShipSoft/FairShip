@@ -3,18 +3,18 @@
 
 """Script to run and test tracking in the straw tubes"""
 
-import ROOT
-import numpy
-
 from argparse import ArgumentParser
 
-# For ShipGeo
-from ShipGeoConfig import load_from_root_file
 import geometry_config
+import global_variables
+import numpy
+import ROOT
 
 # For modules
 import shipDet_conf
-import global_variables
+
+# For ShipGeo
+from ShipGeoConfig import load_from_root_file
 
 # For track pattern recognition
 
@@ -67,17 +67,15 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
     ############################################# Load SHiP modules ####################################################
 
-    import shipDet_conf
-
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
     # Create dummy output file as the  input file is updated directly and
     # histograms are written to output file (hists.root by default)
     run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for the mag field
-    rtdb = run.GetRuntimeDb()
+    run.GetRuntimeDb()
 
-    modules = shipDet_conf.configure(run, ShipGeo)
+    shipDet_conf.configure(run, ShipGeo)
     run.Init()
 
     # run = ROOT.FairRunSim()
@@ -117,7 +115,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     h = init_book_hist()
 
     ########################################## Start Track Pattern Recognition #########################################
-    import shipPatRec
 
     # Init book of hists for the quality measurements
     metrics = {
@@ -281,7 +278,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 n_ghosts += 1
 
             is_reconstructed = 0
-            is_reconstructed_no_clones = 0
 
             if tmax_y12 in reconstructible_tracks:
                 metrics["passed_y12"] += 1
@@ -340,7 +336,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                                             h["TracksPassedU"].Fill("Combined stations 1&2/3&4", 1)
                                             metrics["reco_passed_no_clones"] += 1
                                             in_combo.append(tmax_34)
-                                            is_reconstructed_no_clones = 1
 
             # For reconstructed tracks
             if is_reconstructed == 0:
@@ -349,9 +344,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             metrics["reco_frac_tot"] += [frac_tot]
 
             # Momentum
-            Pz = hits["Pz"]
-            Px = hits["Px"]
-            Py = hits["Py"]
+            hits["Pz"]
+            hits["Px"]
+            hits["Py"]
 
             p, px, py, pz = getPtruthFirst(sTree, tmax_tot)
             pt = math.sqrt(px**2 + py**2)
@@ -625,12 +620,12 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     )
     TStation4EndZ = Zpos + ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
 
-    PDG = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
 
     # returns a list of reconstructible tracks for this event
     # call this routine once for each event before smearing
     MCTrackIDs = []
-    rc = sTree.GetEvent(iEvent)
+    sTree.GetEvent(iEvent)
     nMCTracks = sTree.MCTrack.GetEntriesFast()
 
     # 1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
@@ -803,10 +798,9 @@ def getPtruthFirst(sTree, mcPartKey):
 #################################################################################################################################
 #################################################################################################################################
 
-import ROOT
-import numpy
-import rootUtils as ut
 import math
+
+import rootUtils as ut
 
 ################################################ Helping functions #####################################################
 

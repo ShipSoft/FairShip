@@ -2,9 +2,9 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # utility to simulate response of the veto systems
-import ROOT
-import shipunit as u
 from array import array
+
+import ROOT
 
 
 class Task:
@@ -28,10 +28,10 @@ class Task:
         return detList
 
     def SBT_plastic_decision(self, mcParticle=None):
-        SBT_decision(self, mcParticle, detector="plastic")
+        self.SBT_decision(mcParticle, detector="plastic")
 
     def SBT_liquid_decision(self, mcParticle=None):
-        SBT_decision(self, mcParticle, detector="liquid")
+        self.SBT_decision(mcParticle, detector="liquid")
 
     def SBT_decision(self, mcParticle=None, detector="liquid"):
         # if mcParticle >0, only count hits with this particle
@@ -55,8 +55,8 @@ class Task:
                         found = True
                 if found:
                     continue
-            position = aDigi.GetXYZ()
-            ELoss = aDigi.GetEloss()
+            aDigi.GetXYZ()
+            aDigi.GetEloss()
             if aDigi.isValid():
                 hitSegments += 1  # threshold of 45 MeV per segment
         w = (1 - self.SBTefficiency) ** hitSegments
@@ -135,7 +135,7 @@ class Task:
                 nav.SetCurrentPoint(aPoint.x(), aPoint.y(), aPoint.z())
                 cNode = nav.FindNode().GetName()
                 nav.SetCurrentDirection(xDir, yDir, 0.0)
-                rc = nav.FindNextBoundaryAndStep()
+                nav.FindNextBoundaryAndStep()
                 x, y = nav.GetCurrentPoint()[0], nav.GetCurrentPoint()[1]
                 if cNode != nav.GetCurrentNode().GetName():
                     dist = ROOT.TMath.Sqrt((aPoint.x() - x) ** 2 + (aPoint.y() - y) ** 2)

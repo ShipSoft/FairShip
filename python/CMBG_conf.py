@@ -1,9 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os
-import shipunit as u
-
 
 def configure(CMBG, ship_geo):
     # handles external variables for the Cosmic Muon Background Generator within FairShip

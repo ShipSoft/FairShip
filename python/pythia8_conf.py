@@ -1,15 +1,16 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT
 import os
-import yaml
-import shipunit as u
+
 import hnl
-import rpvsusy
-from pythia8_conf_utils import *
-from method_logger import MethodLogger
 import readDecayTable
+import ROOT
+import rpvsusy
+import shipunit as u
+import yaml
+from method_logger import MethodLogger
+from pythia8_conf_utils import *
 
 
 def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):
@@ -22,7 +23,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy:
         P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)
 
@@ -51,10 +52,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         # 12 14 16 neutrinos replace with N2
         charmhistograms = ["d_mu", "ds_mu"]
         # no tau decay here to consider
-        totaltauBR = 0.0
         maxsumBR = getmaxsumbrrpvsusy(h, charmhistograms, mass, couplings)
         exit_if_zero_br(maxsumBR, inclusive, mass, particle="RPV neutralino")
-        totalBR = gettotalbrrpvsusy(h, charmhistograms, mass, couplings)
+        gettotalbrrpvsusy(h, charmhistograms, mass, couplings)
 
         # overwrite D_s+ decays
         P8gen.SetParameters(
@@ -108,7 +108,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         beautyhistograms = ["b_mu", "b_tau", "b0_nu_mu", "b0_nu_tau"]
         maxsumBR = getmaxsumbrrpvsusy(h, beautyhistograms, mass, couplings)
         exit_if_zero_br(maxsumBR, inclusive, mass, particle="RPV neutralino")
-        totalBR = gettotalbrrpvsusy(h, beautyhistograms, mass, couplings)
+        gettotalbrrpvsusy(h, beautyhistograms, mass, couplings)
 
         # overwrite B+ decays
         P8gen.SetParameters(
@@ -152,7 +152,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
     This function configures a HNLPythia8Generator instance for SHiP usage.
     """
 
-    if process_selection == True:  # For backward compatibility
+    if process_selection is True:  # For backward compatibility
         process_selection = "inclusive"
 
     # Wrap the Pythia8 object into a class logging all of its method calls
@@ -166,7 +166,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy:
         P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     P8gen.SetParameters("Next:numberCount    =  0")
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)

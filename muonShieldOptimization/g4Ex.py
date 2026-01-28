@@ -28,16 +28,18 @@ if len(os.sys.argv) > 1:
 # ==================================================================
 #                         ROOT IMPORT                               #
 # ==================================================================
-import ROOT, time
-from ROOT import TLorentzVector
+import time
+
+import g4py.ezgeom
+import g4py.NISTmaterials
+import ROOT
+from g4py.ezgeom import G4EzVolume
 
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
 from Geant4 import *
-import g4py.NISTmaterials
-import g4py.ezgeom
-from g4py.ezgeom import G4EzVolume
+from ROOT import TLorentzVector
 
 # ==================================================================
 #                         PYTHIA8 PART                              #
@@ -224,7 +226,7 @@ class ScoreSD(G4VSensitiveDetector):
         G4VSensitiveDetector.__init__(self, Name)
 
     def ProcessHits(self, step, rohist):
-        preStepPoint = step.GetPreStepPoint()
+        step.GetPreStepPoint()
         track = step.GetTrack()
         part = track.GetDynamicParticle()
         pid = part.GetPDGcode()
@@ -263,15 +265,15 @@ def ConstructGeom():
     snoopy = G4EzVolume("Snoopy")
     snoopy.CreateTubeVolume(vac, 0.0, 10 * m, 50.0 * m)
     snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.0, 0.0, 0.0 * m))
-    snoopyLog = snoopyPhys.GetLogicalVolume()
+    snoopyPhys.GetLogicalVolume()
     snoopy.SetVisibility(False)
     # a target box is placed
     global target, targetPhys
     iron = G4Material.GetMaterial("G4_Fe")
-    air = G4Material.GetMaterial("G4_AIR")
+    G4Material.GetMaterial("G4_AIR")
     tungsten = G4Material.GetMaterial("G4_W")
-    lead = G4Material.GetMaterial("G4_Pb")
-    alum = G4Material.GetMaterial("G4_Al")
+    G4Material.GetMaterial("G4_Pb")
+    G4Material.GetMaterial("G4_Al")
     target = G4EzVolume("Target")
     target.CreateTubeVolume(tungsten, 0.0, 25.0 * cm, 25.0 * cm)
     targetPhys = target.PlaceIt(G4ThreeVector(0.0, 0.0, -50.0 * m + 25.0 * cm), 1, snoopy)

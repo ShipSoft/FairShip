@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import math
+import sys
+
 import numpy as np
 import ROOT as r
-import math
-import os, sys
-from scipy.integrate import quad, dblquad
-
 from darkphoton import *
+from scipy.integrate import dblquad
 
 # proton mass
 mProton = 0.938272081  # GeV/c - PDG2016

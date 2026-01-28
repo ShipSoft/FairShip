@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, time, os, sys
+
+import ROOT
 
 nJob = 1
 nMult = 1000  # 100000 # number of events / muon
@@ -16,7 +17,7 @@ masssq = {}
 
 def getMasssq(pid):
     apid = abs(int(pid))
-    if not apid in masssq:
+    if apid not in masssq:
         masssq[apid] = PDG.GetParticle(apid).Mass() ** 2
     return masssq[apid]
 

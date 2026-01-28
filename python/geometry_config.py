@@ -337,7 +337,7 @@ def create_config(
     c.muShield.dZ0 = 1 * u.m
 
     # zGap to compensate automatic shortening of magnets
-    zGap = 0.05 * u.m  # halflengh of gap
+    0.05 * u.m  # halflengh of gap
 
     params = shield_db[shieldName]["params"]
     c.muShield.params = params

@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, sys
+import sys
+
+import ROOT
 import rootUtils as ut
 import shipunit as u
 
@@ -49,26 +51,26 @@ def run():
                 f = n.GetVolume().GetField()
                 if f:
                     if f.GetFieldValue()[0] < 0:
-                        rc = h["Bx-"].Fill(z, x, y, -f.GetFieldValue()[0] / u.tesla)
+                        h["Bx-"].Fill(z, x, y, -f.GetFieldValue()[0] / u.tesla)
                     if f.GetFieldValue()[0] > 0:
-                        rc = h["Bx+"].Fill(z, x, y, f.GetFieldValue()[0] / u.tesla)
+                        h["Bx+"].Fill(z, x, y, f.GetFieldValue()[0] / u.tesla)
                     if f.GetFieldValue()[1] < 0:
-                        rc = h["By-"].Fill(z, x, y, -f.GetFieldValue()[1] / u.tesla)
+                        h["By-"].Fill(z, x, y, -f.GetFieldValue()[1] / u.tesla)
                     if f.GetFieldValue()[1] > 0:
-                        rc = h["By+"].Fill(z, x, y, f.GetFieldValue()[1] / u.tesla)
+                        h["By+"].Fill(z, x, y, f.GetFieldValue()[1] / u.tesla)
                     if f.GetFieldValue()[2] < 0:
-                        rc = h["Bz-"].Fill(z, x, y, -f.GetFieldValue()[2] / u.tesla)
+                        h["Bz-"].Fill(z, x, y, -f.GetFieldValue()[2] / u.tesla)
                     if f.GetFieldValue()[2] > 0:
-                        rc = h["Bz+"].Fill(z, x, y, f.GetFieldValue()[2] / u.tesla)
+                        h["Bz+"].Fill(z, x, y, f.GetFieldValue()[2] / u.tesla)
                 f = run.GetField()
                 if f.GetBx(x, y, z) < 0:
-                    rc = h["Bx-"].Fill(z, x, y, -f.GetBx(x, y, z) / u.tesla)
+                    h["Bx-"].Fill(z, x, y, -f.GetBx(x, y, z) / u.tesla)
                 if f.GetBx(x, y, z) > 0:
-                    rc = h["Bx+"].Fill(z, x, y, f.GetBx(x, y, z) / u.tesla)
+                    h["Bx+"].Fill(z, x, y, f.GetBx(x, y, z) / u.tesla)
                 if f.GetBy(x, y, z) < 0:
-                    rc = h["By-"].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)
+                    h["By-"].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)
                 if f.GetBy(x, y, z) > 0:
-                    rc = h["By+"].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)
+                    h["By+"].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)
     for x in h.keys():
         hi = h[x]
         if hi.ClassName() == "TH3F":

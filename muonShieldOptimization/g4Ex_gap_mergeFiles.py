@@ -11,9 +11,11 @@ JPsi = False  # True
 MoTarget = False
 Tau = False
 
-import ROOT, os
+import os
 from array import array
-from ROOT import TDatabasePDG, TMath, gDirectory
+
+import ROOT
+from ROOT import TDatabasePDG
 from rootUtils import *
 
 pdg = TDatabasePDG()
@@ -74,7 +76,7 @@ if Tau:
         for run in jobs[job]:
             for i in range(10):
                 path = job + run + str(i) + "/"
-                if not "log" + run + str(i) in os.listdir(path):
+                if "log" + run + str(i) not in os.listdir(path):
                     continue
                 fl = open(path + "log" + run + str(i))
                 for l in fl.readlines():
@@ -175,7 +177,7 @@ def makeFinalNtuples(norm=5.0e13, opt=""):
             t.SetEventList(temp)
             nev = temp.GetN()
             for iev in range(nev):
-                rc = t.GetEntry(temp.GetEntry(iev))
+                t.GetEntry(temp.GetEntry(iev))
                 leaves = t.GetListOfLeaves()
                 vlist = array("f")
                 for x in range(leaves.GetEntries()):
@@ -222,7 +224,6 @@ def makeFinalNtuples(norm=5.0e13, opt=""):
 
 def interactionRegion():
     import rootUtils as ut
-    import shipunit as u
 
     f = ROOT.TFile("pythia8_Geant4_13_350.0.root")
     sTree = f.FindObjectAny("pythia8-Geant4")

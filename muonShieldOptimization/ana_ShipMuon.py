@@ -2,8 +2,10 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
-import os, ROOT
 import multiprocessing as mp
+import os
+
+import ROOT
 from ShipGeoConfig import load_from_root_file
 
 ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
@@ -390,10 +392,10 @@ def origin(sTree, it):
         origin(sTree, im)
     if im < 0:
         # print 'does not come from muon'
-        rz_inter = -1.0, 0.0
+        pass
     if im == 0:
         # print 'origin z',at.GetStartZ()
-        rz_inter = ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+        ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
 
 
 otherPhysList = False
@@ -416,7 +418,7 @@ if path != "":
 if withChain > 0:
     for prefix in prefixes:
         for i in range(1, 10):
-            if not prefix + str(i) in os.listdir(testdir):
+            if prefix + str(i) not in os.listdir(testdir):
                 continue
             q1 = inputFile1 in os.listdir(path + prefix + str(i))
             q2 = inputFile2 in os.listdir(path + prefix + str(i))
@@ -432,7 +434,7 @@ if withChain > 0:
                 continue
             fname = path + prefix + str(i) + "/" + inputFile
             recFile = inputFile.replace(".root", "_rec.root")
-            if not recFile in os.listdir(path + prefix + str(i)):
+            if recFile not in os.listdir(path + prefix + str(i)):
                 fchain.append(fname)
                 continue
             fname = path + prefix + str(i) + "/" + recFile
@@ -630,7 +632,7 @@ def BigEventLoop():
                         h[newh].SetTitle(h[tag].GetTitle().split("_")[0])
                         first = False
                     else:
-                        rc = h[newh].Add(h[tag])
+                        h[newh].Add(h[tag])
     # compactify muon stations
     for mu in ["", "_mu", "_muV0"]:
         for x in ["", "_E", "_P", "_LP", "_OP", "_id", "_mul", "_evmul", "_origin", "_originmu"]:
@@ -644,7 +646,7 @@ def BigEventLoop():
                     h[newh].SetTitle(h[tag].GetTitle().split(" ")[0] + " " + newh)
                     first = False
                 else:
-                    rc = h[newh].Add(h[tag])
+                    h[newh].Add(h[tag])
 
     # make list of hists with entries
     k = 1
@@ -680,7 +682,7 @@ def executeOneFile(fn, output=None, pid=None):
     ]
     ntot = 0
     for n in range(nEvents):
-        rc = sTree.GetEntry(n)
+        sTree.GetEntry(n)
         theMuon = sTree.MCTrack[0]
         if len(sTree.MCTrack) > 1:
             w = sTree.MCTrack[1].GetWeight()  # also works for neutrinos
@@ -689,8 +691,8 @@ def executeOneFile(fn, output=None, pid=None):
             w = sTree.MCTrack[0].GetWeight()  # also works for neutrinos
         if w == 0:
             w = 1.0
-        rc = h["weight"].Fill(w)
-        rc = h["muonP"].Fill(theMuon.GetP() / u.GeV, w)
+        h["weight"].Fill(w)
+        h["muonP"].Fill(theMuon.GetP() / u.GeV, w)
         ntot += 1
         if ntot % 10000 == 0:
             print("read event", f.GetName(), n)
@@ -700,10 +702,10 @@ def executeOneFile(fn, output=None, pid=None):
             if mcp.GetMotherId() == 0:  # mother is original muon
                 E = mcp.GetEnergy()
                 if mcp.GetPdgCode() == 11:
-                    rc = h["deltaElec"].Fill(E, w)
+                    h["deltaElec"].Fill(E, w)
                     esum += E
-                rc = h["secondaries"].Fill(E, w)
-        rc = h["prop_deltaElec"].Fill(
+                h["secondaries"].Fill(E, w)
+        h["prop_deltaElec"].Fill(
             esum / sTree.MCTrack[0].GetP(), w
         )  # until energy is really made persistent GetEnergy()
         for c in hitContainers:
@@ -719,13 +721,13 @@ def executeOneFile(fn, output=None, pid=None):
                 else:
                     if detID not in logVols:
                         detName = c.GetName().replace("Points", "")
-                        if not detName in histlistAll.values():
+                        if detName not in histlistAll.values():
                             print(detID, detName, c.GetName())
                     else:
                         detName = logVols[detID]
                     x = ahit.GetX()
                     y = ahit.GetY()
-                    z = ahit.GetZ()
+                    ahit.GetZ()
                     E = ahit.GetEnergyLoss()
                 if detName not in h:
                     bookHist(detName)
@@ -747,40 +749,40 @@ def executeOneFile(fn, output=None, pid=None):
                     mu = "_muV0"
                 detName = detName + mu
                 if detName.find("LS") < 0:
-                    rc = h[detName].Fill(x / u.m, y / u.m, w)
+                    h[detName].Fill(x / u.m, y / u.m, w)
                 else:
-                    rc = h[detName].Fill(ahit.GetZ() / u.m, ROOT.TMath.ATan2(y, x) / ROOT.TMath.Pi(), w)
-                rc = h[detName + "_E"].Fill(E / u.MeV, w)
+                    h[detName].Fill(ahit.GetZ() / u.m, ROOT.TMath.ATan2(y, x) / ROOT.TMath.Pi(), w)
+                h[detName + "_E"].Fill(E / u.MeV, w)
                 if detName not in hitmult:
                     hitmult[detName] = {-1: 0}
                 if trackID not in hitmult[detName]:
                     hitmult[detName][trackID] = 0
                 hitmult[detName][trackID] += 1
                 hitmult[detName][-1] += 1
-                rc = h[detName + "_id"].Fill(pdgID, w)
-                rc = h[detName + "_P"].Fill(phit, w)
-                rc = h[detName + "_LP"].Fill(phit, w)
+                h[detName + "_id"].Fill(pdgID, w)
+                h[detName + "_P"].Fill(phit, w)
+                h[detName + "_LP"].Fill(phit, w)
                 if not trackID < 0:
                     r = ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m
-                    rc = h["origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
-                    rc = h[detName + "_origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
+                    h["origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
+                    h[detName + "_origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     if abs(pdgID) == 13:
-                        rc = h[detName + "_originmu"].Fill(aTrack.GetStartZ() / u.m, r, w)
-                    rc = h["borigin"].Fill(aTrack.GetStartZ() / u.m, r, w)
-                    rc = aTrack.GetMomentum(mom)
-                    rc = h[detName + "_OP"].Fill(mom.Mag() / u.GeV, w)
+                        h[detName + "_originmu"].Fill(aTrack.GetStartZ() / u.m, r, w)
+                    h["borigin"].Fill(aTrack.GetStartZ() / u.m, r, w)
+                    aTrack.GetMomentum(mom)
+                    h[detName + "_OP"].Fill(mom.Mag() / u.GeV, w)
                     if trackID > 0:
                         origin(sTree, trackID)
-                        rc = h["porigin"].Fill(
+                        h["porigin"].Fill(
                             aTrack.GetStartZ() / u.m,
                             ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m,
                             w,
                         )
-                    rc = h["mu-inter"].Fill(rz_inter[1] / u.m, rz_inter[0] / u.m, w)
+                    h["mu-inter"].Fill(rz_inter[1] / u.m, rz_inter[0] / u.m, w)
         for detName in hitmult:
-            rc = h[detName + "_evmul"].Fill(hitmult[detName][-1], w)
+            h[detName + "_evmul"].Fill(hitmult[detName][-1], w)
             for tr in hitmult[detName]:
-                rc = h[detName + "_mul"].Fill(hitmult[detName][tr], w)
+                h[detName + "_mul"].Fill(hitmult[detName][tr], w)
     if output:
         ut.writeHists(h, "tmpHists_" + str(pid) + ".root")
         output.put("ok")
@@ -929,7 +931,6 @@ def makePlots(nstations):
 
 #
 def AnaEventLoop():
-    ntot = 0
     fout = open("rareEvents.txt", "w")
     for fn in fchainRec:
         f = ROOT.TFile(fn)
@@ -1039,7 +1040,7 @@ def analyzeConcrete():
         nEvents = sTree.GetEntries()
         ROOT.gROOT.cd()
         for n in range(nEvents):
-            rc = sTree.GetEntry(n)
+            sTree.GetEntry(n)
             if len(sTree.MCTrack) > 1:
                 wg = sTree.MCTrack[1].GetWeight()
             else:
@@ -1096,7 +1097,6 @@ def analyzeConcrete():
 
 
 def rareEventEmulsion(fname="rareEmulsion.txt"):
-    ntot = 0
     fout = open(fname, "w")
     for fn in fchainRec:
         f = ROOT.TFile(fn)
@@ -1116,9 +1116,9 @@ def rareEventEmulsion(fname="rareEmulsion.txt"):
                 detID = ahit.GetDetectorID()
                 if logVols[detID] != "Emulsion":
                     continue
-                x = ahit.GetX()
-                y = ahit.GetY()
-                z = ahit.GetZ()
+                ahit.GetX()
+                ahit.GetY()
+                ahit.GetZ()
                 if len(sTree.MCTrack) > 1:
                     wg = sTree.MCTrack[1].GetWeight()  # also works for neutrinos
                 else:
@@ -1229,7 +1229,7 @@ def extractMuCloseByEvents(single=None):
                         continue
                     n += 1
             if n > 0:
-                rc = newTree.Fill()
+                newTree.Fill()
                 # print 'filled newTree',rc
             sTree.Clear()
         newTree.AutoSave()
@@ -1271,7 +1271,7 @@ def printAndCopy(prefix=None):
         prefix = (h["tc"].GetName()).replace(".root", "")
     for x in ["ResultsI", "ResultsII", "ResultsImu", "ResultsImuV0", "ResultsIII", "ResultsIV", "ResultsV"]:
         h[x].Update()
-    if not prefix in os.listdir("."):
+    if prefix not in os.listdir("."):
         os.mkdir(prefix)
     os.chdir(prefix)
     h["ResultsI"].Print(prefix + "Back_occ.png")
@@ -1341,15 +1341,15 @@ def eventsWithEntryPoints(i):
 
 def depEnergy():
     for n in range(sTree.GetEntries()):
-        rc = sTree.GetEntry(n)
+        sTree.GetEntry(n)
         for ahit in sTree.strawtubesPoint:
             dE = ahit.GetEnergyLoss() / u.keV
-            rc = ahit.Momentum(mom)
+            ahit.Momentum(mom)
             pa = PDG.GetParticle(ahit.PdgCode())
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2() + mpa**2)
             ekin = E - mpa
-            rc = h["dE"].Fill(dE, ekin / u.MeV)
+            h["dE"].Fill(dE, ekin / u.MeV)
         h["dE"].SetXTitle("keV")
         h["dE"].SetYTitle("MeV")
 
@@ -1392,7 +1392,7 @@ def pers():
             lp = rpath.split("/")
             prefix = xdisk
             for i in range(len(lp)):
-                if not lp[i] in os.listdir(prefix):
+                if lp[i] not in os.listdir(prefix):
                     os.system("mkdir " + prefix + "/" + lp[i])
                 prefix = prefix + "/" + lp[i]
             os.system("cp " + tn + " " + xdisk + rpath)

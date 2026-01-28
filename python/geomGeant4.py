@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import shipunit as u
 from array import array
+
 import hepunit as G4Unit
-import ShieldUtils
 import ROOT
+import ShieldUtils
+import shipunit as u
 
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
@@ -24,9 +25,9 @@ def check4OrphanVolumes(fGeo):
     gIndex = {}
     for v in fGeo.GetListOfVolumes():
         name = v.GetName()
-        if not name in listOfVolumes:
+        if name not in listOfVolumes:
             orphan.append(name)
-        if not name in gIndex:
+        if name not in gIndex:
             gIndex[name] = []
         gIndex[name].append(v.GetNumber())
     print("list of orphan volumes:", orphan)

@@ -1,7 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, subprocess, ROOT, time, getpass, multiprocessing
+import getpass
+import multiprocessing
+import os
+import subprocess
+import time
+
+import ROOT
 import rootUtils as ut
 
 ncores = min(multiprocessing.cpu_count(), 4)
@@ -55,7 +61,7 @@ def execute(ncpu=4):
         if k == ncpu:
             k = 0
         if "child" in cpus[k]:
-            rc = child.communicate()[0]
+            child.communicate()[0]
             log[k]["log"].close()
         print("change to directory ", k, x)
         os.chdir("./" + x)
@@ -163,7 +169,7 @@ def executeSimple(prefixes, reset=False):
                 os.system(
                     "python " + cmdAna + " -n 9999999 -f " + inputfile.replace(".root", "_rec.root") + " >> logAna &"
                 )
-                rc = proc.pop(p)
+                proc.pop(p)
                 time.sleep(10)
             else:
                 print("Rec job not finished yet", p)
@@ -175,7 +181,6 @@ def executeSimple(prefixes, reset=False):
 
 
 def executeAna(prefixes):
-    cpus = {}
     log = {}
     for prefix in prefixes:
         jobs = getJobs(prefix)

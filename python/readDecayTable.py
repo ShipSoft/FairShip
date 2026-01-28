@@ -14,9 +14,12 @@
 # ==================================================================
 """
 
-import ROOT, os, csv
-from hnl import PDGname
+import csv
+import os
+
+import ROOT
 from darkphoton import *
+from hnl import PDGname
 
 pdg = ROOT.TDatabasePDG.Instance()
 
@@ -78,7 +81,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/pytho
             P8Gen.SetParameters(f"9900015:addChannel =  1 {BR:.12} 0 {codes}")
             # Charge conjugate modes
             codes = " ".join(
-                [(str(-1 * code) if pdg.GetParticle(-code) != None else str(code)) for code in childrenCodes]
+                [(str(-1 * code) if pdg.GetParticle(-code) is not None else str(code)) for code in childrenCodes]
             )
             P8Gen.SetParameters(f"9900015:addChannel =  1 {BR:.12} 0 {codes}")
             # print "debug readdecay table",particles,children,BR
