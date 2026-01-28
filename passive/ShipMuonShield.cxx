@@ -75,14 +75,14 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
   snd_hole_dy = hole_dy;
 }
 
-void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
-				Double_t dZ, std::array<Double_t, 16> corners,
-				Int_t color, TGeoUniformMagField *magField,
-				TGeoVolume *tShield, Double_t x_translation,
-				Double_t y_translation,
-				Double_t z_translation) {
+void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
+                                Double_t dZ, std::array<Double_t, 16> corners,
+                                Int_t color, TGeoUniformMagField* magField,
+                                TGeoVolume* tShield, Double_t x_translation,
+                                Double_t y_translation,
+                                Double_t z_translation) {
   LOG(debug) << " Create CreateArb8 of the MS ";
-  TGeoVolume *magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
+  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
   if (fWithConstShieldField) {
     magF->SetField(magField);
@@ -364,21 +364,21 @@ void ShipMuonShield::Initialize(
   for (size_t i = 0; i < nMagnets; ++i) {
     // --- Load parameters for each magnet ---
 
-    dZ[i]           = params[i * nParams + 0];
-    Z_rel[i]        = params[i * nParams + 1];
-    dXIn[i]         = params[i * nParams + 2];
-    dXOut[i]        = params[i * nParams + 3];
-    dYIn[i]         = params[i * nParams + 4];
-    dYOut[i]        = params[i * nParams + 5];
-    gapIn[i]        = params[i * nParams + 6];
-    gapOut[i]       = params[i * nParams + 7];
-    ratio_yokesIn[i]  = params[i * nParams + 8];
+    dZ[i] = params[i * nParams + 0];
+    Z_rel[i] = params[i * nParams + 1];
+    dXIn[i] = params[i * nParams + 2];
+    dXOut[i] = params[i * nParams + 3];
+    dYIn[i] = params[i * nParams + 4];
+    dYOut[i] = params[i * nParams + 5];
+    gapIn[i] = params[i * nParams + 6];
+    gapOut[i] = params[i * nParams + 7];
+    ratio_yokesIn[i] = params[i * nParams + 8];
     ratio_yokesOut[i] = params[i * nParams + 9];
-    dY_yokeIn[i]    = params[i * nParams + 10];
-    dY_yokeOut[i]   = params[i * nParams + 11];
-    midGapIn[i]     = params[i * nParams + 12];
-    midGapOut[i]    = params[i * nParams + 13];
-    Bgoal[i]        = params[i * nParams + 14];
+    dY_yokeIn[i] = params[i * nParams + 10];
+    dY_yokeOut[i] = params[i * nParams + 11];
+    midGapIn[i] = params[i * nParams + 12];
+    midGapOut[i] = params[i * nParams + 13];
+    Bgoal[i] = params[i * nParams + 14];
 
     // --- Compute Z position for each magnet ---
     if (i == 0) {
@@ -388,26 +388,19 @@ void ShipMuonShield::Initialize(
       // Subsequent magnets are placed relative to the previous one
       Z[i] = Z[i - 1] + Z_rel[i - 1] + dZ[i] + Z_rel[i];
     }
-// --- Print all values for this magnet ---
-    LOG(debug) << "Magnet " << i
-              << ": dZ=" << dZ[i]
-              << ", Z_rel=" << Z_rel[i]
-              << ", dXIn=" << dXIn[i]
-              << ", dXOut=" << dXOut[i]
-              << ", dYIn=" << dYIn[i]
-              << ", dYOut=" << dYOut[i]
-              << ", gapIn=" << gapIn[i]
-              << ", gapOut=" << gapOut[i]
-              << ", ratio_yokesIn=" << ratio_yokesIn[i]
-              << ", ratio_yokesOut=" << ratio_yokesOut[i]
-              << ", dY_yokeIn=" << dY_yokeIn[i]
-              << ", dY_yokeOut=" << dY_yokeOut[i]
-              << ", midGapIn=" << midGapIn[i]
-              << ", midGapOut=" << midGapOut[i]
-              << ", Bgoal=" << Bgoal[i]
-              << ", Z=" << Z[i];
-}
-LOG(debug) << " ending of Initialize the MS ";
+    // --- Print all values for this magnet ---
+    LOG(debug) << "Magnet " << i << ": dZ=" << dZ[i] << ", Z_rel=" << Z_rel[i]
+               << ", dXIn=" << dXIn[i] << ", dXOut=" << dXOut[i]
+               << ", dYIn=" << dYIn[i] << ", dYOut=" << dYOut[i]
+               << ", gapIn=" << gapIn[i] << ", gapOut=" << gapOut[i]
+               << ", ratio_yokesIn=" << ratio_yokesIn[i]
+               << ", ratio_yokesOut=" << ratio_yokesOut[i]
+               << ", dY_yokeIn=" << dY_yokeIn[i]
+               << ", dY_yokeOut=" << dY_yokeOut[i]
+               << ", midGapIn=" << midGapIn[i] << ", midGapOut=" << midGapOut[i]
+               << ", Bgoal=" << Bgoal[i] << ", Z=" << Z[i];
+  }
+  LOG(debug) << " ending of Initialize the MS ";
 }
 void ShipMuonShield::ConstructGeometry() {
   LOG(debug) << " Construct Geometry of the MS ";
