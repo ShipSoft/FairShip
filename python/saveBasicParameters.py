@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from ShipGeoConfig import AttrDict
-import ROOT
 import os
 import subprocess
+
+import ROOT
+from ShipGeoConfig import AttrDict
 
 
 def retrieveGitTags(o):

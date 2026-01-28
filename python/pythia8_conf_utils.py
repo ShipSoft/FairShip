@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os
-import sys
 import re
+import sys
+
 import numpy as np
-import scipy.interpolate
 import ROOT
-import shipunit as u
+import scipy.interpolate
 
 
 def addHNLtoROOT(pid=9900015, m=1.0, g=3.654203020370371e-21):
@@ -30,7 +29,7 @@ def getmaxsumbrrpvsusy(h, histograms, mass, couplings):
     sumbrs = {}
     for histoname in histograms:
         item = histoname.split("_")
-        lepton = item[len(item) - 1]
+        item[len(item) - 1]
         meson = item[0]
         coupling = couplings[1]
         try:
@@ -45,7 +44,7 @@ def getmaxsumbrrpvsusy(h, histograms, mass, couplings):
 def gettotalbrrpvsusy(h, histograms, mass, couplings):
     totalbr = 0.0
     for histoname in histograms:
-        item = histoname.split("_")
+        histoname.split("_")
         coupling = couplings[1]
         totalbr += getbr_rpvsusy(h, histoname, mass, coupling)
     return totalbr
@@ -155,7 +154,7 @@ def add_particles(P8gen, particles, data):
         # Find particle in database (None: particle not found)
         particle = next((p for p in data["particles"] if particle_id in [p["id"], p["name"]]), None)
         if particle is None:
-            raise ValueError(f"Could not find particle ID {particle} in file {datafile}")
+            raise ValueError(f"Could not find particle ID {particle_id} in particle database")
         # Add the particle
         P8gen.SetParameters(particle["cmd"])
 

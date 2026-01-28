@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os, sys
-import shipunit as u
-import readDecayTable
+import os
+
 import darkphoton
 import proton_bremsstrahlung
+import readDecayTable
+import ROOT
+import shipunit as u
 from method_logger import MethodLogger
 
 # Boundaries for production in meson decays
@@ -97,7 +99,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy:
         P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     if inclusive == "meson":
         # let strange particle decay in Geant4
         p8 = P8gen.getPythiaInstance()

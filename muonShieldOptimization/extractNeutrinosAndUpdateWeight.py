@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os, ROOT
+import os
+
+import ROOT
 import rootUtils as ut
 
 path = "/eos/experiment/ship/data/Mbias/background-prod-2018/"
@@ -26,7 +28,6 @@ weightCharm1GeV = 4895.24
 # for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
-import rootUtils as ut
 
 h = {}
 PDG = ROOT.TDatabasePDG.Instance()
@@ -83,7 +84,7 @@ def run():
     global weight
     weight = weightMbias
     for run in range(0, 67000, 1000):
-        rc = processFile(tmp.replace("XX", str(run)))
+        processFile(tmp.replace("XX", str(run)))
     ut.writeHists(h, "pythia8_Geant4_10.0_c0-67000_nu.root")
 
 
@@ -92,7 +93,7 @@ def run1GeV():
     global weight
     weight = weightMbias1GeV
     for run in range(0, 19000, 1000):
-        rc = processFile(tmp.replace("XX", str(run)))
+        processFile(tmp.replace("XX", str(run)))
     ut.writeHists(h, "pythia8_Geant4_1.0_c0-19000_nu.root")
 
 
@@ -104,7 +105,7 @@ def run4Charm():
         for run in range(0, 100, 20):
             crun = run + cycle * 1000
             fname = tmp.replace("XX", str(crun)).replace("YY", str(crun + 19))
-            rc = processFile(fname, False)
+            processFile(fname, False)
     ut.writeHists(h, "pythia8_Geant4_charm_10.0_nu.root")
 
 
@@ -112,7 +113,7 @@ def run4Charm1GeV():
     fname = "pythia8_Geant4_charm_0-19_1.0.root"  # renamed pythia8_Geant4_charm_XX-YY_10.0.root
     global weight
     weight = weightCharm1GeV
-    rc = processFile(fname, False)
+    processFile(fname, False)
     ut.writeHists(h, "pythia8_Geant4_charm_1.0_nu.root")
 
 

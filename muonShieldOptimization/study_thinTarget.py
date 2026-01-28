@@ -2,13 +2,16 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os, sys, time, shipRoot_conf
+import time
+
+import ROOT
+import shipRoot_conf
 
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 
-import shipunit as u
 import geometry_config
+import shipunit as u
 
 mcEngine = "TGeant4"
 runnr = 1
@@ -75,7 +78,7 @@ class Block(ROOT.pyFairModule):
         ShipMedium = media.getMedium(material)
         W = ROOT.gGeoManager.GetMedium(material)
         if not W:
-            rc = geoBuild.createMedium(ShipMedium)
+            geoBuild.createMedium(ShipMedium)
             W = ROOT.gGeoManager.GetMedium(material)
         aBox = ROOT.gGeoManager.MakeBox("target", W, 100.0 * u.cm, 100.0 * u.cm, thickness)
         top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))

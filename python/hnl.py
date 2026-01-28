@@ -31,7 +31,9 @@
 """
 
 import math
-import ROOT, os
+import os
+
+import ROOT
 import shipunit as u
 
 # Load PDG database
@@ -494,9 +496,9 @@ class HNLbranchings:
             return 0
         width = 0.0
         for l in [1, 2, 3]:
-            for u in [1, 2, 3]:
+            for u_quark in [1, 2, 3]:
                 for d in [1, 2, 3]:
-                    width += self.Width_l_u_d(l, u, d)
+                    width += self.Width_l_u_d(l, u_quark, d)
         width *= 1.0 + self.QCD_corr
         return width
 

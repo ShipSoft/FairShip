@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import sys, os, ROOT
+import os
+import sys
+
+import ROOT
 
 ncpus = 20
 msel = "4"
@@ -27,7 +30,7 @@ else:
 
 def makeHadrons(run):
     for n in range(ncpus):
-        s = x.Rndm() * 1000000000.0
+        x.Rndm() * 1000000000.0
         os.system("mkdir run" + str(run))
         os.chdir("run" + str(run))
         cmd = (

@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from ROOT import TFile, gROOT, TH3D, TH2D, TH1D, TCanvas, TProfile, gSystem
+from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
 import os
 from collections import Counter
+import os
+import sys
 
 _error_log = Counter()
 
@@ -21,7 +23,7 @@ def readHists(h, fname, wanted=[]):
         except:
             hname = name
         if len(wanted) > 0:
-            if not hname in wanted:
+            if hname not in wanted:
                 continue
         obj = akey.ReadObj()
         cln = obj.Class().GetName()
@@ -54,7 +56,7 @@ def readHists(h, fname, wanted=[]):
 
 
 def bookHist(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, nbinsy=0, ymin=0, ymax=1, nbinsz=0, zmin=0, zmax=1):
-    if key == None:
+    if key is None:
         print("missing key")
         return
     rkey = str(key)  # in case somebody wants to use integers, or floats as keys
@@ -70,13 +72,13 @@ def bookHist(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, nbinsy=0, ymin=0
 
 
 def bookProf(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, ymin=None, ymax=None, option=""):
-    if key == None:
+    if key is None:
         print("missing key")
         return
-    rkey = str(key)  # in case somebody wants to use integers, or floats as keys
+    str(key)  # in case somebody wants to use integers, or floats as keys
     if key in h:
         h[key].Reset()
-    if ymin == None or ymax == None:
+    if ymin is None or ymax is None:
         h[key] = TProfile(key, title, nbinsx, xmin, xmax, option)
     else:
         h[key] = TProfile(key, title, nbinsx, xmin, xmax, ymin, ymax, option)
@@ -97,7 +99,7 @@ def writeHists(h, fname, plusCanvas=False):
 
 
 def bookCanvas(h, key=None, title="", nx=900, ny=600, cx=1, cy=1):
-    if key == None:
+    if key is None:
         print("missing key")
         return
     if key not in h:

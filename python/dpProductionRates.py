@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, os, sys, math
-import shipunit as u
-import proton_bremsstrahlung
+import math
 
+import proton_bremsstrahlung
+import ROOT
 
 PDG = ROOT.TDatabasePDG.Instance()
 protonFlux = 2e20
@@ -65,20 +65,20 @@ def mesonBRtoPhoton(mumPdg, doprint=False):
         br = 0.0834941
     if mumPdg == 331:
         br = 0.0219297
-    if doprint == True:
+    if doprint:
         print("BR of %d meson to photons: %.8g" % (mumPdg, br))
     return br
 
 
 def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
     mMeson = PDG.GetParticle(mumPdg).Mass()
-    if doprint == True:
+    if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
     if mass < mMeson:
         br = 2 * epsilon**2 * pow((1 - mass**2 / mMeson**2), 3) * mesonBRtoPhoton(mumPdg, doprint)
     else:
         br = 0
-    if doprint == True:
+    if doprint:
         print("Branching ratio of %d meson to DP is %.8g" % (mumPdg, br))
     return br
 
@@ -86,9 +86,9 @@ def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
 def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
     mMeson = PDG.GetParticle(mumPdg).Mass()
     mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
-    if doprint == True:
+    if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
-    if doprint == True:
+    if doprint:
         print("Mass of daughter %d meson is %3.3f" % (dauPdg, mDaughterMeson))
     if mass < (mMeson - mDaughterMeson):
         fac1 = pow(mMeson**2.0 - mDaughterMeson**2.0, -3.0)
@@ -97,7 +97,7 @@ def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
         br = (epsilon**2.0) * mesonBRtoPhoton(mumPdg, doprint) * massfactor
     else:
         br = 0
-    if doprint == True:
+    if doprint:
         print("Branching ratio of %d meson to DP is %.8g" % (mumPdg, br))
     return br
 

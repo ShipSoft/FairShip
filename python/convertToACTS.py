@@ -1,21 +1,18 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from collections import defaultdict
-import ROOT
 import array
-import math
-import sys
-import os
+from collections import defaultdict
+
 import global_variables
-import shipunit as u
 import numpy as np
+import ROOT
+import shipunit as u
 
 PDG = ROOT.TDatabasePDG.Instance()
-from ShipGeoConfig import load_from_root_file
-import shipDet_conf
-
 import acts
+import shipDet_conf
+from ShipGeoConfig import load_from_root_file
 
 
 def main():
@@ -25,7 +22,6 @@ def main():
 
     geoFile = global_variables.geoFile
     fgeo = ROOT.TFile.Open(geoFile, "READ")
-    geo = fgeo.FAIRGeom
 
     outFile = global_variables.inputFile.replace(".root", "_ACTS.root")
 
@@ -35,8 +31,8 @@ def main():
     run.SetName("TGeant4")  # Transport engine
     run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Dummy output file
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for creating VMC field
-    rtdb = run.GetRuntimeDb()
-    modules = shipDet_conf.configure(run, ShipGeo)
+    run.GetRuntimeDb()
+    shipDet_conf.configure(run, ShipGeo)
 
     with ROOT.TFile.Open(outFile, "RECREATE") as f:
         # Trees to hold converted data: particles, vertices, SiliconTarget hits, Strawtube hits.
@@ -386,7 +382,7 @@ def main():
                         tpx_mtc[0] = 0.0
                         tpy_mtc[0] = 0.0
                         tpz_mtc[0] = 0.0
-                        tenergy_mtc[0] = 0.0
+                        te_mtc[0] = 0.0
                         deltapx_mtc[0] = 0.0
                         deltapy_mtc[0] = 0.0
                         deltapz_mtc[0] = 0.0

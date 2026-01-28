@@ -31,8 +31,9 @@ r"""
 # ==================================================================
 """
 
-import re
 import math
+import re
+
 import ROOT
 import shipunit as u
 

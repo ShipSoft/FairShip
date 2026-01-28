@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import ROOT, time, sys
+import sys
+
+import ROOT
 
 id = int(sys.argv[1])
 ROOT.gSystem.Load("libEG")
