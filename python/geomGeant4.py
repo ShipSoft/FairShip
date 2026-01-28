@@ -6,6 +6,7 @@ from array import array
 import hepunit as G4Unit
 import ShieldUtils
 import ROOT
+import os
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4UIterminal.hh"')
@@ -158,7 +159,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
       if not shipGeo.muShield.WithConstField:
         offset = shipGeo.muShield.Z[0] - shipGeo.muShield.Z_rel[0]
         quadSymm = True
-        vmc_work_dir = ROOT.gSystem.Getenv("VMCWORKDIR")
+        vmc_work_dir = os.environ.get("VMCWORKDIR")
         file_name = f"{vmc_work_dir}/files/{shipGeo.shieldName}.root"
         try:
             # Check if the file exists by trying to open it
