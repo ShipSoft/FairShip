@@ -1,11 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
 import os
 from collections import Counter
-import os
-import sys
+
+from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
 
 _error_log = Counter()
 
@@ -42,7 +41,7 @@ def readHists(h, fname, wanted=[]):
         h[hname].SetDirectory(gROOT)
         if cln == "TH2D" or cln == "TH2F":
             for p in ["_projx", "_projy"]:
-                if type(hname) == str:
+                if isinstance(hname, str):
                     projname = hname + p
                 else:
                     projname = str(hname) + p
@@ -115,7 +114,7 @@ def errorSummary():
     if _error_log:
         print("Summary of recorded incidents:")
     for e in _error_log:
-        print(e, ':', _error_log[e])
+        print(e, ":", _error_log[e])
 
 
 def checkFileExists(x):

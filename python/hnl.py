@@ -208,13 +208,14 @@ class HNLbranchings:
 
     def sqrt_lambda(self, a, b, c):
         """
-        Useful function for decay kinematics. Returns 0 for kinematically forbidden region
+        Useful function for decay kinematics. Returns 0 for kinematically forbidden region.
+        This is the Källén (triangle) function λ(a,b,c).
         """
-        l = a**2 + b**2 + c**2 - 2 * a * b - 2 * b * c - 2 * a * c
-        if l < 0:
+        kallen = a**2 + b**2 + c**2 - 2 * a * b - 2 * b * c - 2 * a * c
+        if kallen < 0:
             return 0
         else:
-            return math.sqrt(l)
+            return math.sqrt(kallen)
 
     def QCD_correction(self):
         """
@@ -246,8 +247,8 @@ class HNLbranchings:
         if (alpha not in [1, 2, 3]) or (beta not in [1, 2, 3, 4, 5, 6, 7, 8, 9]):
             print("Width_nu_f_fbar ERROR: unknown channel alpha =", alpha, " beta =", beta)
             quit()
-        l = [None, "e-", "mu-", "tau-", "u", "d", "s", "c", "b", "t"]
-        x = mass(l[beta]) / self.MN
+        fermions = [None, "e-", "mu-", "tau-", "u", "d", "s", "c", "b", "t"]
+        x = mass(fermions[beta]) / self.MN
         if x > 0.5:  # the decay is kinematically forbidden
             return 0
         width = (c.GF**2.0) * (self.MN**5.0) * self.U2[alpha - 1] / (192.0 * (math.pi**3.0))
@@ -314,7 +315,7 @@ class HNLbranchings:
         res *= self.sqrt_lambda(1.0, x, xu2)
         return res
 
-    def I(self, x1, x2, x3):
+    def integral(self, x1, x2, x3):
         """
         Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN
@@ -346,13 +347,13 @@ class HNLbranchings:
             alpha == beta
         ):  # The interference case is handled by Width_nu_f_fbar function, workaround for a total width calculation
             return 0
-        l = [None, "e-", "mu-", "tau-"]
-        x1 = mass(l[alpha]) / self.MN
-        x2 = mass(l[beta]) / self.MN
+        leptons = [None, "e-", "mu-", "tau-"]
+        x1 = mass(leptons[alpha]) / self.MN
+        x2 = mass(leptons[beta]) / self.MN
         if x1 + x2 > 1:  # The decay is kinematically forbidden
             return 0
         width = (c.GF**2.0) * (self.MN**5.0) * self.U2[alpha - 1] / (192.0 * (math.pi**3.0))
-        width = width * self.I(x1, x2, 0)
+        width = width * self.integral(x1, x2, 0)
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
@@ -368,17 +369,17 @@ class HNLbranchings:
         if (alpha not in [1, 2, 3]) or (beta not in [1, 2, 3]) or (gamma not in [1, 2, 3]):
             print("Width_l_u_d ERROR: unknown channel alpha =", alpha, " beta =", beta, " gamma =", gamma)
             quit()
-        l = [None, "e-", "mu-", "tau-"]
-        u = [None, "u", "c", "t"]
-        d = [None, "d", "s", "b"]
-        xl = mass(l[alpha]) / self.MN
-        xu = mass(u[beta]) / self.MN
-        xd = mass(d[gamma]) / self.MN
+        leptons = [None, "e-", "mu-", "tau-"]
+        up_quarks = [None, "u", "c", "t"]
+        down_quarks = [None, "d", "s", "b"]
+        xl = mass(leptons[alpha]) / self.MN
+        xu = mass(up_quarks[beta]) / self.MN
+        xd = mass(down_quarks[gamma]) / self.MN
         if xl + xu + xd > 1:  # The decay is kinematically forbidden
             return 0
         width = (c.GF**2.0) * (self.MN**5.0) * self.U2[alpha - 1] / (192.0 * (math.pi**3.0))
         width *= 3 * self.CKMelemSq[(beta, gamma)]
-        width *= self.I(xl, xu, xd)
+        width *= self.integral(xl, xu, xd)
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
@@ -421,8 +422,8 @@ class HNLbranchings:
         if (H not in ["pi+", "rho+", "D_s+", "D*_s+"]) or (alpha not in [1, 2, 3]):
             print("Width_H_l ERROR: unknown channel H =", H, " alpha =", alpha)
             quit()
-        l = [None, "e-", "mu-", "tau-"]
-        xl = mass(l[alpha]) / self.MN
+        leptons = [None, "e-", "mu-", "tau-"]
+        xl = mass(leptons[alpha]) / self.MN
         xh = mass(H) / self.MN
         if xl + xh > 1:  # The decay is kinematically forbidden
             return 0.0
@@ -460,8 +461,8 @@ class HNLbranchings:
         mesons = ["pi0", "eta", "rho0", "omega", "eta1", "phi", "eta_c"]
         width = 0.0
         for m in mesons:
-            for l in [1, 2, 3]:
-                width += self.Width_H0_nu(m, l)
+            for lepton in [1, 2, 3]:
+                width += self.Width_H0_nu(m, lepton)
         return width
 
     def Width_charged_mesons(self):
@@ -471,8 +472,8 @@ class HNLbranchings:
         mesons = ["pi+", "rho+", "D_s+", "D*_s+"]
         width = 0.0
         for m in mesons:
-            for l in [1, 2, 3]:
-                width += self.Width_H_l(m, l)
+            for lepton in [1, 2, 3]:
+                width += self.Width_H_l(m, lepton)
         return width
 
     def Width_quarks_neutrino(self):
@@ -482,9 +483,9 @@ class HNLbranchings:
         if self.MN < 1.0:  # decay into quarks is not applicable at low HNL mass
             return 0
         width = 0.0
-        for l in [1, 2, 3]:
+        for lepton in [1, 2, 3]:
             for q in [4, 5, 6, 7, 8, 9]:
-                width += self.Width_nu_f_fbar(l, q)
+                width += self.Width_nu_f_fbar(lepton, q)
         width *= 1.0 + self.QCD_corr
         return width
 
@@ -495,10 +496,10 @@ class HNLbranchings:
         if self.MN < 1.0:  # decay into quarks is not applicable at low HNL mass
             return 0
         width = 0.0
-        for l in [1, 2, 3]:
+        for lepton in [1, 2, 3]:
             for u_quark in [1, 2, 3]:
-                for d in [1, 2, 3]:
-                    width += self.Width_l_u_d(l, u_quark, d)
+                for d_quark in [1, 2, 3]:
+                    width += self.Width_l_u_d(lepton, u_quark, d_quark)
         width *= 1.0 + self.QCD_corr
         return width
 
