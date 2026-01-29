@@ -64,7 +64,7 @@ jobs:
       matrix:
         vessel_option: [vacuums, helium]
         SND_option: [all]
-        muon_shield: [stellatryon_v2]
+        muon_shield: [TRY_2025]
         target: [old, Jun25]
 
     steps:

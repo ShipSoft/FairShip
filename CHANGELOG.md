@@ -14,7 +14,7 @@ it in future.
 
 ### Added
 
-* New warm MS option Stellatryon v.2 added to the config and its field map
+* New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
 
 ### Changed
 
@@ -29,7 +29,7 @@ it in future.
 
 ### Removed
 
-* New_HA_Design muon shield configuration is no longer supported
+* New_HA_Design and warm_opt muon shield configuration are no longer supported
 
 ## 25.12 - 2025-12-22
 
