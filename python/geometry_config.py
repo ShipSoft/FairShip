@@ -376,7 +376,7 @@ def create_config(
     c.muShield.params = params
 
     # MS length
-    c.muShield.length = sum(line[0] + line[1]*2 for line in params)
+    c.muShield.length = sum(line[0] + line[1] * 2 for line in params)
     c.muShield.nMagnets = len(params)
 
     c.muShield.Zgap = []
@@ -396,7 +396,7 @@ def create_config(
             # Subsequent magnets are placed relative to the previous one
             c.muShield.Entrance.append(
                 c.muShield.Entrance[i - 1]
-                + c.muShield.half_length[i - 1]*2
+                + c.muShield.half_length[i - 1] * 2
                 + c.muShield.Zgap[i]
             )
     # Flatten the params list
