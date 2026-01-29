@@ -372,36 +372,33 @@ def create_config(
 
     c.muShield.z = c.hadronAbsorber.z
 
-    c.muShield.Field = 1.7  # in units of Tesla expected by ShipMuonShield
     params = shield_db[shieldName]["params"]
     c.muShield.params = params
 
     # MS length
-    c.muShield.length = sum(line[0] + line[1] for line in params)
+    c.muShield.length = sum(line[0] + line[1]*2 for line in params)
     c.muShield.nMagnets = len(params)
 
-    c.muShield.dZ = []
-    c.muShield.Z_rel = []
-    c.muShield.Z = []
+    c.muShield.Zgap = []
+    c.muShield.half_length = []
+    c.muShield.Entrance = []
 
     for line in params:
-        c.muShield.dZ.append(line[0])
-        c.muShield.Z_rel.append(line[1])
+        c.muShield.Zgap.append(line[0])
+        c.muShield.half_length.append(line[1])
 
     # Compute Z position for each magnet
-    for i in range(len(c.muShield.dZ)):
+    for i in range(len(c.muShield.Zgap)):
         if i == 0:
             # First magnet uses the initial offset
-            c.muShield.Z.append(c.muShield.z + c.muShield.dZ[i] + c.muShield.Z_rel[i])
+            c.muShield.Entrance.append(c.muShield.z + c.muShield.Zgap[i])
         else:
             # Subsequent magnets are placed relative to the previous one
-            c.muShield.Z.append(
-                c.muShield.Z[i - 1]
-                + c.muShield.Z_rel[i - 1]
-                + c.muShield.dZ[i]
-                + c.muShield.Z_rel[i]
+            c.muShield.Entrance.append(
+                c.muShield.Entrance[i - 1]
+                + c.muShield.half_length[i - 1]*2
+                + c.muShield.Zgap[i]
             )
-
     # Flatten the params list
     c.muShield.params = [item for sublist in params for item in sublist]
 
