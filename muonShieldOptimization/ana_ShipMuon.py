@@ -1384,7 +1384,7 @@ def originOfMuon(fout, n, fn, nEvents):
 def pers():
     xdisk = "/media/Work/HNL/"
     for x in h:
-        if type(h[x]) == type(ROOT.TCanvas()):
+        if isinstance(h[x], ROOT.TCanvas):
             h[x].Update()
             tn = h[x].GetName() + ".png"
             h[x].Print(tn)

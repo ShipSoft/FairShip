@@ -205,7 +205,7 @@ h = {}
 
 
 def mergeHistosMakePlots(p):
-    if not type(p) == type([]):
+    if not isinstance(p, list):
         pl = [p]
     else:
         pl = p

@@ -7,16 +7,12 @@ select = ["E", "F", "I", "W"]
 ignore = [
     "E402",  # Module import not at top - common in simulation scripts
     "E501",  # Line too long - handled by formatter where possible
-    "E701",  # Multiple statements on one line - common in physics code
-    "E721",  # Type comparison using == - common pattern in physics code
     "E722",  # Bare except - common for edge case handling in physics code
-    "E741",  # Ambiguous variable name (l, O, I) - common in physics (l=length)
-    "E743",  # Ambiguous function name (I, l, O) - common in physics (I=integral)
 ]
 
 [tool.ruff.lint.per-file-ignores]
 # Files using star imports from Geant4/ROOT bindings
-"muonShieldOptimization/g4Ex*.py" = ["F403", "F405"]
+"muonShieldOptimization/g4Ex*.py" = ["F403", "F405", "E741"]
 "python/ShipStyle.py" = ["F403", "F405"]
 "python/pythia8_conf.py" = ["F403", "F405"]
 "python/readDecayTable.py" = ["F403", "F405"]
@@ -29,12 +25,15 @@ ignore = [
 "python/geomGeant4.py" = ["F821"]  # Geant4 Python bindings imported at runtime
 "python/shipStrawTracking.py" = ["F821"]  # dy defined at runtime
 "python/shipVeto.py" = ["F821"]  # ahit bug needs investigation
-# Interactive analysis scripts using ROOT globals
-"muonShieldOptimization/ana_ShipMuon.py" = ["F821"]
-"muonShieldOptimization/compactingBackgroundProduction.py" = ["F821"]
+# Interactive analysis scripts using ROOT globals and ambiguous var names
+"muonShieldOptimization/ana_ShipMuon.py" = ["F821", "E741"]
+"muonShieldOptimization/compactingBackgroundProduction.py" = ["F821", "E741"]
 "muonShieldOptimization/makeMuonEM.py" = ["F821"]
-"muonShieldOptimization/runCharmHadProd.py" = ["F821"]
+"muonShieldOptimization/runCharmHadProd.py" = ["F821", "E741"]
 "muonShieldOptimization/run_reco.py" = ["F821", "F811"]
+"muonShieldOptimization/g4Ex_gap_mergeFiles.py" = ["E741"]
+# Analysis scripts with ambiguous variable names (l for leaf/line)
+"macro/mergeMbias.py" = ["E741"]
 
 [tool.codespell]
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'

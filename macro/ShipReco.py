@@ -15,7 +15,7 @@ def mem_monitor():
     pid = os.getpid()
     with open(os.path.join("/proc", str(pid), "status")) as f:
         lines = f.readlines()
-    _vmsize = [l for l in lines if l.startswith("VmSize")][0]
+    _vmsize = [line for line in lines if line.startswith("VmSize")][0]
     vmsize = int(_vmsize.split()[1])
     # Getting physical memory size
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss

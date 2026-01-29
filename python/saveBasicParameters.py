@@ -35,11 +35,11 @@ def retrieveGitTags(o):
 
 def execute(f, ox, name="ShipGeo"):
     """Save geometry configuration to ROOT file as JSON string"""
-    if type(ox) == str:
+    if isinstance(ox, str):
         ox = AttrDict()
     o = retrieveGitTags(ox)
 
-    if type(f) == str:
+    if isinstance(f, str):
         fg = ROOT.TFile.Open(f, "update")
     else:
         fg = f
@@ -53,5 +53,5 @@ def execute(f, ox, name="ShipGeo"):
     fg.WriteObject(config_str, name)
     fg.Flush()
 
-    if type(f) == str:
+    if isinstance(f, str):
         fg.Close()
