@@ -14,9 +14,11 @@ it in future.
 
 ### Added
 
+* New warm MS option Stellatryon v.2 added to the config and its field map
+
 ### Changed
 
-
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
@@ -28,6 +30,8 @@ it in future.
 * Set correct trackIDs for exitHadronAbsorber class
 
 ### Removed
+
+* New_HA_Design muon shield configuration is no longer supported
 
 ## 25.12 - 2025-12-22
 

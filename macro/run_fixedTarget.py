@@ -69,7 +69,7 @@ ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile', default=RO
 ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
 ap.add_argument('-rs', '--seed', type=int, help="random seed; default value is 0, see TRrandom::SetSeed documentation", default=0)
 ap.add_argument('--DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums.', default='helium', choices=['helium', 'vacuums'])
-ap.add_argument('--shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
+ap.add_argument('--shieldName', help='Name of the shield in the database. stellatryon_v2 or warm_opt.', default='stellatryon_v2', choices=['stellatryon_v2', 'warm_opt'])
 ap.add_argument('--AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to True.', default=True, action=argparse.BooleanOptionalAction)
@@ -190,16 +190,15 @@ if args.AddPostTargetSensPlane:
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
-    n_magnets = 7
-    n_params = 13
+    n_params = 15
     if not args.AddMuonShieldField:
-        for i in range(n_magnets):
-            ship_geo.muShield.params[n_magnets + i * n_params + 12] = 0  # set B field to 0
+        for i in range(ship_geo.muShield.nMagnets):
+            ship_geo.muShield.params[i * n_params + 15] = 0  # set B field to 0
     if args.AddHadronAbsorberOnly:
-        for i in range(1, n_magnets):
-            ship_geo.muShield.params[n_magnets + i * n_params] = 0  # set dXIn to 0
+        ship_geo.muShield.params = ship_geo.muShield.params[:15]  # set dXIn to 0
 
-    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField,
+    # DEFAULT: always with constant zero field /-> CHECK: if it is better to use a copy of params than params itself.
+    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=True,
                                      SC_key=ship_geo.SC_mag)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.

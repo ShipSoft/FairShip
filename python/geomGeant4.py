@@ -6,6 +6,7 @@ from array import array
 import hepunit as G4Unit
 import ShieldUtils
 import ROOT
+import os
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4UIterminal.hh"')
@@ -155,15 +156,18 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
       fieldsList.append('MainSpecMap')
 
-      if not shipGeo.hadronAbsorber.WithConstField:
+      if not shipGeo.muShield.WithConstField:
+        offset = shipGeo.muShield.Entrance[0]
+        quadSymm = True
+        file_name = f"files/{shipGeo.shieldName}.root"
+        fieldMaker.defineFieldMap('muonShieldField', file_name,
+                              ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm)
+        fieldsList.append('muonShieldField')
+
+      elif not shipGeo.hadronAbsorber.WithConstField:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
        fieldsList.append('HadronAbsorberMap')
 
-      if not shipGeo.muShield.WithConstField:
-       field_center, _ = ShieldUtils.find_shield_center(shipGeo)
-       fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
-                                 ROOT.TVector3(0.0, 0.0, field_center), ROOT.TVector3(0.0, 0.0, 0.0), True)
-       fieldsList.append('muonShieldField')
     # Combine the fields to obtain the global field
       if len(fieldsList) > 1:
        fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
