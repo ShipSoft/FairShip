@@ -76,10 +76,10 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
 }
 
 void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
-                                Double_t dZ, std::array<Double_t, 16>
-                                corners, Int_t color, TGeoUniformMagField*
-                                magField, TGeoVolume* tShield, Double_t
-                                x_translation, Double_t y_translation,
+                                Double_t dZ, std::array<Double_t, 16> corners,
+                                Int_t color, TGeoUniformMagField* magField,
+                                TGeoVolume* tShield, Double_t x_translation,
+                                Double_t y_translation,
                                 Double_t z_translation) {
   TGeoVolume* magVol = nullptr;
 
@@ -90,11 +90,11 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
   TString magnPrev = Form("Magn%zu", nMagnets - 2);
 
   bool snd_magnet = (arbName == magnLast + "_MiddleMagL") ||
-                 (arbName == magnLast + "_MiddleMagR") ||
-                 (arbName == magnPrev + "_MiddleMagL") ||
-                 (arbName == magnPrev + "_MiddleMagR");
+                    (arbName == magnLast + "_MiddleMagR") ||
+                    (arbName == magnPrev + "_MiddleMagL") ||
+                    (arbName == magnPrev + "_MiddleMagR");
 
-  if (snd_hole && snd_magnet){
+  if (snd_hole && snd_magnet) {
     //
     // 1) Raw Arb8 “shape”
     //
@@ -131,7 +131,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
     //
     LOG(debug) << " Create CreateArb8 of the MS 5";
     magVol = new TGeoVolume(arbName, compShape, medium);
-  } else {    
+  } else {
     // original uncut magnet
     magVol = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   }
@@ -344,11 +344,10 @@ void ShipMuonShield::Initialize(
   }
   magnetName.push_back("MagnAbsorb");
   for (size_t i = 1; i < nMagnets; ++i) {
-      TString name = Form("Magn%zu", i);
-      magnetName.push_back(name);
-      LOG(debug) << "magnet i: " << name;  
+    TString name = Form("Magn%zu", i);
+    magnetName.push_back(name);
+    LOG(debug) << "magnet i: " << name;
   }
-
 
   fieldDirection = {FieldDirection::up,   FieldDirection::up,
                     FieldDirection::up,   FieldDirection::up,
