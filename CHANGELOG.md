@@ -135,6 +135,7 @@ it in future.
   - Update Python code in shipDigiReco.py to use modern constructors
   - Bump ClassDef versions to 2 for schema evolution
   - Add TrackInfo to RNTuple I/O test suite
+* Fixed the weird cut on P in the script that produces P and P-Pt histograms for neutrinos
 
 #### Physics and Simulation
 
