@@ -65,7 +65,7 @@ jobs:
         vessel_option: [vacuums, helium]
         SND_option: [all]
         muon_shield: [TRY_2025]
-        target: [old, Jun25]
+        target: [Jun25]
 
     steps:
       - name: Checkout
