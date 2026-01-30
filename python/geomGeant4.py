@@ -16,11 +16,24 @@ ROOT.gROOT.ProcessLine('#include "TG4GeometryServices.h"')
 ROOT.gROOT.ProcessLine('#include "TG4GeometryManager.h"')
 
 
+def _collectVolumeNames(volume, listOfVolumes):
+    """Recursively walk the geometry tree collecting volume names from nodes."""
+    nodes = volume.GetNodes()
+    if not nodes:
+        return
+    for i in range(nodes.GetEntries()):
+        node = nodes.At(i)
+        name = node.GetVolume().GetName()
+        if name not in listOfVolumes:
+            listOfVolumes.append(name)
+        _collectVolumeNames(node.GetVolume(), listOfVolumes)
+
+
 def check4OrphanVolumes(fGeo):
     # fill list with volumes from nodes and compare with list of volumes
     top = fGeo.GetTopVolume()
     listOfVolumes = [top.GetName()]
-    findNode(top, listOfVolumes)
+    _collectVolumeNames(top, listOfVolumes)
     orphan = []
     gIndex = {}
     for v in fGeo.GetListOfVolumes():
@@ -51,8 +64,8 @@ def setMagnetField(flag=None):
         bx = field.GetFieldValue()[0] / u.tesla * G4Unit.tesla
         by = field.GetFieldValue()[1] / u.tesla * G4Unit.tesla
         bz = field.GetFieldValue()[2] / u.tesla * G4Unit.tesla
-        magFieldIron = G4UniformMagField(G4ThreeVector(bx, by, bz))
-        FieldIronMgr = G4FieldManager(magFieldIron)
+        magFieldIron = ROOT.G4UniformMagField(ROOT.G4ThreeVector(bx, by, bz))
+        FieldIronMgr = ROOT.G4FieldManager(magFieldIron)
         FieldIronMgr.CreateChordFinder(magFieldIron)
         listOfFields[v.GetName()] = FieldIronMgr
     gt = ROOT.G4TransportationManager.GetTransportationManager()
@@ -85,7 +98,7 @@ def setMagnetField(flag=None):
             if flag == "dump":
                 print("field already set:", setField[lvl])
     if modified:
-        g4Run = G4RunManager.GetRunManager()
+        g4Run = ROOT.G4RunManager.GetRunManager()
         g4Run.GeometryHasBeenModified(True)
 
 
@@ -243,7 +256,7 @@ def printVMCFields():
 
 
 def getRunManager():
-    return G4RunManager.GetRunManager()
+    return ROOT.G4RunManager.GetRunManager()
 
 
 def startUI():

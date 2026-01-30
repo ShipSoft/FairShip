@@ -27,7 +27,7 @@ def cmp(a, b):
     return (a > b) - (a < b)
 
 
-def run_track_pattern_recognition(input_file, geo_file, output_file, method):
+def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=None):
     """
     Runs all steps of track pattern recognition.
     Parameters

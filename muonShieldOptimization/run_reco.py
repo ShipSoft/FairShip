@@ -45,11 +45,11 @@ cmd = os.environ["FAIRSHIP"] + "/macro/ShipReco.py"
 cmdAna = os.environ["FAIRSHIP"] + "/macro/ShipAna.py"
 
 
-def execute_parallel(ncpu=4):
+def execute_parallel(prefix, ncpu=4):
     cpus = {}
     log = {}
     for i in range(ncpu):
-        cpus[i] = {}
+        cpus[i] = None
     jobs = []
     for x in os.listdir("."):
         if not x.find(prefix) < 0:
@@ -60,9 +60,9 @@ def execute_parallel(ncpu=4):
     for x in jobs:
         if k == ncpu:
             k = 0
-        if "child" in cpus[k]:
-            child.communicate()[0]
-            log[k]["log"].close()
+        if cpus[k] is not None:
+            cpus[k].communicate()
+            log[k].close()
         print("change to directory ", k, x)
         os.chdir("./" + x)
         for f in os.listdir("."):

@@ -28,7 +28,11 @@ def getMasssq(pid):
 # just duplicate muon n times, rather stupid job
 
 fout = ROOT.TFile("muonEm_" + str(nJob) + ".root", "recreate")
-dTree = ROOT.TNtuple("pythia8-Geant4", "muons for EM studies", "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w")
+dTree = ROOT.TTree("pythia8-Geant4", "muons for EM studies")
+iMuon = ROOT.TClonesArray("TVectorD")
+iMuonBranch = dTree.Branch("InMuon", iMuon, 32000, -1)
+dPart = ROOT.TClonesArray("TVectorD")
+dPartBranch = dTree.Branch("Particles", dPart, 32000, -1)
 
 # read file with muons hitting concrete wall
 fin = ROOT.TFile(muonIn)  # id:px:py:pz:x:y:z:w
@@ -47,12 +51,18 @@ for k in range(sTree.GetEntries()):
     for n in range(nMult):
         dPart.Clear()
         iMuon.Clear()
-        iMuon[0] = muPart
+        tca_vec = iMuon.ConstructedAt(0)
+        tca_vec.ResizeTo(muPart)
+        ROOT.std.swap(tca_vec, muPart)
         m = array("d", [pid, px, py, pz, E])
         part = ROOT.TVectorD(5, m)
         # copy to branch
         nPart = len(dPart)
-        dPart[nPart] = part
+        if dPart.GetSize() == nPart:
+            dPart.Expand(nPart + 10)
+        tca_vec = dPart.ConstructedAt(nPart)
+        tca_vec.ResizeTo(part)
+        ROOT.std.swap(tca_vec, part)
         dTree.Fill()
 fout.cd()
 dTree.Write()
