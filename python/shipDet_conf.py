@@ -132,8 +132,8 @@ def configure_snd_mtc(yaml_file, ship_geo):
     # Initialize detector
     if ship_geo.mtc_geo.zPosition == "auto":
         # Get the the center of the *last* magnet
-        ship_geo.mtc_geo.zPosition = ship_geo.muShield.Entrance[-1] +  ship_geo.muShield.half_length[-1] # CHECK: since it has to be near the SiT, should be easier to use only the Entrance of last magnet as init of MTC
-        print("MTC zPosition set to ", ship_geo.mtc_geo.zPosition)
+        mtc_total_length = (ship_geo.mtc_geo.ironThick + ship_geo.mtc_geo.sciFiThick + ship_geo.mtc_geo.scintThick) * ship_geo.mtc_geo.nLayers
+        ship_geo.mtc_geo.zPosition = ship_geo.muShield.Entrance[-1] +  mtc_total_length / 2 # CHECK: since it has to be near the SiT, should be easier to use only the Entrance of last magnet as init of MTCprint("MTC zPosition set to ", ship_geo.mtc_geo.zPosition)
     mtc = ROOT.MTCDetector("MTC", ROOT.kTRUE)
     mtc.SetMTCParameters(
         ship_geo.mtc_geo.width,
@@ -159,7 +159,8 @@ def configure_snd_siliconTarget(yaml_file, ship_geo):
         # Get the the center of the next to last magnet (temporary placement)
         # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
         # 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.
-        ship_geo.SiliconTarget_geo.zPosition = ship_geo.muShield.Entrance[-1] -  ship_geo.muShield.Zgap[-1] - 132 #CHECK: the aim is to have the manget before the last one with the MTC (Exit of magnet[-2] - length_silicon_target)
+        SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
+        ship_geo.SiliconTarget_geo.zPosition = ship_geo.muShield.Entrance[-1] -  ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2 #CHECK: the aim is to have the manget before the last one with the MTC (Exit of magnet[-2] - length_silicon_target)
         print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)
     SiliconTarget = ROOT.SiliconTarget("SiliconTarget", ROOT.kTRUE)
     SiliconTarget.SetSiliconTargetParameters(
