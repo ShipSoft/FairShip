@@ -181,11 +181,11 @@ def mergeMinBias(pot, norm=5.0e13, opt=""):
         if first:
             first = False
             tuples = ""
-            for l in t.GetListOfLeaves():
+            for leaf in t.GetListOfLeaves():
                 if tuples == "":
-                    tuples += l.GetName()
+                    tuples += leaf.GetName()
                 else:
-                    tuples += ":" + l.GetName()
+                    tuples += ":" + leaf.GetName()
             fxx = fnew.replace(".root", opt + ".root")
             if storeCharm:
                 fxx = fnew.replace(".root", "old-charm.root")
@@ -288,11 +288,11 @@ def removeCharm(p):
     if first:
         first = False
         tuples = ""
-        for l in t.GetListOfLeaves():
+        for leaf in t.GetListOfLeaves():
             if tuples == "":
-                tuples += l.GetName()
+                tuples += leaf.GetName()
             else:
-                tuples += ":" + l.GetName()
+                tuples += ":" + leaf.GetName()
         h["N"] = ROOT.TFile(fnew, "RECREATE")
         print("new file created", fnew)
         h["ntuple"] = ROOT.TNtuple("pythia8-Geant4", t.GetTitle() + " no charm", tuples)
@@ -374,8 +374,8 @@ def mergeWithCharm(splitOnly=False, ramOnly=False):
                 print("status read", m)
             m += 1
             a = event()
-            for l in range(L):
-                a.push_back(leaves.At(l).GetValue())
+            for idx in range(L):
+                a.push_back(leaves.At(idx).GetValue())
             allEvents.append(a)
         # distribute events randomly
         evList = []
@@ -384,11 +384,11 @@ def mergeWithCharm(splitOnly=False, ramOnly=False):
         random.shuffle(evList)
         leaves = t.GetListOfLeaves()
         tuples = ""
-        for l in leaves:
+        for leaf in leaves:
             if tuples == "":
-                tuples += l.GetName()
+                tuples += leaf.GetName()
             else:
-                tuples += ":" + l.GetName()
+                tuples += ":" + leaf.GetName()
         newFile = ROOT.TFile("pythia8_Geant4-withCharm-ram.root", "RECREATE")
         randomTuple = ROOT.TNtuple(t.GetName(), t.GetTitle(), tuples)
         m = 0
@@ -424,11 +424,11 @@ def mergeWithCharm(splitOnly=False, ramOnly=False):
             ut.bookHist(h, str(idhnu + 100), name + " log10(ptot) vs log10(pt+0.01)", 100, -0.3, 1.7, 100, -2.0, 1.0)
             ut.bookHist(h, str(idhnu + 200), name + " log10(ptot) vs log10(pt+0.01)", 25, -0.3, 1.7, 100, -2.0, 1.0)
         leaves = t.GetListOfLeaves()
-        for l in leaves:
+        for leaf in leaves:
             if tuples == "":
-                tuples += l.GetName()
+                tuples += leaf.GetName()
             else:
-                tuples += ":" + l.GetName()
+                tuples += ":" + leaf.GetName()
         for opt in cuts:
             fxx = fName.replace("-ram.root", opt + ".root")
             N = ROOT.TFile(fxx, "RECREATE")

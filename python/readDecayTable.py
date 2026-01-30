@@ -18,7 +18,6 @@ import csv
 import os
 
 import ROOT
-from darkphoton import *
 from hnl import PDGname
 
 pdg = ROOT.TDatabasePDG.Instance()

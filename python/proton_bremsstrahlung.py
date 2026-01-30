@@ -6,7 +6,7 @@ import sys
 
 import numpy as np
 import ROOT as r
-from darkphoton import *
+from darkphoton import alphaQED
 from scipy.integrate import dblquad
 
 # proton mass

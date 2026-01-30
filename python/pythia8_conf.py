@@ -10,7 +10,22 @@ import rpvsusy
 import shipunit as u
 import yaml
 from method_logger import MethodLogger
-from pythia8_conf_utils import *
+from pythia8_conf_utils import (
+    add_channel,
+    add_particles,
+    add_tau_channel,
+    addHNLtoROOT,
+    compute_max_total_br,
+    exit_if_zero_br,
+    fill_missing_channels,
+    get_br,
+    getbr_rpvsusy,
+    getmaxsumbrrpvsusy,
+    gettotalbrrpvsusy,
+    make_interpolators,
+    make_particles_stable,
+    print_scale_factor,
+)
 
 
 def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):

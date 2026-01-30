@@ -187,8 +187,8 @@ def compactifyCascade(cycle):
         fName = path + "run" + str(i) + "/Cascade-run" + str(i) + "-parp16-MSTP82-1-MSEL4.root"
         f = open(path + "run" + str(i) + "/log" + str(i))
         success = False
-        for l in f.readlines():
-            if not l.find("Macro finished successfully") < 0:
+        for line in f.readlines():
+            if not line.find("Macro finished successfully") < 0:
                 success = True
         if not success:
             print("job not finished properly", fName)
@@ -339,11 +339,11 @@ def makePrintout():
 
     unbiased = {}
     biased = {}
-    for l in hunbiased:
-        unbiased[l] = hunbiased[l].GetSumOfWeights()
-    for l in hbiased:
-        if l.find("proj") < 0 and l.find("test") < 0 and l.find("pids") < 0:
-            biased[l] = hbiased[l].GetSumOfWeights()
+    for key in hunbiased:
+        unbiased[key] = hunbiased[key].GetSumOfWeights()
+    for key in hbiased:
+        if key.find("proj") < 0 and key.find("test") < 0 and key.find("pids") < 0:
+            biased[key] = hbiased[key].GetSumOfWeights()
     p = {}
     for i in range(1, hbiased["pids"].GetNbinsX() + 1):
         c = hbiased["pids"].GetBinContent(i)

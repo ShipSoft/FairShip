@@ -45,7 +45,7 @@ cmd = os.environ["FAIRSHIP"] + "/macro/ShipReco.py"
 cmdAna = os.environ["FAIRSHIP"] + "/macro/ShipAna.py"
 
 
-def execute(ncpu=4):
+def execute_parallel(ncpu=4):
     cpus = {}
     log = {}
     for i in range(ncpu):
