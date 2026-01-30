@@ -119,7 +119,7 @@ def addRuns(goodRuns, Nstart=0):
             break
 
 
-def YandexProd():
+def YandexProd(startDate, endDate):
     # startDate = datetime.datetime(2018, 1, 1, 0, 0)  # N=0
     # endDate   = datetime.datetime(2018, 2, 1, 0, 0)
     # startDate = datetime.datetime(2018, 2, 1, 0, 0)  # N=23000
@@ -210,7 +210,7 @@ def compactifyCascade(cycle):
 
 
 # some old stuff
-def compactify(charm):
+def compactify(charm, runMin=0, runMax=0, checkOnly=False):
     globalPath = "/afs/cern.ch/project/lbcern/vol2/truf/muonBackground"
     ecut = "10.0"
     if charm:
@@ -233,10 +233,10 @@ def compactify(charm):
                             try:
                                 t = ROOT.TFile.Open(file_path)
                                 if not t:
-                                    badFiles.append(d)
+                                    badFiles.append(file_path)
                                     continue
                                 if t.ReadKeys() == 0:
-                                    badFiles.append(d)
+                                    badFiles.append(file_path)
                                     continue
                                 if t.FindObjectAny("cbmsim"):
                                     subruns.append(file_path)

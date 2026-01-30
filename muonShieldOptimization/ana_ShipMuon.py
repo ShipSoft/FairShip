@@ -6,6 +6,7 @@ import multiprocessing as mp
 import os
 
 import ROOT
+from ROOT import TF1
 from ShipGeoConfig import load_from_root_file
 
 ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
@@ -1295,7 +1296,7 @@ def drawBoth(tag, hn):
     h[hn + tag].Draw("same")
 
 
-def debugGeoTracks():
+def debugGeoTracks(sTree):
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
         n = 0
@@ -1339,7 +1340,7 @@ def eventsWithEntryPoints(i):
             print("-----------------------")
 
 
-def depEnergy():
+def depEnergy(sTree):
     for n in range(sTree.GetEntries()):
         sTree.GetEntry(n)
         for ahit in sTree.strawtubesPoint:

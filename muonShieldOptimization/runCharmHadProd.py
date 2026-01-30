@@ -13,9 +13,11 @@ msel = "4"
 if msel == "4":
     nev = 2000000  # 0.1s / event
     path = "/afs/cern.ch/project/lbcern/vol1/truf/charm/"
+    chicc = 1.7e-3  # prob to produce primary ccbar pair/pot
 else:
     nev = 1000000
     path = "/afs/cern.ch/project/lbcern/vol1/truf/beauty/"
+    chicc = 1.6e-7  # prob to produce primary bbbar pair/pot
 
 # path = "/home/truf/charm/"
 
@@ -218,9 +220,6 @@ def compactifyCascade(run):
 
 
 def statistics():
-    chicc = 1.7e-3
-    if msel == "5":
-        chicc = 1.6e-7
     path = os.environ["EOSSHIP"] + "/eos/experiment/ship/data/Mbias/background-prod-2018/"
     fname = "Cascade-runAA-BB-parp16-MSTP82-1-MSEL4-40Mpot.root"
     nPot = 0
@@ -233,7 +232,7 @@ def statistics():
     print("total nr of hadrons:", nhadrons, nPot / chicc / 1.0e9, "Billion")
 
 
-def potFromFileHeader():
+def potFromFileHeader(f):
     pot = 0
     for x in f.GetListOfKeys():
         if x.GetName() == "FileHeader":

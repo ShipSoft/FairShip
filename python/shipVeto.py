@@ -86,9 +86,9 @@ class Task:
         for aTrack in self.sTree.FitTracks:
             k += 1
             if mcParticle:
-                if mcParticle > 0 and mcParticle != ahit.GetTrackID():
+                if mcParticle > 0 and mcParticle != self.sTree.fitTrack2MC[k]:
                     continue
-                if mcParticle < 0 and abs(mcParticle) == ahit.GetTrackID():
+                if mcParticle < 0 and abs(mcParticle) == self.sTree.fitTrack2MC[k]:
                     continue
             fstatus = aTrack.getFitStatus()
             if not fstatus.isFitConverged():

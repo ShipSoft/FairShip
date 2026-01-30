@@ -319,7 +319,7 @@ def getPtruthFirst(sTree, mcPartKey):
     return Ptruth, Ptruthx, Ptruthy, Ptruthz
 
 
-def access2SmearedHits():
+def access2SmearedHits(ev, TrackingHits, MCTracks):
     key = 0
     for ahit in ev.SmearedHits.GetObject():
         print(ahit[0], ahit[1], ahit[2], ahit[3], ahit[4], ahit[5], ahit[6])

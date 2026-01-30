@@ -9,8 +9,8 @@ def config(GenieGen):
     fGeo = ROOT.gGeoManager
     top = fGeo.GetTopVolume()
     # positions for nu events inside the nutau detector volume
-    top.FindNode("volNuTauMudet_1")
-    muSpectrometer.GetMatrix().GetTranslation()
+    muSpectrometer = top.FindNode("volNuTauMudet_1")
+    muSpectrometerTrans = muSpectrometer.GetMatrix().GetTranslation()
     # upper and lower yokes:
     # volFeYoke_1, volFeYoke_2, volFeYoke1_1  (in UpYoke) and  volFeYoke_3, volFeYoke_4, volFeYoke1_1 (in LowYoke).
     yokes = ["volUpYoke_1", "volLowYoke_1", "volArm2Mudet_1"]
