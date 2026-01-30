@@ -29,6 +29,8 @@ it in future.
 
 ### Removed
 
+* Remove unused ShipStyle, which seems copy-pasted from LHCb
+
 ## 25.12 - 2025-12-22
 
 ### Added
