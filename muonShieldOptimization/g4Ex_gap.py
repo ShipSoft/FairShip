@@ -122,7 +122,37 @@ from g4py.ezgeom import G4EzVolume
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
-from Geant4 import *
+from Geant4 import (
+    G4Color,
+    G4Element,
+    G4GDMLParser,
+    G4Material,
+    G4physicslists,
+    G4PrimaryParticle,
+    G4PrimaryVertex,
+    G4ThreeVector,
+    G4TrackingManager,
+    G4UserEventAction,
+    G4UserRunAction,
+    G4UserSteppingAction,
+    G4UserTrackingAction,
+    G4VisAttributes,
+    G4VSensitiveDetector,
+    G4VUserPrimaryGeneratorAction,
+    GeV,
+    HepRandom,
+    MeV,
+    Ranlux64Engine,
+    cm,
+    cm3,
+    g,
+    gApplyUICommand,
+    gRunManager,
+    gVisManager,
+    m,
+    mm,
+    mole,
+)
 
 # ==================================================================
 #                         PYTHIA8 PART                              #

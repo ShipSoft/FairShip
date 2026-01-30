@@ -15,8 +15,7 @@ import os
 from array import array
 
 import ROOT
-from ROOT import TDatabasePDG
-from rootUtils import *
+from ROOT import TDatabasePDG, gROOT
 
 pdg = TDatabasePDG()
 mu = pdg.GetParticle(13)
@@ -51,11 +50,11 @@ if JPsi:
             for i in range(10):
                 path = job + run + str(i) + "/"
                 fl = open(path + "log" + run + str(i))
-                for l in fl.readlines():
-                    k = l.find(tag)
+                for line in fl.readlines():
+                    k = line.find(tag)
                     if k < 0:
                         continue
-                    nevts = int(l[k + len(tag) :].replace(")", ""))
+                    nevts = int(line[k + len(tag) :].replace(")", ""))
                 fl.close()
                 files[10.0].append(path + "pythia8_Geant4_" + run + str(i) + "_10.0.root")
                 stats[10.0].append(nevts / BR)
@@ -79,11 +78,11 @@ if Tau:
                 if "log" + run + str(i) not in os.listdir(path):
                     continue
                 fl = open(path + "log" + run + str(i))
-                for l in fl.readlines():
-                    k = l.find(tag)
+                for line in fl.readlines():
+                    k = line.find(tag)
                     if k < 0:
                         continue
-                    nevts = int(l[k + len(tag) :].replace(")", ""))
+                    nevts = int(line[k + len(tag) :].replace(")", ""))
                 fl.close()
                 files[0.0].append(path + "pythia8_Geant4_" + run + str(i) + "_0.0.root")
                 stats[0.0].append(nevts / BR)
@@ -112,11 +111,11 @@ if MoTarget:
                 path = job + run + str(i) + "/"
                 fl = open(path + "log" + run + str(i))
                 nevts = 0
-                for l in fl.readlines():
-                    k = l.find(tag)
+                for line in fl.readlines():
+                    k = line.find(tag)
                     if k < 0:
                         continue
-                    nevts = int(l[k + len(tag) :].replace(")", ""))
+                    nevts = int(line[k + len(tag) :].replace(")", ""))
                 fl.close()
                 if nevts == 0:
                     continue
@@ -156,8 +155,8 @@ def makeFinalNtuples(norm=5.0e13, opt=""):
             fn += 1
             if first:
                 first = False
-                for l in t.GetListOfLeaves():
-                    tuples += l.GetName() + ":"
+                for leaf in t.GetListOfLeaves():
+                    tuples += leaf.GetName() + ":"
                 tuples += "w:ecut"
                 fxx = fnew.replace(".root", opt + ".root")
                 if opt != "":

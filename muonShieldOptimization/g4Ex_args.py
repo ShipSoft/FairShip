@@ -92,7 +92,30 @@ from g4py.ezgeom import G4EzVolume
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
-from Geant4 import *
+from Geant4 import (
+    G4Color,
+    G4Material,
+    G4physicslists,
+    G4PrimaryParticle,
+    G4PrimaryVertex,
+    G4ThreeVector,
+    G4TrackingManager,
+    G4UserEventAction,
+    G4UserRunAction,
+    G4UserSteppingAction,
+    G4UserTrackingAction,
+    G4VisAttributes,
+    G4VSensitiveDetector,
+    G4VUserPrimaryGeneratorAction,
+    Geant4,
+    GeV,
+    HepRandom,
+    Ranlux64Engine,
+    cm,
+    gRunManager,
+    m,
+    mm,
+)
 from ROOT import TLorentzVector
 
 # ==================================================================
@@ -219,10 +242,10 @@ class MyRunAction(G4UserRunAction):
         h["ntuple"].Fill(-1.0, float(nevTot))
         h["ntuple"].Write()
         print("lepton masses used")
-        for l in leptons:
-            G4particle = G4PrimaryParticle(l)
+        for pdg_id in leptons:
+            G4particle = G4PrimaryParticle(pdg_id)
             G4def = G4particle.GetParticleDefinition()
-            print(l, G4def.GetParticleName(), G4particle.GetMass())
+            print(pdg_id, G4def.GetParticleName(), G4particle.GetMass())
 
 
 # ------------------------------------------------------------------

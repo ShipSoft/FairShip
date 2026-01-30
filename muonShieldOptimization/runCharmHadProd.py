@@ -168,8 +168,8 @@ def compactifyCascade(run):
         fName = path + "run" + str(i) + "/Cascade-run" + str(i) + "-parp16-MSTP82-1-MSEL" + msel + ".root"
         f = open(path + "run" + str(i) + "/log" + str(i))
         success = False
-        for l in f.readlines():
-            if not l.find("Macro finished successfully") < 0:
+        for line in f.readlines():
+            if not line.find("Macro finished successfully") < 0:
                 success = True
         if not success:
             print("job not finished properly", fName)

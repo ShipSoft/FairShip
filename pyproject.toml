@@ -11,12 +11,6 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-# Files using star imports from Geant4/ROOT bindings
-"muonShieldOptimization/g4Ex*.py" = ["F403", "F405", "E741"]
-"python/ShipStyle.py" = ["F403", "F405"]
-"python/pythia8_conf.py" = ["F403", "F405"]
-"python/readDecayTable.py" = ["F403", "F405"]
-"python/proton_bremsstrahlung.py" = ["F403", "F405"]
 # Interactive script snippets that depend on runtime context
 "macro/getInteractionAndRadiationLength.py" = ["F821"]
 "macro/ShipAna.py" = ["F821"]
@@ -25,15 +19,12 @@ ignore = [
 "python/geomGeant4.py" = ["F821"]  # Geant4 Python bindings imported at runtime
 "python/shipStrawTracking.py" = ["F821"]  # dy defined at runtime
 "python/shipVeto.py" = ["F821"]  # ahit bug needs investigation
-# Interactive analysis scripts using ROOT globals and ambiguous var names
-"muonShieldOptimization/ana_ShipMuon.py" = ["F821", "E741"]
-"muonShieldOptimization/compactingBackgroundProduction.py" = ["F821", "E741"]
+# Interactive analysis scripts using ROOT globals
+"muonShieldOptimization/ana_ShipMuon.py" = ["F821"]
+"muonShieldOptimization/compactingBackgroundProduction.py" = ["F821"]
 "muonShieldOptimization/makeMuonEM.py" = ["F821"]
-"muonShieldOptimization/runCharmHadProd.py" = ["F821", "E741"]
-"muonShieldOptimization/run_reco.py" = ["F821", "F811"]
-"muonShieldOptimization/g4Ex_gap_mergeFiles.py" = ["E741"]
-# Analysis scripts with ambiguous variable names (l for leaf/line)
-"macro/mergeMbias.py" = ["E741"]
+"muonShieldOptimization/runCharmHadProd.py" = ["F821"]
+"muonShieldOptimization/run_reco.py" = ["F821"]
 
 [tool.codespell]
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'

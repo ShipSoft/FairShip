@@ -505,7 +505,7 @@ def fitSingleGauss(x, ba=None, be=None):
 h = {}
 histlist = {}
 txt = {}
-l = {}
+labels = {}
 logVols = detMap()
 
 
@@ -874,21 +874,21 @@ def makePlots(nstations):
         h[hn].SetStats(0)
         h[hn].Draw("colz")
         txt[i] = "%5.2G" % (h[hn].GetSumOfWeights() / nSpills)
-        l[i] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i])
+        labels[i] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i])
         #
         hn = histlist[i] + "_mu"
         tc = h["ResultsImu"].cd(i)
         h[hn].SetStats(0)
         h[hn].Draw("colz")
         txt[i + 100] = "%5.2G" % (h[hn].GetSumOfWeights() / nSpills)
-        l[i + 100] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i + 100])
+        labels[i + 100] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i + 100])
         #
         hn = histlist[i] + "_muV0"
         tc = h["ResultsImuV0"].cd(i)
         h[hn].SetStats(0)
         h[hn].Draw("colz")
         txt[i + 200] = "%5.2G" % (h[hn].GetSumOfWeights() / nSpills)
-        l[i + 200] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i + 200])
+        labels[i + 200] = ROOT.TLatex().DrawLatexNDC(0.15, 0.85, txt[i + 200])
     #
     for i in histlist:
         tc = h["ResultsII"].cd(i)
@@ -1410,30 +1410,30 @@ def makeNicePrintout(x=["rareEvents_61-62.txt", "rareEvents_71-72.txt"]):
         if fn == "rareEvents_81-102.txt":
             cor = 30.0
         for lx in f.readlines():
-            l = lx.replace("\n", "")
-            if not l.find("rare event") < 0:
+            line = lx.replace("\n", "")
+            if not line.find("rare event") < 0:
                 if recTrack:
                     result.append(recTrack)
-                tmp = l.split(",")
+                tmp = line.split(",")
                 w = tmp[2].replace(" ", "")
                 ff = tmp[1].split("/")[0].replace(" ", "")
                 recTrack = {"w": w, "file": ff}
-            elif not l.find("original") < 0:
-                tmp = l.split(",")
+            elif not line.find("original") < 0:
+                tmp = line.split(",")
                 recTrack["origin"] = tmp[0].split(" ")[2]
                 recTrack["pytiaid"] = tmp[1].replace(" ", "")
                 recTrack["o-mom"] = tmp[2].replace(" ", "")
-            elif not l.find("reco ") < 0:
-                tmp = l.split(",")
+            elif not line.find("reco ") < 0:
+                tmp = line.split(",")
                 recTrack["nmeas"] = tmp[0].split(" ")[1]
                 recTrack["chi2"] = tmp[1]
                 recTrack["p_rec"] = tmp[2].replace(" ", "")
-            elif not l.find("making") < 0:
-                tmp = l.split(",")
+            elif not line.find("making") < 0:
+                tmp = line.split(",")
                 recTrack["p_hit"] = tmp[1].replace(" ", "")
                 recTrack["fp_hit"] = float(tmp[1].replace(" ", ""))
-            elif not l.find("Ptruth") < 0:
-                tmp = l.split(" ")
+            elif not line.find("Ptruth") < 0:
+                tmp = line.split(" ")
                 recTrack["id_hit"] = tmp[1].replace(" ", "")
     # print a table
     print(
