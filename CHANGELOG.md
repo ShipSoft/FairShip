@@ -30,6 +30,7 @@ it in future.
 ### Removed
 
 * Remove unused ShipStyle, which seems copy-pasted from LHCb
+* Remove old scripts run_simEcal.py and flux_map.py
 
 ## 25.12 - 2025-12-22
 
