@@ -170,7 +170,7 @@ parser.add_argument(
     default=[2],
 )
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
-parser.add_argument("--target-yaml", help="Path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config_Jun25.yaml"))
+parser.add_argument("--target-yaml", help="Path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config.yaml"))
 parser.add_argument("--tag", dest="output_tag", help="Custom tag for output files instead of auto-generated UUID", default=None)
 
 

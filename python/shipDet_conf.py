@@ -292,7 +292,6 @@ def configure(run, ship_geo):
         "TargetStation",
         ship_geo.target.length,
         ship_geo.target.z,
-        ship_geo.targetVersion,
         ship_geo.target.nS,
         ship_geo.target.HeT
     )

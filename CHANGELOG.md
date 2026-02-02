@@ -32,6 +32,8 @@ it in future.
 
 ### Removed
 
+* Remove old (CDR) target configuration; Jun25 is now the only supported target
+
 * Remove unused ShipStyle, which seems copy-pasted from LHCb
 * Remove old scripts run_simEcal.py and flux_map.py
 * Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
