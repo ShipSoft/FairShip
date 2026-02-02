@@ -21,6 +21,8 @@ it in future.
 
 ### Fixed
 
+* Fix `errorSummary` not printing its header (bare string expression instead of `print`)
+* Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
 * Fix file-filtering logic to support STL branches
 * Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom

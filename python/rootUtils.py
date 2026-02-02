@@ -2,7 +2,10 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
-import os,sys
+import os
+from collections import Counter
+
+_error_log = Counter()
 
 def readHists(h,fname,wanted=[]):
   if fname[0:4] == "/eos":
@@ -72,14 +75,12 @@ def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
     h[key]=TCanvas(key,title,nx,ny)
     h[key].Divide(cx,cy)
 def reportError(s):
- l = sys.modules['__main__'].log
- if s not in l: l[s]=0
- l[s]+=1
+ _error_log[s] += 1
 def errorSummary():
- l = sys.modules['__main__'].log
- if len(l) > 0: "Summary of recorded incidents:"
- for e in l:
-    print(e,':',l[e])
+ if _error_log:
+    print("Summary of recorded incidents:")
+ for e in _error_log:
+    print(e, ':', _error_log[e])
 def checkFileExists(x):
     if x[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+x
     else: f=x
