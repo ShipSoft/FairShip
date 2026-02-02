@@ -11,8 +11,7 @@ var hierarchy =
     [ "dict", null, [
       [ "ShipGeoConfig.AttrDict", "classShipGeoConfig_1_1AttrDict.html", [
         [ "ShipGeoConfig.Config", "classShipGeoConfig_1_1Config.html", null ]
-      ] ],
-      [ "rootUtils.PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
+      ] ]
     ] ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [

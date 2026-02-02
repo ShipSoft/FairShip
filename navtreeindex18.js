@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"makeDecay_8py_source.html":[6,0,6,16],
-"makeGenieEvents_8py.html":[6,0,6,17],
 "makeGenieEvents_8py.html#a21bd60f3fd933289fa2f5da835cff2ab":[6,0,6,17,4],
 "makeGenieEvents_8py.html#a2f0246f41c32fae10d9e9d39a8831f34":[6,0,6,17,11],
 "makeGenieEvents_8py.html#a312cd2f4b1ebabae1b82e0acd4eff92e":[6,0,6,17,14],
@@ -249,5 +247,7 @@ var NAVTREEINDEX18 =
 "mergeMbias_8py.html#a8fb146ae7243df22d0aa0d935cb98c1c":[6,0,6,18,7],
 "mergeMbias_8py.html#a9a494a4f8ca0217d3e1e1b91004b42f1":[6,0,6,18,8],
 "mergeMbias_8py.html#a9a94ea0085e090e0c8254d8a9ff77483":[6,0,6,18,22],
-"mergeMbias_8py.html#aa85a082f32184ed210c0627286497d0e":[6,0,6,18,15]
+"mergeMbias_8py.html#aa85a082f32184ed210c0627286497d0e":[6,0,6,18,15],
+"mergeMbias_8py.html#aafa78ee55d809f949885ed280052d9c3":[6,0,6,18,17],
+"mergeMbias_8py.html#abc9f895a4764e99d4dcf203d1e3bdf41":[6,0,6,18,0]
 };

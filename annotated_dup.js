@@ -59,9 +59,6 @@ var annotated_dup =
     [ "MTCDetector", "namespaceMTCDetector.html", [
       [ "MTCDetector", "classMTCDetector_1_1MTCDetector.html", "classMTCDetector_1_1MTCDetector" ]
     ] ],
-    [ "rootUtils", "namespacerootUtils.html", [
-      [ "PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
-    ] ],
     [ "rpvsusy", "namespacerpvsusy.html", [
       [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
       [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],

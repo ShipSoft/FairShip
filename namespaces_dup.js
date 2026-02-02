@@ -1033,7 +1033,16 @@ var namespaces_dup =
       [ "configuredDecays", "namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7", null ],
       [ "pdg", "namespacereadDecayTable.html#a216e0525d0705b0b1690f178c74c2cf9", null ]
     ] ],
-    [ "rootUtils", "namespacerootUtils.html", "namespacerootUtils" ],
+    [ "rootUtils", "namespacerootUtils.html", [
+      [ "bookCanvas", "namespacerootUtils.html#af503556d7d4590fc7e05a537f76d420f", null ],
+      [ "bookHist", "namespacerootUtils.html#aac6f875685fcf5ccb0029c6a87386c0d", null ],
+      [ "bookProf", "namespacerootUtils.html#a79ba33adb72afebbbddbead98dfcc9e5", null ],
+      [ "checkFileExists", "namespacerootUtils.html#a6df9731f95a2aa0122c18f8fc6ee2f4d", null ],
+      [ "errorSummary", "namespacerootUtils.html#a2808d76ca57749e439c50d781c861ea8", null ],
+      [ "readHists", "namespacerootUtils.html#ab2eab36130015c7ae1c4b0e5ea8e9268", null ],
+      [ "reportError", "namespacerootUtils.html#af995ab99f984b0e88bb4063e431b21dc", null ],
+      [ "writeHists", "namespacerootUtils.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ]
+    ] ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
     [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [
       [ "action", "namespacerun__ACTSTracking.html#afb76210fc78f0dc6654161d27b5e3892", null ],
