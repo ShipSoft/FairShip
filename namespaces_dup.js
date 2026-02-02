@@ -327,14 +327,6 @@ var namespaces_dup =
       [ "weightMbias", "namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c", null ],
       [ "weightMbias1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#ae01b4a5fe37389f539471726e4c843a5", null ]
     ] ],
-    [ "flux_map", "namespaceflux__map.html", [
-      [ "main", "namespaceflux__map.html#a771e745091fb71f923521ce4420f4a8d", null ],
-      [ "format", "namespaceflux__map.html#afc138e0208bc3d989f39f8b7b35a9d5d", null ],
-      [ "gErrorIgnoreLevel", "namespaceflux__map.html#a0a534466aad410c85e90044a42a9fa87", null ],
-      [ "INFO", "namespaceflux__map.html#af2848c3cf881be1cf3ad06823caea97f", null ],
-      [ "level", "namespaceflux__map.html#a726a2761e1c4ab00a305c9eac20a1d6b", null ],
-      [ "log", "namespaceflux__map.html#ae0bc6aa7b464b535cb2abe8f81bcde5d", null ]
-    ] ],
     [ "g4Ex", "namespaceg4Ex.html", "namespaceg4Ex" ],
     [ "g4Ex_args", "namespaceg4Ex__args.html", "namespaceg4Ex__args" ],
     [ "g4Ex_gap", "namespaceg4Ex__gap.html", "namespaceg4Ex__gap" ],
@@ -1186,30 +1178,6 @@ var namespaces_dup =
       [ "user", "namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f", null ],
       [ "xx", "namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc", null ]
     ] ],
-    [ "run_simEcal", "namespacerun__simEcal.html", [
-      [ "boxGen", "namespacerun__simEcal.html#a9645245051a6f84c94278b8a3b08e4a3", null ],
-      [ "ctime", "namespacerun__simEcal.html#a3d747177c03eb87c44d9c595fa9954ee", null ],
-      [ "deepCopy", "namespacerun__simEcal.html#a7dcbeb3ca4645f370911ec8427a54a9f", null ],
-      [ "eventDisplay", "namespacerun__simEcal.html#a29277513572e0ff17f159d46f6d8d2db", null ],
-      [ "fStack", "namespacerun__simEcal.html#ab0800c8ad9f3c1514f801b952798956e", null ],
-      [ "inclusive", "namespacerun__simEcal.html#ac1ee0bf2ab9768d44ed4fe0b23286de2", null ],
-      [ "inputFile", "namespacerun__simEcal.html#a4c5f305488612c246a0fecf3a69c882a", null ],
-      [ "kParameterMerged", "namespacerun__simEcal.html#ab4fa19e6e982f410a1d251490f6514a5", null ],
-      [ "mcEngine", "namespacerun__simEcal.html#a3671b6e7b2da13d0b28067fe7a4018ea", null ],
-      [ "momentum", "namespacerun__simEcal.html#a43b5db65045aec3156fc3ae4167610f3", null ],
-      [ "nEvents", "namespacerun__simEcal.html#a9b2fdc055f8e7394360428df78a48cc4", null ],
-      [ "outFile", "namespacerun__simEcal.html#a56d359d3461025f18f1cc3b27db6c3ad", null ],
-      [ "parFile", "namespacerun__simEcal.html#aebd2228b43b152ce70da948948a21852", null ],
-      [ "parOut", "namespacerun__simEcal.html#a266de7a37da4ec6ec2142e4df35197b9", null ],
-      [ "primGen", "namespacerun__simEcal.html#a40e2343ba1d93939a2032dccdbb625be", null ],
-      [ "rtdb", "namespacerun__simEcal.html#ab781f41883a70d5ba32dbea56c8ad313", null ],
-      [ "rtime", "namespacerun__simEcal.html#a6ed7bfbdf54bb3723ac77489693e8dda", null ],
-      [ "run", "namespacerun__simEcal.html#a4212ccae07e1b69e69c70dc1cd3f95e2", null ],
-      [ "ship_geo", "namespacerun__simEcal.html#ac51658cba900b43c08e5e8edee565674", null ],
-      [ "simEngine", "namespacerun__simEcal.html#a55debef40f0e3918141f43343277a049", null ],
-      [ "theSeed", "namespacerun__simEcal.html#a8bfdefbd6f22a794e72844a0de878dd8", null ],
-      [ "timer", "namespacerun__simEcal.html#aa5bb0c5be4c77be502fb73ea19a57e9a", null ]
-    ] ],
     [ "run_simScript", "namespacerun__simScript.html", [
       [ "checkOverlapsWithGeant4", "namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4", null ],
       [ "visualizeMagFields", "namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14", null ],
@@ -1564,7 +1532,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1711,6 +1678,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
