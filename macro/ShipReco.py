@@ -24,7 +24,6 @@ import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
-from backports import tdirectory634
 
 shipRoot_conf.configure()
 

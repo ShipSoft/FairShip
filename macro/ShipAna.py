@@ -10,7 +10,6 @@ import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import load_from_root_file
 import shipRoot_conf
-from backports import tdirectory634
 from argparse import ArgumentParser
 import decorators
 

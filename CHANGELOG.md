@@ -16,7 +16,7 @@ it in future.
 
 ### Changed
 
-
+* Bump minimum ROOT version to 6.36
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
@@ -33,6 +33,7 @@ it in future.
 * Remove old scripts run_simEcal.py and flux_map.py
 * Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
+* Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
 
 ## 25.12 - 2025-12-22
 

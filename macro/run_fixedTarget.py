@@ -5,7 +5,6 @@
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
 import geometry_config
-from backports import tdirectory634
 
 
 mcEngine     = "TGeant4"

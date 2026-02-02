@@ -9,7 +9,6 @@ from argparse import ArgumentParser
 import ROOT
 import rootUtils as ut
 from experimental import analysis_toolkit
-from backports import tdirectory634
 
 
 def main():

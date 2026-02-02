@@ -127,7 +127,7 @@ endif(NOT UNIX)
 
 find_package(FairCMakeModules 1.0 REQUIRED)
 include(FairFindPackage2)
-find_package2(PUBLIC ROOT 6.26.14 REQUIRED)
+find_package2(PUBLIC ROOT 6.36 REQUIRED)
 include(ROOTMacros)
 # Include Ship-specific macros to override GENERATE_LIBRARY with target
 # propagation
@@ -145,20 +145,8 @@ find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
 
-# Configure TPythia6 interface based on ROOT version
-# ROOT < 6.32: TPythia6 is built into libEG (no external dependency needed)
-# ROOT >= 6.32: TPythia6 removed from ROOT, use external EGPythia6 package
-if(ROOT_VERSION VERSION_LESS "6.32")
-  # For older ROOT versions, TPythia6 is built-in
-  message(STATUS "Using built-in TPythia6 from ROOT ${ROOT_VERSION}")
-  set(USE_EXTERNAL_TPYTHIA6 OFF)
-else()
-  # For ROOT >= 6.32, we need external EGPythia6
-  message(STATUS "ROOT ${ROOT_VERSION} requires external EGPythia6")
-  set(USE_EXTERNAL_TPYTHIA6 ON)
-  find_package(ROOTEGPythia6 REQUIRED)
-  message(STATUS "Found ROOTEGPythia6 via CMake config")
-endif()
+# TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
+find_package(ROOTEGPythia6 REQUIRED)
 
 if(DEFINED $ENV{GSL_ROOT})
   set(GSL_DIR $ENV{GSL_ROOT})
