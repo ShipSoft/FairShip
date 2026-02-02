@@ -28,13 +28,11 @@ ShipTargetStation::~ShipTargetStation() {}
 ShipTargetStation::ShipTargetStation() : FairModule("ShipTargetStation", "") {}
 
 ShipTargetStation::ShipTargetStation(const char* name, const Double_t tl,
-                                     const Double_t tz, const TargetVersion tV,
-                                     const int nS, const int HeT,
-                                     const char* Title)
+                                     const Double_t tz, const int nS,
+                                     const int HeT, const char* Title)
     : FairModule(name, Title) {
   fTargetLength = tl;
   fTargetZ = tz;
-  fTV = tV;
   fnS = nS;
   fHeT = HeT;
 }
@@ -73,8 +71,6 @@ void ShipTargetStation::ConstructGeometry() {
   InitMedium("copper");
   TGeoMedium* copper = gGeoManager->GetMedium("copper");
 
-  InitMedium("H2O");
-  TGeoMedium* water = gGeoManager->GetMedium("H2O");
   InitMedium("Inconel718");
   TGeoMedium* inc718 = gGeoManager->GetMedium("Inconel718");
 
@@ -94,7 +90,7 @@ void ShipTargetStation::ConstructGeometry() {
   TGeoMaterial* fixedCooler = pressurised_He->GetMaterial();
   fixedCooler->SetTemperature(He_T);
   fixedCooler->SetPressure(He_P);
-  TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
+  TGeoMedium* cooler = pressurised_He;
 
   LOG(info) << "-- Target cooler: " << cooler->GetName()
             << " T=" << cooler->GetMaterial()->GetTemperature()

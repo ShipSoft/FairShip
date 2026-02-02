@@ -1,4 +1,3 @@
-targetVersion: 20 #June 2025
 target:
     Nplates: 19 #number of sublayer blocks = layers
     M:

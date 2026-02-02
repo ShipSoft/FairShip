@@ -79,7 +79,7 @@ ap.add_argument('--x-offset', type=float, dest='x_offset', default=0., help="x-o
 ap.add_argument('--y-offset', type=float, dest='y_offset', default=0., help="y-offset for the FixedTargetGenerator [mm]")
 ap.add_argument('--beam-smear', type=float, dest='beam_smear', default=16., help="beam smearing for the FixedTargetGenerator [mm]")
 ap.add_argument('--beam-paint', type=float, dest='beam_paint', default=50., help="beam painting radius for the FixedTargetGenerator [mm]")
-ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
+ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config.yaml'))
 
 ap.add_argument('--AddCylindricalSensPlane', action='store_true', help="Whether or not to add cylindrical sensitive plane around the target. False by default.")
 ap.add_argument('--AddPostTargetSensPlane', action='store_true', help="Whether or not to add sensitive plane after the target. False by default.")
@@ -164,7 +164,6 @@ run.AddModule(cave)
 TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        tl=ship_geo.target.length,
                                        tz=ship_geo.target.z,
-                                       tV=ship_geo.targetVersion,
                                        nS=ship_geo.target.nS,
                                        HeT=ship_geo.target.HeT)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)

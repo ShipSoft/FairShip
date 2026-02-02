@@ -251,7 +251,7 @@ def create_config(
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
         SND_design: SND design options (list of design numbers), default: [2]
-        TARGET_YAML: Path to target YAML configuration file, default: "$FAIRSHIP/geometry/target_config_old.yaml"
+        TARGET_YAML: Path to target YAML configuration file, default: "$FAIRSHIP/geometry/target_config.yaml"
 
     Returns:
         Config: Geometry configuration object
@@ -260,7 +260,7 @@ def create_config(
     if SND_design is None:
         SND_design = [2]
     if TARGET_YAML is None:
-        TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
+        TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config.yaml")
 
     # Create configuration object
     c = Config()
@@ -279,7 +279,7 @@ def create_config(
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]["hybrid"]
 
-    # global targetVersion, strawDesign, Yheight
+    # global strawDesign, Yheight
     c.Yheight = Yheight * u.m
     extraVesselLength = 10 * u.m
     windowBulge = 25 * u.cm
@@ -325,7 +325,6 @@ def create_config(
     for width, gap in zip(c.target.slices_length, c.target.slices_gap):
         target_length += width + gap
     c.target.length = target_length
-    c.targetVersion = targetconfig["targetVersion"]
     # interaction point, start of target
 
     c.target.z0 = 0  # Origin of SHiP coordinate system
