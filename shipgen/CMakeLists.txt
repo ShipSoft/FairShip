@@ -7,13 +7,7 @@
 
 set(INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/generators
-    ${genfit2_INCDIR})
-
-# Add EGPythia6 include directory only for ROOT >= 6.32
-# The CMake config provides ROOTEGPythia6_INCLUDE_DIR
-if(USE_EXTERNAL_TPYTHIA6)
-  list(APPEND INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR})
-endif()
+    ${genfit2_INCDIR} ${ROOTEGPythia6_INCLUDE_DIR})
 
 set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES} ${PYTHIA8_INCLUDE_DIR}
@@ -52,13 +46,7 @@ endif()
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR} ${FAIRROOT_LIBRARY_DIR} ${PYTHIA8_LIBRARY_DIR}
-    ${EVTGEN_LIBRARY_DIR} ${genfit2_LIBDIR})
-
-# Add EGPythia6 library directory only for ROOT >= 6.32
-# The CMake config provides ROOTEGPythia6_LIB_DIR
-if(USE_EXTERNAL_TPYTHIA6)
-  list(APPEND LINK_DIRECTORIES ${ROOTEGPythia6_LIB_DIR})
-endif()
+    ${EVTGEN_LIBRARY_DIR} ${genfit2_LIBDIR} ${ROOTEGPythia6_LIB_DIR})
 
 link_directories(${LINK_DIRECTORIES})
 
@@ -83,12 +71,6 @@ set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
 set(DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
-                 FairLogger::FairLogger)
-
-# Add EGPythia6 dependency only for ROOT >= 6.32
-# Use the ROOT::EGPythia6 target provided by the CMake config
-if(USE_EXTERNAL_TPYTHIA6)
-  list(APPEND DEPENDENCIES ROOT::EGPythia6)
-endif()
+                 FairLogger::FairLogger ROOT::EGPythia6)
 
 generate_library()

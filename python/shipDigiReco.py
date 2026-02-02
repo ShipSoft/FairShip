@@ -9,7 +9,6 @@ import rootUtils as ut
 from array import array
 import sys
 from math import fabs
-from backports import tdirectory634
 from detectors.timeDetector import timeDetector
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector

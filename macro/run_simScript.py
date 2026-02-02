@@ -13,7 +13,6 @@ import rootUtils as ut
 import geometry_config
 from argparse import ArgumentParser
 from array import array
-from backports import tdirectory634
 DownScaleDiMuon = False
 
 # Default HNL parameters
