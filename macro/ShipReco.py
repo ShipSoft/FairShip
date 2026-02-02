@@ -83,7 +83,6 @@ from ShipGeoConfig import load_from_root_file
 ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 h={}
-log={}
 if withHists:
  ut.bookHist(h,'distu','distance to wire',100,0.,5.)
  ut.bookHist(h,'distv','distance to wire',100,0.,5.)
@@ -117,7 +116,6 @@ global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing
 global_variables.h = h
-global_variables.log = log
 global_variables.iEvent = 0
 
 # import reco tasks

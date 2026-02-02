@@ -100,7 +100,6 @@ for x in ROOT.gGeoManager.GetListOfVolumes():
 import shipVeto
 veto = shipVeto.Task(sTree)
 vetoDets={}
-log={}
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'pullPOverPx','delPx / sigma',400,0.,200.,100,-3.,3.)
