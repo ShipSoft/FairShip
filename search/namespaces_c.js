@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['tdirectory634_0',['tdirectory634',['../namespacetdirectory634.html',1,'']]],
-  ['timedetector_1',['timeDetector',['../namespacetimeDetector.html',1,'']]],
-  ['trackextrapolatetool_2',['TrackExtrapolateTool',['../namespaceTrackExtrapolateTool.html',1,'']]]
+  ['timedetector_0',['timeDetector',['../namespacetimeDetector.html',1,'']]],
+  ['trackextrapolatetool_1',['TrackExtrapolateTool',['../namespaceTrackExtrapolateTool.html',1,'']]]
 ];

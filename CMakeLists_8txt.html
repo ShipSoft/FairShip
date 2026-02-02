@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 Functions</h2></td></tr>
 <tr class="memitem:a2b52381399ff98876935a5e6d18d8de4" id="r_a2b52381399ff98876935a5e6d18d8de4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a2b52381399ff98876935a5e6d18d8de4">cmake_minimum_required</a> (VERSION 3.12.0 FATAL_ERROR) foreach(p CMP0028 CMP0074 CMP0144) if(POLICY $</td></tr>
 <tr class="separator:a2b52381399ff98876935a5e6d18d8de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbf38f90f686c2352c0af84fc5460cb9" id="r_adbf38f90f686c2352c0af84fc5460cb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#adbf38f90f686c2352c0af84fc5460cb9">cmake_policy</a> (SET ${p} NEW) <a class="el" href="shipgen_2CMakeLists_8txt.html#a94a420739c798f80959f25d17b4657ab">endif</a>() endforeach() project(FairShip LANGUAGES CXX) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
+<tr class="memitem:adbf38f90f686c2352c0af84fc5460cb9" id="r_adbf38f90f686c2352c0af84fc5460cb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#adbf38f90f686c2352c0af84fc5460cb9">cmake_policy</a> (SET ${p} NEW) endif() endforeach() project(FairShip LANGUAGES CXX) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
 <tr class="separator:adbf38f90f686c2352c0af84fc5460cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -143,7 +143,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00018">18</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   18</span>                      {<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>} NEW)</div>
-<div class="line"><span class="lineno">   19</span>  <a class="code hl_function" href="shipgen_2CMakeLists_8txt.html#a94a420739c798f80959f25d17b4657ab">endif</a>()</div>
+<div class="line"><span class="lineno">   19</span>  endif()</div>
 <div class="line"><span class="lineno">   20</span>endforeach()</div>
 <div class="line"><span class="lineno">   21</span> </div>
 <div class="line"><span class="lineno">   22</span><span class="preprocessor"># Set name of our project to &quot;ShipRoot&quot;. Has to be done after check of cmake</span></div>
@@ -154,7 +154,6 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   27</span>  FAIRBASE</div>
 <div class="line"><span class="lineno">   28</span>  NAMES FairRun.h</div>
 <div class="line"><span class="lineno">   29</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
-<div class="ttc" id="ashipgen_2CMakeLists_8txt_html_a94a420739c798f80959f25d17b4657ab"><div class="ttname"><a href="shipgen_2CMakeLists_8txt.html#a94a420739c798f80959f25d17b4657ab">endif</a></div><div class="ttdeci">endif() set(SYSTEM_INCLUDE_DIRECTORIES $</div><div class="ttdef"><b>Definition</b> <a href="shipgen_2CMakeLists_8txt_source.html#l00016">CMakeLists.txt:16</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

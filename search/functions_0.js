@@ -15,6 +15,5 @@ var searchData=
   ['_5fpdg_5flist_12',['_pdg_list',['../namespacemakeGenieEvents.html#a8d85a53750f8937b2e67972a0871d41e',1,'makeGenieEvents']]],
   ['_5freconstruct_5fclusters_13',['_reconstruct_clusters',['../classsplitcalDetector_1_1splitcalDetector.html#a6b97f9845178c7ab1c424c16057acc40',1,'splitcalDetector::splitcalDetector']]],
   ['_5frun_14',['_run',['../namespacegenie__interface.html#a466b0df6aee34de143ec73457187718b',1,'genie_interface']]],
-  ['_5ftarget_5fcode_15',['_target_code',['../namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab',1,'makeGenieEvents']]],
-  ['_5ftdirectory_5fgetitem_16',['_TDirectory_getitem',['../namespacetdirectory634.html#ad203e5406feb380dfac0076a50b68f5e',1,'tdirectory634']]]
+  ['_5ftarget_5fcode_15',['_target_code',['../namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab',1,'makeGenieEvents']]]
 ];

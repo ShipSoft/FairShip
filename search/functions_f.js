@@ -53,7 +53,7 @@ var searchData=
   ['pt_50',['Pt',['../classShipParticle.html#a6716593b1b4e6fa08c4c03e886592ba5',1,'ShipParticle']]],
   ['ptransverse_51',['pTransverse',['../namespaceproton__bremsstrahlung.html#a3482a5300d8f420ddc9befd32ec770f7',1,'proton_bremsstrahlung']]],
   ['ptsquare_52',['ptSquare',['../namespaceproton__bremsstrahlung.html#a4a7ab8940c1a8fe1f2e16c15c5d57e40',1,'proton_bremsstrahlung']]],
-  ['pushtrack_53',['pushtrack',['../classShipStack.html#a7dc1a2177e9df1401330d47344a67e03',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is)'],['../classShipStack.html#a5ceeed2b4e5f278bea2fc60937ebd1af',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is, Int_t secondParentId)']]],
+  ['pushtrack_53',['pushtrack',['../classShipStack.html#a5ceeed2b4e5f278bea2fc60937ebd1af',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is, Int_t secondParentId)'],['../classShipStack.html#a7dc1a2177e9df1401330d47344a67e03',1,'ShipStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode, Double_t px, Double_t py, Double_t pz, Double_t e, Double_t vx, Double_t vy, Double_t vz, Double_t time, Double_t polx, Double_t poly, Double_t polz, TMCProcess proc, Int_t &amp;ntr, Double_t weight, Int_t is)']]],
   ['putparams_54',['putParams',['../classShipFieldPar.html#a6884101d047f2974535a4088af75e33c',1,'ShipFieldPar']]],
   ['px_55',['Px',['../classShipParticle.html#a6f2fec47a59f91ec66cf93643e1c0d73',1,'ShipParticle']]],
   ['py_56',['Py',['../classShipParticle.html#a25b5b48ac48840b82e3b0dc8a9cf53f6',1,'ShipParticle']]],
@@ -61,8 +61,7 @@ var searchData=
   ['pyfairmodule_58',['pyFairModule',['../classpyFairModule.html#afa7e3a718ebb87efbe13ded62e9fc97b',1,'pyFairModule']]],
   ['pythia6generator_59',['pythia6generator',['../classPythia6Generator.html#aaa5b0c478d05410a778a29845e318144',1,'Pythia6Generator::Pythia6Generator()'],['../classPythia6Generator.html#ab58bde8b6a45bd79ebecf0129eeac58f',1,'Pythia6Generator::Pythia6Generator(const char *fileName)']]],
   ['pythia8generator_60',['Pythia8Generator',['../classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4',1,'Pythia8Generator']]],
-  ['pythonize_5ftdirectory_61',['pythonize_tdirectory',['../namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738',1,'tdirectory634']]],
-  ['pytr1rng_62',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
-  ['pytr3rng_63',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
-  ['pz_64',['Pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle']]]
+  ['pytr1rng_61',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
+  ['pytr3rng_62',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
+  ['pz_63',['Pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle']]]
 ];

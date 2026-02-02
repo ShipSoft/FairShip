@@ -1,6 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespaceg4Ex__gap.html#ad7393c51f02ae25af12b38f1c894ed16":[4,0,36,55],
 "namespaceg4Ex__gap.html#adb7f05855dfc4984c57a1e009f2ae349":[4,0,36,51],
 "namespaceg4Ex__gap.html#add6510a442a96060286b36f6beb4a5a6":[4,0,36,53],
 "namespaceg4Ex__gap.html#ae30e9fb0b530a5492063428cf40f1922":[4,0,36,47],
@@ -249,5 +248,6 @@ var NAVTREEINDEX22 =
 "namespaceinspect__tree__branches.html#a4cbbeae23907d01f454c6a1e8c1cb08e":[4,0,47,0],
 "namespacemakeCascade.html":[4,0,51],
 "namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109":[4,0,51,34],
-"namespacemakeCascade.html#a057828da937f33cac59ee2ea7e48b953":[4,0,51,57]
+"namespacemakeCascade.html#a057828da937f33cac59ee2ea7e48b953":[4,0,51,57],
+"namespacemakeCascade.html#a0bd201bb56785c651d094dbe02417ac2":[4,0,51,53]
 };

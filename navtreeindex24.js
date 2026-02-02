@@ -1,6 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"namespacemake__nTuple__SBT.html#ab3aba4113b46e386af9f00743ef6059a":[4,0,49,49],
 "namespacemake__nTuple__SBT.html#ab45fea356ed324ea04da3ce34317ce7f":[4,0,49,0],
 "namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf":[4,0,49,52],
 "namespacemake__nTuple__SBT.html#ab56dccda72801982ea17934e87b857f1":[4,0,49,37],
@@ -249,5 +248,6 @@ var NAVTREEINDEX24 =
 "namespacepythia8darkphoton__conf.html#a7ce8c8aa53e93dfe5afaa43e2f0901b6":[4,0,63,4],
 "namespacepythia8darkphoton__conf.html#abf09dd3a8d5afdafed0abf06741d1fed":[4,0,63,6],
 "namespacepythia8darkphoton__conf.html#acd520394960a5dfa80c744de77b559f4":[4,0,63,1],
-"namespaceradio.html":[4,0,65]
+"namespaceradio.html":[4,0,65],
+"namespaceradio.html#a185405eec7acfdb148448e1a9c76b5ea":[4,0,65,9]
 };

@@ -1541,6 +1541,7 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1687,7 +1688,6 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
@@ -1701,11 +1701,6 @@ var namespaces_dup =
       [ "logfile", "namespacesubmitPyG4prod.html#a425b9ce028a805b9bf14bb359d842e36", null ],
       [ "nevents", "namespacesubmitPyG4prod.html#a39f1bf1b1d59db426b74d7f00ac547ad", null ],
       [ "path", "namespacesubmitPyG4prod.html#a2c8beaa3825810f733065f8b7afe52f5", null ]
-    ] ],
-    [ "tdirectory634", "namespacetdirectory634.html", [
-      [ "_TDirectory_getitem", "namespacetdirectory634.html#ad203e5406feb380dfac0076a50b68f5e", null ],
-      [ "pythonize_tdirectory", "namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738", null ],
-      [ "_cached_items", "namespacetdirectory634.html#af2c8e0ac0cb408377aed4b01f54a391f", null ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [

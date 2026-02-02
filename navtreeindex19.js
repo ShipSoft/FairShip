@@ -1,14 +1,13 @@
 var NAVTREEINDEX19 =
 {
-"mergeMbias_8py.html#abdf8b516207b70880c2dec0e7f7735b8":[6,0,6,18,13],
 "mergeMbias_8py.html#ac1ba9c5e18f9a604f0c372e588cc6a67":[6,0,6,18,11],
 "mergeMbias_8py.html#ad76b253d12e2a798dff088668ce0484c":[6,0,6,18,9],
 "mergeMbias_8py.html#ae3db1f346012489c08f80fc35e3bdd56":[6,0,6,18,24],
 "mergeMbias_8py.html#aecbed99f072995cde06221015f615f6d":[6,0,6,18,23],
 "mergeMbias_8py.html#af0bee5d03f6eab7bea29fc1cbb4e25ea":[6,0,6,18,20],
 "mergeMbias_8py_source.html":[6,0,6,18],
-"method__logger_8py.html":[6,0,10,19],
-"method__logger_8py_source.html":[6,0,10,19],
+"method__logger_8py.html":[6,0,10,18],
+"method__logger_8py_source.html":[6,0,10,18],
 "muDIS__mergeFiles_8py.html":[6,0,8,13],
 "muDIS__mergeFiles_8py.html#a1a441eb731971198a418bf5e43b8498f":[6,0,8,13,0],
 "muDIS__mergeFiles_8py.html#a2ad4e59b5b770f5e8954ae02a12b75c0":[6,0,8,13,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX19 =
 "namespaceShipReco.html#abe146546d4e5254c83e1db8cd00936ed":[4,0,87,25],
 "namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9":[4,0,87,31],
 "namespaceShipReco.html#acc64c7017469a0c560aa3810436b49f9":[4,0,87,1],
-"namespaceShipReco.html#ad01b3bad514536d827ded35ad1161495":[4,0,87,23]
+"namespaceShipReco.html#ad01b3bad514536d827ded35ad1161495":[4,0,87,23],
+"namespaceShipReco.html#ad65f7dc3b97b1adf05861f52855e59c1":[4,0,87,24]
 };
