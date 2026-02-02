@@ -3,7 +3,6 @@
 
 # example for dumping an MC event
 import ROOT,os,sys
-import rootUtils as ut
 import shipunit as u
 import ShipGeoConfig
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")

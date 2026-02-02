@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os,ROOT
-import rootUtils as ut
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
 # functions, should extract events with muons, update weight based on process/decay and PoT
