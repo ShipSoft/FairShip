@@ -16,9 +16,7 @@ if(POLICY CMP0144)
   cmake_policy(SET CMP0144 NEW)
 endif()
 
-# Set name of our project to "ShipRoot". Has to be done after check of cmake
-# version since this is a new feature
-project(FairShip LANGUAGES CXX)
+project(FairShip VERSION 0.0.0 LANGUAGES CXX)
 
 find_path(
   FAIRBASE
@@ -148,17 +146,9 @@ setbasicvariables()
 set(SYSTEM_INCLUDE_DIRECTORIES ${SYSTEM_INCLUDE_DIRECTORIES}
                                ${BASE_INCLUDE_DIRECTORIES})
 
-# Set the library version in the main CMakeLists.txt
-set(FAIRROOT_MAJOR_VERSION 0)
-set(FAIRROOT_MINOR_VERSION 0)
-set(FAIRROOT_PATCH_VERSION 0)
-set(FAIRROOT_VERSION
-    "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}"
-)
-
 set(PROJECT_LIBRARY_PROPERTIES
-    ${PROJECT_LIBRARY_PROPERTIES} VERSION "${FAIRROOT_VERSION}" SOVERSION
-    "${FAIRROOT_MAJOR_VERSION}")
+    ${PROJECT_LIBRARY_PROPERTIES} VERSION "${PROJECT_VERSION}" SOVERSION
+    "${PROJECT_VERSION_MAJOR}")
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
