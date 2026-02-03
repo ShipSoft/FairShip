@@ -767,7 +767,7 @@ Static Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  341</span> </div>
 <div class="line"><span class="lineno">  342</span>  <span class="comment">// --- Place V-fibers inside upper Epoxy ---</span></div>
 <div class="line"><span class="lineno">  343</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> layer = 0; layer &lt; numFiberLayers; ++layer) {</div>
-<div class="line"><span class="lineno">  344</span>    Double_t <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a> = -<a class="code hl_variable" href="classMTCDetector.html#a8ab7472767dd22fded7b77d1b992740c">fiberMatThick</a> / 2 + (layer + 0.5) * (layerThick);</div>
+<div class="line"><span class="lineno">  344</span>    Double_t z0 = -<a class="code hl_variable" href="classMTCDetector.html#a8ab7472767dd22fded7b77d1b992740c">fiberMatThick</a> / 2 + (layer + 0.5) * (layerThick);</div>
 <div class="line"><span class="lineno">  345</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; fNumFibers; ++j) {</div>
 <div class="line"><span class="lineno">  346</span>      Double_t x0 = -<a class="code hl_variable" href="classMTCDetector.html#ac08d9de230fed497be2257429ba2e8ec">fSciFiActiveX</a> / 2 + (j + 0.5) * fFiberPitch;</div>
 <div class="line"><span class="lineno">  347</span>      <span class="keywordflow">if</span> (layer % 2 == 1) {</div>
@@ -785,7 +785,6 @@ Static Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassMTCDetector_html_a8ab7472767dd22fded7b77d1b992740c"><div class="ttname"><a href="classMTCDetector.html#a8ab7472767dd22fded7b77d1b992740c">MTCDetector::fiberMatThick</a></div><div class="ttdeci">Double_t fiberMatThick</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00116">MTCDetector.h:116</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_ac08d9de230fed497be2257429ba2e8ec"><div class="ttname"><a href="classMTCDetector.html#ac08d9de230fed497be2257429ba2e8ec">MTCDetector::fSciFiActiveX</a></div><div class="ttdeci">Double_t fSciFiActiveX</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00106">MTCDetector.h:106</a></div></div>
 <div class="ttc" id="aclassMTCDetector_html_adcc7760f14e93249a4ee30be53b2f7c2"><div class="ttname"><a href="classMTCDetector.html#adcc7760f14e93249a4ee30be53b2f7c2">MTCDetector::fFiberPitch</a></div><div class="ttdeci">Double_t fFiberPitch</div><div class="ttdef"><b>Definition</b> <a href="MTCDetector_8h_source.html#l00118">MTCDetector.h:118</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a26a21d07ca585442effeb59459219be4"><div class="ttname"><a href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">ShipGeo.z0</a></div><div class="ttdeci">z0</div><div class="ttdef"><b>Definition</b> <a href="ShipGeo_8py_source.html#l00054">ShipGeo.py:54</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

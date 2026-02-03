@@ -694,9 +694,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  321</span>  rmax = <a class="code hl_variable" href="classstrawtubes.html#ab80522eb272e260d2f1a243e104d2d0d">f_outer_straw_diameter</a> / 2.;</div>
 <div class="line"><span class="lineno">  322</span>  <span class="comment">// Third argument is half-length of tube</span></div>
 <div class="line"><span class="lineno">  323</span>  TGeoTube* straw_tube = <span class="keyword">new</span> TGeoTube(<span class="stringliteral">&quot;straw&quot;</span>, rmin, rmax, straw_length);</div>
-<div class="line"><span class="lineno">  324</span>  TGeoVolume* <a class="code hl_variable" href="namespaceShipGeo.html#a592100467bc14dbed22bdf4123a2f2d3">straw</a> = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;straw&quot;</span>, straw_tube, mylar);</div>
-<div class="line"><span class="lineno">  325</span>  <a class="code hl_variable" href="namespaceShipGeo.html#a592100467bc14dbed22bdf4123a2f2d3">straw</a>-&gt;SetLineColor(4);</div>
-<div class="line"><span class="lineno">  326</span>  <a class="code hl_variable" href="namespaceShipGeo.html#a592100467bc14dbed22bdf4123a2f2d3">straw</a>-&gt;SetVisibility(kTRUE);</div>
+<div class="line"><span class="lineno">  324</span>  TGeoVolume* straw = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;straw&quot;</span>, straw_tube, mylar);</div>
+<div class="line"><span class="lineno">  325</span>  straw-&gt;SetLineColor(4);</div>
+<div class="line"><span class="lineno">  326</span>  straw-&gt;SetVisibility(kTRUE);</div>
 <div class="line"><span class="lineno">  327</span> </div>
 <div class="line"><span class="lineno">  328</span>  <span class="comment">// Volume: gas</span></div>
 <div class="line"><span class="lineno">  329</span>  rmin = <a class="code hl_variable" href="classstrawtubes.html#a2c3b2535c871522868dc3f32d3b9a68c">f_wire_thickness</a> / 2. + eps;</div>
@@ -897,7 +897,6 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassstrawtubes_html_aeda0cf05872ca2e260fd695de5607110"><div class="ttname"><a href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">strawtubes::f_offset_layer</a></div><div class="ttdeci">Double_t f_offset_layer</div><div class="ttdoc">Distance (y) between straws in a layer.</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00123">strawtubes.h:123</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_afd76b6aa474f6257df2257ce618b68c5"><div class="ttname"><a href="classstrawtubes.html#afd76b6aa474f6257df2257ce618b68c5">strawtubes::f_T4_z</a></div><div class="ttdeci">Double_t f_T4_z</div><div class="ttdoc">z-position of tracking station 3</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00117">strawtubes.h:117</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_afdeccc886ea2fb425f453e37d2ba7dba"><div class="ttname"><a href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">strawtubes::f_delta_z_layer</a></div><div class="ttdeci">Double_t f_delta_z_layer</div><div class="ttdoc">Offset (y) of straws between layers.</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00124">strawtubes.h:124</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a592100467bc14dbed22bdf4123a2f2d3"><div class="ttname"><a href="namespaceShipGeo.html#a592100467bc14dbed22bdf4123a2f2d3">ShipGeo.straw</a></div><div class="ttdeci">straw</div><div class="ttdef"><b>Definition</b> <a href="ShipGeo_8py_source.html#l00057">ShipGeo.py:57</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01293">eventDisplay.py:1293</a></div></div>
 </div><!-- fragment -->
 </div>

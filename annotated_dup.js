@@ -73,9 +73,6 @@ var annotated_dup =
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
       [ "ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", "classshipDigiReco_1_1ShipDigiReco" ]
     ] ],
-    [ "ShipGeo", "namespaceShipGeo.html", [
-      [ "ShipGeo", "classShipGeo_1_1ShipGeo.html", "classShipGeo_1_1ShipGeo" ]
-    ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", [
       [ "AttrDict", "classShipGeoConfig_1_1AttrDict.html", "classShipGeoConfig_1_1AttrDict" ],
       [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ]
@@ -172,8 +169,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

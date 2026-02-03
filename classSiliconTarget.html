@@ -604,7 +604,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  143</span>            SensorVolume, sensor_id,</div>
 <div class="line"><span class="lineno">  144</span>            <span class="keyword">new</span> TGeoTranslation(</div>
 <div class="line"><span class="lineno">  145</span>                (-1.5 * width - 2. * mm) + (column * <a class="code hl_function" href="namespacerpvsusy.html#a65398d2857d77a98dec2551c2086163f">width</a> + column * 1 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>),</div>
-<div class="line"><span class="lineno">  146</span>                (length / 2. + 0.5 * mm) - row * (<a class="code hl_variable" href="namespaceShipGeo.html#ad3062b2550a2bd084ee4a8d250a364dd">length</a> + 1. * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>), 0));</div>
+<div class="line"><span class="lineno">  146</span>                (length / 2. + 0.5 * mm) - row * (length + 1. * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>), 0));</div>
 <div class="line"><span class="lineno">  147</span>      }</div>
 <div class="line"><span class="lineno">  148</span>    }</div>
 <div class="line"><span class="lineno">  149</span>    <span class="keywordflow">if</span> (plane == 0) {</div>
@@ -622,7 +622,6 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> trackingStation;</div>
 <div class="line"><span class="lineno">  162</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_ab05e85c22fe0c2c6ed701c357bbf1512"><div class="ttname"><a href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a></div><div class="ttdeci">Double_t mm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00026">ShipBellField.cxx:26</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_ad3062b2550a2bd084ee4a8d250a364dd"><div class="ttname"><a href="namespaceShipGeo.html#ad3062b2550a2bd084ee4a8d250a364dd">ShipGeo.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition</b> <a href="ShipGeo_8py_source.html#l00029">ShipGeo.py:29</a></div></div>
 <div class="ttc" id="anamespacerpvsusy_html_a65398d2857d77a98dec2551c2086163f"><div class="ttname"><a href="namespacerpvsusy.html#a65398d2857d77a98dec2551c2086163f">rpvsusy.width</a></div><div class="ttdeci">width(particle)</div><div class="ttdef"><b>Definition</b> <a href="rpvsusy_8py_source.html#l00077">rpvsusy.py:77</a></div></div>
 <div class="ttc" id="anamespaceshipunit_html_a3605c7b413f2f2eb035d929c0a0f86da"><div class="ttname"><a href="namespaceshipunit.html#a3605c7b413f2f2eb035d929c0a0f86da">shipunit.um</a></div><div class="ttdeci">int um</div><div class="ttdef"><b>Definition</b> <a href="shipunit_8py_source.html#l00051">shipunit.py:51</a></div></div>
 </div><!-- fragment -->

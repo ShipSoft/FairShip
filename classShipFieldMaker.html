@@ -1256,13 +1256,13 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  350</span>    <span class="keyword">const</span> TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  351</span>    <span class="keyword">const</span> TString mapFileName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>    Double_t x0(0.0), y0(0.0), <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a>(0.0);</div>
+<div class="line"><span class="lineno">  353</span>    Double_t x0(0.0), y0(0.0), z0(0.0);</div>
 <div class="line"><span class="lineno">  354</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  355</span> </div>
 <div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (nWords &gt; 5) {</div>
 <div class="line"><span class="lineno">  357</span>      x0 = std::atof(inputLine[3].c_str());</div>
 <div class="line"><span class="lineno">  358</span>      y0 = std::atof(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  359</span>      <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a> = std::atof(inputLine[5].c_str());</div>
+<div class="line"><span class="lineno">  359</span>      z0 = std::atof(inputLine[5].c_str());</div>
 <div class="line"><span class="lineno">  360</span>    }</div>
 <div class="line"><span class="lineno">  361</span> </div>
 <div class="line"><span class="lineno">  362</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
@@ -1285,7 +1285,6 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  379</span>  }</div>
 <div class="line"><span class="lineno">  380</span>}</div>
 <div class="ttc" id="aclassShipFieldMaker_html_a0a845f73b3c26e2b5c660bcce4dbef4e"><div class="ttname"><a href="classShipFieldMaker.html#a0a845f73b3c26e2b5c660bcce4dbef4e">ShipFieldMaker::defineFieldMap</a></div><div class="ttdeci">void defineFieldMap(const TString &amp;name, const TString &amp;mapFileName, const TVector3 &amp;localCentre=TVector3(0.0, 0.0, 0.0), const TVector3 &amp;localAngles=TVector3(0.0, 0.0, 0.0), Bool_t useSymmetry=kFALSE)</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00382">ShipFieldMaker.cxx:382</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a26a21d07ca585442effeb59459219be4"><div class="ttname"><a href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">ShipGeo.z0</a></div><div class="ttdeci">z0</div><div class="ttdef"><b>Definition</b> <a href="ShipGeo_8py_source.html#l00054">ShipGeo.py:54</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00086">makeMuonDIS.py:86</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a6deb68dc080ef810c34fcffdd94b6a57"><div class="ttname"><a href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">makeMuonDIS.theta</a></div><div class="ttdeci">theta</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00085">makeMuonDIS.py:85</a></div></div>
 </div><!-- fragment -->
@@ -1368,7 +1367,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  405</span>    <span class="comment">// parameter values to floats, i.e. we can&#39;t simply pass TVector3 objects</span></div>
 <div class="line"><span class="lineno">  406</span>    Float_t x0 = localCentre.X();</div>
 <div class="line"><span class="lineno">  407</span>    Float_t y0 = localCentre.Y();</div>
-<div class="line"><span class="lineno">  408</span>    Float_t <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a> = localCentre.Z();</div>
+<div class="line"><span class="lineno">  408</span>    Float_t z0 = localCentre.Z();</div>
 <div class="line"><span class="lineno">  409</span> </div>
 <div class="line"><span class="lineno">  410</span>    Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = localAngles.X();</div>
 <div class="line"><span class="lineno">  411</span>    Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = localAngles.Y();</div>
@@ -1439,7 +1438,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  442</span> </div>
 <div class="line"><span class="lineno">  443</span>    Double_t x0 = std::atof(inputLine[3].c_str());</div>
 <div class="line"><span class="lineno">  444</span>    Double_t y0 = std::atof(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  445</span>    Double_t <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a> = std::atof(inputLine[5].c_str());</div>
+<div class="line"><span class="lineno">  445</span>    Double_t z0 = std::atof(inputLine[5].c_str());</div>
 <div class="line"><span class="lineno">  446</span> </div>
 <div class="line"><span class="lineno">  447</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  448</span> </div>
@@ -1529,7 +1528,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  483</span>      <span class="comment">// parameter values to floats, i.e. we can&#39;t simply pass TVector3 objects</span></div>
 <div class="line"><span class="lineno">  484</span>      Float_t x0 = translation.X();</div>
 <div class="line"><span class="lineno">  485</span>      Float_t y0 = translation.Y();</div>
-<div class="line"><span class="lineno">  486</span>      Float_t <a class="code hl_variable" href="namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4">z0</a> = translation.Z();</div>
+<div class="line"><span class="lineno">  486</span>      Float_t z0 = translation.Z();</div>
 <div class="line"><span class="lineno">  487</span> </div>
 <div class="line"><span class="lineno">  488</span>      Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = eulerAngles.X();</div>
 <div class="line"><span class="lineno">  489</span>      Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = eulerAngles.Y();</div>
