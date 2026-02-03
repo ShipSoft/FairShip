@@ -181,10 +181,7 @@ set(PROJECT_LIBRARY_PROPERTIES
 set(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
 set(LD_LIBRARY_PATH ${CBMLIBDIR} ${LD_LIBRARY_PATH})
 
-install(
-  DIRECTORY geometry
-  DESTINATION pnd_install
-  PATTERN ".svn" EXCLUDE)
+install(DIRECTORY geometry DESTINATION pnd_install)
 
 message("-- Set check directory to FairRoot...")
 set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
