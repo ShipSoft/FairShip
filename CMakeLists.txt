@@ -32,16 +32,16 @@ find_path(
 if(FAIRBASE)
   message(STATUS "Found FAIRBASE")
   set(FAIRBASE ${FAIRBASE})
-else(FAIRBASE)
+else()
   message(STATUS "NOT Found FAIRBASE")
   if(NOT DEFINED ENV{FAIRROOTPATH})
     message(
       FATAL_ERROR
         "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
     )
-  endif(NOT DEFINED ENV{FAIRROOTPATH})
+  endif()
   set(FAIRROOTPATH $ENV{FAIRROOTPATH})
-endif(FAIRBASE)
+endif()
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is
 # checked
@@ -53,9 +53,9 @@ set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"
 
 if(FAIRROOTPATH)
   set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-else(FAIRROOTPATH)
+else()
   set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-endif(FAIRROOTPATH)
+endif()
 
 # Load some basic macros which are needed later on
 include(FairMacros)
@@ -68,7 +68,7 @@ include(CheckCompiler)
 if(NOT CMAKE_BUILD_TYPE)
   message("Set BuildType RELEASE")
   set(CMAKE_BUILD_TYPE Release)
-endif(NOT CMAKE_BUILD_TYPE)
+endif()
 check_compiler()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
@@ -83,12 +83,12 @@ if(USE_PATH_INFO)
   set(PATH "$PATH")
   if(APPLE)
     set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
-  else(APPLE)
+  else()
     set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-  endif(APPLE)
-else(USE_PATH_INFO)
+  endif()
+else()
   string(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-endif(USE_PATH_INFO)
+endif()
 
 # --------------------- set rpath options -------------
 # When building, use the RPATH
@@ -116,7 +116,7 @@ if(NOT UNIX)
     FATAL_ERROR
       "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory."
   )
-endif(NOT UNIX)
+endif()
 
 # Set the build type. Possibilities are None, Debug, Release, RelWithDebInfo and
 # MinSizeRel SET(CMAKE_BUILD_TYPE Debug)
@@ -150,7 +150,7 @@ find_package(ROOTEGPythia6 REQUIRED)
 
 if(DEFINED $ENV{GSL_ROOT})
   set(GSL_DIR $ENV{GSL_ROOT})
-endif(DEFINED $ENV{GSL_ROOT})
+endif()
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase
