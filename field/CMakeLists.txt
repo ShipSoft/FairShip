@@ -1,35 +1,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-# Create a library called "libField” which includes the source files given in
-# the array . The extension is already found.  Any number of sources could be
-# listed here.
-
-set(INCLUDE_DIRECTORIES
-    ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR}
-    ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR})
-
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR} ${FAIRROOT_LIBRARY_DIR} ${GEANT4VMC_LIBRARY_DIR}
-    ${GEANT4_LIBRARY_DIR} ${genfit2_LIBDIR})
-
-link_directories(${LINK_DIRECTORIES})
-
-set(SRCS
-    ShipConstField.cxx
-    ShipFieldCreator.cxx
-    ShipFieldPar.cxx
-    ShipBellField.cxx
-    ShipBFieldMap.cxx
-    ShipCompField.cxx
-    ShipFieldMaker.cxx
-    FairShipFields.cxx)
-
-set(LINKDEF LinkDef.h)
-set(LIBRARY_NAME ShipField)
-set(DEPENDENCIES Base FairLogger::FairLogger genfit2)
-
-generate_library()
+ship_add_library(
+  NAME ShipField
+  SOURCES ShipConstField.cxx ShipFieldCreator.cxx ShipFieldPar.cxx ShipBellField.cxx
+          ShipBFieldMap.cxx ShipCompField.cxx ShipFieldMaker.cxx FairShipFields.cxx
+  LINKDEF LinkDef.h
+  DEPENDENCIES Base FairLogger::FairLogger genfit2
+  INCLUDE_DIRECTORIES ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR}
+)
