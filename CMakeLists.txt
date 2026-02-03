@@ -7,8 +7,8 @@
 # ${ShipRoot_BINARY_DIR} or ${CMAKE_BINARY_DIR}. This difference is important
 # for the base classes which are in FAIRROOT and ShipRoot.
 
-# Check if cmake has the required version
-cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
+# CMake minimum version driven by ROOT 6.36.06
+cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 foreach(p CMP0028 # double colon for imported and alias targets
           CMP0074 # use _ROOT env variables
