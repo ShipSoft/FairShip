@@ -175,10 +175,7 @@ set(PROJECT_LIBRARY_PROPERTIES
     ${PROJECT_LIBRARY_PROPERTIES} VERSION "${FAIRROOT_VERSION}" SOVERSION
     "${FAIRROOT_MAJOR_VERSION}")
 
-set(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
-set(LD_LIBRARY_PATH ${CBMLIBDIR} ${LD_LIBRARY_PATH})
-
-install(DIRECTORY geometry DESTINATION pnd_install)
+install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
 message("-- Set check directory to FairRoot...")
 set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
