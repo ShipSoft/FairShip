@@ -177,10 +177,6 @@ set(PROJECT_LIBRARY_PROPERTIES
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
-message("-- Set check directory to FairRoot...")
-set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-# Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-
 # Generate a Clang compile_commands.json "compilation database" file for use
 # with various development tools, such as Vim's YouCompleteMe plugin. See
 # http://clang.llvm.org/docs/JSONCompilationDatabase.html
