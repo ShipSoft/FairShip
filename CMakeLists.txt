@@ -10,14 +10,11 @@
 # CMake minimum version driven by ROOT 6.36.06
 cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
-foreach(p CMP0028 # double colon for imported and alias targets
-          CMP0074 # use _ROOT env variables
-          CMP0144 # use <PACKAGENAME>_ROOT variables
-)
-  if(POLICY ${p})
-    cmake_policy(SET ${p} NEW)
-  endif()
-endforeach()
+# CMP0028 and CMP0074 are already NEW at cmake_minimum_required 3.20.
+# CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package.
+if(POLICY CMP0144)
+  cmake_policy(SET CMP0144 NEW)
+endif()
 
 # Set name of our project to "ShipRoot". Has to be done after check of cmake
 # version since this is a new feature
