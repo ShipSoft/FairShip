@@ -534,8 +534,7 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 
 if options.dump_g4_config:
-    gMC.ProcessGeantCommand("/mcVerbose/composedPhysicsList 2")
-    gMC.ProcessGeantCommand("/mcVerbose/regionsManager 3")
+    gMC.ProcessGeantCommand("/run/dumpCouples")
     print(f"Stack type: {type(fStack).__name__}")
 
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
