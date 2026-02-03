@@ -35,7 +35,7 @@ var searchData=
   ['boostfactor_32',['boostFactor',['../namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5',1,'study_GammaConv']]],
   ['bottomview_33',['bottomView',['../classeventDisplay_1_1EventLoop.html#a057484e5d64df88aa1011d9c7ba24d95',1,'eventDisplay::EventLoop']]],
   ['bparam_34',['bparam',['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam'],['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam']]],
-  ['br_35',['br',['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR'],['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br']]],
+  ['br_35',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br'],['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR']]],
   ['branch_36',['branch',['../classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46',1,'BaseDetector::BaseDetector']]],
   ['branches_37',['branches',['../md_README.html#autotoc_md65',1,'Branches'],['../namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8',1,'run_simScript.branches']]],
   ['branchindices_38',['BranchIndices',['../classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46',1,'EvtCalcGenerator']]],
