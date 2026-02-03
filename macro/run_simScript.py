@@ -537,7 +537,6 @@ if options.dump_g4_config:
     gMC.ProcessGeantCommand("/mcVerbose/composedPhysicsList 2")
     gMC.ProcessGeantCommand("/mcVerbose/regionsManager 3")
     print(f"Stack type: {type(fStack).__name__}")
-    print(f"Stack StoreSecondaries: {fStack.GetStoreSecondaries()}")
 
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
