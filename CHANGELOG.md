@@ -34,6 +34,7 @@ it in future.
 * Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
 * Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
+* Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
 
 ## 25.12 - 2025-12-22
 
