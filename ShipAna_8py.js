@@ -35,7 +35,6 @@ var ShipAna_8py =
     [ "hfile", "ShipAna_8py.html#a83c34068270eedb72f140ca4d2869513", null ],
     [ "i", "ShipAna_8py.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3", null ],
     [ "inputFile", "ShipAna_8py.html#a003c9a52b06378eb1e2738942a5a00a0", null ],
-    [ "log", "ShipAna_8py.html#ad069f83304b90aa0743facccf08e1d5c", null ],
     [ "measCutFK", "ShipAna_8py.html#ab441839b9fbec1357c26d875b300d796", null ],
     [ "measCutPR", "ShipAna_8py.html#a351edae811c54ec0a13dd3aa4e071529", null ],
     [ "modules", "ShipAna_8py.html#a41cad21d56b950f615f4d40df1e2c4ed", null ],

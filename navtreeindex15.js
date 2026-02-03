@@ -1,7 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"evd__nextEvent_8py.html":[6,0,6,7],
-"evd__nextEvent_8py.html#ae96688f184f12446cedeaec7189c3205":[6,0,6,7,0],
 "evd__nextEvent_8py_source.html":[6,0,6,7],
 "evd__transparentMode_8py.html":[6,0,6,8],
 "evd__transparentMode_8py.html#afeac3b4d7cb3334678bf667700bc0b20":[6,0,6,8,0],
@@ -141,8 +139,8 @@ var NAVTREEINDEX15 =
 "functions_enum.html":[5,3,4],
 "functions_eval.html":[5,3,5],
 "functions_f.html":[5,3,0,6],
-"functions_func.html":[5,3,1,0],
 "functions_func.html":[5,3,1],
+"functions_func.html":[5,3,1,0],
 "functions_func_a.html":[5,3,1,1],
 "functions_func_b.html":[5,3,1,2],
 "functions_func_c.html":[5,3,1,3],
@@ -182,8 +180,8 @@ var NAVTREEINDEX15 =
 "functions_type.html":[5,3,3],
 "functions_u.html":[5,3,0,21],
 "functions_v.html":[5,3,0,22],
-"functions_vars.html":[5,3,2],
 "functions_vars.html":[5,3,2,0],
+"functions_vars.html":[5,3,2],
 "functions_vars_a.html":[5,3,2,1],
 "functions_vars_b.html":[5,3,2,2],
 "functions_vars_c.html":[5,3,2,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "g4Ex_8py.html#ad7f4b940db2bfe411e0b4429ab08f26d":[6,0,8,6,6],
 "g4Ex_8py.html#af6f653f31d4c4c2f9fc9b2931dc8abe9":[6,0,8,6,13],
 "g4Ex_8py.html#af93fe7803fd2d2d3d90f4c28b4120f8f":[6,0,8,6,36],
-"g4Ex_8py.html#af99540dd4a43c5d62c010f0818468114":[6,0,8,6,16]
+"g4Ex_8py.html#af99540dd4a43c5d62c010f0818468114":[6,0,8,6,16],
+"g4Ex_8py.html#afd27be4af37c94678ccdccb2c39e7f62":[6,0,8,6,37],
+"g4Ex_8py_source.html":[6,0,8,6]
 };

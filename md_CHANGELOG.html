@@ -108,6 +108,8 @@ Changed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>
 <ul>
+<li>Fix <code>errorSummary</code> not printing its header (bare string expression instead of <code>print</code>)</li>
+<li>Fix <code>reportError</code>/<code>errorSummary</code> using fragile &lsquo;sys.modules[&rsquo;<b>main</b>'].log` pattern; use module-level counter instead</li>
 <li>Fix file-filtering logic to support STL branches</li>
 <li>Update <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> to support both TClonesArray and std::vector input formats for MCTrack and <a class="el" href="classvetoPoint.html">vetoPoint</a> branches</li>
 <li>Fix function call in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use SetPhiRandomize instead of deprecated SetPhiRandom</li>

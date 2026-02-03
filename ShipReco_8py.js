@@ -16,7 +16,6 @@ var ShipReco_8py =
     [ "help", "ShipReco_8py.html#a6425d90b37c7ae2428f3b732fc2d03a4", null ],
     [ "iEvent", "ShipReco_8py.html#ab3f350587696737c07f798e0c105cde7", null ],
     [ "inputFile", "ShipReco_8py.html#af216c8c8b08ff8f49fcb82220bed70c4", null ],
-    [ "log", "ShipReco_8py.html#aa37614fc3f0b1f396df209ddd402d176", null ],
     [ "modules", "ShipReco_8py.html#a4850398ee3476da47f58999b04e3a0e7", null ],
     [ "nEvents", "ShipReco_8py.html#a5d79d13160dfaad7ee80f62adb0ee67e", null ],
     [ "None", "ShipReco_8py.html#a19251702830556320d73755869bd74b3", null ],

@@ -7,5 +7,6 @@ var rootUtils_8py =
     [ "errorSummary", "rootUtils_8py.html#a2808d76ca57749e439c50d781c861ea8", null ],
     [ "readHists", "rootUtils_8py.html#ab2eab36130015c7ae1c4b0e5ea8e9268", null ],
     [ "reportError", "rootUtils_8py.html#af995ab99f984b0e88bb4063e431b21dc", null ],
-    [ "writeHists", "rootUtils_8py.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ]
+    [ "writeHists", "rootUtils_8py.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ],
+    [ "_error_log", "rootUtils_8py.html#a628bb012f01de710e9155dc4579eba86", null ]
 ];

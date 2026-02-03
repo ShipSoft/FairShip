@@ -1041,7 +1041,8 @@ var namespaces_dup =
       [ "errorSummary", "namespacerootUtils.html#a2808d76ca57749e439c50d781c861ea8", null ],
       [ "readHists", "namespacerootUtils.html#ab2eab36130015c7ae1c4b0e5ea8e9268", null ],
       [ "reportError", "namespacerootUtils.html#af995ab99f984b0e88bb4063e431b21dc", null ],
-      [ "writeHists", "namespacerootUtils.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ]
+      [ "writeHists", "namespacerootUtils.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ],
+      [ "_error_log", "namespacerootUtils.html#a628bb012f01de710e9155dc4579eba86", null ]
     ] ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
     [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [
@@ -1414,7 +1415,6 @@ var namespaces_dup =
       [ "hfile", "namespaceShipAna.html#a83c34068270eedb72f140ca4d2869513", null ],
       [ "i", "namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3", null ],
       [ "inputFile", "namespaceShipAna.html#a003c9a52b06378eb1e2738942a5a00a0", null ],
-      [ "log", "namespaceShipAna.html#ad069f83304b90aa0743facccf08e1d5c", null ],
       [ "measCutFK", "namespaceShipAna.html#ab441839b9fbec1357c26d875b300d796", null ],
       [ "measCutPR", "namespaceShipAna.html#a351edae811c54ec0a13dd3aa4e071529", null ],
       [ "modules", "namespaceShipAna.html#a41cad21d56b950f615f4d40df1e2c4ed", null ],
@@ -1495,7 +1495,6 @@ var namespaces_dup =
       [ "help", "namespaceShipReco.html#a6425d90b37c7ae2428f3b732fc2d03a4", null ],
       [ "iEvent", "namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7", null ],
       [ "inputFile", "namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4", null ],
-      [ "log", "namespaceShipReco.html#aa37614fc3f0b1f396df209ddd402d176", null ],
       [ "modules", "namespaceShipReco.html#a4850398ee3476da47f58999b04e3a0e7", null ],
       [ "nEvents", "namespaceShipReco.html#a5d79d13160dfaad7ee80f62adb0ee67e", null ],
       [ "None", "namespaceShipReco.html#a19251702830556320d73755869bd74b3", null ],

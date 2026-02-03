@@ -1,7 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78":[5,0,28,32],
-"classEvtCalcGenerator.html#aefc99881e272eed850ed8a1b22cf24c0":[5,0,28,22],
 "classEvtCalcGenerator.html#af70bbfa8ce51af81d46a5711eccba85c":[5,0,28,21],
 "classEvtCalcGenerator.html#af82dd7fe1355493ce691944dd10c8ddf":[5,0,28,19],
 "classEvtCalcGenerator.html#afbe7ab880390edb4e71de4416b6d71de":[5,0,28,6],
@@ -249,5 +247,7 @@ var NAVTREEINDEX3 =
 "classMTCDetHit.html#ad03ffca6b808d429de707303fedf268f":[5,0,35,5],
 "classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d":[5,0,35,9],
 "classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c":[5,0,35,7],
-"classMTCDetHit.html#ae558418d02986544eaaa5898d3c7c5a4":[5,0,35,18]
+"classMTCDetHit.html#ae558418d02986544eaaa5898d3c7c5a4":[5,0,35,18],
+"classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c":[5,0,35,3],
+"classMTCDetHit.html#aee61f60f83aa2d509d272375badfcdc7":[5,0,35,1]
 };

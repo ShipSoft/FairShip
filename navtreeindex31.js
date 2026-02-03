@@ -1,7 +1,5 @@
 var NAVTREEINDEX31 =
 {
-"test__data__class__io_8cxx.html#a8787dbb991369d83bdb2af7a07f4792e":[6,0,16,0,18],
-"test__data__class__io_8cxx.html#a878c00336ef14171705334460a174606":[6,0,16,0,9],
 "test__data__class__io_8cxx.html#a8a460663194035936bfd0895c837dde2":[6,0,16,0,17],
 "test__data__class__io_8cxx.html#a981501cada487c811b3c6a355a19cdc8":[6,0,16,0,21],
 "test__data__class__io_8cxx.html#ab42d601d19af77d78909dba9e62d4688":[6,0,16,0,7],
