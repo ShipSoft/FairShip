@@ -1,20 +1,21 @@
 Geant4_UserGeometry:     "geomRoot"
-Geant4_PhysicsList:      "QGSP_BERT_HP_PEN"
+Geant4_PhysicsList:      "FTFP_BERT_HP_EMZ"
 Geant4_SpecialProcess:   "stepLimiter+specialCuts+specialControls"
 Geant4_SpecialStacking:  false
 Geant4_Multithreaded:    false
 
-Geant4_MaxNStep:         10000    #default is 30000
+#Geant4_MaxNStep:         10000    #default is 30000
 Geant4_Commands:
  - /mcVerbose/all 0
  - /mcTracking/loopVerbose 0
- - /mcPhysics/g4NeutronHPVerbose 0
  - /mcPhysics/g4HadronicProcessStoreVerbose 0
  - /physics_lists/em/PositronToMuons true
  - /physics_lists/em/GammaToMuons true
+ - /process/em/UseGeneralProcess false
  - /process/em/verbose 0
  - /process/eLoss/verbose 0
  - /mcDet/setIsLocalMagField true
+ - /mcPhysics/setExtDecayerSelection J/psi
 
 MonteCarlo_Process:
     PAIR:         1        #pair production

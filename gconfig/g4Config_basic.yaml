@@ -4,11 +4,10 @@ Geant4_SpecialProcess:   ""
 Geant4_SpecialStacking:  false
 Geant4_Multithreaded:    false
 
-Geant4_MaxNStep:         10000    #default is 30000
+#Geant4_MaxNStep:         10000    #default is 30000
 Geant4_Commands:
  - /mcVerbose/all 0
  - /mcTracking/loopVerbose 0
- - /mcPhysics/g4NeutronHPVerbose 0
  - /mcPhysics/g4HadronicProcessStoreVerbose 0
  - /process/em/verbose 0
  - /process/eLoss/verbose 0
