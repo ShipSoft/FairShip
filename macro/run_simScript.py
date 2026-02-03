@@ -143,6 +143,7 @@ parser.add_argument("--MesonMother", dest="MM", help="Choose DP production meson
 parser.add_argument("--debug", help="Control FairLogger verbosity: 0=info (default), 1=+debug, 2=+debug1, 3=+debug2", default=0, type=int, choices=range(0,4))
 parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")
 parser.add_argument("--check-overlaps", help="Perform geometry overlap checking", action="store_true")
+parser.add_argument("--dump-g4-config", help="Dump Geant4 VMC configuration after initialisation", action="store_true")
 parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
 parser.add_argument("--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84., type=float)
 parser.add_argument(
@@ -531,6 +532,12 @@ if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
+
+if options.dump_g4_config:
+    gMC.ProcessGeantCommand("/mcVerbose/composedPhysicsList 2")
+    gMC.ProcessGeantCommand("/mcVerbose/regionsManager 3")
+    print(f"Stack type: {type(fStack).__name__}")
+    print(f"Stack StoreSecondaries: {fStack.GetStoreSecondaries()}")
 
 # -----J/psi external decayer configuration handled in g4config.in------------------------------------
 # VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
