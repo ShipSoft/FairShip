@@ -72,20 +72,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
-option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
-used." OFF)
-
-set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-if(USE_PATH_INFO)
-  set(PATH "$PATH")
-  if(APPLE)
-    set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
-  else()
-    set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-  endif()
-else()
-  string(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-endif()
 
 # --------------------- set rpath options -------------
 # When building, use the RPATH
