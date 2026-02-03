@@ -114,8 +114,6 @@ find_package(FairCMakeModules 1.0 REQUIRED)
 include(FairFindPackage2)
 find_package2(PUBLIC ROOT 6.36 REQUIRED)
 include(ROOTMacros)
-# Include Ship-specific macros to override GENERATE_LIBRARY with target
-# propagation
 include(ShipMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
@@ -129,6 +127,16 @@ find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
+
+# genfit2Config.cmake only sets directory variables, not a proper target.
+# Create an imported target so dependencies propagate automatically.
+if(NOT TARGET genfit2)
+  add_library(genfit2 SHARED IMPORTED)
+  set_target_properties(genfit2 PROPERTIES
+    IMPORTED_LOCATION "${genfit2_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}genfit2${CMAKE_SHARED_LIBRARY_SUFFIX}"
+    INTERFACE_INCLUDE_DIRECTORIES "${genfit2_INCDIR}"
+  )
+endif()
 
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
