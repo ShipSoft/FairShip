@@ -84,7 +84,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer --tag ci-test
+          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer --dump-g4-config --tag ci-test
 
       - name: Overlap check
         run: |
