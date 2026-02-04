@@ -161,25 +161,25 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="BeamSmearingUtils_8cxx_source.html#l00010">10</a> of file <a class="el" href="BeamSmearingUtils_8cxx_source.html">BeamSmearingUtils.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   11</span>                                                                      {</div>
 <div class="line"><span class="lineno">   12</span>  Double_t dx = 0.0;</div>
-<div class="line"><span class="lineno">   13</span>  Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = 0.0;</div>
+<div class="line"><span class="lineno">   13</span>  Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a> = 0.0;</div>
 <div class="line"><span class="lineno">   14</span> </div>
 <div class="line"><span class="lineno">   15</span>  <span class="comment">// Gaussian beam smearing</span></div>
 <div class="line"><span class="lineno">   16</span>  <span class="keywordflow">if</span> (smearBeam &gt; 0) {</div>
 <div class="line"><span class="lineno">   17</span>    dx = gRandom-&gt;Gaus(0, smearBeam);</div>
-<div class="line"><span class="lineno">   18</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> = gRandom-&gt;Gaus(0, smearBeam);</div>
+<div class="line"><span class="lineno">   18</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a> = gRandom-&gt;Gaus(0, smearBeam);</div>
 <div class="line"><span class="lineno">   19</span>  }</div>
 <div class="line"><span class="lineno">   20</span> </div>
 <div class="line"><span class="lineno">   21</span>  <span class="comment">// Uniform circular beam painting</span></div>
 <div class="line"><span class="lineno">   22</span>  <span class="keywordflow">if</span> (paintBeam &gt; 0) {</div>
 <div class="line"><span class="lineno">   23</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = gRandom-&gt;Uniform(0., 2 * TMath::Pi());</div>
 <div class="line"><span class="lineno">   24</span>    dx += paintBeam * TMath::Cos(phi);</div>
-<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a> += paintBeam * TMath::Sin(phi);</div>
+<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a> += paintBeam * TMath::Sin(phi);</div>
 <div class="line"><span class="lineno">   26</span>  }</div>
 <div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">return</span> {dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">dy</a>};</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">return</span> {dx, <a class="code hl_variable" href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">dy</a>};</div>
 <div class="line"><span class="lineno">   29</span>}</div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00086">makeMuonDIS.py:86</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a268fb420d1b4cf832469ab372827e014"><div class="ttname"><a href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">run_fixedTarget.dy</a></div><div class="ttdeci">int dy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00014">run_fixedTarget.py:14</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00098">makeMuonDIS.py:98</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a3112a5faf6aba672ca6db63ae2691c5c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">run_fixedTarget.dy</a></div><div class="ttdeci">float dy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00016">run_fixedTarget.py:16</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

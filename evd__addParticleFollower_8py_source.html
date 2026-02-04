@@ -100,90 +100,98 @@ $(document).ready(function(){initNavTree('evd__addParticleFollower_8py_source.ht
 <a href="evd__addParticleFollower_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> ROOT,evd_fillEnergy</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a1412b4683b4c39c3c1e5cd0123faa1d3">    5</a></span>gEve=ROOT.gEve</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> eveGlobal</div>
-<div class="foldopen" id="foldopen00007" data-start="" data-end="">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">    7</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">execute</a>():</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> gEve.GetViewers().FindChild(<span class="stringliteral">&#39;Bar Embedded Viewer side&#39;</span>):</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  pack1 = slot.MakePack()</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  pack1.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  pack1.SetElementName(<span class="stringliteral">&quot;Top/Side View&quot;</span>)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  pack1.SetVertical()</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"># Embedded viewer.</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  cams = [<span class="stringliteral">&#39;side&#39;</span>,<span class="stringliteral">&#39;top&#39;</span>]</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cams:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   slot = pack1.NewSlot()</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   v = ROOT.TEveViewer(<span class="stringliteral">&quot;BarViewer&quot;</span>+c)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   v.SpawnGLEmbeddedViewer(gEve.GetEditor())</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   slot.ReplaceWindow(v)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   v.SetElementName(<span class="stringliteral">&quot;Bar Embedded Viewer &quot;</span>+c)  <span class="comment"># gEve.GetViewers().FindChild(&#39;Bar Embedded Viewer&#39;)</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   v.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   gEve.GetViewers().AddElement(v)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   v.AddScene(gEve.GetEventScene())</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   v.AddScene(gEve.GetScenes().FindChild(<span class="stringliteral">&#39;Geometry scene&#39;</span>))</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   vw = v.GetGLViewer()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   <span class="keywordflow">if</span> c==<span class="stringliteral">&#39;top&#39;</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZnOX)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZOY)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   vw.ResetCameras()</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   cam = vw.CurrentCamera()</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   cam.Reset()</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   ed = v.GetEditorObject()</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   co = ed.GetCameraOverlay()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="keywordflow">if</span> c==<span class="stringliteral">&#39;top&#39;</span>:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="comment"># doesn&#39;t really work</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    center = array(<span class="stringliteral">&#39;d&#39;</span>,[0,500.,0])</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    cam.Configure(1.0,0.,center,0.,0.)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    co.SetShowOrthographic(<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll) <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    ls = vw.GetLightSet()</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    ls.SetSidePower(1.0)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    ls.SetFrontPower(1.0)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    ls.SetSpecularPower(1.0)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    center = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    cam.Configure(1.0,0.,center,0,0)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    co.SetShowOrthographic(<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll) <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    ls = vw.GetLightSet()</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    ls.SetFrontPower(0.2)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    ls.SetSidePower(0.4)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    ls.SetSpecularPower(1.1)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"># problems with light, Camera home</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">#cam.SetExternalCenter(ROOT.kTRUE)</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   vw.DoDraw()</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">#</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  slot = pack1.NewSlot()</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  slot.StartEmbedding()</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  can = ROOT.TCanvas(<span class="stringliteral">&quot;Root Canvas EnergyLoss&quot;</span>) <span class="comment"># ROOT.gROOT.FindObject(&#39;Root Canvas&#39;)</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  can.SetTitle(<span class="stringliteral">&#39;Energy as function of z&#39;</span>)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  can.ToggleEditor()</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  slot.StopEmbedding()</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  ls = ROOT.gROOT.GetListOfGlobals()</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  ls.Add(can)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  SHiPDisplay  = eveGlobal.SHiPDisplay</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  SHiPDisplay.transparentMode(<span class="stringliteral">&#39;on&#39;</span>)</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> array <span class="keyword">import</span> array</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> evd_fillEnergy</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a1412b4683b4c39c3c1e5cd0123faa1d3">    9</a></span>gEve = ROOT.gEve</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> eveGlobal</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="" data-end="">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">   13</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">execute</a>():</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> gEve.GetViewers().FindChild(<span class="stringliteral">&quot;Bar Embedded Viewer side&quot;</span>):</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        pack1 = slot.MakePack()</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        pack1.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        pack1.SetElementName(<span class="stringliteral">&quot;Top/Side View&quot;</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        pack1.SetVertical()</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="comment"># Embedded viewer.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        cams = [<span class="stringliteral">&quot;side&quot;</span>, <span class="stringliteral">&quot;top&quot;</span>]</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cams:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            slot = pack1.NewSlot()</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            v = ROOT.TEveViewer(<span class="stringliteral">&quot;BarViewer&quot;</span> + c)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            v.SpawnGLEmbeddedViewer(gEve.GetEditor())</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            slot.ReplaceWindow(v)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            v.SetElementName(<span class="stringliteral">&quot;Bar Embedded Viewer &quot;</span> + c)  <span class="comment"># gEve.GetViewers().FindChild(&#39;Bar Embedded Viewer&#39;)</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            v.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            gEve.GetViewers().AddElement(v)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            v.AddScene(gEve.GetEventScene())</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            v.AddScene(gEve.GetScenes().FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>))</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            vw = v.GetGLViewer()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">if</span> c == <span class="stringliteral">&quot;top&quot;</span>:</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZnOX)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZOY)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            vw.ResetCameras()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            cam = vw.CurrentCamera()</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            cam.Reset()</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            ed = v.GetEditorObject()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            co = ed.GetCameraOverlay()</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">if</span> c == <span class="stringliteral">&quot;top&quot;</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                <span class="comment"># doesn&#39;t really work</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                center = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 500.0, 0])</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                cam.Configure(1.0, 0.0, center, 0.0, 0.0)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                co.SetShowOrthographic(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll)  <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                ls = vw.GetLightSet()</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                ls.SetSidePower(1.0)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                ls.SetFrontPower(1.0)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                ls.SetSpecularPower(1.0)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                center = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                cam.Configure(1.0, 0.0, center, 0, 0)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                co.SetShowOrthographic(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll)  <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                ls = vw.GetLightSet()</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                ls.SetFrontPower(0.2)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                ls.SetSidePower(0.4)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                ls.SetSpecularPower(1.1)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="comment"># problems with light, Camera home</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            vw.DoDraw()</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="comment">#</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        slot = pack1.NewSlot()</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        slot.StartEmbedding()</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        can = ROOT.TCanvas(<span class="stringliteral">&quot;Root Canvas EnergyLoss&quot;</span>)  <span class="comment"># ROOT.gROOT.FindObject(&#39;Root Canvas&#39;)</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        can.SetTitle(<span class="stringliteral">&quot;Energy as function of z&quot;</span>)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        can.ToggleEditor()</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        slot.StopEmbedding()</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        ls = ROOT.gROOT.GetListOfGlobals()</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        ls.Add(can)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        SHiPDisplay = eveGlobal.SHiPDisplay</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        SHiPDisplay.transparentMode(<span class="stringliteral">&quot;on&quot;</span>)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keywordflow">if</span> __name__==<span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_function" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">execute</a>()</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">   72</a></span>  v = ROOT.gEve.GetViewers().FindChild(<span class="stringliteral">&#39;Bar Embedded Viewer side&#39;</span>)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a75e4d088426bf0926bdfc45d1439654b">   73</a></span>  vw = v.GetGLViewer()</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#ad6560704d9d9a8192c9a2b200907c919">   74</a></span>  cam = vw.CurrentCamera()</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a4572941be3b61e8753046d8af048af0d">   75</a></span>  fr = vw.GetFrame()</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a74bc49df6761180efe3be10310fca94c">   76</a></span>  test = ROOT.TGLVertex3(0.,0.,0.)</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a978d88e08ac2b36036f6a27074d5d89b">   77</a></span>  vtest = cam.ViewportToWorld(test)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a">   78</a></span>  zmin = vtest.Z()</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  test = ROOT.TGLVertex3(fr.GetWidth(),0.,0.)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  vtest = cam.ViewportToWorld(test)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc">   81</a></span>  zmax = vtest.Z()</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  print(<span class="stringliteral">&quot;?&quot;</span>,zmin,zmax)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a>()</div>
-<div class="ttc" id="anamespaceevd__addParticleFollower_html_a1b614355606c00cfae17a1786f406122"><div class="ttname"><a href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">evd_addParticleFollower.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__addParticleFollower_8py_source.html#l00007">evd_addParticleFollower.py:7</a></div></div>
-<div class="ttc" id="anamespaceevd__fillEnergy_html_ad52729d6ce0c884ae566786a297327cd"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00060">evd_fillEnergy.py:60</a></div></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_function" href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">execute</a>()</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">   80</a></span>    v = ROOT.gEve.GetViewers().FindChild(<span class="stringliteral">&quot;Bar Embedded Viewer side&quot;</span>)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a75e4d088426bf0926bdfc45d1439654b">   81</a></span>    vw = v.GetGLViewer()</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#ad6560704d9d9a8192c9a2b200907c919">   82</a></span>    cam = vw.CurrentCamera()</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a4572941be3b61e8753046d8af048af0d">   83</a></span>    fr = vw.GetFrame()</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a74bc49df6761180efe3be10310fca94c">   84</a></span>    test = ROOT.TGLVertex3(0.0, 0.0, 0.0)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a978d88e08ac2b36036f6a27074d5d89b">   85</a></span>    vtest = cam.ViewportToWorld(test)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a">   86</a></span>    zmin = vtest.Z()</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    test = ROOT.TGLVertex3(fr.GetWidth(), 0.0, 0.0)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    vtest = cam.ViewportToWorld(test)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc">   89</a></span>    zmax = vtest.Z()</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    print(<span class="stringliteral">&quot;?&quot;</span>, zmin, zmax)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a>()</div>
+<div class="ttc" id="anamespaceevd__addParticleFollower_html_a1b614355606c00cfae17a1786f406122"><div class="ttname"><a href="namespaceevd__addParticleFollower.html#a1b614355606c00cfae17a1786f406122">evd_addParticleFollower.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__addParticleFollower_8py_source.html#l00013">evd_addParticleFollower.py:13</a></div></div>
+<div class="ttc" id="anamespaceevd__fillEnergy_html_ad52729d6ce0c884ae566786a297327cd"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00057">evd_fillEnergy.py:57</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

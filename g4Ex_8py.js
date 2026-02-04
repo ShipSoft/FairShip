@@ -38,7 +38,7 @@ var g4Ex_8py =
     [ "sens", "g4Ex_8py.html#a5294848e359b178f218ce1071f11098c", null ],
     [ "t0", "g4Ex_8py.html#af93fe7803fd2d2d3d90f4c28b4120f8f", null ],
     [ "t1", "g4Ex_8py.html#afd27be4af37c94678ccdccb2c39e7f62", null ],
-    [ "tauOnly", "g4Ex_8py.html#a0e89715f7557611814a8c3c1438b7145", null ],
+    [ "tauOnly", "g4Ex_8py.html#abfc584772d072296041c7f855f6168a4", null ],
     [ "withNtuple", "g4Ex_8py.html#ac9f6420d3cabff7af8e5e869703c812f", null ],
     [ "xx", "g4Ex_8py.html#abd8cde62a307957fbb35535058451d42", null ]
 ];

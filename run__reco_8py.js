@@ -4,7 +4,7 @@ var run__reco_8py =
     [ "checkRunningProcesses", "run__reco_8py.html#a3887783d2d08cfbc1602f0b78b27ade8", null ],
     [ "copyRecoToEos", "run__reco_8py.html#a2aeff2abc7e871ba3f88c8192c7aad0d", null ],
     [ "execute", "run__reco_8py.html#a66ca87893feed968ac57348d5dc6e258", null ],
-    [ "execute", "run__reco_8py.html#a338da58575286ed585f7232c2604ec38", null ],
+    [ "execute_parallel", "run__reco_8py.html#a96a4162b5cd78998373a3bd5daff67fe", null ],
     [ "executeAna", "run__reco_8py.html#ab7bd132b6defae6b97e7ca99c9aa6270", null ],
     [ "executeSimple", "run__reco_8py.html#a2ed832760693e6ac7125bfffa8b40227", null ],
     [ "fitSingleGauss", "run__reco_8py.html#a234045bab4a14769c501bbee93be59cb", null ],
@@ -19,7 +19,7 @@ var run__reco_8py =
     [ "h", "run__reco_8py.html#a8553d576110e35b60e61c44b803d35a1", null ],
     [ "ncores", "run__reco_8py.html#a73cbd0f6d7d8add2128f07b538176260", null ],
     [ "pl", "run__reco_8py.html#a643466c527aa2d6265fc9b100d36e080", null ],
-    [ "pref", "run__reco_8py.html#a9dabb00cd6b80021cf8ee4b76b1cab04", null ],
+    [ "pref", "run__reco_8py.html#ab410d600c3e439599f33bafbf3b84bf4", null ],
     [ "user", "run__reco_8py.html#a006fd0bc278889d0f639c7efd723348f", null ],
     [ "xx", "run__reco_8py.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc", null ]
 ];

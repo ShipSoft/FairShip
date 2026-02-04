@@ -21,6 +21,6 @@ var proton__bremsstrahlung_8py =
     [ "wba", "proton__bremsstrahlung_8py.html#a695ec6be4f232306b1c304ab8bfc2eef", null ],
     [ "zeta", "proton__bremsstrahlung_8py.html#ac8d68997530cee631a8f823867dd96ce", null ],
     [ "mProton", "proton__bremsstrahlung_8py.html#ae3b95b849d91a62e6d5819f662a86f2b", null ],
-    [ "protonEnergy", "proton__bremsstrahlung_8py.html#aea9544b9811cdcd633c3dabc8eeef64a", null ],
+    [ "protonEnergy", "proton__bremsstrahlung_8py.html#a97876c92837019c17bb67ac9ac1ad120", null ],
     [ "protonMomentum", "proton__bremsstrahlung_8py.html#a47e461cd92265e129840b8b3f5e64edb", null ]
 ];

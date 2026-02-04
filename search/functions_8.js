@@ -7,7 +7,7 @@ var searchData=
   ['hassymmetry_4',['HasSymmetry',['../classShipBFieldMap.html#a23fc5866bcd2e4009b99bc3824f5ee48',1,'ShipBFieldMap']]],
   ['hideplasticscintillator_5',['hidePlasticScintillator',['../namespaceeventDisplay.html#a173c96261cf7e6d8f123d148798a9943',1,'eventDisplay']]],
   ['hit_5fin_5fbin_6',['hit_in_bin',['../namespaceshipPatRec.html#abcdd3acd1c7b2a34c5e80d19108840ca',1,'shipPatRec']]],
-  ['hit_5fin_5fwindow_7',['hit_in_window',['../namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82',1,'shipPatRec']]],
+  ['hit_5fin_5fwindow_7',['hit_in_window',['../namespaceshipPatRec.html#a900adda1f7ae6c696f866d55f99afd0c',1,'shipPatRec']]],
   ['hits_5fsplit_8',['hits_split',['../namespaceshipPatRec.html#a88e22572a88720d78a13055a49cc64da',1,'shipPatRec']]],
   ['hnlkinematics_9',['HNLKinematics',['../namespaceShipAna.html#ace9d8fcbe3e1150e5f660c671c8e3a24',1,'ShipAna']]],
   ['hnlpythia8generator_10',['HNLPythia8Generator',['../classHNLPythia8Generator.html#aaea0a3e2bf81106eaf2c2b06c45f7c7a',1,'HNLPythia8Generator']]],

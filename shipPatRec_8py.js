@@ -3,7 +3,7 @@ var shipPatRec_8py =
     [ "artificial_retina_pat_rec_stereo_views", "shipPatRec_8py.html#a2d54ac07b407e2d1f95a45c799a57a7f", null ],
     [ "artificial_retina_pat_rec_y_view", "shipPatRec_8py.html#a848914b2596b8ce24ce06d706a96cd29", null ],
     [ "artificial_retina_pattern_recognition", "shipPatRec_8py.html#aaed2c3b80a8c779802840a527d840b5c", null ],
-    [ "execute", "shipPatRec_8py.html#af0ccef68f17f3989d7870e3c793a33e1", null ],
+    [ "execute", "shipPatRec_8py.html#a084a8ca9a8734851b80ca43183f45a86", null ],
     [ "fast_hough_pat_rec_stereo_views", "shipPatRec_8py.html#a26083157d3c5b063b6787c476ef896e6", null ],
     [ "fast_hough_pat_rec_y_view", "shipPatRec_8py.html#a9e786dcf32b59b846a190bf82d7f6f40", null ],
     [ "fast_hough_transform_pattern_recognition", "shipPatRec_8py.html#a34ca2cd92dbeecb478eb4b53152a3f46", null ],
@@ -11,7 +11,7 @@ var shipPatRec_8py =
     [ "get_best_seed", "shipPatRec_8py.html#ac3ea0f3e8b39de2e6778b74f798568c2", null ],
     [ "get_zy_projection", "shipPatRec_8py.html#a50f1d2cf92badc6046881b76c02c5c6d", null ],
     [ "hit_in_bin", "shipPatRec_8py.html#abcdd3acd1c7b2a34c5e80d19108840ca", null ],
-    [ "hit_in_window", "shipPatRec_8py.html#a31c3d4163ed55d9615b93dd88cfd7d82", null ],
+    [ "hit_in_window", "shipPatRec_8py.html#a900adda1f7ae6c696f866d55f99afd0c", null ],
     [ "hits_split", "shipPatRec_8py.html#a88e22572a88720d78a13055a49cc64da", null ],
     [ "initialize", "shipPatRec_8py.html#ab38d0af63836ca01768aaff4f602ce53", null ],
     [ "pat_rec_stereo_views", "shipPatRec_8py.html#a1aceec100bcfa9fd13a9709544805a10", null ],
@@ -23,7 +23,7 @@ var shipPatRec_8py =
     [ "tracks_combination_using_extrapolation", "shipPatRec_8py.html#ae6b2c397c5e235b05d0d91e0535e6e02", null ],
     [ "__author__", "shipPatRec_8py.html#a887d7c79ae760b2046f2430639b9310d", null ],
     [ "max_x", "shipPatRec_8py.html#a14630232c258b560f832ed72fb3f9138", null ],
-    [ "r_scale", "shipPatRec_8py.html#aba2136768f8be9c491ff0fad89614c22", null ],
+    [ "r_scale", "shipPatRec_8py.html#aa601776ac34cd1fd3d2473441566ee86", null ],
     [ "ReconstructibleMCTracks", "shipPatRec_8py.html#a1b2eef17cc3ac04669d2fa4c73c11257", null ],
     [ "theTracks", "shipPatRec_8py.html#afa3471624029a285169b4908bafeaa02", null ]
 ];

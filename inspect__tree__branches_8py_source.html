@@ -184,26 +184,24 @@ $(document).ready(function(){initNavTree('inspect__tree__branches_8py_source.htm
 <div class="foldopen" id="foldopen00083" data-start="" data-end="">
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">   83</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">main</a>():</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="stringliteral">&quot;&quot;&quot;Parse arguments and run the TTree branch inspection.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    parser = argparse.ArgumentParser(</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        description=<span class="stringliteral">&quot;Inspect TTree branches for RNTuple compatibility&quot;</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    )</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input-file&quot;</span>, required=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;Input ROOT file&quot;</span>)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    parser.add_argument(</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="stringliteral">&quot;--tree-name&quot;</span>,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        default=<span class="stringliteral">&quot;cbmsim&quot;</span>,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        help=<span class="stringliteral">&quot;Name of TTree to inspect (default: cbmsim)&quot;</span>,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    )</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    parser = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Inspect TTree branches for RNTuple compatibility&quot;</span>)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input-file&quot;</span>, required=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;Input ROOT file&quot;</span>)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    parser.add_argument(</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="stringliteral">&quot;--tree-name&quot;</span>,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        default=<span class="stringliteral">&quot;cbmsim&quot;</span>,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        help=<span class="stringliteral">&quot;Name of TTree to inspect (default: cbmsim)&quot;</span>,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    )</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    args = parser.parse_args()</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    args = parser.parse_args()</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    success = <a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(args.input_file, args.tree_name)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> 0 <span class="keywordflow">if</span> success <span class="keywordflow">else</span> 1</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    success = <a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(args.input_file, args.tree_name)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> 0 <span class="keywordflow">if</span> success <span class="keywordflow">else</span> 1</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    sys.exit(<a class="code hl_function" href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">main</a>())</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    sys.exit(<a class="code hl_function" href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">main</a>())</div>
 <div class="ttc" id="anamespaceinspect__tree__branches_html"><div class="ttname"><a href="namespaceinspect__tree__branches.html">inspect_tree_branches</a></div><div class="ttdef"><b>Definition</b> <a href="inspect__tree__branches_8py_source.html#l00001">inspect_tree_branches.py:1</a></div></div>
 <div class="ttc" id="anamespaceinspect__tree__branches_html_a1e143d67889541c19c63fcd5364ef4ec"><div class="ttname"><a href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">inspect_tree_branches.main</a></div><div class="ttdeci">main()</div><div class="ttdef"><b>Definition</b> <a href="inspect__tree__branches_8py_source.html#l00083">inspect_tree_branches.py:83</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

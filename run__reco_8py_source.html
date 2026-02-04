@@ -100,377 +100,457 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <a href="run__reco_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacerun__reco.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> os, subprocess,ROOT,time,getpass,multiprocessing</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a73cbd0f6d7d8add2128f07b538176260">    6</a></span>ncores = min(multiprocessing.cpu_count(),4)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f">    7</a></span>user   = getpass.getuser()</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"># support for eos, assume: eosmount $HOME/eos</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> getpass</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> multiprocessing</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> os</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> subprocess</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> time</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a8553d576110e35b60e61c44b803d35a1">   10</a></span>h = {}</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(x,ba=None,be=None):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    name    = <span class="stringliteral">&#39;myGauss_&#39;</span>+x</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba : ba = h[x].GetBinCenter(1)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> be : be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>       bw    = h[x].GetBinWidth(1)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>       mean  = h[x].GetMean()</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>       sigma = h[x].GetRMS()</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>       norm  = h[x].GetEntries()*0.3</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>       myGauss = ROOT.TF1(name,<span class="stringliteral">&#39;[0]*&#39;</span>+str(bw)+<span class="stringliteral">&#39;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&#39;</span>,4)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>       myGauss.SetParameter(0,norm)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>       myGauss.SetParameter(1,mean)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>       myGauss.SetParameter(2,sigma)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>       myGauss.SetParameter(3,1.)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>       myGauss.SetParName(0,<span class="stringliteral">&#39;Signal&#39;</span>)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>       myGauss.SetParName(1,<span class="stringliteral">&#39;Mean&#39;</span>)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>       myGauss.SetParName(2,<span class="stringliteral">&#39;Sigma&#39;</span>)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>       myGauss.SetParName(3,<span class="stringliteral">&#39;bckgr&#39;</span>)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    h[x].Fit(myGauss,<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,ba,be)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a73cbd0f6d7d8add2128f07b538176260">   13</a></span>ncores = min(multiprocessing.cpu_count(), 4)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f">   14</a></span>user = getpass.getuser()</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"># support for eos, assume: eosmount $HOME/eos</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a8553d576110e35b60e61c44b803d35a1">   17</a></span>h = {}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="" data-end="">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">   20</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(x, ba=None, be=None):</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    name = <span class="stringliteral">&quot;myGauss_&quot;</span> + x</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            ba = h[x].GetBinCenter(1)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> be:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        bw = h[x].GetBinWidth(1)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        mean = h[x].GetMean()</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        sigma = h[x].GetRMS()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        norm = h[x].GetEntries() * 0.3</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        myGauss = ROOT.TF1(name, <span class="stringliteral">&quot;[0]*&quot;</span> + str(bw) + <span class="stringliteral">&quot;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&quot;</span>, 4)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        myGauss.SetParameter(0, norm)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        myGauss.SetParameter(1, mean)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        myGauss.SetParameter(2, sigma)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        myGauss.SetParameter(3, 1.0)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        myGauss.SetParName(0, <span class="stringliteral">&quot;Signal&quot;</span>)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        myGauss.SetParName(1, <span class="stringliteral">&quot;Mean&quot;</span>)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        myGauss.SetParName(2, <span class="stringliteral">&quot;Sigma&quot;</span>)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        myGauss.SetParName(3, <span class="stringliteral">&quot;bckgr&quot;</span>)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    h[x].Fit(myGauss, <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, ba, be)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aa2d053442cc575863e21b3cb0d599b84">   33</a></span>cmd     = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]+<span class="stringliteral">&quot;/macro/ShipReco.py&quot;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab11bee5e2fac20519bd1e0888eaa6790">   34</a></span>cmdAna  = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]+<span class="stringliteral">&quot;/macro/ShipAna.py&quot;</span></div>
-<div class="foldopen" id="foldopen00035" data-start="" data-end="">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a338da58575286ed585f7232c2604ec38">   35</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">execute</a>( ncpu = 4 ):</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  cpus = {}</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  log  = {}</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ncpu): cpus[i]={}</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  jobs = []</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>         jobs.append(x)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  k = 0</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  print(jobs)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">if</span> k==ncpu: k = 0</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">if</span> <span class="stringliteral">&#39;child&#39;</span> <span class="keywordflow">in</span> cpus[k]:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        rc = child.communicate()[0]</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        log[k][<span class="stringliteral">&#39;log&#39;</span>].close()</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,k,x)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>          inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>          log[k]  = open(<span class="stringliteral">&quot;logRec&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>          cpus[k] = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmd,<span class="stringliteral">&quot;-n 9999999 -f &quot;</span>+inputfile], stdout=log[k],)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>          k+=1</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>          <span class="keywordflow">break</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> cpus,log</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aa2d053442cc575863e21b3cb0d599b84">   44</a></span>cmd = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/macro/ShipReco.py&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab11bee5e2fac20519bd1e0888eaa6790">   45</a></span>cmdAna = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/macro/ShipAna.py&quot;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00048" data-start="" data-end="">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">   48</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">execute_parallel</a>(prefix, ncpu=4):</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    cpus = {}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    log = {}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ncpu):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        cpus[i] = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    jobs = []</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix) &lt; 0:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">if</span> os.path.isdir(x):</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                jobs.append(x)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    k = 0</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    print(jobs)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">if</span> k == ncpu:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            k = 0</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keywordflow">if</span> cpus[k] <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            cpus[k].communicate()</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            log[k].close()</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        print(<span class="stringliteral">&quot;change to directory &quot;</span>, k, x)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        os.chdir(<span class="stringliteral">&quot;./&quot;</span> + x)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                log[k] = open(<span class="stringliteral">&quot;logRec&quot;</span>, <span class="stringliteral">&quot;w&quot;</span>)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                cpus[k] = subprocess.Popen(</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    [<span class="stringliteral">&quot;python&quot;</span>, cmd, <span class="stringliteral">&quot;-n 9999999 -f &quot;</span> + inputfile],</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                    stdout=log[k],</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                )</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                k += 1</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> cpus, log</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 </div>
-<div class="foldopen" id="foldopen00063" data-start="" data-end="">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">   63</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix):</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> jobs = []</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>         jobs.append(x)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> <span class="keywordflow">return</span> jobs</div>
+<div class="foldopen" id="foldopen00082" data-start="" data-end="">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">   82</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix):</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    jobs = []</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix) &lt; 0:</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="keywordflow">if</span> os.path.isdir(x):</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                jobs.append(x)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> jobs</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
 </div>
-<div class="foldopen" id="foldopen00070" data-start="" data-end="">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">   70</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>():</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> nproc = 0</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0 <span class="keywordflow">and</span> x.find(<span class="stringliteral">&#39;defunct&#39;</span>)&lt;0 :</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      nproc+=1</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> <span class="keywordflow">return</span> nproc</div>
+<div class="foldopen" id="foldopen00091" data-start="" data-end="">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">   91</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>():</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span> + user).read()</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    nproc = 0</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> processoutput.split(<span class="stringliteral">&quot;\n&quot;</span>):</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&quot;python&quot;</span>) &lt; 0 <span class="keywordflow">and</span> x.find(<span class="stringliteral">&quot;defunct&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            nproc += 1</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> nproc</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 </div>
-<div class="foldopen" id="foldopen00077" data-start="" data-end="">
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">   77</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">killAll</a>():</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span>+user).read()</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span>  processoutput.split(<span class="stringliteral">&#39;\n&#39;</span>):</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;python&#39;</span>)&lt;0:</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>       pid = int(x[:5])</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>       print(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>       os.system(<span class="stringliteral">&#39;kill &#39;</span>+str(pid))</div>
+<div class="foldopen" id="foldopen00100" data-start="" data-end="">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">  100</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">killAll</a>():</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span> + user).read()</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> processoutput.split(<span class="stringliteral">&quot;\n&quot;</span>):</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&quot;python&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            pid = int(x[:5])</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            print(<span class="stringliteral">&quot;kill &quot;</span> + str(pid))</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            os.system(<span class="stringliteral">&quot;kill &quot;</span> + str(pid))</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 </div>
-<div class="foldopen" id="foldopen00084" data-start="" data-end="">
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">   84</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(prefixes,reset=False):</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> proc = {}</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      geofile = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>          geofile = f</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>          <span class="keywordflow">break</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> geofile:</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>         print(<span class="stringliteral">&quot;ERROR: no geofile found&quot;</span>,x)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>         os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>         <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>          inputfile = geofile.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>          nproc = 100</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>          <span class="keywordflow">while</span> nproc &gt; ncores :</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">if</span> nproc &gt; ncores:</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>               print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>               time.sleep(100)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>          print(<span class="stringliteral">&#39;launch reco&#39;</span>,x)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>          proc[x] = 1</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>          <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logRec&quot;</span>)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>          <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>          <span class="keywordflow">if</span> reset: os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; --saveDisk &gt;&gt; logRec &amp;&quot;</span>)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>          <span class="keywordflow">else</span>:     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmd+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile + <span class="stringliteral">&quot; &gt;&gt; logRec &amp;&quot;</span>)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>          os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>          time.sleep(10)</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> nJobs = len(proc)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> <span class="keywordflow">while</span> nJobs &gt; 0:</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  nJobs = len(proc)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  print(<span class="stringliteral">&#39;debug &#39;</span>,nJobs)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted(proc.keys()):</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+p)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    nproc = 100</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">while</span> nproc &gt; ncores :</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keywordflow">if</span> nproc &gt; ncores:</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>       print(<span class="stringliteral">&#39;wait a minute&#39;</span>)</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>       time.sleep(100)</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    log = open(<span class="stringliteral">&#39;logRec&#39;</span>)</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    completed = <span class="keyword">False</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    rl = log.readlines()</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    log.close()</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] : completed = <span class="keyword">True</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> completed:</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>     print(<span class="stringliteral">&#39;analyze &#39;</span>,p,nproc)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>     <span class="keywordflow">try</span>:    os.system(<span class="stringliteral">&quot;rm logAna&quot;</span>)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>     <span class="keywordflow">except</span>: <span class="keywordflow">pass</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>     os.system(<span class="stringliteral">&quot;python &quot;</span>+cmdAna+<span class="stringliteral">&quot; -n 9999999 -f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)+ <span class="stringliteral">&quot; &gt;&gt; logAna &amp;&quot;</span>)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>     rc = proc.pop(p)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>     time.sleep(10)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>     print(<span class="stringliteral">&#39;Rec job not finished yet&#39;</span>,p)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>     nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>     <span class="keywordflow">if</span> nproc == 1 : print(<span class="stringliteral">&quot;rec job probably failed, only when python process running&quot;</span>)</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>     time.sleep(100)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="" data-end="">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">  109</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(prefixes, reset=False):</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    proc = {}</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            print(<span class="stringliteral">&quot;change to directory &quot;</span>, x)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + x)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            geofile = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    geofile = f</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                    <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> geofile:</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                print(<span class="stringliteral">&quot;ERROR: no geofile found&quot;</span>, x)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                inputfile = geofile.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                nproc = 100</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                <span class="keywordflow">while</span> nproc &gt; ncores:</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                    nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                    <span class="keywordflow">if</span> nproc &gt; ncores:</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                        print(<span class="stringliteral">&quot;wait a minute&quot;</span>)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                        time.sleep(100)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                print(<span class="stringliteral">&quot;launch reco&quot;</span>, x)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                proc[x] = 1</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                    os.system(<span class="stringliteral">&quot;rm logRec&quot;</span>)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                    <span class="keywordflow">pass</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                <span class="keywordflow">if</span> reset:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                    os.system(<span class="stringliteral">&quot;python &quot;</span> + cmd + <span class="stringliteral">&quot; -n 9999999 -f &quot;</span> + inputfile + <span class="stringliteral">&quot; --saveDisk &gt;&gt; logRec &amp;&quot;</span>)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                    os.system(<span class="stringliteral">&quot;python &quot;</span> + cmd + <span class="stringliteral">&quot; -n 9999999 -f &quot;</span> + inputfile + <span class="stringliteral">&quot; &gt;&gt; logRec &amp;&quot;</span>)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                time.sleep(10)</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    nJobs = len(proc)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">while</span> nJobs &gt; 0:</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        nJobs = len(proc)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        print(<span class="stringliteral">&quot;debug &quot;</span>, nJobs)</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted(proc.keys()):</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + p)</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            nproc = 100</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">while</span> nproc &gt; ncores:</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                <span class="keywordflow">if</span> nproc &gt; ncores:</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    print(<span class="stringliteral">&quot;wait a minute&quot;</span>)</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                    time.sleep(100)</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            log = open(<span class="stringliteral">&quot;logRec&quot;</span>)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            completed = <span class="keyword">False</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            rl = log.readlines()</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            log.close()</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl) - 1]:</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                completed = <span class="keyword">True</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">if</span> completed:</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                print(<span class="stringliteral">&quot;analyze &quot;</span>, p, nproc)</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                    os.system(<span class="stringliteral">&quot;rm logAna&quot;</span>)</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                    <span class="keywordflow">pass</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                os.system(</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                    <span class="stringliteral">&quot;python &quot;</span> + cmdAna + <span class="stringliteral">&quot; -n 9999999 -f &quot;</span> + inputfile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>) + <span class="stringliteral">&quot; &gt;&gt; logAna &amp;&quot;</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                )</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                proc.pop(p)</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                time.sleep(10)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                print(<span class="stringliteral">&quot;Rec job not finished yet&quot;</span>, p)</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                <span class="keywordflow">if</span> nproc == 1:</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                    print(<span class="stringliteral">&quot;rec job probably failed, only when python process running&quot;</span>)</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                time.sleep(100)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
 </div>
-<div class="foldopen" id="foldopen00147" data-start="" data-end="">
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">  147</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">executeAna</a>(prefixes):</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> cpus = {}</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> log  = {}</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    print(<span class="stringliteral">&quot;change to directory &quot;</span>,x)</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    os.chdir(<span class="stringliteral">&#39;./&#39;</span>+x)</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        log[x] = open(<span class="stringliteral">&quot;logAna&quot;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        process = subprocess.Popen([<span class="stringliteral">&quot;python&quot;</span>,cmdAna,<span class="stringliteral">&quot;-n 9999999&quot;</span>, <span class="stringliteral">&quot;-f &quot;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)], stdout=log[x])</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        process.wait()</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        print(<span class="stringliteral">&#39;finished &#39;</span>,process.returncode)</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        log[x].close()</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        os.chdir(<span class="stringliteral">&#39;../&#39;</span>)</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="keywordflow">break</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="foldopen" id="foldopen00183" data-start="" data-end="">
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">  183</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">executeAna</a>(prefixes):</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    log = {}</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            print(<span class="stringliteral">&quot;change to directory &quot;</span>, x)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + x)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                    inputfile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                    log[x] = open(<span class="stringliteral">&quot;logAna&quot;</span>, <span class="stringliteral">&quot;w&quot;</span>)</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                    process = subprocess.Popen(</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                        [<span class="stringliteral">&quot;python&quot;</span>, cmdAna, <span class="stringliteral">&quot;-n 9999999&quot;</span>, <span class="stringliteral">&quot;-f &quot;</span> + inputfile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>)], stdout=log[x]</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                    )</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                    process.wait()</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    print(<span class="stringliteral">&quot;finished &quot;</span>, process.returncode)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                    log[x].close()</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                    os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                    <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
 </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>h={}</div>
-<div class="foldopen" id="foldopen00167" data-start="" data-end="">
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">  167</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(p):</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> type(p)==type([]): pl=[p]</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> <span class="keywordflow">else</span>: pl = p</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> hlist = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pl:</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>   prefix = str(p)</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>):</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix)&lt;0:</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>       <span class="keywordflow">if</span> os.path.isdir(x) :</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>         hlist += x+<span class="stringliteral">&#39;/ShipAna.root &#39;</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> print(<span class="stringliteral">&quot;--&gt;&quot;</span>,hlist)</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> os.system(<span class="stringliteral">&#39;hadd -f ShipAna.root &#39;</span>+hlist)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> ut.readHists(h,<span class="stringliteral">&quot;ShipAna.root&quot;</span>)</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> <span class="keywordflow">if</span> 1&gt;0:</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;strawanalysis&#39;</span>,title=<span class="stringliteral">&#39;Distance to wire and mean nr of hits&#39;</span>,nx=1200,ny=600,cx=2,cy=1)</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">#</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(1)</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>   h[<span class="stringliteral">&#39;disty&#39;</span>].DrawCopy()</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>   h[<span class="stringliteral">&#39;distu&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>   h[<span class="stringliteral">&#39;distv&#39;</span>].DrawCopy(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(2)</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>   h[<span class="stringliteral">&#39;meanhits&#39;</span>].DrawCopy()</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>   print(h[<span class="stringliteral">&#39;meanhits&#39;</span>].GetEntries())</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(1)</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>   h[<span class="stringliteral">&#39;delPOverP&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(2)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>   cv.SetLogy(1)</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>   h[<span class="stringliteral">&#39;chi2&#39;</span>].Draw()</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(3)</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP&#39;</span>].ProjectionY()</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>   ROOT.gStyle.SetOptFit(11111)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Draw()</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>   h[<span class="stringliteral">&#39;delPOverP_proj&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>)</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(4)</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP2&#39;</span>].ProjectionY()</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>   h[<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>].Draw()</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>   <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&#39;delPOverP2_proj&#39;</span>)</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>   h[<span class="stringliteral">&#39;fitresults&#39;</span>].Print(<span class="stringliteral">&#39;fitresults.gif&#39;</span>)</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults2&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>   print(<span class="stringliteral">&#39;finished with first canvas&#39;</span>)</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(1)</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>   h[<span class="stringliteral">&#39;Doca&#39;</span>].Draw()</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(2)</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>   h[<span class="stringliteral">&#39;IP0&#39;</span>].Draw()</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(3)</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   h[<span class="stringliteral">&#39;HNL&#39;</span>].Draw()</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>   <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&#39;HNL&#39;</span>,0.,2.)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>   cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>].cd(4)</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   h[<span class="stringliteral">&#39;IP0/mass&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   h[<span class="stringliteral">&#39;fitresults2&#39;</span>].Print(<span class="stringliteral">&#39;fitresults2.gif&#39;</span>)</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>   h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].Print(<span class="stringliteral">&#39;strawanalysis.gif&#39;</span>)</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>   print(<span class="stringliteral">&#39;finished making plots&#39;</span>)</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>h = {}</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="foldopen" id="foldopen00207" data-start="" data-end="">
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">  207</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(p):</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(p, list):</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        pl = [p]</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        pl = p</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    hlist = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> pl:</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        prefix = str(p)</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix) &lt; 0:</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                <span class="keywordflow">if</span> os.path.isdir(x):</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                    hlist += x + <span class="stringliteral">&quot;/ShipAna.root &quot;</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    print(<span class="stringliteral">&quot;--&gt;&quot;</span>, hlist)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    os.system(<span class="stringliteral">&quot;hadd -f ShipAna.root &quot;</span> + hlist)</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    ut.readHists(h, <span class="stringliteral">&quot;ShipAna.root&quot;</span>)</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    print(h[<span class="stringliteral">&quot;meanhits&quot;</span>].GetEntries())</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordflow">if</span> 1 &gt; 0:</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        ut.bookCanvas(h, key=<span class="stringliteral">&quot;strawanalysis&quot;</span>, title=<span class="stringliteral">&quot;Distance to wire and mean nr of hits&quot;</span>, nx=1200, ny=600, cx=2, cy=1)</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="comment">#</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        cv = h[<span class="stringliteral">&quot;strawanalysis&quot;</span>].cd(1)</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        h[<span class="stringliteral">&quot;disty&quot;</span>].DrawCopy()</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        h[<span class="stringliteral">&quot;distu&quot;</span>].DrawCopy(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        h[<span class="stringliteral">&quot;distv&quot;</span>].DrawCopy(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        cv = h[<span class="stringliteral">&quot;strawanalysis&quot;</span>].cd(2)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        h[<span class="stringliteral">&quot;meanhits&quot;</span>].DrawCopy()</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        print(h[<span class="stringliteral">&quot;meanhits&quot;</span>].GetEntries())</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        ut.bookCanvas(h, key=<span class="stringliteral">&quot;fitresults&quot;</span>, title=<span class="stringliteral">&quot;Fit Results&quot;</span>, nx=1600, ny=1200, cx=2, cy=2)</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        cv = h[<span class="stringliteral">&quot;fitresults&quot;</span>].cd(1)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        h[<span class="stringliteral">&quot;delPOverP&quot;</span>].Draw(<span class="stringliteral">&quot;box&quot;</span>)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        cv = h[<span class="stringliteral">&quot;fitresults&quot;</span>].cd(2)</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        cv.SetLogy(1)</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        h[<span class="stringliteral">&quot;chi2&quot;</span>].Draw()</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        cv = h[<span class="stringliteral">&quot;fitresults&quot;</span>].cd(3)</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        h[<span class="stringliteral">&quot;delPOverP_proj&quot;</span>] = h[<span class="stringliteral">&quot;delPOverP&quot;</span>].ProjectionY()</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        ROOT.gStyle.SetOptFit(11111)</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        h[<span class="stringliteral">&quot;delPOverP_proj&quot;</span>].Draw()</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        h[<span class="stringliteral">&quot;delPOverP_proj&quot;</span>].Fit(<span class="stringliteral">&quot;gaus&quot;</span>)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        cv = h[<span class="stringliteral">&quot;fitresults&quot;</span>].cd(4)</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        h[<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>] = h[<span class="stringliteral">&quot;delPOverP2&quot;</span>].ProjectionY()</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        h[<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>].Draw()</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>)</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        h[<span class="stringliteral">&quot;fitresults&quot;</span>].Print(<span class="stringliteral">&quot;fitresults.gif&quot;</span>)</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        ut.bookCanvas(h, key=<span class="stringliteral">&quot;fitresults2&quot;</span>, title=<span class="stringliteral">&quot;Fit Results&quot;</span>, nx=1600, ny=1200, cx=2, cy=2)</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        print(<span class="stringliteral">&quot;finished with first canvas&quot;</span>)</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(1)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        h[<span class="stringliteral">&quot;Doca&quot;</span>].Draw()</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(2)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        h[<span class="stringliteral">&quot;IP0&quot;</span>].Draw()</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(3)</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        h[<span class="stringliteral">&quot;HNL&quot;</span>].Draw()</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&quot;HNL&quot;</span>, 0.0, 2.0)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(4)</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        h[<span class="stringliteral">&quot;IP0/mass&quot;</span>].Draw(<span class="stringliteral">&quot;box&quot;</span>)</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        h[<span class="stringliteral">&quot;fitresults2&quot;</span>].Print(<span class="stringliteral">&quot;fitresults2.gif&quot;</span>)</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        h[<span class="stringliteral">&quot;strawanalysis&quot;</span>].Print(<span class="stringliteral">&quot;strawanalysis.gif&quot;</span>)</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        print(<span class="stringliteral">&quot;finished making plots&quot;</span>)</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
 </div>
-<div class="foldopen" id="foldopen00223" data-start="" data-end="">
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">  223</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(prefixes):</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  haddCommand = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>          haddCommand+= <span class="stringliteral">&#39; &#39;</span>+ x + <span class="stringliteral">&#39;/&#39;</span> + inputfile</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>          <span class="keywordflow">break</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  cmd = <span class="stringliteral">&#39;hadd -f &#39;</span>+inputfile.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_&#39;</span>+prefix+<span class="stringliteral">&#39;.root&#39;</span>) + haddCommand</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  os.system(cmd)</div>
+<div class="foldopen" id="foldopen00266" data-start="" data-end="">
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">  266</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(prefixes):</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        haddCommand = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                    inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>)</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                    haddCommand += <span class="stringliteral">&quot; &quot;</span> + x + <span class="stringliteral">&quot;/&quot;</span> + inputfile</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                    <span class="keywordflow">break</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        cmd = <span class="stringliteral">&quot;hadd -f &quot;</span> + inputfile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_&quot;</span> + prefix + <span class="stringliteral">&quot;.root&quot;</span>) + haddCommand</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        os.system(cmd)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
 </div>
-<div class="foldopen" id="foldopen00235" data-start="" data-end="">
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">  235</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(prefixes,quiet=False):</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> summary = {<span class="stringliteral">&#39;Sim&#39;</span>:{},<span class="stringliteral">&#39;Rec&#39;</span>:{},<span class="stringliteral">&#39;Ana&#39;</span>:{}}</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/log&#39;</span>)</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no log file for &#39;</span>,x)</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = -1</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    rl = log.readlines()</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    log.close()</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">if</span> len(rl)&lt;1 :</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed log file 0&quot;</span>,x)</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">elif</span> <span class="stringliteral">&quot;Real time&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;simulation step OK &#39;</span>,x)</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 1</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;simulation failed &quot;</span>,x)</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>      summary[<span class="stringliteral">&#39;Sim&#39;</span>][x] = 0</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logRec&#39;</span>)</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logRec file for &#39;</span>,x)</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = -1</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    rl = log.readlines()</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    log.close()</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;reconstruction step OK &#39;</span>,x)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 1</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;reconstruction failed &quot;</span>,x)</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      summary[<span class="stringliteral">&#39;Rec&#39;</span>][x] = 0</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keywordflow">try</span>:    log = open( x+<span class="stringliteral">&#39;/logAna&#39;</span>)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;no logAna file for &#39;</span>,x)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = -1</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    rl = log.readlines()</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    log.close()</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;finished&quot;</span> <span class="keywordflow">in</span> rl[len(rl)-1] :</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&#39;analysis step OK &#39;</span>,x)</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 1</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet: print(<span class="stringliteral">&quot;analysis failed &quot;</span>,x)</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>      summary[<span class="stringliteral">&#39;Ana&#39;</span>][x] = 0</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> <span class="keywordflow">return</span> summary</div>
+<div class="foldopen" id="foldopen00280" data-start="" data-end="">
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">  280</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(prefixes, quiet=False):</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    summary = {<span class="stringliteral">&quot;Sim&quot;</span>: {}, <span class="stringliteral">&quot;Rec&quot;</span>: {}, <span class="stringliteral">&quot;Ana&quot;</span>: {}}</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                log = open(x + <span class="stringliteral">&quot;/log&quot;</span>)</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                    print(<span class="stringliteral">&quot;no log file for &quot;</span>, x)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                summary[<span class="stringliteral">&quot;Sim&quot;</span>][x] = -1</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            rl = log.readlines()</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>            log.close()</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordflow">if</span> len(rl) &lt; 1:</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                    print(<span class="stringliteral">&quot;simulation failed log file 0&quot;</span>, x)</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                summary[<span class="stringliteral">&quot;Sim&quot;</span>][x] = 0</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            <span class="keywordflow">elif</span> <span class="stringliteral">&quot;Real time&quot;</span> <span class="keywordflow">in</span> rl[len(rl) - 1]:</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                    print(<span class="stringliteral">&quot;simulation step OK &quot;</span>, x)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                summary[<span class="stringliteral">&quot;Sim&quot;</span>][x] = 1</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                    print(<span class="stringliteral">&quot;simulation failed &quot;</span>, x)</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                summary[<span class="stringliteral">&quot;Sim&quot;</span>][x] = 0</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                log = open(x + <span class="stringliteral">&quot;/logRec&quot;</span>)</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                    print(<span class="stringliteral">&quot;no logRec file for &quot;</span>, x)</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                summary[<span class="stringliteral">&quot;Rec&quot;</span>][x] = -1</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            rl = log.readlines()</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>            log.close()</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;finishing&quot;</span> <span class="keywordflow">in</span> rl[len(rl) - 1]:</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                    print(<span class="stringliteral">&quot;reconstruction step OK &quot;</span>, x)</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                summary[<span class="stringliteral">&quot;Rec&quot;</span>][x] = 1</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                    print(<span class="stringliteral">&quot;reconstruction failed &quot;</span>, x)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                summary[<span class="stringliteral">&quot;Rec&quot;</span>][x] = 0</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                log = open(x + <span class="stringliteral">&quot;/logAna&quot;</span>)</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                    print(<span class="stringliteral">&quot;no logAna file for &quot;</span>, x)</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                summary[<span class="stringliteral">&quot;Ana&quot;</span>][x] = -1</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            rl = log.readlines()</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            log.close()</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;finished&quot;</span> <span class="keywordflow">in</span> rl[len(rl) - 1]:</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                    print(<span class="stringliteral">&quot;analysis step OK &quot;</span>, x)</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                summary[<span class="stringliteral">&quot;Ana&quot;</span>][x] = 1</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> quiet:</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>                    print(<span class="stringliteral">&quot;analysis failed &quot;</span>, x)</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>                summary[<span class="stringliteral">&quot;Ana&quot;</span>][x] = 0</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    <span class="keywordflow">return</span> summary</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
 </div>
-<div class="foldopen" id="foldopen00287" data-start="" data-end="">
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">  287</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">printFailedJobs</a>(pl):</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl,quiet=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="keywordflow">for</span> p <span class="keywordflow">in</span> result:</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[p]:</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>     <span class="keywordflow">if</span> result[p][x]&lt;1 : print(p,x,result[p][x])</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="foldopen" id="foldopen00347" data-start="" data-end="">
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">  347</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">printFailedJobs</a>(pl):</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl, quiet=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> result:</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[p]:</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>            <span class="keywordflow">if</span> result[p][x] &lt; 1:</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                print(p, x, result[p][x])</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
 </div>
-<div class="foldopen" id="foldopen00294" data-start="" data-end="">
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">  294</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">execute</a>():</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> <a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(pl,reset=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> <a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(pl)</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> <a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(pl)</div>
+<div class="foldopen" id="foldopen00355" data-start="" data-end="">
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">  355</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">execute</a>():</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(pl, reset=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(pl)</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(pl)</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
 </div>
-<div class="foldopen" id="foldopen00298" data-start="" data-end="">
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">  298</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">removeIntermediateFiles</a>(prefixes):</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>      <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <span class="keywordflow">if</span>  <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>          inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;_rec.root&#39;</span>)</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>          os.system(<span class="stringliteral">&#39;rm &#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span> + inputfile )</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="foldopen" id="foldopen00361" data-start="" data-end="">
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">  361</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">removeIntermediateFiles</a>(prefixes):</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>                    inputfile = (f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)).replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>)</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                    os.system(<span class="stringliteral">&quot;rm &quot;</span> + x + <span class="stringliteral">&quot;/&quot;</span> + inputfile)</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
 </div>
-<div class="foldopen" id="foldopen00307" data-start="" data-end="">
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">  307</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">copyRecoToEos</a>(pl):</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl,quiet=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[<span class="stringliteral">&#39;Rec&#39;</span>]:</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>     <span class="keywordflow">if</span> result[<span class="stringliteral">&#39;Rec&#39;</span>][x]&lt;1 : print(<span class="stringliteral">&#39;Reco failed !&#39;</span>,x,result[<span class="stringliteral">&#39;Rec&#39;</span>][x])</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      cmd = eos+<span class="stringliteral">&#39; cp -r &#39;</span>+os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>)+<span class="stringliteral">&#39;/&#39;</span>+x+<span class="stringliteral">&#39;/ /eos/experiment/ship/data/DAFreco/muonBackground/&#39;</span>+x+<span class="stringliteral">&#39;/&#39;</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      os.system(cmd)</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      print(<span class="stringliteral">&#39;copied to eos&#39;</span>,x)</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="foldopen" id="foldopen00371" data-start="" data-end="">
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">  371</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">copyRecoToEos</a>(pl):</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl, quiet=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[<span class="stringliteral">&quot;Rec&quot;</span>]:</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        <span class="keywordflow">if</span> result[<span class="stringliteral">&quot;Rec&quot;</span>][x] &lt; 1:</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>            print(<span class="stringliteral">&quot;Reco failed !&quot;</span>, x, result[<span class="stringliteral">&quot;Rec&quot;</span>][x])</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>            cmd = (</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>                eos</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>                + <span class="stringliteral">&quot; cp -r &quot;</span></div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>                + os.path.abspath(<span class="stringliteral">&quot;.&quot;</span>)</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                + <span class="stringliteral">&quot;/&quot;</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                + x</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>                + <span class="stringliteral">&quot;/ /eos/experiment/ship/data/DAFreco/muonBackground/&quot;</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                + x</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>                + <span class="stringliteral">&quot;/&quot;</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>            )</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>            os.system(cmd)</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>            print(<span class="stringliteral">&quot;copied to eos&quot;</span>, x)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
 </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a643466c527aa2d6265fc9b100d36e080">  317</a></span>pl=[]</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keywordflow">for</span> p <span class="keywordflow">in</span> os.sys.argv[1].split(<span class="stringliteral">&#39;,&#39;</span>):</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a9dabb00cd6b80021cf8ee4b76b1cab04">  319</a></span>   pref = <span class="stringliteral">&#39;muon&#39;</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc">  320</a></span>   xx = os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>).lower()</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&#39;neutrino&#39;</span>)&lt;0: pref=<span class="stringliteral">&#39;neutrino&#39;</span></div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&#39;vdis&#39;</span>)&lt;0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&#39;vetodis&#39;</span>)&lt;0: pref=<span class="stringliteral">&#39;disV&#39;</span></div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&#39;clby&#39;</span>)&lt;0:  pref=<span class="stringliteral">&#39;disCLBY&#39;</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&#39;dis&#39;</span>)&lt;0:  pref=<span class="stringliteral">&#39;dis&#39;</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   pl.append(pref+p)</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>print(<span class="stringliteral">&quot; execute()  input comma separated production nr, performs Simple/mergeHistos/mergeNtuples &quot;</span>)</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>print(<span class="stringliteral">&quot; executeSimple(pl,reset=True) &quot;</span>)</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>print(<span class="stringliteral">&quot; checkProd(pl)&quot;</span>)</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>print(<span class="stringliteral">&quot; executeAna(pl) &quot;</span>)</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>print(<span class="stringliteral">&quot; mergeNtuples(pl) &quot;</span>)</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>print(<span class="stringliteral">&quot; removeIntermediateFiles(pl) only _rec &quot;</span>)</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>print(<span class="stringliteral">&quot; checkRunningProcesses() &quot;</span>)</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment">#61,611,612,613,614,615,616,62,621,622,623,624,625,626</span></div>
-<div class="ttc" id="anamespacerun__reco_html_a088900932dc88aa02c54b314bb00cd72"><div class="ttname"><a href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">run_reco.removeIntermediateFiles</a></div><div class="ttdeci">removeIntermediateFiles(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00298">run_reco.py:298</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a234045bab4a14769c501bbee93be59cb"><div class="ttname"><a href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">run_reco.fitSingleGauss</a></div><div class="ttdeci">fitSingleGauss(x, ba=None, be=None)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00012">run_reco.py:12</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a2aeff2abc7e871ba3f88c8192c7aad0d"><div class="ttname"><a href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">run_reco.copyRecoToEos</a></div><div class="ttdeci">copyRecoToEos(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00307">run_reco.py:307</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a2ed832760693e6ac7125bfffa8b40227"><div class="ttname"><a href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">run_reco.executeSimple</a></div><div class="ttdeci">executeSimple(prefixes, reset=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00084">run_reco.py:84</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a3424015eb33497656d431f179af23295"><div class="ttname"><a href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">run_reco.mergeHistosMakePlots</a></div><div class="ttdeci">mergeHistosMakePlots(p)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00167">run_reco.py:167</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a3887783d2d08cfbc1602f0b78b27ade8"><div class="ttname"><a href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">run_reco.checkRunningProcesses</a></div><div class="ttdeci">checkRunningProcesses()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00070">run_reco.py:70</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a66ca87893feed968ac57348d5dc6e258"><div class="ttname"><a href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">run_reco.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00294">run_reco.py:294</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a716d50f4bb1f155dbad1e09376d7ab1f"><div class="ttname"><a href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">run_reco.printFailedJobs</a></div><div class="ttdeci">printFailedJobs(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00287">run_reco.py:287</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a7460d2d540a34984cc19de7da821a46c"><div class="ttname"><a href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">run_reco.checkProd</a></div><div class="ttdeci">checkProd(prefixes, quiet=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00235">run_reco.py:235</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_ab7bd132b6defae6b97e7ca99c9aa6270"><div class="ttname"><a href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">run_reco.executeAna</a></div><div class="ttdeci">executeAna(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00147">run_reco.py:147</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_aba0d272015e806800c99eefda16dd03a"><div class="ttname"><a href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">run_reco.mergeNtuples</a></div><div class="ttdeci">mergeNtuples(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00223">run_reco.py:223</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_ac9462d0c2d3b3b9405fcb71b1baa5794"><div class="ttname"><a href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">run_reco.getJobs</a></div><div class="ttdeci">getJobs(prefix)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00063">run_reco.py:63</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_acd860dae4886cb6ce24632c1bb22c4f1"><div class="ttname"><a href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">run_reco.killAll</a></div><div class="ttdeci">killAll()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00077">run_reco.py:77</a></div></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a643466c527aa2d6265fc9b100d36e080">  392</a></span>pl = []</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="keywordflow">for</span> p <span class="keywordflow">in</span> os.sys.argv[1].split(<span class="stringliteral">&quot;,&quot;</span>):</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab410d600c3e439599f33bafbf3b84bf4">  394</a></span>    pref = <span class="stringliteral">&quot;muon&quot;</span></div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc">  395</a></span>    xx = os.path.abspath(<span class="stringliteral">&quot;.&quot;</span>).lower()</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&quot;neutrino&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        pref = <span class="stringliteral">&quot;neutrino&quot;</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&quot;vdis&quot;</span>) &lt; 0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&quot;vetodis&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        pref = <span class="stringliteral">&quot;disV&quot;</span></div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keywordflow">elif</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&quot;clby&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>        pref = <span class="stringliteral">&quot;disCLBY&quot;</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="keywordflow">elif</span> <span class="keywordflow">not</span> xx.find(<span class="stringliteral">&quot;dis&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        pref = <span class="stringliteral">&quot;dis&quot;</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    pl.append(pref + p)</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>print(<span class="stringliteral">&quot; execute()  input comma separated production nr, performs Simple/mergeHistos/mergeNtuples &quot;</span>)</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>print(<span class="stringliteral">&quot; executeSimple(pl,reset=True) &quot;</span>)</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>print(<span class="stringliteral">&quot; checkProd(pl)&quot;</span>)</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>print(<span class="stringliteral">&quot; executeAna(pl) &quot;</span>)</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>print(<span class="stringliteral">&quot; mergeNtuples(pl) &quot;</span>)</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>print(<span class="stringliteral">&quot; removeIntermediateFiles(pl) only _rec &quot;</span>)</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>print(<span class="stringliteral">&quot; checkRunningProcesses() &quot;</span>)</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="comment"># 61,611,612,613,614,615,616,62,621,622,623,624,625,626</span></div>
+<div class="ttc" id="anamespacerun__reco_html_a088900932dc88aa02c54b314bb00cd72"><div class="ttname"><a href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">run_reco.removeIntermediateFiles</a></div><div class="ttdeci">removeIntermediateFiles(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00361">run_reco.py:361</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a234045bab4a14769c501bbee93be59cb"><div class="ttname"><a href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">run_reco.fitSingleGauss</a></div><div class="ttdeci">fitSingleGauss(x, ba=None, be=None)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00020">run_reco.py:20</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a2aeff2abc7e871ba3f88c8192c7aad0d"><div class="ttname"><a href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">run_reco.copyRecoToEos</a></div><div class="ttdeci">copyRecoToEos(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00371">run_reco.py:371</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a2ed832760693e6ac7125bfffa8b40227"><div class="ttname"><a href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">run_reco.executeSimple</a></div><div class="ttdeci">executeSimple(prefixes, reset=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00109">run_reco.py:109</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a3424015eb33497656d431f179af23295"><div class="ttname"><a href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">run_reco.mergeHistosMakePlots</a></div><div class="ttdeci">mergeHistosMakePlots(p)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00207">run_reco.py:207</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a3887783d2d08cfbc1602f0b78b27ade8"><div class="ttname"><a href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">run_reco.checkRunningProcesses</a></div><div class="ttdeci">checkRunningProcesses()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00091">run_reco.py:91</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a66ca87893feed968ac57348d5dc6e258"><div class="ttname"><a href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">run_reco.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00355">run_reco.py:355</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a716d50f4bb1f155dbad1e09376d7ab1f"><div class="ttname"><a href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">run_reco.printFailedJobs</a></div><div class="ttdeci">printFailedJobs(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00347">run_reco.py:347</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a7460d2d540a34984cc19de7da821a46c"><div class="ttname"><a href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">run_reco.checkProd</a></div><div class="ttdeci">checkProd(prefixes, quiet=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00280">run_reco.py:280</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a96a4162b5cd78998373a3bd5daff67fe"><div class="ttname"><a href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">run_reco.execute_parallel</a></div><div class="ttdeci">execute_parallel(prefix, ncpu=4)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00048">run_reco.py:48</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_ab7bd132b6defae6b97e7ca99c9aa6270"><div class="ttname"><a href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">run_reco.executeAna</a></div><div class="ttdeci">executeAna(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00183">run_reco.py:183</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_aba0d272015e806800c99eefda16dd03a"><div class="ttname"><a href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">run_reco.mergeNtuples</a></div><div class="ttdeci">mergeNtuples(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00266">run_reco.py:266</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_ac9462d0c2d3b3b9405fcb71b1baa5794"><div class="ttname"><a href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">run_reco.getJobs</a></div><div class="ttdeci">getJobs(prefix)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00082">run_reco.py:82</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_acd860dae4886cb6ce24632c1bb22c4f1"><div class="ttname"><a href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">run_reco.killAll</a></div><div class="ttdeci">killAll()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00100">run_reco.py:100</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

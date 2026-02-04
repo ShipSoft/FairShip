@@ -179,8 +179,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac6d18966f75cfab911e6e80e22346f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff42c4fe303d55b7dab5a1e218806d49" id="r_aff42c4fe303d55b7dab5a1e218806d49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#aff42c4fe303d55b7dab5a1e218806d49">SetZposition</a> (Float_t x)</td></tr>
 <tr class="separator:aff42c4fe303d55b7dab5a1e218806d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a82e014b74a2d95f880b774c81f7d4f" id="r_a7a82e014b74a2d95f880b774c81f7d4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a7a82e014b74a2d95f880b774c81f7d4f">SetVetoPointName</a> (TString nam)</td></tr>
-<tr class="separator:a7a82e014b74a2d95f880b774c81f7d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f0b67bcc57daec9d66375dd07c3ce6a" id="r_a3f0b67bcc57daec9d66375dd07c3ce6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a3f0b67bcc57daec9d66375dd07c3ce6a">SetVetoPointName</a> (TString name)</td></tr>
+<tr class="separator:a3f0b67bcc57daec9d66375dd07c3ce6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63356fa368da2afbfa482b96492396ea" id="r_a63356fa368da2afbfa482b96492396ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a63356fa368da2afbfa482b96492396ea">SetCylindricalPlane</a> ()</td></tr>
 <tr class="separator:a63356fa368da2afbfa482b96492396ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ece590700812cb650aabc6fa5535c4f" id="r_a9ece590700812cb650aabc6fa5535c4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a9ece590700812cb650aabc6fa5535c4f">SetUseCaveCoordinates</a> ()</td></tr>
@@ -565,14 +565,14 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  299</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">fzPos</a> &gt; 1E8) {</div>
 <div class="line"><span class="lineno">  300</span>    <span class="comment">// Add thin sensitive plane after hadron absorber</span></div>
 <div class="line"><span class="lineno">  301</span>    Float_t distance = 1.;</div>
-<div class="line"><span class="lineno">  302</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">local</a>[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">  302</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, 0};</div>
 <div class="line"><span class="lineno">  303</span>    <span class="keywordflow">if</span> (!nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/AbsorberVol_1&quot;</span>)) {</div>
 <div class="line"><span class="lineno">  304</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/MagnAbsorb_MagRetL_1&quot;</span>);</div>
 <div class="line"><span class="lineno">  305</span>      distance = -1.;</div>
 <div class="line"><span class="lineno">  306</span>    }</div>
 <div class="line"><span class="lineno">  307</span>    TGeoBBox* <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> =</div>
 <div class="line"><span class="lineno">  308</span>        <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  309</span>    <a class="code hl_variable" href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">local</a>[2] = distance * <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>-&gt;GetDZ();</div>
+<div class="line"><span class="lineno">  309</span>    <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[2] = distance * <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>-&gt;GetDZ();</div>
 <div class="line"><span class="lineno">  310</span>    Double_t global[3] = {0, 0, 0};</div>
 <div class="line"><span class="lineno">  311</span>    nav-&gt;LocalToMaster(local, global);</div>
 <div class="line"><span class="lineno">  312</span>    zLoc = global[2] + distance * 1. * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
@@ -599,7 +599,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  333</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a>) {</div>
 <div class="line"><span class="lineno">  334</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/&quot;</span>);</div>
 <div class="line"><span class="lineno">  335</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  336</span>      Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">local</a>[3] = {0, 0, zLoc};</div>
+<div class="line"><span class="lineno">  336</span>      Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">local</a>[3] = {0, 0, zLoc};</div>
 <div class="line"><span class="lineno">  337</span>      Double_t global[3];</div>
 <div class="line"><span class="lineno">  338</span>      nav-&gt;cd(<span class="stringliteral">&quot;/target_vacuum_box_1/TargetArea_1&quot;</span>);</div>
 <div class="line"><span class="lineno">  339</span>      nav-&gt;LocalToMaster(local, global);</div>
@@ -632,9 +632,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  366</span>  }</div>
 <div class="line"><span class="lineno">  367</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a36fc4b47251281f99efceaa80c7877f0"><div class="ttname"><a href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></div><div class="ttdeci">Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00024">ShipBellField.cxx:24</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_aed36656f690d43ae5f6faf373436b08b"><div class="ttname"><a href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">ana_ShipMuon.local</a></div><div class="ttdeci">bool local</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00009">ana_ShipMuon.py:9</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00360">makeCascade.py:360</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_a3e1144f0a516f56c4b359927d9e3fe9c"><div class="ttname"><a href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">study_GammaConv.sensPlane</a></div><div class="ttdeci">sensPlane</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00083">study_GammaConv.py:83</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_aca3f5e85758a67e98544d3bd0d4cb8ce"><div class="ttname"><a href="namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce">ana_ShipMuon.local</a></div><div class="ttdeci">bool local</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00013">ana_ShipMuon.py:13</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00453">makeCascade.py:453</a></div></div>
+<div class="ttc" id="anamespacestudy__GammaConv_html_a3e1144f0a516f56c4b359927d9e3fe9c"><div class="ttname"><a href="namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c">study_GammaConv.sensPlane</a></div><div class="ttdeci">sensPlane</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00095">study_GammaConv.py:95</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -818,10 +818,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  284</span>}</div>
 <div class="ttc" id="aclassexitHadronAbsorber_html_ac05fcd31d19370c4c52ecff07a3d7cde"><div class="ttname"><a href="classexitHadronAbsorber.html#ac05fcd31d19370c4c52ecff07a3d7cde">exitHadronAbsorber::fout</a></div><div class="ttdeci">TFile * fout</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00117">exitHadronAbsorber.h:117</a></div></div>
 <div class="ttc" id="aclassexitHadronAbsorber_html_ac31f7b6b808a04741d98cc9fba322aeb"><div class="ttname"><a href="classexitHadronAbsorber.html#ac31f7b6b808a04741d98cc9fba322aeb">exitHadronAbsorber::fNtuple</a></div><div class="ttdeci">TNtuple * fNtuple</div><div class="ttdoc">special option for Dark Photon physics studies</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00110">exitHadronAbsorber.h:110</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00041">extractNeutrinosAndUpdateWeight.py:41</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a01404b2f458b9421e40c21a5c483f109"><div class="ttname"><a href="namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109">makeCascade.idw</a></div><div class="ttdeci">list idw</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00175">makeCascade.py:175</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a66d67df4128c56a2de1726b2bcfe151f"><div class="ttname"><a href="namespacemakeCascade.html#a66d67df4128c56a2de1726b2bcfe151f">makeCascade.idadd</a></div><div class="ttdeci">int idadd</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00188">makeCascade.py:188</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_ad422f34c01c3361b6027a63eaad5cfd7"><div class="ttname"><a href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">makeDecay.idhnu</a></div><div class="ttdeci">int idhnu</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00089">makeDecay.py:89</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00044">extractNeutrinosAndUpdateWeight.py:44</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a01404b2f458b9421e40c21a5c483f109"><div class="ttname"><a href="namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109">makeCascade.idw</a></div><div class="ttdeci">list idw</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00243">makeCascade.py:243</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a66d67df4128c56a2de1726b2bcfe151f"><div class="ttname"><a href="namespacemakeCascade.html#a66d67df4128c56a2de1726b2bcfe151f">makeCascade.idadd</a></div><div class="ttdeci">int idadd</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00256">makeCascade.py:256</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_ad422f34c01c3361b6027a63eaad5cfd7"><div class="ttname"><a href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">makeDecay.idhnu</a></div><div class="ttdeci">int idhnu</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00095">makeDecay.py:95</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -951,9 +951,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  178</span>    <a class="code hl_variable" href="classexitHadronAbsorber.html#ac31f7b6b808a04741d98cc9fba322aeb">fNtuple</a> = <span class="keyword">new</span> TNtuple(<span class="stringliteral">&quot;4DP&quot;</span>, <span class="stringliteral">&quot;4DP&quot;</span>, <span class="stringliteral">&quot;id:px:py:pz:x:y:z&quot;</span>);</div>
 <div class="line"><span class="lineno">  179</span>  }</div>
 <div class="line"><span class="lineno">  180</span>}</div>
-<div class="ttc" id="anamespacedumpEvent_html_a53600608fbd2147b2fd0b88c65e95223"><div class="ttname"><a href="namespacedumpEvent.html#a53600608fbd2147b2fd0b88c65e95223">dumpEvent.PDG</a></div><div class="ttdeci">PDG</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00009">dumpEvent.py:9</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a485fb7e387dc6298deaed66ee2e9e66d"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d">extractNeutrinosAndUpdateWeight.title</a></div><div class="ttdeci">str title</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00040">extractNeutrinosAndUpdateWeight.py:40</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00177">makeCascade.py:177</a></div></div>
+<div class="ttc" id="anamespacedumpEvent_html_a53600608fbd2147b2fd0b88c65e95223"><div class="ttname"><a href="namespacedumpEvent.html#a53600608fbd2147b2fd0b88c65e95223">dumpEvent.PDG</a></div><div class="ttdeci">PDG</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00011">dumpEvent.py:11</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a485fb7e387dc6298deaed66ee2e9e66d"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d">extractNeutrinosAndUpdateWeight.title</a></div><div class="ttdeci">str title</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00043">extractNeutrinosAndUpdateWeight.py:43</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00245">makeCascade.py:245</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1023,7 +1023,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  197</span>  <span class="keywordflow">if</span> (idabs &lt; 18 || idabs == 22 || idabs == 111 || idabs == 221 ||</div>
 <div class="line"><span class="lineno">  198</span>      idabs == 223 || idabs == 331 || idabs == 211 || idabs == 321 ||</div>
 <div class="line"><span class="lineno">  199</span>      idabs == 2212) {</div>
-<div class="line"><span class="lineno">  200</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#ae0f852e2d4a4c101cdd77eb2a675bb60">wspill</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetWeight();</div>
+<div class="line"><span class="lineno">  200</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7">wspill</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetWeight();</div>
 <div class="line"><span class="lineno">  201</span>    Int_t <a class="code hl_variable" href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">idhnu</a> = <a class="code hl_variable" href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">idabs</a> + 10000;</div>
 <div class="line"><span class="lineno">  202</span>    <span class="keywordflow">if</span> (pdgCode &lt; 0) {</div>
 <div class="line"><span class="lineno">  203</span>      <a class="code hl_variable" href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">idhnu</a> += 10000;</div>
@@ -1036,7 +1036,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  210</span>    <a class="code hl_variable" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a> += <a class="code hl_variable" href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">idhnu</a>;</div>
 <div class="line"><span class="lineno">  211</span>    TH1D* h1 = <span class="keyword">dynamic_cast&lt;</span>TH1D*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classexitHadronAbsorber.html#ac05fcd31d19370c4c52ecff07a3d7cde">fout</a>-&gt;Get(key));</div>
 <div class="line"><span class="lineno">  212</span>    <span class="keywordflow">if</span> (h1) {</div>
-<div class="line"><span class="lineno">  213</span>      h1-&gt;Fill(<a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.P(), <a class="code hl_variable" href="namespacemakeDecay.html#ae0f852e2d4a4c101cdd77eb2a675bb60">wspill</a>);</div>
+<div class="line"><span class="lineno">  213</span>      h1-&gt;Fill(<a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.P(), <a class="code hl_variable" href="namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7">wspill</a>);</div>
 <div class="line"><span class="lineno">  214</span>    }</div>
 <div class="line"><span class="lineno">  215</span>    <a class="code hl_variable" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a> = <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a>;</div>
 <div class="line"><span class="lineno">  216</span>    <a class="code hl_variable" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a> += <a class="code hl_variable" href="namespacemakeDecay.html#ad422f34c01c3361b6027a63eaad5cfd7">idhnu</a> + 1000;</div>
@@ -1060,12 +1060,12 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  234</span>  }</div>
 <div class="line"><span class="lineno">  235</span>}</div>
 <div class="ttc" id="aclassexitHadronAbsorber_html_ad60adebeb36d9c452ac1460abc39afe2"><div class="ttname"><a href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">exitHadronAbsorber::EMax</a></div><div class="ttdeci">Float_t EMax</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00111">exitHadronAbsorber.h:111</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a6727d7bb8472fc986a59166a91b33c15"><div class="ttname"><a href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">makeCascade.idabs</a></div><div class="ttdeci">idabs</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00284">makeCascade.py:284</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_a65aea31e5d35b9671f40a2432dcfded2"><div class="ttname"><a href="namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2">makeDecay.l10pt</a></div><div class="ttdeci">l10pt</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00146">makeDecay.py:146</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00070">makeDecay.py:70</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_ad0633cff194d9c5881ba54524a76e89b"><div class="ttname"><a href="namespacemakeDecay.html#ad0633cff194d9c5881ba54524a76e89b">makeDecay.l10ptot</a></div><div class="ttdeci">l10ptot</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00145">makeDecay.py:145</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_ae0f852e2d4a4c101cdd77eb2a675bb60"><div class="ttname"><a href="namespacemakeDecay.html#ae0f852e2d4a4c101cdd77eb2a675bb60">makeDecay.wspill</a></div><div class="ttdeci">int wspill</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00117">makeDecay.py:117</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00272">run_fixedTarget.py:272</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a6727d7bb8472fc986a59166a91b33c15"><div class="ttname"><a href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">makeCascade.idabs</a></div><div class="ttdeci">idabs</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00359">makeCascade.py:359</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a65aea31e5d35b9671f40a2432dcfded2"><div class="ttname"><a href="namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2">makeDecay.l10pt</a></div><div class="ttdeci">l10pt</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00170">makeDecay.py:170</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_aba31d2bd4d941b30fc3604be92b089f7"><div class="ttname"><a href="namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7">makeDecay.wspill</a></div><div class="ttdeci">float wspill</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00123">makeDecay.py:123</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_ad0633cff194d9c5881ba54524a76e89b"><div class="ttname"><a href="namespacemakeDecay.html#ad0633cff194d9c5881ba54524a76e89b">makeDecay.l10ptot</a></div><div class="ttdeci">l10ptot</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00169">makeDecay.py:169</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00390">run_fixedTarget.py:390</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1125,7 +1125,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00048">ShipStack.h:48</a></div></div>
 <div class="ttc" id="aclassexitHadronAbsorber_html_a490f0810b2339f9727668c15de8e78cb"><div class="ttname"><a href="classexitHadronAbsorber.html#a490f0810b2339f9727668c15de8e78cb">exitHadronAbsorber::AddHit</a></div><div class="ttdeci">vetoPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode, TVector3 Lpos, TVector3 Lmom, Int_t eventId)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00369">exitHadronAbsorber.cxx:369</a></div></div>
-<div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00252">makeCascade.py:252</a></div></div>
+<div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00326">makeCascade.py:326</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1366,8 +1366,8 @@ Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a7a82e014b74a2d95f880b774c81f7d4f" name="a7a82e014b74a2d95f880b774c81f7d4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a82e014b74a2d95f880b774c81f7d4f">&#9670;&#160;</a></span>SetVetoPointName()</h2>
+<a id="a3f0b67bcc57daec9d66375dd07c3ce6a" name="a3f0b67bcc57daec9d66375dd07c3ce6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f0b67bcc57daec9d66375dd07c3ce6a">&#9670;&#160;</a></span>SetVetoPointName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1379,7 +1379,7 @@ Private Attributes</h2></td></tr>
           <td class="memname">void exitHadronAbsorber::SetVetoPointName </td>
           <td>(</td>
           <td class="paramtype">TString&#160;</td>
-          <td class="paramname"><em>nam</em></td><td>)</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1391,7 +1391,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00085">85</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a> = nam; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a> = <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1421,7 +1421,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00084">84</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   84</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">fzPos</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>; }</div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00350">run_fixedTarget.py:350</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00478">run_fixedTarget.py:478</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

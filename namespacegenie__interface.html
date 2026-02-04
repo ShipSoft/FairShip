@@ -781,112 +781,108 @@ Examples
 <div class="line"><span class="lineno">  387</span>    <span class="stringliteral">&quot;&quot;&quot;Entry point for the command-line interface.&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  388</span>    <span class="keyword">import</span> argparse</div>
 <div class="line"><span class="lineno">  389</span> </div>
-<div class="line"><span class="lineno">  390</span>    parser = argparse.ArgumentParser(</div>
-<div class="line"><span class="lineno">  391</span>        prog=<span class="stringliteral">&quot;genie-utils&quot;</span>, description=<span class="stringliteral">&quot;GENIE helpers with per-call env overrides&quot;</span></div>
-<div class="line"><span class="lineno">  392</span>    )</div>
-<div class="line"><span class="lineno">  393</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  394</span>        <span class="stringliteral">&quot;--env&quot;</span>,</div>
-<div class="line"><span class="lineno">  395</span>        metavar=<span class="stringliteral">&quot;KEY=VALUE&quot;</span>,</div>
-<div class="line"><span class="lineno">  396</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
-<div class="line"><span class="lineno">  397</span>        default=[],</div>
-<div class="line"><span class="lineno">  398</span>        help=<span class="stringliteral">&quot;Set environment variable(s) for the child process (repeatable).&quot;</span>,</div>
-<div class="line"><span class="lineno">  399</span>    )</div>
-<div class="line"><span class="lineno">  400</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  401</span>        <span class="stringliteral">&quot;--unset&quot;</span>,</div>
-<div class="line"><span class="lineno">  402</span>        metavar=<span class="stringliteral">&quot;KEY&quot;</span>,</div>
-<div class="line"><span class="lineno">  403</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
-<div class="line"><span class="lineno">  404</span>        default=[],</div>
-<div class="line"><span class="lineno">  405</span>        help=<span class="stringliteral">&quot;Unset environment variable(s) for the child process (repeatable).&quot;</span>,</div>
-<div class="line"><span class="lineno">  406</span>    )</div>
-<div class="line"><span class="lineno">  407</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">  408</span>        <span class="stringliteral">&quot;-v&quot;</span>, <span class="stringliteral">&quot;--verbose&quot;</span>, action=<span class="stringliteral">&quot;count&quot;</span>, default=0, help=<span class="stringliteral">&quot;Increase verbosity.&quot;</span></div>
-<div class="line"><span class="lineno">  409</span>    )</div>
-<div class="line"><span class="lineno">  410</span>    sub = parser.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>    p_spl = sub.add_parser(<span class="stringliteral">&quot;splines&quot;</span>, help=<span class="stringliteral">&quot;Run gmkspl&quot;</span>)</div>
-<div class="line"><span class="lineno">  413</span>    p_spl.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, nargs=<span class="stringliteral">&quot;+&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  414</span>    p_spl.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  415</span>    p_spl.add_argument(<span class="stringliteral">&quot;-e&quot;</span>, <span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  416</span>    p_spl.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  417</span>    p_spl.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  418</span> </div>
-<div class="line"><span class="lineno">  419</span>    p_gen = sub.add_parser(<span class="stringliteral">&quot;generate&quot;</span>, help=<span class="stringliteral">&quot;Run gevgen&quot;</span>)</div>
-<div class="line"><span class="lineno">  420</span>    p_gen.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  421</span>    p_gen.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  422</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  423</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  424</span>    p_gen.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  425</span>    p_gen.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  426</span>    p_gen.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--spline&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  427</span>    p_gen.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  428</span>    p_gen.add_argument(<span class="stringliteral">&quot;--process&quot;</span>, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  429</span>    p_gen.add_argument(<span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  430</span>    p_gen.add_argument(<span class="stringliteral">&quot;--run&quot;</span>, type=int, dest=<span class="stringliteral">&quot;irun&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  390</span>    parser = argparse.ArgumentParser(prog=<span class="stringliteral">&quot;genie-utils&quot;</span>, description=<span class="stringliteral">&quot;GENIE helpers with per-call env overrides&quot;</span>)</div>
+<div class="line"><span class="lineno">  391</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  392</span>        <span class="stringliteral">&quot;--env&quot;</span>,</div>
+<div class="line"><span class="lineno">  393</span>        metavar=<span class="stringliteral">&quot;KEY=VALUE&quot;</span>,</div>
+<div class="line"><span class="lineno">  394</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
+<div class="line"><span class="lineno">  395</span>        default=[],</div>
+<div class="line"><span class="lineno">  396</span>        help=<span class="stringliteral">&quot;Set environment variable(s) for the child process (repeatable).&quot;</span>,</div>
+<div class="line"><span class="lineno">  397</span>    )</div>
+<div class="line"><span class="lineno">  398</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">  399</span>        <span class="stringliteral">&quot;--unset&quot;</span>,</div>
+<div class="line"><span class="lineno">  400</span>        metavar=<span class="stringliteral">&quot;KEY&quot;</span>,</div>
+<div class="line"><span class="lineno">  401</span>        action=<span class="stringliteral">&quot;append&quot;</span>,</div>
+<div class="line"><span class="lineno">  402</span>        default=[],</div>
+<div class="line"><span class="lineno">  403</span>        help=<span class="stringliteral">&quot;Unset environment variable(s) for the child process (repeatable).&quot;</span>,</div>
+<div class="line"><span class="lineno">  404</span>    )</div>
+<div class="line"><span class="lineno">  405</span>    parser.add_argument(<span class="stringliteral">&quot;-v&quot;</span>, <span class="stringliteral">&quot;--verbose&quot;</span>, action=<span class="stringliteral">&quot;count&quot;</span>, default=0, help=<span class="stringliteral">&quot;Increase verbosity.&quot;</span>)</div>
+<div class="line"><span class="lineno">  406</span>    sub = parser.add_subparsers(dest=<span class="stringliteral">&quot;cmd&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>    p_spl = sub.add_parser(<span class="stringliteral">&quot;splines&quot;</span>, help=<span class="stringliteral">&quot;Run gmkspl&quot;</span>)</div>
+<div class="line"><span class="lineno">  409</span>    p_spl.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, nargs=<span class="stringliteral">&quot;+&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  410</span>    p_spl.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  411</span>    p_spl.add_argument(<span class="stringliteral">&quot;-e&quot;</span>, <span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  412</span>    p_spl.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nknots&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  413</span>    p_spl.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  414</span> </div>
+<div class="line"><span class="lineno">  415</span>    p_gen = sub.add_parser(<span class="stringliteral">&quot;generate&quot;</span>, help=<span class="stringliteral">&quot;Run gevgen&quot;</span>)</div>
+<div class="line"><span class="lineno">  416</span>    p_gen.add_argument(<span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;--nevents&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  417</span>    p_gen.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  418</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emin&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  419</span>    p_gen.add_argument(<span class="stringliteral">&quot;--emax&quot;</span>, type=float, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  420</span>    p_gen.add_argument(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;--target&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  421</span>    p_gen.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  422</span>    p_gen.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--spline&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  423</span>    p_gen.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  424</span>    p_gen.add_argument(<span class="stringliteral">&quot;--process&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  425</span>    p_gen.add_argument(<span class="stringliteral">&quot;--seed&quot;</span>, type=int, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  426</span>    p_gen.add_argument(<span class="stringliteral">&quot;--run&quot;</span>, type=int, dest=<span class="stringliteral">&quot;irun&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>    p_nt = sub.add_parser(<span class="stringliteral">&quot;ntuples&quot;</span>, help=<span class="stringliteral">&quot;Run gntpc (ghep -&gt; gst)&quot;</span>)</div>
+<div class="line"><span class="lineno">  429</span>    p_nt.add_argument(<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  430</span>    p_nt.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>    p_nt = sub.add_parser(<span class="stringliteral">&quot;ntuples&quot;</span>, help=<span class="stringliteral">&quot;Run gntpc (ghep -&gt; gst)&quot;</span>)</div>
-<div class="line"><span class="lineno">  433</span>    p_nt.add_argument(<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--input&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  434</span>    p_nt.add_argument(<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>    p_add = sub.add_parser(<span class="stringliteral">&quot;add-hists&quot;</span>, help=<span class="stringliteral">&quot;Copy 2D flux hist to sim file&quot;</span>)</div>
-<div class="line"><span class="lineno">  437</span>    p_add.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  438</span>    p_add.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--sim&quot;</span>, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  439</span>    p_add.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span>    args = parser.parse_args(argv)</div>
-<div class="line"><span class="lineno">  442</span> </div>
-<div class="line"><span class="lineno">  443</span>    <span class="comment"># logging</span></div>
-<div class="line"><span class="lineno">  444</span>    level = logging.WARNING</div>
-<div class="line"><span class="lineno">  445</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
-<div class="line"><span class="lineno">  446</span>        level = logging.INFO</div>
-<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
-<div class="line"><span class="lineno">  448</span>        level = logging.DEBUG</div>
-<div class="line"><span class="lineno">  449</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
-<div class="line"><span class="lineno">  450</span> </div>
-<div class="line"><span class="lineno">  451</span>    <span class="comment"># env merging for CLI</span></div>
-<div class="line"><span class="lineno">  452</span>    env_vars: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
-<div class="line"><span class="lineno">  453</span>    <span class="keywordflow">if</span> args.env:</div>
-<div class="line"><span class="lineno">  454</span>        env_vars.update(_parse_env_kv(args.env))</div>
-<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> args.unset:</div>
-<div class="line"><span class="lineno">  456</span>        env_vars[key] = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  457</span> </div>
-<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;splines&quot;</span>:</div>
-<div class="line"><span class="lineno">  459</span>        make_splines(</div>
-<div class="line"><span class="lineno">  460</span>            nupdglist=args.pdg,</div>
-<div class="line"><span class="lineno">  461</span>            targetcode=args.target,</div>
-<div class="line"><span class="lineno">  462</span>            emax=args.emax,</div>
-<div class="line"><span class="lineno">  463</span>            nknots=args.nknots,</div>
-<div class="line"><span class="lineno">  464</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  465</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  466</span>        )</div>
-<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;generate&quot;</span>:</div>
-<div class="line"><span class="lineno">  468</span>        generate_genie_events(</div>
-<div class="line"><span class="lineno">  469</span>            nevents=args.nevents,</div>
-<div class="line"><span class="lineno">  470</span>            nupdg=args.pdg,</div>
-<div class="line"><span class="lineno">  471</span>            emin=args.emin,</div>
-<div class="line"><span class="lineno">  472</span>            emax=args.emax,</div>
-<div class="line"><span class="lineno">  473</span>            targetcode=args.target,</div>
-<div class="line"><span class="lineno">  474</span>            inputflux=args.flux,</div>
-<div class="line"><span class="lineno">  475</span>            spline=args.spline,</div>
-<div class="line"><span class="lineno">  476</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  477</span>            process=args.process,</div>
-<div class="line"><span class="lineno">  478</span>            seed=args.seed,</div>
-<div class="line"><span class="lineno">  479</span>            irun=args.irun,</div>
-<div class="line"><span class="lineno">  480</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  481</span>        )</div>
-<div class="line"><span class="lineno">  482</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;ntuples&quot;</span>:</div>
-<div class="line"><span class="lineno">  483</span>        make_ntuples(</div>
-<div class="line"><span class="lineno">  484</span>            inputfile=args.input,</div>
-<div class="line"><span class="lineno">  485</span>            outputfile=args.output,</div>
-<div class="line"><span class="lineno">  486</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  487</span>        )</div>
-<div class="line"><span class="lineno">  488</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;add-hists&quot;</span>:</div>
-<div class="line"><span class="lineno">  489</span>        add_hists(inputflux=args.flux, simfile=args.sim, nupdg=args.pdg)</div>
-<div class="line"><span class="lineno">  490</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  491</span>        parser.error(<span class="stringliteral">&quot;Unknown command&quot;</span>)</div>
-<div class="line"><span class="lineno">  492</span> </div>
-<div class="line"><span class="lineno">  493</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  494</span> </div>
-<div class="line"><span class="lineno">  495</span> </div>
+<div class="line"><span class="lineno">  432</span>    p_add = sub.add_parser(<span class="stringliteral">&quot;add-hists&quot;</span>, help=<span class="stringliteral">&quot;Copy 2D flux hist to sim file&quot;</span>)</div>
+<div class="line"><span class="lineno">  433</span>    p_add.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--flux&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  434</span>    p_add.add_argument(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--sim&quot;</span>, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  435</span>    p_add.add_argument(<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--pdg&quot;</span>, type=int, required=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>    args = parser.parse_args(argv)</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    <span class="comment"># logging</span></div>
+<div class="line"><span class="lineno">  440</span>    level = logging.WARNING</div>
+<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">if</span> args.verbose == 1:</div>
+<div class="line"><span class="lineno">  442</span>        level = logging.INFO</div>
+<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">elif</span> args.verbose &gt;= 2:</div>
+<div class="line"><span class="lineno">  444</span>        level = logging.DEBUG</div>
+<div class="line"><span class="lineno">  445</span>    logging.basicConfig(level=level, format=<span class="stringliteral">&quot;%(levelname)s %(name)s: %(message)s&quot;</span>)</div>
+<div class="line"><span class="lineno">  446</span> </div>
+<div class="line"><span class="lineno">  447</span>    <span class="comment"># env merging for CLI</span></div>
+<div class="line"><span class="lineno">  448</span>    env_vars: dict[str, str | <span class="keywordtype">None</span>] = {}</div>
+<div class="line"><span class="lineno">  449</span>    <span class="keywordflow">if</span> args.env:</div>
+<div class="line"><span class="lineno">  450</span>        env_vars.update(_parse_env_kv(args.env))</div>
+<div class="line"><span class="lineno">  451</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> args.unset:</div>
+<div class="line"><span class="lineno">  452</span>        env_vars[key] = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  453</span> </div>
+<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">if</span> args.cmd == <span class="stringliteral">&quot;splines&quot;</span>:</div>
+<div class="line"><span class="lineno">  455</span>        make_splines(</div>
+<div class="line"><span class="lineno">  456</span>            nupdglist=args.pdg,</div>
+<div class="line"><span class="lineno">  457</span>            targetcode=args.target,</div>
+<div class="line"><span class="lineno">  458</span>            emax=args.emax,</div>
+<div class="line"><span class="lineno">  459</span>            nknots=args.nknots,</div>
+<div class="line"><span class="lineno">  460</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  461</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  462</span>        )</div>
+<div class="line"><span class="lineno">  463</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;generate&quot;</span>:</div>
+<div class="line"><span class="lineno">  464</span>        generate_genie_events(</div>
+<div class="line"><span class="lineno">  465</span>            nevents=args.nevents,</div>
+<div class="line"><span class="lineno">  466</span>            nupdg=args.pdg,</div>
+<div class="line"><span class="lineno">  467</span>            emin=args.emin,</div>
+<div class="line"><span class="lineno">  468</span>            emax=args.emax,</div>
+<div class="line"><span class="lineno">  469</span>            targetcode=args.target,</div>
+<div class="line"><span class="lineno">  470</span>            inputflux=args.flux,</div>
+<div class="line"><span class="lineno">  471</span>            spline=args.spline,</div>
+<div class="line"><span class="lineno">  472</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  473</span>            process=args.process,</div>
+<div class="line"><span class="lineno">  474</span>            seed=args.seed,</div>
+<div class="line"><span class="lineno">  475</span>            irun=args.irun,</div>
+<div class="line"><span class="lineno">  476</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  477</span>        )</div>
+<div class="line"><span class="lineno">  478</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;ntuples&quot;</span>:</div>
+<div class="line"><span class="lineno">  479</span>        make_ntuples(</div>
+<div class="line"><span class="lineno">  480</span>            inputfile=args.input,</div>
+<div class="line"><span class="lineno">  481</span>            outputfile=args.output,</div>
+<div class="line"><span class="lineno">  482</span>            env_vars=env_vars <span class="keywordflow">or</span> <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  483</span>        )</div>
+<div class="line"><span class="lineno">  484</span>    <span class="keywordflow">elif</span> args.cmd == <span class="stringliteral">&quot;add-hists&quot;</span>:</div>
+<div class="line"><span class="lineno">  485</span>        add_hists(inputflux=args.flux, simfile=args.sim, nupdg=args.pdg)</div>
+<div class="line"><span class="lineno">  486</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  487</span>        parser.error(<span class="stringliteral">&quot;Unknown command&quot;</span>)</div>
+<div class="line"><span class="lineno">  488</span> </div>
+<div class="line"><span class="lineno">  489</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span> </div>
 <div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00007">test_pythia_version.cpp:7</a></div></div>
 </div><!-- fragment -->
 </div>

@@ -184,45 +184,39 @@ $(document).ready(function(){initNavTree('strawtubesDetector_8py_source.html',''
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        start = ROOT.TVector3()</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        v_drift = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawVdrift()</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        z1 = stop.z()</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            key += 1</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            detID = aDigi.GetDetectorID()</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            p = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint[key]</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <span class="comment"># use true t0  construction:</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <span class="comment">#     fdigi = t0 + p-&gt;GetTime() + t_drift + ( stop[0]-p-&gt;GetX() )/ speedOfLight;</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            smear = (</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                aDigi.GetDigi()</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                - self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                - p.GetTime()</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                - (stop[0] - p.GetX()) / u.speedOfLight</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            ) * v_drift</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">if</span> no_amb:</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                smear = p.dist2Wire()</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            SmearedHits.append(</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                    <span class="stringliteral">&quot;dist&quot;</span>: smear,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                }</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            )</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="comment"># Note: top.z()==bot.z() unless misaligned, so only add key &#39;z&#39; to smearedHit</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">if</span> abs(stop.y()) == abs(start.y()):</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                global_variables.h[<span class="stringliteral">&quot;disty&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">elif</span> abs(stop.y()) &gt; abs(start.y()):</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                global_variables.h[<span class="stringliteral">&quot;distu&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keywordflow">elif</span> abs(stop.y()) &lt; abs(start.y()):</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                global_variables.h[<span class="stringliteral">&quot;distv&quot;</span>].Fill(smear)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> SmearedHits</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>:</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            key += 1</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> aDigi.isValid():</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            detID = aDigi.GetDetectorID()</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID, start, stop)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            p = self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.strawtubesPoint[key]</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="comment"># use true t0  construction:</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <span class="comment">#     fdigi = t0 + p-&gt;GetTime() + t_drift + ( stop[0]-p-&gt;GetX() )/ speedOfLight;</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            smear = (aDigi.GetDigi() - self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0 - p.GetTime() - (stop[0] - p.GetX()) / u.speedOfLight) * v_drift</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">if</span> no_amb:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                smear = p.dist2Wire()</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            SmearedHits.append(</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                    <span class="stringliteral">&quot;digiHit&quot;</span>: key,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                    <span class="stringliteral">&quot;xtop&quot;</span>: stop.x(),</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                    <span class="stringliteral">&quot;ytop&quot;</span>: stop.y(),</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    <span class="stringliteral">&quot;z&quot;</span>: stop.z(),</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    <span class="stringliteral">&quot;xbot&quot;</span>: start.x(),</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    <span class="stringliteral">&quot;ybot&quot;</span>: start.y(),</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    <span class="stringliteral">&quot;dist&quot;</span>: smear,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    <span class="stringliteral">&quot;detID&quot;</span>: detID,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            )</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="comment"># Note: top.z()==bot.z() unless misaligned, so only add key &#39;z&#39; to smearedHit</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">if</span> abs(stop.y()) == abs(start.y()):</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                global_variables.h[<span class="stringliteral">&quot;disty&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keywordflow">elif</span> abs(stop.y()) &gt; abs(start.y()):</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                global_variables.h[<span class="stringliteral">&quot;distu&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">elif</span> abs(stop.y()) &lt; abs(start.y()):</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                global_variables.h[<span class="stringliteral">&quot;distv&quot;</span>].Fill(smear)</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordflow">return</span> SmearedHits</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>

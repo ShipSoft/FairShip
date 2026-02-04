@@ -24,7 +24,7 @@ var classexitHadronAbsorber =
     [ "SetOpt4DP", "classexitHadronAbsorber.html#afc8ef09ec676c200596267046addf18b", null ],
     [ "SetSpecialPhysicsCuts", "classexitHadronAbsorber.html#aebe20942f656b96af5f8c2dcb91fb73a", null ],
     [ "SetUseCaveCoordinates", "classexitHadronAbsorber.html#a9ece590700812cb650aabc6fa5535c4f", null ],
-    [ "SetVetoPointName", "classexitHadronAbsorber.html#a7a82e014b74a2d95f880b774c81f7d4f", null ],
+    [ "SetVetoPointName", "classexitHadronAbsorber.html#a3f0b67bcc57daec9d66375dd07c3ce6a", null ],
     [ "SetZposition", "classexitHadronAbsorber.html#aff42c4fe303d55b7dab5a1e218806d49", null ],
     [ "SkipNeutrinos", "classexitHadronAbsorber.html#aac6d18966f75cfab911e6e80e22346f3", null ],
     [ "UpdatePointTrackIndices", "classexitHadronAbsorber.html#aa83c3bb510037bbe15b0c0c93a2414db", null ],

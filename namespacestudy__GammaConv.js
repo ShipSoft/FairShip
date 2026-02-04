@@ -1,7 +1,7 @@
 var namespacestudy__GammaConv =
 [
     [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
-    [ "boostFactor", "namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5", null ],
+    [ "boostFactor", "namespacestudy__GammaConv.html#a87e1fbd736ef46b9a49a67ee3e340c9c", null ],
     [ "cave", "namespacestudy__GammaConv.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9", null ],
     [ "checkOverlap", "namespacestudy__GammaConv.html#a6d4855531bd591ee5f7b60226b127b43", null ],
     [ "ctime", "namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9", null ],

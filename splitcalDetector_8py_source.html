@@ -203,236 +203,212 @@ $(document).ready(function(){initNavTree('splitcalDetector_8py_source.html','');
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="comment"># Compute energy weights from X splitting</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            weights_from_x_splitting = {}</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_x:</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                subcluster_energy_x = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    list_of_subclusters_x[index_subcluster]</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                )</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                weight = (</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    subcluster_energy_x / cluster_energy_x</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    <span class="keywordflow">if</span> cluster_energy_x &gt; 0</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    <span class="keywordflow">else</span> 0</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                )</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                weights_from_x_splitting[index_subcluster] = weight</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="comment"># Re-cluster in YZ plane</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a> = list_hits_y</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            list_subclusters_of_y_hits = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">_clustering</a>()</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            cluster_energy_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(list_hits_y)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a> = list_subclusters_of_y_hits</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            list_of_subclusters_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">_get_subclusters_excluding_fragments</a>()</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="comment"># Compute energy weights from Y splitting</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            weights_from_y_splitting = {}</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_y:</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                subcluster_energy_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    list_of_subclusters_y[index_subcluster]</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                )</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                weight = (</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                    subcluster_energy_y / cluster_energy_y</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                    <span class="keywordflow">if</span> cluster_energy_y &gt; 0</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                    <span class="keywordflow">else</span> 0</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                )</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                weights_from_y_splitting[index_subcluster] = weight</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <span class="comment"># Build final clusters</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">if</span> len(list_of_subclusters_x) == 1 <span class="keywordflow">and</span> len(list_of_subclusters_y) == 1:</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                list_final_clusters[index_final_cluster] = [</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                    (hit, 1.0) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                ]</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                index_final_cluster += 1</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> list_of_subclusters_x:</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                    <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> list_of_subclusters_y:</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                        <span class="comment"># Build list of (hit, weight) tuples</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                        hit_weight_list = []</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_y[iy]:</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                            hit_weight_list.append((hit, weights_from_x_splitting[ix]))</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_x[ix]:</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                            hit_weight_list.append((hit, weights_from_y_splitting[iy]))</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                        list_final_clusters[index_final_cluster] = hit_weight_list</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                        index_final_cluster += 1</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                subcluster_energy_x = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(list_of_subclusters_x[index_subcluster])</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                weight = subcluster_energy_x / cluster_energy_x <span class="keywordflow">if</span> cluster_energy_x &gt; 0 <span class="keywordflow">else</span> 0</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                weights_from_x_splitting[index_subcluster] = weight</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="comment"># Re-cluster in YZ plane</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a> = list_hits_y</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            list_subclusters_of_y_hits = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">_clustering</a>()</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            cluster_energy_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(list_hits_y)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a> = list_subclusters_of_y_hits</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            list_of_subclusters_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">_get_subclusters_excluding_fragments</a>()</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="comment"># Compute energy weights from Y splitting</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            weights_from_y_splitting = {}</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_y:</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                subcluster_energy_y = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(list_of_subclusters_y[index_subcluster])</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                weight = subcluster_energy_y / cluster_energy_y <span class="keywordflow">if</span> cluster_energy_y &gt; 0 <span class="keywordflow">else</span> 0</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                weights_from_y_splitting[index_subcluster] = weight</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="comment"># Build final clusters</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">if</span> len(list_of_subclusters_x) == 1 <span class="keywordflow">and</span> len(list_of_subclusters_y) == 1:</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                list_final_clusters[index_final_cluster] = [(hit, 1.0) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]]</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                index_final_cluster += 1</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> list_of_subclusters_x:</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                    <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> list_of_subclusters_y:</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                        <span class="comment"># Build list of (hit, weight) tuples</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                        hit_weight_list = []</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_y[iy]:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                            hit_weight_list.append((hit, weights_from_x_splitting[ix]))</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_x[ix]:</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                            hit_weight_list.append((hit, weights_from_y_splitting[iy]))</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                        list_final_clusters[index_final_cluster] = hit_weight_list</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                        index_final_cluster += 1</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="comment"># Fill cluster objects</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_final_clusters:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="comment"># Create empty cluster</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            cluster = ROOT.splitcalCluster()</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="comment"># Add all hits with their weights using indices</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            <span class="keywordflow">for</span> hit, weight <span class="keywordflow">in</span> list_final_clusters[i]:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                hit_index = hit_to_index[id(hit)]</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                cluster.AddHit(hit_index, weight)</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            cluster.SetIndex(int(i))</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            cluster.ComputeEtaPhiE(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a><a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a6e67f1fbdc7bf994cfd44bbcb9bd7536">det</a>)</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#ab2986cd3483fb6b06b1836ad9c7b5cf9">reco</a>.push_back(cluster)</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="comment"># Fill cluster objects</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_final_clusters:</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="comment"># Create empty cluster</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            cluster = ROOT.splitcalCluster()</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="comment"># Add all hits with their weights using indices</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="keywordflow">for</span> hit, weight <span class="keywordflow">in</span> list_final_clusters[i]:</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                hit_index = hit_to_index[id(hit)]</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                cluster.AddHit(hit_index, weight)</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            cluster.SetIndex(int(i))</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            cluster.ComputeEtaPhiE(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a><a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a6e67f1fbdc7bf994cfd44bbcb9bd7536">det</a>)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#ab2986cd3483fb6b06b1836ad9c7b5cf9">reco</a>.push_back(cluster)</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 </div>
-<div class="foldopen" id="foldopen00161" data-start="" data-end="">
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">  161</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">_get_subclusters_excluding_fragments</a>(self):</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="stringliteral">&quot;&quot;&quot;Merge fragments into the closest subcluster.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        list_subclusters_excluding_fragments = {}</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        fragment_indices = []</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        subclusters_indices = []</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>:</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            subcluster_size = len(self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[k])</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            <span class="keywordflow">if</span> subcluster_size &lt; 5:</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                fragment_indices.append(k)</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                subclusters_indices.append(k)</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="comment"># Merge all fragments if no subclusters exist</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">if</span> len(subclusters_indices) == 0 <span class="keywordflow">and</span> len(fragment_indices) != 0:</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            subclusters_indices.append(0)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="comment"># Merge fragments into closest subcluster</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">for</span> index_fragment <span class="keywordflow">in</span> fragment_indices:</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            minDistance = -1</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            minIndex = -1</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            first_hit_fragment = self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_fragment][0]</div>
+<div class="foldopen" id="foldopen00147" data-start="" data-end="">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">  147</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">_get_subclusters_excluding_fragments</a>(self):</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="stringliteral">&quot;&quot;&quot;Merge fragments into the closest subcluster.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        list_subclusters_excluding_fragments = {}</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        fragment_indices = []</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        subclusters_indices = []</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            subcluster_size = len(self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[k])</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <span class="keywordflow">if</span> subcluster_size &lt; 5:</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                fragment_indices.append(k)</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                subclusters_indices.append(k)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="comment"># Merge all fragments if no subclusters exist</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">if</span> len(subclusters_indices) == 0 <span class="keywordflow">and</span> len(fragment_indices) != 0:</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            subclusters_indices.append(0)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="comment"># Merge fragments into closest subcluster</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">for</span> index_fragment <span class="keywordflow">in</span> fragment_indices:</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            minDistance = -1</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            minIndex = -1</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            first_hit_fragment = self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_fragment][0]</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> subclusters_indices:</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                first_hit_subcluster = self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_subcluster][0]</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                <span class="keywordflow">if</span> first_hit_fragment.IsX():</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    distance = fabs(first_hit_fragment.GetX() - first_hit_subcluster.GetX())</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                    distance = fabs(first_hit_fragment.GetY() - first_hit_subcluster.GetY())</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                <span class="keywordflow">if</span> minDistance &lt; 0 <span class="keywordflow">or</span> distance &lt; minDistance:</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                    minDistance = distance</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                    minIndex = index_subcluster</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            <span class="keywordflow">if</span> minIndex != index_fragment:</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[minIndex] += self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_fragment]</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> subclusters_indices:</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                first_hit_subcluster = self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_subcluster][</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                    0</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                ]</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                <span class="keywordflow">if</span> first_hit_fragment.IsX():</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                    distance = fabs(</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        first_hit_fragment.GetX() - first_hit_subcluster.GetX()</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                    )</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                    distance = fabs(</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                        first_hit_fragment.GetY() - first_hit_subcluster.GetY()</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                    )</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                <span class="keywordflow">if</span> minDistance &lt; 0 <span class="keywordflow">or</span> distance &lt; minDistance:</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    minDistance = distance</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                    minIndex = index_subcluster</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordflow">for</span> counter, index_subcluster <span class="keywordflow">in</span> enumerate(subclusters_indices):</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            list_subclusters_excluding_fragments[counter] = self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_subcluster]</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">return</span> list_subclusters_excluding_fragments</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+</div>
+<div class="foldopen" id="foldopen00189" data-start="" data-end="">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">  189</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(self, list_hits):</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate total energy of hits in a cluster.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        energy = 0</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_hits:</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            energy += hit.GetEnergy()</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="keywordflow">return</span> energy</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+</div>
+<div class="foldopen" id="foldopen00196" data-start="" data-end="">
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">  196</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">_clustering</a>(self):</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="stringliteral">&quot;&quot;&quot;Perform clustering algorithm on input hits.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        list_hits_in_cluster = {}</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        cluster_index = -1</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            <span class="keywordflow">if</span> minIndex != index_fragment:</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[minIndex] += (</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                    self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_fragment]</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                )</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="keywordflow">for</span> counter, index_subcluster <span class="keywordflow">in</span> enumerate(subclusters_indices):</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            list_subclusters_excluding_fragments[counter] = (</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb">list_subclusters_of_hits</a>[index_subcluster]</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            )</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        <span class="keywordflow">return</span> list_subclusters_excluding_fragments</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-</div>
-<div class="foldopen" id="foldopen00213" data-start="" data-end="">
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">  213</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">_get_cluster_energy</a>(self, list_hits):</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate total energy of hits in a cluster.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        energy = 0</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_hits:</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            energy += hit.GetEnergy()</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordflow">return</span> energy</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-</div>
-<div class="foldopen" id="foldopen00220" data-start="" data-end="">
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">  220</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">_clustering</a>(self):</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <span class="stringliteral">&quot;&quot;&quot;Perform clustering algorithm on input hits.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        list_hits_in_cluster = {}</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        cluster_index = -1</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="keywordflow">for</span> i, hit <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a>):</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            <span class="keywordflow">if</span> hit.IsUsed() == 1:</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">for</span> i, hit <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a>):</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <span class="keywordflow">if</span> hit.IsUsed() == 1:</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            neighbours = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(hit)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            <span class="keywordflow">if</span> len(neighbours) &lt; 1:</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            cluster_index = cluster_index + 1</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            hit.SetIsUsed(1)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            list_hits_in_cluster[cluster_index] = []</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>            list_hits_in_cluster[cluster_index].append(hit)</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            <span class="keywordflow">for</span> neighbouringHit <span class="keywordflow">in</span> neighbours:</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                <span class="keywordflow">if</span> neighbouringHit.IsUsed() == 1:</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                neighbouringHit.SetIsUsed(1)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                list_hits_in_cluster[cluster_index].append(neighbouringHit)</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                expand_neighbours = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(neighbouringHit)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                <span class="keywordflow">if</span> len(expand_neighbours) &gt;= 1:</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                    <span class="keywordflow">for</span> additionalHit <span class="keywordflow">in</span> expand_neighbours:</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                        <span class="keywordflow">if</span> additionalHit <span class="keywordflow">not</span> <span class="keywordflow">in</span> neighbours:</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                            neighbours.append(additionalHit)</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            neighbours = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(hit)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">return</span> list_hits_in_cluster</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            <span class="keywordflow">if</span> len(neighbours) &lt; 1:</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            cluster_index = cluster_index + 1</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            hit.SetIsUsed(1)</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            list_hits_in_cluster[cluster_index] = []</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            list_hits_in_cluster[cluster_index].append(hit)</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="keywordflow">for</span> neighbouringHit <span class="keywordflow">in</span> neighbours:</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                <span class="keywordflow">if</span> neighbouringHit.IsUsed() == 1:</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                neighbouringHit.SetIsUsed(1)</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                list_hits_in_cluster[cluster_index].append(neighbouringHit)</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                expand_neighbours = self.<a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(neighbouringHit)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                <span class="keywordflow">if</span> len(expand_neighbours) &gt;= 1:</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                    <span class="keywordflow">for</span> additionalHit <span class="keywordflow">in</span> expand_neighbours:</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                        <span class="keywordflow">if</span> additionalHit <span class="keywordflow">not</span> <span class="keywordflow">in</span> neighbours:</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                            neighbours.append(additionalHit)</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        <span class="keywordflow">return</span> list_hits_in_cluster</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
 </div>
-<div class="foldopen" id="foldopen00255" data-start="" data-end="">
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">  255</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(self, hit):</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        <span class="stringliteral">&quot;&quot;&quot;Find neighbouring hits for clustering.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        list_neighbours = []</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        err_x_1 = hit.GetXError()</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        err_y_1 = hit.GetYError()</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        err_z_1 = hit.GetZError()</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="comment"># Allow one or more &#39;missing&#39; hit in x/y</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        max_gap = 2.0</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            err_x_1 = err_x_1 * max_gap</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            err_y_1 = err_y_1 * max_gap</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keywordflow">for</span> hit2 <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a>:</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            <span class="keywordflow">if</span> hit2 <span class="keywordflow">is</span> <span class="keywordflow">not</span> hit:</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                Dx = fabs(hit2.GetX() - hit.GetX())</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                Dy = fabs(hit2.GetY() - hit.GetY())</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                Dz = fabs(hit2.GetZ() - hit.GetZ())</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                err_x_2 = hit2.GetXError()</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                err_y_2 = hit2.GetYError()</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                err_z_2 = hit2.GetZError()</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                <span class="keywordflow">if</span> hit2.IsX():</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    err_x_2 = err_x_2 * max_gap</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                <span class="keywordflow">if</span> hit2.IsY():</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                    err_y_2 = err_y_2 * max_gap</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 1:</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="foldopen" id="foldopen00231" data-start="" data-end="">
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">  231</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">_get_neighbours</a>(self, hit):</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        <span class="stringliteral">&quot;&quot;&quot;Find neighbouring hits for clustering.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        list_neighbours = []</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        err_x_1 = hit.GetXError()</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        err_y_1 = hit.GetYError()</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        err_z_1 = hit.GetZError()</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="comment"># Allow one or more &#39;missing&#39; hit in x/y</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        max_gap = 2.0</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            err_x_1 = err_x_1 * max_gap</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            err_y_1 = err_y_1 * max_gap</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">for</span> hit2 <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">input_hits</a>:</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            <span class="keywordflow">if</span> hit2 <span class="keywordflow">is</span> <span class="keywordflow">not</span> hit:</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                Dx = fabs(hit2.GetX() - hit.GetX())</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                Dy = fabs(hit2.GetY() - hit.GetY())</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                Dz = fabs(hit2.GetZ() - hit.GetZ())</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                err_x_2 = hit2.GetXError()</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                err_y_2 = hit2.GetYError()</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                err_z_2 = hit2.GetZError()</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                <span class="keywordflow">if</span> hit2.IsX():</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                    err_x_2 = err_x_2 * max_gap</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                <span class="keywordflow">if</span> hit2.IsY():</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                    err_y_2 = err_y_2 * max_gap</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 1:</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                        ):</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                        ):</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                <span class="keywordflow">elif</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 2:</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                    <span class="comment"># Relax z condition for step 2</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                        ):</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                        ):</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                        ):</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                <span class="keywordflow">elif</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 2:</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>                    <span class="comment"># Relax z condition for step 2</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                        ):</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                        ):</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        <span class="keywordflow">return</span> list_neighbours</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keywordflow">return</span> list_neighbours</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>
@@ -440,10 +416,10 @@ $(document).ready(function(){initNavTree('splitcalDetector_8py_source.html','');
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a3935ad43ce8135e442a77356ce42a77e"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a3935ad43ce8135e442a77356ce42a77e">BaseDetector.BaseDetector.outtree</a></div><div class="ttdeci">outtree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00028">BaseDetector.py:28</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00026">BaseDetector.py:26</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html">splitcalDetector.splitcalDetector</a></div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00007">splitcalDetector.py:7</a></div></div>
-<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a0451c1c20e993526797f2321dd10252e"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">splitcalDetector.splitcalDetector._get_cluster_energy</a></div><div class="ttdeci">_get_cluster_energy(self, list_hits)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00213">splitcalDetector.py:213</a></div></div>
+<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a0451c1c20e993526797f2321dd10252e"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a0451c1c20e993526797f2321dd10252e">splitcalDetector.splitcalDetector._get_cluster_energy</a></div><div class="ttdeci">_get_cluster_energy(self, list_hits)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00189">splitcalDetector.py:189</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a31c633beec0952bfd9e8e609344b0ce6"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a31c633beec0952bfd9e8e609344b0ce6">splitcalDetector.splitcalDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00008">splitcalDetector.py:8</a></div></div>
-<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a3a0a419ac749a2d7ebc840bc010b8faf"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">splitcalDetector.splitcalDetector._get_subclusters_excluding_fragments</a></div><div class="ttdeci">_get_subclusters_excluding_fragments(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00161">splitcalDetector.py:161</a></div></div>
-<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a3af47a5d2a74d476ad5af3e3aaa33009"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">splitcalDetector.splitcalDetector._clustering</a></div><div class="ttdeci">_clustering(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00220">splitcalDetector.py:220</a></div></div>
+<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a3a0a419ac749a2d7ebc840bc010b8faf"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf">splitcalDetector.splitcalDetector._get_subclusters_excluding_fragments</a></div><div class="ttdeci">_get_subclusters_excluding_fragments(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00147">splitcalDetector.py:147</a></div></div>
+<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a3af47a5d2a74d476ad5af3e3aaa33009"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a3af47a5d2a74d476ad5af3e3aaa33009">splitcalDetector.splitcalDetector._clustering</a></div><div class="ttdeci">_clustering(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00196">splitcalDetector.py:196</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a6b97f9845178c7ab1c424c16057acc40"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a6b97f9845178c7ab1c424c16057acc40">splitcalDetector.splitcalDetector._reconstruct_clusters</a></div><div class="ttdeci">_reconstruct_clusters(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00051">splitcalDetector.py:51</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a6e67f1fbdc7bf994cfd44bbcb9bd7536"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a6e67f1fbdc7bf994cfd44bbcb9bd7536">splitcalDetector.splitcalDetector.det</a></div><div class="ttdeci">det</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00057">splitcalDetector.py:57</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_a7bfd26cc42f7bad16c967d4a578d9791"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791">splitcalDetector.splitcalDetector.input_hits</a></div><div class="ttdeci">input_hits</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00068">splitcalDetector.py:68</a></div></div>
@@ -452,7 +428,7 @@ $(document).ready(function(){initNavTree('splitcalDetector_8py_source.html','');
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_aa68e237211745e8ce78b62dedbbbe123"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#aa68e237211745e8ce78b62dedbbbe123">splitcalDetector.splitcalDetector.fill</a></div><div class="ttdeci">fill(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00023">splitcalDetector.py:23</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_aac3b51e6817c5a49fdf2e2dbedf77d0a"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#aac3b51e6817c5a49fdf2e2dbedf77d0a">splitcalDetector.splitcalDetector.recoBranch</a></div><div class="ttdeci">recoBranch</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00016">splitcalDetector.py:16</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_ab2986cd3483fb6b06b1836ad9c7b5cf9"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#ab2986cd3483fb6b06b1836ad9c7b5cf9">splitcalDetector.splitcalDetector.reco</a></div><div class="ttdeci">reco</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00013">splitcalDetector.py:13</a></div></div>
-<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_abddfe6e74d4a3d109758d15d2526d9cf"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">splitcalDetector.splitcalDetector._get_neighbours</a></div><div class="ttdeci">_get_neighbours(self, hit)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00255">splitcalDetector.py:255</a></div></div>
+<div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_abddfe6e74d4a3d109758d15d2526d9cf"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#abddfe6e74d4a3d109758d15d2526d9cf">splitcalDetector.splitcalDetector._get_neighbours</a></div><div class="ttdeci">_get_neighbours(self, hit)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00231">splitcalDetector.py:231</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_add129ec61db4b18b6d472397e7ef81f6"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">splitcalDetector.splitcalDetector.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00067">splitcalDetector.py:67</a></div></div>
 <div class="ttc" id="aclasssplitcalDetector_1_1splitcalDetector_html_ae2bff9ed9baa836c882da943745d7503"><div class="ttname"><a href="classsplitcalDetector_1_1splitcalDetector.html#ae2bff9ed9baa836c882da943745d7503">splitcalDetector.splitcalDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="splitcalDetector_8py_source.html#l00028">splitcalDetector.py:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

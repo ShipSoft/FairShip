@@ -150,7 +150,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Lifetime and total and partial decay widths of an RPV neutralino
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00148">148</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00178">178</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a187342e4a9b5941dfde4cd9e2cf1a1c8" name="a187342e4a9b5941dfde4cd9e2cf1a1c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a187342e4a9b5941dfde4cd9e2cf1a1c8">&#9670;&#160;</a></span>__init__()</h2>
@@ -210,47 +210,58 @@ Public Attributes</h2></td></tr>
     sfermion mass to normalise the couplings by (GeV)</pre> 
 <p>Reimplemented in <a class="el" href="classrpvsusy_1_1RPVSUSY.html#ac386b1690642a9eb9acce952a69df266">rpvsusy.RPVSUSY</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00152">152</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  152</span>    <span class="keyword">def </span>__init__(self, mass, couplings, sfmass, benchmark,debug=False):</div>
-<div class="line"><span class="lineno">  153</span>        <span class="stringliteral">r&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  154</span><span class="stringliteral">        Initialize with mass and couplings of the RPV neutralino</span></div>
-<div class="line"><span class="lineno">  155</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  156</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  157</span><span class="stringliteral">        mass (GeV)</span></div>
-<div class="line"><span class="lineno">  158</span><span class="stringliteral">        which benchmark scenario (1,2,3,4,5)</span></div>
-<div class="line"><span class="lineno">  159</span><span class="stringliteral">        couplings (list of [\lambda production, \lambda decay])</span></div>
-<div class="line"><span class="lineno">  160</span><span class="stringliteral">        sfermion mass to normalise the couplings by (GeV)</span></div>
-<div class="line"><span class="lineno">  161</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  162</span>        self.MN = mass*u.GeV</div>
-<div class="line"><span class="lineno">  163</span>        self.U  = couplings</div>
-<div class="line"><span class="lineno">  164</span>        self.U2 = [ui*ui <span class="keywordflow">for</span> ui <span class="keywordflow">in</span> self.U]</div>
-<div class="line"><span class="lineno">  165</span>        self.sfmass = sfmass</div>
-<div class="line"><span class="lineno">  166</span>        self.bench  = benchmark</div>
-<div class="line"><span class="lineno">  167</span>        self.decays =  {1:[<span class="stringliteral">&#39;N -&gt; K+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_L0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_S0 nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  168</span>                        2:[<span class="stringliteral">&#39;N -&gt; K+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_L0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_S0 nu_mu&#39;</span>,</div>
-<div class="line"><span class="lineno">  169</span>                           <span class="stringliteral">&#39;N -&gt; eta nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; eta\&#39; nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; phi nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  170</span>                        3:[<span class="stringliteral">&#39;N -&gt; K+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_L0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_S0 nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  171</span>                        4:[<span class="stringliteral">&#39;N -&gt; D+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; D*+ mu-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_L0 nu_mu&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_S0 nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  172</span>                        5:[<span class="stringliteral">&#39;N -&gt; K+ tau-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*+ tau-&#39;</span>,<span class="stringliteral">&#39;N -&gt; K*0 nu_tau&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_L0 nu_tau&#39;</span>,<span class="stringliteral">&#39;N -&gt; K_S0 nu_tau&#39;</span>]}</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>        self.prods   =  {1:[<span class="stringliteral">&#39;D+ -&gt; N mu+&#39;</span>],</div>
-<div class="line"><span class="lineno">  175</span>                         2:[<span class="stringliteral">&#39;D_s+ -&gt; N mu+&#39;</span>],</div>
-<div class="line"><span class="lineno">  176</span>                         3:[<span class="stringliteral">&#39;B0 -&gt; N nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  177</span>                         4:[<span class="stringliteral">&#39;B0 -&gt; N nu_mu&#39;</span>],</div>
-<div class="line"><span class="lineno">  178</span>                         5:[<span class="stringliteral">&#39;B0 -&gt; N nu_tau&#39;</span>,<span class="stringliteral">&#39;B+ -&gt; N tau+&#39;</span>]}</div>
-<div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> debug:</div>
-<div class="line"><span class="lineno">  182</span>            print(<span class="stringliteral">&quot;RPVSUSYbranchings instance initialized with couplings:&quot;</span>)</div>
-<div class="line"><span class="lineno">  183</span>            print(<span class="stringliteral">&quot;\t benchmark scenario   = %d&quot;</span>%self.bench)</div>
-<div class="line"><span class="lineno">  184</span>            print(<span class="stringliteral">&quot;\t decay coupling       = %s&quot;</span>%self.U[0])</div>
-<div class="line"><span class="lineno">  185</span>            print(<span class="stringliteral">&quot;\t production coupling  = %s&quot;</span>%self.U[1])</div>
-<div class="line"><span class="lineno">  186</span>            print(<span class="stringliteral">&quot;\t sfermion mass        = %s&quot;</span>%self.sfmass)</div>
-<div class="line"><span class="lineno">  187</span>            print(<span class="stringliteral">&quot;\t total prod coupling  = %s&quot;</span>%(self.U[0]/self.sfmass**2))</div>
-<div class="line"><span class="lineno">  188</span>            print(<span class="stringliteral">&quot;\t total decay coupling = %s&quot;</span>%(self.U[1]/self.sfmass**2))</div>
-<div class="line"><span class="lineno">  189</span>            print(<span class="stringliteral">&quot;and mass:&quot;</span>)</div>
-<div class="line"><span class="lineno">  190</span>            print(<span class="stringliteral">&quot;\tm = %s GeV&quot;</span>%(self.MN))</div>
-<div class="line"><span class="lineno">  191</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00183">183</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>    <span class="keyword">def </span>__init__(self, mass, couplings, sfmass, benchmark, debug=False):</div>
+<div class="line"><span class="lineno">  184</span>        <span class="stringliteral">r&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  185</span><span class="stringliteral">        Initialize with mass and couplings of the RPV neutralino</span></div>
+<div class="line"><span class="lineno">  186</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  187</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  188</span><span class="stringliteral">        mass (GeV)</span></div>
+<div class="line"><span class="lineno">  189</span><span class="stringliteral">        which benchmark scenario (1,2,3,4,5)</span></div>
+<div class="line"><span class="lineno">  190</span><span class="stringliteral">        couplings (list of [\lambda production, \lambda decay])</span></div>
+<div class="line"><span class="lineno">  191</span><span class="stringliteral">        sfermion mass to normalise the couplings by (GeV)</span></div>
+<div class="line"><span class="lineno">  192</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  193</span>        self.MN = mass * u.GeV</div>
+<div class="line"><span class="lineno">  194</span>        self.U = couplings</div>
+<div class="line"><span class="lineno">  195</span>        self.U2 = [ui * ui <span class="keywordflow">for</span> ui <span class="keywordflow">in</span> self.U]</div>
+<div class="line"><span class="lineno">  196</span>        self.sfmass = sfmass</div>
+<div class="line"><span class="lineno">  197</span>        self.bench = benchmark</div>
+<div class="line"><span class="lineno">  198</span>        self.decays = {</div>
+<div class="line"><span class="lineno">  199</span>            1: [<span class="stringliteral">&quot;N -&gt; K+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_L0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_S0 nu_mu&quot;</span>],</div>
+<div class="line"><span class="lineno">  200</span>            2: [</div>
+<div class="line"><span class="lineno">  201</span>                <span class="stringliteral">&quot;N -&gt; K+ mu-&quot;</span>,</div>
+<div class="line"><span class="lineno">  202</span>                <span class="stringliteral">&quot;N -&gt; K*+ mu-&quot;</span>,</div>
+<div class="line"><span class="lineno">  203</span>                <span class="stringliteral">&quot;N -&gt; K*0 nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  204</span>                <span class="stringliteral">&quot;N -&gt; K_L0 nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  205</span>                <span class="stringliteral">&quot;N -&gt; K_S0 nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  206</span>                <span class="stringliteral">&quot;N -&gt; eta nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  207</span>                <span class="stringliteral">&quot;N -&gt; eta&#39; nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  208</span>                <span class="stringliteral">&quot;N -&gt; phi nu_mu&quot;</span>,</div>
+<div class="line"><span class="lineno">  209</span>            ],</div>
+<div class="line"><span class="lineno">  210</span>            3: [<span class="stringliteral">&quot;N -&gt; K+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_L0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_S0 nu_mu&quot;</span>],</div>
+<div class="line"><span class="lineno">  211</span>            4: [<span class="stringliteral">&quot;N -&gt; D+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; D*+ mu-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_L0 nu_mu&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_S0 nu_mu&quot;</span>],</div>
+<div class="line"><span class="lineno">  212</span>            5: [<span class="stringliteral">&quot;N -&gt; K+ tau-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*+ tau-&quot;</span>, <span class="stringliteral">&quot;N -&gt; K*0 nu_tau&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_L0 nu_tau&quot;</span>, <span class="stringliteral">&quot;N -&gt; K_S0 nu_tau&quot;</span>],</div>
+<div class="line"><span class="lineno">  213</span>        }</div>
+<div class="line"><span class="lineno">  214</span> </div>
+<div class="line"><span class="lineno">  215</span>        self.prods = {</div>
+<div class="line"><span class="lineno">  216</span>            1: [<span class="stringliteral">&quot;D+ -&gt; N mu+&quot;</span>],</div>
+<div class="line"><span class="lineno">  217</span>            2: [<span class="stringliteral">&quot;D_s+ -&gt; N mu+&quot;</span>],</div>
+<div class="line"><span class="lineno">  218</span>            3: [<span class="stringliteral">&quot;B0 -&gt; N nu_mu&quot;</span>],</div>
+<div class="line"><span class="lineno">  219</span>            4: [<span class="stringliteral">&quot;B0 -&gt; N nu_mu&quot;</span>],</div>
+<div class="line"><span class="lineno">  220</span>            5: [<span class="stringliteral">&quot;B0 -&gt; N nu_tau&quot;</span>, <span class="stringliteral">&quot;B+ -&gt; N tau+&quot;</span>],</div>
+<div class="line"><span class="lineno">  221</span>        }</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>        <span class="keywordflow">if</span> debug:</div>
+<div class="line"><span class="lineno">  224</span>            print(<span class="stringliteral">&quot;RPVSUSYbranchings instance initialized with couplings:&quot;</span>)</div>
+<div class="line"><span class="lineno">  225</span>            print(<span class="stringliteral">&quot;\t benchmark scenario   = %d&quot;</span> % self.bench)</div>
+<div class="line"><span class="lineno">  226</span>            print(<span class="stringliteral">&quot;\t decay coupling       = %s&quot;</span> % self.U[0])</div>
+<div class="line"><span class="lineno">  227</span>            print(<span class="stringliteral">&quot;\t production coupling  = %s&quot;</span> % self.U[1])</div>
+<div class="line"><span class="lineno">  228</span>            print(<span class="stringliteral">&quot;\t sfermion mass        = %s&quot;</span> % self.sfmass)</div>
+<div class="line"><span class="lineno">  229</span>            print(<span class="stringliteral">&quot;\t total prod coupling  = %s&quot;</span> % (self.U[0] / self.sfmass**2))</div>
+<div class="line"><span class="lineno">  230</span>            print(<span class="stringliteral">&quot;\t total decay coupling = %s&quot;</span> % (self.U[1] / self.sfmass**2))</div>
+<div class="line"><span class="lineno">  231</span>            print(<span class="stringliteral">&quot;and mass:&quot;</span>)</div>
+<div class="line"><span class="lineno">  232</span>            print(<span class="stringliteral">&quot;\tm = %s GeV&quot;</span> % (self.MN))</div>
+<div class="line"><span class="lineno">  233</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -287,35 +298,38 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00198">198</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  198</span>    <span class="keyword">def </span>AddChannelsToPythia(self,P8Gen,verbose=True):</div>
-<div class="line"><span class="lineno">  199</span>        decays_tmp = self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  200</span>        <span class="keywordflow">for</span> decay <span class="keywordflow">in</span> decays_tmp:</div>
-<div class="line"><span class="lineno">  201</span>            decay_cpy = decay</div>
-<div class="line"><span class="lineno">  202</span>            decay_cpy = decay_cpy.replace(<span class="stringliteral">&quot;N -&gt; &quot;</span>,<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">  203</span>            particles = decay_cpy.split()</div>
-<div class="line"><span class="lineno">  204</span>            codes     = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles]</div>
-<div class="line"><span class="lineno">  205</span>            print(decay)</div>
-<div class="line"><span class="lineno">  206</span>            bf        = self.findDecayBranchingRatio(decay)</div>
-<div class="line"><span class="lineno">  207</span>            <span class="keywordflow">if</span> any(<span class="stringliteral">&quot;K+&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles) <span class="keywordflow">or</span>\</div>
-<div class="line"><span class="lineno">  208</span>               any(<span class="stringliteral">&quot;K-&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles) <span class="keywordflow">or</span>\</div>
-<div class="line"><span class="lineno">  209</span>               any(<span class="stringliteral">&quot;K*+&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles) <span class="keywordflow">or</span>\</div>
-<div class="line"><span class="lineno">  210</span>               any(<span class="stringliteral">&quot;K*-&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles) <span class="keywordflow">or</span>\</div>
-<div class="line"><span class="lineno">  211</span>               any(<span class="stringliteral">&quot;K*0&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles) <span class="keywordflow">or</span>\</div>
-<div class="line"><span class="lineno">  212</span>               any(<span class="stringliteral">&quot;K*0_bar&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles):</div>
-<div class="line"><span class="lineno">  213</span>                bf             = bf/2.</div>
-<div class="line"><span class="lineno">  214</span>                P8Gen.SetParameters(<span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>\</div>
-<div class="line"><span class="lineno">  215</span>                                    .format(bf, <span class="stringliteral">&#39; &#39;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes)))</div>
-<div class="line"><span class="lineno">  216</span>                P8Gen.SetParameters(<span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>\</div>
-<div class="line"><span class="lineno">  217</span>                                    .format(bf, <span class="stringliteral">&#39; &#39;</span>.join(str(-code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes)))</div>
-<div class="line"><span class="lineno">  218</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  219</span>                P8Gen.SetParameters(<span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>\</div>
-<div class="line"><span class="lineno">  220</span>                                    .format(bf, <span class="stringliteral">&#39; &#39;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes)))</div>
-<div class="line"><span class="lineno">  221</span>            <span class="keywordflow">if</span> verbose:</div>
-<div class="line"><span class="lineno">  222</span>                print(<span class="stringliteral">&quot;debug readdecay table&quot;</span>,particles,codes,bf)</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00240">240</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>    <span class="keyword">def </span>AddChannelsToPythia(self, P8Gen, verbose=True):</div>
+<div class="line"><span class="lineno">  241</span>        decays_tmp = self.decays[self.bench]</div>
+<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">for</span> decay <span class="keywordflow">in</span> decays_tmp:</div>
+<div class="line"><span class="lineno">  243</span>            decay_cpy = decay</div>
+<div class="line"><span class="lineno">  244</span>            decay_cpy = decay_cpy.replace(<span class="stringliteral">&quot;N -&gt; &quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">  245</span>            particles = decay_cpy.split()</div>
+<div class="line"><span class="lineno">  246</span>            codes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles]</div>
+<div class="line"><span class="lineno">  247</span>            print(decay)</div>
+<div class="line"><span class="lineno">  248</span>            bf = self.findDecayBranchingRatio(decay)</div>
+<div class="line"><span class="lineno">  249</span>            <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  250</span>                any(<span class="stringliteral">&quot;K+&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  251</span>                <span class="keywordflow">or</span> any(<span class="stringliteral">&quot;K-&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  252</span>                <span class="keywordflow">or</span> any(<span class="stringliteral">&quot;K*+&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  253</span>                <span class="keywordflow">or</span> any(<span class="stringliteral">&quot;K*-&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  254</span>                <span class="keywordflow">or</span> any(<span class="stringliteral">&quot;K*0&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  255</span>                <span class="keywordflow">or</span> any(<span class="stringliteral">&quot;K*0_bar&quot;</span> <span class="keywordflow">in</span> s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> particles)</div>
+<div class="line"><span class="lineno">  256</span>            ):</div>
+<div class="line"><span class="lineno">  257</span>                bf = bf / 2.0</div>
+<div class="line"><span class="lineno">  258</span>                P8Gen.SetParameters(</div>
+<div class="line"><span class="lineno">  259</span>                    <span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>.format(bf, <span class="stringliteral">&quot; &quot;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes))</div>
+<div class="line"><span class="lineno">  260</span>                )</div>
+<div class="line"><span class="lineno">  261</span>                P8Gen.SetParameters(</div>
+<div class="line"><span class="lineno">  262</span>                    <span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>.format(bf, <span class="stringliteral">&quot; &quot;</span>.join(str(-code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes))</div>
+<div class="line"><span class="lineno">  263</span>                )</div>
+<div class="line"><span class="lineno">  264</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  265</span>                P8Gen.SetParameters(</div>
+<div class="line"><span class="lineno">  266</span>                    <span class="stringliteral">&quot;9900015:addChannel = 1 {:.12} 0 {}&quot;</span>.format(bf, <span class="stringliteral">&quot; &quot;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> codes))</div>
+<div class="line"><span class="lineno">  267</span>                )</div>
+<div class="line"><span class="lineno">  268</span>            <span class="keywordflow">if</span> verbose:</div>
+<div class="line"><span class="lineno">  269</span>                print(<span class="stringliteral">&quot;debug readdecay table&quot;</span>, particles, codes, bf)</div>
+<div class="line"><span class="lineno">  270</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -349,49 +363,46 @@ Public Attributes</h2></td></tr>
 Inputs:
 - decayString is a string describing the decay, in the form 'N -&gt; stuff1 ... stuffN'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00334">334</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  334</span>    <span class="keyword">def </span>findDecayBranchingRatio(self, decayString):</div>
-<div class="line"><span class="lineno">  335</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  336</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino decay channel</span></div>
-<div class="line"><span class="lineno">  337</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  338</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  339</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
-<div class="line"><span class="lineno">  340</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  341</span>        had = re.search(<span class="stringliteral">r&#39;-&gt;\ (.+?)\ &#39;</span>, decayString).group(1)</div>
-<div class="line"><span class="lineno">  342</span>        decaysplit = decayString.split(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">  343</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
-<div class="line"><span class="lineno">  344</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&#39;mu&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;e&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;tau&#39;</span>)&gt;-1:</div>
-<div class="line"><span class="lineno">  345</span>                lep = split</div>
-<div class="line"><span class="lineno">  346</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&#39;pi+&#39;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&#39;pi-&#39;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&#39;pi0&#39;</span>:</div>
-<div class="line"><span class="lineno">  347</span>            print(<span class="stringliteral">&quot;findBranchingRatio() ERROR: Pions in final &quot;</span>\</div>
-<div class="line"><span class="lineno">  348</span>                  <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span>\</div>
-<div class="line"><span class="lineno">  349</span>                  <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  350</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  351</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>        corrdecstring = <span class="stringliteral">&#39;N -&gt; %s %s&#39;</span>%(had,lep)</div>
-<div class="line"><span class="lineno">  354</span>        listdecs      = self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  355</span>        gooddec       = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  356</span>        print(<span class="stringliteral">&quot;findBranchingRation() INFO: &quot;</span>\</div>
-<div class="line"><span class="lineno">  357</span>              <span class="stringliteral">&quot;You have chosen the decay: &#39;&quot;</span>,\</div>
-<div class="line"><span class="lineno">  358</span>              corrdecstring)</div>
-<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
-<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
-<div class="line"><span class="lineno">  361</span>                gooddec = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
-<div class="line"><span class="lineno">  363</span>            print(<span class="stringliteral">&quot;findBranchingRation() ERROR: Badly &quot;</span>\</div>
-<div class="line"><span class="lineno">  364</span>                  <span class="stringliteral">&quot;formulated decay string, please choose &quot;</span>\</div>
-<div class="line"><span class="lineno">  365</span>                  <span class="stringliteral">&quot;one of the following\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  366</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  367</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>        br = 0.</div>
-<div class="line"><span class="lineno">  370</span>        totalwidth = self.NdecayWidth()</div>
-<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">if</span> totalwidth &gt; 0.0:</div>
-<div class="line"><span class="lineno">  372</span>            br = self.Width_H_L(had,lep)/totalwidth</div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  374</span> </div>
-<div class="line"><span class="lineno">  375</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00417">417</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  417</span>    <span class="keyword">def </span>findDecayBranchingRatio(self, decayString):</div>
+<div class="line"><span class="lineno">  418</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  419</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino decay channel</span></div>
+<div class="line"><span class="lineno">  420</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  421</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  422</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
+<div class="line"><span class="lineno">  423</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  424</span>        had = re.search(<span class="stringliteral">r&quot;-&gt;\ (.+?)\ &quot;</span>, decayString).group(1)</div>
+<div class="line"><span class="lineno">  425</span>        decaysplit = decayString.split(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><span class="lineno">  426</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
+<div class="line"><span class="lineno">  427</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
+<div class="line"><span class="lineno">  428</span>                lep = split</div>
+<div class="line"><span class="lineno">  429</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
+<div class="line"><span class="lineno">  430</span>            print(</div>
+<div class="line"><span class="lineno">  431</span>                <span class="stringliteral">&quot;findBranchingRatio() ERROR: Pions in final &quot;</span></div>
+<div class="line"><span class="lineno">  432</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
+<div class="line"><span class="lineno">  433</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
+<div class="line"><span class="lineno">  434</span>            )</div>
+<div class="line"><span class="lineno">  435</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  436</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  437</span> </div>
+<div class="line"><span class="lineno">  438</span>        corrdecstring = f<span class="stringliteral">&quot;N -&gt; {had} {lep}&quot;</span></div>
+<div class="line"><span class="lineno">  439</span>        listdecs = self.decays[self.bench]</div>
+<div class="line"><span class="lineno">  440</span>        gooddec = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  441</span>        print(<span class="stringliteral">&quot;findBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
+<div class="line"><span class="lineno">  442</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
+<div class="line"><span class="lineno">  443</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
+<div class="line"><span class="lineno">  444</span>                gooddec = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  445</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
+<div class="line"><span class="lineno">  446</span>            print(<span class="stringliteral">&quot;findBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span>)</div>
+<div class="line"><span class="lineno">  447</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  448</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>        br = 0.0</div>
+<div class="line"><span class="lineno">  451</span>        totalwidth = self.NdecayWidth()</div>
+<div class="line"><span class="lineno">  452</span>        <span class="keywordflow">if</span> totalwidth &gt; 0.0:</div>
+<div class="line"><span class="lineno">  453</span>            br = self.Width_H_L(had, lep) / totalwidth</div>
+<div class="line"><span class="lineno">  454</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  455</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -425,45 +436,46 @@ Inputs:
 Inputs:
 - decayString is a string describing the decay, in the form 'H -&gt; N ... stuffN'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00376">376</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  376</span>    <span class="keyword">def </span>findProdBranchingRatio(self, decayString):</div>
-<div class="line"><span class="lineno">  377</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  378</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino product channel</span></div>
-<div class="line"><span class="lineno">  379</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  380</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  381</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;H -&gt; N ... stuffN&#39;</span></div>
-<div class="line"><span class="lineno">  382</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  383</span>        had = re.search(<span class="stringliteral">r&#39;(.+?)\ -&gt;&#39;</span>, decayString).group(1)</div>
-<div class="line"><span class="lineno">  384</span>        decaysplit = decayString.split(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
-<div class="line"><span class="lineno">  386</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&#39;mu&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;e&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;tau&#39;</span>)&gt;-1:</div>
-<div class="line"><span class="lineno">  387</span>                lep = split</div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&#39;pi+&#39;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&#39;pi-&#39;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&#39;pi0&#39;</span>:</div>
-<div class="line"><span class="lineno">  389</span>            print(<span class="stringliteral">&quot;findProdBranchingRatio() ERROR: Pions in final &quot;</span>\</div>
-<div class="line"><span class="lineno">  390</span>                  <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span>\</div>
-<div class="line"><span class="lineno">  391</span>                  <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  392</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  393</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>        corrdecstring = <span class="stringliteral">&#39;%s -&gt; N %s&#39;</span>%(had,lep)</div>
-<div class="line"><span class="lineno">  396</span>        listdecs      = self.prods[self.bench]</div>
-<div class="line"><span class="lineno">  397</span>        gooddec       = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  398</span>        print(<span class="stringliteral">&quot;findProdBranchingRation() INFO: &quot;</span>\</div>
-<div class="line"><span class="lineno">  399</span>              <span class="stringliteral">&quot;You have chosen the decay: &#39;&quot;</span>,\</div>
-<div class="line"><span class="lineno">  400</span>              corrdecstring)</div>
-<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
-<div class="line"><span class="lineno">  402</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
-<div class="line"><span class="lineno">  403</span>                gooddec = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  404</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
-<div class="line"><span class="lineno">  405</span>            print(<span class="stringliteral">&quot;findProdBranchingRation() ERROR: Badly &quot;</span>\</div>
-<div class="line"><span class="lineno">  406</span>                  <span class="stringliteral">&quot;formulated decay string, please choose &quot;</span>\</div>
-<div class="line"><span class="lineno">  407</span>                  <span class="stringliteral">&quot;one of the following\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  408</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  409</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  410</span> </div>
-<div class="line"><span class="lineno">  411</span>        br = self.Width_N_L(had,lep)/(self.Width_N_L(had,lep)+c.hGeV/lifetime(had))</div>
-<div class="line"><span class="lineno">  412</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  413</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00456">456</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  456</span>    <span class="keyword">def </span>findProdBranchingRatio(self, decayString):</div>
+<div class="line"><span class="lineno">  457</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  458</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino product channel</span></div>
+<div class="line"><span class="lineno">  459</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  460</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  461</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;H -&gt; N ... stuffN&#39;</span></div>
+<div class="line"><span class="lineno">  462</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  463</span>        had = re.search(<span class="stringliteral">r&quot;(.+?)\ -&gt;&quot;</span>, decayString).group(1)</div>
+<div class="line"><span class="lineno">  464</span>        decaysplit = decayString.split(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><span class="lineno">  465</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
+<div class="line"><span class="lineno">  466</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
+<div class="line"><span class="lineno">  467</span>                lep = split</div>
+<div class="line"><span class="lineno">  468</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
+<div class="line"><span class="lineno">  469</span>            print(</div>
+<div class="line"><span class="lineno">  470</span>                <span class="stringliteral">&quot;findProdBranchingRatio() ERROR: Pions in final &quot;</span></div>
+<div class="line"><span class="lineno">  471</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
+<div class="line"><span class="lineno">  472</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
+<div class="line"><span class="lineno">  473</span>            )</div>
+<div class="line"><span class="lineno">  474</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  475</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  476</span> </div>
+<div class="line"><span class="lineno">  477</span>        corrdecstring = f<span class="stringliteral">&quot;{had} -&gt; N {lep}&quot;</span></div>
+<div class="line"><span class="lineno">  478</span>        listdecs = self.prods[self.bench]</div>
+<div class="line"><span class="lineno">  479</span>        gooddec = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  480</span>        print(<span class="stringliteral">&quot;findProdBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
+<div class="line"><span class="lineno">  481</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
+<div class="line"><span class="lineno">  482</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
+<div class="line"><span class="lineno">  483</span>                gooddec = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  484</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
+<div class="line"><span class="lineno">  485</span>            print(</div>
+<div class="line"><span class="lineno">  486</span>                <span class="stringliteral">&quot;findProdBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span></div>
+<div class="line"><span class="lineno">  487</span>            )</div>
+<div class="line"><span class="lineno">  488</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  489</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span>        br = self.Width_N_L(had, lep) / (self.Width_N_L(had, lep) + c.hGeV / lifetime(had))</div>
+<div class="line"><span class="lineno">  492</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  493</span> </div>
+<div class="line"><span class="lineno">  494</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -483,10 +495,10 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00195">195</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  195</span>    <span class="keyword">def </span>Get_Dec_Modes(self):</div>
-<div class="line"><span class="lineno">  196</span>        <span class="keywordflow">return</span> self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  197</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00237">237</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  237</span>    <span class="keyword">def </span>Get_Dec_Modes(self):</div>
+<div class="line"><span class="lineno">  238</span>        <span class="keywordflow">return</span> self.decays[self.bench]</div>
+<div class="line"><span class="lineno">  239</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -506,10 +518,10 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00192">192</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  192</span>    <span class="keyword">def </span>Get_Prod_Modes(self):</div>
-<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">return</span> self.prods[self.bench]</div>
-<div class="line"><span class="lineno">  194</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00234">234</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>    <span class="keyword">def </span>Get_Prod_Modes(self):</div>
+<div class="line"><span class="lineno">  235</span>        <span class="keywordflow">return</span> self.prods[self.bench]</div>
+<div class="line"><span class="lineno">  236</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -530,18 +542,18 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Returns the total SUSYRPV neutralino decay width
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00312">312</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  312</span>    <span class="keyword">def </span>NdecayWidth(self):</div>
-<div class="line"><span class="lineno">  313</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  314</span><span class="stringliteral">        Returns the total SUSYRPV neutralino decay width</span></div>
-<div class="line"><span class="lineno">  315</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  316</span>        declist    = self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  317</span>        hadlist = [re.search(<span class="stringliteral">r&#39;-&gt;\ (.+?)\ &#39;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
-<div class="line"><span class="lineno">  318</span>        leplist    = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>,dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
-<div class="line"><span class="lineno">  319</span>        print(leplist,hadlist)</div>
-<div class="line"><span class="lineno">  320</span>        totalwidth = sum([self.Width_H_L(hadlist[i],leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,len(hadlist))])</div>
-<div class="line"><span class="lineno">  321</span>        <span class="keywordflow">return</span> totalwidth</div>
-<div class="line"><span class="lineno">  322</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00396">396</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  396</span>    <span class="keyword">def </span>NdecayWidth(self):</div>
+<div class="line"><span class="lineno">  397</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  398</span><span class="stringliteral">        Returns the total SUSYRPV neutralino decay width</span></div>
+<div class="line"><span class="lineno">  399</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  400</span>        declist = self.decays[self.bench]</div>
+<div class="line"><span class="lineno">  401</span>        hadlist = [re.search(<span class="stringliteral">r&quot;-&gt;\ (.+?)\ &quot;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
+<div class="line"><span class="lineno">  402</span>        leplist = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>, dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
+<div class="line"><span class="lineno">  403</span>        print(leplist, hadlist)</div>
+<div class="line"><span class="lineno">  404</span>        totalwidth = sum([self.Width_H_L(hadlist[i], leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0, len(hadlist))])</div>
+<div class="line"><span class="lineno">  405</span>        <span class="keywordflow">return</span> totalwidth</div>
+<div class="line"><span class="lineno">  406</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -562,18 +574,17 @@ Inputs:
 </div><div class="memdoc">
 <pre class="fragment">Returns the total SUSYRPV neutralino production width
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00323">323</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  323</span>    <span class="keyword">def </span>NprodWidth(self):</div>
-<div class="line"><span class="lineno">  324</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  325</span><span class="stringliteral">        Returns the total SUSYRPV neutralino production width</span></div>
-<div class="line"><span class="lineno">  326</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  327</span>        declist    = self.prods[self.bench]</div>
-<div class="line"><span class="lineno">  328</span>        hadlist = [re.search(<span class="stringliteral">r&#39;(.+?)\ -&gt;&#39;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
-<div class="line"><span class="lineno">  329</span>        leplist    = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>,dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
-<div class="line"><span class="lineno">  330</span>        totalwidth = sum([self.Width_N_L(hadlist[i],leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,len(hadlist))])</div>
-<div class="line"><span class="lineno">  331</span>        <span class="keywordflow">return</span> totalwidth</div>
-<div class="line"><span class="lineno">  332</span> </div>
-<div class="line"><span class="lineno">  333</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00407">407</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  407</span>    <span class="keyword">def </span>NprodWidth(self):</div>
+<div class="line"><span class="lineno">  408</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  409</span><span class="stringliteral">        Returns the total SUSYRPV neutralino production width</span></div>
+<div class="line"><span class="lineno">  410</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  411</span>        declist = self.prods[self.bench]</div>
+<div class="line"><span class="lineno">  412</span>        hadlist = [re.search(<span class="stringliteral">r&quot;(.+?)\ -&gt;&quot;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
+<div class="line"><span class="lineno">  413</span>        leplist = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>, dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
+<div class="line"><span class="lineno">  414</span>        totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0, len(hadlist))])</div>
+<div class="line"><span class="lineno">  415</span>        <span class="keywordflow">return</span> totalwidth</div>
+<div class="line"><span class="lineno">  416</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -614,53 +625,73 @@ Inputs:
 - H is a string (name of the meson)
 - L is a string (name of the lepton)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00226">226</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>    <span class="keyword">def </span>Width_H_L(self, H, L):</div>
-<div class="line"><span class="lineno">  227</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  228</span><span class="stringliteral">        Returns the RPV neutralino decay width into neutral meson and lepton</span></div>
-<div class="line"><span class="lineno">  229</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  230</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  231</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
-<div class="line"><span class="lineno">  232</span><span class="stringliteral">        - L is a string (name of the lepton)</span></div>
-<div class="line"><span class="lineno">  233</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  234</span>        <span class="keywordflow">if</span> self.MN &lt; (mass(H)+mass(L)):</div>
-<div class="line"><span class="lineno">  235</span>            <span class="keywordflow">return</span> 0.</div>
-<div class="line"><span class="lineno">  236</span> </div>
-<div class="line"><span class="lineno">  237</span>        phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\</div>
-<div class="line"><span class="lineno">  238</span>                       2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\</div>
-<div class="line"><span class="lineno">  239</span>                       2*mass(H)**2*mass(L)**2)</div>
-<div class="line"><span class="lineno">  240</span>        tmp_width=0</div>
-<div class="line"><span class="lineno">  241</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;nu_mu&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_tau&#39;</span> <span class="keywordflow">in</span> L:</div>
-<div class="line"><span class="lineno">  242</span>            tmp_width = phsp/(self.sfmass**4*128*u.pi*self.MN**3)*\</div>
-<div class="line"><span class="lineno">  243</span>                        c.GST2[<span class="stringliteral">&#39;sneutrino&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  244</span>                        (self.MN**2+mass(L)**2-mass(H)**2)</div>
-<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  246</span>            tmp_width = phsp/(self.sfmass**4*128*u.pi*self.MN**3)*\</div>
-<div class="line"><span class="lineno">  247</span>                        c.GST2[<span class="stringliteral">&#39;slepton&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  248</span>                        (self.MN**2+mass(L)**2-mass(H)**2)</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;K*&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&#39;D*&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;phi&quot;</span> <span class="keywordflow">in</span> H:</div>
-<div class="line"><span class="lineno">  251</span>            <span class="keywordflow">if</span> <span class="stringliteral">&#39;nu_mu&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_tau&#39;</span> <span class="keywordflow">in</span> L:</div>
-<div class="line"><span class="lineno">  252</span>                tmp_width = phsp/(self.sfmass**4*2*u.pi*self.MN**3)*\</div>
-<div class="line"><span class="lineno">  253</span>                            c.GST2[<span class="stringliteral">&#39;tneutrino&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  254</span>                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2))</div>
-<div class="line"><span class="lineno">  255</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  256</span>                tmp_width = phsp/(self.sfmass**4*2*u.pi*self.MN**3)*\</div>
-<div class="line"><span class="lineno">  257</span>                            c.GST2[<span class="stringliteral">&#39;tlepton&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  258</span>                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2))</div>
-<div class="line"><span class="lineno">  259</span>        width=self.U2[1]*tmp_width</div>
-<div class="line"><span class="lineno">  260</span>        <span class="comment"># contributions both from decay and production couplings</span></div>
-<div class="line"><span class="lineno">  261</span>        <span class="keywordflow">if</span> self.bench==1 <span class="keywordflow">and</span> (<span class="stringliteral">&#39;K_&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&#39;K*&#39;</span> <span class="keywordflow">in</span> H):</div>
-<div class="line"><span class="lineno">  262</span>            width=(self.U2[0]+self.U2[1])*tmp_width</div>
-<div class="line"><span class="lineno">  263</span>        <span class="comment"># contributions only from production coupling</span></div>
-<div class="line"><span class="lineno">  264</span>        <span class="keywordflow">if</span> self.bench==2 <span class="keywordflow">and</span> (<span class="stringliteral">&#39;eta&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&#39;phi&#39;</span> <span class="keywordflow">in</span> H):</div>
-<div class="line"><span class="lineno">  265</span>            width=self.U2[0]*tmp_width</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>        <span class="comment"># Majorana case (charge conjugate channels)</span></div>
-<div class="line"><span class="lineno">  268</span>        width = 2.*width</div>
-<div class="line"><span class="lineno">  269</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00271">271</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  271</span>    <span class="keyword">def </span>Width_H_L(self, H, L):</div>
+<div class="line"><span class="lineno">  272</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  273</span><span class="stringliteral">        Returns the RPV neutralino decay width into neutral meson and lepton</span></div>
+<div class="line"><span class="lineno">  274</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  275</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  276</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
+<div class="line"><span class="lineno">  277</span><span class="stringliteral">        - L is a string (name of the lepton)</span></div>
+<div class="line"><span class="lineno">  278</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  279</span>        <span class="keywordflow">if</span> self.MN &lt; (mass(H) + mass(L)):</div>
+<div class="line"><span class="lineno">  280</span>            <span class="keywordflow">return</span> 0.0</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span>        phsp = math.sqrt(</div>
+<div class="line"><span class="lineno">  283</span>            self.MN**4</div>
+<div class="line"><span class="lineno">  284</span>            + mass(H) ** 4</div>
+<div class="line"><span class="lineno">  285</span>            + mass(L) ** 4</div>
+<div class="line"><span class="lineno">  286</span>            - 2 * self.MN**2 * mass(H) ** 2</div>
+<div class="line"><span class="lineno">  287</span>            - 2 * self.MN**2 * mass(L) ** 2</div>
+<div class="line"><span class="lineno">  288</span>            - 2 * mass(H) ** 2 * mass(L) ** 2</div>
+<div class="line"><span class="lineno">  289</span>        )</div>
+<div class="line"><span class="lineno">  290</span>        tmp_width = 0</div>
+<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;nu_mu&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_e&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_tau&quot;</span> <span class="keywordflow">in</span> L:</div>
+<div class="line"><span class="lineno">  292</span>            tmp_width = (</div>
+<div class="line"><span class="lineno">  293</span>                phsp</div>
+<div class="line"><span class="lineno">  294</span>                / (self.sfmass**4 * 128 * u.pi * self.MN**3)</div>
+<div class="line"><span class="lineno">  295</span>                * c.GST2[<span class="stringliteral">&quot;sneutrino&quot;</span>]</div>
+<div class="line"><span class="lineno">  296</span>                * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  297</span>                * (self.MN**2 + mass(L) ** 2 - mass(H) ** 2)</div>
+<div class="line"><span class="lineno">  298</span>            )</div>
+<div class="line"><span class="lineno">  299</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  300</span>            tmp_width = (</div>
+<div class="line"><span class="lineno">  301</span>                phsp</div>
+<div class="line"><span class="lineno">  302</span>                / (self.sfmass**4 * 128 * u.pi * self.MN**3)</div>
+<div class="line"><span class="lineno">  303</span>                * c.GST2[<span class="stringliteral">&quot;slepton&quot;</span>]</div>
+<div class="line"><span class="lineno">  304</span>                * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  305</span>                * (self.MN**2 + mass(L) ** 2 - mass(H) ** 2)</div>
+<div class="line"><span class="lineno">  306</span>            )</div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;K*&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;D*&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;phi&quot;</span> <span class="keywordflow">in</span> H:</div>
+<div class="line"><span class="lineno">  309</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;nu_mu&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_e&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_tau&quot;</span> <span class="keywordflow">in</span> L:</div>
+<div class="line"><span class="lineno">  310</span>                tmp_width = (</div>
+<div class="line"><span class="lineno">  311</span>                    phsp</div>
+<div class="line"><span class="lineno">  312</span>                    / (self.sfmass**4 * 2 * u.pi * self.MN**3)</div>
+<div class="line"><span class="lineno">  313</span>                    * c.GST2[<span class="stringliteral">&quot;tneutrino&quot;</span>]</div>
+<div class="line"><span class="lineno">  314</span>                    * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  315</span>                    * (2 * (self.MN**2 - mass(L) ** 2) ** 2 - mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2))</div>
+<div class="line"><span class="lineno">  316</span>                )</div>
+<div class="line"><span class="lineno">  317</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  318</span>                tmp_width = (</div>
+<div class="line"><span class="lineno">  319</span>                    phsp</div>
+<div class="line"><span class="lineno">  320</span>                    / (self.sfmass**4 * 2 * u.pi * self.MN**3)</div>
+<div class="line"><span class="lineno">  321</span>                    * c.GST2[<span class="stringliteral">&quot;tlepton&quot;</span>]</div>
+<div class="line"><span class="lineno">  322</span>                    * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  323</span>                    * (2 * (self.MN**2 - mass(L) ** 2) ** 2 - mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2))</div>
+<div class="line"><span class="lineno">  324</span>                )</div>
+<div class="line"><span class="lineno">  325</span>        width = self.U2[1] * tmp_width</div>
+<div class="line"><span class="lineno">  326</span>        <span class="comment"># contributions both from decay and production couplings</span></div>
+<div class="line"><span class="lineno">  327</span>        <span class="keywordflow">if</span> self.bench == 1 <span class="keywordflow">and</span> (<span class="stringliteral">&quot;K_&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;K*&quot;</span> <span class="keywordflow">in</span> H):</div>
+<div class="line"><span class="lineno">  328</span>            width = (self.U2[0] + self.U2[1]) * tmp_width</div>
+<div class="line"><span class="lineno">  329</span>        <span class="comment"># contributions only from production coupling</span></div>
+<div class="line"><span class="lineno">  330</span>        <span class="keywordflow">if</span> self.bench == 2 <span class="keywordflow">and</span> (<span class="stringliteral">&quot;eta&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;phi&quot;</span> <span class="keywordflow">in</span> H):</div>
+<div class="line"><span class="lineno">  331</span>            width = self.U2[0] * tmp_width</div>
+<div class="line"><span class="lineno">  332</span> </div>
+<div class="line"><span class="lineno">  333</span>        <span class="comment"># Majorana case (charge conjugate channels)</span></div>
+<div class="line"><span class="lineno">  334</span>        width = 2.0 * width</div>
+<div class="line"><span class="lineno">  335</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  336</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -700,47 +731,66 @@ Inputs:
 - H is a string (name of the meson)
 - L is a string (name of the lepton)
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00272">272</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  272</span>    <span class="keyword">def </span>Width_N_L(self, H, L):</div>
-<div class="line"><span class="lineno">  273</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  274</span><span class="stringliteral">        Returns the Meson decay width to RPV neutralino and lepton</span></div>
-<div class="line"><span class="lineno">  275</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  276</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
-<div class="line"><span class="lineno">  277</span><span class="stringliteral">        - L is a string (name of the lepton)</span></div>
-<div class="line"><span class="lineno">  278</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>        <span class="keywordflow">if</span> mass(H) &lt; (self.MN+mass(L)):</div>
-<div class="line"><span class="lineno">  281</span>            <span class="keywordflow">return</span> 0.</div>
-<div class="line"><span class="lineno">  282</span>        phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\</div>
-<div class="line"><span class="lineno">  283</span>                       2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\</div>
-<div class="line"><span class="lineno">  284</span>                       2*mass(H)**2*mass(L)**2)</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span>        tmp_width=0</div>
-<div class="line"><span class="lineno">  287</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;nu_mu&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_tau&#39;</span> <span class="keywordflow">in</span> L:</div>
-<div class="line"><span class="lineno">  288</span>            tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\</div>
-<div class="line"><span class="lineno">  289</span>                        c.GST2[<span class="stringliteral">&#39;sneutrino&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  290</span>                        (mass(H)**2-self.MN**2-mass(L)**2)</div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  292</span>            tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\</div>
-<div class="line"><span class="lineno">  293</span>                        c.GST2[<span class="stringliteral">&#39;slepton&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  294</span>                        (mass(H)**2-self.MN**2-mass(L)**2)</div>
-<div class="line"><span class="lineno">  295</span> </div>
-<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;K*&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&#39;D*&#39;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;phi&quot;</span> <span class="keywordflow">in</span> H:</div>
-<div class="line"><span class="lineno">  297</span>            <span class="keywordflow">if</span> <span class="stringliteral">&#39;nu_mu&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_e&#39;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&#39;nu_tau&#39;</span> <span class="keywordflow">in</span> L:</div>
-<div class="line"><span class="lineno">  298</span>                tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\</div>
-<div class="line"><span class="lineno">  299</span>                            c.GST2[<span class="stringliteral">&#39;tneutrino&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  300</span>                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))</div>
-<div class="line"><span class="lineno">  301</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  302</span>                tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\</div>
-<div class="line"><span class="lineno">  303</span>                            c.GST2[<span class="stringliteral">&#39;tlepton&#39;</span>]*c.decayConstant[H]**2*\</div>
-<div class="line"><span class="lineno">  304</span>                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>        width=self.U2[0]*tmp_width</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>        <span class="keywordflow">return</span> width</div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00337">337</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  337</span>    <span class="keyword">def </span>Width_N_L(self, H, L):</div>
+<div class="line"><span class="lineno">  338</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  339</span><span class="stringliteral">        Returns the Meson decay width to RPV neutralino and lepton</span></div>
+<div class="line"><span class="lineno">  340</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  341</span><span class="stringliteral">        - H is a string (name of the meson)</span></div>
+<div class="line"><span class="lineno">  342</span><span class="stringliteral">        - L is a string (name of the lepton)</span></div>
+<div class="line"><span class="lineno">  343</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">if</span> mass(H) &lt; (self.MN + mass(L)):</div>
+<div class="line"><span class="lineno">  346</span>            <span class="keywordflow">return</span> 0.0</div>
+<div class="line"><span class="lineno">  347</span>        phsp = math.sqrt(</div>
+<div class="line"><span class="lineno">  348</span>            self.MN**4</div>
+<div class="line"><span class="lineno">  349</span>            + mass(H) ** 4</div>
+<div class="line"><span class="lineno">  350</span>            + mass(L) ** 4</div>
+<div class="line"><span class="lineno">  351</span>            - 2 * self.MN**2 * mass(H) ** 2</div>
+<div class="line"><span class="lineno">  352</span>            - 2 * self.MN**2 * mass(L) ** 2</div>
+<div class="line"><span class="lineno">  353</span>            - 2 * mass(H) ** 2 * mass(L) ** 2</div>
+<div class="line"><span class="lineno">  354</span>        )</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>        tmp_width = 0</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;nu_mu&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_e&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_tau&quot;</span> <span class="keywordflow">in</span> L:</div>
+<div class="line"><span class="lineno">  358</span>            tmp_width = (</div>
+<div class="line"><span class="lineno">  359</span>                phsp</div>
+<div class="line"><span class="lineno">  360</span>                / (self.sfmass**4 * 64 * u.pi * mass(H) ** 3)</div>
+<div class="line"><span class="lineno">  361</span>                * c.GST2[<span class="stringliteral">&quot;sneutrino&quot;</span>]</div>
+<div class="line"><span class="lineno">  362</span>                * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  363</span>                * (mass(H) ** 2 - self.MN**2 - mass(L) ** 2)</div>
+<div class="line"><span class="lineno">  364</span>            )</div>
+<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  366</span>            tmp_width = (</div>
+<div class="line"><span class="lineno">  367</span>                phsp</div>
+<div class="line"><span class="lineno">  368</span>                / (self.sfmass**4 * 64 * u.pi * mass(H) ** 3)</div>
+<div class="line"><span class="lineno">  369</span>                * c.GST2[<span class="stringliteral">&quot;slepton&quot;</span>]</div>
+<div class="line"><span class="lineno">  370</span>                * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  371</span>                * (mass(H) ** 2 - self.MN**2 - mass(L) ** 2)</div>
+<div class="line"><span class="lineno">  372</span>            )</div>
+<div class="line"><span class="lineno">  373</span> </div>
+<div class="line"><span class="lineno">  374</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;K*&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;D*&quot;</span> <span class="keywordflow">in</span> H <span class="keywordflow">or</span> <span class="stringliteral">&quot;phi&quot;</span> <span class="keywordflow">in</span> H:</div>
+<div class="line"><span class="lineno">  375</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;nu_mu&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_e&quot;</span> <span class="keywordflow">in</span> L <span class="keywordflow">or</span> <span class="stringliteral">&quot;nu_tau&quot;</span> <span class="keywordflow">in</span> L:</div>
+<div class="line"><span class="lineno">  376</span>                tmp_width = (</div>
+<div class="line"><span class="lineno">  377</span>                    phsp</div>
+<div class="line"><span class="lineno">  378</span>                    / (self.sfmass**4 * 3 * u.pi * mass(H) ** 3)</div>
+<div class="line"><span class="lineno">  379</span>                    * c.GST2[<span class="stringliteral">&quot;tneutrino&quot;</span>]</div>
+<div class="line"><span class="lineno">  380</span>                    * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  381</span>                    * (mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2 - 2 * (self.MN**2 - mass(L) ** 2) ** 2))</div>
+<div class="line"><span class="lineno">  382</span>                )</div>
+<div class="line"><span class="lineno">  383</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  384</span>                tmp_width = (</div>
+<div class="line"><span class="lineno">  385</span>                    phsp</div>
+<div class="line"><span class="lineno">  386</span>                    / (self.sfmass**4 * 3 * u.pi * mass(H) ** 3)</div>
+<div class="line"><span class="lineno">  387</span>                    * c.GST2[<span class="stringliteral">&quot;tlepton&quot;</span>]</div>
+<div class="line"><span class="lineno">  388</span>                    * c.decayConstant[H] ** 2</div>
+<div class="line"><span class="lineno">  389</span>                    * (mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2 - 2 * (self.MN**2 - mass(L) ** 2) ** 2))</div>
+<div class="line"><span class="lineno">  390</span>                )</div>
+<div class="line"><span class="lineno">  391</span> </div>
+<div class="line"><span class="lineno">  392</span>        width = self.U2[0] * tmp_width</div>
+<div class="line"><span class="lineno">  393</span> </div>
+<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">return</span> width</div>
+<div class="line"><span class="lineno">  395</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -757,7 +807,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00166">166</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00197">197</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -773,7 +823,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00167">167</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00198">198</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -789,7 +839,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00162">162</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00193">193</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -805,7 +855,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00174">174</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00215">215</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -821,7 +871,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00165">165</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00196">196</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -837,7 +887,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00163">163</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00194">194</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>
@@ -853,7 +903,7 @@ Inputs:
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00164">164</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00195">195</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>

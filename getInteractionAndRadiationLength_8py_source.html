@@ -106,13 +106,19 @@ $(document).ready(function(){initNavTree('getInteractionAndRadiationLength_8py_s
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"># python $FAIRSHIP/macro/getGeoInformation.py -g geofile_full.conical.Genie-TGeant4.root</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"># python -i $FAIRSHIP/macro/run_simScript.py --Genie -f /eos/experiment/ship/data/GenieEvents/genie-nu_mu.root</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#acb156e7c2455b7437dfa7ceb797dc4b8">   10</a></span>start=array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3666.5])</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#a0bb5e2e407c672fbaca98f5615812e5b">   11</a></span>end=array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3898.700])</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">   12</a></span>mparam=array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0,0,0,0,0,0,0,0,0,0])</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>Geniegen.MeanMaterialBudget(start, end, mparam)</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>print(mparam[8], <span class="stringliteral">&quot; equivalent interaction length fraction&quot;</span>)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>print(mparam[1], <span class="stringliteral">&quot; equivalent rad length fraction&quot;</span>)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="" data-end="">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#aa0c6a854bdecdfe4558f60c6d8ce2fd5">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegetInteractionAndRadiationLength.html#aa0c6a854bdecdfe4558f60c6d8ce2fd5">compute_material_budget</a>(Geniegen):</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    start = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 3666.5])</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    end = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 3898.700])</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    mparam = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Geniegen.MeanMaterialBudget(start, end, mparam)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    print(mparam[8], <span class="stringliteral">&quot; equivalent interaction length fraction&quot;</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    print(mparam[1], <span class="stringliteral">&quot; equivalent rad length fraction&quot;</span>)</div>
+</div>
+<div class="ttc" id="anamespacegetInteractionAndRadiationLength_html_aa0c6a854bdecdfe4558f60c6d8ce2fd5"><div class="ttname"><a href="namespacegetInteractionAndRadiationLength.html#aa0c6a854bdecdfe4558f60c6d8ce2fd5">getInteractionAndRadiationLength.compute_material_budget</a></div><div class="ttdeci">compute_material_budget(Geniegen)</div><div class="ttdef"><b>Definition</b> <a href="getInteractionAndRadiationLength_8py_source.html#l00012">getInteractionAndRadiationLength.py:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

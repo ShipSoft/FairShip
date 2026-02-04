@@ -4,7 +4,7 @@ var classshipVeto_1_1Task =
     [ "detMap", "classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8", null ],
     [ "fiducialCheck", "classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8", null ],
     [ "fiducialCheckSignal", "classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886", null ],
-    [ "SBT_decision", "classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be", null ],
+    [ "SBT_decision", "classshipVeto_1_1Task.html#a82e6c101f1669f3ee44cf20cee98f3ea", null ],
     [ "SBT_liquid_decision", "classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0", null ],
     [ "SBT_plastic_decision", "classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5", null ],
     [ "Track_decision", "classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12", null ],

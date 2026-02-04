@@ -1,7 +1,7 @@
 var study__GammaConv_8py =
 [
     [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ],
-    [ "boostFactor", "study__GammaConv_8py.html#ae7dc52662551ed7788ac46668220e4f5", null ],
+    [ "boostFactor", "study__GammaConv_8py.html#a87e1fbd736ef46b9a49a67ee3e340c9c", null ],
     [ "cave", "study__GammaConv_8py.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9", null ],
     [ "checkOverlap", "study__GammaConv_8py.html#a6d4855531bd591ee5f7b60226b127b43", null ],
     [ "ctime", "study__GammaConv_8py.html#aebd70fbb6d12627cfa23a813ccf33cc9", null ],

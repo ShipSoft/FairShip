@@ -38,7 +38,7 @@ var namespaceg4Ex =
     [ "sens", "namespaceg4Ex.html#a5294848e359b178f218ce1071f11098c", null ],
     [ "t0", "namespaceg4Ex.html#af93fe7803fd2d2d3d90f4c28b4120f8f", null ],
     [ "t1", "namespaceg4Ex.html#afd27be4af37c94678ccdccb2c39e7f62", null ],
-    [ "tauOnly", "namespaceg4Ex.html#a0e89715f7557611814a8c3c1438b7145", null ],
+    [ "tauOnly", "namespaceg4Ex.html#abfc584772d072296041c7f855f6168a4", null ],
     [ "withNtuple", "namespaceg4Ex.html#ac9f6420d3cabff7af8e5e869703c812f", null ],
     [ "xx", "namespaceg4Ex.html#abd8cde62a307957fbb35535058451d42", null ]
 ];

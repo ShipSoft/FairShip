@@ -1,6 +1,6 @@
 var ShipAna_8py =
 [
-    [ "access2SmearedHits", "ShipAna_8py.html#a19f60a61e3504e0143aad95ff168121b", null ],
+    [ "access2SmearedHits", "ShipAna_8py.html#a15de66a7d330dfcee067f46e4f1a5469", null ],
     [ "checkFiducialVolume", "ShipAna_8py.html#add600534e6df6909726258d95b473c75", null ],
     [ "checkHNLorigin", "ShipAna_8py.html#aa393bdafd0ce4a7a41237e3b068bcedd", null ],
     [ "dist2InnerWall", "ShipAna_8py.html#a62bc883cf46f34acd4ef73d4954837e8", null ],
@@ -17,10 +17,10 @@ var ShipAna_8py =
     [ "VertexError", "ShipAna_8py.html#a199566e2c0d9990d581ac26bbb87cbad", null ],
     [ "action", "ShipAna_8py.html#afdad0a04c8dad7eb3e3d7b6d9b17a138", null ],
     [ "bfield", "ShipAna_8py.html#a1f85359f38d72674b0a60c4e12683bfe", null ],
-    [ "chi2CutOff", "ShipAna_8py.html#ac5e4f9fe446df939ce898d258a237ce1", null ],
+    [ "chi2CutOff", "ShipAna_8py.html#ab9849a92f94b1776590ae98542810c63", null ],
     [ "default", "ShipAna_8py.html#a6a821359f5bb97c0c4c040adbc4cdca3", null ],
     [ "dest", "ShipAna_8py.html#a96c5027870721bf07ee185ffd2187b82", null ],
-    [ "docaCut", "ShipAna_8py.html#ab29a46af8f4a8b3c07f7b2df80ba0376", null ],
+    [ "docaCut", "ShipAna_8py.html#a700ab637b54a36857a04bf4570626534", null ],
     [ "dy", "ShipAna_8py.html#a02a40c51d86f2bb079d5d8018e56f028", null ],
     [ "f", "ShipAna_8py.html#a5fe42ce719ea428b2332fb77324aea4f", null ],
     [ "False", "ShipAna_8py.html#a9ef6cd917c9c0bb683c75ff15ad0f264", null ],

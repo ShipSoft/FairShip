@@ -228,23 +228,21 @@ Args:
 <p class="definition">Definition at line <a class="el" href="inspect__tree__branches_8py_source.html#l00083">83</a> of file <a class="el" href="inspect__tree__branches_8py_source.html">inspect_tree_branches.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
 <div class="line"><span class="lineno">   84</span>    <span class="stringliteral">&quot;&quot;&quot;Parse arguments and run the TTree branch inspection.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   85</span>    parser = argparse.ArgumentParser(</div>
-<div class="line"><span class="lineno">   86</span>        description=<span class="stringliteral">&quot;Inspect TTree branches for RNTuple compatibility&quot;</span></div>
-<div class="line"><span class="lineno">   87</span>    )</div>
-<div class="line"><span class="lineno">   88</span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input-file&quot;</span>, required=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;Input ROOT file&quot;</span>)</div>
-<div class="line"><span class="lineno">   89</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   90</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><span class="lineno">   91</span>        <span class="stringliteral">&quot;--tree-name&quot;</span>,</div>
-<div class="line"><span class="lineno">   92</span>        default=<span class="stringliteral">&quot;cbmsim&quot;</span>,</div>
-<div class="line"><span class="lineno">   93</span>        help=<span class="stringliteral">&quot;Name of TTree to inspect (default: cbmsim)&quot;</span>,</div>
-<div class="line"><span class="lineno">   94</span>    )</div>
+<div class="line"><span class="lineno">   85</span>    parser = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Inspect TTree branches for RNTuple compatibility&quot;</span>)</div>
+<div class="line"><span class="lineno">   86</span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input-file&quot;</span>, required=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;Input ROOT file&quot;</span>)</div>
+<div class="line"><span class="lineno">   87</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">   88</span>        <span class="stringliteral">&quot;-t&quot;</span>,</div>
+<div class="line"><span class="lineno">   89</span>        <span class="stringliteral">&quot;--tree-name&quot;</span>,</div>
+<div class="line"><span class="lineno">   90</span>        default=<span class="stringliteral">&quot;cbmsim&quot;</span>,</div>
+<div class="line"><span class="lineno">   91</span>        help=<span class="stringliteral">&quot;Name of TTree to inspect (default: cbmsim)&quot;</span>,</div>
+<div class="line"><span class="lineno">   92</span>    )</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>    args = parser.parse_args()</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>    args = parser.parse_args()</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    success = <a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(args.input_file, args.tree_name)</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> 0 <span class="keywordflow">if</span> success <span class="keywordflow">else</span> 1</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">   96</span>    success = <a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(args.input_file, args.tree_name)</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span> 0 <span class="keywordflow">if</span> success <span class="keywordflow">else</span> 1</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span> </div>
 <div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00007">test_pythia_version.cpp:7</a></div></div>
 </div><!-- fragment -->
 </div>

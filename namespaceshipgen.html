@@ -208,7 +208,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   88</span>  }</div>
 <div class="line"><span class="lineno">   89</span>  TGeoMaterial* <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a> = startnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
 <div class="line"><span class="lineno">   90</span>  lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetDensity();</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[7] = lparam[0];</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
 <div class="line"><span class="lineno">   92</span>  lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetRadLen();</div>
 <div class="line"><span class="lineno">   93</span>  lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetA();</div>
 <div class="line"><span class="lineno">   94</span>  lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetZ();</div>
@@ -217,7 +217,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   97</span>  lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetIntLen();</div>
 <div class="line"><span class="lineno">   98</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
 <div class="line"><span class="lineno">   99</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a9e059fccd1865e487271645a59736440">mbarn</a>;</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
 <div class="line"><span class="lineno">  102</span>    TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
 <div class="line"><span class="lineno">  103</span>    lparam[5] = 0;</div>
@@ -237,12 +237,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  117</span>  <span class="keywordtype">double</span> snext = gGeoManager-&gt;GetStep();</div>
 <div class="line"><span class="lineno">  118</span>  <span class="comment">// If no boundary within proposed length, return current density</span></div>
 <div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (!gGeoManager-&gt;IsOnBoundary()) {</div>
-<div class="line"><span class="lineno">  120</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[0] = lparam[0];</div>
-<div class="line"><span class="lineno">  121</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[1] = lparam[4] / lparam[1];</div>
-<div class="line"><span class="lineno">  122</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[2] = lparam[2];</div>
-<div class="line"><span class="lineno">  123</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[3] = lparam[3];</div>
-<div class="line"><span class="lineno">  124</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[4] = lparam[4];</div>
-<div class="line"><span class="lineno">  125</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[8] = lparam[4] / lparam[6];</div>
+<div class="line"><span class="lineno">  120</span>    mparam[0] = lparam[0];</div>
+<div class="line"><span class="lineno">  121</span>    mparam[1] = lparam[4] / lparam[1];</div>
+<div class="line"><span class="lineno">  122</span>    mparam[2] = lparam[2];</div>
+<div class="line"><span class="lineno">  123</span>    mparam[3] = lparam[3];</div>
+<div class="line"><span class="lineno">  124</span>    mparam[4] = lparam[4];</div>
+<div class="line"><span class="lineno">  125</span>    mparam[8] = lparam[4] / lparam[6];</div>
 <div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> lparam[0];</div>
 <div class="line"><span class="lineno">  127</span>  }</div>
 <div class="line"><span class="lineno">  128</span>  <span class="comment">// Try to cross the boundary and see what is next</span></div>
@@ -256,18 +256,18 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> (nzero &gt; 3) {</div>
 <div class="line"><span class="lineno">  137</span>      <span class="comment">// This means navigation has problems on one boundary</span></div>
 <div class="line"><span class="lineno">  138</span>      <span class="comment">// Try to cross by making a small step</span></div>
-<div class="line"><span class="lineno">  139</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  140</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[1] = bparam[1];</div>
-<div class="line"><span class="lineno">  141</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  142</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  143</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  144</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[8] = bparam[6];</div>
-<div class="line"><span class="lineno">  145</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[4] = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  146</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[0] = 0.;       <span class="comment">// if crash of navigation take mean density 0</span></div>
-<div class="line"><span class="lineno">  147</span>      <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[1] = 1000000;  <span class="comment">// and infinite rad length</span></div>
+<div class="line"><span class="lineno">  139</span>      mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  140</span>      mparam[1] = bparam[1];</div>
+<div class="line"><span class="lineno">  141</span>      mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  142</span>      mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  143</span>      mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  144</span>      mparam[8] = bparam[6];</div>
+<div class="line"><span class="lineno">  145</span>      mparam[4] = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  146</span>      mparam[0] = 0.;       <span class="comment">// if crash of navigation take mean density 0</span></div>
+<div class="line"><span class="lineno">  147</span>      mparam[1] = 1000000;  <span class="comment">// and infinite rad length</span></div>
 <div class="line"><span class="lineno">  148</span>      <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
-<div class="line"><span class="lineno">  150</span>    <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[6] += 1.;</div>
+<div class="line"><span class="lineno">  150</span>    mparam[6] += 1.;</div>
 <div class="line"><span class="lineno">  151</span>    <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> += snext;</div>
 <div class="line"><span class="lineno">  152</span>    bparam[1] += snext / lparam[1];</div>
 <div class="line"><span class="lineno">  153</span>    bparam[2] += snext * lparam[2];</div>
@@ -281,7 +281,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  161</span>    length -= snext;</div>
 <div class="line"><span class="lineno">  162</span>    <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a> = currentnode-&gt;GetVolume()-&gt;GetMedium()-&gt;GetMaterial();</div>
 <div class="line"><span class="lineno">  163</span>    lparam[0] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetDensity();</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[7] = lparam[0];</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> (lparam[0] &gt; mparam[7]) mparam[7] = lparam[0];</div>
 <div class="line"><span class="lineno">  165</span>    lparam[1] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetRadLen();</div>
 <div class="line"><span class="lineno">  166</span>    lparam[2] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetA();</div>
 <div class="line"><span class="lineno">  167</span>    lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetZ();</div>
@@ -289,7 +289,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  169</span>    lparam[6] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetIntLen();</div>
 <div class="line"><span class="lineno">  170</span>    <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = lparam[0] / lparam[2];</div>
 <div class="line"><span class="lineno">  171</span>    <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1. / (<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> * lparam[6]) / <a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a9e059fccd1865e487271645a59736440">mbarn</a>;</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
+<div class="line"><span class="lineno">  172</span>    <span class="keywordflow">if</span> (sigma &gt; mparam[9]) mparam[9] = <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>;</div>
 <div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
 <div class="line"><span class="lineno">  174</span>      TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
 <div class="line"><span class="lineno">  175</span>      lparam[5] = 0;</div>
@@ -304,20 +304,19 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  184</span>    gGeoManager-&gt;FindNextBoundaryAndStep(length, kFALSE);</div>
 <div class="line"><span class="lineno">  185</span>    snext = gGeoManager-&gt;GetStep();</div>
 <div class="line"><span class="lineno">  186</span>  }</div>
-<div class="line"><span class="lineno">  187</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  188</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[1] = bparam[1];</div>
-<div class="line"><span class="lineno">  189</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  191</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
-<div class="line"><span class="lineno">  192</span>  <a class="code hl_variable" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">mparam</a>[8] = bparam[6];</div>
+<div class="line"><span class="lineno">  187</span>  mparam[0] = bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  188</span>  mparam[1] = bparam[1];</div>
+<div class="line"><span class="lineno">  189</span>  mparam[2] = bparam[2] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  190</span>  mparam[3] = bparam[3] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  191</span>  mparam[5] = bparam[5] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
+<div class="line"><span class="lineno">  192</span>  mparam[8] = bparam[6];</div>
 <div class="line"><span class="lineno">  193</span>  <span class="keywordflow">return</span> bparam[0] / <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>;</div>
 <div class="line"><span class="lineno">  194</span>}</div>
 <div class="ttc" id="aFixedTargetGenerator_8cxx_html_a9e059fccd1865e487271645a59736440"><div class="ttname"><a href="FixedTargetGenerator_8cxx.html#a9e059fccd1865e487271645a59736440">mbarn</a></div><div class="ttdeci">const Double_t mbarn</div><div class="ttdef"><b>Definition</b> <a href="FixedTargetGenerator_8cxx_source.html#l00032">FixedTargetGenerator.cxx:32</a></div></div>
-<div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00072">add_noise_to_field.py:72</a></div></div>
-<div class="ttc" id="anamespacegetInteractionAndRadiationLength_html_aa0e9918aaad753c9ae2ef7d1cf39dc05"><div class="ttname"><a href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">getInteractionAndRadiationLength.mparam</a></div><div class="ttdeci">mparam</div><div class="ttdef"><b>Definition</b> <a href="getInteractionAndRadiationLength_8py_source.html#l00012">getInteractionAndRadiationLength.py:12</a></div></div>
-<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00151">runPythia8.py:151</a></div></div>
-<div class="ttc" id="anamespacestudy__GammaConv_html_afc85c748ac6d5eca2175c005a7b66d32"><div class="ttname"><a href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">study_GammaConv.material</a></div><div class="ttdeci">dict material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00026">study_GammaConv.py:26</a></div></div>
+<div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00079">add_noise_to_field.py:79</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00073">makeDecay.py:73</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_aa6ccf15df5382fe526735a07d97d3cd4"><div class="ttname"><a href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">runPythia8.sigma</a></div><div class="ttdeci">dict sigma</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00180">runPythia8.py:180</a></div></div>
+<div class="ttc" id="anamespacestudy__GammaConv_html_afc85c748ac6d5eca2175c005a7b66d32"><div class="ttname"><a href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">study_GammaConv.material</a></div><div class="ttdeci">dict material</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00031">study_GammaConv.py:31</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

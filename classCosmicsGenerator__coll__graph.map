@@ -1,7 +1,9 @@
 <map id="CosmicsGenerator" name="CosmicsGenerator">
-<area shape="rect" id="Node000001" title=" " alt="" coords="47,93,189,119"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,116,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,41,112,91,108,94,74,44"/>
-<area shape="rect" id="Node000003" href="$classCo3Rng.html" title=" " alt="" coords="141,5,213,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,44,128,94,124,91,159,41"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,196,153,221"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,116,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,146,82,195,76,196,64,147"/>
+<area shape="rect" id="Node000003" href="$classCo3Rng.html" title=" " alt="" coords="141,108,213,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,145,97,197,93,193,152,141"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="153,5,200,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,45,179,108,174,108,174,45"/>
 </map>

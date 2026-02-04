@@ -1,7 +1,7 @@
 var searchData=
 [
   ['save_5fhists_0',['save_hists',['../namespaceshipStrawTracking.html#a875df7febec3679ada1619e7c347dac1',1,'shipStrawTracking']]],
-  ['sbt_5fdecision_1',['SBT_decision',['../classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be',1,'shipVeto::Task']]],
+  ['sbt_5fdecision_1',['SBT_decision',['../classshipVeto_1_1Task.html#a82e6c101f1669f3ee44cf20cee98f3ea',1,'shipVeto::Task']]],
   ['sbt_5fliquid_5fdecision_2',['SBT_liquid_decision',['../classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0',1,'shipVeto::Task']]],
   ['sbt_5fplastic_5fdecision_3',['SBT_plastic_decision',['../classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5',1,'shipVeto::Task']]],
   ['scaleneventsincludinghadrons_4',['scaleNEventsIncludingHadrons',['../classdarkphoton_1_1DarkPhoton.html#a5f5edb570e284690fdbac539a96cc966',1,'darkphoton::DarkPhoton']]],
@@ -148,7 +148,7 @@ var searchData=
   ['setverbose_145',['SetVerbose',['../classPythia6Generator.html#a64187d5c0756ff78a09ed78561b142aa',1,'Pythia6Generator']]],
   ['setvesseldimensions_146',['SetVesselDimensions',['../classveto.html#a32665284b06c2c657b2455ebaa49b191',1,'veto']]],
   ['setvesselstructure_147',['SetVesselStructure',['../classveto.html#a42e9d7c08b954ea09c928be6e798130a',1,'veto']]],
-  ['setvetopointname_148',['SetVetoPointName',['../classexitHadronAbsorber.html#a7a82e014b74a2d95f880b774c81f7d4f',1,'exitHadronAbsorber']]],
+  ['setvetopointname_148',['SetVetoPointName',['../classexitHadronAbsorber.html#a3f0b67bcc57daec9d66375dd07c3ce6a',1,'exitHadronAbsorber']]],
   ['setweight_149',['SetWeight',['../classShipMCTrack.html#a65915331fb3a53345fe464a92fac6185',1,'ShipMCTrack']]],
   ['setwirethickness_150',['SetWireThickness',['../classstrawtubes.html#ace8539312c83354b381d983c4c8f106f',1,'strawtubes']]],
   ['setxmax_151',['SetXMax',['../classsplitcal.html#a573a24765361012b489d130e3b5b3a7e',1,'splitcal']]],

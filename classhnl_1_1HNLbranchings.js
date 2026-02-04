@@ -3,7 +3,7 @@ var classhnl_1_1HNLbranchings =
     [ "__init__", "classhnl_1_1HNLbranchings.html#ae11e5d7fb18776fbbdb4a35d1b0012d7", null ],
     [ "allowedChannels", "classhnl_1_1HNLbranchings.html#aa5145ac4726dd58d3fa567c34978fee9", null ],
     [ "findBranchingRatio", "classhnl_1_1HNLbranchings.html#a53a687fa31f3659634443ce9f853033c", null ],
-    [ "I", "classhnl_1_1HNLbranchings.html#a61cea2ebae71320d597232d0c33b10a9", null ],
+    [ "integral", "classhnl_1_1HNLbranchings.html#a799a22252708b4f7dca832a8d52cd322", null ],
     [ "Integrand", "classhnl_1_1HNLbranchings.html#a5da94991d38ca159ba47ba55168c007c", null ],
     [ "NDecayWidth", "classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d", null ],
     [ "QCD_correction", "classhnl_1_1HNLbranchings.html#a193ceb512abd3845ee899ee96682a69f", null ],

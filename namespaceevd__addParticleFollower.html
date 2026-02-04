@@ -105,7 +105,7 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a1412b4683b4c39c3c1e5cd0123faa1d3" id="r_a1412b4683b4c39c3c1e5cd0123faa1d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a1412b4683b4c39c3c1e5cd0123faa1d3">gEve</a> = ROOT.gEve</td></tr>
 <tr class="separator:a1412b4683b4c39c3c1e5cd0123faa1d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae322592f9d93fa2f17428793bf6e5457" id="r_ae322592f9d93fa2f17428793bf6e5457"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">v</a> = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer side')</td></tr>
+<tr class="memitem:ae322592f9d93fa2f17428793bf6e5457" id="r_ae322592f9d93fa2f17428793bf6e5457"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">v</a> = ROOT.gEve.GetViewers().FindChild(&quot;Bar Embedded Viewer side&quot;)</td></tr>
 <tr class="separator:ae322592f9d93fa2f17428793bf6e5457"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75e4d088426bf0926bdfc45d1439654b" id="r_a75e4d088426bf0926bdfc45d1439654b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a75e4d088426bf0926bdfc45d1439654b">vw</a> = v.GetGLViewer()</td></tr>
 <tr class="separator:a75e4d088426bf0926bdfc45d1439654b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,7 +113,7 @@ Variables</h2></td></tr>
 <tr class="separator:ad6560704d9d9a8192c9a2b200907c919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4572941be3b61e8753046d8af048af0d" id="r_a4572941be3b61e8753046d8af048af0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a4572941be3b61e8753046d8af048af0d">fr</a> = vw.GetFrame()</td></tr>
 <tr class="separator:a4572941be3b61e8753046d8af048af0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74bc49df6761180efe3be10310fca94c" id="r_a74bc49df6761180efe3be10310fca94c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a74bc49df6761180efe3be10310fca94c">test</a> = ROOT.TGLVertex3(0.,0.,0.)</td></tr>
+<tr class="memitem:a74bc49df6761180efe3be10310fca94c" id="r_a74bc49df6761180efe3be10310fca94c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a74bc49df6761180efe3be10310fca94c">test</a> = ROOT.TGLVertex3(0.0, 0.0, 0.0)</td></tr>
 <tr class="separator:a74bc49df6761180efe3be10310fca94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a978d88e08ac2b36036f6a27074d5d89b" id="r_a978d88e08ac2b36036f6a27074d5d89b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceevd__addParticleFollower.html#a978d88e08ac2b36036f6a27074d5d89b">vtest</a> = cam.ViewportToWorld(<a class="el" href="namespaceevd__addParticleFollower.html#a74bc49df6761180efe3be10310fca94c">test</a>)</td></tr>
 <tr class="separator:a978d88e08ac2b36036f6a27074d5d89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,70 +138,72 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00007">7</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span><span class="keyword">def </span>execute():</div>
-<div class="line"><span class="lineno">    8</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> gEve.GetViewers().FindChild(<span class="stringliteral">&#39;Bar Embedded Viewer side&#39;</span>):</div>
-<div class="line"><span class="lineno">    9</span>  slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())</div>
-<div class="line"><span class="lineno">   10</span>  pack1 = slot.MakePack()</div>
-<div class="line"><span class="lineno">   11</span>  pack1.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><span class="lineno">   12</span>  pack1.SetElementName(<span class="stringliteral">&quot;Top/Side View&quot;</span>)</div>
-<div class="line"><span class="lineno">   13</span>  pack1.SetVertical()</div>
-<div class="line"><span class="lineno">   14</span><span class="comment"># Embedded viewer.</span></div>
-<div class="line"><span class="lineno">   15</span>  cams = [<span class="stringliteral">&#39;side&#39;</span>,<span class="stringliteral">&#39;top&#39;</span>]</div>
-<div class="line"><span class="lineno">   16</span>  <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cams:</div>
-<div class="line"><span class="lineno">   17</span>   slot = pack1.NewSlot()</div>
-<div class="line"><span class="lineno">   18</span>   v = ROOT.TEveViewer(<span class="stringliteral">&quot;BarViewer&quot;</span>+c)</div>
-<div class="line"><span class="lineno">   19</span>   v.SpawnGLEmbeddedViewer(gEve.GetEditor())</div>
-<div class="line"><span class="lineno">   20</span>   slot.ReplaceWindow(v)</div>
-<div class="line"><span class="lineno">   21</span>   v.SetElementName(<span class="stringliteral">&quot;Bar Embedded Viewer &quot;</span>+c)  <span class="comment"># gEve.GetViewers().FindChild(&#39;Bar Embedded Viewer&#39;)</span></div>
-<div class="line"><span class="lineno">   22</span>   v.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><span class="lineno">   23</span>   gEve.GetViewers().AddElement(v)</div>
-<div class="line"><span class="lineno">   24</span>   v.AddScene(gEve.GetEventScene())</div>
-<div class="line"><span class="lineno">   25</span>   v.AddScene(gEve.GetScenes().FindChild(<span class="stringliteral">&#39;Geometry scene&#39;</span>))</div>
-<div class="line"><span class="lineno">   26</span>   vw = v.GetGLViewer()</div>
-<div class="line"><span class="lineno">   27</span>   <span class="keywordflow">if</span> c==<span class="stringliteral">&#39;top&#39;</span>:</div>
-<div class="line"><span class="lineno">   28</span>    vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZnOX)</div>
-<div class="line"><span class="lineno">   29</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   30</span>    vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZOY)</div>
-<div class="line"><span class="lineno">   31</span>   vw.ResetCameras()</div>
-<div class="line"><span class="lineno">   32</span>   cam = vw.CurrentCamera()</div>
-<div class="line"><span class="lineno">   33</span>   cam.Reset()</div>
-<div class="line"><span class="lineno">   34</span>   ed = v.GetEditorObject()</div>
-<div class="line"><span class="lineno">   35</span>   co = ed.GetCameraOverlay()</div>
-<div class="line"><span class="lineno">   36</span>   <span class="keywordflow">if</span> c==<span class="stringliteral">&#39;top&#39;</span>:</div>
-<div class="line"><span class="lineno">   37</span>    <span class="comment"># doesn&#39;t really work</span></div>
-<div class="line"><span class="lineno">   38</span>    center = array(<span class="stringliteral">&#39;d&#39;</span>,[0,500.,0])</div>
-<div class="line"><span class="lineno">   39</span>    cam.Configure(1.0,0.,center,0.,0.)</div>
-<div class="line"><span class="lineno">   40</span>    co.SetShowOrthographic(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   41</span>    co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll) <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
-<div class="line"><span class="lineno">   43</span>    ls = vw.GetLightSet()</div>
-<div class="line"><span class="lineno">   44</span>    ls.SetSidePower(1.0)</div>
-<div class="line"><span class="lineno">   45</span>    ls.SetFrontPower(1.0)</div>
-<div class="line"><span class="lineno">   46</span>    ls.SetSpecularPower(1.0)</div>
-<div class="line"><span class="lineno">   47</span>   <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   48</span>    center = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><span class="lineno">   49</span>    cam.Configure(1.0,0.,center,0,0)</div>
-<div class="line"><span class="lineno">   50</span>    co.SetShowOrthographic(<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   51</span>    co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll) <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
-<div class="line"><span class="lineno">   52</span>    ls = vw.GetLightSet()</div>
-<div class="line"><span class="lineno">   53</span>    ls.SetFrontPower(0.2)</div>
-<div class="line"><span class="lineno">   54</span>    ls.SetSidePower(0.4)</div>
-<div class="line"><span class="lineno">   55</span>    ls.SetSpecularPower(1.1)</div>
-<div class="line"><span class="lineno">   56</span><span class="comment"># problems with light, Camera home</span></div>
-<div class="line"><span class="lineno">   57</span>  <span class="comment">#cam.SetExternalCenter(ROOT.kTRUE)</span></div>
-<div class="line"><span class="lineno">   58</span>   vw.DoDraw()</div>
-<div class="line"><span class="lineno">   59</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">   60</span>  slot = pack1.NewSlot()</div>
-<div class="line"><span class="lineno">   61</span>  slot.StartEmbedding()</div>
-<div class="line"><span class="lineno">   62</span>  can = ROOT.TCanvas(<span class="stringliteral">&quot;Root Canvas EnergyLoss&quot;</span>) <span class="comment"># ROOT.gROOT.FindObject(&#39;Root Canvas&#39;)</span></div>
-<div class="line"><span class="lineno">   63</span>  can.SetTitle(<span class="stringliteral">&#39;Energy as function of z&#39;</span>)</div>
-<div class="line"><span class="lineno">   64</span>  can.ToggleEditor()</div>
-<div class="line"><span class="lineno">   65</span>  slot.StopEmbedding()</div>
-<div class="line"><span class="lineno">   66</span>  ls = ROOT.gROOT.GetListOfGlobals()</div>
-<div class="line"><span class="lineno">   67</span>  ls.Add(can)</div>
-<div class="line"><span class="lineno">   68</span>  SHiPDisplay  = eveGlobal.SHiPDisplay</div>
-<div class="line"><span class="lineno">   69</span>  SHiPDisplay.transparentMode(<span class="stringliteral">&#39;on&#39;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00013">13</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span><span class="keyword">def </span>execute():</div>
+<div class="line"><span class="lineno">   14</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> gEve.GetViewers().FindChild(<span class="stringliteral">&quot;Bar Embedded Viewer side&quot;</span>):</div>
+<div class="line"><span class="lineno">   15</span>        slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())</div>
+<div class="line"><span class="lineno">   16</span>        pack1 = slot.MakePack()</div>
+<div class="line"><span class="lineno">   17</span>        pack1.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><span class="lineno">   18</span>        pack1.SetElementName(<span class="stringliteral">&quot;Top/Side View&quot;</span>)</div>
+<div class="line"><span class="lineno">   19</span>        pack1.SetVertical()</div>
+<div class="line"><span class="lineno">   20</span>        <span class="comment"># Embedded viewer.</span></div>
+<div class="line"><span class="lineno">   21</span>        cams = [<span class="stringliteral">&quot;side&quot;</span>, <span class="stringliteral">&quot;top&quot;</span>]</div>
+<div class="line"><span class="lineno">   22</span>        <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cams:</div>
+<div class="line"><span class="lineno">   23</span>            slot = pack1.NewSlot()</div>
+<div class="line"><span class="lineno">   24</span>            v = ROOT.TEveViewer(<span class="stringliteral">&quot;BarViewer&quot;</span> + c)</div>
+<div class="line"><span class="lineno">   25</span>            v.SpawnGLEmbeddedViewer(gEve.GetEditor())</div>
+<div class="line"><span class="lineno">   26</span>            slot.ReplaceWindow(v)</div>
+<div class="line"><span class="lineno">   27</span>            v.SetElementName(<span class="stringliteral">&quot;Bar Embedded Viewer &quot;</span> + c)  <span class="comment"># gEve.GetViewers().FindChild(&#39;Bar Embedded Viewer&#39;)</span></div>
+<div class="line"><span class="lineno">   28</span>            v.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><span class="lineno">   29</span>            gEve.GetViewers().AddElement(v)</div>
+<div class="line"><span class="lineno">   30</span>            v.AddScene(gEve.GetEventScene())</div>
+<div class="line"><span class="lineno">   31</span>            v.AddScene(gEve.GetScenes().FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>))</div>
+<div class="line"><span class="lineno">   32</span>            vw = v.GetGLViewer()</div>
+<div class="line"><span class="lineno">   33</span>            <span class="keywordflow">if</span> c == <span class="stringliteral">&quot;top&quot;</span>:</div>
+<div class="line"><span class="lineno">   34</span>                vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZnOX)</div>
+<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   36</span>                vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZOY)</div>
+<div class="line"><span class="lineno">   37</span>            vw.ResetCameras()</div>
+<div class="line"><span class="lineno">   38</span>            cam = vw.CurrentCamera()</div>
+<div class="line"><span class="lineno">   39</span>            cam.Reset()</div>
+<div class="line"><span class="lineno">   40</span>            ed = v.GetEditorObject()</div>
+<div class="line"><span class="lineno">   41</span>            co = ed.GetCameraOverlay()</div>
+<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">if</span> c == <span class="stringliteral">&quot;top&quot;</span>:</div>
+<div class="line"><span class="lineno">   43</span>                <span class="comment"># doesn&#39;t really work</span></div>
+<div class="line"><span class="lineno">   44</span>                center = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 500.0, 0])</div>
+<div class="line"><span class="lineno">   45</span>                cam.Configure(1.0, 0.0, center, 0.0, 0.0)</div>
+<div class="line"><span class="lineno">   46</span>                co.SetShowOrthographic(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   47</span>                co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll)  <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
+<div class="line"><span class="lineno">   48</span>                <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
+<div class="line"><span class="lineno">   49</span>                ls = vw.GetLightSet()</div>
+<div class="line"><span class="lineno">   50</span>                ls.SetSidePower(1.0)</div>
+<div class="line"><span class="lineno">   51</span>                ls.SetFrontPower(1.0)</div>
+<div class="line"><span class="lineno">   52</span>                ls.SetSpecularPower(1.0)</div>
+<div class="line"><span class="lineno">   53</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   54</span>                center = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">   55</span>                cam.Configure(1.0, 0.0, center, 0, 0)</div>
+<div class="line"><span class="lineno">   56</span>                co.SetShowOrthographic(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   57</span>                co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAll)  <span class="comment"># ROOT.TGLCameraOverlay.kAxis</span></div>
+<div class="line"><span class="lineno">   58</span>                ls = vw.GetLightSet()</div>
+<div class="line"><span class="lineno">   59</span>                ls.SetFrontPower(0.2)</div>
+<div class="line"><span class="lineno">   60</span>                ls.SetSidePower(0.4)</div>
+<div class="line"><span class="lineno">   61</span>                ls.SetSpecularPower(1.1)</div>
+<div class="line"><span class="lineno">   62</span>            <span class="comment"># problems with light, Camera home</span></div>
+<div class="line"><span class="lineno">   63</span>            <span class="comment"># cam.SetExternalCenter(ROOT.kTRUE)</span></div>
+<div class="line"><span class="lineno">   64</span>            vw.DoDraw()</div>
+<div class="line"><span class="lineno">   65</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">   66</span>        slot = pack1.NewSlot()</div>
+<div class="line"><span class="lineno">   67</span>        slot.StartEmbedding()</div>
+<div class="line"><span class="lineno">   68</span>        can = ROOT.TCanvas(<span class="stringliteral">&quot;Root Canvas EnergyLoss&quot;</span>)  <span class="comment"># ROOT.gROOT.FindObject(&#39;Root Canvas&#39;)</span></div>
+<div class="line"><span class="lineno">   69</span>        can.SetTitle(<span class="stringliteral">&quot;Energy as function of z&quot;</span>)</div>
+<div class="line"><span class="lineno">   70</span>        can.ToggleEditor()</div>
+<div class="line"><span class="lineno">   71</span>        slot.StopEmbedding()</div>
+<div class="line"><span class="lineno">   72</span>        ls = ROOT.gROOT.GetListOfGlobals()</div>
+<div class="line"><span class="lineno">   73</span>        ls.Add(can)</div>
+<div class="line"><span class="lineno">   74</span>        SHiPDisplay = eveGlobal.SHiPDisplay</div>
+<div class="line"><span class="lineno">   75</span>        SHiPDisplay.transparentMode(<span class="stringliteral">&quot;on&quot;</span>)</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,7 +220,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00074">74</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00082">82</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -234,7 +236,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00075">75</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00083">83</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -250,7 +252,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00005">5</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00009">9</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -261,12 +263,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">evd_addParticleFollower.test = ROOT.TGLVertex3(0.,0.,0.)</td>
+          <td class="memname">evd_addParticleFollower.test = ROOT.TGLVertex3(0.0, 0.0, 0.0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00076">76</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00084">84</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -277,12 +279,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">evd_addParticleFollower.v = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer side')</td>
+          <td class="memname">evd_addParticleFollower.v = ROOT.gEve.GetViewers().FindChild(&quot;Bar Embedded Viewer side&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00072">72</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00080">80</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -298,7 +300,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00077">77</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00085">85</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -314,7 +316,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00073">73</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00081">81</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -330,7 +332,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00081">81</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00089">89</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>
@@ -346,7 +348,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00078">78</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evd__addParticleFollower_8py_source.html#l00086">86</a> of file <a class="el" href="evd__addParticleFollower_8py_source.html">evd_addParticleFollower.py</a>.</p>
 
 </div>
 </div>

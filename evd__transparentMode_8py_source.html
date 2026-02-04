@@ -100,11 +100,13 @@ $(document).ready(function(){initNavTree('evd__transparentMode_8py_source.html',
 <a href="evd__transparentMode_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceevd__transparentMode.html">    1</a></span><span class="comment"># SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span>  eveGlobal</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> eveGlobal</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20">    6</a></span>SHiPDisplay = eveGlobal.SHiPDisplay</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keywordflow">if</span> SHiPDisplay.TransparentMode == 0 : SHiPDisplay.transparentMode()</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordflow">else</span>: SHiPDisplay.transparentMode(<span class="stringliteral">&#39;off&#39;</span>)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keywordflow">if</span> SHiPDisplay.TransparentMode == 0:</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    SHiPDisplay.transparentMode()</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    SHiPDisplay.transparentMode(<span class="stringliteral">&quot;off&quot;</span>)</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

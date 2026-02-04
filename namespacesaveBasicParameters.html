@@ -99,12 +99,12 @@ $(document).ready(function(){initNavTree('namespacesaveBasicParameters.html','')
 Functions</h2></td></tr>
 <tr class="memitem:ab4a697c36be41496c6d12f0e1686a389" id="r_ab4a697c36be41496c6d12f0e1686a389"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">retrieveGitTags</a> (o)</td></tr>
 <tr class="separator:ab4a697c36be41496c6d12f0e1686a389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae19428dcf1f80c5affea43fc209bf908" id="r_ae19428dcf1f80c5affea43fc209bf908"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">execute</a> (f, ox, name='ShipGeo')</td></tr>
-<tr class="separator:ae19428dcf1f80c5affea43fc209bf908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59e9b134da12cfd065718f6ac6a08e4b" id="r_a59e9b134da12cfd065718f6ac6a08e4b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesaveBasicParameters.html#a59e9b134da12cfd065718f6ac6a08e4b">execute</a> (f, ox, name=&quot;ShipGeo&quot;)</td></tr>
+<tr class="separator:a59e9b134da12cfd065718f6ac6a08e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae19428dcf1f80c5affea43fc209bf908" name="ae19428dcf1f80c5affea43fc209bf908"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae19428dcf1f80c5affea43fc209bf908">&#9670;&#160;</a></span>execute()</h2>
+<a id="a59e9b134da12cfd065718f6ac6a08e4b" name="a59e9b134da12cfd065718f6ac6a08e4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59e9b134da12cfd065718f6ac6a08e4b">&#9670;&#160;</a></span>execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,7 +125,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>name</em> = <code>'ShipGeo'</code>&#160;</td>
+          <td class="paramname"><em>name</em> = <code>&quot;ShipGeo&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -135,29 +135,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Save geometry configuration to ROOT file as JSON string</pre> 
-<p class="definition">Definition at line <a class="el" href="saveBasicParameters_8py_source.html#l00031">31</a> of file <a class="el" href="saveBasicParameters_8py_source.html">saveBasicParameters.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>execute(f, ox, name=&#39;ShipGeo&#39;):</div>
-<div class="line"><span class="lineno">   32</span>    <span class="stringliteral">&quot;&quot;&quot;Save geometry configuration to ROOT file as JSON string&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> type(ox) == str:</div>
-<div class="line"><span class="lineno">   34</span>        ox = AttrDict()</div>
-<div class="line"><span class="lineno">   35</span>    o = retrieveGitTags(ox)</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> type(f) == str:</div>
-<div class="line"><span class="lineno">   38</span>        fg = ROOT.TFile.Open(f, <span class="stringliteral">&#39;update&#39;</span>)</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   40</span>        fg = f</div>
+<p class="definition">Definition at line <a class="el" href="saveBasicParameters_8py_source.html#l00036">36</a> of file <a class="el" href="saveBasicParameters_8py_source.html">saveBasicParameters.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span><span class="keyword">def </span>execute(f, ox, name=&quot;ShipGeo&quot;):</div>
+<div class="line"><span class="lineno">   37</span>    <span class="stringliteral">&quot;&quot;&quot;Save geometry configuration to ROOT file as JSON string&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> isinstance(ox, str):</div>
+<div class="line"><span class="lineno">   39</span>        ox = AttrDict()</div>
+<div class="line"><span class="lineno">   40</span>    o = retrieveGitTags(ox)</div>
 <div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment"># Serialize to JSON</span></div>
-<div class="line"><span class="lineno">   43</span>    json_str = o.dumps_json()</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    <span class="comment"># Save as std::string in ROOT file</span></div>
-<div class="line"><span class="lineno">   46</span>    fg.cd()</div>
-<div class="line"><span class="lineno">   47</span>    config_str = ROOT.std.string(json_str)</div>
-<div class="line"><span class="lineno">   48</span>    fg.WriteObject(config_str, name)</div>
-<div class="line"><span class="lineno">   49</span>    fg.Flush()</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> type(f) == str:</div>
-<div class="line"><span class="lineno">   52</span>        fg.Close()</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> isinstance(f, str):</div>
+<div class="line"><span class="lineno">   43</span>        fg = ROOT.TFile.Open(f, <span class="stringliteral">&quot;update&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   45</span>        fg = f</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    <span class="comment"># Serialize to JSON</span></div>
+<div class="line"><span class="lineno">   48</span>    json_str = o.dumps_json()</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment"># Save as std::string in ROOT file</span></div>
+<div class="line"><span class="lineno">   51</span>    fg.cd()</div>
+<div class="line"><span class="lineno">   52</span>    config_str = ROOT.std.string(json_str)</div>
+<div class="line"><span class="lineno">   53</span>    fg.WriteObject(config_str, name)</div>
+<div class="line"><span class="lineno">   54</span>    fg.Flush()</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> isinstance(f, str):</div>
+<div class="line"><span class="lineno">   57</span>        fg.Close()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -177,30 +177,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="saveBasicParameters_8py_source.html#l00008">8</a> of file <a class="el" href="saveBasicParameters_8py_source.html">saveBasicParameters.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    8</span><span class="keyword">def </span>retrieveGitTags(o):</div>
-<div class="line"><span class="lineno">    9</span>    <span class="comment"># record some basic information about version of software:</span></div>
-<div class="line"><span class="lineno">   10</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;FAIRSHIP_HASH&quot;</span> <span class="keywordflow">in</span> os.environ:</div>
-<div class="line"><span class="lineno">   11</span>        o.FairShip = os.environ[<span class="stringliteral">&#39;FAIRSHIP_HASH&#39;</span>]</div>
-<div class="line"><span class="lineno">   12</span>        o.FairRoot = os.environ[<span class="stringliteral">&#39;FAIRROOT_HASH&#39;</span>]</div>
-<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   14</span>      tmp = os.environ[<span class="stringliteral">&#39;FAIRSHIP&#39;</span>]+<span class="stringliteral">&#39;/.git/refs/remotes/origin/master&#39;</span></div>
-<div class="line"><span class="lineno">   15</span>      <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
-<div class="line"><span class="lineno">   16</span>        x = subprocess.check_output([<span class="stringliteral">&#39;more&#39;</span>,tmp]).replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">   17</span>        o.FairShip = AttrDict(origin=x)</div>
-<div class="line"><span class="lineno">   18</span>        tmp = os.environ[<span class="stringliteral">&#39;FAIRSHIP&#39;</span>]+<span class="stringliteral">&#39;/.git/refs/heads/master&#39;</span></div>
-<div class="line"><span class="lineno">   19</span>      <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
-<div class="line"><span class="lineno">   20</span>        x = subprocess.check_output([<span class="stringliteral">&#39;more&#39;</span>,tmp]).replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">   21</span>        o.FairShip = AttrDict(local=x)</div>
-<div class="line"><span class="lineno">   22</span>        tmp = os.environ[<span class="stringliteral">&#39;FAIRROOTPATH&#39;</span>]+<span class="stringliteral">&#39;/../FairRoot/.git/refs/heads/dev&#39;</span></div>
-<div class="line"><span class="lineno">   23</span>      <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
-<div class="line"><span class="lineno">   24</span>        x = subprocess.check_output([<span class="stringliteral">&#39;more&#39;</span>,tmp]).replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">   25</span>        o.FairRoot = AttrDict(dev=x)</div>
-<div class="line"><span class="lineno">   26</span>        tmp = os.environ[<span class="stringliteral">&#39;FAIRROOTPATH&#39;</span>]+<span class="stringliteral">&#39;/../FairRoot/.git/refs/heads/master&#39;</span></div>
-<div class="line"><span class="lineno">   27</span>      <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
-<div class="line"><span class="lineno">   28</span>        x = subprocess.check_output([<span class="stringliteral">&#39;more&#39;</span>,tmp]).replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">   29</span>        o.FairRoot = AttrDict(master=x)</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">return</span> o</div>
+<p class="definition">Definition at line <a class="el" href="saveBasicParameters_8py_source.html#l00011">11</a> of file <a class="el" href="saveBasicParameters_8py_source.html">saveBasicParameters.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>retrieveGitTags(o):</div>
+<div class="line"><span class="lineno">   12</span>    <span class="comment"># record some basic information about version of software:</span></div>
+<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;FAIRSHIP_HASH&quot;</span> <span class="keywordflow">in</span> os.environ:</div>
+<div class="line"><span class="lineno">   14</span>        o.FairShip = os.environ[<span class="stringliteral">&quot;FAIRSHIP_HASH&quot;</span>]</div>
+<div class="line"><span class="lineno">   15</span>        o.FairRoot = os.environ[<span class="stringliteral">&quot;FAIRROOT_HASH&quot;</span>]</div>
+<div class="line"><span class="lineno">   16</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   17</span>        tmp = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/.git/refs/remotes/origin/master&quot;</span></div>
+<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
+<div class="line"><span class="lineno">   19</span>            x = subprocess.check_output([<span class="stringliteral">&quot;more&quot;</span>, tmp]).replace(<span class="stringliteral">&quot;\n&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   20</span>            o.FairShip = AttrDict(origin=x)</div>
+<div class="line"><span class="lineno">   21</span>            tmp = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/.git/refs/heads/master&quot;</span></div>
+<div class="line"><span class="lineno">   22</span>        <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
+<div class="line"><span class="lineno">   23</span>            x = subprocess.check_output([<span class="stringliteral">&quot;more&quot;</span>, tmp]).replace(<span class="stringliteral">&quot;\n&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   24</span>            o.FairShip = AttrDict(local=x)</div>
+<div class="line"><span class="lineno">   25</span>            tmp = os.environ[<span class="stringliteral">&quot;FAIRROOTPATH&quot;</span>] + <span class="stringliteral">&quot;/../FairRoot/.git/refs/heads/dev&quot;</span></div>
+<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
+<div class="line"><span class="lineno">   27</span>            x = subprocess.check_output([<span class="stringliteral">&quot;more&quot;</span>, tmp]).replace(<span class="stringliteral">&quot;\n&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   28</span>            o.FairRoot = AttrDict(dev=x)</div>
+<div class="line"><span class="lineno">   29</span>            tmp = os.environ[<span class="stringliteral">&quot;FAIRROOTPATH&quot;</span>] + <span class="stringliteral">&quot;/../FairRoot/.git/refs/heads/master&quot;</span></div>
+<div class="line"><span class="lineno">   30</span>        <span class="keywordflow">if</span> os.path.isfile(tmp):</div>
+<div class="line"><span class="lineno">   31</span>            x = subprocess.check_output([<span class="stringliteral">&quot;more&quot;</span>, tmp]).replace(<span class="stringliteral">&quot;\n&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   32</span>            o.FairRoot = AttrDict(master=x)</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> o</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -88,37 +88,6 @@ var hierarchy =
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
     ] ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
-    [ "G4UserEventAction", null, [
-      [ "g4Ex.MyEventAction", "classg4Ex_1_1MyEventAction.html", null ],
-      [ "g4Ex_args.MyEventAction", "classg4Ex__args_1_1MyEventAction.html", null ],
-      [ "g4Ex_gap.MyEventAction", "classg4Ex__gap_1_1MyEventAction.html", null ]
-    ] ],
-    [ "G4UserRunAction", null, [
-      [ "g4Ex.MyRunAction", "classg4Ex_1_1MyRunAction.html", null ],
-      [ "g4Ex_args.MyRunAction", "classg4Ex__args_1_1MyRunAction.html", null ],
-      [ "g4Ex_gap.MyRunAction", "classg4Ex__gap_1_1MyRunAction.html", null ]
-    ] ],
-    [ "G4UserSteppingAction", null, [
-      [ "g4Ex.MySteppingAction", "classg4Ex_1_1MySteppingAction.html", null ],
-      [ "g4Ex_args.MySteppingAction", "classg4Ex__args_1_1MySteppingAction.html", null ],
-      [ "g4Ex_gap.MySteppingAction", "classg4Ex__gap_1_1MySteppingAction.html", null ]
-    ] ],
-    [ "G4UserTrackingAction", null, [
-      [ "g4Ex.MyTrackingAction", "classg4Ex_1_1MyTrackingAction.html", null ],
-      [ "g4Ex_args.MyTrackingAction", "classg4Ex__args_1_1MyTrackingAction.html", null ],
-      [ "g4Ex_gap.MyTrackingAction", "classg4Ex__gap_1_1MyTrackingAction.html", null ],
-      [ "g4Ex_gap.MyTrackingActionD", "classg4Ex__gap_1_1MyTrackingActionD.html", null ]
-    ] ],
-    [ "G4VSensitiveDetector", null, [
-      [ "g4Ex.ScoreSD", "classg4Ex_1_1ScoreSD.html", null ],
-      [ "g4Ex_args.ScoreSD", "classg4Ex__args_1_1ScoreSD.html", null ],
-      [ "g4Ex_gap.ScoreSD", "classg4Ex__gap_1_1ScoreSD.html", null ]
-    ] ],
-    [ "G4VUserPrimaryGeneratorAction", null, [
-      [ "g4Ex.MyGeneratorAction", "classg4Ex_1_1MyGeneratorAction.html", null ],
-      [ "g4Ex_args.MyGeneratorAction", "classg4Ex__args_1_1MyGeneratorAction.html", null ],
-      [ "g4Ex_gap.MyGeneratorAction", "classg4Ex__gap_1_1MyGeneratorAction.html", null ]
-    ] ],
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
@@ -192,5 +161,36 @@ var hierarchy =
         [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
         [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
       ] ]
+    ] ],
+    [ "G4UserEventAction", null, [
+      [ "g4Ex.MyEventAction", "classg4Ex_1_1MyEventAction.html", null ],
+      [ "g4Ex_args.MyEventAction", "classg4Ex__args_1_1MyEventAction.html", null ],
+      [ "g4Ex_gap.MyEventAction", "classg4Ex__gap_1_1MyEventAction.html", null ]
+    ] ],
+    [ "G4UserRunAction", null, [
+      [ "g4Ex.MyRunAction", "classg4Ex_1_1MyRunAction.html", null ],
+      [ "g4Ex_args.MyRunAction", "classg4Ex__args_1_1MyRunAction.html", null ],
+      [ "g4Ex_gap.MyRunAction", "classg4Ex__gap_1_1MyRunAction.html", null ]
+    ] ],
+    [ "G4UserSteppingAction", null, [
+      [ "g4Ex.MySteppingAction", "classg4Ex_1_1MySteppingAction.html", null ],
+      [ "g4Ex_args.MySteppingAction", "classg4Ex__args_1_1MySteppingAction.html", null ],
+      [ "g4Ex_gap.MySteppingAction", "classg4Ex__gap_1_1MySteppingAction.html", null ]
+    ] ],
+    [ "G4UserTrackingAction", null, [
+      [ "g4Ex.MyTrackingAction", "classg4Ex_1_1MyTrackingAction.html", null ],
+      [ "g4Ex_args.MyTrackingAction", "classg4Ex__args_1_1MyTrackingAction.html", null ],
+      [ "g4Ex_gap.MyTrackingAction", "classg4Ex__gap_1_1MyTrackingAction.html", null ],
+      [ "g4Ex_gap.MyTrackingActionD", "classg4Ex__gap_1_1MyTrackingActionD.html", null ]
+    ] ],
+    [ "G4VSensitiveDetector", null, [
+      [ "g4Ex.ScoreSD", "classg4Ex_1_1ScoreSD.html", null ],
+      [ "g4Ex_args.ScoreSD", "classg4Ex__args_1_1ScoreSD.html", null ],
+      [ "g4Ex_gap.ScoreSD", "classg4Ex__gap_1_1ScoreSD.html", null ]
+    ] ],
+    [ "G4VUserPrimaryGeneratorAction", null, [
+      [ "g4Ex.MyGeneratorAction", "classg4Ex_1_1MyGeneratorAction.html", null ],
+      [ "g4Ex_args.MyGeneratorAction", "classg4Ex__args_1_1MyGeneratorAction.html", null ],
+      [ "g4Ex_gap.MyGeneratorAction", "classg4Ex__gap_1_1MyGeneratorAction.html", null ]
     ] ]
 ];

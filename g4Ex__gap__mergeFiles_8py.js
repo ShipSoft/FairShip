@@ -1,10 +1,10 @@
 var g4Ex__gap__mergeFiles_8py =
 [
     [ "interactionRegion", "g4Ex__gap__mergeFiles_8py.html#a04b74595d43532a050e84552abc4c5ed", null ],
-    [ "makeFinalNtuples", "g4Ex__gap__mergeFiles_8py.html#a09fbb3db875a5ff9ec2f66290d5ff031", null ],
+    [ "makeFinalNtuples", "g4Ex__gap__mergeFiles_8py.html#a56795a58637a08b65cdcabd1487a52da", null ],
     [ "afterHadronAbsorber", "g4Ex__gap__mergeFiles_8py.html#a158c90325fb2abd766b0509fe4185ffc", null ],
     [ "BR", "g4Ex__gap__mergeFiles_8py.html#aae067114d26712c0dfa8ef37ff4317ce", null ],
-    [ "E13", "g4Ex__gap__mergeFiles_8py.html#a7ec28bacbdf4bb7bdded39edb8744475", null ],
+    [ "e13", "g4Ex__gap__mergeFiles_8py.html#a5b276e236a0187c0b1f6cb82b71f1579", null ],
     [ "ecut", "g4Ex__gap__mergeFiles_8py.html#a53a3777c891011718f9229d7dfb31265", null ],
     [ "files", "g4Ex__gap__mergeFiles_8py.html#a38872d62a0c9857719cd41adda923f49", null ],
     [ "fl", "g4Ex__gap__mergeFiles_8py.html#adcaa46350fd5a35f4399ea92f71a7867", null ],
