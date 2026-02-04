@@ -1,9 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"namespacerun__simScript.html#ab658890547af5e0465901c28dbaf5199":[4,0,73,42],
-"namespacerun__simScript.html#ab849a0cc2206716284b2e90fbd3fa3ed":[4,0,73,93],
-"namespacerun__simScript.html#ab93e824396c27419daefc1d01f0ab022":[4,0,73,67],
-"namespacerun__simScript.html#abb91726f585a0ba37957110e3883be6a":[4,0,73,107],
 "namespacerun__simScript.html#abcf3f03662d4796a1af150de86d59f43":[4,0,73,55],
 "namespacerun__simScript.html#abcf5040fef2f5816464371dd3982d3a8":[4,0,73,22],
 "namespacerun__simScript.html#abe0f6f27c11e27c01a9ffffa37571906":[4,0,73,34],
@@ -249,5 +245,9 @@ var NAVTREEINDEX26 =
 "namespaceshipunit.html#aff7b79e311729ac38235f2252f22d222":[4,0,89,128],
 "namespacesplitcalDetector.html":[4,0,93],
 "namespacestrawtubesDetector.html":[4,0,94],
-"namespacestudy__GammaConv.html":[4,0,95]
+"namespacestudy__GammaConv.html":[4,0,95],
+"namespacestudy__GammaConv.html#a0e406399d5b657e9fc43b13fd28cfa09":[4,0,95,7],
+"namespacestudy__GammaConv.html#a10d1123a69a99bcd399ae95a19c5b21f":[4,0,95,31],
+"namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb":[4,0,95,5],
+"namespacestudy__GammaConv.html#a16cf33bc98985a325104f08b919d8ba8":[4,0,95,23]
 };
