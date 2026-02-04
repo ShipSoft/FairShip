@@ -162,7 +162,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  586</span>        self.contents = tkinter.IntVar()</div>
 <div class="line"><span class="lineno">  587</span>        <span class="comment"># set it to some value</span></div>
 <div class="line"><span class="lineno">  588</span>        self.n = 0</div>
-<div class="line"><span class="lineno">  589</span>        self.contents.<a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(self.n)</div>
+<div class="line"><span class="lineno">  589</span>        self.contents.set(self.n)</div>
 <div class="line"><span class="lineno">  590</span>        <span class="comment"># tell the entry widget to watch this variable</span></div>
 <div class="line"><span class="lineno">  591</span>        entry[<span class="stringliteral">&quot;textvariable&quot;</span>] = self.contents</div>
 <div class="line"><span class="lineno">  592</span>        <span class="comment"># and here we get a callback when the user hits return.</span></div>
@@ -261,7 +261,6 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  685</span>        cf.Layout()</div>
 <div class="line"><span class="lineno">  686</span>        cf.MapWindow()</div>
 <div class="line"><span class="lineno">  687</span> </div>
-<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00008">CMakeLists.txt:8</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -299,7 +298,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  691</span>            self.n += 1</div>
 <div class="line"><span class="lineno">  692</span>        <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  693</span>            self.n = i</div>
-<div class="line"><span class="lineno">  694</span>        self.contents.<a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(self.n)</div>
+<div class="line"><span class="lineno">  694</span>        self.contents.set(self.n)</div>
 <div class="line"><span class="lineno">  695</span>        SHiPDisplay.NextEvent(self.n)</div>
 <div class="line"><span class="lineno">  696</span> </div>
 </div><!-- fragment -->

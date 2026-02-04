@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a736de18d7263449ea9094e3e79e11013" id="r_a736de18d7263449ea9094e3e79e11013"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a736de18d7263449ea9094e3e79e11013">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) <a class="el" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_STANDARD 17) <a class="el" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_STANDARD_REQUIRED ON) <a class="el" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
+<tr class="memitem:a736de18d7263449ea9094e3e79e11013" id="r_a736de18d7263449ea9094e3e79e11013"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a736de18d7263449ea9094e3e79e11013">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) set(CMAKE_CXX_STANDARD 17) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
 <tr class="separator:a736de18d7263449ea9094e3e79e11013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -118,7 +118,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00011">11</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in <a class="code hl_function" href="muonShieldOptimization_2CMakeLists_8txt.html#a43c43ee24fbb1429bfc38250746d9919">find_package</a>.</div>
+<div class="fragment"><div class="line"><span class="lineno">   14</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in find_package.</div>
 <div class="line"><span class="lineno">   15</span>if(POLICY CMP0144)</div>
 <div class="line"><span class="lineno">   16</span>  cmake_policy(SET CMP0144 NEW)</div>
 <div class="line"><span class="lineno">   17</span>endif()</div>
@@ -126,16 +126,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   19</span>project(FairShip VERSION 0.0.0 LANGUAGES CXX)</div>
 <div class="line"><span class="lineno">   20</span> </div>
 <div class="line"><span class="lineno">   21</span><span class="preprocessor"># C++17 required by ROOT 6.36</span></div>
-<div class="line"><span class="lineno">   22</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_STANDARD 17)</div>
-<div class="line"><span class="lineno">   23</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
-<div class="line"><span class="lineno">   24</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(CMAKE_CXX_EXTENSIONS OFF)</div>
+<div class="line"><span class="lineno">   22</span>set(CMAKE_CXX_STANDARD 17)</div>
+<div class="line"><span class="lineno">   23</span>set(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
+<div class="line"><span class="lineno">   24</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
 <div class="line"><span class="lineno">   25</span> </div>
 <div class="line"><span class="lineno">   26</span>find_path(</div>
 <div class="line"><span class="lineno">   27</span>  FAIRBASE</div>
 <div class="line"><span class="lineno">   28</span>  NAMES FairRun.h</div>
 <div class="line"><span class="lineno">   29</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
-<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00008">CMakeLists.txt:8</a></div></div>
-<div class="ttc" id="amuonShieldOptimization_2CMakeLists_8txt_html_a43c43ee24fbb1429bfc38250746d9919"><div class="ttname"><a href="muonShieldOptimization_2CMakeLists_8txt.html#a43c43ee24fbb1429bfc38250746d9919">find_package</a></div><div class="ttdeci">find_package(Python3 COMPONENTS Development REQUIRED) set(INCLUDE_DIRECTORIES $</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00007">CMakeLists.txt:7</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -219,7 +219,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span>    zmax = vtest.Z()</div>
 <div class="line"><span class="lineno">   85</span> </div>
 <div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    checked_muons = <a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>()</div>
+<div class="line"><span class="lineno">   87</span>    checked_muons = set()</div>
 <div class="line"><span class="lineno">   88</span>    all_muons_hitlist = [collect_hits(lsOfGlobals, checked_muons) <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(N_MUONS)]</div>
 <div class="line"><span class="lineno">   89</span>    all_muons_hitlist = list(filter(<span class="keyword">lambda</span> x: x, all_muons_hitlist))</div>
 <div class="line"><span class="lineno">   90</span>    trajectories = [trajectory_init(lsOfGlobals, <span class="stringliteral">&quot;SHiP MuonTraj_&quot;</span> + str(index))</div>
@@ -247,7 +247,6 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  112</span>    c1.Update()</div>
 <div class="line"><span class="lineno">  113</span> </div>
 <div class="line"><span class="lineno">  114</span> </div>
-<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00008">CMakeLists.txt:8</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
