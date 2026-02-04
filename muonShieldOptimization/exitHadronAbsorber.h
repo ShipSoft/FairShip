@@ -82,7 +82,7 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   inline void SetOpt4DP() { withNtuple = kTRUE; }
   inline void SkipNeutrinos() { fSkipNeutrinos = kTRUE; }
   inline void SetZposition(Float_t x) { fzPos = x; }
-  inline void SetVetoPointName(TString nam) { fVetoName = nam; }
+  inline void SetVetoPointName(TString name) { fVetoName = name; }
   inline void SetCylindricalPlane() { fCylindricalPlane = kTRUE; }
   inline void SetUseCaveCoordinates() { fUseCaveCoordinates = kTRUE; }
 
