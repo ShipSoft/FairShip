@@ -5,5 +5,5 @@ ship_add_library(
   NAME ShipData
   SOURCES ShipHit.cxx ShipStack.cxx ShipMCTrack.cxx ShipParticle.cxx TrackInfo.cxx VMCConfig.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger
+  DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger FairRoot::MCConfigurator
 )
