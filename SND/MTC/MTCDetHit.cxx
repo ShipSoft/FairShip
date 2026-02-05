@@ -5,7 +5,8 @@
 #include "MTCDetHit.h"
 
 #include <TRandom.h>
-
+#include <vector>
+#include <TMath.h>
 #include "FairRunSim.h"
 #include "MTCDetPoint.h"
 #include "MTCDetector.h"
@@ -45,29 +46,44 @@ MTCDetHit::MTCDetHit(int SiPMChan, const std::vector<MTCDetPoint*>& points,
   Float_t total_light_yield = 0.0f;
   Float_t earliest_to_A = std::numeric_limits<Float_t>::max();
   Float_t earliest_to_B = std::numeric_limits<Float_t>::max();
+  const size_t n = points.size();
   Float_t signal_sum = 0.0f;
   bool hit_flag = false;
 
   // Separate handling for scintillating mat (plane_type == 2)
   if (plane_type == 2) {
+    std::vector<Float_t> x_temp, y_temp, z_temp;
+    x_temp.reserve(n);
+    y_temp.reserve(n);
+    z_temp.reserve(n);
     for (auto* pt : points) {
       signal_sum += pt->GetEnergyLoss();
       // Track earliest arrival time
       Float_t arrival = pt->GetTime();
       earliest_to_B = std::min(earliest_to_B, arrival);
+      x_temp.push_back(pt->GetX());
+      y_temp.push_back(pt->GetY());
+      z_temp.push_back(pt->GetZ());
     }
     flag = true;
     time = gRandom->Gaus(earliest_to_B, time_res);
+    // for scintillating tiles set simulated coordinates so far as the realistic geometry is not yet done.
+    Xch = TMath::Mean(x_temp.begin(), x_temp.end());
+    Ych = TMath::Mean(y_temp.begin(), y_temp.end());
+    Zch = TMath::Mean(z_temp.begin(), z_temp.end());
     signals = signal_sum;
     return;
   }
 
   // Fiber hit processing
-  const size_t n = points.size();
   total_light_yield = 0.0f;
 
   TVector3 sipmA, sipmB;
   MTCDet->GetSiPMPosition(SiPMChan, sipmA, sipmB);
+  // Define only X and Z coordinates for Sci-Fi.
+  Xch = sipmB.X();
+  Ych = 0.0;
+  Zch = sipmB.Z();
 
   for (size_t i = 0; i < n; ++i) {
     auto* pt = points[i];

@@ -57,17 +57,19 @@ class MTCDetHit : public ShipHit {
   }
   Int_t GetSiPM() const { return (static_cast<int>(fDetectorID / 1000) % 10); }
   Int_t GetSiPMChan() const { return (fDetectorID % 1000); }
+  TVector3 GetChannelCoordinates() const { return TVector3(Xch, Ych, Zch); }
   Float_t GetEnergy() const;
   void setInvalid() { flag = false; }
   bool isValid() const { return flag; }
   /*
-          SND@LHC comment: from Guido (22.9.2021): A threshold of 3.5pe should
-     be used, which corresponds to 0.031MeV. 1 SiPM channel has 104 pixels,
-     pixel can only see 0 or >0 photons.
+  SND@LHC comment: from Guido (22.9.2021): A threshold of 3.5pe should
+  be used, which corresponds to 0.031MeV. 1 SiPM channel has 104 pixels,
+  pixel can only see 0 or >0 photons.
   */
  private:
   Float_t signals = 0;
   Float_t time;
+  Float_t Xch, Ych, Zch;
   Float_t light_attenuation(Float_t distance);
   Float_t sipm_saturation(Float_t ly);
   Float_t n_pixels_to_qdc(Float_t npix);
