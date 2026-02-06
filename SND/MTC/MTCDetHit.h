@@ -69,13 +69,13 @@ class MTCDetHit : public ShipHit {
  private:
   Float_t signals = 0;
   Float_t time;
-  Float_t Xch, Ych, Zch;
+  Float_t Xch = 0.0, Ych = 0.0, Zch = 0.0;
   Float_t light_attenuation(Float_t distance);
   Float_t sipm_saturation(Float_t ly);
   Float_t n_pixels_to_qdc(Float_t npix);
   Float_t flag;  ///< flag
 
-  ClassDef(MTCDetHit, 4);
+  ClassDef(MTCDetHit, 5);
 };
 
 #endif  // SND_MTC_MTCDETHIT_H_
