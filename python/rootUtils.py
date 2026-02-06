@@ -81,14 +81,30 @@ def errorSummary():
     print("Summary of recorded incidents:")
  for e in _error_log:
     print(e, ':', _error_log[e])
+
 def checkFileExists(x):
-    if x[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+x
-    else: f=x
-    test = TFile.Open(f)
-    if not test:
-       print("input file",f," does not exist. Missing authentication?")
-       os._exit(1)
-    if test.FindObjectAny('cbmsim'):
-     return 'tree'
+
+    if isinstance(x, list):
+        print("I'm a list")
+        for _f in x:
+            if _f[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+_f
+            else: f=_f
+            test = TFile.Open(f)
+            if not test:
+               print("input file",f," does not exist. Missing authentication?")
+               os._exit(1)
+            if test.FindObjectAny('cbmsim'):
+             return 'tree'
+            else:
+             return 'ntuple'
     else:
-     return 'ntuple'
+        if x[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+x
+        else: f=x
+        test = TFile.Open(f)
+        if not test:
+           print("input file",f," does not exist. Missing authentication?")
+           os._exit(1)
+        if test.FindObjectAny('cbmsim'):
+         return 'tree'
+        else:
+         return 'ntuple'
