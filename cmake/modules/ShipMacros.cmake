@@ -30,8 +30,7 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
     by replacing ``.cxx`` with ``.h``.
 
   ``LINKDEF``
-    Path to the ROOT LinkDef header (relative to ``CMAKE_CURRENT_SOURCE_DIR``
-    or absolute).
+    Path to the ROOT LinkDef header (relative to ``CMAKE_CURRENT_SOURCE_DIR``).
 
   ``DEPENDENCIES``
     Link dependencies — target names, library file paths, or variable-based
@@ -46,6 +45,9 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
 The current source directory is always added as a PUBLIC include directory
 with a ``BUILD_INTERFACE`` / ``INSTALL_INTERFACE`` generator expression, so
 dependents of the library automatically receive its include path.
+
+Dictionary generation invokes ROOT's rootcling directly and reads include
+directories from target properties via generator expressions.
 
 #]=======================================================================]
 
@@ -66,52 +68,6 @@ function(ship_add_library)
 
   # --- Derive headers from sources (.cxx -> .h) ---
   CHANGE_FILE_EXTENSION(*.cxx *.h _hdrs "${ARG_SOURCES}")
-  install(FILES ${_hdrs} DESTINATION include)
-
-  # --- Prepare scope variables for FairRoot's dictionary macros ---
-  set(LIBRARY_NAME ${ARG_NAME})
-  set(HDRS ${_hdrs})
-  set(DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/G__${ARG_NAME}Dict.cxx)
-  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-
-  # Build INCLUDE_DIRECTORIES for rootcling: own source dir + extras +
-  # source dirs of FairShip dependency targets.
-  set(INCLUDE_DIRECTORIES
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${ARG_INCLUDE_DIRECTORIES}
-  )
-  set(SYSTEM_INCLUDE_DIRECTORIES ${ARG_SYSTEM_INCLUDE_DIRECTORIES})
-
-  foreach(_dep IN LISTS ARG_DEPENDENCIES)
-    if(TARGET ${_dep})
-      get_target_property(_dep_src ${_dep} SOURCE_DIR)
-      if(_dep_src)
-        list(APPEND INCLUDE_DIRECTORIES ${_dep_src})
-      endif()
-    endif()
-  endforeach()
-
-  # --- Dictionary generation ---
-  set(_all_srcs ${ARG_SOURCES})
-
-  if(ARG_LINKDEF)
-    if(IS_ABSOLUTE "${ARG_LINKDEF}")
-      set(LINKDEF "${ARG_LINKDEF}")
-    else()
-      set(LINKDEF "${CMAKE_CURRENT_SOURCE_DIR}/${ARG_LINKDEF}")
-    endif()
-
-    if(COMMAND FAIRROOT_GENERATE_DICTIONARY)
-      FAIRROOT_GENERATE_DICTIONARY()
-    else()
-      ROOT_GENERATE_DICTIONARY()
-    endif()
-
-    list(APPEND _all_srcs ${DICTIONARY})
-    set_source_files_properties(${DICTIONARY} PROPERTIES
-      COMPILE_FLAGS "-Wno-old-style-cast"
-    )
-  endif()
 
   # --- Resolve dependencies ---
   set(_resolved_deps)
@@ -126,9 +82,44 @@ function(ship_add_library)
     endif()
   endforeach()
 
-  # --- Create library ---
-  add_library(${ARG_NAME} SHARED ${_all_srcs})
-  target_link_libraries(${ARG_NAME} ${_resolved_deps})
+  # --- Dictionary generation setup (before add_library) ---
+  # We generate the dictionary using rootcling and add it to library sources
+  # directly, similar to the old GENERATE_LIBRARY macro approach.
+  set(_all_srcs ${ARG_SOURCES})
+  if(ARG_LINKDEF)
+    set(_dict_basename G__${ARG_NAME})
+    set(_dict_file ${CMAKE_CURRENT_BINARY_DIR}/${_dict_basename}.cxx)
+    set(_pcm_base ${_dict_basename}_rdict.pcm)
+    set(_pcm_file ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_pcm_base})
+    set(_rootmap_file ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${ARG_NAME}.rootmap)
+
+    # Collect headers with absolute paths for rootcling
+    # Also extract directories for include paths (matches fairroot_target_root_dictionary)
+    set(_abs_headers)
+    set(_hdr_dirs)
+    foreach(_h ${_hdrs})
+      get_filename_component(_abs_h ${_h} ABSOLUTE)
+      list(APPEND _abs_headers ${_abs_h})
+      get_filename_component(_hdr_dir ${_abs_h} DIRECTORY)
+      list(APPEND _hdr_dirs ${_hdr_dir})
+    endforeach()
+    get_filename_component(_abs_linkdef ${ARG_LINKDEF} ABSOLUTE)
+    list(REMOVE_DUPLICATES _hdr_dirs)
+
+    # Include directories for rootcling - will use generator expression after target exists
+    set(_inc_dirs_genex $<TARGET_PROPERTY:${ARG_NAME},INCLUDE_DIRECTORIES>)
+
+    # Add dictionary to sources
+    list(APPEND _all_srcs ${_dict_file})
+    set_source_files_properties(${_dict_file} PROPERTIES
+      GENERATED TRUE
+      COMPILE_FLAGS "-Wno-old-style-cast"
+    )
+  endif()
+
+  # --- Create library with ALL sources including dictionary ---
+  add_library(${ARG_NAME} SHARED ${_all_srcs} ${_hdrs})
+  target_link_libraries(${ARG_NAME} PUBLIC ${_resolved_deps})
   set_target_properties(${ARG_NAME} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
   # --- Target-based include propagation ---
@@ -148,5 +139,39 @@ function(ship_add_library)
     )
   endif()
 
-  install(TARGETS ${ARG_NAME} DESTINATION lib)
+  # --- Dictionary generation command (after target exists for generator expressions) ---
+  if(ARG_LINKDEF)
+    # Add header directories as private include directories for dictionary compilation
+    # (matches fairroot_target_root_dictionary behaviour)
+    target_include_directories(${ARG_NAME} PRIVATE ${_hdr_dirs})
+
+    add_custom_command(
+      OUTPUT ${_dict_file} ${_pcm_file} ${_rootmap_file}
+      VERBATIM
+      COMMAND ${CMAKE_COMMAND} -E env
+        "LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{LD_LIBRARY_PATH}"
+        $<TARGET_FILE:ROOT::rootcling>
+        -f ${_dict_file}
+        -inlineInputHeader
+        -rmf ${_rootmap_file}
+        -rml $<TARGET_FILE_NAME:${ARG_NAME}>
+        "$<$<BOOL:${_inc_dirs_genex}>:-I$<JOIN:${_inc_dirs_genex},$<SEMICOLON>-I>>"
+        "$<$<BOOL:$<TARGET_PROPERTY:${ARG_NAME},COMPILE_DEFINITIONS>>:-D$<JOIN:$<TARGET_PROPERTY:${ARG_NAME},COMPILE_DEFINITIONS>,$<SEMICOLON>-D>>"
+        ${_abs_headers}
+        ${_abs_linkdef}
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${_pcm_base} ${_pcm_file}
+      COMMAND_EXPAND_LISTS
+      DEPENDS ${_abs_headers} ${_abs_linkdef}
+    )
+    # Ensure ROOT::RIO is linked
+    get_property(_libs TARGET ${ARG_NAME} PROPERTY INTERFACE_LINK_LIBRARIES)
+    if(NOT ROOT::RIO IN_LIST _libs)
+      target_link_libraries(${ARG_NAME} PUBLIC ROOT::RIO)
+    endif()
+    install(FILES ${_rootmap_file} ${_pcm_file} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  endif()
+
+  install(TARGETS ${ARG_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  install(FILES ${_hdrs} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endfunction()
