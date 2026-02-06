@@ -50,7 +50,7 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
   TFile testFile(fileNames.at(0));
   auto testKeys = testFile.GetListOfKeys();
   if (testKeys == nullptr) {
-      LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
+    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
   }
   fn = firstEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
