@@ -11,12 +11,16 @@
 cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 # CMP0028 and CMP0074 are already NEW at cmake_minimum_required 3.20.
+# CMP0118 (3.20): GENERATED sources visible across directories.
+cmake_policy(SET CMP0118 NEW)
 # CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package.
 if(POLICY CMP0144)
   cmake_policy(SET CMP0144 NEW)
 endif()
 
 project(FairShip VERSION 0.0.0 LANGUAGES CXX)
+
+include(GNUInstallDirs)
 
 # C++17 required by ROOT 6.36
 set(CMAKE_CXX_STANDARD 17)
