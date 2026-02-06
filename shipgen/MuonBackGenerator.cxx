@@ -21,6 +21,7 @@
 #include "TRandom.h"
 #include "TSystem.h"
 #include "TVector.h"
+#include "TChain.h"
 #include "vetoPoint.h"
 
 using ShipUnit::cm;
@@ -38,6 +39,106 @@ MuonBackGenerator::MuonBackGenerator()
 Bool_t MuonBackGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
+
+Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames){
+    return Init(fileNames, 0);
+}
+
+Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames, const int firstEvent){
+  LOG(info) << "Opening input file " << fileNames.at(0);
+  TFile testFile(fileNames.at(0));
+  auto testKeys = testFile.GetListOfKeys();
+//  if (testFile == NULL) {
+//    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
+//  }
+  fn = firstEvent;
+  fPaintBeam = 5 * cm;  // default value for painting beam
+  fSameSeed = 0;
+  fPhiRandomize = false;      // default value for phi randomization
+  fsmearBeam = 8 * mm;        // default value for smearing beam
+  fdownScaleDiMuon = kFALSE;  // only needed for muflux simulation
+  if (testKeys->FindObject("pythia8-Geant4")) {
+    fTree = new TChain("pythia8-Geant4");
+    for(auto &f : fileNames){
+        LOG(info) << "Opening input file " << f;
+        static_cast<TChain*>(fTree)->Add(f);
+    }
+    fNevents = fTree->GetEntries();
+    LOG(info) << "Reading "<<fNevents<<" entries";
+    // count only events with muons
+    fTree->SetBranchAddress("id", &id);  // particle id
+    fTree->SetBranchAddress("parentid",
+                            &parentid);  // parent id, could be different
+    fTree->SetBranchAddress("pythiaid",
+                            &pythiaid);      // pythiaid original particle
+    fTree->SetBranchAddress("ecut", &ecut);  // energy cut used in simulation
+    fTree->SetBranchAddress("w", &w);        // weight of event
+    //  check if ntuple has information of momentum at origin
+    if (fTree->GetListOfLeaves()->GetSize() < 17) {
+      fTree->SetBranchAddress(
+          "x", &vx);  // position with respect to startOfTarget at -89.27m
+      fTree->SetBranchAddress("y", &vy);
+      fTree->SetBranchAddress("z", &vz);
+      fTree->SetBranchAddress("px", &px);  // momentum
+      fTree->SetBranchAddress("py", &py);
+      fTree->SetBranchAddress("pz", &pz);
+    } else {
+      fTree->SetBranchAddress(
+          "ox", &vx);  // position with respect to startOfTarget at -50m
+      fTree->SetBranchAddress("oy", &vy);
+      fTree->SetBranchAddress("oz", &vz);
+      fTree->SetBranchAddress("opx", &px);  // momentum
+      fTree->SetBranchAddress("opy", &py);
+      fTree->SetBranchAddress("opz", &pz);
+    }
+  } else {
+    id = -1;
+//    fTree = fInputFile->Get<TTree>("cbmsim");
+    fTree = new TChain("cbmsim");
+    for(auto &f : fileNames){
+        LOG(info) << "Opening input file " << f;
+        static_cast<TChain*>(fTree)->Add(f);
+    }
+    fNevents = fTree->GetEntries();
+    LOG(info) << "Reading "<<fNevents<<" entries";
+    // Detect format by checking branch name:
+    // STL format uses PlaneHAPoint, TClonesArray uses vetoPoint
+    TBranch* mcBranch = fTree->GetBranch("MCTrack");
+    if (!mcBranch) {
+      LOG(fatal) << "MCTrack branch not found in input file";
+    }
+
+    if (fTree->GetBranch("PlaneHAPoint")) {
+      // New STL format
+      fUseSTL = true;
+      MCTrack_vec = nullptr;
+      vetoPoints_vec = nullptr;
+      auto mcStatus = fTree->SetBranchAddress("MCTrack", &MCTrack_vec);
+      auto vetoStatus =
+          fTree->SetBranchAddress("PlaneHAPoint", &vetoPoints_vec);
+      if (mcStatus < 0 || vetoStatus < 0) {
+        LOG(fatal) << "Failed to set branch addresses for STL vector format";
+      }
+      LOG(info) << "Using STL vector format (PlaneHAPoint)";
+    } else if (fTree->GetBranch("vetoPoint")) {
+      // Old TClonesArray format
+      fUseSTL = false;
+      MCTrack = new TClonesArray("ShipMCTrack");
+      vetoPoints = new TClonesArray("vetoPoint");
+      auto mcStatus = fTree->SetBranchAddress("MCTrack", &MCTrack);
+      auto vetoStatus = fTree->SetBranchAddress("vetoPoint", &vetoPoints);
+      if (mcStatus < 0 || vetoStatus < 0) {
+        LOG(fatal) << "Failed to set branch addresses for TClonesArray format";
+      }
+      LOG(info) << "Using TClonesArray format (vetoPoint)";
+    } else {
+      LOG(fatal)
+          << "Neither PlaneHAPoint nor vetoPoint branch found in input file";
+    }
+  }
+  return kTRUE;
+}
+
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
   LOG(info) << "Opening input file " << fileName;
@@ -228,8 +329,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
   }
-  if (fn > fNevents - 1) {
-    LOGF(info, "End of file reached %i", fNevents);
+  if (fn == fNevents) {
+    LOGF(info, "End of tree reached %i", fNevents);
     return kFALSE;
   }
   if (fSameSeed) {
