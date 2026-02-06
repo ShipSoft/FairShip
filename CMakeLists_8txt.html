@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a736de18d7263449ea9094e3e79e11013" id="r_a736de18d7263449ea9094e3e79e11013"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a736de18d7263449ea9094e3e79e11013">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) set(CMAKE_CXX_STANDARD 17) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
-<tr class="separator:a736de18d7263449ea9094e3e79e11013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d69a6b2a935985e03548c21fd832cb4" id="r_a0d69a6b2a935985e03548c21fd832cb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a0d69a6b2a935985e03548c21fd832cb4">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) include(GNUInstallDirs) set(CMAKE_CXX_STANDARD 17) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
+<tr class="separator:a0d69a6b2a935985e03548c21fd832cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a736de18d7263449ea9094e3e79e11013" name="a736de18d7263449ea9094e3e79e11013"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a736de18d7263449ea9094e3e79e11013">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
+<a id="a0d69a6b2a935985e03548c21fd832cb4" name="a0d69a6b2a935985e03548c21fd832cb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d69a6b2a935985e03548c21fd832cb4">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,22 +118,26 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00011">11</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                : use &lt;PACKAGENAME&gt;_ROOT variables in find_package.</div>
-<div class="line"><span class="lineno">   15</span>if(POLICY CMP0144)</div>
-<div class="line"><span class="lineno">   16</span>  cmake_policy(SET CMP0144 NEW)</div>
-<div class="line"><span class="lineno">   17</span>endif()</div>
-<div class="line"><span class="lineno">   18</span> </div>
-<div class="line"><span class="lineno">   19</span>project(FairShip VERSION 0.0.0 LANGUAGES CXX)</div>
+<div class="fragment"><div class="line"><span class="lineno">   14</span>                : GENERATED sources visible across directories.</div>
+<div class="line"><span class="lineno">   15</span>cmake_policy(SET CMP0118 NEW)</div>
+<div class="line"><span class="lineno">   16</span><span class="preprocessor"># CMP0144 (3.27): use &lt;PACKAGENAME&gt;_ROOT variables in find_package.</span></div>
+<div class="line"><span class="lineno">   17</span><span class="keywordflow">if</span>(POLICY CMP0144)</div>
+<div class="line"><span class="lineno">   18</span>  cmake_policy(SET CMP0144 NEW)</div>
+<div class="line"><span class="lineno">   19</span>endif()</div>
 <div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span><span class="preprocessor"># C++17 required by ROOT 6.36</span></div>
-<div class="line"><span class="lineno">   22</span>set(CMAKE_CXX_STANDARD 17)</div>
-<div class="line"><span class="lineno">   23</span>set(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
-<div class="line"><span class="lineno">   24</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>find_path(</div>
-<div class="line"><span class="lineno">   27</span>  FAIRBASE</div>
-<div class="line"><span class="lineno">   28</span>  NAMES FairRun.h</div>
-<div class="line"><span class="lineno">   29</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
+<div class="line"><span class="lineno">   21</span>project(FairShip VERSION 0.0.0 LANGUAGES CXX)</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>include(GNUInstallDirs)</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span><span class="preprocessor"># C++17 required by ROOT 6.36</span></div>
+<div class="line"><span class="lineno">   26</span>set(CMAKE_CXX_STANDARD 17)</div>
+<div class="line"><span class="lineno">   27</span>set(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
+<div class="line"><span class="lineno">   28</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>find_path(</div>
+<div class="line"><span class="lineno">   31</span>  FAIRBASE</div>
+<div class="line"><span class="lineno">   32</span>  NAMES FairRun.h</div>
+<div class="line"><span class="lineno">   33</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
 </div><!-- fragment -->
 </div>
 </div>
