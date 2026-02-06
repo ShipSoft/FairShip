@@ -4,9 +4,11 @@
 
 #include "MTCDetHit.h"
 
-#include <TRandom.h>
-#include <vector>
 #include <TMath.h>
+#include <TRandom.h>
+
+#include <vector>
+
 #include "FairRunSim.h"
 #include "MTCDetPoint.h"
 #include "MTCDetector.h"
@@ -64,7 +66,8 @@ MTCDetHit::MTCDetHit(int SiPMChan, const std::vector<MTCDetPoint*>& points,
     }
     flag = true;
     time = gRandom->Gaus(earliest_to_B, time_res);
-    // for scintillating tiles set simulated coordinates so far as the realistic geometry is not yet done.
+    // for scintillating tiles set simulated coordinates so far as the realistic
+    // geometry is not yet done.
     Xch = x_temp / n;
     Ych = y_temp / n;
     Zch = z_temp / n;
