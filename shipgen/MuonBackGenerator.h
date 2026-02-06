@@ -27,13 +27,13 @@ class MuonBackGenerator : public FairGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);  //!
-  virtual Bool_t Init(const char*);       //!
+  virtual Bool_t Init(const char*, int);               //!
+  virtual Bool_t Init(const char*);                    //!
   virtual Bool_t Init(std::vector<const char*>, int);  //!
   virtual Bool_t Init(std::vector<const char*>);       //!
 
-  Int_t GetNevents();                     //!
-  void CloseFile();                       //!
+  Int_t GetNevents();  //!
+  void CloseFile();    //!
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };

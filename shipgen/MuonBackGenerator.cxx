@@ -13,6 +13,7 @@
 #include "FairPrimaryGenerator.h"
 #include "ShipMCTrack.h"
 #include "ShipUnit.h"
+#include "TChain.h"
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TFile.h"
 #include "TMCProcess.h"
@@ -21,7 +22,6 @@
 #include "TRandom.h"
 #include "TSystem.h"
 #include "TVector.h"
-#include "TChain.h"
 #include "vetoPoint.h"
 
 using ShipUnit::cm;
@@ -40,17 +40,18 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
 
-Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames){
-    return Init(fileNames, 0);
+Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames) {
+  return Init(fileNames, 0);
 }
 
-Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames, const int firstEvent){
+Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
+                               const int firstEvent) {
   LOG(info) << "Opening input file " << fileNames.at(0);
   TFile testFile(fileNames.at(0));
   auto testKeys = testFile.GetListOfKeys();
-//  if (testFile == NULL) {
-//    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
-//  }
+  //  if (testFile == NULL) {
+  //    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
+  //  }
   fn = firstEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
   fSameSeed = 0;
@@ -59,12 +60,12 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames, const int fir
   fdownScaleDiMuon = kFALSE;  // only needed for muflux simulation
   if (testKeys->FindObject("pythia8-Geant4")) {
     fTree = new TChain("pythia8-Geant4");
-    for(auto &f : fileNames){
-        LOG(info) << "Opening input file " << f;
-        static_cast<TChain*>(fTree)->Add(f);
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      static_cast<TChain*>(fTree)->Add(f);
     }
     fNevents = fTree->GetEntries();
-    LOG(info) << "Reading "<<fNevents<<" entries";
+    LOG(info) << "Reading " << fNevents << " entries";
     // count only events with muons
     fTree->SetBranchAddress("id", &id);  // particle id
     fTree->SetBranchAddress("parentid",
@@ -93,14 +94,14 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames, const int fir
     }
   } else {
     id = -1;
-//    fTree = fInputFile->Get<TTree>("cbmsim");
+    //    fTree = fInputFile->Get<TTree>("cbmsim");
     fTree = new TChain("cbmsim");
-    for(auto &f : fileNames){
-        LOG(info) << "Opening input file " << f;
-        static_cast<TChain*>(fTree)->Add(f);
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      static_cast<TChain*>(fTree)->Add(f);
     }
     fNevents = fTree->GetEntries();
-    LOG(info) << "Reading "<<fNevents<<" entries";
+    LOG(info) << "Reading " << fNevents << " entries";
     // Detect format by checking branch name:
     // STL format uses PlaneHAPoint, TClonesArray uses vetoPoint
     TBranch* mcBranch = fTree->GetBranch("MCTrack");
