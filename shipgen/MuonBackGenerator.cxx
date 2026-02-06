@@ -142,8 +142,8 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
 
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
-    std::vector<const char*> fileNames = {fileName};
-    return Init(fileNames, firstEvent);
+  std::vector<const char*> fileNames = {fileName};
+  return Init(fileNames, firstEvent);
 }
 // -----   Destructor   ----------------------------------------------------
 MuonBackGenerator::~MuonBackGenerator() {
