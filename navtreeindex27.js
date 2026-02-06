@@ -1,5 +1,9 @@
 var NAVTREEINDEX27 =
 {
+"namespacestrawtubesDetector.html":[4,0,94],
+"namespacestudy__GammaConv.html":[4,0,95],
+"namespacestudy__GammaConv.html#a0e406399d5b657e9fc43b13fd28cfa09":[4,0,95,7],
+"namespacestudy__GammaConv.html#a10d1123a69a99bcd399ae95a19c5b21f":[4,0,95,31],
 "namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb":[4,0,95,5],
 "namespacestudy__GammaConv.html#a16cf33bc98985a325104f08b919d8ba8":[4,0,95,23],
 "namespacestudy__GammaConv.html#a1f409493f214e98b6bcf7019cb15b14d":[4,0,95,20],
@@ -245,9 +249,5 @@ var NAVTREEINDEX27 =
 "runCharmHadProd_8py.html#a1e83269509a766a9db5789c8b28eafef":[6,0,8,19,5],
 "runCharmHadProd_8py.html#a53fe99e18f1781f1eda4c8dc08e8c26c":[6,0,8,19,12],
 "runCharmHadProd_8py.html#a70ddd2e52b606bc1c378163a94c2fd37":[6,0,8,19,9],
-"runCharmHadProd_8py.html#a73723768be756b5d2011a4324d357eeb":[6,0,8,19,11],
-"runCharmHadProd_8py.html#a75eea8adb8596551e3e0a5b370d919cc":[6,0,8,19,0],
-"runCharmHadProd_8py.html#a8942d4c18f1b98a88afb2c18297ad273":[6,0,8,19,7],
-"runCharmHadProd_8py.html#a89e30bf773fe87c64157f7080137c1c6":[6,0,8,19,1],
-"runCharmHadProd_8py.html#a8ecfb19b19a9c961567df617be80b2a2":[6,0,8,19,10]
+"runCharmHadProd_8py.html#a73723768be756b5d2011a4324d357eeb":[6,0,8,19,11]
 };

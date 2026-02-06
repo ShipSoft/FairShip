@@ -1,5 +1,9 @@
 var NAVTREEINDEX15 =
 {
+"evd__nextEvent_8py.html#ae96688f184f12446cedeaec7189c3205":[6,0,6,7,0],
+"evd__nextEvent_8py_source.html":[6,0,6,7],
+"evd__transparentMode_8py.html":[6,0,6,8],
+"evd__transparentMode_8py.html#afeac3b4d7cb3334678bf667700bc0b20":[6,0,6,8,0],
 "evd__transparentMode_8py_source.html":[6,0,6,8],
 "eveGlobal_8py.html":[6,0,6,9],
 "eveGlobal_8py.html#af384e4f875e85dd37b0398e54a393298":[6,0,6,9,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX15 =
 "g4Ex_8py.html#af6f653f31d4c4c2f9fc9b2931dc8abe9":[6,0,8,6,13],
 "g4Ex_8py.html#af93fe7803fd2d2d3d90f4c28b4120f8f":[6,0,8,6,36],
 "g4Ex_8py.html#af99540dd4a43c5d62c010f0818468114":[6,0,8,6,16],
-"g4Ex_8py.html#afd27be4af37c94678ccdccb2c39e7f62":[6,0,8,6,37],
-"g4Ex_8py_source.html":[6,0,8,6],
-"g4Ex__args_8py.html":[6,0,8,7],
-"g4Ex__args_8py.html#a095cbe971c5f99d45c340bc602d046f7":[6,0,8,7,27],
-"g4Ex__args_8py.html#a0987f3969de55adeb2defbb3764614e9":[6,0,8,7,21]
+"g4Ex_8py.html#afd27be4af37c94678ccdccb2c39e7f62":[6,0,8,6,37]
 };

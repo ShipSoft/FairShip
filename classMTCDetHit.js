@@ -4,7 +4,8 @@ var classMTCDetHit =
     [ "MTCDetHit", "classMTCDetHit.html#aee61f60f83aa2d509d272375badfcdc7", null ],
     [ "MTCDetHit", "classMTCDetHit.html#a7c86ac5b342de0f8bea667d1d5a13ef6", null ],
     [ "~MTCDetHit", "classMTCDetHit.html#aed6ac5fb39f0b320a7d777b09ad5724c", null ],
-    [ "ClassDef", "classMTCDetHit.html#a9d515457ff20e166dd7b8cafcd2b2e0e", null ],
+    [ "ClassDef", "classMTCDetHit.html#a07bd3f94e33a4b6d906d8b56ae07969e", null ],
+    [ "GetChannelCoordinates", "classMTCDetHit.html#a074b71713b05f8aad10440dd766c3ade", null ],
     [ "GetChannelID", "classMTCDetHit.html#ad03ffca6b808d429de707303fedf268f", null ],
     [ "GetEnergy", "classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e", null ],
     [ "GetLayer", "classMTCDetHit.html#adec45e495568fe3478081b7f413c8d4c", null ],
@@ -23,5 +24,8 @@ var classMTCDetHit =
     [ "sipm_saturation", "classMTCDetHit.html#a162956dea791783ba63cd6458ccb5a42", null ],
     [ "flag", "classMTCDetHit.html#a159b24738b91eb8fe6389e2237399e6b", null ],
     [ "signals", "classMTCDetHit.html#a6b33710eec297647716726c01558093c", null ],
-    [ "time", "classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb", null ]
+    [ "time", "classMTCDetHit.html#a541e56fa8abea47621f8c6fdcdda5fdb", null ],
+    [ "Xch", "classMTCDetHit.html#ab386b001e8c86869528fb8350facae61", null ],
+    [ "Ych", "classMTCDetHit.html#a71b4a82c51ae60fe4fc20824941dc37f", null ],
+    [ "Zch", "classMTCDetHit.html#a8f74f01f8d5e85cc07c1c7754729c750", null ]
 ];

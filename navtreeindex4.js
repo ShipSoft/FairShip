@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"classMTCDetHit.html#aee61f60f83aa2d509d272375badfcdc7":[5,0,35,1],
+"classMTCDetHit.html#afb02e0ae751ce734df0f1b439326a2d8":[5,0,35,17],
+"classMTCDetPoint.html":[5,0,36],
+"classMTCDetPoint.html#a046c1a2ec58385c0fbd05c35e49cfb91":[5,0,36,6],
 "classMTCDetPoint.html#a06100ddb006c56d1656d43d465b74ed3":[5,0,36,9],
 "classMTCDetPoint.html#a115f3d43a2671b1e31fae33fa100717d":[5,0,36,7],
 "classMTCDetPoint.html#a38fea1921833807f2a6da767bf58fa7c":[5,0,36,0],
@@ -87,8 +91,8 @@ var NAVTREEINDEX4 =
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[5,0,34,15],
 "classMTCDetector_1_1MTCDetector.html":[5,0,10,0],
 "classMTCDetector_1_1MTCDetector.html":[4,0,58,0],
-"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[5,0,10,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[4,0,58,0,2],
+"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[5,0,10,0,2],
 "classMTCDetector_1_1MTCDetector.html#a6f4c232cccdfab832fd25a28b80d6aa6":[5,0,10,0,1],
 "classMTCDetector_1_1MTCDetector.html#a6f4c232cccdfab832fd25a28b80d6aa6":[4,0,58,0,1],
 "classMTCDetector_1_1MTCDetector.html#abc178a62d673f1ed99d57e3195126b56":[5,0,10,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7":[5,0,42,15],
 "classPythia8Generator.html#aaa20ee6eebd9b28575c10e060d595f1c":[5,0,42,2],
 "classPythia8Generator.html#ab1bdd995a1bcf9b625ab1033353ddd22":[5,0,42,16],
-"classPythia8Generator.html#ab2e4b9e2d91c8c9fb5ca08ccce3a3976":[5,0,42,24],
-"classPythia8Generator.html#ab3657d24cdcddc7514c9b59bcc7834d7":[5,0,42,32],
-"classPythia8Generator.html#abab3c221126823904c878ab6fd80021f":[5,0,42,7],
-"classPythia8Generator.html#abe9b533fab344300bc4f39349cd50c3a":[5,0,42,31],
-"classPythia8Generator.html#ac081d866518118c13776853f3ba88353":[5,0,42,41]
+"classPythia8Generator.html#ab2e4b9e2d91c8c9fb5ca08ccce3a3976":[5,0,42,24]
 };
