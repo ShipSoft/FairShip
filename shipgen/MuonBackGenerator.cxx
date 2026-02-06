@@ -45,12 +45,12 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames){
 }
 
 Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames, const int firstEvent){
-  LOG(info) << "Opening input file " << fileNames.at(0);
+  LOG(info) << "Looking for keys in file " << fileNames.at(0);
   TFile testFile(fileNames.at(0));
   auto testKeys = testFile.GetListOfKeys();
-//  if (testFile == NULL) {
-//    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
-//  }
+  if (testFile == nullptr) {
+    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
+  }
   fn = firstEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
   fSameSeed = 0;
