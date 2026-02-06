@@ -118,7 +118,9 @@ include(ShipMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
-find_package2(PUBLIC GEANT4)
+# FairRoot::MCConfigurator has transitive dependencies on Geant4 CMake targets
+# (via FairRoot::FastSim -> Geant4::G4processes), so Geant4 must be found first.
+find_package2(PUBLIC GEANT4 REQUIRED)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)

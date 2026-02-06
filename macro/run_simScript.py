@@ -375,7 +375,10 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
+# Use SHiP::VMCConfig for YAML configuration via C++ interpreter
+ROOT.gInterpreter.ProcessLine(
+    'FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));'
+)
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
@@ -639,11 +642,14 @@ if options.eventDisplay:
 else:
     run.SetStoreTraj(ROOT.kFALSE)
 
+
 # -----Configure external decayer globally------------------------------------
 # Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
 if options.evtgen_decayer:
     run.SetPythiaDecayer("DecayConfigTEvtGen.C")
     print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
+
+# ShipStack is now automatically created by SHiP::VMCConfig
 
 # -----Initialize simulation run------------------------------------
 run.Init()

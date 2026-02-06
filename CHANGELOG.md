@@ -19,6 +19,7 @@ it in future.
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+* Use g4Config.yaml instead of deprecated .C macro for Geant4 VMC configuration
 
 ### Fixed
 
@@ -82,6 +83,10 @@ it in future.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
+* Added YAML configuration files for Geant4 VMC setup (`g4Config.yaml`, `g4Config_basic.yaml`) to replace deprecated C macros
+  - Includes physics lists, Monte Carlo processes/cuts, and Geant4 macro commands
+  - Maintains full compatibility with original C configuration functionality
+* Add SHiP::VMCConfig class to setup VMC from the YAML configuration
 
 #### Geometry and Target Station
 
@@ -394,7 +399,9 @@ it in future.
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 * Removed unused run_simPgun.py
 * Remove TTCluster.py
+* Removed deprecated Geant4 VMC configuration files (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`)
 * Remove pid class
+* Remove GCUTS (replaced by CUTGAM in Geant4)
 
 #### Build System
 
