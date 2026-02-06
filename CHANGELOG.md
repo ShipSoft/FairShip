@@ -173,6 +173,7 @@ it in future.
 * Use STL vectors for SBT digitisation
 * Use maximum splitting (99) for vector branches instead of no splitting (-1)
 * Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
+* Store channel coordinates in the digi containers to avoid reading geofile
 
 #### Geometry Configuration System
 
