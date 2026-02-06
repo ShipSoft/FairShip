@@ -1,133 +1,152 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-# ShipMacros.cmake Extended version of GENERATE_LIBRARY() with target-based
-# include propagation
-#
-# This file should be included AFTER FairRootMacros.cmake to wrap GENERATE_LIBRARY
+#[=======================================================================[.rst:
+ShipMacros
+----------
 
-# Save FairRoot's original GENERATE_LIBRARY macro
-macro(_FAIRROOT_GENERATE_LIBRARY)
-  generate_library()
-endmacro()
+Provides ``ship_add_library()`` — a modern, target-based replacement for
+FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
 
-# Rename the original macro before we override it
-if(COMMAND generate_library)
-  # Store a reference to FairRoot's implementation
-  macro(_FAIRROOT_ORIGINAL_GENERATE_LIBRARY)
-    _cmake_original_generate_library_impl()
-  endmacro()
-endif()
+.. command:: ship_add_library
 
-# Override GENERATE_LIBRARY to add target-based include propagation
-macro(GENERATE_LIBRARY)
-  # Store library name and source dir for later use
-  set(_SHIP_LIB_NAME ${LIBRARY_NAME})
-  set(_SHIP_CURRENT_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
+  Create a shared library with ROOT dictionary generation and proper
+  target-based include propagation::
 
-  # Call FairRoot's original GENERATE_LIBRARY implementation
-  # We can't rename macros in CMake, so we need to inline the call
-  # This works by temporarily undefining our override
-  macro(_ship_temp_generate_library)
-    # Include FairRoot's macro file again to get the original implementation
-    # But we can't do that, so instead we just call it directly by duplicating
-    # the exact same code that FairRoot uses
+    ship_add_library(
+      NAME <target_name>
+      SOURCES <src1> [<src2> ...]
+      LINKDEF <linkdef_file>
+      DEPENDENCIES <dep1> [<dep2> ...]
+      [INCLUDE_DIRECTORIES <dir1> ...]
+      [SYSTEM_INCLUDE_DIRECTORIES <dir1> ...]
+    )
 
-    # Actually, let's try a different approach: just call the macro
-    # that FairRoot defines, which should be available
-    set(Int_LIB ${LIBRARY_NAME})
-    set(HeaderRuleName "${Int_LIB}_HEADER_RULES")
-    set(DictName "G__${Int_LIB}Dict.cxx")
+  ``NAME``
+    Name of the library target to create.
 
-    if(NOT DICTIONARY)
-      set(DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/${DictName})
-    endif()
+  ``SOURCES``
+    List of C++ source files (``.cxx``).  Headers are derived automatically
+    by replacing ``.cxx`` with ``.h``.
 
-    if(IS_ABSOLUTE ${DICTIONARY})
-      set(DICTIONARY ${DICTIONARY})
-    else()
-      set(Int_DICTIONARY ${CMAKE_CURRENT_SOURCE_DIR}/${DICTIONARY})
-    endif()
+  ``LINKDEF``
+    Path to the ROOT LinkDef header (relative to ``CMAKE_CURRENT_SOURCE_DIR``
+    or absolute).
 
-    set(Int_SRCS ${SRCS})
+  ``DEPENDENCIES``
+    Link dependencies — target names, library file paths, or variable-based
+    library names (looked up as ``${name}_LIBRARY``).
 
-    if(HEADERS)
-      set(HDRS ${HEADERS})
-    else()
-      CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${SRCS}")
-    endif()
+  ``INCLUDE_DIRECTORIES``
+    Extra include directories needed only by this target (added as PRIVATE).
 
-    install(FILES ${HDRS} DESTINATION include)
+  ``SYSTEM_INCLUDE_DIRECTORIES``
+    External include directories added as SYSTEM PRIVATE (suppresses warnings).
 
-    if(LINKDEF)
-      if(IS_ABSOLUTE ${LINKDEF})
-        set(Int_LINKDEF ${LINKDEF})
-      else()
-        set(Int_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/${LINKDEF})
-      endif()
+The current source directory is always added as a PUBLIC include directory
+with a ``BUILD_INTERFACE`` / ``INSTALL_INTERFACE`` generator expression, so
+dependents of the library automatically receive its include path.
 
-      # For dictionary generation, we need to add source directories of dependencies
-      # to INCLUDE_DIRECTORIES so rootcint can find headers
-      set(_original_include_dirs ${INCLUDE_DIRECTORIES})
-      foreach(d ${DEPENDENCIES})
-        # Skip targets that aren't FairShip libraries
-        if(TARGET ${d})
-          get_target_property(_dep_source_dir ${d} SOURCE_DIR)
-          if(_dep_source_dir)
-            list(APPEND INCLUDE_DIRECTORIES ${_dep_source_dir})
-          endif()
-        endif()
-      endforeach()
+#]=======================================================================]
 
-      # Use FairRoot's dictionary generation macro
-      # Both FairRoot v18.8.2 and v19+ use macros with no parameters
-      # They read variables from parent scope: LINKDEF, DICTIONARY, LIBRARY_NAME, HDRS, etc.
-      if(COMMAND FAIRROOT_GENERATE_DICTIONARY)
-        # FairRoot v19+ - call without parameters
-        FAIRROOT_GENERATE_DICTIONARY()
-      else()
-        # FairRoot v18.8.2 - call ROOT_GENERATE_DICTIONARY without parameters
-        ROOT_GENERATE_DICTIONARY()
-      endif()
+function(ship_add_library)
+  cmake_parse_arguments(
+    PARSE_ARGV 0 ARG
+    ""
+    "NAME;LINKDEF"
+    "SOURCES;DEPENDENCIES;INCLUDE_DIRECTORIES;SYSTEM_INCLUDE_DIRECTORIES"
+  )
 
-      # Restore original INCLUDE_DIRECTORIES
-      set(INCLUDE_DIRECTORIES ${_original_include_dirs})
-
-      set(Int_SRCS ${Int_SRCS} ${DICTIONARY})
-      set_source_files_properties(${DICTIONARY} PROPERTIES COMPILE_FLAGS
-                                                            "-Wno-old-style-cast")
-    endif()
-
-    set(Int_DEPENDENCIES)
-    foreach(d ${DEPENDENCIES})
-      get_filename_component(_ext ${d} EXT)
-      if(_ext)
-        set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-      else()
-        if(TARGET ${d})
-          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-        else()
-          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${${d}_LIBRARY})
-        endif()
-      endif()
-    endforeach()
-
-    add_library(${Int_LIB} SHARED ${Int_SRCS})
-    target_link_libraries(${Int_LIB} ${Int_DEPENDENCIES})
-    set_target_properties(${Int_LIB} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
-
-    install(TARGETS ${Int_LIB} DESTINATION lib)
-  endmacro()
-
-  _ship_temp_generate_library()
-
-  # Add Ship extension - target-based include propagation
-  if(TARGET ${_SHIP_LIB_NAME})
-    target_include_directories(
-      ${_SHIP_LIB_NAME}
-      PUBLIC # During build, use the source directory
-             $<BUILD_INTERFACE:${_SHIP_CURRENT_SOURCE}>
-             # After install, use the install include directory
-             $<INSTALL_INTERFACE:include>)
+  if(NOT ARG_NAME)
+    message(FATAL_ERROR "ship_add_library: NAME is required")
   endif()
-endmacro()
+  if(NOT ARG_SOURCES)
+    message(FATAL_ERROR "ship_add_library(${ARG_NAME}): SOURCES is required")
+  endif()
+
+  # --- Derive headers from sources (.cxx -> .h) ---
+  CHANGE_FILE_EXTENSION(*.cxx *.h _hdrs "${ARG_SOURCES}")
+  install(FILES ${_hdrs} DESTINATION include)
+
+  # --- Prepare scope variables for FairRoot's dictionary macros ---
+  set(LIBRARY_NAME ${ARG_NAME})
+  set(HDRS ${_hdrs})
+  set(DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/G__${ARG_NAME}Dict.cxx)
+  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
+  # Build INCLUDE_DIRECTORIES for rootcling: own source dir + extras +
+  # source dirs of FairShip dependency targets.
+  set(INCLUDE_DIRECTORIES
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${ARG_INCLUDE_DIRECTORIES}
+  )
+  set(SYSTEM_INCLUDE_DIRECTORIES ${ARG_SYSTEM_INCLUDE_DIRECTORIES})
+
+  foreach(_dep IN LISTS ARG_DEPENDENCIES)
+    if(TARGET ${_dep})
+      get_target_property(_dep_src ${_dep} SOURCE_DIR)
+      if(_dep_src)
+        list(APPEND INCLUDE_DIRECTORIES ${_dep_src})
+      endif()
+    endif()
+  endforeach()
+
+  # --- Dictionary generation ---
+  set(_all_srcs ${ARG_SOURCES})
+
+  if(ARG_LINKDEF)
+    if(IS_ABSOLUTE "${ARG_LINKDEF}")
+      set(LINKDEF "${ARG_LINKDEF}")
+    else()
+      set(LINKDEF "${CMAKE_CURRENT_SOURCE_DIR}/${ARG_LINKDEF}")
+    endif()
+
+    if(COMMAND FAIRROOT_GENERATE_DICTIONARY)
+      FAIRROOT_GENERATE_DICTIONARY()
+    else()
+      ROOT_GENERATE_DICTIONARY()
+    endif()
+
+    list(APPEND _all_srcs ${DICTIONARY})
+    set_source_files_properties(${DICTIONARY} PROPERTIES
+      COMPILE_FLAGS "-Wno-old-style-cast"
+    )
+  endif()
+
+  # --- Resolve dependencies ---
+  set(_resolved_deps)
+  foreach(_dep IN LISTS ARG_DEPENDENCIES)
+    get_filename_component(_ext "${_dep}" EXT)
+    if(_ext)
+      list(APPEND _resolved_deps ${_dep})
+    elseif(TARGET ${_dep})
+      list(APPEND _resolved_deps ${_dep})
+    else()
+      list(APPEND _resolved_deps ${${_dep}_LIBRARY})
+    endif()
+  endforeach()
+
+  # --- Create library ---
+  add_library(${ARG_NAME} SHARED ${_all_srcs})
+  target_link_libraries(${ARG_NAME} ${_resolved_deps})
+  set_target_properties(${ARG_NAME} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+  # --- Target-based include propagation ---
+  target_include_directories(${ARG_NAME}
+    PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+      $<INSTALL_INTERFACE:include>
+  )
+  if(ARG_INCLUDE_DIRECTORIES)
+    target_include_directories(${ARG_NAME} PRIVATE
+      ${ARG_INCLUDE_DIRECTORIES}
+    )
+  endif()
+  if(ARG_SYSTEM_INCLUDE_DIRECTORIES)
+    target_include_directories(${ARG_NAME} SYSTEM PRIVATE
+      ${ARG_SYSTEM_INCLUDE_DIRECTORIES}
+    )
+  endif()
+
+  install(TARGETS ${ARG_NAME} DESTINATION lib)
+endfunction()
