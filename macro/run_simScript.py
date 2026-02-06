@@ -376,7 +376,9 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 # Use SHiP::VMCConfig for YAML configuration via C++ interpreter
-ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
+ROOT.gInterpreter.ProcessLine(
+    'FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));'
+)
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA

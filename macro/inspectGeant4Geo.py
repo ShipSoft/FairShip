@@ -21,7 +21,9 @@ run = ROOT.FairRunSim()
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")
 modules = shipDet_conf.configure(run, ShipGeo)
 # Use SHiP::VMCConfig for YAML configuration
-ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
+ROOT.gInterpreter.ProcessLine(
+    'FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));'
+)
 run.SetName("TGeant4")
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
 # ShipStack is now automatically created by SHiP::VMCConfig

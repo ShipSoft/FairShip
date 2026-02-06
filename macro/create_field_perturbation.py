@@ -26,7 +26,9 @@ def create_csv_field_map(options):
     run.SetName("TGeant4")  # Transport engine
     run.SetSink(r.FairRootFileSink("tmp_file"))  # Output file
     # Use SHiP::VMCConfig for YAML configuration
-    r.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
+    r.gInterpreter.ProcessLine(
+        'FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));'
+    )
     shipDet_conf.configure(run, ship_geo)
     primGen = r.FairPrimaryGenerator()
     primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
