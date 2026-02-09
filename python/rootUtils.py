@@ -111,10 +111,11 @@ def reportError(s):
 
 
 def errorSummary():
- if _error_log:
-    print("Summary of recorded incidents:")
- for e in _error_log:
-    print(e, ':', _error_log[e])
+    if _error_log:
+        print("Summary of recorded incidents:")
+    for e in _error_log:
+        print(e, ":", _error_log[e])
+
 
 def checkFileExists(x):
     if isinstance(x, str):
@@ -123,16 +124,18 @@ def checkFileExists(x):
         # See what we are looking at and make sure all the files are of the same type
         fileType = ""
         for _f in x:
-            if _f[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+_f
-            else: f=_f
+            if _f[0:4] == "/eos":
+                f = gSystem.Getenv("EOSSHIP") + _f
+            else:
+                f = _f
             test = TFile.Open(f)
             if not test:
-                print("input file",f," does not exist. Missing authentication?")
+                print("input file", f, " does not exist. Missing authentication?")
                 os._exit(1)
-            if test.FindObjectAny('cbmsim') and fileType in ["tree", ""]:
-                fileType = 'tree'
+            if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
+                fileType = "tree"
             elif fileType in ["ntuple", ""]:
-                fileType = 'ntuple'
+                fileType = "ntuple"
             else:
                 print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
         return fileType
