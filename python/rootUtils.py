@@ -111,10 +111,11 @@ def reportError(s):
 
 
 def errorSummary():
-     if _error_log:
+    if _error_log:
         print("Summary of recorded incidents:")
-     for e in _error_log:
-        print(e, ':', _error_log[e])
+    for e in _error_log:
+        print(e, ":", _error_log[e])
+
 
 def checkFileExists(x):
     if isinstance(x, str):
