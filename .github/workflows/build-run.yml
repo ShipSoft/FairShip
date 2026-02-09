@@ -65,7 +65,6 @@ jobs:
         vessel_option: [vacuums, helium]
         SND_option: [all]
         muon_shield: [warm_opt, New_HA_Design]
-        target: [old, Jun25]
 
     steps:
       - name: Checkout
@@ -84,7 +83,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer --tag ci-test
+          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --EvtGenDecayer --tag ci-test
 
       - name: Overlap check
         run: |
@@ -126,14 +125,14 @@ jobs:
       # - name: Upload .root artifacts
       #   uses: actions/upload-artifact@v4
       #   with:
-      #     name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+      #     name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
       #     path: |
       #       *.root
       #
       # - name: Upload physics metrics
       #   uses: actions/upload-artifact@v4
       #   with:
-      #     name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+      #     name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
       #     path: physics_metrics.json
 
   # store-metrics:
@@ -184,7 +183,6 @@ jobs:
   #       vessel_option: [vacuums, helium]
   #       SND_option: [all]
   #       muon_shield: [warm_opt, New_HA_Design]
-  #       target: [old, Jun25]
   #
   #   steps:
   #     - name: Checkout
@@ -199,7 +197,7 @@ jobs:
   #     - name: Download physics metrics
   #       uses: actions/download-artifact@v4
   #       with:
-  #         name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+  #         name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
   #
   #     - name: Compare with reference metrics
   #       run: |
@@ -207,18 +205,18 @@ jobs:
   #         BASE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
   #
   #         # Try to get reference metrics from git notes
-  #         if git notes --ref=ci/physics-metrics/${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }} show $BASE_SHA > reference_metrics.json 2>/dev/null; then
+  #         if git notes --ref=ci/physics-metrics/${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }} show $BASE_SHA > reference_metrics.json 2>/dev/null; then
   #           echo "Found reference metrics from commit $BASE_SHA"
-  #           python3 .github/scripts/compare_metrics.py reference_metrics.json physics_metrics.json > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}_${{ matrix.target }}.txt
+  #           python3 .github/scripts/compare_metrics.py reference_metrics.json physics_metrics.json > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}.txt
   #         else
-  #           echo "No reference metrics found for configuration ${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}" > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}_${{ matrix.target }}.txt
+  #           echo "No reference metrics found for configuration ${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}" > comparison_${{ matrix.vessel_option }}_${{ matrix.SND_option }}_${{ matrix.muon_shield }}.txt
   #           echo "This is expected for the first run with this configuration."
   #         fi
   #
   #     - name: Upload comparison results
   #       uses: actions/upload-artifact@v4
   #       with:
-  #         name: comparison-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
+  #         name: comparison-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
   #         path: comparison_*.txt
 
   # comment-pr:

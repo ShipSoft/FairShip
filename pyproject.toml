@@ -1,2 +1,15 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = [
+    "E402",  # Module import not at top - common in simulation scripts
+    "E501",  # Line too long - handled by formatter where possible
+    "E722",  # Bare except - common for edge case handling in physics code
+]
+
+
 [tool.codespell]
-ignore-words-list = 'Millepede,Gaus,gaus,dYIn'
+ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'

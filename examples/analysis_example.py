@@ -23,9 +23,10 @@ def main():
     f = ROOT.TFile.Open(options.simfile, "read")
     if not f or f.IsZombie():
         import os
+
         print(f"ERROR: Cannot open MC simulation file: {options.simfile}")
         print(f"Current working directory: {os.getcwd()}")
-        print(f"Files in current directory:")
+        print("Files in current directory:")
         os.system("ls -lh *.root")
         raise RuntimeError(f"Cannot open MC simulation file: {options.simfile}")
 
@@ -36,7 +37,7 @@ def main():
     if "cbmsim" not in keys:
         print(f"ERROR: MC simulation file {options.simfile} does not contain 'cbmsim' tree")
         print(f"Available keys: {keys}")
-        raise RuntimeError(f"MC simulation file does not contain 'cbmsim' tree")
+        raise RuntimeError("MC simulation file does not contain 'cbmsim' tree")
 
     tree = f["cbmsim"]
 
@@ -69,9 +70,7 @@ def main():
         100,
     )
     ut.bookHist(hist_dict, "impact_parameter", "Impact parameter; cm", 200, 100, 100)
-    ut.bookHist(
-        hist_dict, "dist_to_innerwall", "Distance to inner wall; cm", 200, 100, 100
-    )
+    ut.bookHist(hist_dict, "dist_to_innerwall", "Distance to inner wall; cm", 200, 100, 100)
     ut.bookHist(
         hist_dict,
         "dist_to_vesselentrance",
@@ -120,9 +119,7 @@ def main():
             hist_dict["candidate_time"].Fill(selection.define_candidate_time(signal))
             hist_dict["impact_parameter"].Fill(selection.impact_parameter(signal))
             hist_dict["dist_to_innerwall"].Fill(selection.dist_to_innerwall(signal))
-            hist_dict["dist_to_vesselentrance"].Fill(
-                selection.dist_to_vesselentrance(signal)
-            )
+            hist_dict["dist_to_vesselentrance"].Fill(selection.dist_to_vesselentrance(signal))
             hist_dict["DOCA"].Fill(selection.DOCA(signal))
             hist_dict["inv_mass"].Fill(selection.invariant_mass(signal))
             hist_dict["len_Particles"].Fill(len(tree.Particles))
@@ -131,14 +128,10 @@ def main():
             hist_dict["chi2nDOF"].Fill(*selection.chi2nDOF(signal))
 
             IP_cut = 250
-            preselection_flag = selection.preselection_cut(
-                signal, IP_cut=IP_cut, show_table=False
-            )
+            preselection_flag = selection.preselection_cut(signal, IP_cut=IP_cut, show_table=False)
 
             if preselection_flag:
-                print(
-                    f"Event:{event_nr} Candidate_index: {candidate_id_in_event} <--passes the pre-selection\n\n"
-                )
+                print(f"Event:{event_nr} Candidate_index: {candidate_id_in_event} <--passes the pre-selection\n\n")
 
     ut.writeHists(hist_dict, "preselectionparameters.root")
 

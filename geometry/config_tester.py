@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import os
-import json
-import importlib.util
-import logging
 import argparse
+import importlib.util
+import json
+import logging
+import os
 
 logging.info("")
 logger = logging.getLogger()
@@ -14,13 +14,13 @@ logger.setLevel(logging.INFO)
 
 
 def parse_arguments():
-    ap = argparse.ArgumentParser(
-        description='test configuration file')
-    ap.add_argument('-d', '--debug', action='store_true')
-    ap.add_argument('-p', '--params', type=json.loads,
-                    help="""config parameters in json form '{"a": 1, "b": 2}' """, default={})
+    ap = argparse.ArgumentParser(description="test configuration file")
+    ap.add_argument("-d", "--debug", action="store_true")
+    ap.add_argument(
+        "-p", "--params", type=json.loads, help="""config parameters in json form '{"a": 1, "b": 2}' """, default={}
+    )
 
-    ap.add_argument('config_file', help='config file to test')
+    ap.add_argument("config_file", help="config file to test")
     args = ap.parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -45,5 +45,6 @@ def main(arguments):
     for k, v in config.items():
         print(f"{k}: {v}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main(parse_arguments())

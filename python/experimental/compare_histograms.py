@@ -24,22 +24,16 @@ def compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0
     """
     # Check if the histograms are equal
     if not hist1 == hist2:
-        print(
-            f"Histograms '{hist1.name}' are different in terms of bin contents or errors."
-        )
+        print(f"Histograms '{hist1.name}' are different in terms of bin contents or errors.")
 
         if use_ks_test:
             # Perform the Kolmogorov-Smirnov test
             ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())
             print(f"KS Statistic: {ks_statistic}, p-value: {p_value}")
             if p_value.all() < significance_threshold:
-                print(
-                    f"Histograms '{hist1.name}' are statistically different (p < {significance_threshold})."
-                )
+                print(f"Histograms '{hist1.name}' are statistically different (p < {significance_threshold}).")
             else:
-                print(
-                    f"Histograms '{hist1.name}' are statistically compatible (p >= {significance_threshold})."
-                )
+                print(f"Histograms '{hist1.name}' are statistically compatible (p >= {significance_threshold}).")
         return False
 
     print(f"Histograms '{hist1.name}' are equal.")
@@ -68,12 +62,8 @@ def main(file1_path, file2_path, use_ks_test, significance_threshold):
             isHist = False
         return isHist
 
-    histograms1 = {
-        key: files[1][key] for key in files[1].keys() if isuproothist(key, 1)
-    }
-    histograms2 = {
-        key: files[2][key] for key in files[2].keys() if isuproothist(key, 2)
-    }
+    histograms1 = {key: files[1][key] for key in files[1].keys() if isuproothist(key, 1)}
+    histograms2 = {key: files[2][key] for key in files[2].keys() if isuproothist(key, 2)}
 
     # Compare histograms with the same names
     for hist_name in histograms1.keys():
@@ -91,9 +81,7 @@ def main(file1_path, file2_path, use_ks_test, significance_threshold):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Compare histograms in two ROOT files."
-    )
+    parser = argparse.ArgumentParser(description="Compare histograms in two ROOT files.")
     parser.add_argument("file1", help="Path to the first ROOT file.")
     parser.add_argument("file2", help="Path to the second ROOT file.")
     parser.add_argument(

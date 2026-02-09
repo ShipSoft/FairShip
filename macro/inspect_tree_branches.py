@@ -82,9 +82,7 @@ def inspect_tree_branches(input_file, tree_name):
 
 def main():
     """Parse arguments and run the TTree branch inspection."""
-    parser = argparse.ArgumentParser(
-        description="Inspect TTree branches for RNTuple compatibility"
-    )
+    parser = argparse.ArgumentParser(description="Inspect TTree branches for RNTuple compatibility")
     parser.add_argument("-f", "--input-file", required=True, help="Input ROOT file")
     parser.add_argument(
         "-t",

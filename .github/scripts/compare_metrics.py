@@ -79,9 +79,7 @@ def compare_metric(
 
         rel_diff = abs(new_value - ref_value) / abs(ref_value)  # type: ignore[operator,arg-type]
         if rel_diff > float_tolerance:
-            return [
-                f"  {name}: {ref_value:.4g} → {new_value:.4g} (Δ={rel_diff * 100:.4g}%)"
-            ]
+            return [f"  {name}: {ref_value:.4g} → {new_value:.4g} (Δ={rel_diff * 100:.4g}%)"]
         return []
 
     elif compare_mode == "statistical":
@@ -97,10 +95,7 @@ def compare_metric(
 
         deviation = abs(ref_value - new_value) / combined_unc  # type: ignore[operator]
         if deviation > n_sigma:
-            return [
-                f"  {name}: {ref_value:.4g}±{ref_unc:.4g} → "
-                f"{new_value:.4g}±{new_unc:.4g} ({deviation:.1f}σ)"
-            ]
+            return [f"  {name}: {ref_value:.4g}±{ref_unc:.4g} → {new_value:.4g}±{new_unc:.4g} ({deviation:.1f}σ)"]
         return []
 
     return []
@@ -126,14 +121,10 @@ def compare_dict_recursive(
 
         if isinstance(ref_value, dict):
             if "value" in ref_value and "compare" in ref_value:
-                diffs = compare_metric(
-                    ref_value, new_value, f"{path}{key}", float_tolerance, n_sigma
-                )
+                diffs = compare_metric(ref_value, new_value, f"{path}{key}", float_tolerance, n_sigma)
                 differences.extend(diffs)
             else:
-                diffs = compare_dict_recursive(
-                    ref_value, new_value, current_path, float_tolerance, n_sigma
-                )
+                diffs = compare_dict_recursive(ref_value, new_value, current_path, float_tolerance, n_sigma)
                 differences.extend(diffs)
 
     return differences
@@ -187,9 +178,7 @@ def compare_metrics(
             summary["trees_compared"] += 1
             new_tree = new_file["trees"][tree_name]
 
-            tree_diffs = compare_dict_recursive(
-                ref_tree, new_tree, f"{tree_name}.", float_tolerance, n_sigma
-            )
+            tree_diffs = compare_dict_recursive(ref_tree, new_tree, f"{tree_name}.", float_tolerance, n_sigma)
             file_diffs.extend(tree_diffs)
 
         for hist_name, ref_hist in ref_file.get("histograms", {}).items():
@@ -200,9 +189,7 @@ def compare_metrics(
             summary["histograms_compared"] += 1
             new_hist = new_file["histograms"][hist_name]
 
-            hist_diffs = compare_dict_recursive(
-                ref_hist, new_hist, f"{hist_name}.", float_tolerance, n_sigma
-            )
+            hist_diffs = compare_dict_recursive(ref_hist, new_hist, f"{hist_name}.", float_tolerance, n_sigma)
             file_diffs.extend(hist_diffs)
 
             if "fit" in ref_hist:
@@ -218,9 +205,7 @@ def compare_metrics(
 
 def main() -> int:
     """Compare physics metrics from two JSON files."""
-    parser = argparse.ArgumentParser(
-        description="Compare physics metrics from two JSON files"
-    )
+    parser = argparse.ArgumentParser(description="Compare physics metrics from two JSON files")
     parser.add_argument(
         "reference",
         help="Reference metrics JSON file",
@@ -246,10 +231,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--config",
-        help=(
-            "Path to configuration file "
-            "(default: metrics_config.yaml in script directory)"
-        ),
+        help=("Path to configuration file (default: metrics_config.yaml in script directory)"),
     )
 
     args = parser.parse_args()
@@ -257,13 +239,9 @@ def main() -> int:
     # Load config and apply defaults
     config = load_config(args.config)
     float_tolerance = (
-        args.float_tolerance
-        if args.float_tolerance is not None
-        else config["comparison"]["float_tolerance"]
+        args.float_tolerance if args.float_tolerance is not None else config["comparison"]["float_tolerance"]
     )
-    n_sigma = (
-        args.n_sigma if args.n_sigma is not None else config["comparison"]["n_sigma"]
-    )
+    n_sigma = args.n_sigma if args.n_sigma is not None else config["comparison"]["n_sigma"]
 
     try:
         ref_metrics = json.loads(Path(args.reference).read_text())
@@ -275,9 +253,7 @@ def main() -> int:
         print(f"ERROR: Invalid JSON: {e}")
         return 1
 
-    differences, summary = compare_metrics(
-        ref_metrics, new_metrics, float_tolerance, n_sigma
-    )
+    differences, summary = compare_metrics(ref_metrics, new_metrics, float_tolerance, n_sigma)
 
     print("=" * 80)
     print("Physics Metrics Comparison")

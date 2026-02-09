@@ -116,9 +116,7 @@ def modify_file(inputfile, muonfile):
 
     temp_filename = inputfile.replace(".root", ".tmp")
     temp_file = r.TFile.Open(temp_filename, "recreate")
-    output_tree = input_tree.CloneTree(
-        0
-    )  # Clone the structure of the existing tree, but do not copy the entries
+    output_tree = input_tree.CloneTree(0)  # Clone the structure of the existing tree, but do not copy the entries
 
     combined_vetoPoint = r.TClonesArray("vetoPoint")
     output_tree.SetBranchAddress("vetoPoint", combined_vetoPoint)
@@ -158,9 +156,7 @@ def modify_file(inputfile, muonfile):
         for hit in input_event.UpstreamTaggerPoint:
             if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
                 combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-            combined_UpstreamTaggerPoint[ubt_index] = (
-                hit  # pending fix to support ROOT 6.32+
-            )
+            combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
             ubt_index += 1
 
         muon_ubtcount = 0
@@ -168,9 +164,7 @@ def modify_file(inputfile, muonfile):
             if hit.GetZ() < interaction_point.Z():
                 if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
                     combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
-                combined_UpstreamTaggerPoint[ubt_index] = (
-                    hit  # pending fix to support ROOT 6.32+
-                )
+                combined_UpstreamTaggerPoint[ubt_index] = hit  # pending fix to support ROOT 6.32+
                 ubt_index += 1
                 muon_ubtcount += 1
 
@@ -203,9 +197,7 @@ def modify_file(inputfile, muonfile):
 muons_found = inspect_file(args.inputfile, args.muonfile)
 
 if not muons_found:
-    print(
-        "Incoming muon's vetoPoints & UpstreamTaggerPoints inf missing in file, proceeding with modification"
-    )
+    print("Incoming muon's vetoPoints & UpstreamTaggerPoints inf missing in file, proceeding with modification")
     modify_file(args.inputfile, args.muonfile)
 else:
     print("File is already updated with incoming muon info. Nothing to do.")

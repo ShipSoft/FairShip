@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import json
 import os
 import pickle
-import json
 
 
 class AttrDict(dict):
@@ -39,6 +39,7 @@ class Config(AttrDict):
 
     def loads_json(self, json_str):
         """Deserialize config from JSON string"""
+
         def dict_to_attrdict(d):
             """Recursively convert dict to AttrDict"""
             if isinstance(d, dict):
@@ -85,15 +86,11 @@ class Config(AttrDict):
 
     def __str__(self):
         return "ShipGeoConfig:\n  " + "\n  ".join(
-            [
-                f"{k}: {self[k].__str__()}"
-                for k in sorted(self.keys())
-                if not k.startswith("_")
-            ]
+            [f"{k}: {self[k].__str__()}" for k in sorted(self.keys()) if not k.startswith("_")]
         )
 
 
-def load_from_root_file(root_file, key='ShipGeo'):
+def load_from_root_file(root_file, key="ShipGeo"):
     """
     Load configuration from ROOT file.
 
@@ -125,14 +122,14 @@ def load_from_root_file(root_file, key='ShipGeo'):
         content_str = str(config_obj)
 
         # Auto-detect format by checking first character
-        if content_str.startswith('{'):
+        if content_str.startswith("{"):
             # JSON format - parse it
             config = Config()
             config.loads_json(content_str)
         else:
             # Assume pickle format - unpickle it
             # Convert to bytes for pickle (using latin-1 encoding)
-            pickle_bytes = content_str.encode('latin-1')
+            pickle_bytes = content_str.encode("latin-1")
             config = pickle.loads(pickle_bytes)
 
             # Ensure it's a Config object (might be if it was pickled as Config)

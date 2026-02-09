@@ -70,9 +70,7 @@ NUPDGLIST = [16, -16, 14, -14, 12, -12]
 # ------------------------------ Helpers ---------------------------------------
 
 
-def extract_nu_over_nubar(
-    neutrino_flux: Path, particles: Sequence[int]
-) -> dict[int, float]:
+def extract_nu_over_nubar(neutrino_flux: Path, particles: Sequence[int]) -> dict[int, float]:
     """Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms."""
     f = ROOT.TFile(str(neutrino_flux), "READ")
     if not f or f.IsZombie():
@@ -85,20 +83,14 @@ def extract_nu_over_nubar(
             h_nubar = f.Get(get_1D_flux_name(-fam))
             if not h_nu or not h_nubar:
                 raise FileNotFoundError(
-                    f"Missing hists {get_1D_flux_name(fam)} / "
-                    f"{get_1D_flux_name(-fam)} in {neutrino_flux}"
+                    f"Missing hists {get_1D_flux_name(fam)} / {get_1D_flux_name(-fam)} in {neutrino_flux}"
                 )
             s_nu = float(h_nu.GetSumOfWeights())
             s_nubar = float(h_nubar.GetSumOfWeights())
             if s_nubar <= 0.0:
-                raise FileNotFoundError(
-                    f"ν̄ sum of weights is zero for family {fam} in {neutrino_flux}"
-                )
+                raise FileNotFoundError(f"ν̄ sum of weights is zero for family {fam} in {neutrino_flux}")
             ratios[fam] = s_nu / s_nubar
-            log_output = (
-                f"ν/ν̄ ratio for |PDG|={fam}: "
-                f"{ratios[fam]:.4f} (nu={s_nu}, nubar={s_nubar})"
-            )
+            log_output = f"ν/ν̄ ratio for |PDG|={fam}: {ratios[fam]:.4f} (nu={s_nu}, nubar={s_nubar})"
             logging.info(log_output)
         return ratios
     finally:
@@ -113,11 +105,7 @@ def _build_env(nudet: bool, gxmlpath: Path | None) -> Mapping[str, str | None] |
     """Build per-call env overrides (sets GXMLPATH only in nudet mode)."""
     if not nudet:
         return None
-    val = (
-        str(gxmlpath)
-        if gxmlpath
-        else "/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines"
-    )
+    val = str(gxmlpath) if gxmlpath else "/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines"
     return {"GXMLPATH": val}
 
 
@@ -179,15 +167,12 @@ def make_events(
 
         nudet_suffix = "_nudet" if env_vars and env_vars.get("GXMLPATH") else ""
         filename = (
-            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_"
-            f"{process or 'ALL'}{nudet_suffix}.ghep.root"
+            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}{nudet_suffix}.ghep.root"
         )
         ghep_path = out_dir / filename
         gst_path = out_dir / f"genie-{filename}"
 
-        logging.info(
-            f"Generating {N} events for PDG {pdg_name} (run={run}) -> {ghep_path}"
-        )
+        logging.info(f"Generating {N} events for PDG {pdg_name} (run={run}) -> {ghep_path}")
 
         generate_genie_events(
             nevents=N,
@@ -218,9 +203,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     # sim command
     ap = sub.add_parser("sim", help="Make GENIE simulation file(s)")
-    ap.add_argument(
-        "-s", "--seed", type=int, default=65539, help="RNG seed (default: GENIE 65539)"
-    )
+    ap.add_argument("-s", "--seed", type=int, default=65539, help="RNG seed (default: GENIE 65539)")
     ap.add_argument(
         "-o",
         "--output",
@@ -265,9 +248,7 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=sorted(TARGET_CODE),
         help="Target material",
     )
-    ap.add_argument(
-        "-n", "--nevents", type=int, default=100, help="Events per neutrino species"
-    )
+    ap.add_argument("-n", "--nevents", type=int, default=100, help="Events per neutrino species")
     ap.add_argument("--emin", type=float, default=0.5, help="Min Eν [GeV]")
     ap.add_argument("--emax", type=float, default=350.0, help="Max Eν [GeV]")
     ap.add_argument(
@@ -278,12 +259,8 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="GENIE generator list (e.g. CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, ...)",
     )
-    ap.add_argument(
-        "--nudet", action="store_true", help="Disable charm & tau decays via GXMLPATH"
-    )
-    ap.add_argument(
-        "--gxmlpath", type=Path, default=None, help="Override GXMLPATH in --nudet mode"
-    )
+    ap.add_argument("--nudet", action="store_true", help="Disable charm & tau decays via GXMLPATH")
+    ap.add_argument("--gxmlpath", type=Path, default=None, help="Override GXMLPATH in --nudet mode")
     ap.add_argument(
         "-p",
         "--particles",
@@ -302,15 +279,9 @@ def _build_parser() -> argparse.ArgumentParser:
     )
 
     # spline command
-    ap1 = sub.add_parser(
-        "spline", help="Make a new cross-section spline (xsec_splines.xml)"
-    )
-    ap1.add_argument(
-        "-t", "--target", type=str, default="iron", choices=sorted(TARGET_CODE)
-    )
-    ap1.add_argument(
-        "-o", "--output", dest="work_dir", type=Path, default=Path("./work")
-    )
+    ap1 = sub.add_parser("spline", help="Make a new cross-section spline (xsec_splines.xml)")
+    ap1.add_argument("-t", "--target", type=str, default="iron", choices=sorted(TARGET_CODE))
+    ap1.add_argument("-o", "--output", dest="work_dir", type=Path, default=Path("./work"))
     ap1.add_argument("-n", "--nknots", type=int, default=500)
     ap1.add_argument("--emax", type=float, default=400.0)
 

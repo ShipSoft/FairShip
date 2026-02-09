@@ -33,6 +33,8 @@ it in future.
 
 ### Removed
 
+* Remove old (CDR) target configuration; Jun25 is now the only supported target
+
 * Remove unused ShipStyle, which seems copy-pasted from LHCb
 * Remove old scripts run_simEcal.py and flux_map.py
 * Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
@@ -172,6 +174,7 @@ it in future.
 * Use STL vectors for SBT digitisation
 * Use maximum splitting (99) for vector branches instead of no splitting (-1)
 * Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
+* Store channel coordinates in the digi containers to avoid reading geofile
 
 #### Geometry Configuration System
 

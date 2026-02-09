@@ -251,7 +251,7 @@ def create_config(
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
         SND_design: SND design options (list of design numbers), default: [2]
-        TARGET_YAML: Path to target YAML configuration file, default: "$FAIRSHIP/geometry/target_config_old.yaml"
+        TARGET_YAML: Path to target YAML configuration file, default: "$FAIRSHIP/geometry/target_config.yaml"
 
     Returns:
         Config: Geometry configuration object
@@ -260,7 +260,7 @@ def create_config(
     if SND_design is None:
         SND_design = [2]
     if TARGET_YAML is None:
-        TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
+        TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config.yaml")
 
     # Create configuration object
     c = Config()
@@ -279,7 +279,7 @@ def create_config(
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]["hybrid"]
 
-    # global targetVersion, strawDesign, Yheight
+    # global strawDesign, Yheight
     c.Yheight = Yheight * u.m
     extraVesselLength = 10 * u.m
     windowBulge = 25 * u.cm
@@ -290,9 +290,7 @@ def create_config(
     c.cave.floorHeightMuonShield = 5 * u.m
     c.cave.floorHeightTankA = 4.2 * u.m
     if strawDesign == 10:
-        c.cave.floorHeightMuonShield = (
-            c.cave.floorHeightTankA
-        )  # avoid the gap, for 2018 geometry
+        c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
 
     with open(c.target_yaml) as file:
@@ -325,7 +323,6 @@ def create_config(
     for width, gap in zip(c.target.slices_length, c.target.slices_gap):
         target_length += width + gap
     c.target.length = target_length
-    c.targetVersion = targetconfig["targetVersion"]
     # interaction point, start of target
 
     c.target.z0 = 0  # Origin of SHiP coordinate system
@@ -340,7 +337,7 @@ def create_config(
     c.muShield.dZ0 = 1 * u.m
 
     # zGap to compensate automatic shortening of magnets
-    zGap = 0.05 * u.m  # halflengh of gap
+    0.05 * u.m  # halflengh of gap
 
     params = shield_db[shieldName]["params"]
     c.muShield.params = params
@@ -386,14 +383,10 @@ def create_config(
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
-    c.decayVolume.z = (
-        c.z - 31.450 * u.m
-    )  # Relative position of decay vessel centre to spectrometer magnet
+    c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
     if strawDesign != 4 and strawDesign != 10:
-        print(
-            "this design ", strawDesign, " is not supported, use strawDesign = 4 or 10"
-        )
+        print("this design ", strawDesign, " is not supported, use strawDesign = 4 or 10")
         1 / 0
     else:
         c.chambers.Tub1length = 2.5 * u.m
@@ -407,9 +400,7 @@ def create_config(
 
         c.xMax = 2 * u.m  # max horizontal width at T4
         TrGap = 2 * u.m  # Distance between Tr1/2 and Tr3/4
-        TrMagGap = (
-            3.5 * u.m
-        )  # Distance from spectrometer magnet centre to the next tracking stations
+        TrMagGap = 3.5 * u.m  # Distance from spectrometer magnet centre to the next tracking stations
         #
         z4 = c.z + TrMagGap + TrGap
         c.TrackStation4 = AttrDict(z=z4)
@@ -453,9 +444,7 @@ def create_config(
     c.EcalOption = 2
 
     c.SplitCal = AttrDict()
-    c.SplitCal.ZStart = (
-        38.450 * u.m + c.decayVolume.z
-    )  # Relative start z of split cal to decay vessel centre
+    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z  # Relative start z of split cal to decay vessel centre
     c.SplitCal.XMax = 4 * u.m / 2  # half length
     c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0 * u.cm
@@ -481,20 +470,15 @@ def create_config(
     c.SplitCal.NModulesInX = 2
     c.SplitCal.NModulesInY = 3
     c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (
-        c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX
-    )
+    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX)
     c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness = (
         (c.SplitCal.FilterECALThickness_first - c.SplitCal.FilterECALThickness)
-        + (c.SplitCal.FilterECALThickness + c.SplitCal.ActiveECALThickness)
-        * c.SplitCal.nECALSamplings
+        + (c.SplitCal.FilterECALThickness + c.SplitCal.ActiveECALThickness) * c.SplitCal.nECALSamplings
         + c.SplitCal.BigGap
     )
 
-    c.MuonStation0 = AttrDict(
-        z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
-    )
+    c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness)
 
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z + 1 * u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z + 2 * u.m)
@@ -511,24 +495,18 @@ def create_config(
     c.Muon.ActiveThickness = 0.5 * u.cm
     c.Muon.FilterThickness = 30.0 * u.cm
 
-    c.hadronAbsorber.WithConstField = shield_db[shieldName][
-        "WithConstField"
-    ]  # TO BE CHECKED: NOT SURE IT IS NEEDED
+    c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]  # TO BE CHECKED: NOT SURE IT IS NEEDED
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
     c.strawtubesDigi = AttrDict()
-    c.strawtubesDigi.v_drift = 1.0 / (
-        30 * u.ns / u.mm
-    )  # for baseline NA62 5mm radius straws)
+    c.strawtubesDigi.v_drift = 1.0 / (30 * u.ns / u.mm)  # for baseline NA62 5mm radius straws)
     c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  # according to Massi's TP section
 
     # CAMM - For Nu tau detector, keep only these parameters which are used by others...
     c.tauMudet = AttrDict()
     c.tauMudet.Ztot = 3 * u.m  # space allocated to Muon spectrometer
-    c.tauMudet.zMudetC = (
-        c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm
-    )
+    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2.0 - c.tauMudet.Ztot / 2.0 - 70 * u.cm
 
     # Upstream Tagger
     # UpstreamTagger (UBT) - Simplified scoring plane
@@ -538,9 +516,7 @@ def create_config(
     c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
     c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
     c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
-    c.UpstreamTagger.Z_Position = (
-        -25.400 * u.m + c.decayVolume.z
-    )  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
 

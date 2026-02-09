@@ -31,18 +31,12 @@ class BaseDetector(ABC):
         self.mcBranch = None
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mcBranch = self.outtree.Branch(
-                mcBranchName, self.MCdet, 32000, splitLevel
-            )
+            self.mcBranch = self.outtree.Branch(mcBranchName, self.MCdet, 32000, splitLevel)
 
         if branchName:
-            self.branch = self.outtree.Branch(
-                f"Digi_{branchName}Hits", self.det, 32000, splitLevel
-            )
+            self.branch = self.outtree.Branch(f"Digi_{branchName}Hits", self.det, 32000, splitLevel)
         else:
-            self.branch = self.outtree.Branch(
-                f"Digi_{name}Hits", self.det, 32000, splitLevel
-            )
+            self.branch = self.outtree.Branch(f"Digi_{name}Hits", self.det, 32000, splitLevel)
 
     def delete(self):
         """Clear detector hit containers."""
