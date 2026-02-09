@@ -54,7 +54,7 @@ class MuonBackGenerator : public FairGenerator {
   std::vector<vetoPoint>* vetoPoints_vec;  //!
   Bool_t fUseSTL;     //! flag to indicate if using STL vectors
   TFile* fInputFile;  //!
-  TTree* fTree;       //!
+  TChain* fTree;       //!
   int fNevents;
   float f_zOffset;  //!
   int fn;

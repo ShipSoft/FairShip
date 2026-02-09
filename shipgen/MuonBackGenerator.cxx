@@ -62,7 +62,7 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
     fTree = new TChain("pythia8-Geant4");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
-      static_cast<TChain*>(fTree)->Add(f);
+      fTree->Add(f);
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
@@ -94,11 +94,10 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
     }
   } else {
     id = -1;
-    //    fTree = fInputFile->Get<TTree>("cbmsim");
     fTree = new TChain("cbmsim");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
-      static_cast<TChain*>(fTree)->Add(f);
+      fTree->Add(f);
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
