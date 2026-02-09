@@ -118,12 +118,15 @@ def errorSummary():
 
 
 def checkFileExists(x):
+    print("check file exists")
     if isinstance(x, str):
-        x = [x]
-    if isinstance(x, (list, tuple)):
+        tx = [x]
+    else:
+        tx = x
+    if isinstance(tx, (list, tuple)):
         # See what we are looking at and make sure all the files are of the same type
         fileType = ""
-        for _f in x:
+        for _f in tx:
             if _f[0:4] == "/eos":
                 f = gSystem.Getenv("EOSSHIP") + _f
             else:
@@ -138,6 +141,7 @@ def checkFileExists(x):
                 fileType = "ntuple"
             else:
                 print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
+        print("file types is: ", fileType)
         return fileType
     else:
         print("ERROR FileCheck: File must be either a string or list of files")

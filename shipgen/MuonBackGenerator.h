@@ -11,7 +11,8 @@
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "TClonesArray.h"
 #include "TROOT.h"
-#include "TTree.h"  // for TTree
+#include "TChain.h"  // for TChain
+
 
 class FairPrimaryGenerator;
 class ShipMCTrack;
