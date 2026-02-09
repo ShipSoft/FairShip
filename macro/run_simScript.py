@@ -125,7 +125,7 @@ parser.add_argument("-n", "--nEvents", dest="nEvents", help="Number of events to
 parser.add_argument("-i", "--firstEvent", help="First event of input file to use", default=0, type=int)
 parser.add_argument("-s", "--seed", dest="theSeed", help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", default=0, type=int)
 parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!", default=False, type=int)
-group.add_argument("-f", dest="inputFile", help="Input file if not default file", default=False)
+group.add_argument("-f", dest="inputFile", nargs = "*", help="Input file if not default file", default=False)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
@@ -487,7 +487,8 @@ if options.muonback:
     testf.Close()
  if options.sameSeed: MuonBackgen.SetSameSeed(options.sameSeed)
  primGen.AddGenerator(MuonBackgen)
- options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
+ options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())-1
+ print("nEvents: ", options.nEvents)
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
  print('Process ', options.nEvents, ' from input file, with 𝜎 = ', options.PaintBeam, ', with smear radius r = ', options.SmearBeam * u.cm, 'with MCTracksWithHitsOnly', MCTracksWithHitsOnly)
  if options.followMuon :
@@ -581,15 +582,18 @@ if options.print_fields:
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
+print("about to run: ", options.nEvents)
+
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
+print("all sorted")
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
-parOut = ROOT.FairParRootFileIo(kParameterMerged)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
+#parOut = ROOT.FairParRootFileIo(kParameterMerged)
+#parOut.open(parFile)
+#rtdb.setOutput(parOut)
+#rtdb.saveOutput()
+#rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
@@ -655,11 +659,11 @@ if options.muonback:
      empty = True
      for containerName in pointContainers:
         container = getattr(sTree, containerName)
-        if container.size() > 0:
-           empty = False
-           break
+#        if container.size() > 0:
+#           empty = False
+#           break
 
-     if not empty:
+#     if not empty:
         sTree.Fill()
         nEvents += 1
 
