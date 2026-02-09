@@ -16,6 +16,7 @@ it in future.
 
 ### Changed
 
+* Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
