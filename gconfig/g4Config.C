@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
+#include "G4UImanager.hh"
 
 // Configuration macro for Geant4 VirtualMC
 void Config() {
@@ -53,9 +54,21 @@ void Config() {
 
   TString configm(gSystem->Getenv("VMCWORKDIR"));
   TString configm1 = configm + "/gconfig/g4config.in";
-  cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
+  std::cout << " -I g4Config() using g4conf  macro: " << configm1 << std::endl;
   // set geant4 specific stuff
   // still stupid bug in geant4_vmc
   // geant4->SetMaxNStep(10000.);  // default is 30000
   geant4->ProcessGeantMacro(configm1.Data());
+
+  const std::string set_general_process_to_false =
+      getenv("SET_GENERAL_PROCESS_TO_FALSE")
+          ? getenv("SET_GENERAL_PROCESS_TO_FALSE")
+          : "";
+  if (set_general_process_to_false == "1") {
+    // Turn off UseGeneralProcess to access GammaToMuons directly when
+    // cross-sections need to be changed
+    std::cout << "Setting /process/em/UseGeneralProcess false" << std::endl;
+    G4UImanager::GetUIpointer()->ApplyCommand(
+        "/process/em/UseGeneralProcess false");
+  }
 }

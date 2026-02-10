@@ -11,8 +11,6 @@
 # switch on other sources of di muon
 /physics_lists/em/PositronToMuons true
 /physics_lists/em/GammaToMuons true
-# turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
-/process/em/UseGeneralProcess false
 
 # drives me crazy how to stop this tons of output !!!
 /process/em/verbose 0
