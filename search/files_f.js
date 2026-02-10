@@ -83,6 +83,5 @@ var searchData=
   ['strawtubespoint_2eh_80',['strawtubesPoint.h',['../strawtubesPoint_8h.html',1,'']]],
   ['study_5fgammaconv_2epy_81',['study_GammaConv.py',['../study__GammaConv_8py.html',1,'']]],
   ['study_5fmumsc_2epy_82',['study_muMSC.py',['../study__muMSC_8py.html',1,'']]],
-  ['study_5fthintarget_2epy_83',['study_thinTarget.py',['../study__thinTarget_8py.html',1,'']]],
-  ['submitpyg4prod_2epy_84',['submitPyG4prod.py',['../submitPyG4prod_8py.html',1,'']]]
+  ['study_5fthintarget_2epy_83',['study_thinTarget.py',['../study__thinTarget_8py.html',1,'']]]
 ];

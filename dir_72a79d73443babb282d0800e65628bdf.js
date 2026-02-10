@@ -6,10 +6,6 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "exitHadronAbsorber.h", "exitHadronAbsorber_8h.html", "exitHadronAbsorber_8h" ],
     [ "extractMuonsAndUpdateWeight.py", "extractMuonsAndUpdateWeight_8py.html", "extractMuonsAndUpdateWeight_8py" ],
     [ "extractNeutrinosAndUpdateWeight.py", "extractNeutrinosAndUpdateWeight_8py.html", "extractNeutrinosAndUpdateWeight_8py" ],
-    [ "g4Ex.py", "g4Ex_8py.html", "g4Ex_8py" ],
-    [ "g4Ex_args.py", "g4Ex__args_8py.html", "g4Ex__args_8py" ],
-    [ "g4Ex_gap.py", "g4Ex__gap_8py.html", "g4Ex__gap_8py" ],
-    [ "g4Ex_gap_mergeFiles.py", "g4Ex__gap__mergeFiles_8py.html", "g4Ex__gap__mergeFiles_8py" ],
     [ "LinkDef.h", "muonShieldOptimization_2LinkDef_8h.html", null ],
     [ "makeMuonDIS.py", "muonShieldOptimization_2makeMuonDIS_8py.html", "muonShieldOptimization_2makeMuonDIS_8py" ],
     [ "makeMuonEM.py", "makeMuonEM_8py.html", "makeMuonEM_8py" ],
@@ -22,6 +18,5 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "runCharmHadProd.py", "runCharmHadProd_8py.html", "runCharmHadProd_8py" ],
     [ "study_GammaConv.py", "study__GammaConv_8py.html", "study__GammaConv_8py" ],
     [ "study_muMSC.py", "study__muMSC_8py.html", "study__muMSC_8py" ],
-    [ "study_thinTarget.py", "study__thinTarget_8py.html", "study__thinTarget_8py" ],
-    [ "submitPyG4prod.py", "submitPyG4prod_8py.html", "submitPyG4prod_8py" ]
+    [ "study_thinTarget.py", "study__thinTarget_8py.html", "study__thinTarget_8py" ]
 ];

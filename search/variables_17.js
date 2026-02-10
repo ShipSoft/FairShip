@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['w_0',['w',['../classNtupleGenerator.html#ad7e4225758488655be034b3679318882',1,'NtupleGenerator::w'],['../classMuonBackGenerator.html#a80bbd4bdb61f50d5cb9dd0faacce82c5',1,'MuonBackGenerator::w'],['../namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5',1,'makeMuonEM.w'],['../namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254',1,'makeMuonDIS.w']]],
+  ['w_0',['w',['../classNtupleGenerator.html#ad7e4225758488655be034b3679318882',1,'NtupleGenerator::w'],['../classMuonBackGenerator.html#a80bbd4bdb61f50d5cb9dd0faacce82c5',1,'MuonBackGenerator::w'],['../namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254',1,'makeMuonDIS.w'],['../namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5',1,'makeMuonEM.w']]],
   ['wallxdim_1',['WallXDim',['../classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc',1,'Target']]],
   ['wallydim_2',['WallYDim',['../classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7',1,'Target']]],
   ['wallzdim_3',['WallZDim',['../classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab',1,'Target']]],
@@ -9,23 +9,20 @@ var searchData=
   ['weber_6',['weber',['../namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2',1,'shipunit.weber'],['../namespacehepunit.html#a3a7df78e33eb5f64197fcc31604cfdd2',1,'hepunit.weber']]],
   ['weight_7',['weight',['../namespacemake__nTuple__SBT.html#a8b051082441b56e7c523a3cce45c1ebe',1,'make_nTuple_SBT.weight'],['../namespacemake__nTuple__Tr.html#ac61bf72f3a4774df419e794604cab6a9',1,'make_nTuple_Tr.weight'],['../classCosmicsGenerator.html#a5f21b44c11bb8b2b8701e4a501dc4def',1,'CosmicsGenerator::weight']]],
   ['weightbeauty_8',['weightbeauty',['../namespaceextractMuonsAndUpdateWeight.html#adfec8af16ddc9104b3a740bc14d0759f',1,'extractMuonsAndUpdateWeight.weightBeauty'],['../namespaceextractNeutrinosAndUpdateWeight.html#a219530ce37f64738a48b1c1f4f1c30e7',1,'extractNeutrinosAndUpdateWeight.weightBeauty']]],
-  ['weightcharm_9',['weightcharm',['../namespaceextractNeutrinosAndUpdateWeight.html#aef3a69a66e9465622a1a4762e9d207cf',1,'extractNeutrinosAndUpdateWeight.weightCharm'],['../namespaceextractMuonsAndUpdateWeight.html#a6931ea78c2f6638c3581e970e932c7cd',1,'extractMuonsAndUpdateWeight.weightCharm']]],
+  ['weightcharm_9',['weightcharm',['../namespaceextractMuonsAndUpdateWeight.html#a6931ea78c2f6638c3581e970e932c7cd',1,'extractMuonsAndUpdateWeight.weightCharm'],['../namespaceextractNeutrinosAndUpdateWeight.html#aef3a69a66e9465622a1a4762e9d207cf',1,'extractNeutrinosAndUpdateWeight.weightCharm']]],
   ['weightcharm1gev_10',['weightCharm1GeV',['../namespaceextractNeutrinosAndUpdateWeight.html#ab760c708e24b90544e4fbd8e02fbf40c',1,'extractNeutrinosAndUpdateWeight']]],
   ['weightmbias_11',['weightmbias',['../namespaceextractMuonsAndUpdateWeight.html#aa62f94d168950261430ef026b2b30db5',1,'extractMuonsAndUpdateWeight.weightMbias'],['../namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c',1,'extractNeutrinosAndUpdateWeight.weightMbias']]],
   ['weightmbias1gev_12',['weightMbias1GeV',['../namespaceextractNeutrinosAndUpdateWeight.html#a255cf9b881f376a23b67633ac2307b83',1,'extractNeutrinosAndUpdateWeight']]],
   ['weighttest_13',['weighttest',['../classCosmicsGenerator.html#acb7b3dadeb86940507d6198b42c0fd38',1,'CosmicsGenerator']]],
   ['withchain_14',['withChain',['../namespaceana__ShipMuon.html#ab54b0884f0d0e9af5430d755b0f116b8',1,'ana_ShipMuon']]],
-  ['withevtgen_15',['withevtgen',['../classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb',1,'FixedTargetGenerator::withEvtGen'],['../namespacerun__fixedTarget.html#afb952bca5dc9fe65f9648554f8737215',1,'run_fixedTarget.withEvtGen']]],
+  ['withevtgen_15',['withevtgen',['../namespacerun__fixedTarget.html#afb952bca5dc9fe65f9648554f8737215',1,'run_fixedTarget.withEvtGen'],['../classFixedTargetGenerator.html#ac8d1a7cc5304e3c24de79f4c79bc4eeb',1,'FixedTargetGenerator::withEvtGen']]],
   ['withgeo_16',['withGeo',['../namespaceeventDisplay.html#a19c17c7cc197bc1d35c2b8c087e9426f',1,'eventDisplay']]],
   ['withhists_17',['withHists',['../namespaceShipReco.html#a4cc8c323c3b85bdbb198ab178da862b7',1,'ShipReco']]],
   ['withmctracks_18',['withMCTracks',['../namespaceeventDisplay.html#a362e5157e1dcf1b106536f5a9cafba0b',1,'eventDisplay']]],
   ['withnostrawsmearing_19',['withNoStrawSmearing',['../namespaceShipReco.html#a4563247f8c82a82f64d3c921dd359728',1,'ShipReco']]],
-  ['withntuple_20',['withntuple',['../namespaceg4Ex__gap.html#adb7f05855dfc4984c57a1e009f2ae349',1,'g4Ex_gap.withNtuple'],['../namespaceg4Ex__args.html#a8d87624c9ec47ceec59b5d9e118b9034',1,'g4Ex_args.withNtuple'],['../namespaceg4Ex.html#ac9f6420d3cabff7af8e5e869703c812f',1,'g4Ex.withNtuple'],['../classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f',1,'exitHadronAbsorber::withNtuple'],['../classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf',1,'FixedTargetGenerator::withNtuple']]],
-  ['withstepping_21',['withStepping',['../namespaceg4Ex__gap.html#a3fe32346bcac816f9c00642b4ddbe1dd',1,'g4Ex_gap']]],
-  ['witht0_22',['withT0',['../namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20',1,'ShipReco']]],
-  ['work_5fdir_23',['work_dir',['../namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79',1,'run_fixedTarget.work_dir'],['../namespaceg4Ex__args.html#a708f047fdf497d71a359daebd5b19be1',1,'g4Ex_args.work_dir'],['../namespaceg4Ex__gap.html#add6510a442a96060286b36f6beb4a5a6',1,'g4Ex_gap.work_dir']]],
-  ['world_24',['world',['../classShipCave.html#a8cbdea1cf52198304407f44a7a21e305',1,'ShipCave']]],
-  ['world_5fr_25',['world_r',['../namespaceg4Ex__gap.html#a4f2cc7279b3555421d077ca6820859a9',1,'g4Ex_gap']]],
-  ['wrld_26',['wrld',['../namespaceg4Ex__gap.html#ad7393c51f02ae25af12b38f1c894ed16',1,'g4Ex_gap']]],
-  ['wspill_27',['wspill',['../classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829',1,'FixedTargetGenerator::wspill'],['../namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7',1,'makeDecay.wspill']]]
+  ['withntuple_20',['withntuple',['../classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f',1,'exitHadronAbsorber::withNtuple'],['../classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf',1,'FixedTargetGenerator::withNtuple']]],
+  ['witht0_21',['withT0',['../namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20',1,'ShipReco']]],
+  ['work_5fdir_22',['work_dir',['../namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79',1,'run_fixedTarget']]],
+  ['world_23',['world',['../classShipCave.html#a8cbdea1cf52198304407f44a7a21e305',1,'ShipCave']]],
+  ['wspill_24',['wspill',['../classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829',1,'FixedTargetGenerator::wspill'],['../namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7',1,'makeDecay.wspill']]]
 ];

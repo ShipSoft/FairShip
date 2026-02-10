@@ -168,182 +168,182 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00477">477</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  477</span><span class="keyword">def </span>compare():</div>
-<div class="line"><span class="lineno">  478</span>    test(eospath + <span class="stringliteral">&quot;pythia8_Geant4_onlyMuons.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  479</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
-<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
-<div class="line"><span class="lineno">  481</span>            <span class="keywordflow">for</span> ahist <span class="keywordflow">in</span> [<span class="stringliteral">&quot;mu-&quot;</span>, <span class="stringliteral">&quot;mu+&quot;</span>, <span class="stringliteral">&quot;mu&quot;</span>, <span class="stringliteral">&quot;mu-charm&quot;</span>, <span class="stringliteral">&quot;mu+charm&quot;</span>, <span class="stringliteral">&quot;mucharm&quot;</span>]:</div>
-<div class="line"><span class="lineno">  482</span>                h[<span class="stringliteral">&quot;TP&quot;</span> + z + ahist + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + ahist + x].Clone(<span class="stringliteral">&quot;CT&quot;</span> + ahist + x)</div>
-<div class="line"><span class="lineno">  483</span>    test(eospath + <span class="stringliteral">&quot;pythia8_Geant4_Yandex_onlyNeutrinos.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  484</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
-<div class="line"><span class="lineno">  485</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
-<div class="line"><span class="lineno">  486</span>            <span class="keywordflow">for</span> ahist <span class="keywordflow">in</span> [</div>
-<div class="line"><span class="lineno">  487</span>                <span class="stringliteral">&quot;numusum&quot;</span>,</div>
-<div class="line"><span class="lineno">  488</span>                <span class="stringliteral">&quot;nuesum&quot;</span>,</div>
-<div class="line"><span class="lineno">  489</span>                <span class="stringliteral">&quot;numusumcharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  490</span>                <span class="stringliteral">&quot;nuesumcharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  491</span>                <span class="stringliteral">&quot;numu&quot;</span>,</div>
-<div class="line"><span class="lineno">  492</span>                <span class="stringliteral">&quot;numubar&quot;</span>,</div>
-<div class="line"><span class="lineno">  493</span>                <span class="stringliteral">&quot;nue&quot;</span>,</div>
-<div class="line"><span class="lineno">  494</span>                <span class="stringliteral">&quot;nuebar&quot;</span>,</div>
-<div class="line"><span class="lineno">  495</span>                <span class="stringliteral">&quot;numucharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  496</span>                <span class="stringliteral">&quot;numubarcharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  497</span>                <span class="stringliteral">&quot;nuecharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  498</span>                <span class="stringliteral">&quot;nuebarcharm&quot;</span>,</div>
-<div class="line"><span class="lineno">  499</span>            ]:</div>
-<div class="line"><span class="lineno">  500</span>                h[<span class="stringliteral">&quot;TP&quot;</span> + z + ahist + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + ahist + x].Clone(<span class="stringliteral">&quot;CT&quot;</span> + ahist + x)</div>
-<div class="line"><span class="lineno">  501</span>    test(eospath + <span class="stringliteral">&quot;Mbias/pythia8_Geant4-withCharm-ram.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
-<div class="line"><span class="lineno">  503</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
-<div class="line"><span class="lineno">  504</span>            t = z.upper()</div>
-<div class="line"><span class="lineno">  505</span>            <span class="keywordflow">if</span> x != <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  506</span>                t = <span class="stringliteral">&quot;&gt;&quot;</span> + t</div>
-<div class="line"><span class="lineno">  507</span>            h[t].cd(1)</div>
-<div class="line"><span class="lineno">  508</span>            p = z + <span class="stringliteral">&quot;mu&quot;</span></div>
-<div class="line"><span class="lineno">  509</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;musum&quot;</span>)</div>
-<div class="line"><span class="lineno">  510</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  511</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  512</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  513</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  514</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  515</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  516</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  517</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  518</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  519</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;muon new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  520</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;muon from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  521</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;muon old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  522</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;muon from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  523</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  524</span>            h[t].cd(2)</div>
-<div class="line"><span class="lineno">  525</span>            p = z + <span class="stringliteral">&quot;numusum&quot;</span></div>
-<div class="line"><span class="lineno">  526</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  527</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  528</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  529</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  530</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  531</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  532</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  533</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  534</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  535</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  536</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_mu from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  537</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  538</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_mu from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  539</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  540</span>            t3 = h[t].cd(3)</div>
-<div class="line"><span class="lineno">  541</span>            t3.SetLogy(1)</div>
-<div class="line"><span class="lineno">  542</span>            p = z + <span class="stringliteral">&quot;nuesum&quot;</span></div>
-<div class="line"><span class="lineno">  543</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  544</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  545</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  546</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  547</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  548</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  549</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  550</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  551</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  552</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  553</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_e from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  554</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  555</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_e from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  556</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  557</span>            <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  558</span>            t4 = h[t].cd(4)</div>
-<div class="line"><span class="lineno">  559</span>            t4.SetLogy(1)</div>
-<div class="line"><span class="lineno">  560</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  561</span>            p = z + <span class="stringliteral">&quot;mu-&quot;</span></div>
-<div class="line"><span class="lineno">  562</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;mu-/mu+&quot;</span>)</div>
-<div class="line"><span class="lineno">  563</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  564</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  565</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  566</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  567</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;mu- new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  568</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;mu- old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  569</span>            p = z + <span class="stringliteral">&quot;mu+&quot;</span></div>
-<div class="line"><span class="lineno">  570</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  571</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  572</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  573</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  574</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;mu+ new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  575</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;mu+ old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  576</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].Draw()</div>
-<div class="line"><span class="lineno">  577</span>            <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  578</span>            t5 = h[t].cd(5)</div>
-<div class="line"><span class="lineno">  579</span>            t5.SetLogy(1)</div>
-<div class="line"><span class="lineno">  580</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  581</span>            p = z + <span class="stringliteral">&quot;numu&quot;</span></div>
-<div class="line"><span class="lineno">  582</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;numu/numubar&quot;</span>)</div>
-<div class="line"><span class="lineno">  583</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  584</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  585</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  586</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  587</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  588</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  589</span>            p = z + <span class="stringliteral">&quot;numubar&quot;</span></div>
-<div class="line"><span class="lineno">  590</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  591</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  592</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  593</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  594</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  595</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_mu old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  596</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].Draw()</div>
-<div class="line"><span class="lineno">  597</span>            t6 = h[t].cd(6)</div>
-<div class="line"><span class="lineno">  598</span>            t6.SetLogy(1)</div>
-<div class="line"><span class="lineno">  599</span>            p = z + <span class="stringliteral">&quot;nue&quot;</span></div>
-<div class="line"><span class="lineno">  600</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
-<div class="line"><span class="lineno">  601</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;nue/nuebar&quot;</span>)</div>
-<div class="line"><span class="lineno">  602</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
-<div class="line"><span class="lineno">  603</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  604</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
-<div class="line"><span class="lineno">  605</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
-<div class="line"><span class="lineno">  606</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  607</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  608</span>            p = z + <span class="stringliteral">&quot;nuebar&quot;</span></div>
-<div class="line"><span class="lineno">  609</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  610</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  611</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  612</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  613</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  614</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_e old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  615</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].Draw()</div>
-<div class="line"><span class="lineno">  616</span>            <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  617</span>            h[t].Print(<span class="stringliteral">&quot;comparison&quot;</span> + z + x.replace(<span class="stringliteral">&quot;_&gt;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot;.png&quot;</span>)</div>
-<div class="line"><span class="lineno">  618</span>            h[t].Print(<span class="stringliteral">&quot;comparison&quot;</span> + z + x.replace(<span class="stringliteral">&quot;_&gt;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot;.pdf&quot;</span>)</div>
-<div class="line"><span class="lineno">  619</span>    <span class="comment"># make ratio plots</span></div>
-<div class="line"><span class="lineno">  620</span>    x = <span class="stringliteral">&quot;_&gt;E&quot;</span></div>
-<div class="line"><span class="lineno">  621</span>    <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
-<div class="line"><span class="lineno">  622</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;mu&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;muRatio&quot;</span> + x)</div>
-<div class="line"><span class="lineno">  623</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;mu&quot;</span> + x])</div>
-<div class="line"><span class="lineno">  624</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;numusum&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x)</div>
-<div class="line"><span class="lineno">  625</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;numusum&quot;</span> + x])</div>
-<div class="line"><span class="lineno">  626</span>        h[z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;nuesum&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x)</div>
-<div class="line"><span class="lineno">  627</span>        h[z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;nuesum&quot;</span> + x])</div>
-<div class="line"><span class="lineno">  628</span>    ut.bookCanvas(h, key=<span class="stringliteral">&quot;ratios&quot;</span>, title=<span class="stringliteral">&quot;ratios&quot;</span>, nx=1800, ny=600, cx=2, cy=1)</div>
-<div class="line"><span class="lineno">  629</span>    n = 1</div>
-<div class="line"><span class="lineno">  630</span>    <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
-<div class="line"><span class="lineno">  631</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x] = ROOT.TLegend(0.21, 0.74, 0.71, 0.85)</div>
-<div class="line"><span class="lineno">  632</span>        h[<span class="stringliteral">&quot;ratios&quot;</span>].cd(n)</div>
-<div class="line"><span class="lineno">  633</span>        n += 1</div>
-<div class="line"><span class="lineno">  634</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetLineColor(2)</div>
-<div class="line"><span class="lineno">  635</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetMaximum(max(h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].GetMaximum(), h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].GetMaximum()))</div>
-<div class="line"><span class="lineno">  636</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetMinimum(0)</div>
-<div class="line"><span class="lineno">  637</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetStats(0)</div>
-<div class="line"><span class="lineno">  638</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].Draw()</div>
-<div class="line"><span class="lineno">  639</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].SetLineColor(3)</div>
-<div class="line"><span class="lineno">  640</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].SetStats(0)</div>
-<div class="line"><span class="lineno">  641</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
-<div class="line"><span class="lineno">  642</span>        <span class="comment"># h[z+&#39;nueRatio&#39;+x].SetLineColor(4)</span></div>
-<div class="line"><span class="lineno">  643</span>        <span class="comment"># h[z+&#39;nueRatio&#39;+x].Draw(&#39;same&#39;)</span></div>
-<div class="line"><span class="lineno">  644</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].AddEntry(h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x], <span class="stringliteral">&quot;muon flux new / old &quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  645</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].AddEntry(h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x], <span class="stringliteral">&quot;nu_mu flux new / old &quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
-<div class="line"><span class="lineno">  646</span>        <span class="comment"># h[&#39;Lratio&#39;+z+x].AddEntry(h[z+&#39;nueRatio&#39;+x],&#39;nu_e flux new / old &#39;,&#39;PL&#39;)</span></div>
-<div class="line"><span class="lineno">  647</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].Draw()</div>
-<div class="line"><span class="lineno">  648</span>    h[<span class="stringliteral">&quot;ratios&quot;</span>].Print(<span class="stringliteral">&quot;comparisonRatios.png&quot;</span>)</div>
-<div class="line"><span class="lineno">  649</span>    h[<span class="stringliteral">&quot;ratios&quot;</span>].Print(<span class="stringliteral">&quot;comparisonRatios.pdf&quot;</span>)</div>
-<div class="line"><span class="lineno">  650</span> </div>
-<div class="line"><span class="lineno">  651</span> </div>
+<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00474">474</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  474</span><span class="keyword">def </span>compare():</div>
+<div class="line"><span class="lineno">  475</span>    test(eospath + <span class="stringliteral">&quot;pythia8_Geant4_onlyMuons.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  476</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
+<div class="line"><span class="lineno">  477</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
+<div class="line"><span class="lineno">  478</span>            <span class="keywordflow">for</span> ahist <span class="keywordflow">in</span> [<span class="stringliteral">&quot;mu-&quot;</span>, <span class="stringliteral">&quot;mu+&quot;</span>, <span class="stringliteral">&quot;mu&quot;</span>, <span class="stringliteral">&quot;mu-charm&quot;</span>, <span class="stringliteral">&quot;mu+charm&quot;</span>, <span class="stringliteral">&quot;mucharm&quot;</span>]:</div>
+<div class="line"><span class="lineno">  479</span>                h[<span class="stringliteral">&quot;TP&quot;</span> + z + ahist + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + ahist + x].Clone(<span class="stringliteral">&quot;CT&quot;</span> + ahist + x)</div>
+<div class="line"><span class="lineno">  480</span>    test(eospath + <span class="stringliteral">&quot;pythia8_Geant4_Yandex_onlyNeutrinos.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  481</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
+<div class="line"><span class="lineno">  482</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
+<div class="line"><span class="lineno">  483</span>            <span class="keywordflow">for</span> ahist <span class="keywordflow">in</span> [</div>
+<div class="line"><span class="lineno">  484</span>                <span class="stringliteral">&quot;numusum&quot;</span>,</div>
+<div class="line"><span class="lineno">  485</span>                <span class="stringliteral">&quot;nuesum&quot;</span>,</div>
+<div class="line"><span class="lineno">  486</span>                <span class="stringliteral">&quot;numusumcharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  487</span>                <span class="stringliteral">&quot;nuesumcharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  488</span>                <span class="stringliteral">&quot;numu&quot;</span>,</div>
+<div class="line"><span class="lineno">  489</span>                <span class="stringliteral">&quot;numubar&quot;</span>,</div>
+<div class="line"><span class="lineno">  490</span>                <span class="stringliteral">&quot;nue&quot;</span>,</div>
+<div class="line"><span class="lineno">  491</span>                <span class="stringliteral">&quot;nuebar&quot;</span>,</div>
+<div class="line"><span class="lineno">  492</span>                <span class="stringliteral">&quot;numucharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  493</span>                <span class="stringliteral">&quot;numubarcharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  494</span>                <span class="stringliteral">&quot;nuecharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  495</span>                <span class="stringliteral">&quot;nuebarcharm&quot;</span>,</div>
+<div class="line"><span class="lineno">  496</span>            ]:</div>
+<div class="line"><span class="lineno">  497</span>                h[<span class="stringliteral">&quot;TP&quot;</span> + z + ahist + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + ahist + x].Clone(<span class="stringliteral">&quot;CT&quot;</span> + ahist + x)</div>
+<div class="line"><span class="lineno">  498</span>    test(eospath + <span class="stringliteral">&quot;Mbias/pythia8_Geant4-withCharm-ram.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  499</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;_&gt;E&quot;</span>]:</div>
+<div class="line"><span class="lineno">  500</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
+<div class="line"><span class="lineno">  501</span>            t = z.upper()</div>
+<div class="line"><span class="lineno">  502</span>            <span class="keywordflow">if</span> x != <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  503</span>                t = <span class="stringliteral">&quot;&gt;&quot;</span> + t</div>
+<div class="line"><span class="lineno">  504</span>            h[t].cd(1)</div>
+<div class="line"><span class="lineno">  505</span>            p = z + <span class="stringliteral">&quot;mu&quot;</span></div>
+<div class="line"><span class="lineno">  506</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;musum&quot;</span>)</div>
+<div class="line"><span class="lineno">  507</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  508</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  509</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  510</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  511</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  512</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  513</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  514</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  515</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  516</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;muon new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  517</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;muon from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  518</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;muon old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  519</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;muon from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  520</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  521</span>            h[t].cd(2)</div>
+<div class="line"><span class="lineno">  522</span>            p = z + <span class="stringliteral">&quot;numusum&quot;</span></div>
+<div class="line"><span class="lineno">  523</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  524</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  525</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  526</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  527</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  528</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  529</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  530</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  531</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  532</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  533</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_mu from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  534</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  535</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_mu from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  536</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  537</span>            t3 = h[t].cd(3)</div>
+<div class="line"><span class="lineno">  538</span>            t3.SetLogy(1)</div>
+<div class="line"><span class="lineno">  539</span>            p = z + <span class="stringliteral">&quot;nuesum&quot;</span></div>
+<div class="line"><span class="lineno">  540</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  541</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  542</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  543</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  544</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  545</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  546</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  547</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  548</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x] = ROOT.TLegend(0.33, 0.69, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  549</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  550</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_e from charm new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  551</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  552</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + <span class="stringliteral">&quot;charm&quot;</span> + x], <span class="stringliteral">&quot;nu_e from charm old CERN-Cracow prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  553</span>            h[<span class="stringliteral">&quot;L&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  554</span>            <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  555</span>            t4 = h[t].cd(4)</div>
+<div class="line"><span class="lineno">  556</span>            t4.SetLogy(1)</div>
+<div class="line"><span class="lineno">  557</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  558</span>            p = z + <span class="stringliteral">&quot;mu-&quot;</span></div>
+<div class="line"><span class="lineno">  559</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;mu-/mu+&quot;</span>)</div>
+<div class="line"><span class="lineno">  560</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  561</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  562</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  563</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  564</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;mu- new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  565</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;mu- old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  566</span>            p = z + <span class="stringliteral">&quot;mu+&quot;</span></div>
+<div class="line"><span class="lineno">  567</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  568</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  569</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  570</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  571</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;mu+ new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  572</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;mu+ old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  573</span>            h[<span class="stringliteral">&quot;Lmuc&quot;</span> + z + x].Draw()</div>
+<div class="line"><span class="lineno">  574</span>            <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  575</span>            t5 = h[t].cd(5)</div>
+<div class="line"><span class="lineno">  576</span>            t5.SetLogy(1)</div>
+<div class="line"><span class="lineno">  577</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  578</span>            p = z + <span class="stringliteral">&quot;numu&quot;</span></div>
+<div class="line"><span class="lineno">  579</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;numu/numubar&quot;</span>)</div>
+<div class="line"><span class="lineno">  580</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  581</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  582</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  583</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  584</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  585</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_mu old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  586</span>            p = z + <span class="stringliteral">&quot;numubar&quot;</span></div>
+<div class="line"><span class="lineno">  587</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  588</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  589</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  590</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  591</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_mu new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  592</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_mu old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  593</span>            h[<span class="stringliteral">&quot;Lnumu&quot;</span> + z + x].Draw()</div>
+<div class="line"><span class="lineno">  594</span>            t6 = h[t].cd(6)</div>
+<div class="line"><span class="lineno">  595</span>            t6.SetLogy(1)</div>
+<div class="line"><span class="lineno">  596</span>            p = z + <span class="stringliteral">&quot;nue&quot;</span></div>
+<div class="line"><span class="lineno">  597</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x] = ROOT.TLegend(0.33, 0.73, 0.99, 0.94)</div>
+<div class="line"><span class="lineno">  598</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetTitle(<span class="stringliteral">&quot;nue/nuebar&quot;</span>)</div>
+<div class="line"><span class="lineno">  599</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw()</div>
+<div class="line"><span class="lineno">  600</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  601</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(6)</div>
+<div class="line"><span class="lineno">  602</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(4)</div>
+<div class="line"><span class="lineno">  603</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  604</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;nu_e old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  605</span>            p = z + <span class="stringliteral">&quot;nuebar&quot;</span></div>
+<div class="line"><span class="lineno">  606</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  607</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  608</span>            h[<span class="stringliteral">&quot;TP&quot;</span> + p + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  609</span>            h[<span class="stringliteral">&quot;T&quot;</span> + p + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  610</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;T&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_e new with charm, cascade, k-fac&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  611</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].AddEntry(h[<span class="stringliteral">&quot;TP&quot;</span> + p + x], <span class="stringliteral">&quot;anti nu_e old Yandex prod&quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  612</span>            h[<span class="stringliteral">&quot;Lnue&quot;</span> + z + x].Draw()</div>
+<div class="line"><span class="lineno">  613</span>            <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  614</span>            h[t].Print(<span class="stringliteral">&quot;comparison&quot;</span> + z + x.replace(<span class="stringliteral">&quot;_&gt;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot;.png&quot;</span>)</div>
+<div class="line"><span class="lineno">  615</span>            h[t].Print(<span class="stringliteral">&quot;comparison&quot;</span> + z + x.replace(<span class="stringliteral">&quot;_&gt;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot;.pdf&quot;</span>)</div>
+<div class="line"><span class="lineno">  616</span>    <span class="comment"># make ratio plots</span></div>
+<div class="line"><span class="lineno">  617</span>    x = <span class="stringliteral">&quot;_&gt;E&quot;</span></div>
+<div class="line"><span class="lineno">  618</span>    <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
+<div class="line"><span class="lineno">  619</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;mu&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;muRatio&quot;</span> + x)</div>
+<div class="line"><span class="lineno">  620</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;mu&quot;</span> + x])</div>
+<div class="line"><span class="lineno">  621</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;numusum&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x)</div>
+<div class="line"><span class="lineno">  622</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;numusum&quot;</span> + x])</div>
+<div class="line"><span class="lineno">  623</span>        h[z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x] = h[<span class="stringliteral">&quot;T&quot;</span> + z + <span class="stringliteral">&quot;nuesum&quot;</span> + x].Clone(z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x)</div>
+<div class="line"><span class="lineno">  624</span>        h[z + <span class="stringliteral">&quot;nueRatio&quot;</span> + x].Divide(h[<span class="stringliteral">&quot;TP&quot;</span> + z + <span class="stringliteral">&quot;nuesum&quot;</span> + x])</div>
+<div class="line"><span class="lineno">  625</span>    ut.bookCanvas(h, key=<span class="stringliteral">&quot;ratios&quot;</span>, title=<span class="stringliteral">&quot;ratios&quot;</span>, nx=1800, ny=600, cx=2, cy=1)</div>
+<div class="line"><span class="lineno">  626</span>    n = 1</div>
+<div class="line"><span class="lineno">  627</span>    <span class="keywordflow">for</span> z <span class="keywordflow">in</span> [<span class="stringliteral">&quot;p&quot;</span>, <span class="stringliteral">&quot;pt&quot;</span>]:</div>
+<div class="line"><span class="lineno">  628</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x] = ROOT.TLegend(0.21, 0.74, 0.71, 0.85)</div>
+<div class="line"><span class="lineno">  629</span>        h[<span class="stringliteral">&quot;ratios&quot;</span>].cd(n)</div>
+<div class="line"><span class="lineno">  630</span>        n += 1</div>
+<div class="line"><span class="lineno">  631</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetLineColor(2)</div>
+<div class="line"><span class="lineno">  632</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetMaximum(max(h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].GetMaximum(), h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].GetMaximum()))</div>
+<div class="line"><span class="lineno">  633</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetMinimum(0)</div>
+<div class="line"><span class="lineno">  634</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].SetStats(0)</div>
+<div class="line"><span class="lineno">  635</span>        h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x].Draw()</div>
+<div class="line"><span class="lineno">  636</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].SetLineColor(3)</div>
+<div class="line"><span class="lineno">  637</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].SetStats(0)</div>
+<div class="line"><span class="lineno">  638</span>        h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x].Draw(<span class="stringliteral">&quot;same&quot;</span>)</div>
+<div class="line"><span class="lineno">  639</span>        <span class="comment"># h[z+&#39;nueRatio&#39;+x].SetLineColor(4)</span></div>
+<div class="line"><span class="lineno">  640</span>        <span class="comment"># h[z+&#39;nueRatio&#39;+x].Draw(&#39;same&#39;)</span></div>
+<div class="line"><span class="lineno">  641</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].AddEntry(h[z + <span class="stringliteral">&quot;muRatio&quot;</span> + x], <span class="stringliteral">&quot;muon flux new / old &quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  642</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].AddEntry(h[z + <span class="stringliteral">&quot;numuRatio&quot;</span> + x], <span class="stringliteral">&quot;nu_mu flux new / old &quot;</span>, <span class="stringliteral">&quot;PL&quot;</span>)</div>
+<div class="line"><span class="lineno">  643</span>        <span class="comment"># h[&#39;Lratio&#39;+z+x].AddEntry(h[z+&#39;nueRatio&#39;+x],&#39;nu_e flux new / old &#39;,&#39;PL&#39;)</span></div>
+<div class="line"><span class="lineno">  644</span>        h[<span class="stringliteral">&quot;Lratio&quot;</span> + z + x].Draw()</div>
+<div class="line"><span class="lineno">  645</span>    h[<span class="stringliteral">&quot;ratios&quot;</span>].Print(<span class="stringliteral">&quot;comparisonRatios.png&quot;</span>)</div>
+<div class="line"><span class="lineno">  646</span>    h[<span class="stringliteral">&quot;ratios&quot;</span>].Print(<span class="stringliteral">&quot;comparisonRatios.pdf&quot;</span>)</div>
+<div class="line"><span class="lineno">  647</span> </div>
+<div class="line"><span class="lineno">  648</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,28 +524,25 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  247</span>                vlist[9] = norm / (pot[<span class="stringliteral">&quot;Yandex&quot;</span>][0.5])</div>
 <div class="line"><span class="lineno">  248</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  249</span>                print(<span class="stringliteral">&quot;this should not happen, except some rounding errors&quot;</span>, p, Ekin, vlist[9])</div>
-<div class="line"><span class="lineno">  250</span>            <span class="comment"># scoring plane, g4Ex_gap:   afterHadronZ = z0Pos+targetL+absorberL+5.1*cm</span></div>
-<div class="line"><span class="lineno">  251</span>            <span class="comment">#                                    z0Pos   = -50.*m    absorberL = 2*150.*cm</span></div>
-<div class="line"><span class="lineno">  252</span>            <span class="comment"># target length increased for Yandex2 production, ignore this, put all muons at current end of hadronabsorber</span></div>
-<div class="line"><span class="lineno">  253</span>            vlist[6] = endOfHadronAbsorber</div>
-<div class="line"><span class="lineno">  254</span>            h[<span class="stringliteral">&quot;ntuple&quot;</span>].Fill(</div>
-<div class="line"><span class="lineno">  255</span>                vlist[0],</div>
-<div class="line"><span class="lineno">  256</span>                vlist[1],</div>
-<div class="line"><span class="lineno">  257</span>                vlist[2],</div>
-<div class="line"><span class="lineno">  258</span>                vlist[3],</div>
-<div class="line"><span class="lineno">  259</span>                vlist[4],</div>
-<div class="line"><span class="lineno">  260</span>                vlist[5],</div>
-<div class="line"><span class="lineno">  261</span>                vlist[6],</div>
-<div class="line"><span class="lineno">  262</span>                vlist[7],</div>
-<div class="line"><span class="lineno">  263</span>                vlist[8],</div>
-<div class="line"><span class="lineno">  264</span>                vlist[9],</div>
-<div class="line"><span class="lineno">  265</span>                vlist[10],</div>
-<div class="line"><span class="lineno">  266</span>            )</div>
-<div class="line"><span class="lineno">  267</span>        h[<span class="stringliteral">&quot;N&quot;</span>].cd()</div>
-<div class="line"><span class="lineno">  268</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>].Write()</div>
-<div class="line"><span class="lineno">  269</span>    h[<span class="stringliteral">&quot;N&quot;</span>].Close()</div>
-<div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  250</span>            vlist[6] = endOfHadronAbsorber</div>
+<div class="line"><span class="lineno">  251</span>            h[<span class="stringliteral">&quot;ntuple&quot;</span>].Fill(</div>
+<div class="line"><span class="lineno">  252</span>                vlist[0],</div>
+<div class="line"><span class="lineno">  253</span>                vlist[1],</div>
+<div class="line"><span class="lineno">  254</span>                vlist[2],</div>
+<div class="line"><span class="lineno">  255</span>                vlist[3],</div>
+<div class="line"><span class="lineno">  256</span>                vlist[4],</div>
+<div class="line"><span class="lineno">  257</span>                vlist[5],</div>
+<div class="line"><span class="lineno">  258</span>                vlist[6],</div>
+<div class="line"><span class="lineno">  259</span>                vlist[7],</div>
+<div class="line"><span class="lineno">  260</span>                vlist[8],</div>
+<div class="line"><span class="lineno">  261</span>                vlist[9],</div>
+<div class="line"><span class="lineno">  262</span>                vlist[10],</div>
+<div class="line"><span class="lineno">  263</span>            )</div>
+<div class="line"><span class="lineno">  264</span>        h[<span class="stringliteral">&quot;N&quot;</span>].cd()</div>
+<div class="line"><span class="lineno">  265</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>].Write()</div>
+<div class="line"><span class="lineno">  266</span>    h[<span class="stringliteral">&quot;N&quot;</span>].Close()</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -575,160 +572,160 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00318">318</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  318</span><span class="keyword">def </span>mergeWithCharm(splitOnly=False, ramOnly=False):</div>
-<div class="line"><span class="lineno">  319</span>    <span class="comment"># Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)</span></div>
-<div class="line"><span class="lineno">  320</span>    <span class="comment"># i.e. the par. is for the neutrino, and the sTree. is for its mother.</span></div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment"># wspill is the weight for this file normalised/5e13.</span></div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> splitOnly:</div>
-<div class="line"><span class="lineno">  323</span>        fcascade = ROOT.TFile.Open(eospath + <span class="stringliteral">&quot;/Charm/Decay-Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  324</span>        t = fcascade.Decay</div>
-<div class="line"><span class="lineno">  325</span>        newFile = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Charm.root&quot;</span>, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  326</span>        nt = ROOT.TNtuple(</div>
-<div class="line"><span class="lineno">  327</span>            <span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, <span class="stringliteral">&quot;mu/nu flux from charm&quot;</span>, <span class="stringliteral">&quot;id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid:w:ecut&quot;</span></div>
-<div class="line"><span class="lineno">  328</span>        )</div>
-<div class="line"><span class="lineno">  329</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
-<div class="line"><span class="lineno">  330</span>            t.GetEntry(n)</div>
-<div class="line"><span class="lineno">  331</span>            ztarget = rnr.Exp(0.16) + startOfTarget</div>
-<div class="line"><span class="lineno">  332</span>            vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
-<div class="line"><span class="lineno">  333</span>            x = (</div>
-<div class="line"><span class="lineno">  334</span>                t.id,</div>
-<div class="line"><span class="lineno">  335</span>                t.px,</div>
-<div class="line"><span class="lineno">  336</span>                t.py,</div>
-<div class="line"><span class="lineno">  337</span>                t.pz,</div>
-<div class="line"><span class="lineno">  338</span>                0.0,</div>
-<div class="line"><span class="lineno">  339</span>                0.0,</div>
-<div class="line"><span class="lineno">  340</span>                ztarget,</div>
-<div class="line"><span class="lineno">  341</span>                t.px,</div>
-<div class="line"><span class="lineno">  342</span>                t.py,</div>
-<div class="line"><span class="lineno">  343</span>                t.pz,</div>
-<div class="line"><span class="lineno">  344</span>                0.0,</div>
-<div class="line"><span class="lineno">  345</span>                0.0,</div>
-<div class="line"><span class="lineno">  346</span>                ztarget,</div>
-<div class="line"><span class="lineno">  347</span>                t.id,</div>
-<div class="line"><span class="lineno">  348</span>                t.mid,</div>
-<div class="line"><span class="lineno">  349</span>                t.weight,</div>
-<div class="line"><span class="lineno">  350</span>                0.0,</div>
-<div class="line"><span class="lineno">  351</span>            )</div>
-<div class="line"><span class="lineno">  352</span>            <span class="keywordflow">for</span> ax <span class="keywordflow">in</span> x:</div>
-<div class="line"><span class="lineno">  353</span>                vlist.append(ax)</div>
-<div class="line"><span class="lineno">  354</span>            nt.Fill(vlist)</div>
-<div class="line"><span class="lineno">  355</span>        newFile.cd()</div>
-<div class="line"><span class="lineno">  356</span>        nt.Write()</div>
-<div class="line"><span class="lineno">  357</span>        newFile.Close()</div>
-<div class="line"><span class="lineno">  358</span>        fcascade.Close()</div>
-<div class="line"><span class="lineno">  359</span>        os.system(<span class="stringliteral">&quot;hadd -f pythia8_Geant4-withCharm.root pythia8_Geant4-noOpenCharm.root pythia8_Charm.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  360</span>        print(<span class="stringliteral">&quot; progress: minbias and charm merged&quot;</span>)</div>
-<div class="line"><span class="lineno">  361</span>        ramOnly = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  362</span>    <span class="keywordflow">if</span> ramOnly:</div>
-<div class="line"><span class="lineno">  363</span>        <span class="comment"># put all events in memory, otherwise will take years to finish</span></div>
-<div class="line"><span class="lineno">  364</span>        event = ROOT.std.vector(<span class="stringliteral">&quot;float&quot;</span>)</div>
-<div class="line"><span class="lineno">  365</span>        f = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Geant4-withCharm.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  366</span>        t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
-<div class="line"><span class="lineno">  367</span>        leaves = t.GetListOfLeaves()</div>
-<div class="line"><span class="lineno">  368</span>        L = leaves.GetEntries()</div>
-<div class="line"><span class="lineno">  369</span>        m = 0</div>
-<div class="line"><span class="lineno">  370</span>        allEvents = []</div>
-<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
-<div class="line"><span class="lineno">  372</span>            t.GetEvent(n)</div>
-<div class="line"><span class="lineno">  373</span>            <span class="keywordflow">if</span> m % 1000000 == 0:</div>
-<div class="line"><span class="lineno">  374</span>                print(<span class="stringliteral">&quot;status read&quot;</span>, m)</div>
-<div class="line"><span class="lineno">  375</span>            m += 1</div>
-<div class="line"><span class="lineno">  376</span>            a = event()</div>
-<div class="line"><span class="lineno">  377</span>            <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> range(L):</div>
-<div class="line"><span class="lineno">  378</span>                a.push_back(leaves.At(idx).GetValue())</div>
-<div class="line"><span class="lineno">  379</span>            allEvents.append(a)</div>
-<div class="line"><span class="lineno">  380</span>        <span class="comment"># distribute events randomly</span></div>
-<div class="line"><span class="lineno">  381</span>        evList = []</div>
-<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(allEvents)):</div>
-<div class="line"><span class="lineno">  383</span>            evList.append(n)</div>
-<div class="line"><span class="lineno">  384</span>        random.shuffle(evList)</div>
-<div class="line"><span class="lineno">  385</span>        leaves = t.GetListOfLeaves()</div>
-<div class="line"><span class="lineno">  386</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  387</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> leaves:</div>
-<div class="line"><span class="lineno">  388</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  389</span>                tuples += leaf.GetName()</div>
-<div class="line"><span class="lineno">  390</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  391</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
-<div class="line"><span class="lineno">  392</span>        newFile = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Geant4-withCharm-ram.root&quot;</span>, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  393</span>        randomTuple = ROOT.TNtuple(t.GetName(), t.GetTitle(), tuples)</div>
-<div class="line"><span class="lineno">  394</span>        m = 0</div>
-<div class="line"><span class="lineno">  395</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> evList:</div>
-<div class="line"><span class="lineno">  396</span>            a = allEvents[n]</div>
-<div class="line"><span class="lineno">  397</span>            <span class="keywordflow">if</span> m % 1000000 == 0:</div>
-<div class="line"><span class="lineno">  398</span>                print(<span class="stringliteral">&quot;status write&quot;</span>, m)</div>
-<div class="line"><span class="lineno">  399</span>            m += 1</div>
-<div class="line"><span class="lineno">  400</span>            vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
-<div class="line"><span class="lineno">  401</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> a:</div>
-<div class="line"><span class="lineno">  402</span>                vlist.append(x)</div>
-<div class="line"><span class="lineno">  403</span>            randomTuple.Fill(vlist)</div>
-<div class="line"><span class="lineno">  404</span>        newFile.cd()</div>
-<div class="line"><span class="lineno">  405</span>        randomTuple.Write()</div>
-<div class="line"><span class="lineno">  406</span>        newFile.Close()</div>
-<div class="line"><span class="lineno">  407</span>        f.Close()</div>
-<div class="line"><span class="lineno">  408</span>        allEvents = []</div>
-<div class="line"><span class="lineno">  409</span>        print(<span class="stringliteral">&quot; progress: order of events randomized&quot;</span>)</div>
-<div class="line"><span class="lineno">  410</span>    <span class="keywordflow">if</span> 1 &gt; 0:</div>
-<div class="line"><span class="lineno">  411</span>        <span class="comment"># split in muons and neutrinos</span></div>
-<div class="line"><span class="lineno">  412</span>        cuts = {<span class="stringliteral">&quot;_onlyNeutrinos&quot;</span>: <span class="stringliteral">&quot;abs(id)==12||abs(id)==14||abs(id)==16&quot;</span>, <span class="stringliteral">&quot;_onlyMuons&quot;</span>: <span class="stringliteral">&quot;abs(id)==13&quot;</span>}</div>
-<div class="line"><span class="lineno">  413</span>        fName = <span class="stringliteral">&quot;pythia8_Geant4-withCharm-ram.root&quot;</span></div>
-<div class="line"><span class="lineno">  414</span>        f = ROOT.TFile(fName)</div>
-<div class="line"><span class="lineno">  415</span>        t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
-<div class="line"><span class="lineno">  416</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  417</span>        <span class="comment"># add histograms</span></div>
-<div class="line"><span class="lineno">  418</span>        <span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> [16, -16, 14, -14, 12, -12]:</div>
-<div class="line"><span class="lineno">  419</span>            name = pdg.GetParticle(idnu).GetName()</div>
-<div class="line"><span class="lineno">  420</span>            idhnu = 1000 + idnu</div>
-<div class="line"><span class="lineno">  421</span>            <span class="keywordflow">if</span> idnu &lt; 0:</div>
-<div class="line"><span class="lineno">  422</span>                idhnu = 2000 + abs(idnu)</div>
-<div class="line"><span class="lineno">  423</span>            ut.bookHist(h, str(idhnu), name + <span class="stringliteral">&quot; momentum (GeV)&quot;</span>, 400, 0.0, 400.0)</div>
-<div class="line"><span class="lineno">  424</span>            ut.bookHist(h, str(idhnu + 100), name + <span class="stringliteral">&quot; log10(ptot) vs log10(pt+0.01)&quot;</span>, 100, -0.3, 1.7, 100, -2.0, 1.0)</div>
-<div class="line"><span class="lineno">  425</span>            ut.bookHist(h, str(idhnu + 200), name + <span class="stringliteral">&quot; log10(ptot) vs log10(pt+0.01)&quot;</span>, 25, -0.3, 1.7, 100, -2.0, 1.0)</div>
-<div class="line"><span class="lineno">  426</span>        leaves = t.GetListOfLeaves()</div>
-<div class="line"><span class="lineno">  427</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> leaves:</div>
-<div class="line"><span class="lineno">  428</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  429</span>                tuples += leaf.GetName()</div>
-<div class="line"><span class="lineno">  430</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  431</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
-<div class="line"><span class="lineno">  432</span>        <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> cuts:</div>
-<div class="line"><span class="lineno">  433</span>            fxx = fName.replace(<span class="stringliteral">&quot;-ram.root&quot;</span>, opt + <span class="stringliteral">&quot;.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  434</span>            N = ROOT.TFile(fxx, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  435</span>            ntuple = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, opt.replace(<span class="stringliteral">&quot;_only&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot; flux mbias and charm&quot;</span> + opt, tuples)</div>
-<div class="line"><span class="lineno">  436</span>            ROOT.gROOT.cd()</div>
-<div class="line"><span class="lineno">  437</span>            t.SetEventList(0)</div>
-<div class="line"><span class="lineno">  438</span>            t.Draw(<span class="stringliteral">&quot;&gt;&gt;temp&quot;</span>, cuts[opt])</div>
-<div class="line"><span class="lineno">  439</span>            temp = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;temp&quot;</span>)</div>
-<div class="line"><span class="lineno">  440</span>            t.SetEventList(temp)</div>
-<div class="line"><span class="lineno">  441</span>            <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(temp.GetN()):</div>
-<div class="line"><span class="lineno">  442</span>                t.GetEntry(temp.GetEntry(iev))</div>
-<div class="line"><span class="lineno">  443</span>                vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
-<div class="line"><span class="lineno">  444</span>                <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(leaves.GetSize()):</div>
-<div class="line"><span class="lineno">  445</span>                    vlist.append(leaves.At(n).GetValue())</div>
-<div class="line"><span class="lineno">  446</span>                ntuple.Fill(vlist)</div>
-<div class="line"><span class="lineno">  447</span>                <span class="keywordflow">if</span> <span class="stringliteral">&quot;Neutrinos&quot;</span> <span class="keywordflow">in</span> opt:</div>
-<div class="line"><span class="lineno">  448</span>                    pt2 = t.px**2 + t.py**2</div>
-<div class="line"><span class="lineno">  449</span>                    ptot = ROOT.TMath.Sqrt(pt2 + t.pz**2)</div>
-<div class="line"><span class="lineno">  450</span>                    l10ptot = min(max(ROOT.TMath.Log10(ptot), -0.3), 1.69999)</div>
-<div class="line"><span class="lineno">  451</span>                    l10pt = min(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2) + 0.01), 0.9999)</div>
-<div class="line"><span class="lineno">  452</span>                    idnu = int(t.id)</div>
-<div class="line"><span class="lineno">  453</span>                    idhnu = 1000 + idnu</div>
-<div class="line"><span class="lineno">  454</span>                    <span class="keywordflow">if</span> idnu &lt; 0:</div>
-<div class="line"><span class="lineno">  455</span>                        idhnu = 2000 + abs(idnu)</div>
-<div class="line"><span class="lineno">  456</span>                    h[str(idhnu)].Fill(ptot, t.w)</div>
-<div class="line"><span class="lineno">  457</span>                    h[str(idhnu + 100)].Fill(l10ptot, l10pt, t.w)</div>
-<div class="line"><span class="lineno">  458</span>                    h[str(idhnu + 200)].Fill(l10ptot, l10pt, t.w)</div>
-<div class="line"><span class="lineno">  459</span>            <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  460</span>            N.cd()</div>
-<div class="line"><span class="lineno">  461</span>            ntuple.Write()</div>
-<div class="line"><span class="lineno">  462</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;Neutrinos&quot;</span> <span class="keywordflow">in</span> opt:</div>
-<div class="line"><span class="lineno">  463</span>                <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  464</span>                    cln = h[akey].Class().GetName()</div>
-<div class="line"><span class="lineno">  465</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TH&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">  466</span>                        h[akey].Write()</div>
-<div class="line"><span class="lineno">  467</span>                N.Close()</div>
-<div class="line"><span class="lineno">  468</span>            print(<span class="stringliteral">&quot; progress: split &quot;</span> + opt)</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span> </div>
+<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00315">315</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  315</span><span class="keyword">def </span>mergeWithCharm(splitOnly=False, ramOnly=False):</div>
+<div class="line"><span class="lineno">  316</span>    <span class="comment"># Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)</span></div>
+<div class="line"><span class="lineno">  317</span>    <span class="comment"># i.e. the par. is for the neutrino, and the sTree. is for its mother.</span></div>
+<div class="line"><span class="lineno">  318</span>    <span class="comment"># wspill is the weight for this file normalised/5e13.</span></div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> splitOnly:</div>
+<div class="line"><span class="lineno">  320</span>        fcascade = ROOT.TFile.Open(eospath + <span class="stringliteral">&quot;/Charm/Decay-Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  321</span>        t = fcascade.Decay</div>
+<div class="line"><span class="lineno">  322</span>        newFile = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Charm.root&quot;</span>, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  323</span>        nt = ROOT.TNtuple(</div>
+<div class="line"><span class="lineno">  324</span>            <span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, <span class="stringliteral">&quot;mu/nu flux from charm&quot;</span>, <span class="stringliteral">&quot;id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid:w:ecut&quot;</span></div>
+<div class="line"><span class="lineno">  325</span>        )</div>
+<div class="line"><span class="lineno">  326</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
+<div class="line"><span class="lineno">  327</span>            t.GetEntry(n)</div>
+<div class="line"><span class="lineno">  328</span>            ztarget = rnr.Exp(0.16) + startOfTarget</div>
+<div class="line"><span class="lineno">  329</span>            vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
+<div class="line"><span class="lineno">  330</span>            x = (</div>
+<div class="line"><span class="lineno">  331</span>                t.id,</div>
+<div class="line"><span class="lineno">  332</span>                t.px,</div>
+<div class="line"><span class="lineno">  333</span>                t.py,</div>
+<div class="line"><span class="lineno">  334</span>                t.pz,</div>
+<div class="line"><span class="lineno">  335</span>                0.0,</div>
+<div class="line"><span class="lineno">  336</span>                0.0,</div>
+<div class="line"><span class="lineno">  337</span>                ztarget,</div>
+<div class="line"><span class="lineno">  338</span>                t.px,</div>
+<div class="line"><span class="lineno">  339</span>                t.py,</div>
+<div class="line"><span class="lineno">  340</span>                t.pz,</div>
+<div class="line"><span class="lineno">  341</span>                0.0,</div>
+<div class="line"><span class="lineno">  342</span>                0.0,</div>
+<div class="line"><span class="lineno">  343</span>                ztarget,</div>
+<div class="line"><span class="lineno">  344</span>                t.id,</div>
+<div class="line"><span class="lineno">  345</span>                t.mid,</div>
+<div class="line"><span class="lineno">  346</span>                t.weight,</div>
+<div class="line"><span class="lineno">  347</span>                0.0,</div>
+<div class="line"><span class="lineno">  348</span>            )</div>
+<div class="line"><span class="lineno">  349</span>            <span class="keywordflow">for</span> ax <span class="keywordflow">in</span> x:</div>
+<div class="line"><span class="lineno">  350</span>                vlist.append(ax)</div>
+<div class="line"><span class="lineno">  351</span>            nt.Fill(vlist)</div>
+<div class="line"><span class="lineno">  352</span>        newFile.cd()</div>
+<div class="line"><span class="lineno">  353</span>        nt.Write()</div>
+<div class="line"><span class="lineno">  354</span>        newFile.Close()</div>
+<div class="line"><span class="lineno">  355</span>        fcascade.Close()</div>
+<div class="line"><span class="lineno">  356</span>        os.system(<span class="stringliteral">&quot;hadd -f pythia8_Geant4-withCharm.root pythia8_Geant4-noOpenCharm.root pythia8_Charm.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  357</span>        print(<span class="stringliteral">&quot; progress: minbias and charm merged&quot;</span>)</div>
+<div class="line"><span class="lineno">  358</span>        ramOnly = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">if</span> ramOnly:</div>
+<div class="line"><span class="lineno">  360</span>        <span class="comment"># put all events in memory, otherwise will take years to finish</span></div>
+<div class="line"><span class="lineno">  361</span>        event = ROOT.std.vector(<span class="stringliteral">&quot;float&quot;</span>)</div>
+<div class="line"><span class="lineno">  362</span>        f = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Geant4-withCharm.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  363</span>        t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
+<div class="line"><span class="lineno">  364</span>        leaves = t.GetListOfLeaves()</div>
+<div class="line"><span class="lineno">  365</span>        L = leaves.GetEntries()</div>
+<div class="line"><span class="lineno">  366</span>        m = 0</div>
+<div class="line"><span class="lineno">  367</span>        allEvents = []</div>
+<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
+<div class="line"><span class="lineno">  369</span>            t.GetEvent(n)</div>
+<div class="line"><span class="lineno">  370</span>            <span class="keywordflow">if</span> m % 1000000 == 0:</div>
+<div class="line"><span class="lineno">  371</span>                print(<span class="stringliteral">&quot;status read&quot;</span>, m)</div>
+<div class="line"><span class="lineno">  372</span>            m += 1</div>
+<div class="line"><span class="lineno">  373</span>            a = event()</div>
+<div class="line"><span class="lineno">  374</span>            <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> range(L):</div>
+<div class="line"><span class="lineno">  375</span>                a.push_back(leaves.At(idx).GetValue())</div>
+<div class="line"><span class="lineno">  376</span>            allEvents.append(a)</div>
+<div class="line"><span class="lineno">  377</span>        <span class="comment"># distribute events randomly</span></div>
+<div class="line"><span class="lineno">  378</span>        evList = []</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(allEvents)):</div>
+<div class="line"><span class="lineno">  380</span>            evList.append(n)</div>
+<div class="line"><span class="lineno">  381</span>        random.shuffle(evList)</div>
+<div class="line"><span class="lineno">  382</span>        leaves = t.GetListOfLeaves()</div>
+<div class="line"><span class="lineno">  383</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  384</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> leaves:</div>
+<div class="line"><span class="lineno">  385</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  386</span>                tuples += leaf.GetName()</div>
+<div class="line"><span class="lineno">  387</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  388</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
+<div class="line"><span class="lineno">  389</span>        newFile = ROOT.TFile(<span class="stringliteral">&quot;pythia8_Geant4-withCharm-ram.root&quot;</span>, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  390</span>        randomTuple = ROOT.TNtuple(t.GetName(), t.GetTitle(), tuples)</div>
+<div class="line"><span class="lineno">  391</span>        m = 0</div>
+<div class="line"><span class="lineno">  392</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> evList:</div>
+<div class="line"><span class="lineno">  393</span>            a = allEvents[n]</div>
+<div class="line"><span class="lineno">  394</span>            <span class="keywordflow">if</span> m % 1000000 == 0:</div>
+<div class="line"><span class="lineno">  395</span>                print(<span class="stringliteral">&quot;status write&quot;</span>, m)</div>
+<div class="line"><span class="lineno">  396</span>            m += 1</div>
+<div class="line"><span class="lineno">  397</span>            vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
+<div class="line"><span class="lineno">  398</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> a:</div>
+<div class="line"><span class="lineno">  399</span>                vlist.append(x)</div>
+<div class="line"><span class="lineno">  400</span>            randomTuple.Fill(vlist)</div>
+<div class="line"><span class="lineno">  401</span>        newFile.cd()</div>
+<div class="line"><span class="lineno">  402</span>        randomTuple.Write()</div>
+<div class="line"><span class="lineno">  403</span>        newFile.Close()</div>
+<div class="line"><span class="lineno">  404</span>        f.Close()</div>
+<div class="line"><span class="lineno">  405</span>        allEvents = []</div>
+<div class="line"><span class="lineno">  406</span>        print(<span class="stringliteral">&quot; progress: order of events randomized&quot;</span>)</div>
+<div class="line"><span class="lineno">  407</span>    <span class="keywordflow">if</span> 1 &gt; 0:</div>
+<div class="line"><span class="lineno">  408</span>        <span class="comment"># split in muons and neutrinos</span></div>
+<div class="line"><span class="lineno">  409</span>        cuts = {<span class="stringliteral">&quot;_onlyNeutrinos&quot;</span>: <span class="stringliteral">&quot;abs(id)==12||abs(id)==14||abs(id)==16&quot;</span>, <span class="stringliteral">&quot;_onlyMuons&quot;</span>: <span class="stringliteral">&quot;abs(id)==13&quot;</span>}</div>
+<div class="line"><span class="lineno">  410</span>        fName = <span class="stringliteral">&quot;pythia8_Geant4-withCharm-ram.root&quot;</span></div>
+<div class="line"><span class="lineno">  411</span>        f = ROOT.TFile(fName)</div>
+<div class="line"><span class="lineno">  412</span>        t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
+<div class="line"><span class="lineno">  413</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  414</span>        <span class="comment"># add histograms</span></div>
+<div class="line"><span class="lineno">  415</span>        <span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> [16, -16, 14, -14, 12, -12]:</div>
+<div class="line"><span class="lineno">  416</span>            name = pdg.GetParticle(idnu).GetName()</div>
+<div class="line"><span class="lineno">  417</span>            idhnu = 1000 + idnu</div>
+<div class="line"><span class="lineno">  418</span>            <span class="keywordflow">if</span> idnu &lt; 0:</div>
+<div class="line"><span class="lineno">  419</span>                idhnu = 2000 + abs(idnu)</div>
+<div class="line"><span class="lineno">  420</span>            ut.bookHist(h, str(idhnu), name + <span class="stringliteral">&quot; momentum (GeV)&quot;</span>, 400, 0.0, 400.0)</div>
+<div class="line"><span class="lineno">  421</span>            ut.bookHist(h, str(idhnu + 100), name + <span class="stringliteral">&quot; log10(ptot) vs log10(pt+0.01)&quot;</span>, 100, -0.3, 1.7, 100, -2.0, 1.0)</div>
+<div class="line"><span class="lineno">  422</span>            ut.bookHist(h, str(idhnu + 200), name + <span class="stringliteral">&quot; log10(ptot) vs log10(pt+0.01)&quot;</span>, 25, -0.3, 1.7, 100, -2.0, 1.0)</div>
+<div class="line"><span class="lineno">  423</span>        leaves = t.GetListOfLeaves()</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> leaves:</div>
+<div class="line"><span class="lineno">  425</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  426</span>                tuples += leaf.GetName()</div>
+<div class="line"><span class="lineno">  427</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  428</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
+<div class="line"><span class="lineno">  429</span>        <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> cuts:</div>
+<div class="line"><span class="lineno">  430</span>            fxx = fName.replace(<span class="stringliteral">&quot;-ram.root&quot;</span>, opt + <span class="stringliteral">&quot;.root&quot;</span>)</div>
+<div class="line"><span class="lineno">  431</span>            N = ROOT.TFile(fxx, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  432</span>            ntuple = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, opt.replace(<span class="stringliteral">&quot;_only&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) + <span class="stringliteral">&quot; flux mbias and charm&quot;</span> + opt, tuples)</div>
+<div class="line"><span class="lineno">  433</span>            ROOT.gROOT.cd()</div>
+<div class="line"><span class="lineno">  434</span>            t.SetEventList(0)</div>
+<div class="line"><span class="lineno">  435</span>            t.Draw(<span class="stringliteral">&quot;&gt;&gt;temp&quot;</span>, cuts[opt])</div>
+<div class="line"><span class="lineno">  436</span>            temp = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;temp&quot;</span>)</div>
+<div class="line"><span class="lineno">  437</span>            t.SetEventList(temp)</div>
+<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(temp.GetN()):</div>
+<div class="line"><span class="lineno">  439</span>                t.GetEntry(temp.GetEntry(iev))</div>
+<div class="line"><span class="lineno">  440</span>                vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
+<div class="line"><span class="lineno">  441</span>                <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(leaves.GetSize()):</div>
+<div class="line"><span class="lineno">  442</span>                    vlist.append(leaves.At(n).GetValue())</div>
+<div class="line"><span class="lineno">  443</span>                ntuple.Fill(vlist)</div>
+<div class="line"><span class="lineno">  444</span>                <span class="keywordflow">if</span> <span class="stringliteral">&quot;Neutrinos&quot;</span> <span class="keywordflow">in</span> opt:</div>
+<div class="line"><span class="lineno">  445</span>                    pt2 = t.px**2 + t.py**2</div>
+<div class="line"><span class="lineno">  446</span>                    ptot = ROOT.TMath.Sqrt(pt2 + t.pz**2)</div>
+<div class="line"><span class="lineno">  447</span>                    l10ptot = min(max(ROOT.TMath.Log10(ptot), -0.3), 1.69999)</div>
+<div class="line"><span class="lineno">  448</span>                    l10pt = min(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2) + 0.01), 0.9999)</div>
+<div class="line"><span class="lineno">  449</span>                    idnu = int(t.id)</div>
+<div class="line"><span class="lineno">  450</span>                    idhnu = 1000 + idnu</div>
+<div class="line"><span class="lineno">  451</span>                    <span class="keywordflow">if</span> idnu &lt; 0:</div>
+<div class="line"><span class="lineno">  452</span>                        idhnu = 2000 + abs(idnu)</div>
+<div class="line"><span class="lineno">  453</span>                    h[str(idhnu)].Fill(ptot, t.w)</div>
+<div class="line"><span class="lineno">  454</span>                    h[str(idhnu + 100)].Fill(l10ptot, l10pt, t.w)</div>
+<div class="line"><span class="lineno">  455</span>                    h[str(idhnu + 200)].Fill(l10ptot, l10pt, t.w)</div>
+<div class="line"><span class="lineno">  456</span>            <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  457</span>            N.cd()</div>
+<div class="line"><span class="lineno">  458</span>            ntuple.Write()</div>
+<div class="line"><span class="lineno">  459</span>            <span class="keywordflow">if</span> <span class="stringliteral">&quot;Neutrinos&quot;</span> <span class="keywordflow">in</span> opt:</div>
+<div class="line"><span class="lineno">  460</span>                <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  461</span>                    cln = h[akey].Class().GetName()</div>
+<div class="line"><span class="lineno">  462</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TH&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">  463</span>                        h[akey].Write()</div>
+<div class="line"><span class="lineno">  464</span>                N.Close()</div>
+<div class="line"><span class="lineno">  465</span>            print(<span class="stringliteral">&quot; progress: split &quot;</span> + opt)</div>
+<div class="line"><span class="lineno">  466</span> </div>
+<div class="line"><span class="lineno">  467</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -748,41 +745,41 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00284">284</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  284</span><span class="keyword">def </span>removeCharm(p):</div>
-<div class="line"><span class="lineno">  285</span>    f = ROOT.TFile.Open(eospath + productions[p][<span class="stringliteral">&quot;file&quot;</span>])</div>
-<div class="line"><span class="lineno">  286</span>    t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
-<div class="line"><span class="lineno">  287</span>    first = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  288</span>    <span class="keywordflow">if</span> first:</div>
-<div class="line"><span class="lineno">  289</span>        first = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  290</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> t.GetListOfLeaves():</div>
-<div class="line"><span class="lineno">  292</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  293</span>                tuples += leaf.GetName()</div>
-<div class="line"><span class="lineno">  294</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  295</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
-<div class="line"><span class="lineno">  296</span>        h[<span class="stringliteral">&quot;N&quot;</span>] = ROOT.TFile(fnew, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">  297</span>        print(<span class="stringliteral">&quot;new file created&quot;</span>, fnew)</div>
-<div class="line"><span class="lineno">  298</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>] = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, t.GetTitle() + <span class="stringliteral">&quot; no charm&quot;</span>, tuples)</div>
-<div class="line"><span class="lineno">  299</span>    ROOT.gROOT.cd()</div>
-<div class="line"><span class="lineno">  300</span>    t.SetEventList(0)</div>
-<div class="line"><span class="lineno">  301</span>    t.Draw(<span class="stringliteral">&quot;&gt;&gt;temp&quot;</span>, noOpCharm)</div>
-<div class="line"><span class="lineno">  302</span>    temp = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;temp&quot;</span>)</div>
-<div class="line"><span class="lineno">  303</span>    t.SetEventList(temp)</div>
-<div class="line"><span class="lineno">  304</span>    nev = temp.GetN()</div>
-<div class="line"><span class="lineno">  305</span>    leaves = t.GetListOfLeaves()</div>
-<div class="line"><span class="lineno">  306</span>    leaves.GetEntries()</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(nev):</div>
-<div class="line"><span class="lineno">  308</span>        t.GetEntry(temp.GetEntry(iev))</div>
-<div class="line"><span class="lineno">  309</span>        vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
-<div class="line"><span class="lineno">  310</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> range(leaves.GetEntries()):</div>
-<div class="line"><span class="lineno">  311</span>            vlist.append(leaves.At(x).GetValue())</div>
-<div class="line"><span class="lineno">  312</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>].Fill(vlist)</div>
-<div class="line"><span class="lineno">  313</span>    h[<span class="stringliteral">&quot;N&quot;</span>].cd()</div>
-<div class="line"><span class="lineno">  314</span>    h[<span class="stringliteral">&quot;ntuple&quot;</span>].Write()</div>
-<div class="line"><span class="lineno">  315</span>    h[<span class="stringliteral">&quot;N&quot;</span>].Close()</div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span> </div>
+<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00281">281</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  281</span><span class="keyword">def </span>removeCharm(p):</div>
+<div class="line"><span class="lineno">  282</span>    f = ROOT.TFile.Open(eospath + productions[p][<span class="stringliteral">&quot;file&quot;</span>])</div>
+<div class="line"><span class="lineno">  283</span>    t = f.FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
+<div class="line"><span class="lineno">  284</span>    first = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">if</span> first:</div>
+<div class="line"><span class="lineno">  286</span>        first = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  287</span>        tuples = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  288</span>        <span class="keywordflow">for</span> leaf <span class="keywordflow">in</span> t.GetListOfLeaves():</div>
+<div class="line"><span class="lineno">  289</span>            <span class="keywordflow">if</span> tuples == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  290</span>                tuples += leaf.GetName()</div>
+<div class="line"><span class="lineno">  291</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  292</span>                tuples += <span class="stringliteral">&quot;:&quot;</span> + leaf.GetName()</div>
+<div class="line"><span class="lineno">  293</span>        h[<span class="stringliteral">&quot;N&quot;</span>] = ROOT.TFile(fnew, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  294</span>        print(<span class="stringliteral">&quot;new file created&quot;</span>, fnew)</div>
+<div class="line"><span class="lineno">  295</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>] = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>, t.GetTitle() + <span class="stringliteral">&quot; no charm&quot;</span>, tuples)</div>
+<div class="line"><span class="lineno">  296</span>    ROOT.gROOT.cd()</div>
+<div class="line"><span class="lineno">  297</span>    t.SetEventList(0)</div>
+<div class="line"><span class="lineno">  298</span>    t.Draw(<span class="stringliteral">&quot;&gt;&gt;temp&quot;</span>, noOpCharm)</div>
+<div class="line"><span class="lineno">  299</span>    temp = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;temp&quot;</span>)</div>
+<div class="line"><span class="lineno">  300</span>    t.SetEventList(temp)</div>
+<div class="line"><span class="lineno">  301</span>    nev = temp.GetN()</div>
+<div class="line"><span class="lineno">  302</span>    leaves = t.GetListOfLeaves()</div>
+<div class="line"><span class="lineno">  303</span>    leaves.GetEntries()</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">for</span> iev <span class="keywordflow">in</span> range(nev):</div>
+<div class="line"><span class="lineno">  305</span>        t.GetEntry(temp.GetEntry(iev))</div>
+<div class="line"><span class="lineno">  306</span>        vlist = array(<span class="stringliteral">&quot;f&quot;</span>)</div>
+<div class="line"><span class="lineno">  307</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> range(leaves.GetEntries()):</div>
+<div class="line"><span class="lineno">  308</span>            vlist.append(leaves.At(x).GetValue())</div>
+<div class="line"><span class="lineno">  309</span>        h[<span class="stringliteral">&quot;ntuple&quot;</span>].Fill(vlist)</div>
+<div class="line"><span class="lineno">  310</span>    h[<span class="stringliteral">&quot;N&quot;</span>].cd()</div>
+<div class="line"><span class="lineno">  311</span>    h[<span class="stringliteral">&quot;ntuple&quot;</span>].Write()</div>
+<div class="line"><span class="lineno">  312</span>    h[<span class="stringliteral">&quot;N&quot;</span>].Close()</div>
+<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  314</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -802,19 +799,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00272">272</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  272</span><span class="keyword">def </span>runProduction(opts=&quot;&quot;):</div>
-<div class="line"><span class="lineno">  273</span>    we = fillWeights()</div>
-<div class="line"><span class="lineno">  274</span>    pot = {}</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> we:</div>
-<div class="line"><span class="lineno">  276</span>        pot[p] = {}</div>
-<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">for</span> w <span class="keywordflow">in</span> we[p]:</div>
-<div class="line"><span class="lineno">  278</span>            pot[p][we[p][w][0]] = 5.0e13 / w</div>
-<div class="line"><span class="lineno">  279</span>    print(<span class="stringliteral">&quot;pots:&quot;</span>, pot)</div>
-<div class="line"><span class="lineno">  280</span>    <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  281</span>    mergeMinBias(pot, norm=5.0e13, opt=opts)</div>
-<div class="line"><span class="lineno">  282</span> </div>
-<div class="line"><span class="lineno">  283</span> </div>
+<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00269">269</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  269</span><span class="keyword">def </span>runProduction(opts=&quot;&quot;):</div>
+<div class="line"><span class="lineno">  270</span>    we = fillWeights()</div>
+<div class="line"><span class="lineno">  271</span>    pot = {}</div>
+<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> we:</div>
+<div class="line"><span class="lineno">  273</span>        pot[p] = {}</div>
+<div class="line"><span class="lineno">  274</span>        <span class="keywordflow">for</span> w <span class="keywordflow">in</span> we[p]:</div>
+<div class="line"><span class="lineno">  275</span>            pot[p][we[p][w][0]] = 5.0e13 / w</div>
+<div class="line"><span class="lineno">  276</span>    print(<span class="stringliteral">&quot;pots:&quot;</span>, pot)</div>
+<div class="line"><span class="lineno">  277</span>    <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  278</span>    mergeMinBias(pot, norm=5.0e13, opt=opts)</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -834,13 +831,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00471">471</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  471</span><span class="keyword">def </span>test(fname):</div>
-<div class="line"><span class="lineno">  472</span>    h[<span class="stringliteral">&quot;f&quot;</span>] = ROOT.TFile.Open(fname)</div>
-<div class="line"><span class="lineno">  473</span>    sTree = h[<span class="stringliteral">&quot;f&quot;</span>].FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
-<div class="line"><span class="lineno">  474</span>    TplotP(sTree)</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span> </div>
+<p class="definition">Definition at line <a class="el" href="mergeMbias_8py_source.html#l00468">468</a> of file <a class="el" href="mergeMbias_8py_source.html">mergeMbias.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  468</span><span class="keyword">def </span>test(fname):</div>
+<div class="line"><span class="lineno">  469</span>    h[<span class="stringliteral">&quot;f&quot;</span>] = ROOT.TFile.Open(fname)</div>
+<div class="line"><span class="lineno">  470</span>    sTree = h[<span class="stringliteral">&quot;f&quot;</span>].FindObjectAny(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
+<div class="line"><span class="lineno">  471</span>    TplotP(sTree)</div>
+<div class="line"><span class="lineno">  472</span> </div>
+<div class="line"><span class="lineno">  473</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

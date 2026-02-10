@@ -19,31 +19,6 @@ var annotated_dup =
         [ "selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", "classexperimental_1_1analysis__toolkit_1_1selection__check" ]
       ] ]
     ] ],
-    [ "g4Ex", "namespaceg4Ex.html", [
-      [ "MyEventAction", "classg4Ex_1_1MyEventAction.html", "classg4Ex_1_1MyEventAction" ],
-      [ "MyGeneratorAction", "classg4Ex_1_1MyGeneratorAction.html", "classg4Ex_1_1MyGeneratorAction" ],
-      [ "MyRunAction", "classg4Ex_1_1MyRunAction.html", "classg4Ex_1_1MyRunAction" ],
-      [ "MySteppingAction", "classg4Ex_1_1MySteppingAction.html", "classg4Ex_1_1MySteppingAction" ],
-      [ "MyTrackingAction", "classg4Ex_1_1MyTrackingAction.html", "classg4Ex_1_1MyTrackingAction" ],
-      [ "ScoreSD", "classg4Ex_1_1ScoreSD.html", "classg4Ex_1_1ScoreSD" ]
-    ] ],
-    [ "g4Ex_args", "namespaceg4Ex__args.html", [
-      [ "MyEventAction", "classg4Ex__args_1_1MyEventAction.html", "classg4Ex__args_1_1MyEventAction" ],
-      [ "MyGeneratorAction", "classg4Ex__args_1_1MyGeneratorAction.html", "classg4Ex__args_1_1MyGeneratorAction" ],
-      [ "MyRunAction", "classg4Ex__args_1_1MyRunAction.html", "classg4Ex__args_1_1MyRunAction" ],
-      [ "MySteppingAction", "classg4Ex__args_1_1MySteppingAction.html", "classg4Ex__args_1_1MySteppingAction" ],
-      [ "MyTrackingAction", "classg4Ex__args_1_1MyTrackingAction.html", "classg4Ex__args_1_1MyTrackingAction" ],
-      [ "ScoreSD", "classg4Ex__args_1_1ScoreSD.html", "classg4Ex__args_1_1ScoreSD" ]
-    ] ],
-    [ "g4Ex_gap", "namespaceg4Ex__gap.html", [
-      [ "MyEventAction", "classg4Ex__gap_1_1MyEventAction.html", "classg4Ex__gap_1_1MyEventAction" ],
-      [ "MyGeneratorAction", "classg4Ex__gap_1_1MyGeneratorAction.html", "classg4Ex__gap_1_1MyGeneratorAction" ],
-      [ "MyRunAction", "classg4Ex__gap_1_1MyRunAction.html", "classg4Ex__gap_1_1MyRunAction" ],
-      [ "MySteppingAction", "classg4Ex__gap_1_1MySteppingAction.html", "classg4Ex__gap_1_1MySteppingAction" ],
-      [ "MyTrackingAction", "classg4Ex__gap_1_1MyTrackingAction.html", "classg4Ex__gap_1_1MyTrackingAction" ],
-      [ "MyTrackingActionD", "classg4Ex__gap_1_1MyTrackingActionD.html", "classg4Ex__gap_1_1MyTrackingActionD" ],
-      [ "ScoreSD", "classg4Ex__gap_1_1ScoreSD.html", "classg4Ex__gap_1_1ScoreSD" ]
-    ] ],
     [ "genfit", "namespacegenfit.html", [
       [ "FairShipFields", "classgenfit_1_1FairShipFields.html", "classgenfit_1_1FairShipFields" ]
     ] ],
@@ -169,8 +144,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

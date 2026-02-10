@@ -13,13 +13,12 @@ var searchData=
   ['shipreco_10',['ShipReco',['../namespaceShipReco.html',1,'']]],
   ['shiproot_5fconf_11',['shipRoot_conf',['../namespaceshipRoot__conf.html',1,'']]],
   ['shipstrawtracking_12',['shipStrawTracking',['../namespaceshipStrawTracking.html',1,'']]],
-  ['shipunit_13',['shipunit',['../namespaceShipUnit.html',1,'ShipUnit'],['../namespaceshipunit.html',1,'shipunit']]],
+  ['shipunit_13',['shipunit',['../namespaceshipunit.html',1,'shipunit'],['../namespaceShipUnit.html',1,'ShipUnit']]],
   ['shipvertex_14',['shipVertex',['../namespaceshipVertex.html',1,'']]],
   ['shipveto_15',['shipVeto',['../namespaceshipVeto.html',1,'']]],
   ['splitcaldetector_16',['splitcalDetector',['../namespacesplitcalDetector.html',1,'']]],
   ['strawtubesdetector_17',['strawtubesDetector',['../namespacestrawtubesDetector.html',1,'']]],
   ['study_5fgammaconv_18',['study_GammaConv',['../namespacestudy__GammaConv.html',1,'']]],
   ['study_5fmumsc_19',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
-  ['study_5fthintarget_20',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]],
-  ['submitpyg4prod_21',['submitPyG4prod',['../namespacesubmitPyG4prod.html',1,'']]]
+  ['study_5fthintarget_20',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]]
 ];

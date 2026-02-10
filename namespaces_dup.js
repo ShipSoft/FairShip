@@ -326,40 +326,6 @@ var namespaces_dup =
       [ "weightMbias", "namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c", null ],
       [ "weightMbias1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#a255cf9b881f376a23b67633ac2307b83", null ]
     ] ],
-    [ "g4Ex", "namespaceg4Ex.html", "namespaceg4Ex" ],
-    [ "g4Ex_args", "namespaceg4Ex__args.html", "namespaceg4Ex__args" ],
-    [ "g4Ex_gap", "namespaceg4Ex__gap.html", "namespaceg4Ex__gap" ],
-    [ "g4Ex_gap_mergeFiles", "namespaceg4Ex__gap__mergeFiles.html", [
-      [ "interactionRegion", "namespaceg4Ex__gap__mergeFiles.html#a04b74595d43532a050e84552abc4c5ed", null ],
-      [ "makeFinalNtuples", "namespaceg4Ex__gap__mergeFiles.html#a56795a58637a08b65cdcabd1487a52da", null ],
-      [ "afterHadronAbsorber", "namespaceg4Ex__gap__mergeFiles.html#a158c90325fb2abd766b0509fe4185ffc", null ],
-      [ "BR", "namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce", null ],
-      [ "e13", "namespaceg4Ex__gap__mergeFiles.html#a5b276e236a0187c0b1f6cb82b71f1579", null ],
-      [ "ecut", "namespaceg4Ex__gap__mergeFiles.html#a53a3777c891011718f9229d7dfb31265", null ],
-      [ "files", "namespaceg4Ex__gap__mergeFiles.html#a38872d62a0c9857719cd41adda923f49", null ],
-      [ "fl", "namespaceg4Ex__gap__mergeFiles.html#adcaa46350fd5a35f4399ea92f71a7867", null ],
-      [ "fnew", "namespaceg4Ex__gap__mergeFiles.html#a4a0a1e4921d53f4decd1c54be45fd646", null ],
-      [ "h", "namespaceg4Ex__gap__mergeFiles.html#abe825bb5752a5388554ef0be6c90b1ea", null ],
-      [ "jobs", "namespaceg4Ex__gap__mergeFiles.html#a2ac25789017dd56603137f3da74453fb", null ],
-      [ "JPsi", "namespaceg4Ex__gap__mergeFiles.html#a8544223a30d45a0c9dcb939452e8a56d", null ],
-      [ "k", "namespaceg4Ex__gap__mergeFiles.html#af4e4600997a13fcec4e3102ececf2a49", null ],
-      [ "Mmu", "namespaceg4Ex__gap__mergeFiles.html#a9f6d4cfe7b47eb0c08381f5ced6837f5", null ],
-      [ "Mmu2", "namespaceg4Ex__gap__mergeFiles.html#a2bd0162f169ff3e31dba248ae0ea4ea3", null ],
-      [ "MoTarget", "namespaceg4Ex__gap__mergeFiles.html#afe47ccb715ab0cebfc45785ef0aaf2bc", null ],
-      [ "mu", "namespaceg4Ex__gap__mergeFiles.html#a200741f599f0bb0893f52498a9617a0a", null ],
-      [ "nevts", "namespaceg4Ex__gap__mergeFiles.html#a196fb8f6a4ff597dc8d4c5d23673e253", null ],
-      [ "norm", "namespaceg4Ex__gap__mergeFiles.html#a7476ba2e67b1127eb1c1de262c5ff876", null ],
-      [ "ntot", "namespaceg4Ex__gap__mergeFiles.html#aebeda73a8e53a1bfc57d2e49e5525ca4", null ],
-      [ "opt", "namespaceg4Ex__gap__mergeFiles.html#a39c9cf110da148cb9e1e9328c07ad079", null ],
-      [ "path", "namespaceg4Ex__gap__mergeFiles.html#a17163553c78ce5cf82e52b199e45c06b", null ],
-      [ "pdg", "namespaceg4Ex__gap__mergeFiles.html#a837f1e4d78049ceaaa8445095c8de6f5", null ],
-      [ "stats", "namespaceg4Ex__gap__mergeFiles.html#a90d63457e06ce862b83379f7aa671c8c", null ],
-      [ "tag", "namespaceg4Ex__gap__mergeFiles.html#a9db6de354e37e10cd7840c56a404dfa5", null ],
-      [ "Tau", "namespaceg4Ex__gap__mergeFiles.html#a6cc1c7e0382927b54da3e68abfb3e59d", null ],
-      [ "Yandex", "namespaceg4Ex__gap__mergeFiles.html#a6ea5fea2de017f0b639ccc3bc2e74fa1", null ],
-      [ "Yandex2", "namespaceg4Ex__gap__mergeFiles.html#a0ffd288e214d2f529b00ea65801167b6", null ],
-      [ "Yandex3", "namespaceg4Ex__gap__mergeFiles.html#a9ce168a6d589cb926251658d1563f8bc", null ]
-    ] ],
     [ "genfit", "namespacegenfit.html", "namespacegenfit" ],
     [ "genie_interface", "namespacegenie__interface.html", [
       [ "_merge_env", "namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e", null ],
@@ -1538,7 +1504,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1685,6 +1650,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
@@ -1692,13 +1658,6 @@ var namespaces_dup =
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muMSC", "namespacestudy__muMSC.html", "namespacestudy__muMSC" ],
     [ "study_thinTarget", "namespacestudy__thinTarget.html", "namespacestudy__thinTarget" ],
-    [ "submitPyG4prod", "namespacesubmitPyG4prod.html", [
-      [ "cmd", "namespacesubmitPyG4prod.html#adaaeb11ad0cbbcd9bc610a3ab9d3c969", null ],
-      [ "ecut", "namespacesubmitPyG4prod.html#a3df62ad71957234d501a254ca984fd21", null ],
-      [ "logfile", "namespacesubmitPyG4prod.html#a425b9ce028a805b9bf14bb359d842e36", null ],
-      [ "nevents", "namespacesubmitPyG4prod.html#a39f1bf1b1d59db426b74d7f00ac547ad", null ],
-      [ "path", "namespacesubmitPyG4prod.html#a2c8beaa3825810f733065f8b7afe52f5", null ]
-    ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],

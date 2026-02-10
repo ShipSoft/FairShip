@@ -664,8 +664,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   57</span>  <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">   58</span>    <span class="comment">// === WRITE TEST ===</span></div>
 <div class="line"><span class="lineno">   59</span>    {</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceg4Ex.html#a2c59b2adf9473624731a1dccf0dc615e">model</a> = RNTupleModel::Create();</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keyword">auto</span> vec_field = <a class="code hl_variable" href="namespaceg4Ex.html#a2c59b2adf9473624731a1dccf0dc615e">model</a>-&gt;MakeField&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
+<div class="line"><span class="lineno">   60</span>      <span class="keyword">auto</span> model = RNTupleModel::Create();</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keyword">auto</span> vec_field = model-&gt;MakeField&lt;std::vector&lt;T&gt;&gt;(class_name);</div>
 <div class="line"><span class="lineno">   62</span> </div>
 <div class="line"><span class="lineno">   63</span>      <span class="keyword">auto</span> writer =</div>
 <div class="line"><span class="lineno">   64</span>          RNTupleWriter::Recreate(std::move(model), ntuple_name, filename);</div>
@@ -733,7 +733,6 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  127</span>  }</div>
 <div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="anamespaceg4Ex_html_a2c59b2adf9473624731a1dccf0dc615e"><div class="ttname"><a href="namespaceg4Ex.html#a2c59b2adf9473624731a1dccf0dc615e">g4Ex.model</a></div><div class="ttdeci">str model</div><div class="ttdef"><b>Definition</b> <a href="g4Ex_8py_source.html#l00007">g4Ex.py:7</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

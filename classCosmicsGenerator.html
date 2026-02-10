@@ -453,7 +453,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   93</span>                                             {</div>
 <div class="line"><span class="lineno">   94</span>  <span class="comment">// general</span></div>
 <div class="line"><span class="lineno">   95</span>  <a class="code hl_variable" href="classCosmicsGenerator.html#a5630621f5a2636fc83ee24aeae4fe3ce">fRandomEngine</a> = <span class="keyword">new</span> <a class="code hl_class" href="classCo3Rng.html">Co3Rng</a>();</div>
-<div class="line"><span class="lineno">   96</span>  TDatabasePDG* <a class="code hl_variable" href="classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816">pdgBase</a> = TDatabasePDG::Instance();</div>
+<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816">TDatabasePDG</a>* <a class="code hl_variable" href="classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816">pdgBase</a> = TDatabasePDG::Instance();</div>
 <div class="line"><span class="lineno">   97</span>  <a class="code hl_variable" href="classCosmicsGenerator.html#a761ed1889592414d0aeaafb329fcfa61">mass</a> = <a class="code hl_variable" href="classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816">pdgBase</a>-&gt;GetParticle(13)-&gt;Mass();  <span class="comment">// muons!</span></div>
 <div class="line"><span class="lineno">   98</span>  cout &lt;&lt; <span class="stringliteral">&quot;--------------------------------------------------------------------&quot;</span></div>
 <div class="line"><span class="lineno">   99</span>          <span class="stringliteral">&quot;--&quot;</span></div>
