@@ -594,7 +594,16 @@ if options.muonback:
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
-    options.nEvents = min(options.nEvents, MuonBackgen.GetNevents())
+
+    n_mu = 0
+    with (ROOT.TFile.Open(inputFile, "read") as f_muonfile):
+        tree = f_muonfile["cbmsim"]
+        for event in tree:
+            for point in event.PlaneHAPoint:
+                if point.PdgCode() == 13 or point.PdgCode() == -13:
+                    n_mu += 1
+                    break
+    options.nEvents = min([options.nEvents, n_mu])
     MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
     print(
         "Process ",
