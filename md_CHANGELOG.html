@@ -122,6 +122,7 @@ Fixed</h2>
 <li>Fix function call in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use SetPhiRandomize instead of deprecated SetPhiRandom</li>
 <li>Update <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a> to save tracks for hits in post-target sensitive plane</li>
 <li>Set correct trackIDs for <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> class</li>
+<li>Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>

@@ -761,7 +761,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>  <span class="comment">// Initialize EvtGen if decay files are specified</span></div>
 <div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTEvtGenDecayer.html#a65b04ab2b62e5f8b5e797013bee5aa19">fDecayFile</a> != <span class="stringliteral">&quot;&quot;</span> &amp;&amp; <a class="code hl_variable" href="classTEvtGenDecayer.html#a534ee6d49850cf9eb77d981a27f31e76">fParticleFile</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
 <div class="line"><span class="lineno">   66</span>    <span class="comment">// Set up EvtGen random engine with ROOT&#39;s random number generator seed</span></div>
-<div class="line"><span class="lineno">   67</span>    UInt_t seed = gRandom-&gt;GetSeed();</div>
+<div class="line"><span class="lineno">   67</span>    UInt_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">seed</a> = gRandom-&gt;GetSeed();</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>    <span class="comment">// Also seed Pythia8 with the same seed for consistency</span></div>
 <div class="line"><span class="lineno">   70</span>    TPythia8* <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a> = TPythia8::Instance();</div>
@@ -769,13 +769,13 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   72</span>      <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(Form(<span class="stringliteral">&quot;Random:seed = %u&quot;</span>, seed));</div>
 <div class="line"><span class="lineno">   73</span>      <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;readString(<span class="stringliteral">&quot;Random:setSeed = on&quot;</span>);</div>
 <div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">pythia8</a>-&gt;Pythia8()-&gt;init();  <span class="comment">// Re-initialize with new seed</span></div>
-<div class="line"><span class="lineno">   75</span>      LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Pythia8 RNG seeded with &quot;</span> &lt;&lt; seed;</div>
+<div class="line"><span class="lineno">   75</span>      LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Pythia8 RNG seeded with &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">seed</a>;</div>
 <div class="line"><span class="lineno">   76</span>    }</div>
 <div class="line"><span class="lineno">   77</span> </div>
 <div class="line"><span class="lineno">   78</span>    EvtRandomEngine* randomEngine = <span class="keyword">new</span> EvtMTRandomEngine(seed);</div>
 <div class="line"><span class="lineno">   79</span>    EvtRandom::setRandomEngine(randomEngine);</div>
 <div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Random engine initialized with seed &quot;</span> &lt;&lt; seed;</div>
+<div class="line"><span class="lineno">   81</span>    LOG(info) &lt;&lt; <span class="stringliteral">&quot;TEvtGenDecayer: Random engine initialized with seed &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">seed</a>;</div>
 <div class="line"><span class="lineno">   82</span> </div>
 <div class="line"><span class="lineno">   83</span>    <span class="comment">// Set up external generators with PHOTOS radiative corrections</span></div>
 <div class="line"><span class="lineno">   84</span>    std::string photonType(<span class="stringliteral">&quot;gamma&quot;</span>);</div>
@@ -823,7 +823,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  126</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;  EvtGen particle: PDG &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTEvtGenDecayer.html#a07d1a70e0418c8eec7ca0875c1ed0cd8">fEvtGenParticles</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
 <div class="line"><span class="lineno">  127</span>  }</div>
 <div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a8fb1d87868691be90334fae6651ab73d"><div class="ttname"><a href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">run_simScript.pythia8</a></div><div class="ttdeci">pythia8</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00361">run_simScript.py:361</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a0c69a894251ef9de75b9a06ec7d12804"><div class="ttname"><a href="namespacerun__fixedTarget.html#a0c69a894251ef9de75b9a06ec7d12804">run_fixedTarget.seed</a></div><div class="ttdeci">seed</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00229">run_fixedTarget.py:229</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a8fb1d87868691be90334fae6651ab73d"><div class="ttname"><a href="namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d">run_simScript.pythia8</a></div><div class="ttdeci">pythia8</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00370">run_simScript.py:370</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -133,133 +133,141 @@ $(document).ready(function(){initNavTree('study__thinTarget_8py_source.html','')
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a32297dc133cd2f024927c6e1e1eef1ba">   34</a></span>checkOverlap = <span class="keyword">True</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a074165db6e63ccdcc607cba230b81715">   36</a></span>outFile = <span class="stringliteral">&quot;TLV.root&quot;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a66ea1e388086201ddb78f4983b1833f9">   37</a></span>theSeed = 0</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#ac1292d52ae3c8da74f0c07a22cf4cc78">   37</a></span>theSeed = 0</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#af22b0230911110381a9456faaa67d77b">   38</a></span>ecut = 0.0</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"># -------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>ROOT.gRandom.SetSeed(theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()  <span class="comment"># load basic libraries, prepare atexit for python</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a033878c5a0d6d8cdded748c6d3b40c96">   43</a></span>ship_geo = <a class="code hl_function" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(Yheight=10, shieldName=<span class="stringliteral">&quot;warm_opt&quot;</span>)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a781dc49671893f41b9cabf200aaec718">   46</a></span>timer = ROOT.TStopwatch()</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>timer.Start()</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#aa9ff8642ba3746c2603b01b6f1595c8b">   50</a></span>gFairBaseContFact = ROOT.FairBaseContFact()  <span class="comment"># required by change to FairBaseContFact to avoid TList::Clear errors</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7d345676eb518ca2a793ac62d2f5f1aa">   51</a></span>run = ROOT.FairRunSim()</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>)  <span class="comment"># user configuration file default g4Config.C</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a87163e57320d77f666a40f70746316b3">   55</a></span>rtdb = run.GetRuntimeDb()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"># PYTHIA8 requires Random:seed to be in range [0, 900000000]</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"># When theSeed=0, ROOT generates a seed from system time which can exceed this limit</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordflow">if</span> theSeed == 0:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    ROOT.gRandom.SetSeed(0)  <span class="comment"># Generate time-based seed</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    theSeed = ROOT.gRandom.GetSeed()</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment"># Clamp to PYTHIA8&#39;s maximum allowed seed value</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keywordflow">if</span> theSeed &gt; 900000000:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    theSeed = theSeed % 900000000</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>ROOT.gRandom.SetSeed(theSeed)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()  <span class="comment"># load basic libraries, prepare atexit for python</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a033878c5a0d6d8cdded748c6d3b40c96">   51</a></span>ship_geo = <a class="code hl_function" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(Yheight=10, shieldName=<span class="stringliteral">&quot;warm_opt&quot;</span>)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a781dc49671893f41b9cabf200aaec718">   54</a></span>timer = ROOT.TStopwatch()</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>timer.Start()</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"># -----Materials----------------------------------------------</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7c10cd1069ea56556ce9cde4d6a2c272">   60</a></span>cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>run.AddModule(cave)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#aa9ff8642ba3746c2603b01b6f1595c8b">   58</a></span>gFairBaseContFact = ROOT.FairBaseContFact()  <span class="comment"># required by change to FairBaseContFact to avoid TList::Clear errors</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7d345676eb518ca2a793ac62d2f5f1aa">   59</a></span>run = ROOT.FairRunSim()</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>)  <span class="comment"># user configuration file default g4Config.C</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a87163e57320d77f666a40f70746316b3">   63</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="foldopen" id="foldopen00065" data-start="" data-end="">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html">   65</a></span><span class="keyword">class </span><a class="code hl_class" href="classstudy__thinTarget_1_1Block.html">Block</a>(ROOT.pyFairModule):</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="stringliteral">&quot;block of material&quot;</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="" data-end="">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">   68</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">__init__</a>(self):</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        ROOT.pyFairModule.__init__(self, self)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"># -----Materials----------------------------------------------</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7c10cd1069ea56556ce9cde4d6a2c272">   68</a></span>cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>run.AddModule(cave)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="" data-end="">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html">   73</a></span><span class="keyword">class </span><a class="code hl_class" href="classstudy__thinTarget_1_1Block.html">Block</a>(ROOT.pyFairModule):</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="stringliteral">&quot;block of material&quot;</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="" data-end="">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">   76</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">__init__</a>(self):</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        ROOT.pyFairModule.__init__(self, self)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 </div>
-<div class="foldopen" id="foldopen00071" data-start="" data-end="">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">   71</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">ConstructGeometry</a>(self):</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        top = ROOT.gGeoManager.GetTopVolume()</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        geoLoad = ROOT.FairGeoLoader.Instance()</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        geoFace = geoLoad.getGeoInterface()</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        media = geoFace.getMedia()</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        geoBuild = geoLoad.getGeoBuilder()</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        ShipMedium = media.getMedium(material)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            geoBuild.createMedium(ShipMedium)</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.0 * u.cm, 100.0 * u.cm, thickness)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00079" data-start="" data-end="">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">   79</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">ConstructGeometry</a>(self):</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        top = ROOT.gGeoManager.GetTopVolume()</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        geoLoad = ROOT.FairGeoLoader.Instance()</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        geoFace = geoLoad.getGeoInterface()</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        media = geoFace.getMedia()</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        geoBuild = geoLoad.getGeoBuilder()</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        ShipMedium = media.getMedium(material)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            geoBuild.createMedium(ShipMedium)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.0 * u.cm, 100.0 * u.cm, thickness)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 </div>
-<div class="foldopen" id="foldopen00086" data-start="" data-end="">
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">   86</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">InitParContainers</a>():</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-</div>
-</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a06c433ab3997c7a35450cc7cc95ffa3f">   90</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>sensPlane.SetEnergyCut(ecut * u.GeV)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>sensPlane.SetZposition(thickness + 10 * u.cm)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>run.AddModule(sensPlane)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#addda8330794870435600f0683fa69589">   94</a></span>target = <a class="code hl_class" href="classstudy__thinTarget_1_1Block.html">Block</a>()</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>run.AddModule(target)</div>
+<div class="foldopen" id="foldopen00094" data-start="" data-end="">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">   94</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">InitParContainers</a>():</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a2ddaae0a9c352d34993509015c434eab">   97</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a4b89ee4dda0a012fd35a62c7fa7170e4">   98</a></span>myPgun = ROOT.FairBoxGenerator(2212, 1)  <span class="comment"># pdg id  and multiplicity</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>myPgun.SetPRange(minmomentum, maxmomentum)</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>myPgun.SetPhiRange(0, 0)  <span class="comment"># // Azimuth angle range [degree]</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>myPgun.SetThetaRange(0, 0)  <span class="comment"># // Polar angle in lab system range [degree]</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>myPgun.SetXYZ(0.0 * u.cm, 0.0 * u.cm, -10.0 * u.cm - (thickness))</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>primGen.AddGenerator(myPgun)</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">#</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>run.Init()</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a02c7a123ba3b3b8451fdcfd43447901a">  109</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a283dda573966a9c820b9f7880ced5cc4">  111</a></span>fStack = gMC.GetStack()</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>fStack.SetMinPoints(1)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>fStack.SetEnergyCut(-1.0)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>run.Run(nev)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment"># -----Start Analysis---------------</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6997471a5eff05086318992b9deda546">  122</a></span>f = ROOT.TFile(<span class="stringliteral">&quot;TLV.root&quot;</span>)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a0163d9dd05e285af2e0d7e6b120d4ff1">  123</a></span>pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#aafa9dceccb570acf027d044d03bdfa88">  124</a></span>h = {}</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#ae8e129f6411b6c394a018646bebe96f1">  125</a></span>sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>ut.bookHist(h, <span class="stringliteral">&quot;Ekin&quot;</span>, <span class="stringliteral">&quot;Ekin of particles in sens plane&quot;</span>, 400000, 0.0, 400)</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>ut.bookHist(h, <span class="stringliteral">&quot;EkinLow&quot;</span>, <span class="stringliteral">&quot;Ekin of particles in sens plane&quot;</span>, 1000, 0.0, 0.001)</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a39aa964b0e7234068dd84e1db8e82ed0">  129</a></span>    rc = sTree.GetEvent(n)</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">for</span> aHit <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#ad42514fa94c85147992a2838f87d2465">  131</a></span>        oTrack = sTree.MCTrack[aHit.GetTrackID()]</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">  132</a></span>        M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#abf343d15ac513f7c099b042aa8b8910d">  133</a></span>        Ekin = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2 + aHit.GetPz() ** 2 + M**2) - M</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        rc = h[<span class="stringliteral">&quot;Ekin&quot;</span>].Fill(Ekin)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        rc = h[<span class="stringliteral">&quot;EkinLow&quot;</span>].Fill(Ekin)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6ab62725a04f4f0c23b38e5dc9315f17">  136</a></span>ut.bookCanvas(h, key=s, title=s, nx=900, ny=600, cx=1, cy=1)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6251d6d1043367f9b14e723bf107a329">  137</a></span>tc = h[s].cd(1)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>tc.SetLogy(1)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>h[<span class="stringliteral">&quot;Ekin&quot;</span>].Draw()</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment"># tungsten dedex mev cm**2/g 1.145 * rho g/cm-3 19.3 * 0.1</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">#          interactionLength 191.9 / 19.3 = 9.94cm, 0.1/9.94 = 1%</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>timer.Stop()</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#abab42de4ec96b6e76ef8b5f2320acbf2">  146</a></span>rtime = timer.RealTime()</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7bd06a17bb8831e6dabcf07c3e09402e">  147</a></span>ctime = timer.CpuTime()</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>print(<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>print(<span class="stringliteral">&quot;Output file is &quot;</span>, outFile)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>print(<span class="stringliteral">&quot;Real time &quot;</span>, rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>, ctime, <span class="stringliteral">&quot;s&quot;</span>)</div>
-<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html">study_thinTarget.Block</a></div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00065">study_thinTarget.py:65</a></div></div>
-<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a79aec59a3057c1675c2516f8771fbabc"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">study_thinTarget.Block.__init__</a></div><div class="ttdeci">__init__(self)</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00068">study_thinTarget.py:68</a></div></div>
-<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a842263d44651f2a48f417d41bc84461d"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">study_thinTarget.Block.InitParContainers</a></div><div class="ttdeci">InitParContainers()</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00086">study_thinTarget.py:86</a></div></div>
-<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a9e1d002b4600966e7f43b001d7dd241f"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">study_thinTarget.Block.ConstructGeometry</a></div><div class="ttdeci">ConstructGeometry(self)</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00071">study_thinTarget.py:71</a></div></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+</div>
+</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a06c433ab3997c7a35450cc7cc95ffa3f">   98</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>sensPlane.SetEnergyCut(ecut * u.GeV)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>sensPlane.SetZposition(thickness + 10 * u.cm)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>run.AddModule(sensPlane)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#addda8330794870435600f0683fa69589">  102</a></span>target = <a class="code hl_class" href="classstudy__thinTarget_1_1Block.html">Block</a>()</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>run.AddModule(target)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a2ddaae0a9c352d34993509015c434eab">  105</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a4b89ee4dda0a012fd35a62c7fa7170e4">  106</a></span>myPgun = ROOT.FairBoxGenerator(2212, 1)  <span class="comment"># pdg id  and multiplicity</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>myPgun.SetPRange(minmomentum, maxmomentum)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>myPgun.SetPhiRange(0, 0)  <span class="comment"># // Azimuth angle range [degree]</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>myPgun.SetThetaRange(0, 0)  <span class="comment"># // Polar angle in lab system range [degree]</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>myPgun.SetXYZ(0.0 * u.cm, 0.0 * u.cm, -10.0 * u.cm - (thickness))</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>primGen.AddGenerator(myPgun)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>run.SetGenerator(primGen)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">#</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>run.SetGenerator(primGen)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>run.Init()</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a02c7a123ba3b3b8451fdcfd43447901a">  117</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a283dda573966a9c820b9f7880ced5cc4">  119</a></span>fStack = gMC.GetStack()</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>fStack.SetMinPoints(1)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>fStack.SetEnergyCut(-1.0)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>run.Run(nev)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment"># -----Start Analysis---------------</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6997471a5eff05086318992b9deda546">  130</a></span>f = ROOT.TFile(<span class="stringliteral">&quot;TLV.root&quot;</span>)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a0163d9dd05e285af2e0d7e6b120d4ff1">  131</a></span>pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#aafa9dceccb570acf027d044d03bdfa88">  132</a></span>h = {}</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#ae8e129f6411b6c394a018646bebe96f1">  133</a></span>sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>ut.bookHist(h, <span class="stringliteral">&quot;Ekin&quot;</span>, <span class="stringliteral">&quot;Ekin of particles in sens plane&quot;</span>, 400000, 0.0, 400)</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>ut.bookHist(h, <span class="stringliteral">&quot;EkinLow&quot;</span>, <span class="stringliteral">&quot;Ekin of particles in sens plane&quot;</span>, 1000, 0.0, 0.001)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a39aa964b0e7234068dd84e1db8e82ed0">  137</a></span>    rc = sTree.GetEvent(n)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">for</span> aHit <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#ad42514fa94c85147992a2838f87d2465">  139</a></span>        oTrack = sTree.MCTrack[aHit.GetTrackID()]</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">  140</a></span>        M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#abf343d15ac513f7c099b042aa8b8910d">  141</a></span>        Ekin = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2 + aHit.GetPz() ** 2 + M**2) - M</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        rc = h[<span class="stringliteral">&quot;Ekin&quot;</span>].Fill(Ekin)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        rc = h[<span class="stringliteral">&quot;EkinLow&quot;</span>].Fill(Ekin)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6ab62725a04f4f0c23b38e5dc9315f17">  144</a></span>ut.bookCanvas(h, key=s, title=s, nx=900, ny=600, cx=1, cy=1)</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a6251d6d1043367f9b14e723bf107a329">  145</a></span>tc = h[s].cd(1)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>tc.SetLogy(1)</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>h[<span class="stringliteral">&quot;Ekin&quot;</span>].Draw()</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment"># tungsten dedex mev cm**2/g 1.145 * rho g/cm-3 19.3 * 0.1</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">#          interactionLength 191.9 / 19.3 = 9.94cm, 0.1/9.94 = 1%</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>timer.Stop()</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#abab42de4ec96b6e76ef8b5f2320acbf2">  154</a></span>rtime = timer.RealTime()</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7bd06a17bb8831e6dabcf07c3e09402e">  155</a></span>ctime = timer.CpuTime()</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>print(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>print(<span class="stringliteral">&quot;Output file is &quot;</span>, outFile)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>print(<span class="stringliteral">&quot;Real time &quot;</span>, rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>, ctime, <span class="stringliteral">&quot;s&quot;</span>)</div>
+<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html">study_thinTarget.Block</a></div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00073">study_thinTarget.py:73</a></div></div>
+<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a79aec59a3057c1675c2516f8771fbabc"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a79aec59a3057c1675c2516f8771fbabc">study_thinTarget.Block.__init__</a></div><div class="ttdeci">__init__(self)</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00076">study_thinTarget.py:76</a></div></div>
+<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a842263d44651f2a48f417d41bc84461d"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a842263d44651f2a48f417d41bc84461d">study_thinTarget.Block.InitParContainers</a></div><div class="ttdeci">InitParContainers()</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00094">study_thinTarget.py:94</a></div></div>
+<div class="ttc" id="aclassstudy__thinTarget_1_1Block_html_a9e1d002b4600966e7f43b001d7dd241f"><div class="ttname"><a href="classstudy__thinTarget_1_1Block.html#a9e1d002b4600966e7f43b001d7dd241f">study_thinTarget.Block.ConstructGeometry</a></div><div class="ttdeci">ConstructGeometry(self)</div><div class="ttdef"><b>Definition</b> <a href="study__thinTarget_8py_source.html#l00079">study_thinTarget.py:79</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00231">geometry_config.py:241</a></div></div>
 <div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00047">shipRoot_conf.py:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
