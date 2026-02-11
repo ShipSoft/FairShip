@@ -265,7 +265,6 @@ parser.add_argument(
 
 
 options = parser.parse_args()
-print("ppppp")
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == "all" for x in options.SND_design):
@@ -330,10 +329,8 @@ if (options.ntuple or options.muonback) and defaultInputFile:
     print("input file required if simEngine = Ntuple or MuonBack")
     print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
     sys.exit()
-print("ddd")
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
-print("ccc")
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
@@ -344,7 +341,6 @@ elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
-print("bbb")
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,
@@ -356,7 +352,6 @@ ship_geo = geometry_config.create_config(
     TARGET_YAML=options.target_yaml,
 )
 
-print("aa")
 
 if not options.command:
     for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
@@ -392,8 +387,9 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
-
+print("jjj")
 modules = shipDet_conf.configure(run, ship_geo)
+print("lll")
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
@@ -592,7 +588,8 @@ if options.muonback:
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
-    MuonBackgen.Init(inputFile, options.firstEvent)
+
+    MuonBackgen.Init(options.inputFile, options.firstEvent)
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)

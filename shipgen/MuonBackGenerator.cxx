@@ -2,8 +2,6 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#include <vector>
-#include <string>
 #include "MuonBackGenerator.h"
 
 #include <math.h>
