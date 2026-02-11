@@ -118,15 +118,29 @@ def errorSummary():
 
 
 def checkFileExists(x):
-    if x[0:4] == "/eos":
-        f = gSystem.Getenv("EOSSHIP") + x
+    if isinstance(x, str):
+        tx = [x]
     else:
-        f = x
-    test = TFile.Open(f)
-    if not test:
-        print("input file", f, " does not exist. Missing authentication?")
+        tx = x
+    if isinstance(tx, (list, tuple)):
+        # See what we are looking at and make sure all the files are of the same type
+        fileType = ""
+        for _f in tx:
+            if _f[0:4] == "/eos":
+                f = gSystem.Getenv("EOSSHIP") + _f
+            else:
+                f = _f
+            test = TFile.Open(f)
+            if not test:
+                print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
+                os._exit(1)
+            if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
+                fileType = "tree"
+            elif fileType in ["ntuple", ""]:
+                fileType = "ntuple"
+            else:
+                print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
+        return fileType
+    else:
+        print("ERROR FileCheck: File must be either a string or list of files")
         os._exit(1)
-    if test.FindObjectAny("cbmsim"):
-        return "tree"
-    else:
-        return "ntuple"

@@ -9,9 +9,9 @@
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "TChain.h"      // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
-#include "TTree.h"  // for TTree
 
 class FairPrimaryGenerator;
 class ShipMCTrack;
@@ -27,10 +27,13 @@ class MuonBackGenerator : public FairGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);  //!
-  virtual Bool_t Init(const char*);       //!
-  Int_t GetNevents();                     //!
-  void CloseFile();                       //!
+  virtual Bool_t Init(const char*, int);                      //!
+  virtual Bool_t Init(const char*);                           //!
+  virtual Bool_t Init(const std::vector<std::string>&, int);  //!
+  virtual Bool_t Init(const std::vector<std::string>&);       //!
+
+  Int_t GetNevents();  //!
+  void CloseFile();    //!
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };
@@ -51,7 +54,7 @@ class MuonBackGenerator : public FairGenerator {
   std::vector<vetoPoint>* vetoPoints_vec;  //!
   Bool_t fUseSTL;     //! flag to indicate if using STL vectors
   TFile* fInputFile;  //!
-  TTree* fTree;       //!
+  TChain* fTree;      //!
   int fNevents;
   float f_zOffset;  //!
   int fn;

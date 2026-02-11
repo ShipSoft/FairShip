@@ -13,6 +13,7 @@
 #include "FairPrimaryGenerator.h"
 #include "ShipMCTrack.h"
 #include "ShipUnit.h"
+#include "TChain.h"
 #include "TDatabasePDG.h"  // for TDatabasePDG
 #include "TFile.h"
 #include "TMCProcess.h"
@@ -38,12 +39,18 @@ MuonBackGenerator::MuonBackGenerator()
 Bool_t MuonBackGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
-// -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
-  LOG(info) << "Opening input file " << fileName;
-  fInputFile = TFile::Open(fileName);
-  if (!fInputFile) {
-    LOG(fatal) << "Error opening the Signal file: " << fileName;
+
+Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames) {
+  return Init(fileNames, 0);
+}
+
+Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
+                               const int firstEvent) {
+  LOG(info) << "Opening input file " << fileNames.at(0);
+  TFile testFile(fileNames.at(0).c_str());
+  auto testKeys = testFile.GetListOfKeys();
+  if (testKeys == nullptr) {
+    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
   }
   fn = firstEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
@@ -51,9 +58,14 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
   fPhiRandomize = false;      // default value for phi randomization
   fsmearBeam = 8 * mm;        // default value for smearing beam
   fdownScaleDiMuon = kFALSE;  // only needed for muflux simulation
-  fTree = fInputFile->Get<TTree>("pythia8-Geant4");
-  if (fTree) {
+  if (testKeys->FindObject("pythia8-Geant4")) {
+    fTree = new TChain("pythia8-Geant4");
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      fTree->Add(f.c_str());
+    }
     fNevents = fTree->GetEntries();
+    LOG(info) << "Reading " << fNevents << " entries";
     // count only events with muons
     fTree->SetBranchAddress("id", &id);  // particle id
     fTree->SetBranchAddress("parentid",
@@ -82,9 +94,13 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
     }
   } else {
     id = -1;
-    fTree = fInputFile->Get<TTree>("cbmsim");
+    fTree = new TChain("cbmsim");
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      fTree->Add(f.c_str());
+    }
     fNevents = fTree->GetEntries();
-
+    LOG(info) << "Reading " << fNevents << " entries";
     // Detect format by checking branch name:
     // STL format uses PlaneHAPoint, TClonesArray uses vetoPoint
     TBranch* mcBranch = fTree->GetBranch("MCTrack");
@@ -121,6 +137,12 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
     }
   }
   return kTRUE;
+}
+
+// -----   Default constructor   -------------------------------------------
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
+  std::vector<std::string> fileNames = {fileName};
+  return Init(fileNames, firstEvent);
 }
 // -----   Destructor   ----------------------------------------------------
 MuonBackGenerator::~MuonBackGenerator() {
@@ -228,8 +250,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
   }
-  if (fn > fNevents - 1) {
-    LOGF(info, "End of file reached %i", fNevents);
+  if (fn == fNevents) {
+    LOGF(info, "End of tree reached %i", fNevents);
     return kFALSE;
   }
   if (fSameSeed) {
