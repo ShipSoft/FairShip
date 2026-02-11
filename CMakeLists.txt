@@ -22,6 +22,10 @@ project(FairShip VERSION 0.0.0 LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
+include(GNUInstallDirs)
+# aliBuild modulefile expects libraries in lib/, not lib64/
+set(CMAKE_INSTALL_LIBDIR lib)
+
 # C++17 required by ROOT 6.36
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

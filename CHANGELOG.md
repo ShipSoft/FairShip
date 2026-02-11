@@ -17,6 +17,7 @@ it in future.
 ### Changed
 
 * Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
+* UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
@@ -33,6 +34,7 @@ it in future.
 
 ### Removed
 
+* Remove g4Ex scripts, which are unused and rely on g4py and Geant4 python imports
 * Remove old (CDR) target configuration; Jun25 is now the only supported target
 
 * Remove unused ShipStyle, which seems copy-pasted from LHCb
