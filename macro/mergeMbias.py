@@ -247,9 +247,6 @@ def mergeMinBias(pot, norm=5.0e13, opt=""):
                 vlist[9] = norm / (pot["Yandex"][0.5])
             else:
                 print("this should not happen, except some rounding errors", p, Ekin, vlist[9])
-            # scoring plane, g4Ex_gap:   afterHadronZ = z0Pos+targetL+absorberL+5.1*cm
-            #                                    z0Pos   = -50.*m    absorberL = 2*150.*cm
-            # target length increased for Yandex2 production, ignore this, put all muons at current end of hadronabsorber
             vlist[6] = endOfHadronAbsorber
             h["ntuple"].Fill(
                 vlist[0],
@@ -650,6 +647,6 @@ def compare():
 
 
 print("+ merging with charm events using existing charmless Mbias file:   mergeWithCharm()")
-print("+ removeCharm(p) from mbias file made with g4Ex_gap_mergeFiles.py")
+print("+ removeCharm(p) from mbias file")
 print("+ testing output: test('pythia8_Geant4-noOpenCharm.root')")
 print("+ not used anymore: to start the full production, including merging of Mbias files: runProduction()")

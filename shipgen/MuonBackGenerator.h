@@ -9,10 +9,9 @@
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "TChain.h"      // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
-#include "TChain.h"  // for TChain
-
 
 class FairPrimaryGenerator;
 class ShipMCTrack;
@@ -28,8 +27,8 @@ class MuonBackGenerator : public FairGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);               //!
-  virtual Bool_t Init(const char*);                    //!
+  virtual Bool_t Init(const char*, int);                      //!
+  virtual Bool_t Init(const char*);                           //!
   virtual Bool_t Init(const std::vector<std::string>&, int);  //!
   virtual Bool_t Init(const std::vector<std::string>&);       //!
 

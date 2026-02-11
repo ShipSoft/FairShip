@@ -248,6 +248,9 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+if args.boostFactor > 1:
+    # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
+    os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
