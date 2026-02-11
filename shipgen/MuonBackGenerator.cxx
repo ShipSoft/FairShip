@@ -243,7 +243,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         }
       }
       if (!found) {
-        LOGF(warn, "No muon found %i", fn - 1);
+        LOGF(debug, "No muon found %i", fn - 1);
       }
       if (found) {
         break;
