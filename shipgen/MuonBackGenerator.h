@@ -6,6 +6,7 @@
 #define SHIPGEN_MUONBACKGENERATOR_H_ 1
 
 #include <vector>
+#include <string>
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
@@ -30,8 +31,8 @@ class MuonBackGenerator : public FairGenerator {
   Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int);               //!
   virtual Bool_t Init(const char*);                    //!
-  virtual Bool_t Init(std::vector<const char*>, int);  //!
-  virtual Bool_t Init(std::vector<const char*>);       //!
+  virtual Bool_t Init(const std::vector<std::string>&, int);  //!
+  virtual Bool_t Init(const std::vector<std::string>&);       //!
 
   Int_t GetNevents();  //!
   void CloseFile();    //!
