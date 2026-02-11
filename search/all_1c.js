@@ -5,7 +5,7 @@ var searchData=
   ['y_5fdata_2',['y_data',['../classshipVertex_1_1Task.html#a8ca5c8775cc4a7b23568c0eeee8ec0a7',1,'shipVertex::Task']]],
   ['yandexprod_3',['YandexProd',['../namespacecompactingBackgroundProduction.html#a817cba0947b2022019ca7611061249d5',1,'compactingBackgroundProduction']]],
   ['yaxis_4',['yAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087',1,'ShipBFieldMap']]],
-  ['ybeam_5',['ybeam',['../namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c',1,'runPythia8.yBeam(Mproton=0.938272081, pbeam=400.0)'],['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam']]],
+  ['ybeam_5',['ybeam',['../namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a',1,'runPythia8.ybeam'],['../namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c',1,'runPythia8.yBeam(Mproton=0.938272081, pbeam=400.0)']]],
   ['ybox_6',['yBox',['../classCosmicsGenerator.html#a7cdf63ffe46b0356831c2da709a4b7f9',1,'CosmicsGenerator']]],
   ['ybox_5ffulldet_7',['ybox_fulldet',['../classUpstreamTagger.html#a8ce3b317da08c7f52ff60792de4a04ae',1,'UpstreamTagger']]],
   ['ych_8',['Ych',['../classMTCDetHit.html#a71b4a82c51ae60fe4fc20824941dc37f',1,'MTCDetHit']]],

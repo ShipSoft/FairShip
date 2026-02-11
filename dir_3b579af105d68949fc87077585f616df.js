@@ -3,7 +3,6 @@ var dir_3b579af105d68949fc87077585f616df =
     [ "checkZpositions.py", "checkZpositions_8py.html", "checkZpositions_8py" ],
     [ "convertEvtCalc.py", "convertEvtCalc_8py.html", "convertEvtCalc_8py" ],
     [ "convertTreeToRNTuple.py", "convertTreeToRNTuple_8py.html", "convertTreeToRNTuple_8py" ],
-    [ "create_field_perturbation.py", "create__field__perturbation_8py.html", "create__field__perturbation_8py" ],
     [ "dumpEvent.py", "dumpEvent_8py.html", "dumpEvent_8py" ],
     [ "evd_addParticleFollower.py", "evd__addParticleFollower_8py.html", "evd__addParticleFollower_8py" ],
     [ "evd_fillEnergy.py", "evd__fillEnergy_8py.html", "evd__fillEnergy_8py" ],

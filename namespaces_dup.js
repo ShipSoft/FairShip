@@ -206,19 +206,6 @@ var namespaces_dup =
       [ "convert_tree_to_rntuple", "namespaceconvertTreeToRNTuple.html#ac6283410d3883844133d0c7d0a270661", null ],
       [ "main", "namespaceconvertTreeToRNTuple.html#ab49ef6987e3cdf5ff7ad4a7d947b00b7", null ]
     ] ],
-    [ "create_field_perturbation", "namespacecreate__field__perturbation.html", [
-      [ "create_csv_field_map", "namespacecreate__field__perturbation.html#a6d00ea983330a2eb4fe30eb85617355c", null ],
-      [ "action", "namespacecreate__field__perturbation.html#aba0c2f46468899bbec9d04637f93daf2", null ],
-      [ "default", "namespacecreate__field__perturbation.html#a9ae4137b422a20288ccb4d6ed61a2e82", null ],
-      [ "dest", "namespacecreate__field__perturbation.html#ad1d4ab2e24b1030906e5f58c411190f2", null ],
-      [ "False", "namespacecreate__field__perturbation.html#a0aa64b0c1b4e269aa469e9f4ac5b98c0", null ],
-      [ "help", "namespacecreate__field__perturbation.html#a4061d6cced21789fa984fe78910a2f8c", null ],
-      [ "options", "namespacecreate__field__perturbation.html#adc0459d4901422e740446d3f9202e352", null ],
-      [ "parser", "namespacecreate__field__perturbation.html#ae83f777214c02831731c7578eba36abd", null ],
-      [ "required", "namespacecreate__field__perturbation.html#a98157393a14c717e9b919dc3ac9764dd", null ],
-      [ "True", "namespacecreate__field__perturbation.html#a13892067a995a5f65b11f874a759a3db", null ],
-      [ "type", "namespacecreate__field__perturbation.html#a1c55da2e2f6c98f027093385b6496afb", null ]
-    ] ],
     [ "darkphoton", "namespacedarkphoton.html", "namespacedarkphoton" ],
     [ "decorators", "namespacedecorators.html", [
       [ "apply_decorators", "namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704", null ],
