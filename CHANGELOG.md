@@ -14,12 +14,16 @@ it in future.
 
 ### Added
 
+* Add `SHiP::VMCConfig` class for YAML-based Geant4 VMC configuration with ROOT dictionary support
+* Add `g4Config.yaml` and `g4Config_basic.yaml` configuration files
+
 ### Changed
 
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+* Use g4Config.yaml instead of deprecated .C macro for Geant4 VMC configuration
 
 ### Fixed
 
@@ -28,7 +32,7 @@ it in future.
 * Fix file-filtering logic to support STL branches
 * Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
-+ Update run_fixedTarget to save tracks for hits in post-target sensitive plane
+* Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
 
 ### Removed
@@ -42,6 +46,7 @@ it in future.
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
 * Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
 * Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
+* Remove deprecated Geant4 VMC configuration macros (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`), replaced by YAML configuration
 
 ## 25.12 - 2025-12-22
 

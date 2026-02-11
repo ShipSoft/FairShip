@@ -843,7 +843,8 @@ if __name__ == "__main__":
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
     run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Output file
-    run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used
+    ROOT.SHiP.SetupVMCConfig("g4Config", "g4Config_basic.yaml")
+    # geant4 transport not used
     rtdb = run.GetRuntimeDb()
     modules = shipDet_conf.configure(run, ship_geo)
     run.Init()
