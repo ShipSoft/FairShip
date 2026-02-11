@@ -596,7 +596,7 @@ if options.muonback:
     primGen.AddGenerator(MuonBackgen)
 
     n_mu = 0
-    with (ROOT.TFile.Open(inputFile, "read") as f_muonfile):
+    with ROOT.TFile.Open(inputFile, "read") as f_muonfile:
         tree = f_muonfile["cbmsim"]
         for event in tree:
             for point in event.PlaneHAPoint:
