@@ -38,7 +38,15 @@ theSeed = 0
 ecut = 0.0
 
 # -------------------------------------------------------------------
-ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+# PYTHIA8 requires Random:seed to be in range [0, 900000000]
+# When theSeed=0, ROOT generates a seed from system time which can exceed this limit
+if theSeed == 0:
+    ROOT.gRandom.SetSeed(0)  # Generate time-based seed
+    theSeed = ROOT.gRandom.GetSeed()
+    # Clamp to PYTHIA8's maximum allowed seed value
+if theSeed > 900000000:
+    theSeed = theSeed % 900000000
+ROOT.gRandom.SetSeed(theSeed)
 shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
 ship_geo = geometry_config.create_config(Yheight=10, shieldName="warm_opt")
 

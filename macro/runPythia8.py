@@ -5,8 +5,15 @@
 import ROOT
 import rootUtils as ut
 
+# PYTHIA8 requires Random:seed to be in range [0, 900000000]
+# When theSeed=0, ROOT generates a seed from system time which can exceed this limit
 theSeed = 0
 h = {}
+ROOT.gRandom.SetSeed(0)  # Generate time-based seed
+theSeed = ROOT.gRandom.GetSeed()
+# Clamp to PYTHIA8's maximum allowed seed value
+if theSeed > 900000000:
+    theSeed = theSeed % 900000000
 ROOT.gRandom.SetSeed(theSeed)
 ROOT.gSystem.Load("libpythia8")
 

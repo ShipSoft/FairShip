@@ -34,6 +34,7 @@ it in future.
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
+* Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds
 
 ### Removed
 

@@ -224,7 +224,16 @@ else:
 
 os.chdir(args.work_dir)
 # -------------------------------------------------------------------
-ROOT.gRandom.SetSeed(args.seed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+# PYTHIA8 requires Random:seed to be in range [0, 900000000]
+# When seed=0, ROOT generates a seed from system time which can exceed this limit
+seed = args.seed
+if seed == 0:
+    ROOT.gRandom.SetSeed(0)  # Generate time-based seed
+    seed = ROOT.gRandom.GetSeed()
+# Clamp to PYTHIA8's maximum allowed seed value
+if seed > 900000000:
+    seed = seed % 900000000
+ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
 ship_geo_kwargs = {
     "Yheight": dy,
@@ -376,7 +385,7 @@ if args.boostDiMuon > 1:
         args.boostDiMuon
     )  # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
     # and later copied to Geant4
-P8gen.SetSeed(args.seed)
+P8gen.SetSeed(seed)
 # for charm/beauty
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
