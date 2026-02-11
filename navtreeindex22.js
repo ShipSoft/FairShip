@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60":[4,0,45,42],
+"namespacemake__nTuple__SBT.html#a7050b04ba92c631cf6be0da28730a2de":[4,0,45,38],
 "namespacemake__nTuple__SBT.html#a740911fa9e8ed96e446b67390de2a688":[4,0,45,36],
 "namespacemake__nTuple__SBT.html#a7fc553485c3320721d1abb6ed326eb0b":[4,0,45,46],
 "namespacemake__nTuple__SBT.html#a80292fc543265e29da6ffcaf406c308c":[4,0,45,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "namespacepythia8__conf__utils.html#a5e95b7f87fea4478df870f18f6457554":[4,0,58,0],
 "namespacepythia8__conf__utils.html#a62c04373226d7ade2f120a30d03a66bd":[4,0,58,14],
 "namespacepythia8__conf__utils.html#a643f6af0e4181400db5d9eec768fbfcf":[4,0,58,12],
-"namespacepythia8__conf__utils.html#a65a64823ec85647ac87d464dcd43be4c":[4,0,58,4],
-"namespacepythia8__conf__utils.html#a6a47cb7861e4155b59d826ed6e40d730":[4,0,58,9],
-"namespacepythia8__conf__utils.html#a7bec05780607ee21023f773202ab1cd7":[4,0,58,10]
+"namespacepythia8__conf__utils.html#a65a64823ec85647ac87d464dcd43be4c":[4,0,58,4]
 };

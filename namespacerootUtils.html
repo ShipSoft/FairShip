@@ -400,18 +400,32 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00120">120</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  120</span><span class="keyword">def </span>checkFileExists(x):</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> x[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><span class="lineno">  122</span>        f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + x</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> isinstance(x, str):</div>
+<div class="line"><span class="lineno">  122</span>        tx = [x]</div>
 <div class="line"><span class="lineno">  123</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  124</span>        f = x</div>
-<div class="line"><span class="lineno">  125</span>    test = TFile.Open(f)</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
-<div class="line"><span class="lineno">  127</span>        print(<span class="stringliteral">&quot;input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
-<div class="line"><span class="lineno">  128</span>        os._exit(1)</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>):</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;tree&quot;</span></div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;ntuple&quot;</span></div>
+<div class="line"><span class="lineno">  124</span>        tx = x</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> isinstance(tx, (list, tuple)):</div>
+<div class="line"><span class="lineno">  126</span>        <span class="comment"># See what we are looking at and make sure all the files are of the same type</span></div>
+<div class="line"><span class="lineno">  127</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
+<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
+<div class="line"><span class="lineno">  130</span>                f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
+<div class="line"><span class="lineno">  131</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  132</span>                f = _f</div>
+<div class="line"><span class="lineno">  133</span>            test = TFile.Open(f)</div>
+<div class="line"><span class="lineno">  134</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><span class="lineno">  135</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><span class="lineno">  136</span>                os._exit(1)</div>
+<div class="line"><span class="lineno">  137</span>            <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;tree&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
+<div class="line"><span class="lineno">  138</span>                fileType = <span class="stringliteral">&quot;tree&quot;</span></div>
+<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">elif</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;ntuple&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
+<div class="line"><span class="lineno">  140</span>                fileType = <span class="stringliteral">&quot;ntuple&quot;</span></div>
+<div class="line"><span class="lineno">  141</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  142</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: Supplied list of files not all of tree or ntuple type&quot;</span>)</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">return</span> fileType</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  145</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
+<div class="line"><span class="lineno">  146</span>        os._exit(1)</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"compare__histograms_8py.html#a1104376ca7039bd88330e7638f3239de":[6,0,10,1,3,2],
+"compare__histograms_8py.html#a144d3fb2ba95b485e443d7b3ce52ab99":[6,0,10,1,3,1],
 "compare__histograms_8py.html#a3b917802d991eb03dd0e4b41fda9b16d":[6,0,10,1,3,0],
 "compare__histograms_8py.html#a749c93fca44e38491ba75d0a31d0fa0b":[6,0,10,1,3,7],
 "compare__histograms_8py.html#aa62b2d0a16f870914fa42a905426fa08":[6,0,10,1,3,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "extractMuonsAndUpdateWeight_8py.html#ac9dcea3edd72815ffe9ba0cc43aebbe8":[6,0,8,4,0],
 "extractMuonsAndUpdateWeight_8py.html#ad9b3017ed07c574c48e46004c8383b37":[6,0,8,4,3],
 "extractMuonsAndUpdateWeight_8py.html#adfec8af16ddc9104b3a740bc14d0759f":[6,0,8,4,13],
-"extractMuonsAndUpdateWeight_8py.html#af67101ca8beb9723e8fc5463dd0c17e6":[6,0,8,4,7],
-"extractMuonsAndUpdateWeight_8py_source.html":[6,0,8,4],
-"extractNeutrinosAndUpdateWeight_8py.html":[6,0,8,5]
+"extractMuonsAndUpdateWeight_8py.html#af67101ca8beb9723e8fc5463dd0c17e6":[6,0,8,4,7]
 };
