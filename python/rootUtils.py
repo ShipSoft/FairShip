@@ -118,7 +118,6 @@ def errorSummary():
 
 
 def checkFileExists(x):
-    print("check file exists")
     if isinstance(x, str):
         tx = [x]
     else:
@@ -133,7 +132,7 @@ def checkFileExists(x):
                 f = _f
             test = TFile.Open(f)
             if not test:
-                print("input file", f, " does not exist. Missing authentication?")
+                print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
                 os._exit(1)
             if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
                 fileType = "tree"
@@ -141,7 +140,6 @@ def checkFileExists(x):
                 fileType = "ntuple"
             else:
                 print("ERROR FileCheck: Supplied list of files not all of tree or ntuple type")
-        print("file types is: ", fileType)
         return fileType
     else:
         print("ERROR FileCheck: File must be either a string or list of files")
