@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add Findgenfit2.cmake module to support both upstream GenFit and the fork
+
 ### Changed
 
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
