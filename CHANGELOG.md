@@ -46,6 +46,7 @@ it in future.
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
 * Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
 * Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
+* Remove unused create_field_perturbation.py script
 
 ## 25.12 - 2025-12-22
 
