@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add Findgenfit2.cmake module to support both upstream GenFit and the fork
+
 ### Changed
 
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
