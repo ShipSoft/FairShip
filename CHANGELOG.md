@@ -16,6 +16,7 @@ it in future.
 
 ### Changed
 
+* Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
 * Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
 * Bump minimum ROOT version to 6.36
