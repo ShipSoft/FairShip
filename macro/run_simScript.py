@@ -323,7 +323,16 @@ if (options.ntuple or options.muonback) and defaultInputFile:
     print("input file required if simEngine = Ntuple or MuonBack")
     print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
     sys.exit()
-ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+# PYTHIA8 requires Random:seed to be in range [0, 900000000]
+# When theSeed=0, ROOT generates a seed from system time which can exceed this limit
+seed = options.theSeed
+if seed == 0:
+    ROOT.gRandom.SetSeed(0)  # Generate time-based seed
+    seed = ROOT.gRandom.GetSeed()
+    # Clamp to PYTHIA8's maximum allowed seed value
+if seed > 900000000:
+    seed = seed % 900000000
+ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
 
 # Configure FairLogger verbosity based on debug level
