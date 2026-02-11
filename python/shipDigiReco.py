@@ -111,7 +111,6 @@ class ShipDigiReco:
         self.header.SetEventTime(self.sTree.t0)
         self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())
         self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
-        self.eventHeader.Fill()
         self.digiSBT.process()
         self.strawtubes.process()
         self.timeDetector.process()
@@ -323,9 +322,6 @@ class ShipDigiReco:
                 indices.push_back(index)
             aTracklet = ROOT.Tracklet(1, indices)
             self.fTrackletsArray.push_back(aTracklet)
-        self.Tracklets.Fill()
-        self.fitTracks.Fill()
-        self.mcLink.Fill()
         # debug
         if global_variables.debug:
             print("save tracklets:")
@@ -345,7 +341,6 @@ class ShipDigiReco:
             if chi2 < 50 and not chi2 < 0:
                 self.goodTracksVect.push_back(i)
                 nGoodTracks += 1
-        self.goodTracksBranch.Fill()
         return nGoodTracks
 
     def findVetoHitOnTrack(self, track):
@@ -376,7 +371,6 @@ class ShipDigiReco:
         for good_track in self.goodTracksVect:
             track = self.fGenFitArray[good_track]
             self.vetoHitOnTrackArray.push_back(self.findVetoHitOnTrack(track))
-        self.vetoHitOnTrackBranch.Fill()
 
     def fracMCsame(self, trackids):
         track = {}

@@ -45,10 +45,12 @@ class BaseDetector(ABC):
             self.MCdet.clear()
 
     def fill(self):
-        """Fill detector hit branches."""
-        self.branch.Fill()
-        if self.mcBranch:
-            self.mcBranch.Fill()
+        """Fill detector hit branches.
+
+        Note: This method is now a no-op to prevent double-filling.
+        All branches are filled synchronously by recoTree.Fill() in the main loop.
+        """
+        pass
 
     @abstractmethod
     def digitize(self):

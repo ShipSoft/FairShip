@@ -51,7 +51,6 @@ class Task:
     def execute(self):
         # make particles persistent
         self.TwoTrackVertex()
-        self.Particles.Fill()
 
     # define global data and functions for vertex fit with TMinuit
     y_data = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])

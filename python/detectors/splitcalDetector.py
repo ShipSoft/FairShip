@@ -21,9 +21,12 @@ class splitcalDetector(BaseDetector):
         self.reco.clear()
 
     def fill(self):
-        # Override to also fill reconstruction branch
-        super().fill()
-        self.recoBranch.Fill()
+        """Fill detector hit branches.
+
+        Note: This method is now a no-op to prevent double-filling.
+        All branches are filled synchronously by recoTree.Fill() in the main loop.
+        """
+        pass
 
     def digitize(self):
         """Digitize splitcal hits and perform cluster reconstruction."""
