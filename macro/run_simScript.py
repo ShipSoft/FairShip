@@ -352,7 +352,6 @@ ship_geo = geometry_config.create_config(
     TARGET_YAML=options.target_yaml,
 )
 
-
 if not options.command:
     for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
         if getattr(options, g):
@@ -387,9 +386,7 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
-print("jjj")
 modules = shipDet_conf.configure(run, ship_geo)
-print("lll")
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
@@ -589,7 +586,7 @@ if options.muonback:
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
 
-    MuonBackgen.Init(options.inputFile, options.firstEvent)
+    MuonBackgen.Init(inputFile, options.firstEvent)
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
