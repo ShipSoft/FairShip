@@ -41,6 +41,7 @@ it in future.
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
 * Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds
+* Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028
 
 ### Removed
 
