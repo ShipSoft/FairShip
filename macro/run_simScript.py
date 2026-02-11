@@ -331,6 +331,7 @@ if (options.ntuple or options.muonback) and defaultInputFile:
     sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
+
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
@@ -386,6 +387,7 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
+
 modules = shipDet_conf.configure(run, ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -585,7 +587,6 @@ if options.muonback:
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
-
     MuonBackgen.Init(inputFile, options.firstEvent)
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)

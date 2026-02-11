@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <unordered_map>
 
-
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
 #include "ShipMCTrack.h"
