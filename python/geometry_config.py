@@ -10,7 +10,6 @@ from ShipGeoConfig import AttrDict, Config
 # Parameters for geometry configuration are passed to create_config() function
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
-# targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
@@ -297,24 +296,9 @@ def create_config(
         targetconfig = yaml.safe_load(file)
         c.target = AttrDict(targetconfig["target"])
 
-    c.target.slices_length = []
-    c.target.slices_gap = []
-    c.target.slices_material = []
-
-    for i in range(c.target.Nplates):
-        for j in range(c.target.N[i]):
-            if len(c.target.L) == 1:
-                c.target.slices_length.append(c.target.L[0])
-            else:
-                c.target.slices_length.append(c.target.L[i])
-            if len(c.target.G) == 1:
-                c.target.slices_gap.append(c.target.G[0])
-            else:
-                c.target.slices_gap.append(c.target.G[i])
-            if len(c.target.M) == 1:
-                c.target.slices_material.append(c.target.M[0])
-            else:
-                c.target.slices_material.append(c.target.M[i])
+    c.target.slices_length = c.target.L
+    c.target.slices_gap = c.target.G
+    c.target.slices_material = [c.target.material] * c.target.nS
     # Last gap should be 0...
     c.target.slices_gap[c.target.nS - 1] = 0
     print(c.target.slices_material, c.target.slices_length, c.target.slices_gap)

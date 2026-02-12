@@ -62,8 +62,6 @@ void ShipTargetStation::ConstructGeometry() {
   TGeoMedium* tungsten = gGeoManager->GetMedium("tungsten");
   InitMedium("tantalum");
   TGeoMedium* tantalum = gGeoManager->GetMedium("tantalum");
-  InitMedium("molybdenum");
-  TGeoMedium* mo = gGeoManager->GetMedium("molybdenum");
   InitMedium("iron");
   TGeoMedium* iron = gGeoManager->GetMedium("iron");
   InitMedium("steel316L");
@@ -182,29 +180,18 @@ void ShipTargetStation::ConstructGeometry() {
     TString nmi_core = "TargetCore_";
     nmi_core += i + 1;
 
-    TGeoMedium* material = nullptr;
-    if (fM.at(i) == "molybdenum") {
-      material = mo;
-    } else if (fM.at(i) == "tungsten") {
-      material = tungsten;
-    }
-
     // Create outer cladded volume (tantalum, full dimensions)
     claddedTarget = gGeoManager->MakeTube(nmi_cladded, tantalum, 0.,
                                           fDiameter / 2., fL.at(i) / 2.);
     claddedTarget->SetLineColor(8);  // Green for tantalum
 
-    // Create inner target core (W or Mo, reduced dimensions)
+    // Create inner target core (tungsten, reduced dimensions)
     // Positioned at centre (z=0) of cladded volume - tantalum fills the gaps
     // automatically
-    targetCore = gGeoManager->MakeTube(nmi_core, material, 0.,
+    targetCore = gGeoManager->MakeTube(nmi_core, tungsten, 0.,
                                        fDiameter / 2. - cladding_width,
                                        (fL.at(i) - 2 * cladding_width) / 2.);
-    if (fM.at(i) == "molybdenum") {
-      targetCore->SetLineColor(28);
-    } else {
-      targetCore->SetLineColor(38);
-    };  // silver/blue
+    targetCore->SetLineColor(38);  // Blue for tungsten
 
     // Nest core inside cladding (at centre, z=0 in cladded volume's coordinate
     // system)

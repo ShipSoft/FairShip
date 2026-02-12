@@ -38,6 +38,7 @@ it in future.
 
 ### Removed
 
+* Remove molybdenum target option; simplify target_config.yaml
 * Remove g4Ex scripts, which are unused and rely on g4py and Geant4 python imports
 * Remove old (CDR) target configuration; Jun25 is now the only supported target
 
