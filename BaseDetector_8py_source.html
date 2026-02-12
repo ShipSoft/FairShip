@@ -150,29 +150,31 @@ $(document).ready(function(){initNavTree('BaseDetector_8py_source.html',''); ini
 </div>
 <div class="foldopen" id="foldopen00047" data-start="" data-end="">
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">   47</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">fill</a>(self):</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="stringliteral">&quot;&quot;&quot;Fill detector hit branches.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46">branch</a>.Fill()</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9">mcBranch</a>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9">mcBranch</a>.Fill()</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="stringliteral">&quot;&quot;&quot;Fill detector hit branches.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="stringliteral">        Note: This method is now a no-op to prevent double-filling.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="stringliteral">        All branches are filled synchronously by recoTree.Fill() in the main loop.</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="preprocessor">@abstractmethod</span></div>
-<div class="foldopen" id="foldopen00054" data-start="" data-end="">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">   54</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">digitize</a>(self):</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize detector hits.</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="stringliteral">        This method must be implemented by all detector subclasses to convert</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">        MC hits into digitized detector responses.</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">pass</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="preprocessor">@abstractmethod</span></div>
+<div class="foldopen" id="foldopen00056" data-start="" data-end="">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">   56</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">digitize</a>(self):</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize detector hits.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">        This method must be implemented by all detector subclasses to convert</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">        MC hits into digitized detector responses.</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 </div>
-<div class="foldopen" id="foldopen00062" data-start="" data-end="">
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">   62</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">process</a>(self):</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="stringliteral">&quot;&quot;&quot;Process one event: delete, digitize, and fill.&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        self.delete()</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        self.digitize()</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        self.fill()</div>
+<div class="foldopen" id="foldopen00064" data-start="" data-end="">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">   64</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">process</a>(self):</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="stringliteral">&quot;&quot;&quot;Process one event: delete, digitize, and fill.&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        self.delete()</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        self.digitize()</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        self.fill()</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>
@@ -181,11 +183,11 @@ $(document).ready(function(){initNavTree('BaseDetector_8py_source.html',''); ini
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a444b7836488fd79f06f7edbbacf094d9"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9">BaseDetector.BaseDetector.mcBranch</a></div><div class="ttdeci">mcBranch</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00031">BaseDetector.py:31</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a44b08d07048c21b3a72e3f6c5b987950"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">BaseDetector.BaseDetector.MCdet</a></div><div class="ttdeci">MCdet</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00030">BaseDetector.py:30</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a69950a475b87b1035f2cdfe6b61743b8"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">BaseDetector.BaseDetector.fill</a></div><div class="ttdeci">fill(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00047">BaseDetector.py:47</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a752493f22dc30c10150c780f0e1801f2"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">BaseDetector.BaseDetector.process</a></div><div class="ttdeci">process(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00062">BaseDetector.py:62</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a752493f22dc30c10150c780f0e1801f2"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2">BaseDetector.BaseDetector.process</a></div><div class="ttdeci">process(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00064">BaseDetector.py:64</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a770798bc9f8dc602ddd63f5e8c99d8a6"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a770798bc9f8dc602ddd63f5e8c99d8a6">BaseDetector.BaseDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, branchName=None, mcBranchType=None, mcBranchName=None, splitLevel=99, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00014">BaseDetector.py:23</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a9849299ed6ff5da8cb6c10a61d135a9f"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a9849299ed6ff5da8cb6c10a61d135a9f">BaseDetector.BaseDetector.delete</a></div><div class="ttdeci">delete(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00041">BaseDetector.py:41</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00026">BaseDetector.py:26</a></div></div>
-<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac8a54e9c12221011cdb3aa521bd386c5"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00054">BaseDetector.py:54</a></div></div>
+<div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac8a54e9c12221011cdb3aa521bd386c5"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00056">BaseDetector.py:56</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_acf1f438321cfd4d51bee4d1d5a62ab39"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39">BaseDetector.BaseDetector.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00025">BaseDetector.py:25</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ae5c0b9a7c057d0bdd36cc98786554c46"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46">BaseDetector.BaseDetector.branch</a></div><div class="ttdeci">branch</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00037">BaseDetector.py:37</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

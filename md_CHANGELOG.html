@@ -128,6 +128,7 @@ Fixed</h2>
 <li>Update <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a> to save tracks for hits in post-target sensitive plane</li>
 <li>Set correct trackIDs for <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> class</li>
 <li>Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds</li>
+<li>Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>

@@ -262,42 +262,42 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Perform clustering algorithm on input hits.</pre> 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00196">196</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>    <span class="keyword">def </span>_clustering(self):</div>
-<div class="line"><span class="lineno">  197</span>        <span class="stringliteral">&quot;&quot;&quot;Perform clustering algorithm on input hits.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  198</span>        list_hits_in_cluster = {}</div>
-<div class="line"><span class="lineno">  199</span>        cluster_index = -1</div>
-<div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>        <span class="keywordflow">for</span> i, hit <span class="keywordflow">in</span> enumerate(self.input_hits):</div>
-<div class="line"><span class="lineno">  202</span>            <span class="keywordflow">if</span> hit.IsUsed() == 1:</div>
-<div class="line"><span class="lineno">  203</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>            neighbours = self._get_neighbours(hit)</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>            <span class="keywordflow">if</span> len(neighbours) &lt; 1:</div>
-<div class="line"><span class="lineno">  208</span>                <span class="keywordflow">continue</span></div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00199">199</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  199</span>    <span class="keyword">def </span>_clustering(self):</div>
+<div class="line"><span class="lineno">  200</span>        <span class="stringliteral">&quot;&quot;&quot;Perform clustering algorithm on input hits.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  201</span>        list_hits_in_cluster = {}</div>
+<div class="line"><span class="lineno">  202</span>        cluster_index = -1</div>
+<div class="line"><span class="lineno">  203</span> </div>
+<div class="line"><span class="lineno">  204</span>        <span class="keywordflow">for</span> i, hit <span class="keywordflow">in</span> enumerate(self.input_hits):</div>
+<div class="line"><span class="lineno">  205</span>            <span class="keywordflow">if</span> hit.IsUsed() == 1:</div>
+<div class="line"><span class="lineno">  206</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>            neighbours = self._get_neighbours(hit)</div>
 <div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>            cluster_index = cluster_index + 1</div>
-<div class="line"><span class="lineno">  211</span>            hit.SetIsUsed(1)</div>
-<div class="line"><span class="lineno">  212</span>            list_hits_in_cluster[cluster_index] = []</div>
-<div class="line"><span class="lineno">  213</span>            list_hits_in_cluster[cluster_index].append(hit)</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>            <span class="keywordflow">for</span> neighbouringHit <span class="keywordflow">in</span> neighbours:</div>
-<div class="line"><span class="lineno">  216</span>                <span class="keywordflow">if</span> neighbouringHit.IsUsed() == 1:</div>
-<div class="line"><span class="lineno">  217</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span>                neighbouringHit.SetIsUsed(1)</div>
-<div class="line"><span class="lineno">  220</span>                list_hits_in_cluster[cluster_index].append(neighbouringHit)</div>
+<div class="line"><span class="lineno">  210</span>            <span class="keywordflow">if</span> len(neighbours) &lt; 1:</div>
+<div class="line"><span class="lineno">  211</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  212</span> </div>
+<div class="line"><span class="lineno">  213</span>            cluster_index = cluster_index + 1</div>
+<div class="line"><span class="lineno">  214</span>            hit.SetIsUsed(1)</div>
+<div class="line"><span class="lineno">  215</span>            list_hits_in_cluster[cluster_index] = []</div>
+<div class="line"><span class="lineno">  216</span>            list_hits_in_cluster[cluster_index].append(hit)</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>            <span class="keywordflow">for</span> neighbouringHit <span class="keywordflow">in</span> neighbours:</div>
+<div class="line"><span class="lineno">  219</span>                <span class="keywordflow">if</span> neighbouringHit.IsUsed() == 1:</div>
+<div class="line"><span class="lineno">  220</span>                    <span class="keywordflow">continue</span></div>
 <div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>                expand_neighbours = self._get_neighbours(neighbouringHit)</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>                <span class="keywordflow">if</span> len(expand_neighbours) &gt;= 1:</div>
-<div class="line"><span class="lineno">  225</span>                    <span class="keywordflow">for</span> additionalHit <span class="keywordflow">in</span> expand_neighbours:</div>
-<div class="line"><span class="lineno">  226</span>                        <span class="keywordflow">if</span> additionalHit <span class="keywordflow">not</span> <span class="keywordflow">in</span> neighbours:</div>
-<div class="line"><span class="lineno">  227</span>                            neighbours.append(additionalHit)</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>        <span class="keywordflow">return</span> list_hits_in_cluster</div>
-<div class="line"><span class="lineno">  230</span> </div>
+<div class="line"><span class="lineno">  222</span>                neighbouringHit.SetIsUsed(1)</div>
+<div class="line"><span class="lineno">  223</span>                list_hits_in_cluster[cluster_index].append(neighbouringHit)</div>
+<div class="line"><span class="lineno">  224</span> </div>
+<div class="line"><span class="lineno">  225</span>                expand_neighbours = self._get_neighbours(neighbouringHit)</div>
+<div class="line"><span class="lineno">  226</span> </div>
+<div class="line"><span class="lineno">  227</span>                <span class="keywordflow">if</span> len(expand_neighbours) &gt;= 1:</div>
+<div class="line"><span class="lineno">  228</span>                    <span class="keywordflow">for</span> additionalHit <span class="keywordflow">in</span> expand_neighbours:</div>
+<div class="line"><span class="lineno">  229</span>                        <span class="keywordflow">if</span> additionalHit <span class="keywordflow">not</span> <span class="keywordflow">in</span> neighbours:</div>
+<div class="line"><span class="lineno">  230</span>                            neighbours.append(additionalHit)</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">return</span> list_hits_in_cluster</div>
+<div class="line"><span class="lineno">  233</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -335,14 +335,14 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Calculate total energy of hits in a cluster.</pre> 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00189">189</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>    <span class="keyword">def </span>_get_cluster_energy(self, list_hits):</div>
-<div class="line"><span class="lineno">  190</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate total energy of hits in a cluster.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  191</span>        energy = 0</div>
-<div class="line"><span class="lineno">  192</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_hits:</div>
-<div class="line"><span class="lineno">  193</span>            energy += hit.GetEnergy()</div>
-<div class="line"><span class="lineno">  194</span>        <span class="keywordflow">return</span> energy</div>
-<div class="line"><span class="lineno">  195</span> </div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00192">192</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>    <span class="keyword">def </span>_get_cluster_energy(self, list_hits):</div>
+<div class="line"><span class="lineno">  193</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate total energy of hits in a cluster.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  194</span>        energy = 0</div>
+<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_hits:</div>
+<div class="line"><span class="lineno">  196</span>            energy += hit.GetEnergy()</div>
+<div class="line"><span class="lineno">  197</span>        <span class="keywordflow">return</span> energy</div>
+<div class="line"><span class="lineno">  198</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -380,71 +380,71 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Find neighbouring hits for clustering.</pre> 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00231">231</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  231</span>    <span class="keyword">def </span>_get_neighbours(self, hit):</div>
-<div class="line"><span class="lineno">  232</span>        <span class="stringliteral">&quot;&quot;&quot;Find neighbouring hits for clustering.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  233</span>        list_neighbours = []</div>
-<div class="line"><span class="lineno">  234</span>        err_x_1 = hit.GetXError()</div>
-<div class="line"><span class="lineno">  235</span>        err_y_1 = hit.GetYError()</div>
-<div class="line"><span class="lineno">  236</span>        err_z_1 = hit.GetZError()</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>        <span class="comment"># Allow one or more &#39;missing&#39; hit in x/y</span></div>
-<div class="line"><span class="lineno">  239</span>        max_gap = 2.0</div>
-<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><span class="lineno">  241</span>            err_x_1 = err_x_1 * max_gap</div>
-<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><span class="lineno">  243</span>            err_y_1 = err_y_1 * max_gap</div>
-<div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">for</span> hit2 <span class="keywordflow">in</span> self.input_hits:</div>
-<div class="line"><span class="lineno">  246</span>            <span class="keywordflow">if</span> hit2 <span class="keywordflow">is</span> <span class="keywordflow">not</span> hit:</div>
-<div class="line"><span class="lineno">  247</span>                Dx = fabs(hit2.GetX() - hit.GetX())</div>
-<div class="line"><span class="lineno">  248</span>                Dy = fabs(hit2.GetY() - hit.GetY())</div>
-<div class="line"><span class="lineno">  249</span>                Dz = fabs(hit2.GetZ() - hit.GetZ())</div>
-<div class="line"><span class="lineno">  250</span>                err_x_2 = hit2.GetXError()</div>
-<div class="line"><span class="lineno">  251</span>                err_y_2 = hit2.GetYError()</div>
-<div class="line"><span class="lineno">  252</span>                err_z_2 = hit2.GetZError()</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>                <span class="keywordflow">if</span> hit2.IsX():</div>
-<div class="line"><span class="lineno">  255</span>                    err_x_2 = err_x_2 * max_gap</div>
-<div class="line"><span class="lineno">  256</span>                <span class="keywordflow">if</span> hit2.IsY():</div>
-<div class="line"><span class="lineno">  257</span>                    err_y_2 = err_y_2 * max_gap</div>
-<div class="line"><span class="lineno">  258</span> </div>
-<div class="line"><span class="lineno">  259</span>                <span class="keywordflow">if</span> self.step == 1:</div>
-<div class="line"><span class="lineno">  260</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><span class="lineno">  261</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  262</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><span class="lineno">  263</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><span class="lineno">  264</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
-<div class="line"><span class="lineno">  265</span>                        ):</div>
-<div class="line"><span class="lineno">  266</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><span class="lineno">  267</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><span class="lineno">  268</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  269</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><span class="lineno">  270</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><span class="lineno">  271</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><span class="lineno">  272</span>                        ):</div>
-<div class="line"><span class="lineno">  273</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>                <span class="keywordflow">elif</span> self.step == 2:</div>
-<div class="line"><span class="lineno">  276</span>                    <span class="comment"># Relax z condition for step 2</span></div>
-<div class="line"><span class="lineno">  277</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><span class="lineno">  278</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  279</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><span class="lineno">  280</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><span class="lineno">  281</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
-<div class="line"><span class="lineno">  282</span>                        ):</div>
-<div class="line"><span class="lineno">  283</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><span class="lineno">  284</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><span class="lineno">  285</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  286</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><span class="lineno">  287</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><span class="lineno">  288</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><span class="lineno">  289</span>                        ):</div>
-<div class="line"><span class="lineno">  290</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><span class="lineno">  291</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  292</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
-<div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span>        <span class="keywordflow">return</span> list_neighbours</div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00234">234</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>    <span class="keyword">def </span>_get_neighbours(self, hit):</div>
+<div class="line"><span class="lineno">  235</span>        <span class="stringliteral">&quot;&quot;&quot;Find neighbouring hits for clustering.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  236</span>        list_neighbours = []</div>
+<div class="line"><span class="lineno">  237</span>        err_x_1 = hit.GetXError()</div>
+<div class="line"><span class="lineno">  238</span>        err_y_1 = hit.GetYError()</div>
+<div class="line"><span class="lineno">  239</span>        err_z_1 = hit.GetZError()</div>
+<div class="line"><span class="lineno">  240</span> </div>
+<div class="line"><span class="lineno">  241</span>        <span class="comment"># Allow one or more &#39;missing&#39; hit in x/y</span></div>
+<div class="line"><span class="lineno">  242</span>        max_gap = 2.0</div>
+<div class="line"><span class="lineno">  243</span>        <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><span class="lineno">  244</span>            err_x_1 = err_x_1 * max_gap</div>
+<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><span class="lineno">  246</span>            err_y_1 = err_y_1 * max_gap</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span>        <span class="keywordflow">for</span> hit2 <span class="keywordflow">in</span> self.input_hits:</div>
+<div class="line"><span class="lineno">  249</span>            <span class="keywordflow">if</span> hit2 <span class="keywordflow">is</span> <span class="keywordflow">not</span> hit:</div>
+<div class="line"><span class="lineno">  250</span>                Dx = fabs(hit2.GetX() - hit.GetX())</div>
+<div class="line"><span class="lineno">  251</span>                Dy = fabs(hit2.GetY() - hit.GetY())</div>
+<div class="line"><span class="lineno">  252</span>                Dz = fabs(hit2.GetZ() - hit.GetZ())</div>
+<div class="line"><span class="lineno">  253</span>                err_x_2 = hit2.GetXError()</div>
+<div class="line"><span class="lineno">  254</span>                err_y_2 = hit2.GetYError()</div>
+<div class="line"><span class="lineno">  255</span>                err_z_2 = hit2.GetZError()</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>                <span class="keywordflow">if</span> hit2.IsX():</div>
+<div class="line"><span class="lineno">  258</span>                    err_x_2 = err_x_2 * max_gap</div>
+<div class="line"><span class="lineno">  259</span>                <span class="keywordflow">if</span> hit2.IsY():</div>
+<div class="line"><span class="lineno">  260</span>                    err_y_2 = err_y_2 * max_gap</div>
+<div class="line"><span class="lineno">  261</span> </div>
+<div class="line"><span class="lineno">  262</span>                <span class="keywordflow">if</span> self.step == 1:</div>
+<div class="line"><span class="lineno">  263</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><span class="lineno">  264</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  265</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><span class="lineno">  266</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><span class="lineno">  267</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><span class="lineno">  268</span>                        ):</div>
+<div class="line"><span class="lineno">  269</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><span class="lineno">  270</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><span class="lineno">  271</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  272</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><span class="lineno">  273</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><span class="lineno">  274</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
+<div class="line"><span class="lineno">  275</span>                        ):</div>
+<div class="line"><span class="lineno">  276</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>                <span class="keywordflow">elif</span> self.step == 2:</div>
+<div class="line"><span class="lineno">  279</span>                    <span class="comment"># Relax z condition for step 2</span></div>
+<div class="line"><span class="lineno">  280</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><span class="lineno">  281</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  282</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><span class="lineno">  283</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><span class="lineno">  284</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><span class="lineno">  285</span>                        ):</div>
+<div class="line"><span class="lineno">  286</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><span class="lineno">  287</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><span class="lineno">  288</span>                        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  289</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><span class="lineno">  290</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><span class="lineno">  291</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
+<div class="line"><span class="lineno">  292</span>                        ):</div>
+<div class="line"><span class="lineno">  293</span>                            list_neighbours.append(hit2)</div>
+<div class="line"><span class="lineno">  294</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  295</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
+<div class="line"><span class="lineno">  296</span> </div>
+<div class="line"><span class="lineno">  297</span>        <span class="keywordflow">return</span> list_neighbours</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -472,49 +472,49 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Merge fragments into the closest subcluster.</pre> 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00147">147</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  147</span>    <span class="keyword">def </span>_get_subclusters_excluding_fragments(self):</div>
-<div class="line"><span class="lineno">  148</span>        <span class="stringliteral">&quot;&quot;&quot;Merge fragments into the closest subcluster.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  149</span>        list_subclusters_excluding_fragments = {}</div>
-<div class="line"><span class="lineno">  150</span>        fragment_indices = []</div>
-<div class="line"><span class="lineno">  151</span>        subclusters_indices = []</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> self.list_subclusters_of_hits:</div>
-<div class="line"><span class="lineno">  154</span>            subcluster_size = len(self.list_subclusters_of_hits[k])</div>
-<div class="line"><span class="lineno">  155</span>            <span class="keywordflow">if</span> subcluster_size &lt; 5:</div>
-<div class="line"><span class="lineno">  156</span>                fragment_indices.append(k)</div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  158</span>                subclusters_indices.append(k)</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>        <span class="comment"># Merge all fragments if no subclusters exist</span></div>
-<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">if</span> len(subclusters_indices) == 0 <span class="keywordflow">and</span> len(fragment_indices) != 0:</div>
-<div class="line"><span class="lineno">  162</span>            subclusters_indices.append(0)</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>        <span class="comment"># Merge fragments into closest subcluster</span></div>
-<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">for</span> index_fragment <span class="keywordflow">in</span> fragment_indices:</div>
-<div class="line"><span class="lineno">  166</span>            minDistance = -1</div>
-<div class="line"><span class="lineno">  167</span>            minIndex = -1</div>
-<div class="line"><span class="lineno">  168</span>            first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> subclusters_indices:</div>
-<div class="line"><span class="lineno">  171</span>                first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]</div>
-<div class="line"><span class="lineno">  172</span>                <span class="keywordflow">if</span> first_hit_fragment.IsX():</div>
-<div class="line"><span class="lineno">  173</span>                    distance = fabs(first_hit_fragment.GetX() - first_hit_subcluster.GetX())</div>
-<div class="line"><span class="lineno">  174</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  175</span>                    distance = fabs(first_hit_fragment.GetY() - first_hit_subcluster.GetY())</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>                <span class="keywordflow">if</span> minDistance &lt; 0 <span class="keywordflow">or</span> distance &lt; minDistance:</div>
-<div class="line"><span class="lineno">  178</span>                    minDistance = distance</div>
-<div class="line"><span class="lineno">  179</span>                    minIndex = index_subcluster</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>            <span class="keywordflow">if</span> minIndex != index_fragment:</div>
-<div class="line"><span class="lineno">  182</span>                self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment]</div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00150">150</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>    <span class="keyword">def </span>_get_subclusters_excluding_fragments(self):</div>
+<div class="line"><span class="lineno">  151</span>        <span class="stringliteral">&quot;&quot;&quot;Merge fragments into the closest subcluster.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  152</span>        list_subclusters_excluding_fragments = {}</div>
+<div class="line"><span class="lineno">  153</span>        fragment_indices = []</div>
+<div class="line"><span class="lineno">  154</span>        subclusters_indices = []</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> self.list_subclusters_of_hits:</div>
+<div class="line"><span class="lineno">  157</span>            subcluster_size = len(self.list_subclusters_of_hits[k])</div>
+<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">if</span> subcluster_size &lt; 5:</div>
+<div class="line"><span class="lineno">  159</span>                fragment_indices.append(k)</div>
+<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  161</span>                subclusters_indices.append(k)</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>        <span class="comment"># Merge all fragments if no subclusters exist</span></div>
+<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">if</span> len(subclusters_indices) == 0 <span class="keywordflow">and</span> len(fragment_indices) != 0:</div>
+<div class="line"><span class="lineno">  165</span>            subclusters_indices.append(0)</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>        <span class="comment"># Merge fragments into closest subcluster</span></div>
+<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">for</span> index_fragment <span class="keywordflow">in</span> fragment_indices:</div>
+<div class="line"><span class="lineno">  169</span>            minDistance = -1</div>
+<div class="line"><span class="lineno">  170</span>            minIndex = -1</div>
+<div class="line"><span class="lineno">  171</span>            first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> subclusters_indices:</div>
+<div class="line"><span class="lineno">  174</span>                first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]</div>
+<div class="line"><span class="lineno">  175</span>                <span class="keywordflow">if</span> first_hit_fragment.IsX():</div>
+<div class="line"><span class="lineno">  176</span>                    distance = fabs(first_hit_fragment.GetX() - first_hit_subcluster.GetX())</div>
+<div class="line"><span class="lineno">  177</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  178</span>                    distance = fabs(first_hit_fragment.GetY() - first_hit_subcluster.GetY())</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>                <span class="keywordflow">if</span> minDistance &lt; 0 <span class="keywordflow">or</span> distance &lt; minDistance:</div>
+<div class="line"><span class="lineno">  181</span>                    minDistance = distance</div>
+<div class="line"><span class="lineno">  182</span>                    minIndex = index_subcluster</div>
 <div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">for</span> counter, index_subcluster <span class="keywordflow">in</span> enumerate(subclusters_indices):</div>
-<div class="line"><span class="lineno">  185</span>            list_subclusters_excluding_fragments[counter] = self.list_subclusters_of_hits[index_subcluster]</div>
+<div class="line"><span class="lineno">  184</span>            <span class="keywordflow">if</span> minIndex != index_fragment:</div>
+<div class="line"><span class="lineno">  185</span>                self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment]</div>
 <div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>        <span class="keywordflow">return</span> list_subclusters_excluding_fragments</div>
-<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  187</span>        <span class="keywordflow">for</span> counter, index_subcluster <span class="keywordflow">in</span> enumerate(subclusters_indices):</div>
+<div class="line"><span class="lineno">  188</span>            list_subclusters_excluding_fragments[counter] = self.list_subclusters_of_hits[index_subcluster]</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span>        <span class="keywordflow">return</span> list_subclusters_excluding_fragments</div>
+<div class="line"><span class="lineno">  191</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -542,103 +542,103 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Perform cluster reconstruction from digitized hits.</pre> 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00051">51</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>    <span class="keyword">def </span>_reconstruct_clusters(self):</div>
-<div class="line"><span class="lineno">   52</span>        <span class="stringliteral">&quot;&quot;&quot;Perform cluster reconstruction from digitized hits.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   53</span>        <span class="comment"># Hit selection: select hits above noise threshold</span></div>
-<div class="line"><span class="lineno">   54</span>        noise_energy_threshold = 0.002  <span class="comment"># GeV</span></div>
-<div class="line"><span class="lineno">   55</span>        list_hits_above_threshold = []</div>
-<div class="line"><span class="lineno">   56</span>        hit_to_index = {}</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">for</span> idx, hit <span class="keywordflow">in</span> enumerate(self.det):</div>
-<div class="line"><span class="lineno">   58</span>            <span class="keywordflow">if</span> hit.GetEnergy() &gt; noise_energy_threshold:</div>
-<div class="line"><span class="lineno">   59</span>                hit.SetIsUsed(0)</div>
-<div class="line"><span class="lineno">   60</span>                list_hits_above_threshold.append(hit)</div>
-<div class="line"><span class="lineno">   61</span>                hit_to_index[id(hit)] = idx</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> list_hits_above_threshold:</div>
-<div class="line"><span class="lineno">   64</span>            <span class="keywordflow">return</span></div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00054">54</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>    <span class="keyword">def </span>_reconstruct_clusters(self):</div>
+<div class="line"><span class="lineno">   55</span>        <span class="stringliteral">&quot;&quot;&quot;Perform cluster reconstruction from digitized hits.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   56</span>        <span class="comment"># Hit selection: select hits above noise threshold</span></div>
+<div class="line"><span class="lineno">   57</span>        noise_energy_threshold = 0.002  <span class="comment"># GeV</span></div>
+<div class="line"><span class="lineno">   58</span>        list_hits_above_threshold = []</div>
+<div class="line"><span class="lineno">   59</span>        hit_to_index = {}</div>
+<div class="line"><span class="lineno">   60</span>        <span class="keywordflow">for</span> idx, hit <span class="keywordflow">in</span> enumerate(self.det):</div>
+<div class="line"><span class="lineno">   61</span>            <span class="keywordflow">if</span> hit.GetEnergy() &gt; noise_energy_threshold:</div>
+<div class="line"><span class="lineno">   62</span>                hit.SetIsUsed(0)</div>
+<div class="line"><span class="lineno">   63</span>                list_hits_above_threshold.append(hit)</div>
+<div class="line"><span class="lineno">   64</span>                hit_to_index[id(hit)] = idx</div>
 <div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>        <span class="comment"># Step 1: group of neighbouring cells</span></div>
-<div class="line"><span class="lineno">   67</span>        self.step = 1</div>
-<div class="line"><span class="lineno">   68</span>        self.input_hits = list_hits_above_threshold</div>
-<div class="line"><span class="lineno">   69</span>        list_clusters_of_hits = self._clustering()</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>        <span class="comment"># Step 2: check if clusters can be split in XZ and YZ planes</span></div>
-<div class="line"><span class="lineno">   72</span>        self.step = 2</div>
-<div class="line"><span class="lineno">   73</span>        list_final_clusters = {}</div>
-<div class="line"><span class="lineno">   74</span>        index_final_cluster = 0</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_clusters_of_hits:</div>
-<div class="line"><span class="lineno">   77</span>            list_hits_x = []</div>
-<div class="line"><span class="lineno">   78</span>            list_hits_y = []</div>
-<div class="line"><span class="lineno">   79</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]:</div>
-<div class="line"><span class="lineno">   80</span>                hit.SetIsUsed(0)</div>
-<div class="line"><span class="lineno">   81</span>                <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><span class="lineno">   82</span>                    list_hits_x.append(hit)</div>
-<div class="line"><span class="lineno">   83</span>                <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><span class="lineno">   84</span>                    list_hits_y.append(hit)</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>            <span class="comment"># Re-cluster in XZ plane</span></div>
-<div class="line"><span class="lineno">   87</span>            self.input_hits = list_hits_x</div>
-<div class="line"><span class="lineno">   88</span>            list_subclusters_of_x_hits = self._clustering()</div>
-<div class="line"><span class="lineno">   89</span>            cluster_energy_x = self._get_cluster_energy(list_hits_x)</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>            self.list_subclusters_of_hits = list_subclusters_of_x_hits</div>
-<div class="line"><span class="lineno">   92</span>            list_of_subclusters_x = self._get_subclusters_excluding_fragments()</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> list_hits_above_threshold:</div>
+<div class="line"><span class="lineno">   67</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>        <span class="comment"># Step 1: group of neighbouring cells</span></div>
+<div class="line"><span class="lineno">   70</span>        self.step = 1</div>
+<div class="line"><span class="lineno">   71</span>        self.input_hits = list_hits_above_threshold</div>
+<div class="line"><span class="lineno">   72</span>        list_clusters_of_hits = self._clustering()</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>        <span class="comment"># Step 2: check if clusters can be split in XZ and YZ planes</span></div>
+<div class="line"><span class="lineno">   75</span>        self.step = 2</div>
+<div class="line"><span class="lineno">   76</span>        list_final_clusters = {}</div>
+<div class="line"><span class="lineno">   77</span>        index_final_cluster = 0</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_clusters_of_hits:</div>
+<div class="line"><span class="lineno">   80</span>            list_hits_x = []</div>
+<div class="line"><span class="lineno">   81</span>            list_hits_y = []</div>
+<div class="line"><span class="lineno">   82</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]:</div>
+<div class="line"><span class="lineno">   83</span>                hit.SetIsUsed(0)</div>
+<div class="line"><span class="lineno">   84</span>                <span class="keywordflow">if</span> hit.IsX():</div>
+<div class="line"><span class="lineno">   85</span>                    list_hits_x.append(hit)</div>
+<div class="line"><span class="lineno">   86</span>                <span class="keywordflow">if</span> hit.IsY():</div>
+<div class="line"><span class="lineno">   87</span>                    list_hits_y.append(hit)</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>            <span class="comment"># Re-cluster in XZ plane</span></div>
+<div class="line"><span class="lineno">   90</span>            self.input_hits = list_hits_x</div>
+<div class="line"><span class="lineno">   91</span>            list_subclusters_of_x_hits = self._clustering()</div>
+<div class="line"><span class="lineno">   92</span>            cluster_energy_x = self._get_cluster_energy(list_hits_x)</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>            <span class="comment"># Compute energy weights from X splitting</span></div>
-<div class="line"><span class="lineno">   95</span>            weights_from_x_splitting = {}</div>
-<div class="line"><span class="lineno">   96</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_x:</div>
-<div class="line"><span class="lineno">   97</span>                subcluster_energy_x = self._get_cluster_energy(list_of_subclusters_x[index_subcluster])</div>
-<div class="line"><span class="lineno">   98</span>                weight = subcluster_energy_x / cluster_energy_x <span class="keywordflow">if</span> cluster_energy_x &gt; 0 <span class="keywordflow">else</span> 0</div>
-<div class="line"><span class="lineno">   99</span>                weights_from_x_splitting[index_subcluster] = weight</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>            <span class="comment"># Re-cluster in YZ plane</span></div>
-<div class="line"><span class="lineno">  102</span>            self.input_hits = list_hits_y</div>
-<div class="line"><span class="lineno">  103</span>            list_subclusters_of_y_hits = self._clustering()</div>
-<div class="line"><span class="lineno">  104</span>            cluster_energy_y = self._get_cluster_energy(list_hits_y)</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>            self.list_subclusters_of_hits = list_subclusters_of_y_hits</div>
-<div class="line"><span class="lineno">  107</span>            list_of_subclusters_y = self._get_subclusters_excluding_fragments()</div>
+<div class="line"><span class="lineno">   94</span>            self.list_subclusters_of_hits = list_subclusters_of_x_hits</div>
+<div class="line"><span class="lineno">   95</span>            list_of_subclusters_x = self._get_subclusters_excluding_fragments()</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>            <span class="comment"># Compute energy weights from X splitting</span></div>
+<div class="line"><span class="lineno">   98</span>            weights_from_x_splitting = {}</div>
+<div class="line"><span class="lineno">   99</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_x:</div>
+<div class="line"><span class="lineno">  100</span>                subcluster_energy_x = self._get_cluster_energy(list_of_subclusters_x[index_subcluster])</div>
+<div class="line"><span class="lineno">  101</span>                weight = subcluster_energy_x / cluster_energy_x <span class="keywordflow">if</span> cluster_energy_x &gt; 0 <span class="keywordflow">else</span> 0</div>
+<div class="line"><span class="lineno">  102</span>                weights_from_x_splitting[index_subcluster] = weight</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>            <span class="comment"># Re-cluster in YZ plane</span></div>
+<div class="line"><span class="lineno">  105</span>            self.input_hits = list_hits_y</div>
+<div class="line"><span class="lineno">  106</span>            list_subclusters_of_y_hits = self._clustering()</div>
+<div class="line"><span class="lineno">  107</span>            cluster_energy_y = self._get_cluster_energy(list_hits_y)</div>
 <div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>            <span class="comment"># Compute energy weights from Y splitting</span></div>
-<div class="line"><span class="lineno">  110</span>            weights_from_y_splitting = {}</div>
-<div class="line"><span class="lineno">  111</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_y:</div>
-<div class="line"><span class="lineno">  112</span>                subcluster_energy_y = self._get_cluster_energy(list_of_subclusters_y[index_subcluster])</div>
-<div class="line"><span class="lineno">  113</span>                weight = subcluster_energy_y / cluster_energy_y <span class="keywordflow">if</span> cluster_energy_y &gt; 0 <span class="keywordflow">else</span> 0</div>
-<div class="line"><span class="lineno">  114</span>                weights_from_y_splitting[index_subcluster] = weight</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>            <span class="comment"># Build final clusters</span></div>
-<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> len(list_of_subclusters_x) == 1 <span class="keywordflow">and</span> len(list_of_subclusters_y) == 1:</div>
-<div class="line"><span class="lineno">  118</span>                list_final_clusters[index_final_cluster] = [(hit, 1.0) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]]</div>
-<div class="line"><span class="lineno">  119</span>                index_final_cluster += 1</div>
-<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  121</span>                <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> list_of_subclusters_x:</div>
-<div class="line"><span class="lineno">  122</span>                    <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> list_of_subclusters_y:</div>
-<div class="line"><span class="lineno">  123</span>                        <span class="comment"># Build list of (hit, weight) tuples</span></div>
-<div class="line"><span class="lineno">  124</span>                        hit_weight_list = []</div>
-<div class="line"><span class="lineno">  125</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_y[iy]:</div>
-<div class="line"><span class="lineno">  126</span>                            hit_weight_list.append((hit, weights_from_x_splitting[ix]))</div>
-<div class="line"><span class="lineno">  127</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_x[ix]:</div>
-<div class="line"><span class="lineno">  128</span>                            hit_weight_list.append((hit, weights_from_y_splitting[iy]))</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>                        list_final_clusters[index_final_cluster] = hit_weight_list</div>
-<div class="line"><span class="lineno">  131</span>                        index_final_cluster += 1</div>
+<div class="line"><span class="lineno">  109</span>            self.list_subclusters_of_hits = list_subclusters_of_y_hits</div>
+<div class="line"><span class="lineno">  110</span>            list_of_subclusters_y = self._get_subclusters_excluding_fragments()</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>            <span class="comment"># Compute energy weights from Y splitting</span></div>
+<div class="line"><span class="lineno">  113</span>            weights_from_y_splitting = {}</div>
+<div class="line"><span class="lineno">  114</span>            <span class="keywordflow">for</span> index_subcluster <span class="keywordflow">in</span> list_of_subclusters_y:</div>
+<div class="line"><span class="lineno">  115</span>                subcluster_energy_y = self._get_cluster_energy(list_of_subclusters_y[index_subcluster])</div>
+<div class="line"><span class="lineno">  116</span>                weight = subcluster_energy_y / cluster_energy_y <span class="keywordflow">if</span> cluster_energy_y &gt; 0 <span class="keywordflow">else</span> 0</div>
+<div class="line"><span class="lineno">  117</span>                weights_from_y_splitting[index_subcluster] = weight</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>            <span class="comment"># Build final clusters</span></div>
+<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">if</span> len(list_of_subclusters_x) == 1 <span class="keywordflow">and</span> len(list_of_subclusters_y) == 1:</div>
+<div class="line"><span class="lineno">  121</span>                list_final_clusters[index_final_cluster] = [(hit, 1.0) <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_clusters_of_hits[i]]</div>
+<div class="line"><span class="lineno">  122</span>                index_final_cluster += 1</div>
+<div class="line"><span class="lineno">  123</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  124</span>                <span class="keywordflow">for</span> ix <span class="keywordflow">in</span> list_of_subclusters_x:</div>
+<div class="line"><span class="lineno">  125</span>                    <span class="keywordflow">for</span> iy <span class="keywordflow">in</span> list_of_subclusters_y:</div>
+<div class="line"><span class="lineno">  126</span>                        <span class="comment"># Build list of (hit, weight) tuples</span></div>
+<div class="line"><span class="lineno">  127</span>                        hit_weight_list = []</div>
+<div class="line"><span class="lineno">  128</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_y[iy]:</div>
+<div class="line"><span class="lineno">  129</span>                            hit_weight_list.append((hit, weights_from_x_splitting[ix]))</div>
+<div class="line"><span class="lineno">  130</span>                        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> list_of_subclusters_x[ix]:</div>
+<div class="line"><span class="lineno">  131</span>                            hit_weight_list.append((hit, weights_from_y_splitting[iy]))</div>
 <div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>        <span class="comment"># Fill cluster objects</span></div>
-<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_final_clusters:</div>
-<div class="line"><span class="lineno">  135</span>            <span class="comment"># Create empty cluster</span></div>
-<div class="line"><span class="lineno">  136</span>            cluster = ROOT.splitcalCluster()</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>            <span class="comment"># Add all hits with their weights using indices</span></div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">for</span> hit, weight <span class="keywordflow">in</span> list_final_clusters[i]:</div>
-<div class="line"><span class="lineno">  140</span>                hit_index = hit_to_index[id(hit)]</div>
-<div class="line"><span class="lineno">  141</span>                cluster.AddHit(hit_index, weight)</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>            cluster.SetIndex(int(i))</div>
-<div class="line"><span class="lineno">  144</span>            cluster.ComputeEtaPhiE(self.det)</div>
-<div class="line"><span class="lineno">  145</span>            self.reco.push_back(cluster)</div>
-<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  133</span>                        list_final_clusters[index_final_cluster] = hit_weight_list</div>
+<div class="line"><span class="lineno">  134</span>                        index_final_cluster += 1</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>        <span class="comment"># Fill cluster objects</span></div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> list_final_clusters:</div>
+<div class="line"><span class="lineno">  138</span>            <span class="comment"># Create empty cluster</span></div>
+<div class="line"><span class="lineno">  139</span>            cluster = ROOT.splitcalCluster()</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>            <span class="comment"># Add all hits with their weights using indices</span></div>
+<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">for</span> hit, weight <span class="keywordflow">in</span> list_final_clusters[i]:</div>
+<div class="line"><span class="lineno">  143</span>                hit_index = hit_to_index[id(hit)]</div>
+<div class="line"><span class="lineno">  144</span>                cluster.AddHit(hit_index, weight)</div>
+<div class="line"><span class="lineno">  145</span> </div>
+<div class="line"><span class="lineno">  146</span>            cluster.SetIndex(int(i))</div>
+<div class="line"><span class="lineno">  147</span>            cluster.ComputeEtaPhiE(self.det)</div>
+<div class="line"><span class="lineno">  148</span>            self.reco.push_back(cluster)</div>
+<div class="line"><span class="lineno">  149</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -687,30 +687,30 @@ Protected Member Functions</h2></td></tr>
 <pre class="fragment">Digitize splitcal hits and perform cluster reconstruction.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5">BaseDetector.BaseDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00028">28</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>    <span class="keyword">def </span>digitize(self):</div>
-<div class="line"><span class="lineno">   29</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize splitcal hits and perform cluster reconstruction.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   30</span>        <span class="comment"># Digitization: group MC points by detector cell, then create one hit per cell</span></div>
-<div class="line"><span class="lineno">   31</span>        points_by_detID = {}</div>
-<div class="line"><span class="lineno">   32</span>        <span class="keywordflow">for</span> point <span class="keywordflow">in</span> self.intree.splitcalPoint:</div>
-<div class="line"><span class="lineno">   33</span>            detector_id = point.GetDetectorID()</div>
-<div class="line"><span class="lineno">   34</span>            <span class="keywordflow">if</span> detector_id <span class="keywordflow">not</span> <span class="keywordflow">in</span> points_by_detID:</div>
-<div class="line"><span class="lineno">   35</span>                points_by_detID[detector_id] = []</div>
-<div class="line"><span class="lineno">   36</span>            points_by_detID[detector_id].append(point)</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>        <span class="comment"># Create one hit per detector cell from all points in that cell</span></div>
-<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">for</span> detector_id, points <span class="keywordflow">in</span> points_by_detID.items():</div>
-<div class="line"><span class="lineno">   40</span>            <span class="comment"># Convert Python list to std::vector for C++</span></div>
-<div class="line"><span class="lineno">   41</span>            point_vector = ROOT.std.vector(<span class="stringliteral">&quot;splitcalPoint&quot;</span>)()</div>
-<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">for</span> point <span class="keywordflow">in</span> points:</div>
-<div class="line"><span class="lineno">   43</span>                point_vector.push_back(point)</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>            hit = ROOT.splitcalHit(point_vector, self.intree.t0)</div>
-<div class="line"><span class="lineno">   46</span>            self.det.push_back(hit)</div>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00031">31</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>    <span class="keyword">def </span>digitize(self):</div>
+<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize splitcal hits and perform cluster reconstruction.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   33</span>        <span class="comment"># Digitization: group MC points by detector cell, then create one hit per cell</span></div>
+<div class="line"><span class="lineno">   34</span>        points_by_detID = {}</div>
+<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">for</span> point <span class="keywordflow">in</span> self.intree.splitcalPoint:</div>
+<div class="line"><span class="lineno">   36</span>            detector_id = point.GetDetectorID()</div>
+<div class="line"><span class="lineno">   37</span>            <span class="keywordflow">if</span> detector_id <span class="keywordflow">not</span> <span class="keywordflow">in</span> points_by_detID:</div>
+<div class="line"><span class="lineno">   38</span>                points_by_detID[detector_id] = []</div>
+<div class="line"><span class="lineno">   39</span>            points_by_detID[detector_id].append(point)</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>        <span class="comment"># Create one hit per detector cell from all points in that cell</span></div>
+<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">for</span> detector_id, points <span class="keywordflow">in</span> points_by_detID.items():</div>
+<div class="line"><span class="lineno">   43</span>            <span class="comment"># Convert Python list to std::vector for C++</span></div>
+<div class="line"><span class="lineno">   44</span>            point_vector = ROOT.std.vector(<span class="stringliteral">&quot;splitcalPoint&quot;</span>)()</div>
+<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">for</span> point <span class="keywordflow">in</span> points:</div>
+<div class="line"><span class="lineno">   46</span>                point_vector.push_back(point)</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        <span class="comment"># Cluster reconstruction</span></div>
-<div class="line"><span class="lineno">   49</span>        self._reconstruct_clusters()</div>
+<div class="line"><span class="lineno">   48</span>            hit = ROOT.splitcalHit(point_vector, self.intree.t0)</div>
+<div class="line"><span class="lineno">   49</span>            self.det.push_back(hit)</div>
 <div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>        <span class="comment"># Cluster reconstruction</span></div>
+<div class="line"><span class="lineno">   52</span>        self._reconstruct_clusters()</div>
+<div class="line"><span class="lineno">   53</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -729,15 +729,22 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Fill detector hit branches.</pre> 
+<pre class="fragment">Fill detector hit branches.
+
+Note: This method is now a no-op to prevent double-filling.
+All branches are filled synchronously by recoTree.Fill() in the main loop.
+</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">BaseDetector.BaseDetector</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00023">23</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>    <span class="keyword">def </span>fill(self):</div>
-<div class="line"><span class="lineno">   24</span>        <span class="comment"># Override to also fill reconstruction branch</span></div>
-<div class="line"><span class="lineno">   25</span>        super().fill()</div>
-<div class="line"><span class="lineno">   26</span>        self.recoBranch.Fill()</div>
-<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   24</span>        <span class="stringliteral">&quot;&quot;&quot;Fill detector hit branches.</span></div>
+<div class="line"><span class="lineno">   25</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   26</span><span class="stringliteral">        Note: This method is now a no-op to prevent double-filling.</span></div>
+<div class="line"><span class="lineno">   27</span><span class="stringliteral">        All branches are filled synchronously by recoTree.Fill() in the main loop.</span></div>
+<div class="line"><span class="lineno">   28</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   29</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">   30</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -754,7 +761,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00057">57</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00060">60</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 
 </div>
 </div>
@@ -770,7 +777,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00068">68</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00071">71</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 
 </div>
 </div>
@@ -786,7 +793,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00091">91</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00094">94</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 
 </div>
 </div>
@@ -834,7 +841,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00067">67</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00070">70</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 
 </div>
 </div>
