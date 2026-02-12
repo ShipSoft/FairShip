@@ -18,6 +18,7 @@ it in future.
 
 ### Changed
 
+* Add file glob to run_simScript.py input files to allow for wildcards etc. #1041
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
 * Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
