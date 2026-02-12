@@ -101,6 +101,7 @@ Unreleased</h1>
 Added</h2>
 <ul>
 <li>Add Findgenfit2.cmake module to support both upstream GenFit and the fork</li>
+<li>New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
@@ -110,6 +111,9 @@ Changed</h2>
 <li>UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)</li>
 <li>Bump minimum ROOT version to 6.36</li>
 <li>Bump minimum CMake version to 3.20 (same as ROOT)</li>
+<li>Change function SND in <a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a></li>
+<li>Change disable magnetic field in the MS and remove field map upload in <a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></li>
+<li>Change the <a class="el" href="classShipMuonShield.html">ShipMuonShield</a> script to accept new magnet configuration: no fixed number of magnets and variable z-gap between them.</li>
 <li>Change naming convention for simulation files to <code>{sim,geo,params}_{uuid4}.root</code>, with optional <code>--tag</code> parameter to specify custom identifier</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -136,6 +140,7 @@ Removed</h2>
 <li>Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)</li>
 <li>Remove unused legacy ShipGeo.py (superseded by <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a>)</li>
 <li>Remove unused create_field_perturbation.py script</li>
+<li>New_HA_Design and warm_opt muon shield configuration are no longer supported</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.12 - 2025-12-22</h1>
@@ -441,9 +446,9 @@ MTC and SND</h3>
 <h3><a class="anchor" id="autotoc_md34"></a>
 Muon Shield and Field</h3>
 <ul>
-<li>The fieldmap offset was calibrated with the old version of MS (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
-<li>Changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
-<li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
+<li>The fieldmap offset was calibrated with the old version of MS (ShieldUtils.py)</li>
+<li>Changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield (ShieldUtils.py)</li>
+<li>Fix: in <code>python/ShieldUtils.py</code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 <li>Changing paths to yaml files to more pythonic (<code>os.path.join()</code> now) (<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>)</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md35"></a>

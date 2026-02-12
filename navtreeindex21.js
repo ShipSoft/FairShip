@@ -1,9 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespacemakeCascade.html#a43be68b4e26aa550ea770c299d12ade0":[4,0,46,2],
-"namespacemakeCascade.html#a46b36a061df3565eba3013b58138f218":[4,0,46,4],
-"namespacemakeCascade.html#a4e8a729976ca09e90c3d5afe6590d37f":[4,0,46,5],
-"namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53":[4,0,46,24],
 "namespacemakeCascade.html#a59464c43d4bb7e8f058da677de563c2c":[4,0,46,59],
 "namespacemakeCascade.html#a596fbf87482d55148af7d015e9cae35f":[4,0,46,3],
 "namespacemakeCascade.html#a5ce3d0605060ad1f4cf61d6cdd6d4a37":[4,0,46,47],
@@ -249,5 +245,9 @@ var NAVTREEINDEX21 =
 "namespacemake__nTuple__SBT.html#ab94108ec7dc822703c4e63fad2c6c371":[4,0,44,31],
 "namespacemake__nTuple__SBT.html#abf4155fc67a8e22daa201493ba9865cf":[4,0,44,53],
 "namespacemake__nTuple__SBT.html#ac54c70d0b9d03d6867d68352c94d270b":[4,0,44,1],
-"namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986":[4,0,44,40]
+"namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986":[4,0,44,40],
+"namespacemake__nTuple__SBT.html#ad0555d76ded3d9343fbe31388290d00d":[4,0,44,29],
+"namespacemake__nTuple__SBT.html#ad91a304752bf8cac6a1bffa8efdfa346":[4,0,44,5],
+"namespacemake__nTuple__SBT.html#ad9cbca9f2ac1d12791d6293d80405706":[4,0,44,25],
+"namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37":[4,0,44,7]
 };

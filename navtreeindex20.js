@@ -1,9 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespaceextractMuonsAndUpdateWeight.html#aa86c7e190f6dbb2969042d852344dbf6":[4,0,31,6],
-"namespaceextractMuonsAndUpdateWeight.html#ac9dcea3edd72815ffe9ba0cc43aebbe8":[4,0,31,0],
-"namespaceextractMuonsAndUpdateWeight.html#ad9b3017ed07c574c48e46004c8383b37":[4,0,31,3],
-"namespaceextractMuonsAndUpdateWeight.html#adfec8af16ddc9104b3a740bc14d0759f":[4,0,31,13],
 "namespaceextractMuonsAndUpdateWeight.html#af67101ca8beb9723e8fc5463dd0c17e6":[4,0,31,7],
 "namespaceextractNeutrinosAndUpdateWeight.html":[4,0,32],
 "namespaceextractNeutrinosAndUpdateWeight.html#a00be488dba5652e1ddd7fb5345159b90":[4,0,32,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX20 =
 "namespacemakeCascade.html#a22471af5580d8a00e4a41a15ba12810b":[4,0,46,13],
 "namespacemakeCascade.html#a2845a7c4488f4e6b4e96da1a5bcc61f6":[4,0,46,49],
 "namespacemakeCascade.html#a2f6fb871fa058d1482b6e7e90e79e75f":[4,0,46,29],
-"namespacemakeCascade.html#a35165000147805caec50896c8194059e":[4,0,46,46]
+"namespacemakeCascade.html#a35165000147805caec50896c8194059e":[4,0,46,46],
+"namespacemakeCascade.html#a43be68b4e26aa550ea770c299d12ade0":[4,0,46,2],
+"namespacemakeCascade.html#a46b36a061df3565eba3013b58138f218":[4,0,46,4],
+"namespacemakeCascade.html#a4e8a729976ca09e90c3d5afe6590d37f":[4,0,46,5],
+"namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53":[4,0,46,24]
 };

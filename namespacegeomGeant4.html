@@ -155,20 +155,20 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Recursively walk the geometry tree collecting volume names from nodes.</pre> 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00019">19</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span><span class="keyword">def </span>_collectVolumeNames(volume, listOfVolumes):</div>
-<div class="line"><span class="lineno">   20</span>    <span class="stringliteral">&quot;&quot;&quot;Recursively walk the geometry tree collecting volume names from nodes.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>    nodes = volume.GetNodes()</div>
-<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> nodes:</div>
-<div class="line"><span class="lineno">   23</span>        <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nodes.GetEntries()):</div>
-<div class="line"><span class="lineno">   25</span>        node = nodes.At(i)</div>
-<div class="line"><span class="lineno">   26</span>        name = node.GetVolume().GetName()</div>
-<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> listOfVolumes:</div>
-<div class="line"><span class="lineno">   28</span>            listOfVolumes.append(name)</div>
-<div class="line"><span class="lineno">   29</span>        _collectVolumeNames(node.GetVolume(), listOfVolumes)</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00018">18</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>_collectVolumeNames(volume, listOfVolumes):</div>
+<div class="line"><span class="lineno">   19</span>    <span class="stringliteral">&quot;&quot;&quot;Recursively walk the geometry tree collecting volume names from nodes.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   20</span>    nodes = volume.GetNodes()</div>
+<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> nodes:</div>
+<div class="line"><span class="lineno">   22</span>        <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nodes.GetEntries()):</div>
+<div class="line"><span class="lineno">   24</span>        node = nodes.At(i)</div>
+<div class="line"><span class="lineno">   25</span>        name = node.GetVolume().GetName()</div>
+<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> listOfVolumes:</div>
+<div class="line"><span class="lineno">   27</span>            listOfVolumes.append(name)</div>
+<div class="line"><span class="lineno">   28</span>        _collectVolumeNames(node.GetVolume(), listOfVolumes)</div>
+<div class="line"><span class="lineno">   29</span> </div>
 <div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -211,65 +211,63 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Define VMC B fields, e.g. global field, field maps, local or local+global fields
 </pre> 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00176">176</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span><span class="keyword">def </span>addVMCFields(shipGeo, controlFile=&quot;&quot;, verbose=False, withVirtualMC=True):</div>
-<div class="line"><span class="lineno">  177</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  178</span><span class="stringliteral">    Define VMC B fields, e.g. global field, field maps, local or local+global fields</span></div>
-<div class="line"><span class="lineno">  179</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  180</span>    print(<span class="stringliteral">&quot;Calling addVMCFields&quot;</span>)</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>    fieldMaker = ROOT.ShipFieldMaker(verbose)</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>    <span class="comment"># Read the input control file. If this is empty then the only fields that are</span></div>
-<div class="line"><span class="lineno">  185</span>    <span class="comment"># defined (so far) are those within the C++ geometry classes</span></div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> controlFile != <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">  187</span>        fieldMaker.readInputFile(controlFile)</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>    <span class="comment"># Set the main spectrometer field map as a global field</span></div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
-<div class="line"><span class="lineno">  191</span>        fieldsList = []</div>
-<div class="line"><span class="lineno">  192</span>        fieldMaker.defineFieldMap(<span class="stringliteral">&quot;MainSpecMap&quot;</span>, shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))</div>
-<div class="line"><span class="lineno">  193</span>        fieldsList.append(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> shipGeo.hadronAbsorber.WithConstField:</div>
-<div class="line"><span class="lineno">  196</span>            fieldMaker.defineFieldMap(</div>
-<div class="line"><span class="lineno">  197</span>                <span class="stringliteral">&quot;HadronAbsorberMap&quot;</span>,</div>
-<div class="line"><span class="lineno">  198</span>                <span class="stringliteral">&quot;files/FieldHadronStopper_raised_20190411.root&quot;</span>,</div>
-<div class="line"><span class="lineno">  199</span>                ROOT.TVector3(0.0, 0.0, shipGeo.hadronAbsorber.z),</div>
-<div class="line"><span class="lineno">  200</span>            )</div>
-<div class="line"><span class="lineno">  201</span>            fieldsList.append(<span class="stringliteral">&quot;HadronAbsorberMap&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00175">175</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  175</span><span class="keyword">def </span>addVMCFields(shipGeo, controlFile=&quot;&quot;, verbose=False, withVirtualMC=True):</div>
+<div class="line"><span class="lineno">  176</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  177</span><span class="stringliteral">    Define VMC B fields, e.g. global field, field maps, local or local+global fields</span></div>
+<div class="line"><span class="lineno">  178</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  179</span>    print(<span class="stringliteral">&quot;Calling addVMCFields&quot;</span>)</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>    fieldMaker = ROOT.ShipFieldMaker(verbose)</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span>    <span class="comment"># Read the input control file. If this is empty then the only fields that are</span></div>
+<div class="line"><span class="lineno">  184</span>    <span class="comment"># defined (so far) are those within the C++ geometry classes</span></div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">if</span> controlFile != <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">  186</span>        fieldMaker.readInputFile(controlFile)</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>    <span class="comment"># Set the main spectrometer field map as a global field</span></div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
+<div class="line"><span class="lineno">  190</span>        fieldsList = []</div>
+<div class="line"><span class="lineno">  191</span>        fieldMaker.defineFieldMap(<span class="stringliteral">&quot;MainSpecMap&quot;</span>, shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))</div>
+<div class="line"><span class="lineno">  192</span>        fieldsList.append(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> shipGeo.muShield.WithConstField:</div>
+<div class="line"><span class="lineno">  195</span>        offset = shipGeo.muShield.Entrance[0]</div>
+<div class="line"><span class="lineno">  196</span>        quadSymm = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  197</span>        file_name = f<span class="stringliteral">&quot;files/{shipGeo.shieldName}.root&quot;</span></div>
+<div class="line"><span class="lineno">  198</span>        fieldMaker.defineFieldMap(</div>
+<div class="line"><span class="lineno">  199</span>            <span class="stringliteral">&quot;muonShieldField&quot;</span>, file_name, ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm</div>
+<div class="line"><span class="lineno">  200</span>        )</div>
+<div class="line"><span class="lineno">  201</span>        fieldsList.append(<span class="stringliteral">&quot;muonShieldField&quot;</span>)</div>
 <div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> shipGeo.muShield.WithConstField:</div>
-<div class="line"><span class="lineno">  204</span>            field_center, _ = <a class="code hl_function" href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">ShieldUtils.find_shield_center</a>(shipGeo)</div>
-<div class="line"><span class="lineno">  205</span>            fieldMaker.defineFieldMap(</div>
-<div class="line"><span class="lineno">  206</span>                <span class="stringliteral">&quot;muonShieldField&quot;</span>,</div>
-<div class="line"><span class="lineno">  207</span>                <span class="stringliteral">&quot;files/MuonShieldField.root&quot;</span>,</div>
-<div class="line"><span class="lineno">  208</span>                ROOT.TVector3(0.0, 0.0, field_center),</div>
-<div class="line"><span class="lineno">  209</span>                ROOT.TVector3(0.0, 0.0, 0.0),</div>
-<div class="line"><span class="lineno">  210</span>                <span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">  211</span>            )</div>
-<div class="line"><span class="lineno">  212</span>            fieldsList.append(<span class="stringliteral">&quot;muonShieldField&quot;</span>)</div>
-<div class="line"><span class="lineno">  213</span>        <span class="comment"># Combine the fields to obtain the global field</span></div>
-<div class="line"><span class="lineno">  214</span>        <span class="keywordflow">if</span> len(fieldsList) &gt; 1:</div>
-<div class="line"><span class="lineno">  215</span>            fieldMaker.defineComposite(<span class="stringliteral">&quot;TotalField&quot;</span>, *fieldsList)  <span class="comment"># fieldsList MUST have length &lt;=4</span></div>
-<div class="line"><span class="lineno">  216</span>            fieldMaker.defineGlobalField(<span class="stringliteral">&quot;TotalField&quot;</span>)</div>
-<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  218</span>            fieldMaker.defineGlobalField(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
-<div class="line"><span class="lineno">  219</span>    <span class="keywordflow">if</span> withVirtualMC:</div>
-<div class="line"><span class="lineno">  220</span>        <span class="comment"># Force the VMC to update/reset the fields defined by the fieldMaker object.</span></div>
-<div class="line"><span class="lineno">  221</span>        <span class="comment"># Get the ROOT/Geant4 geometry manager</span></div>
-<div class="line"><span class="lineno">  222</span>        geom = ROOT.TG4GeometryManager.Instance()</div>
-<div class="line"><span class="lineno">  223</span>        <span class="comment"># Let the geometry know about the fieldMaker object</span></div>
-<div class="line"><span class="lineno">  224</span>        geom.SetUserPostDetConstruction(fieldMaker)</div>
-<div class="line"><span class="lineno">  225</span>        <span class="comment"># Update the fields via the overridden ShipFieldMaker::Construct() function</span></div>
-<div class="line"><span class="lineno">  226</span>        geom.ConstructSDandField()</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    <span class="comment"># Return the fieldMaker object, otherwise it will &quot;go out of scope&quot; and its</span></div>
-<div class="line"><span class="lineno">  229</span>    <span class="comment"># content will be deleted</span></div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">return</span> fieldMaker</div>
-<div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="ttc" id="anamespaceShieldUtils_html_a15add410b51d2e47e680e4949e50876c"><div class="ttname"><a href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">ShieldUtils.find_shield_center</a></div><div class="ttdeci">find_shield_center(ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="ShieldUtils_8py_source.html#l00005">ShieldUtils.py:5</a></div></div>
+<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">elif</span> <span class="keywordflow">not</span> shipGeo.hadronAbsorber.WithConstField:</div>
+<div class="line"><span class="lineno">  204</span>        fieldMaker.defineFieldMap(</div>
+<div class="line"><span class="lineno">  205</span>            <span class="stringliteral">&quot;HadronAbsorberMap&quot;</span>,</div>
+<div class="line"><span class="lineno">  206</span>            <span class="stringliteral">&quot;files/FieldHadronStopper_raised_20190411.root&quot;</span>,</div>
+<div class="line"><span class="lineno">  207</span>            ROOT.TVector3(0.0, 0.0, shipGeo.hadronAbsorber.z),</div>
+<div class="line"><span class="lineno">  208</span>        )</div>
+<div class="line"><span class="lineno">  209</span>        fieldsList.append(<span class="stringliteral">&quot;HadronAbsorberMap&quot;</span>)</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    <span class="comment"># Combine the fields to obtain the global field</span></div>
+<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">if</span> len(fieldsList) &gt; 1:</div>
+<div class="line"><span class="lineno">  213</span>        fieldMaker.defineComposite(<span class="stringliteral">&quot;TotalField&quot;</span>, *fieldsList)  <span class="comment"># fieldsList MUST have length &lt;=4</span></div>
+<div class="line"><span class="lineno">  214</span>        fieldMaker.defineGlobalField(<span class="stringliteral">&quot;TotalField&quot;</span>)</div>
+<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  216</span>        fieldMaker.defineGlobalField(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
+<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">if</span> withVirtualMC:</div>
+<div class="line"><span class="lineno">  218</span>        <span class="comment"># Force the VMC to update/reset the fields defined by the fieldMaker object.</span></div>
+<div class="line"><span class="lineno">  219</span>        <span class="comment"># Get the ROOT/Geant4 geometry manager</span></div>
+<div class="line"><span class="lineno">  220</span>        geom = ROOT.TG4GeometryManager.Instance()</div>
+<div class="line"><span class="lineno">  221</span>        <span class="comment"># Let the geometry know about the fieldMaker object</span></div>
+<div class="line"><span class="lineno">  222</span>        geom.SetUserPostDetConstruction(fieldMaker)</div>
+<div class="line"><span class="lineno">  223</span>        <span class="comment"># Update the fields via the overridden ShipFieldMaker::Construct() function</span></div>
+<div class="line"><span class="lineno">  224</span>        geom.ConstructSDandField()</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment"># Return the fieldMaker object, otherwise it will &quot;go out of scope&quot; and its</span></div>
+<div class="line"><span class="lineno">  227</span>    <span class="comment"># content will be deleted</span></div>
+<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">return</span> fieldMaker</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -289,29 +287,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00032">32</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>check4OrphanVolumes(fGeo):</div>
-<div class="line"><span class="lineno">   33</span>    <span class="comment"># fill list with volumes from nodes and compare with list of volumes</span></div>
-<div class="line"><span class="lineno">   34</span>    top = fGeo.GetTopVolume()</div>
-<div class="line"><span class="lineno">   35</span>    listOfVolumes = [top.GetName()]</div>
-<div class="line"><span class="lineno">   36</span>    _collectVolumeNames(top, listOfVolumes)</div>
-<div class="line"><span class="lineno">   37</span>    orphan = []</div>
-<div class="line"><span class="lineno">   38</span>    gIndex = {}</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
-<div class="line"><span class="lineno">   40</span>        name = v.GetName()</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> listOfVolumes:</div>
-<div class="line"><span class="lineno">   42</span>            orphan.append(name)</div>
-<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> gIndex:</div>
-<div class="line"><span class="lineno">   44</span>            gIndex[name] = []</div>
-<div class="line"><span class="lineno">   45</span>        gIndex[name].append(v.GetNumber())</div>
-<div class="line"><span class="lineno">   46</span>    print(<span class="stringliteral">&quot;list of orphan volumes:&quot;</span>, orphan)</div>
-<div class="line"><span class="lineno">   47</span>    vSame = {}</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> gIndex:</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">if</span> len(gIndex[x]) &gt; 1:</div>
-<div class="line"><span class="lineno">   50</span>            vSame[x] = len(gIndex[x])</div>
-<div class="line"><span class="lineno">   51</span>    print(<span class="stringliteral">&quot;list of volumes with same name&quot;</span>, vSame)</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00031">31</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>check4OrphanVolumes(fGeo):</div>
+<div class="line"><span class="lineno">   32</span>    <span class="comment"># fill list with volumes from nodes and compare with list of volumes</span></div>
+<div class="line"><span class="lineno">   33</span>    top = fGeo.GetTopVolume()</div>
+<div class="line"><span class="lineno">   34</span>    listOfVolumes = [top.GetName()]</div>
+<div class="line"><span class="lineno">   35</span>    _collectVolumeNames(top, listOfVolumes)</div>
+<div class="line"><span class="lineno">   36</span>    orphan = []</div>
+<div class="line"><span class="lineno">   37</span>    gIndex = {}</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
+<div class="line"><span class="lineno">   39</span>        name = v.GetName()</div>
+<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> listOfVolumes:</div>
+<div class="line"><span class="lineno">   41</span>            orphan.append(name)</div>
+<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> gIndex:</div>
+<div class="line"><span class="lineno">   43</span>            gIndex[name] = []</div>
+<div class="line"><span class="lineno">   44</span>        gIndex[name].append(v.GetNumber())</div>
+<div class="line"><span class="lineno">   45</span>    print(<span class="stringliteral">&quot;list of orphan volumes:&quot;</span>, orphan)</div>
+<div class="line"><span class="lineno">   46</span>    vSame = {}</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> gIndex:</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">if</span> len(gIndex[x]) &gt; 1:</div>
+<div class="line"><span class="lineno">   49</span>            vSame[x] = len(gIndex[x])</div>
+<div class="line"><span class="lineno">   50</span>    print(<span class="stringliteral">&quot;list of volumes with same name&quot;</span>, vSame)</div>
+<div class="line"><span class="lineno">   51</span> </div>
 <div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -330,33 +328,33 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00267">267</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  267</span><span class="keyword">def </span><a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>():</div>
-<div class="line"><span class="lineno">  268</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
-<div class="line"><span class="lineno">  269</span>    gn = gt.GetNavigatorForTracking()</div>
-<div class="line"><span class="lineno">  270</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  271</span>    vmap = {}</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
-<div class="line"><span class="lineno">  273</span>        vl = world.GetDaughter(da)</div>
-<div class="line"><span class="lineno">  274</span>        vmap[vl.GetName().c_str()] = vl</div>
-<div class="line"><span class="lineno">  275</span>        print(da, vl.GetName())</div>
-<div class="line"><span class="lineno">  276</span>    lvl = vmap[<span class="stringliteral">&quot;MagB&quot;</span>].GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  277</span>    print(lvl.GetMass() / G4Unit.kg, lvl.GetMaterial().GetName())</div>
-<div class="line"><span class="lineno">  278</span>    print(lvl.GetFieldManager())</div>
-<div class="line"><span class="lineno">  279</span>    <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
-<div class="line"><span class="lineno">  281</span>        vl = world.GetDaughter(da)</div>
-<div class="line"><span class="lineno">  282</span>        vln = vl.GetName().c_str()</div>
-<div class="line"><span class="lineno">  283</span>        lvl = vl.GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  284</span>        fm = lvl.GetFieldManager()</div>
-<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">if</span> fm:</div>
-<div class="line"><span class="lineno">  286</span>            v = fm.GetDetectorField().GetConstantFieldValue()</div>
-<div class="line"><span class="lineno">  287</span>            print(vln, fm, v.getX(), v.getY())</div>
-<div class="line"><span class="lineno">  288</span>    <span class="comment"># FairROOT view</span></div>
-<div class="line"><span class="lineno">  289</span>    fgeom = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">  290</span>    magB = fgeom.GetVolume(<span class="stringliteral">&quot;MagB&quot;</span>)</div>
-<div class="line"><span class="lineno">  291</span>    fl = magB.GetField()</div>
-<div class="line"><span class="lineno">  292</span>    print(fl.GetFieldValue()[0], fl.GetFieldValue()[1], fl.GetFieldValue()[2])</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00265">265</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span><span class="keyword">def </span><a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>():</div>
+<div class="line"><span class="lineno">  266</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
+<div class="line"><span class="lineno">  267</span>    gn = gt.GetNavigatorForTracking()</div>
+<div class="line"><span class="lineno">  268</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  269</span>    vmap = {}</div>
+<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
+<div class="line"><span class="lineno">  271</span>        vl = world.GetDaughter(da)</div>
+<div class="line"><span class="lineno">  272</span>        vmap[vl.GetName().c_str()] = vl</div>
+<div class="line"><span class="lineno">  273</span>        print(da, vl.GetName())</div>
+<div class="line"><span class="lineno">  274</span>    lvl = vmap[<span class="stringliteral">&quot;MagB&quot;</span>].GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  275</span>    print(lvl.GetMass() / G4Unit.kg, lvl.GetMaterial().GetName())</div>
+<div class="line"><span class="lineno">  276</span>    print(lvl.GetFieldManager())</div>
+<div class="line"><span class="lineno">  277</span>    <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
+<div class="line"><span class="lineno">  279</span>        vl = world.GetDaughter(da)</div>
+<div class="line"><span class="lineno">  280</span>        vln = vl.GetName().c_str()</div>
+<div class="line"><span class="lineno">  281</span>        lvl = vl.GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  282</span>        fm = lvl.GetFieldManager()</div>
+<div class="line"><span class="lineno">  283</span>        <span class="keywordflow">if</span> fm:</div>
+<div class="line"><span class="lineno">  284</span>            v = fm.GetDetectorField().GetConstantFieldValue()</div>
+<div class="line"><span class="lineno">  285</span>            print(vln, fm, v.getX(), v.getY())</div>
+<div class="line"><span class="lineno">  286</span>    <span class="comment"># FairROOT view</span></div>
+<div class="line"><span class="lineno">  287</span>    fgeom = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">  288</span>    magB = fgeom.GetVolume(<span class="stringliteral">&quot;MagB&quot;</span>)</div>
+<div class="line"><span class="lineno">  289</span>    fl = magB.GetField()</div>
+<div class="line"><span class="lineno">  290</span>    print(fl.GetFieldValue()[0], fl.GetFieldValue()[1], fl.GetFieldValue()[2])</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00018">DPPythia8Generator.cxx:18</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -376,11 +374,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00258">258</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  258</span><span class="keyword">def </span>getRunManager():</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">return</span> ROOT.G4RunManager.GetRunManager()</div>
-<div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span> </div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00256">256</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  256</span><span class="keyword">def </span>getRunManager():</div>
+<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">return</span> ROOT.G4RunManager.GetRunManager()</div>
+<div class="line"><span class="lineno">  258</span> </div>
+<div class="line"><span class="lineno">  259</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -428,23 +426,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00147">147</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  147</span><span class="keyword">def </span>nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):</div>
-<div class="line"><span class="lineno">  148</span>    tmp = 0</div>
-<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(lv.GetNoDaughters()):</div>
-<div class="line"><span class="lineno">  150</span>        lvn = lv.GetDaughter(da)</div>
-<div class="line"><span class="lineno">  151</span>        name = lvn.GetName().c_str()</div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">if</span> name <span class="keywordflow">in</span> exclude:</div>
-<div class="line"><span class="lineno">  153</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  154</span>        lvln = lvn.GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">if</span> lvln.GetNoDaughters() &gt; 0:</div>
-<div class="line"><span class="lineno">  156</span>            xtmp, dummy = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
-<div class="line"><span class="lineno">  157</span>            magnetMass += xtmp</div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  159</span>            tmp += printWF(lvn, alreadyPrinted, onlyWithField)</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> tmp, magnetMass</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00146">146</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  146</span><span class="keyword">def </span>nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):</div>
+<div class="line"><span class="lineno">  147</span>    tmp = 0</div>
+<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(lv.GetNoDaughters()):</div>
+<div class="line"><span class="lineno">  149</span>        lvn = lv.GetDaughter(da)</div>
+<div class="line"><span class="lineno">  150</span>        name = lvn.GetName().c_str()</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">if</span> name <span class="keywordflow">in</span> exclude:</div>
+<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  153</span>        lvln = lvn.GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">if</span> lvln.GetNoDaughters() &gt; 0:</div>
+<div class="line"><span class="lineno">  155</span>            xtmp, dummy = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
+<div class="line"><span class="lineno">  156</span>            magnetMass += xtmp</div>
+<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  158</span>            tmp += printWF(lvn, alreadyPrinted, onlyWithField)</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">return</span> tmp, magnetMass</div>
+<div class="line"><span class="lineno">  160</span> </div>
 <div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -464,32 +462,32 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Method to print out information about VMC fields
 </pre> 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00233">233</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  233</span><span class="keyword">def </span>printVMCFields():</div>
-<div class="line"><span class="lineno">  234</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  235</span><span class="stringliteral">    Method to print out information about VMC fields</span></div>
-<div class="line"><span class="lineno">  236</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  237</span>    print(<span class="stringliteral">&quot;Printing VMC fields and associated volumes&quot;</span>)</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>    fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">  240</span>    vols = fGeo.GetListOfVolumes()</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> vols:</div>
-<div class="line"><span class="lineno">  243</span>        field = v.GetField()</div>
-<div class="line"><span class="lineno">  244</span>        <span class="keywordflow">if</span> field:</div>
-<div class="line"><span class="lineno">  245</span>            print(f<span class="stringliteral">&quot;Vol is {v.GetName()}, field is {field}&quot;</span>)</div>
-<div class="line"><span class="lineno">  246</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  247</span>            print(f<span class="stringliteral">&quot;Vol is {v.GetName()}&quot;</span>)</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>        <span class="keywordflow">if</span> field:</div>
-<div class="line"><span class="lineno">  250</span>            <span class="comment"># Get the field value assuming the global coordinate origin.</span></div>
-<div class="line"><span class="lineno">  251</span>            <span class="comment"># This needs to be modified to use the local volume centre</span></div>
-<div class="line"><span class="lineno">  252</span>            centre = array(<span class="stringliteral">&quot;d&quot;</span>, [0.0, 0.0, 0.0])</div>
-<div class="line"><span class="lineno">  253</span>            B = array(<span class="stringliteral">&quot;d&quot;</span>, [0.0, 0.0, 0.0])</div>
-<div class="line"><span class="lineno">  254</span>            field.Field(centre, B)</div>
-<div class="line"><span class="lineno">  255</span>            print(f<span class="stringliteral">&quot;Volume {v.GetName()} has B = ({B[0] / u.tesla}, {B[1] / u.tesla}, {B[2] / u.tesla}) T&quot;</span>)</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span> </div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00231">231</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span><span class="keyword">def </span>printVMCFields():</div>
+<div class="line"><span class="lineno">  232</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  233</span><span class="stringliteral">    Method to print out information about VMC fields</span></div>
+<div class="line"><span class="lineno">  234</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  235</span>    print(<span class="stringliteral">&quot;Printing VMC fields and associated volumes&quot;</span>)</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">  238</span>    vols = fGeo.GetListOfVolumes()</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> vols:</div>
+<div class="line"><span class="lineno">  241</span>        field = v.GetField()</div>
+<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">if</span> field:</div>
+<div class="line"><span class="lineno">  243</span>            print(f<span class="stringliteral">&quot;Vol is {v.GetName()}, field is {field}&quot;</span>)</div>
+<div class="line"><span class="lineno">  244</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  245</span>            print(f<span class="stringliteral">&quot;Vol is {v.GetName()}&quot;</span>)</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>        <span class="keywordflow">if</span> field:</div>
+<div class="line"><span class="lineno">  248</span>            <span class="comment"># Get the field value assuming the global coordinate origin.</span></div>
+<div class="line"><span class="lineno">  249</span>            <span class="comment"># This needs to be modified to use the local volume centre</span></div>
+<div class="line"><span class="lineno">  250</span>            centre = array(<span class="stringliteral">&quot;d&quot;</span>, [0.0, 0.0, 0.0])</div>
+<div class="line"><span class="lineno">  251</span>            B = array(<span class="stringliteral">&quot;d&quot;</span>, [0.0, 0.0, 0.0])</div>
+<div class="line"><span class="lineno">  252</span>            field.Field(centre, B)</div>
+<div class="line"><span class="lineno">  253</span>            print(f<span class="stringliteral">&quot;Volume {v.GetName()} has B = ({B[0] / u.tesla}, {B[1] / u.tesla}, {B[2] / u.tesla}) T&quot;</span>)</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,20 +517,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00163">163</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  163</span><span class="keyword">def </span>printWeightsandFields(onlyWithField=True, exclude=[]):</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> len(exclude) != 0:</div>
-<div class="line"><span class="lineno">  165</span>        print(<span class="stringliteral">&quot;will not search in &quot;</span>, exclude)</div>
-<div class="line"><span class="lineno">  166</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
-<div class="line"><span class="lineno">  167</span>    gn = gt.GetNavigatorForTracking()</div>
-<div class="line"><span class="lineno">  168</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  169</span>    magnetMass = 0</div>
-<div class="line"><span class="lineno">  170</span>    alreadyPrinted = {}</div>
-<div class="line"><span class="lineno">  171</span>    dummy, nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
-<div class="line"><span class="lineno">  172</span>    print(<span class="stringliteral">&quot;total magnet mass&quot;</span>, nM / 1000.0, <span class="stringliteral">&quot;t&quot;</span>)</div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">return</span></div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00162">162</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span><span class="keyword">def </span>printWeightsandFields(onlyWithField=True, exclude=[]):</div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> len(exclude) != 0:</div>
+<div class="line"><span class="lineno">  164</span>        print(<span class="stringliteral">&quot;will not search in &quot;</span>, exclude)</div>
+<div class="line"><span class="lineno">  165</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
+<div class="line"><span class="lineno">  166</span>    gn = gt.GetNavigatorForTracking()</div>
+<div class="line"><span class="lineno">  167</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  168</span>    magnetMass = 0</div>
+<div class="line"><span class="lineno">  169</span>    alreadyPrinted = {}</div>
+<div class="line"><span class="lineno">  170</span>    dummy, nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
+<div class="line"><span class="lineno">  171</span>    print(<span class="stringliteral">&quot;total magnet mass&quot;</span>, nM / 1000.0, <span class="stringliteral">&quot;t&quot;</span>)</div>
+<div class="line"><span class="lineno">  172</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  173</span> </div>
 <div class="line"><span class="lineno">  174</span> </div>
-<div class="line"><span class="lineno">  175</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -568,49 +566,49 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00105">105</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span><span class="keyword">def </span>printWF(vl, alreadyPrinted, onlyWithField=True):</div>
-<div class="line"><span class="lineno">  106</span>    magnetMass = 0</div>
-<div class="line"><span class="lineno">  107</span>    vname = vl.GetName().data()</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> vname <span class="keywordflow">in</span> alreadyPrinted:</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">return</span> magnetMass</div>
-<div class="line"><span class="lineno">  110</span>    vln = vname + <span class="stringliteral">&quot; &quot;</span> + str(vl.GetCopyNo())</div>
-<div class="line"><span class="lineno">  111</span>    mvl = vl.GetMotherLogical().GetName().data()</div>
-<div class="line"><span class="lineno">  112</span>    alreadyPrinted[vname] = mvl</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">if</span> mvl != <span class="stringliteral">&quot;cave&quot;</span>:</div>
-<div class="line"><span class="lineno">  114</span>        vln = mvl + <span class="stringliteral">&quot;/&quot;</span> + vln</div>
-<div class="line"><span class="lineno">  115</span>    lvl = vl.GetLogicalVolume()</div>
-<div class="line"><span class="lineno">  116</span>    cvol = lvl.GetSolid().GetCubicVolume() / G4Unit.m3</div>
-<div class="line"><span class="lineno">  117</span>    M = lvl.GetMass() / G4Unit.kg</div>
-<div class="line"><span class="lineno">  118</span>    fm = lvl.GetFieldManager()</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> fm <span class="keywordflow">and</span> onlyWithField:</div>
-<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">return</span> magnetMass</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> M &lt; 5000.0:</div>
-<div class="line"><span class="lineno">  122</span>        print(<span class="stringliteral">&quot;%-35s volume = %5.2Fm3  mass = %5.2F kg&quot;</span> % (vln, cvol, M))</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  124</span>        print(<span class="stringliteral">&quot;%-35s volume = %5.2Fm3  mass = %5.2F t&quot;</span> % (vln, cvol, M / 1000.0))</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> fm:</div>
-<div class="line"><span class="lineno">  126</span>        fi = fm.GetDetectorField()</div>
-<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">if</span> hasattr(fi, <span class="stringliteral">&quot;GetConstantFieldValue&quot;</span>):</div>
-<div class="line"><span class="lineno">  128</span>            print(<span class="stringliteral">&quot;   Magnetic field:&quot;</span>, fi.GetConstantFieldValue() / G4Unit.tesla)</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  130</span>            serv = ROOT.TG4GeometryServices.Instance()</div>
-<div class="line"><span class="lineno">  131</span>            pos = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
-<div class="line"><span class="lineno">  132</span>            bf = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
-<div class="line"><span class="lineno">  133</span>            name = ROOT.G4String(lvl.GetName().c_str())</div>
-<div class="line"><span class="lineno">  134</span>            print(<span class="stringliteral">&quot;debug&quot;</span>, name, lvl.GetName(), lvl)</div>
-<div class="line"><span class="lineno">  135</span>            serv.GetField(name, pos, bf)</div>
-<div class="line"><span class="lineno">  136</span>            print(</div>
-<div class="line"><span class="lineno">  137</span>                <span class="stringliteral">&quot;   Magnetic field Bx,By,Bz: %4.2F %4.2F %4.2F&quot;</span></div>
-<div class="line"><span class="lineno">  138</span>                % (bf[0] / G4Unit.tesla, bf[1] / G4Unit.tesla, bf[2] / G4Unit.tesla)</div>
-<div class="line"><span class="lineno">  139</span>            )</div>
-<div class="line"><span class="lineno">  140</span>    <span class="comment"># if vl.GetName().c_str()[0:3]==&#39;Mag&#39;: magnetMass =  M # only count volumes starting with Mag</span></div>
-<div class="line"><span class="lineno">  141</span>    name = vl.GetName().c_str()</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;_&quot;</span> <span class="keywordflow">in</span> name <span class="keywordflow">and</span> <span class="stringliteral">&quot;Mag&quot;</span> <span class="keywordflow">in</span> name.split(<span class="stringliteral">&quot;_&quot;</span>)[1]:</div>
-<div class="line"><span class="lineno">  143</span>        magnetMass = M  <span class="comment"># only count volumes starting with Mag</span></div>
-<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">return</span> magnetMass</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00104">104</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span><span class="keyword">def </span>printWF(vl, alreadyPrinted, onlyWithField=True):</div>
+<div class="line"><span class="lineno">  105</span>    magnetMass = 0</div>
+<div class="line"><span class="lineno">  106</span>    vname = vl.GetName().data()</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> vname <span class="keywordflow">in</span> alreadyPrinted:</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> magnetMass</div>
+<div class="line"><span class="lineno">  109</span>    vln = vname + <span class="stringliteral">&quot; &quot;</span> + str(vl.GetCopyNo())</div>
+<div class="line"><span class="lineno">  110</span>    mvl = vl.GetMotherLogical().GetName().data()</div>
+<div class="line"><span class="lineno">  111</span>    alreadyPrinted[vname] = mvl</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> mvl != <span class="stringliteral">&quot;cave&quot;</span>:</div>
+<div class="line"><span class="lineno">  113</span>        vln = mvl + <span class="stringliteral">&quot;/&quot;</span> + vln</div>
+<div class="line"><span class="lineno">  114</span>    lvl = vl.GetLogicalVolume()</div>
+<div class="line"><span class="lineno">  115</span>    cvol = lvl.GetSolid().GetCubicVolume() / G4Unit.m3</div>
+<div class="line"><span class="lineno">  116</span>    M = lvl.GetMass() / G4Unit.kg</div>
+<div class="line"><span class="lineno">  117</span>    fm = lvl.GetFieldManager()</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> fm <span class="keywordflow">and</span> onlyWithField:</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">return</span> magnetMass</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">if</span> M &lt; 5000.0:</div>
+<div class="line"><span class="lineno">  121</span>        print(<span class="stringliteral">&quot;%-35s volume = %5.2Fm3  mass = %5.2F kg&quot;</span> % (vln, cvol, M))</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  123</span>        print(<span class="stringliteral">&quot;%-35s volume = %5.2Fm3  mass = %5.2F t&quot;</span> % (vln, cvol, M / 1000.0))</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">if</span> fm:</div>
+<div class="line"><span class="lineno">  125</span>        fi = fm.GetDetectorField()</div>
+<div class="line"><span class="lineno">  126</span>        <span class="keywordflow">if</span> hasattr(fi, <span class="stringliteral">&quot;GetConstantFieldValue&quot;</span>):</div>
+<div class="line"><span class="lineno">  127</span>            print(<span class="stringliteral">&quot;   Magnetic field:&quot;</span>, fi.GetConstantFieldValue() / G4Unit.tesla)</div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  129</span>            serv = ROOT.TG4GeometryServices.Instance()</div>
+<div class="line"><span class="lineno">  130</span>            pos = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">  131</span>            bf = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">  132</span>            name = ROOT.G4String(lvl.GetName().c_str())</div>
+<div class="line"><span class="lineno">  133</span>            print(<span class="stringliteral">&quot;debug&quot;</span>, name, lvl.GetName(), lvl)</div>
+<div class="line"><span class="lineno">  134</span>            serv.GetField(name, pos, bf)</div>
+<div class="line"><span class="lineno">  135</span>            print(</div>
+<div class="line"><span class="lineno">  136</span>                <span class="stringliteral">&quot;   Magnetic field Bx,By,Bz: %4.2F %4.2F %4.2F&quot;</span></div>
+<div class="line"><span class="lineno">  137</span>                % (bf[0] / G4Unit.tesla, bf[1] / G4Unit.tesla, bf[2] / G4Unit.tesla)</div>
+<div class="line"><span class="lineno">  138</span>            )</div>
+<div class="line"><span class="lineno">  139</span>    <span class="comment"># if vl.GetName().c_str()[0:3]==&#39;Mag&#39;: magnetMass =  M # only count volumes starting with Mag</span></div>
+<div class="line"><span class="lineno">  140</span>    name = vl.GetName().c_str()</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;_&quot;</span> <span class="keywordflow">in</span> name <span class="keywordflow">and</span> <span class="stringliteral">&quot;Mag&quot;</span> <span class="keywordflow">in</span> name.split(<span class="stringliteral">&quot;_&quot;</span>)[1]:</div>
+<div class="line"><span class="lineno">  142</span>        magnetMass = M  <span class="comment"># only count volumes starting with Mag</span></div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">return</span> magnetMass</div>
+<div class="line"><span class="lineno">  144</span> </div>
 <div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -630,58 +628,58 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00054">54</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>setMagnetField(flag=None):</div>
-<div class="line"><span class="lineno">   55</span>    print(<span class="stringliteral">&quot;setMagnetField() called. Out of date, does not set field for tau neutrino detector!&quot;</span>)</div>
-<div class="line"><span class="lineno">   56</span>    fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">   57</span>    vols = fGeo.GetListOfVolumes()</div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment"># copy field by hand to geant4</span></div>
-<div class="line"><span class="lineno">   59</span>    listOfFields = {}</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> vols:</div>
-<div class="line"><span class="lineno">   61</span>        field = v.GetField()</div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> field:</div>
-<div class="line"><span class="lineno">   63</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   64</span>        bx = field.GetFieldValue()[0] / u.tesla * G4Unit.tesla</div>
-<div class="line"><span class="lineno">   65</span>        by = field.GetFieldValue()[1] / u.tesla * G4Unit.tesla</div>
-<div class="line"><span class="lineno">   66</span>        bz = field.GetFieldValue()[2] / u.tesla * G4Unit.tesla</div>
-<div class="line"><span class="lineno">   67</span>        magFieldIron = ROOT.G4UniformMagField(ROOT.G4ThreeVector(bx, by, bz))</div>
-<div class="line"><span class="lineno">   68</span>        FieldIronMgr = ROOT.G4FieldManager(magFieldIron)</div>
-<div class="line"><span class="lineno">   69</span>        FieldIronMgr.CreateChordFinder(magFieldIron)</div>
-<div class="line"><span class="lineno">   70</span>        listOfFields[v.GetName()] = FieldIronMgr</div>
-<div class="line"><span class="lineno">   71</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
-<div class="line"><span class="lineno">   72</span>    gn = gt.GetNavigatorForTracking()</div>
-<div class="line"><span class="lineno">   73</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
-<div class="line"><span class="lineno">   74</span>    setField = {}</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
-<div class="line"><span class="lineno">   76</span>        vl0 = world.GetDaughter(da)</div>
-<div class="line"><span class="lineno">   77</span>        vln = vl0.GetName().c_str()</div>
-<div class="line"><span class="lineno">   78</span>        lvl0 = vl0.GetLogicalVolume()</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">if</span> vln <span class="keywordflow">in</span> listOfFields:</div>
-<div class="line"><span class="lineno">   80</span>            setField[lvl0] = vln</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">for</span> dda <span class="keywordflow">in</span> range(lvl0.GetNoDaughters()):</div>
-<div class="line"><span class="lineno">   82</span>            vl = lvl0.GetDaughter(dda)</div>
-<div class="line"><span class="lineno">   83</span>            vln = vl.GetName().c_str()</div>
-<div class="line"><span class="lineno">   84</span>            lvl = vl.GetLogicalVolume()</div>
-<div class="line"><span class="lineno">   85</span>            <span class="keywordflow">if</span> vln <span class="keywordflow">in</span> listOfFields:</div>
-<div class="line"><span class="lineno">   86</span>                setField[lvl] = vln</div>
-<div class="line"><span class="lineno">   87</span>    modified = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">for</span> lvl <span class="keywordflow">in</span> setField:</div>
-<div class="line"><span class="lineno">   89</span>        <span class="comment"># check if field already exists</span></div>
-<div class="line"><span class="lineno">   90</span>        fm = lvl.GetFieldManager()</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> fm.DoesFieldExist():</div>
-<div class="line"><span class="lineno">   92</span>            lvl.SetFieldManager(listOfFields[setField[lvl]], <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   93</span>            modified = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   94</span>            <span class="keywordflow">if</span> flag == <span class="stringliteral">&quot;dump&quot;</span>:</div>
-<div class="line"><span class="lineno">   95</span>                constField = listOfFields[setField[lvl]].GetDetectorField().GetConstantFieldValue()</div>
-<div class="line"><span class="lineno">   96</span>                print(<span class="stringliteral">&quot;set field for &quot;</span>, setField[lvl], constField)</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   98</span>            <span class="keywordflow">if</span> flag == <span class="stringliteral">&quot;dump&quot;</span>:</div>
-<div class="line"><span class="lineno">   99</span>                print(<span class="stringliteral">&quot;field already set:&quot;</span>, setField[lvl])</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> modified:</div>
-<div class="line"><span class="lineno">  101</span>        g4Run = ROOT.G4RunManager.GetRunManager()</div>
-<div class="line"><span class="lineno">  102</span>        g4Run.GeometryHasBeenModified(<span class="keyword">True</span>)</div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00053">53</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>setMagnetField(flag=None):</div>
+<div class="line"><span class="lineno">   54</span>    print(<span class="stringliteral">&quot;setMagnetField() called. Out of date, does not set field for tau neutrino detector!&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span>    fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">   56</span>    vols = fGeo.GetListOfVolumes()</div>
+<div class="line"><span class="lineno">   57</span>    <span class="comment"># copy field by hand to geant4</span></div>
+<div class="line"><span class="lineno">   58</span>    listOfFields = {}</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> vols:</div>
+<div class="line"><span class="lineno">   60</span>        field = v.GetField()</div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> field:</div>
+<div class="line"><span class="lineno">   62</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   63</span>        bx = field.GetFieldValue()[0] / u.tesla * G4Unit.tesla</div>
+<div class="line"><span class="lineno">   64</span>        by = field.GetFieldValue()[1] / u.tesla * G4Unit.tesla</div>
+<div class="line"><span class="lineno">   65</span>        bz = field.GetFieldValue()[2] / u.tesla * G4Unit.tesla</div>
+<div class="line"><span class="lineno">   66</span>        magFieldIron = ROOT.G4UniformMagField(ROOT.G4ThreeVector(bx, by, bz))</div>
+<div class="line"><span class="lineno">   67</span>        FieldIronMgr = ROOT.G4FieldManager(magFieldIron)</div>
+<div class="line"><span class="lineno">   68</span>        FieldIronMgr.CreateChordFinder(magFieldIron)</div>
+<div class="line"><span class="lineno">   69</span>        listOfFields[v.GetName()] = FieldIronMgr</div>
+<div class="line"><span class="lineno">   70</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
+<div class="line"><span class="lineno">   71</span>    gn = gt.GetNavigatorForTracking()</div>
+<div class="line"><span class="lineno">   72</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
+<div class="line"><span class="lineno">   73</span>    setField = {}</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(world.GetNoDaughters()):</div>
+<div class="line"><span class="lineno">   75</span>        vl0 = world.GetDaughter(da)</div>
+<div class="line"><span class="lineno">   76</span>        vln = vl0.GetName().c_str()</div>
+<div class="line"><span class="lineno">   77</span>        lvl0 = vl0.GetLogicalVolume()</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">if</span> vln <span class="keywordflow">in</span> listOfFields:</div>
+<div class="line"><span class="lineno">   79</span>            setField[lvl0] = vln</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">for</span> dda <span class="keywordflow">in</span> range(lvl0.GetNoDaughters()):</div>
+<div class="line"><span class="lineno">   81</span>            vl = lvl0.GetDaughter(dda)</div>
+<div class="line"><span class="lineno">   82</span>            vln = vl.GetName().c_str()</div>
+<div class="line"><span class="lineno">   83</span>            lvl = vl.GetLogicalVolume()</div>
+<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">if</span> vln <span class="keywordflow">in</span> listOfFields:</div>
+<div class="line"><span class="lineno">   85</span>                setField[lvl] = vln</div>
+<div class="line"><span class="lineno">   86</span>    modified = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">for</span> lvl <span class="keywordflow">in</span> setField:</div>
+<div class="line"><span class="lineno">   88</span>        <span class="comment"># check if field already exists</span></div>
+<div class="line"><span class="lineno">   89</span>        fm = lvl.GetFieldManager()</div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> fm.DoesFieldExist():</div>
+<div class="line"><span class="lineno">   91</span>            lvl.SetFieldManager(listOfFields[setField[lvl]], <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   92</span>            modified = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   93</span>            <span class="keywordflow">if</span> flag == <span class="stringliteral">&quot;dump&quot;</span>:</div>
+<div class="line"><span class="lineno">   94</span>                constField = listOfFields[setField[lvl]].GetDetectorField().GetConstantFieldValue()</div>
+<div class="line"><span class="lineno">   95</span>                print(<span class="stringliteral">&quot;set field for &quot;</span>, setField[lvl], constField)</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   97</span>            <span class="keywordflow">if</span> flag == <span class="stringliteral">&quot;dump&quot;</span>:</div>
+<div class="line"><span class="lineno">   98</span>                print(<span class="stringliteral">&quot;field already set:&quot;</span>, setField[lvl])</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> modified:</div>
+<div class="line"><span class="lineno">  100</span>        g4Run = ROOT.G4RunManager.GetRunManager()</div>
+<div class="line"><span class="lineno">  101</span>        g4Run.GeometryHasBeenModified(<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  102</span> </div>
 <div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -700,12 +698,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00262">262</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  262</span><span class="keyword">def </span>startUI():</div>
-<div class="line"><span class="lineno">  263</span>    session = ROOT.G4UIterminal()</div>
-<div class="line"><span class="lineno">  264</span>    session.SessionStart()</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span> </div>
+<p class="definition">Definition at line <a class="el" href="geomGeant4_8py_source.html#l00260">260</a> of file <a class="el" href="geomGeant4_8py_source.html">geomGeant4.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  260</span><span class="keyword">def </span>startUI():</div>
+<div class="line"><span class="lineno">  261</span>    session = ROOT.G4UIterminal()</div>
+<div class="line"><span class="lineno">  262</span>    session.SessionStart()</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

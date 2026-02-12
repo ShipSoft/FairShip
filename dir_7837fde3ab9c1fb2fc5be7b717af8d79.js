@@ -29,7 +29,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "rpvsusy.py", "rpvsusy_8py.html", "rpvsusy_8py" ],
     [ "saveBasicParameters.py", "saveBasicParameters_8py.html", "saveBasicParameters_8py" ],
     [ "SciFiMapping.py", "SciFiMapping_8py.html", "SciFiMapping_8py" ],
-    [ "ShieldUtils.py", "ShieldUtils_8py.html", "ShieldUtils_8py" ],
     [ "shipDet_conf.py", "shipDet__conf_8py.html", "shipDet__conf_8py" ],
     [ "shipDigiReco.py", "shipDigiReco_8py.html", "shipDigiReco_8py" ],
     [ "ShipGeoConfig.py", "ShipGeoConfig_8py.html", "ShipGeoConfig_8py" ],

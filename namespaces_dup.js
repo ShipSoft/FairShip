@@ -1068,13 +1068,13 @@ var namespaces_dup =
       [ "M", "namespacerun__fixedTarget.html#af90f2a88330fe43e2fc455313465f260", null ],
       [ "mcEngine", "namespacerun__fixedTarget.html#a2ecf6a13590cfb316a6f17be3fb51f35", null ],
       [ "MuonShield", "namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa", null ],
-      [ "n_magnets", "namespacerun__fixedTarget.html#af98c4aa8b7f1d06b5c50f7826bb9a98d", null ],
       [ "n_params", "namespacerun__fixedTarget.html#acad6c0d1dfd24bba22f2eab2138afc96", null ],
       [ "nEvents", "namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3", null ],
       [ "nt", "namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95", null ],
       [ "outFile", "namespacerun__fixedTarget.html#ae509765a529dfe63f10403bfbb4e6c23", null ],
       [ "outputDir", "namespacerun__fixedTarget.html#a34f5375a3b50b83ee41e62f626294d87", null ],
       [ "P8gen", "namespacerun__fixedTarget.html#ad5d197a44fb50031e902eba201329ecc", null ],
+      [ "params", "namespacerun__fixedTarget.html#ad83c31f0696cc6c2129af09325c7ef08", null ],
       [ "parFile", "namespacerun__fixedTarget.html#a2e15b921db00faa3c382a285ac4d1484", null ],
       [ "poteq", "namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4", null ],
       [ "primGen", "namespacerun__fixedTarget.html#ad5019a2bfcd85504e1ed4b193811c920", null ],
@@ -1330,9 +1330,6 @@ var namespaces_dup =
     ] ],
     [ "SBTDetector", "namespaceSBTDetector.html", "namespaceSBTDetector" ],
     [ "SciFiMapping", "namespaceSciFiMapping.html", "namespaceSciFiMapping" ],
-    [ "ShieldUtils", "namespaceShieldUtils.html", [
-      [ "find_shield_center", "namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c", null ]
-    ] ],
     [ "ShipAna", "namespaceShipAna.html", [
       [ "access2SmearedHits", "namespaceShipAna.html#a15de66a7d330dfcee067f46e4f1a5469", null ],
       [ "checkFiducialVolume", "namespaceShipAna.html#add600534e6df6909726258d95b473c75", null ],
