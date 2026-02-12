@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import re
 import sys
 
 import numpy as np
@@ -67,59 +66,56 @@ def make_particles_stable(P8gen, above_lifetime):
             print(f"Pythia8 configuration: Made {p.name()} stable for Pythia, should decay in Geant4")
 
 
-def parse_histograms(filepath):
+def load_histograms_from_root(filepath):
     """
-    This function parses a file containing histograms of branching ratios.
+    Load TH1F histograms from a ROOT file.
 
-    It places them in a dictionary indexed by the decay string (e.g. 'd_K0_e'),
-    as a pair ([masses...], [branching ratios...]), where the mass is expressed
-    in GeV.
+    Args:
+        filepath: Path to ROOT file containing TH1F histograms
+
+    Returns:
+        Dictionary of decay_code -> (masses_array, branching_ratios_array)
     """
-    with open(filepath) as f:
-        lines = f.readlines()
-    # Define regular expressions matching (sub-)headers and data lines
-    th1f_exp = re.compile(r"^TH1F\|.+")
-    header_exp = re.compile(r"^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \(GeV\)\|?")
-    subheader_exp = re.compile(r"^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$")
-    data_exp = re.compile(r"^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$")
-    # Locate beginning of each histogram
-    header_line_idx = [i for i in range(len(lines)) if th1f_exp.match(lines[i]) is not None]
-    # Iterate over histograms
-    histograms = {}
-    for offset in header_line_idx:
-        # Parse header
-        mh = header_exp.match(lines[offset])
-        if mh is None or len(mh.groups()) != 2:
-            raise ValueError(f"Malformed header encountered: {lines[offset]}")
-        decay_code = mh.group(1)
-        # Parse sub-header (min/max mass and number of points)
-        ms = subheader_exp.match(lines[offset + 1])
-        if ms is None or len(ms.groups()) != 3:
-            raise ValueError(f"Malformed sub-header encountered: {lines[offset + 1]}")
-        npoints = int(ms.group(1))
-        min_mass = float(ms.group(2))
-        max_mass = float(ms.group(3))
-        masses = np.linspace(min_mass, max_mass, npoints, endpoint=False)
-        branching_ratios = np.zeros(npoints)
-        # Now read the data lines (skipping the two header lines)
-        for line in lines[offset + 2 : offset + npoints + 1]:
-            md = data_exp.match(line)
-            if md is None or len(md.groups()) != 2:
-                raise ValueError(f"Malformed data row encountered: {line}")
-            idx = int(md.group(1))
-            br = float(md.group(2))
-            branching_ratios[idx] = br
-        histograms[decay_code] = (masses, branching_ratios)
-    return histograms
+    root_file = ROOT.TFile(filepath, "READ")
+    if root_file.IsZombie():
+        raise RuntimeError(f"Cannot open ROOT file: {filepath}")
+
+    histogram_data = {}
+
+    # Get list of keys in the file
+    keys = root_file.GetListOfKeys()
+
+    for key in keys:
+        hist_name = key.GetName()
+        hist = root_file.Get(hist_name)
+
+        if not isinstance(hist, ROOT.TH1F):
+            continue
+
+        # Extract masses and branching ratios
+        nbins = hist.GetNbinsX()
+        masses = np.zeros(nbins)
+        branching_ratios = np.zeros(nbins)
+
+        for i in range(nbins):
+            # Get bin center for mass
+            masses[i] = hist.GetBinCenter(i + 1)  # ROOT bins are 1-indexed
+            branching_ratios[i] = hist.GetBinContent(i + 1)
+
+        histogram_data[hist_name] = (masses, branching_ratios)
+
+    root_file.Close()
+    return histogram_data
 
 
 def make_interpolators(filepath, kind="linear"):
     """
-    This function reads a file containing branching ratio histograms, and
+    This function reads a ROOT file containing branching ratio histograms, and
     returns a dictionary of interpolators of the branching ratios, indexed by
     the decay string.
     """
-    histogram_data = parse_histograms(filepath)
+    histogram_data = load_histograms_from_root(filepath)
+
     histograms = {}
     for hist_string, (masses, br) in histogram_data.items():
         histograms[hist_string] = scipy.interpolate.interp1d(

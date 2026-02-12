@@ -23,28 +23,41 @@ def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
     pdg.AddParticle("A", "DarkPhoton", m, False, g, 0.0, "A", pid)
 
 
-def readFromAscii():
+def load_branching_ratios():
+    """
+    Load branching ratio histograms from ROOT file.
+    Returns a dictionary of TH1F objects indexed by decay code.
+    """
+    from pythia8_conf_utils import load_histograms_from_root
+
     FairShip = os.environ["FAIRSHIP"]
-    ascii = open(FairShip + "/shipgen/branchingratios.dat")
+    filepath = FairShip + "/shipgen/branchingratios.root"
+
+    # Load histogram data
+    histogram_data = load_histograms_from_root(filepath)
+
+    # Convert to TH1F objects for compatibility
     h = {}
-    content = ascii.readlines()
-    n = 0
-    while n < len(content):
-        line = content[n]
-        if not line.find("TH1F") < 0:
-            keys = line.split("|")
-            n += 1
-            limits = content[n].split(",")
-            hname = keys[1]
-            if len(keys) < 5:
-                keys.append(",")
-            h[hname] = ROOT.TH1F(
-                hname, keys[2] + ";" + keys[3] + ";" + keys[4], int(limits[0]), float(limits[1]), float(limits[2])
-            )
-        else:
-            keys = line.split(",")
-            h[hname].SetBinContent(int(keys[0]), float(keys[1]))
-        n += 1
+    for decay_code, (masses, branching_ratios) in histogram_data.items():
+        # Calculate bin parameters
+        nbins = len(masses)
+        if nbins < 2:
+            continue
+
+        bin_width = masses[1] - masses[0] if nbins > 1 else 0.001
+        xmin = masses[0] - bin_width / 2
+        xmax = masses[-1] + bin_width / 2
+
+        # Create TH1F
+        title = f"BR/U2   {decay_code} to HNL;HNL mass (GeV);"
+        hist = ROOT.TH1F(decay_code, title, nbins, xmin, xmax)
+
+        # Fill with data
+        for i, br in enumerate(branching_ratios):
+            hist.SetBinContent(i + 1, br)  # ROOT bins are 1-indexed
+
+        h[decay_code] = hist
+
     return h
 
 

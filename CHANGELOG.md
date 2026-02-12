@@ -20,6 +20,7 @@ it in future.
 
 ### Changed
 
+* Store branching ratios in ROOT files instead of custom ASCII format for better compression and simpler code. ASCII format (.dat files) removed.
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
 * Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
 * UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)

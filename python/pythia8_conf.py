@@ -33,7 +33,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     if debug:
         pythia_log = open("pythia8_conf.txt", "w")
         P8gen = MethodLogger(P8gen, sink=pythia_log)
-    h = make_interpolators(os.path.expandvars(f"$FAIRSHIP/shipgen/branchingratiosrpvsusybench{benchmark}.dat"))
+    h = make_interpolators(os.path.expandvars(f"$FAIRSHIP/shipgen/branchingratiosrpvsusybench{benchmark}.root"))
     P8gen.UseRandom3()
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy:
@@ -176,7 +176,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         P8gen = MethodLogger(P8gen, sink=pythia_log)
 
     fairship_root = os.environ["FAIRSHIP"]
-    histograms = make_interpolators(fairship_root + "/shipgen/branchingratios.dat")
+    histograms = make_interpolators(fairship_root + "/shipgen/branchingratios.root")
     P8gen.UseRandom3()  # TRandom1 or TRandom3 ?
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy:
