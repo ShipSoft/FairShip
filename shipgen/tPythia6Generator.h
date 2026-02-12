@@ -24,7 +24,7 @@ class tPythia6Generator : public FairGenerator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
 
-  virtual Bool_t Init();  //!
+  virtual Bool_t Init();
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetTarget(TString Type, TString Target) {

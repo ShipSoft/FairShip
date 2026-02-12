@@ -34,11 +34,11 @@ class FixedTargetGenerator : public FairGenerator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
-  void Print();  //!
+  void Print();
 
-  virtual Bool_t Init();  //!
+  virtual Bool_t Init();
   Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots = 5E13,
-                              Int_t nStart = 0);  //!
+                              Int_t nStart = 0);
 
   void SetMom(Double_t mom) { fMom = mom; };
   void UseRandom1() {

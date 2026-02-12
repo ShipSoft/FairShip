@@ -62,9 +62,9 @@ class CosmicsGenerator : public FairGenerator {
   };
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);  //!
+  Bool_t ReadEvent(FairPrimaryGenerator*);
   //  virtual Bool_t Init(); //!
-  virtual Bool_t Init(Bool_t largeMom);  //!
+  virtual Bool_t Init(Bool_t largeMom);
 
   double z0, yBox, xBox, zBox, xdist, zdist, minE;
   int n_EVENTS;

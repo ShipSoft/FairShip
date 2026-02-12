@@ -28,8 +28,8 @@ class GenieGenerator : public FairGenerator {
   /** public method ReadEvent **/
   Bool_t OldReadEvent(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);  //!
-  virtual Bool_t Init(const char*);       //!
+  virtual Bool_t Init(const char*, int);
+  virtual Bool_t Init(const char*);
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {
