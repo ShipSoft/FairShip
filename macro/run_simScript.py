@@ -504,7 +504,9 @@ if options.evtcalc:
     EvtCalcGen.Init(inputFile, options.firstEvent)
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
-    options.nEvents = EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
+    options.nEvents = (
+        EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
+    )
     print(f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}")
 
 # -----Particle Gun-----------------------
@@ -606,7 +608,9 @@ if options.muonback:
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
-    options.nEvents = MuonBackgen.GetNevents() if options.nEvents == -1  else min(options.nEvents, MuonBackgen.GetNevents())
+    options.nEvents = (
+        MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
+    )
     MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
     print(
         "Process ",
