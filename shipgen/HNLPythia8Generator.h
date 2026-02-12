@@ -50,10 +50,10 @@ class HNLPythia8Generator : public FairGenerator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
-  void Print() { fPythia->settings.listAll(); };          //!
-  void List(int id) { fPythia->particleData.list(id); };  //!
+  void Print() { fPythia->settings.listAll(); };
+  void List(int id) { fPythia->particleData.list(id); };
 
-  virtual Bool_t Init();  //!
+  virtual Bool_t Init();
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };

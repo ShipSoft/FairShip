@@ -36,15 +36,15 @@ class DPPythia8Generator : public FairGenerator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
-  void Print() { fPythia->settings.listAll(); };          //!
-  void List(int id) { fPythia->particleData.list(id); };  //!
+  void Print() { fPythia->settings.listAll(); };
+  void List(int id) { fPythia->particleData.list(id); };
 
   // void SetDecayToHadrons(){
   // std::cout << " INFO: Adding decay to hadrons." << std::endl;
   // fHadDecay = true;
   // };
 
-  virtual Bool_t Init();  //!
+  virtual Bool_t Init();
 
   void SetMom(Double_t mom) { fMom = mom; };
   Double_t GetMom() { return fMom; };

@@ -26,8 +26,8 @@ class MuDISGenerator : public FairGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);  //!
-  virtual Bool_t Init(const char*);       //!
+  virtual Bool_t Init(const char*, int);
+  virtual Bool_t Init(const char*);
   Int_t GetNevents();
 
   void SetPositions(Double_t z_start, Double_t z_end) {
