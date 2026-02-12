@@ -267,9 +267,7 @@ def create_config(
         else:
             # Subsequent magnets are placed relative to the previous one
             c.muShield.Entrance.append(
-                c.muShield.Entrance[i - 1]
-                + c.muShield.half_length[i - 1] * 2
-                + c.muShield.Zgap[i]
+                c.muShield.Entrance[i - 1] + c.muShield.half_length[i - 1] * 2 + c.muShield.Zgap[i]
             )
     # Flatten the params list
     c.muShield.params = [item for sublist in params for item in sublist]
@@ -398,9 +396,7 @@ def create_config(
     c.Muon.ActiveThickness = 0.5 * u.cm
     c.Muon.FilterThickness = 30.0 * u.cm
 
-    c.hadronAbsorber.WithConstField = shield_db[shieldName][
-        "WithConstField"
-    ]
+    c.hadronAbsorber.WithConstField = shield_db[shieldName]["WithConstField"]
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
