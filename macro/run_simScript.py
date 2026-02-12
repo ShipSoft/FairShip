@@ -297,6 +297,7 @@ if options.inputFile:
     inputFile = []
     for _f in options.inputFile:
         inputFile.extend(glob.glob(_f))
+    inputFile = list(set(inputFile))
     if options.nFiles > 0:
         inputFile = inputFile[: options.nFiles]
     defaultInputFile = False
