@@ -504,7 +504,7 @@ if options.evtcalc:
     EvtCalcGen.Init(inputFile, options.firstEvent)
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
-    options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
+    options.nEvents = EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
     print(f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}")
 
 # -----Particle Gun-----------------------
@@ -540,7 +540,7 @@ if options.mudis:
     DISgen.SetPositions(mu_start, mu_end)
     DISgen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(DISgen)
-    options.nEvents = min(options.nEvents, DISgen.GetNevents())
+    options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
     print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
 # -----Neutrino Background------------------------
 if options.command == "Genie":
@@ -551,7 +551,7 @@ if options.command == "Genie":
     Geniegen.Init(inputFile, options.firstEvent)
     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
-    options.nEvents = min(options.nEvents, Geniegen.GetNevents())
+    options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
     run.SetPythiaDecayer("DecayConfigNuAge.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
 if options.nuradio:
@@ -579,7 +579,7 @@ if options.ntuple:
     Ntuplegen = ROOT.NtupleGenerator()
     Ntuplegen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(Ntuplegen)
-    options.nEvents = min(options.nEvents, Ntuplegen.GetNevents())
+    options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
     print("Process ", options.nEvents, " from input file")
 #
 if options.muonback:
@@ -606,7 +606,7 @@ if options.muonback:
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
-    options.nEvents = min(options.nEvents, MuonBackgen.GetNevents())
+    options.nEvents = MuonBackgen.GetNevents() if options.nEvents == -1  else min(options.nEvents, MuonBackgen.GetNevents())
     MCTracksWithHitsOnly = True  # otherwise, output file becomes too big
     print(
         "Process ",
