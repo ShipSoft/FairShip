@@ -5,6 +5,7 @@
 import os
 import sys
 import uuid
+import glob
 from argparse import ArgumentParser
 from array import array
 
@@ -186,6 +187,13 @@ group.add_argument(
     help="Input file or space separated list of files if not default file",
     default=False,
 )
+parser.add_argument(
+    "--nFiles",
+    dest="nFiles",
+    help="Number of input files to process",
+    default=-1,
+    type=int
+)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
@@ -292,7 +300,11 @@ if options.cosmics:
 if options.inputFile:
     if options.inputFile == "none":
         options.inputFile = None
-    inputFile = options.inputFile
+    inputFile = []
+    for _f in options.inputFile:
+        inputFile.extend(glob.glob(_f))
+    if options.nFiles > 0:
+        inputFile = inputFile[:options.nFiles]
     defaultInputFile = False
 if options.RPVSUSY:
     HNL = False
