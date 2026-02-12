@@ -5,7 +5,6 @@ from array import array
 
 import hepunit as G4Unit
 import ROOT
-import ShieldUtils
 import shipunit as u
 
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
@@ -196,20 +195,25 @@ def addVMCFields(shipGeo, controlFile="", verbose=False, withVirtualMC=True):
         offset = shipGeo.muShield.Entrance[0]
         quadSymm = True
         file_name = f"files/{shipGeo.shieldName}.root"
-        fieldMaker.defineFieldMap('muonShieldField', file_name,
-                                ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm)
-        fieldsList.append('muonShieldField')
+        fieldMaker.defineFieldMap(
+            "muonShieldField", file_name, ROOT.TVector3(0.0, 0.0, offset), ROOT.TVector3(0.0, 0.0, 0.0), quadSymm
+        )
+        fieldsList.append("muonShieldField")
 
     elif not shipGeo.hadronAbsorber.WithConstField:
-        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
-        fieldsList.append('HadronAbsorberMap')
+        fieldMaker.defineFieldMap(
+            "HadronAbsorberMap",
+            "files/FieldHadronStopper_raised_20190411.root",
+            ROOT.TVector3(0.0, 0.0, shipGeo.hadronAbsorber.z),
+        )
+        fieldsList.append("HadronAbsorberMap")
 
     # Combine the fields to obtain the global field
     if len(fieldsList) > 1:
-        fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
-        fieldMaker.defineGlobalField('TotalField')
+        fieldMaker.defineComposite("TotalField", *fieldsList)  # fieldsList MUST have length <=4
+        fieldMaker.defineGlobalField("TotalField")
     else:
-        fieldMaker.defineGlobalField('MainSpecMap')
+        fieldMaker.defineGlobalField("MainSpecMap")
     if withVirtualMC:
         # Force the VMC to update/reset the fields defined by the fieldMaker object.
         # Get the ROOT/Geant4 geometry manager
