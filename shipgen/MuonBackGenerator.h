@@ -28,8 +28,8 @@ class MuonBackGenerator : public ShipGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int) override;
-  virtual Bool_t Init(const char*) override;
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
   virtual Bool_t Init(const std::vector<std::string>&, int);
   virtual Bool_t Init(const std::vector<std::string>&);
 

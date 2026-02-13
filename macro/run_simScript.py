@@ -847,7 +847,7 @@ if options.mudis:
         ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
     ):
         output_tree = f_outputfile["cbmsim"]
-        muondis_tree = TChain("DIS")
+        muondis_tree = ROOT.TChain("DIS")
         for _f in inputFile:
             muondis_tree.Add(_f)
 
