@@ -6,6 +6,7 @@
 #define SHIPGEN_SHIPGENERATOR_H_ 1
 
 #include <vector>
+#include <string>
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN

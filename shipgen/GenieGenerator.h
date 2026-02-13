@@ -29,7 +29,7 @@ class GenieGenerator : public ShipGenerator {
   /** public method ReadEvent **/
   using ShipGenerator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
   Int_t GetNevents();
