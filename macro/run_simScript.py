@@ -17,6 +17,33 @@ import shipunit as u
 
 DownScaleDiMuon = False
 
+# Generators that support multiple input files (via TChain)
+# Other generators only support a single input file
+MULTI_FILE_GENERATORS = {"muonback"}
+
+
+def validate_input_files(input_files, options):
+    """Validate that generators receive the correct number of input files.
+
+    Only generators in MULTI_FILE_GENERATORS support multiple input files.
+    Other generators require exactly one file.
+    """
+    if not input_files or len(input_files) <= 1:
+        return  # Single file or no file is always fine
+
+    # Check if any multi-file generator is enabled
+    uses_multi_file_generator = any(getattr(options, gen, False) for gen in MULTI_FILE_GENERATORS)
+
+    if not uses_multi_file_generator:
+        supported = ", ".join(f"--{gen.title()}" for gen in sorted(MULTI_FILE_GENERATORS))
+        raise SystemExit(
+            f"Error: Multiple input files provided ({len(input_files)} files), "
+            "but the selected generator only supports a single input file.\n"
+            f"Only the following generators support multiple files: {supported}.\n"
+            "Please provide a single file or use --nFiles 1 to limit to one file."
+        )
+
+
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
 theProductionCouplings = theDecayCouplings = None
@@ -300,6 +327,7 @@ if options.inputFile:
     inputFile = list(set(inputFile))
     if options.nFiles > 0:
         inputFile = inputFile[: options.nFiles]
+    validate_input_files(inputFile, options)
     defaultInputFile = False
 if options.RPVSUSY:
     HNL = False
@@ -610,7 +638,7 @@ if options.muonback:
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
     if DownScaleDiMuon:
-        testf = ROOT.TFile.Open(inputFile)
+        testf = ROOT.TFile.Open(inputFile[0])
         if not testf.FileHeader.GetTitle().find("diMu100.0") < 0:
             MuonBackgen.SetDownScaleDiMuon()  # avoid interference with boosted channels
             print("MuonBackgenerator: set downscale for dimuon on")

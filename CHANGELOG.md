@@ -33,6 +33,7 @@ it in future.
 
 ### Fixed
 
+* Validate that multiple input files are only passed to generators that support them (currently only MuonBackGenerator). #1045
 * Fix `errorSummary` not printing its header (bare string expression instead of `print`)
 * Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
 * Fix file-filtering logic to support STL branches
