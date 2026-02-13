@@ -6,8 +6,8 @@
 #define SHIPGEN_NTUPLEGENERATOR_H_
 
 #include "FairGenerator.h"
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "ShipGenerator.h"
 #include "TROOT.h"
 #include "TTree.h"  // for TTree
 

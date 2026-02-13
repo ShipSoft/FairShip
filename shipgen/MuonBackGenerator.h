@@ -9,10 +9,10 @@
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "TChain.h"      // for TChain
+#include "ShipGenerator.h"
+#include "TChain.h"  // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
-#include "ShipGenerator.h"
 
 class FairPrimaryGenerator;
 class ShipMCTrack;
