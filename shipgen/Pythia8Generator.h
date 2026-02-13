@@ -43,6 +43,9 @@ class Pythia8Generator : public FairGenerator {
     fextFile = x;
     firstEvent = i;
   };
+  void UseExternalFile(std::vector<std::string>& inFiles, int startEvent){
+    useExternalFile(inFiles.at(0).c_str(), startEvent);
+  };
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x, Double_t y) {
     targetName = s;
