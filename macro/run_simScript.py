@@ -844,12 +844,12 @@ if options.mudis:
 
     with (
         ROOT.TFile.Open(outFile, "read") as f_outputfile,
-        ROOT.TFile.Open(inputFile, "read") as f_muonfile,
         ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
     ):
         output_tree = f_outputfile["cbmsim"]
-
-        muondis_tree = f_muonfile["DIS"]
+        muondis_tree = ROOT.TChain("DIS")
+        for _f in inputFile:
+            muondis_tree.Add(_f)
 
         new_tree = output_tree.CloneTree(0)
 

@@ -5,6 +5,9 @@
 #ifndef SHIPGEN_PYTHIA8GENERATOR_H_
 #define SHIPGEN_PYTHIA8GENERATOR_H_
 
+#include <string>
+#include <vector>
+
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "GenieGenerator.h"
@@ -42,6 +45,9 @@ class Pythia8Generator : public FairGenerator {
   void UseExternalFile(const char* x, Int_t i) {
     fextFile = x;
     firstEvent = i;
+  };
+  void UseExternalFile(std::vector<std::string>& inFiles, int startEvent) {
+    UseExternalFile(inFiles.at(0).c_str(), startEvent);
   };
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x, Double_t y) {

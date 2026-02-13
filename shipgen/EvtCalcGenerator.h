@@ -8,12 +8,13 @@
 #include <memory>
 
 #include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "TFile.h"
 #include "TTree.h"
 
 class FairPrimaryGenerator;
 
-class EvtCalcGenerator : public FairGenerator {
+class EvtCalcGenerator : public ShipGenerator {
  public:
   /** default constructor **/
   EvtCalcGenerator();
@@ -22,9 +23,10 @@ class EvtCalcGenerator : public FairGenerator {
   virtual ~EvtCalcGenerator();
 
   /** public method ReadEvent **/
+  using ShipGenerator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
 
   Int_t GetNevents() { return fNevents; }
   void SetPositions(Double_t zTa, Double_t zDV) {

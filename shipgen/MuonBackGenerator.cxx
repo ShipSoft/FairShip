@@ -46,7 +46,7 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames) {
 
 Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
                                const int firstEvent) {
-  LOG(info) << "Opening input file " << fileNames.at(0);
+  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
   TFile testFile(fileNames.at(0).c_str());
   auto testKeys = testFile.GetListOfKeys();
   if (testKeys == nullptr) {
@@ -196,7 +196,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return fUseSTL ? MCTrack_vec->size() : MCTrack->GetEntries();
   };
 
-  while (fn < fNevents) {
+  while (fn < fNevents - 1) {
     fTree->GetEntry(fn);
     muList.clear();
     moList.clear();
