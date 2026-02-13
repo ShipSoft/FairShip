@@ -12,12 +12,13 @@
 #include "TChain.h"      // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
+#include "ShipGenerator.h"
 
 class FairPrimaryGenerator;
 class ShipMCTrack;
 class vetoPoint;
 
-class MuonBackGenerator : public FairGenerator {
+class MuonBackGenerator : public ShipGenerator {
  public:
   /** default constructor **/
   MuonBackGenerator();
@@ -27,8 +28,8 @@ class MuonBackGenerator : public FairGenerator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
+  virtual Bool_t Init(const char*, int) override;
+  virtual Bool_t Init(const char*) override;
   virtual Bool_t Init(const std::vector<std::string>&, int);
   virtual Bool_t Init(const std::vector<std::string>&);
 

@@ -6,6 +6,7 @@
 #define SHIPGEN_GENIEGENERATOR_H_ 1
 
 #include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "TF1.h"         // for TF1
 #include "TH1.h"         // for TH1
@@ -17,7 +18,7 @@
 
 class FairPrimaryGenerator;
 
-class GenieGenerator : public FairGenerator {
+class GenieGenerator : public ShipGenerator {
  public:
   /** default constructor **/
   GenieGenerator();
@@ -26,10 +27,11 @@ class GenieGenerator : public FairGenerator {
   virtual ~GenieGenerator();
 
   /** public method ReadEvent **/
+  using ShipGenerator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {

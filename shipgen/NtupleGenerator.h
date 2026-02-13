@@ -6,13 +6,14 @@
 #define SHIPGEN_NTUPLEGENERATOR_H_
 
 #include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "TROOT.h"
 #include "TTree.h"  // for TTree
 
 class FairPrimaryGenerator;
 
-class NtupleGenerator : public FairGenerator {
+class NtupleGenerator : public ShipGenerator {
  public:
   /** default constructor **/
   NtupleGenerator();
@@ -21,9 +22,10 @@ class NtupleGenerator : public FairGenerator {
   virtual ~NtupleGenerator();
 
   /** public method ReadEvent **/
+  using ShipGenerator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
   Int_t GetNevents();
 
  private:
