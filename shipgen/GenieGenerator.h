@@ -6,11 +6,11 @@
 #define SHIPGEN_GENIEGENERATOR_H_ 1
 
 #include "FairGenerator.h"
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "TF1.h"         // for TF1
-#include "TH1.h"         // for TH1
-#include "TH2.h"         // for TH2
+#include "ShipGenerator.h"
+#include "TF1.h"  // for TF1
+#include "TH1.h"  // for TH1
+#include "TH2.h"  // for TH2
 #include "TROOT.h"
 #include "TTree.h"  // for TTree
 #include "TVector3.h"

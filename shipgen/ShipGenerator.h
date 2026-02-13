@@ -18,22 +18,22 @@ class ShipMCTrack;
 class vetoPoint;
 
 class ShipGenerator : public FairGenerator {
+ public:
+  ShipGenerator() {};
+  virtual ~ShipGenerator();
 
-  public:
+  virtual Bool_t Init(const char*, int) = 0;
+  virtual Bool_t Init(const char*) = 0;
+  virtual Bool_t Init(const std::vector<std::string>& inFiles,
+                      int startNumber) {
+    return Init(inFiles.at(0).c_str(), startNumber);
+  };
+  virtual Bool_t Init(const std::vector<std::string>& inFiles) {
+    return Init(inFiles.at(0).c_str(), 0);
+  };
 
-    ShipGenerator() {};
-    virtual ~ShipGenerator();
-
-    virtual Bool_t Init(const char*, int) = 0;
-    virtual Bool_t Init(const char*) = 0;
-    virtual Bool_t Init(const std::vector<std::string>& inFiles, int startNumber){return Init(inFiles.at(0).c_str(), startNumber);};
-    virtual Bool_t Init(const std::vector<std::string>& inFiles){return Init(inFiles.at(0).c_str(), 0);};
-
-  protected:
-    ClassDef(ShipGenerator, 1);
-
-  
-
+ protected:
+  ClassDef(ShipGenerator, 1);
 };
 
-#endif  // SHIPGEN_SHIPGENERATOR_H_ 
+#endif  // SHIPGEN_SHIPGENERATOR_H_

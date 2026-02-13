@@ -6,8 +6,8 @@
 #define SHIPGEN_MUDISGENERATOR_H_ 1
 
 #include "FairGenerator.h"
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "ShipGenerator.h"
 #include "TClonesArray.h"
 #include "TF1.h"  // for TF1
 #include "TROOT.h"
