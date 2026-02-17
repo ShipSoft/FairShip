@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
@@ -17,7 +17,7 @@
 
 class FairPrimaryGenerator;
 
-class Pythia8Generator : public FairGenerator {
+class Pythia8Generator : public Ship::Generator {
  public:
   /** default constructor **/
   Pythia8Generator();
@@ -26,11 +26,12 @@ class Pythia8Generator : public FairGenerator {
   virtual ~Pythia8Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print();
 
-  virtual Bool_t Init();
+  using Ship::Generator::Init;
+  Bool_t Init() override;
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };
@@ -87,7 +88,7 @@ class Pythia8Generator : public FairGenerator {
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;  //
   GenieGenerator* fMaterialInvestigator;  //!
-  ClassDef(Pythia8Generator, 3);
+  ClassDefOverride(Pythia8Generator, 3);
   TString targetName;
   Double_t xOff;
   Double_t yOff;

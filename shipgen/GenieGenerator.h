@@ -18,7 +18,7 @@
 
 class FairPrimaryGenerator;
 
-class GenieGenerator : public ShipGenerator {
+class GenieGenerator : public Ship::Generator {
  public:
   /** default constructor **/
   GenieGenerator();
@@ -27,7 +27,7 @@ class GenieGenerator : public ShipGenerator {
   virtual ~GenieGenerator();
 
   /** public method ReadEvent **/
-  using ShipGenerator::Init;
+  using Ship::Generator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
@@ -67,7 +67,7 @@ class GenieGenerator : public ShipGenerator {
   TH1D* pxhist[3000];        //!
   TH1D* pyslice[3000][100];  //!
 
-  ClassDef(GenieGenerator, 1);
+  ClassDefOverride(GenieGenerator, 1);
 };
 
 #endif  // SHIPGEN_GENIEGENERATOR_H_ /* !PNDGeGENERATOR_H */

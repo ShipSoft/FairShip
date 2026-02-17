@@ -5,7 +5,6 @@
 #ifndef SHIPGEN_NTUPLEGENERATOR_H_
 #define SHIPGEN_NTUPLEGENERATOR_H_
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "ShipGenerator.h"
 #include "TROOT.h"
@@ -13,7 +12,7 @@
 
 class FairPrimaryGenerator;
 
-class NtupleGenerator : public ShipGenerator {
+class NtupleGenerator : public Ship::Generator {
  public:
   /** default constructor **/
   NtupleGenerator();
@@ -22,8 +21,8 @@ class NtupleGenerator : public ShipGenerator {
   virtual ~NtupleGenerator();
 
   /** public method ReadEvent **/
-  using ShipGenerator::Init;
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  using Ship::Generator::Init;
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
   Int_t GetNevents();
@@ -39,7 +38,7 @@ class NtupleGenerator : public ShipGenerator {
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
-  ClassDef(NtupleGenerator, 1);
+  ClassDefOverride(NtupleGenerator, 1);
 };
 
 #endif  // SHIPGEN_NTUPLEGENERATOR_H_ /* !PNDntGENERATOR_H */

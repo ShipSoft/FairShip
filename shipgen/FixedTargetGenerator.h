@@ -5,7 +5,7 @@
 #ifndef SHIPGEN_FIXEDTARGETGENERATOR_H_
 #define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
-#include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
@@ -23,7 +23,7 @@ class EvtGenDecays;
 
 class FairPrimaryGenerator;
 
-class FixedTargetGenerator : public FairGenerator {
+class FixedTargetGenerator : public Ship::Generator {
  public:
   /** default constructor **/
   FixedTargetGenerator();
@@ -32,11 +32,12 @@ class FixedTargetGenerator : public FairGenerator {
   virtual ~FixedTargetGenerator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print();
 
-  virtual Bool_t Init();
+  using Ship::Generator::Init;
+  Bool_t Init() override;
   Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots = 5E13,
                               Int_t nStart = 0);
 
@@ -149,6 +150,6 @@ class FixedTargetGenerator : public FairGenerator {
       ck;
   Int_t heartbeat;
 
-  ClassDef(FixedTargetGenerator, 2);
+  ClassDefOverride(FixedTargetGenerator, 2);
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_

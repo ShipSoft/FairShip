@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "ShipGenerator.h"
 #include "TChain.h"  // for TChain
@@ -18,7 +17,7 @@ class FairPrimaryGenerator;
 class ShipMCTrack;
 class vetoPoint;
 
-class MuonBackGenerator : public ShipGenerator {
+class MuonBackGenerator : public Ship::Generator {
  public:
   /** default constructor **/
   MuonBackGenerator();
@@ -27,11 +26,11 @@ class MuonBackGenerator : public ShipGenerator {
   virtual ~MuonBackGenerator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
-  virtual Bool_t Init(const std::vector<std::string>&, int);
-  virtual Bool_t Init(const std::vector<std::string>&);
+  Bool_t Init(const std::vector<std::string>&, int) override;
+  Bool_t Init(const std::vector<std::string>&) override;
 
   Int_t GetNevents();
   void CloseFile();
@@ -65,7 +64,7 @@ class MuonBackGenerator : public ShipGenerator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
-  ClassDef(MuonBackGenerator, 6);
+  ClassDefOverride(MuonBackGenerator, 6);
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

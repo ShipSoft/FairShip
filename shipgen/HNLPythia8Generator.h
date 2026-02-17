@@ -5,7 +5,7 @@
 #ifndef SHIPGEN_HNLPYTHIA8GENERATOR_H_
 #define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
-#include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Pythia8/Pythia.h"
 #include "TFile.h"
@@ -39,7 +39,7 @@ class PyTr3Rng : public Pythia8::RndmEngine {
   TRandom3* rng;  //!
 };
 
-class HNLPythia8Generator : public FairGenerator {
+class HNLPythia8Generator : public Ship::Generator {
  public:
   /** default constructor **/
   HNLPythia8Generator();
@@ -48,12 +48,13 @@ class HNLPythia8Generator : public FairGenerator {
   virtual ~HNLPythia8Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
 
-  virtual Bool_t Init();
+  using Ship::Generator::Init;
+  Bool_t Init() override;
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };
@@ -113,7 +114,7 @@ class HNLPythia8Generator : public FairGenerator {
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 
-  ClassDef(HNLPythia8Generator, 6);
+  ClassDefOverride(HNLPythia8Generator, 6);
 };
 
 #endif  // SHIPGEN_HNLPYTHIA8GENERATOR_H_

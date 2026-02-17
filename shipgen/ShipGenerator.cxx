@@ -3,4 +3,4 @@
 // Collaboration
 
 #include "ShipGenerator.h"
-ShipGenerator::~ShipGenerator() {}
+Ship::Generator::~Generator() {}

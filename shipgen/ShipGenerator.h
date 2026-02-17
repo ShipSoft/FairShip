@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
@@ -18,23 +19,26 @@ class FairPrimaryGenerator;
 class ShipMCTrack;
 class vetoPoint;
 
-class ShipGenerator : public FairGenerator {
- public:
-  ShipGenerator() {};
-  virtual ~ShipGenerator();
+namespace Ship{
+    class Generator : public FairGenerator {
+     public:
+      Generator() {};
+      virtual ~Generator();
 
-  virtual Bool_t Init(const char*, int) = 0;
-  virtual Bool_t Init(const char*) = 0;
-  virtual Bool_t Init(const std::vector<std::string>& inFiles,
-                      int startNumber) {
-    return Init(inFiles.at(0).c_str(), startNumber);
-  };
-  virtual Bool_t Init(const std::vector<std::string>& inFiles) {
-    return Init(inFiles.at(0).c_str(), 0);
-  };
+      virtual Bool_t Init(const char*, int) = 0;
+      virtual Bool_t Init(const char*) = 0;
+      virtual Bool_t Init(const std::vector<std::string>& inFiles,
+                          int startNumber) {
+        std::cout<<"WARNING: Multiple input files not implemented for this generator - only taking the first!"<<std::endl;
+        return Init(inFiles.at(0).c_str(), startNumber);
+      };
+      virtual Bool_t Init(const std::vector<std::string>& inFiles) {
+        std::cout<<"WARNING: Multiple input files not implemented for this generator - only taking the first!"<<std::endl;
+        return Init(inFiles.at(0).c_str(), 0);
+      };
 
- protected:
-  ClassDef(ShipGenerator, 1);
-};
-
+     protected:
+//      ClassDef(Generator, 1);
+    };
+}
 #endif  // SHIPGEN_SHIPGENERATOR_H_

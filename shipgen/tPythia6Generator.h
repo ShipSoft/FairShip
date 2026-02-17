@@ -5,7 +5,7 @@
 #ifndef SHIPGEN_TPYTHIA6GENERATOR_H_
 #define SHIPGEN_TPYTHIA6GENERATOR_H_ 1
 
-#include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
 #include "TROOT.h"
@@ -13,7 +13,7 @@
 
 class FairPrimaryGenerator;
 
-class tPythia6Generator : public FairGenerator {
+class tPythia6Generator : public Ship::Generator {
  public:
   /** default constructor **/
   tPythia6Generator();
@@ -22,9 +22,10 @@ class tPythia6Generator : public FairGenerator {
   virtual ~tPythia6Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
 
-  virtual Bool_t Init();
+  using Ship::Generator::Init;
+  Bool_t Init() override;
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetTarget(TString Type, TString Target) {
@@ -49,7 +50,7 @@ class tPythia6Generator : public FairGenerator {
   Bool_t fPionKaonDecay;
   TString fType;  // muon proton scattering
   TString fTarget;
-  ClassDef(tPythia6Generator, 1);
+  ClassDefOverride(tPythia6Generator, 1);
 };
 
 #endif  // SHIPGEN_TPYTHIA6GENERATOR_H_ /* !PNDP6GENERATOR_H */

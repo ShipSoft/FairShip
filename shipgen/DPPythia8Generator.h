@@ -11,7 +11,7 @@
 // #define _DLFCN_H
 // #endif
 
-#include "FairGenerator.h"
+#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "HNLPythia8Generator.h"
 #include "Pythia8/Pythia.h"
@@ -25,7 +25,7 @@
 
 class FairPrimaryGenerator;
 
-class DPPythia8Generator : public FairGenerator {
+class DPPythia8Generator : public Ship::Generator {
  public:
   /** default constructor **/
   DPPythia8Generator();
@@ -34,7 +34,7 @@ class DPPythia8Generator : public FairGenerator {
   virtual ~DPPythia8Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
@@ -44,7 +44,8 @@ class DPPythia8Generator : public FairGenerator {
   // fHadDecay = true;
   // };
 
-  virtual Bool_t Init();
+  using Ship::Generator::Init;
+  Bool_t Init() override; 
 
   void SetMom(Double_t mom) { fMom = mom; };
   Double_t GetMom() { return fMom; };
@@ -122,7 +123,7 @@ class DPPythia8Generator : public FairGenerator {
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 
-  ClassDef(DPPythia8Generator, 2);
+  ClassDefOverride(DPPythia8Generator, 2);
 };
 
 #endif  // SHIPGEN_DPPYTHIA8GENERATOR_H_
