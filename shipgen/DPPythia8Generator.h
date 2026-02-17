@@ -45,14 +45,14 @@ class DPPythia8Generator : public Ship::Generator {
   // };
 
   using Ship::Generator::Init;
-  Bool_t Init() override; 
-  Bool_t Init(const char* inFile) override{
-      return Init(inFile, 0);
-  };
-  
-  Bool_t Init(const char* inFile, int startEvent) override{
-      std::cout<<"ERROR: Init with files not implemented for DPPythia8Generator. Using default Init() instead"<<std::endl;
-      return Init();
+  Bool_t Init() override;
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    std::cout << "ERROR: Init with files not implemented for "
+                 "DPPythia8Generator. Using default Init() instead"
+              << std::endl;
+    return Init();
   };
 
   void SetMom(Double_t mom) { fMom = mom; };

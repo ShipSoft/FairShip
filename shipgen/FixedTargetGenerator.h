@@ -35,13 +35,13 @@ class FixedTargetGenerator : public Ship::Generator {
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print();
-  Bool_t Init(const char* inFile) override{
-      return Init(inFile, 0);
-  };
-  
-  Bool_t Init(const char* inFile, int startEvent) override{
-      std::cout<<"ERROR: Init with files not implemented for FixedTargetGenerator. Using default Init() instead"<<std::endl;
-      return Init();
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    std::cout << "ERROR: Init with files not implemented for "
+                 "FixedTargetGenerator. Using default Init() instead"
+              << std::endl;
+    return Init();
   };
   using Ship::Generator::Init;
   Bool_t Init() override;

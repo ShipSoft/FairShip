@@ -66,13 +66,12 @@ class CosmicsGenerator : public Ship::Generator {
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   //  virtual Bool_t Init(); //!
   virtual Bool_t Init(Bool_t largeMom);
-  Bool_t Init(const char* inFile) override{
-      return Init(inFile, 0);
-  };
-  
-  Bool_t Init(const char* inFile, int startEvent) override{
-      std::cout<<"ERROR: Init with files not implemented for CosmicsGenerator."<<std::endl;
-      return false;
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    std::cout << "ERROR: Init with files not implemented for CosmicsGenerator."
+              << std::endl;
+    return false;
   };
 
   double z0, yBox, xBox, zBox, xdist, zdist, minE;
