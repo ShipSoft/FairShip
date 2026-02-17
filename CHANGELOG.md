@@ -20,6 +20,7 @@ it in future.
 
 ### Changed
 
+* Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047
 * Add file glob to run_simScript.py input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
 * Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
