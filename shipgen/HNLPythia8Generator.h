@@ -76,10 +76,7 @@ class HNLPythia8Generator : public Ship::Generator {
     fUseRandom1 = kFALSE;
     fUseRandom3 = kTRUE;
   };
-  void UseExternalFile(const char* x, Int_t i) {
-    fextFile = x;
-    firstEvent = i;
-  };
+
   void UseDeepCopy() { fDeepCopy = kTRUE; };
   Int_t nrOfRetries() { return fnRetries; };
   Pythia8::Pythia* getPythiaInstance() { return fPythia; };
@@ -104,11 +101,9 @@ class HNLPythia8Generator : public Ship::Generator {
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;   // finite beam size
   Double_t fPaintBeam;   // beam painting radius
-  const char* fextFile;  // read charm and beauty hadrons from external file,
-                         // decay with Pythia
   TFile* fInputFile;     //! pointer to a file
   TTree* fTree;          //!
-  Int_t fNevents, fn, firstEvent, fShipEventNr;
+  Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];
   Bool_t fDeepCopy;     // not used

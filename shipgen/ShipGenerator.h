@@ -37,8 +37,19 @@ namespace Ship{
         return Init(inFiles.at(0).c_str(), 0);
       };
 
+      virtual void UseExternalFile(const char* x, Int_t i){
+        fextFile = x;
+        firstEvent = i;
+      };
+
+      virtual void UseExternalFile(std::vector<std::string>& inFiles, Int_t i){
+        std::cout<<"WARNING: Multiple external files not implemented for this generator - only taking the first!"<<std::endl;
+        UseExternalFile(inFiles.at(0).c_str(), i);
+      }
+
      protected:
-//      ClassDef(Generator, 1);
+      const char* fextFile;
+      Int_t firstEvent;
     };
 }
 #endif  // SHIPGEN_SHIPGENERATOR_H_

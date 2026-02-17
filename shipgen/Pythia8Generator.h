@@ -43,13 +43,7 @@ class Pythia8Generator : public Ship::Generator {
     fUseRandom1 = kFALSE;
     fUseRandom3 = kTRUE;
   };
-  void UseExternalFile(const char* x, Int_t i) {
-    fextFile = x;
-    firstEvent = i;
-  };
-  void UseExternalFile(std::vector<std::string>& inFiles, int startEvent) {
-    UseExternalFile(inFiles.at(0).c_str(), startEvent);
-  };
+
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x, Double_t y) {
     targetName = s;
@@ -75,12 +69,10 @@ class Pythia8Generator : public Ship::Generator {
   Int_t fId;             // target type
   Bool_t fUseRandom1;    // flag to use TRandom1
   Bool_t fUseRandom3;    // flag to use TRandom3 (default)
-  const char* fextFile;  // read charm and beauty hadrons from external file,
-                         // decay with Pythia
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1], ck[1];
   Float_t ancestors[16], subprocCodes[16];
-  Int_t fNevents, fn, firstEvent, fShipEventNr;
+  Int_t fNevents, fn, fShipEventNr;
   TFile* fInputFile;         //! pointer to a file
   FairLogger* fLogger;       //!   don't make it persistent, magic ROOT command
   TTree* fTree;              //!
