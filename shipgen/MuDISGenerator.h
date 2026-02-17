@@ -6,7 +6,7 @@
 #define SHIPGEN_MUDISGENERATOR_H_ 1
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "ShipGenerator.h"
+#include "Generator.h"
 #include "TClonesArray.h"
 #include "TF1.h"  // for TF1
 #include "TROOT.h"
@@ -16,7 +16,7 @@
 
 class FairPrimaryGenerator;
 
-class MuDISGenerator : public Ship::Generator {
+class MuDISGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   MuDISGenerator();
@@ -25,7 +25,7 @@ class MuDISGenerator : public Ship::Generator {
   virtual ~MuDISGenerator();
 
   /** public method ReadEvent **/
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
@@ -48,6 +48,6 @@ class MuDISGenerator : public Ship::Generator {
   int fn;
   bool fFirst;
 
-  ClassDefOverride(MuDISGenerator, 1);
+  ClassDefOverride(MuDISGenerator, 2);
 };
 #endif  // SHIPGEN_MUDISGENERATOR_H_

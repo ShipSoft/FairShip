@@ -2,24 +2,16 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#ifndef SHIPGEN_SHIPGENERATOR_H_
-#define SHIPGEN_SHIPGENERATOR_H_ 1
+#ifndef SHIPGEN_GENERATOR_H_
+#define SHIPGEN_GENERATOR_H_ 1
 
-#include <iostream>
 #include <string>
 #include <vector>
 
 #include "FairGenerator.h"
-#include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "TChain.h"      // for TChain
-#include "TClonesArray.h"
-#include "TROOT.h"
+#include "FairLogger.h"
 
-class FairPrimaryGenerator;
-class ShipMCTrack;
-class vetoPoint;
-
-namespace Ship {
+namespace SHiP {
 class Generator : public FairGenerator {
  public:
   Generator() {};
@@ -29,15 +21,13 @@ class Generator : public FairGenerator {
   virtual Bool_t Init(const char*) = 0;
   virtual Bool_t Init(const std::vector<std::string>& inFiles,
                       int startNumber) {
-    std::cout << "WARNING: Multiple input files not implemented for this "
-                 "generator - only taking the first!"
-              << std::endl;
+    LOG(warning) << "Multiple input files not implemented for this generator "
+                    "- only taking the first!";
     return Init(inFiles.at(0).c_str(), startNumber);
   };
   virtual Bool_t Init(const std::vector<std::string>& inFiles) {
-    std::cout << "WARNING: Multiple input files not implemented for this "
-                 "generator - only taking the first!"
-              << std::endl;
+    LOG(warning) << "Multiple input files not implemented for this generator "
+                    "- only taking the first!";
     return Init(inFiles.at(0).c_str(), 0);
   };
 
@@ -47,16 +37,15 @@ class Generator : public FairGenerator {
   };
 
   virtual void UseExternalFile(std::vector<std::string>& inFiles, Int_t i) {
-    std::cout << "WARNING: Multiple external files not implemented for this "
-                 "generator - only taking the first!"
-              << std::endl;
+    LOG(warning) << "Multiple external files not implemented for this "
+                    "generator - only taking the first!";
     UseExternalFile(inFiles.at(0).c_str(), i);
   }
 
  protected:
   const char* fextFile = nullptr;
   Int_t firstEvent = 0;
-  ClassDef(Ship::Generator, 1);
+  ClassDef(SHiP::Generator, 2);
 };
-}  // namespace Ship
-#endif  // SHIPGEN_SHIPGENERATOR_H_
+}  // namespace SHiP
+#endif  // SHIPGEN_GENERATOR_H_

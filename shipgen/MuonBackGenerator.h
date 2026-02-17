@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "ShipGenerator.h"
+#include "Generator.h"
 #include "TChain.h"  // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
@@ -17,7 +17,7 @@ class FairPrimaryGenerator;
 class ShipMCTrack;
 class vetoPoint;
 
-class MuonBackGenerator : public Ship::Generator {
+class MuonBackGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   MuonBackGenerator();
@@ -64,7 +64,7 @@ class MuonBackGenerator : public Ship::Generator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
-  ClassDefOverride(MuonBackGenerator, 6);
+  ClassDefOverride(MuonBackGenerator, 7);
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

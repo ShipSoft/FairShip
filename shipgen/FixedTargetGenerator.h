@@ -6,9 +6,9 @@
 #define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
-#include "ShipGenerator.h"
 #include "TNtuple.h"
 #include "TROOT.h"
 #include "TTree.h"
@@ -23,7 +23,7 @@ class EvtGenDecays;
 
 class FairPrimaryGenerator;
 
-class FixedTargetGenerator : public Ship::Generator {
+class FixedTargetGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   FixedTargetGenerator();
@@ -38,12 +38,11 @@ class FixedTargetGenerator : public Ship::Generator {
   Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
   Bool_t Init(const char* inFile, int startEvent) override {
-    std::cout << "ERROR: Init with files not implemented for "
-                 "FixedTargetGenerator. Using default Init() instead"
-              << std::endl;
+    LOG(warning) << "Init with files not implemented for FixedTargetGenerator. "
+                    "Using default Init() instead";
     return Init();
   };
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t Init() override;
 
   Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots = 5E13,
@@ -158,6 +157,6 @@ class FixedTargetGenerator : public Ship::Generator {
       ck;
   Int_t heartbeat;
 
-  ClassDefOverride(FixedTargetGenerator, 2);
+  ClassDefOverride(FixedTargetGenerator, 3);
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_

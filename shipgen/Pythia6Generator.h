@@ -85,17 +85,17 @@ below "N" is the line number of the event,
 #ifndef SHIPGEN_PYTHIA6GENERATOR_H_
 #define SHIPGEN_PYTHIA6GENERATOR_H_
 
-#include "ShipGenerator.h"
+#include "Generator.h"
 
 class TDatabasePDG;
 class FairPrimaryGenerator;
 
-class Pythia6Generator : public Ship::Generator {
+class Pythia6Generator : public SHiP::Generator {
  public:
   /** Default constructor without arguments should not be used. **/
   Pythia6Generator();
 
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
 
   /** Standard constructor.
    ** @param fileName The input file name
@@ -127,7 +127,7 @@ class Pythia6Generator : public Ship::Generator {
 
   //  TDatabasePDG *fPDG; //!
 
-  ClassDefOverride(Pythia6Generator, 1);
+  ClassDefOverride(Pythia6Generator, 2);
 };
 
 #endif  // SHIPGEN_PYTHIA6GENERATOR_H_

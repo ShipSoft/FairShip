@@ -5,9 +5,8 @@
 #ifndef SHIPGEN_GENIEGENERATOR_H_
 #define SHIPGEN_GENIEGENERATOR_H_ 1
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "ShipGenerator.h"
+#include "Generator.h"
 #include "TF1.h"  // for TF1
 #include "TH1.h"  // for TH1
 #include "TH2.h"  // for TH2
@@ -18,7 +17,7 @@
 
 class FairPrimaryGenerator;
 
-class GenieGenerator : public Ship::Generator {
+class GenieGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   GenieGenerator();
@@ -27,7 +26,7 @@ class GenieGenerator : public Ship::Generator {
   virtual ~GenieGenerator();
 
   /** public method ReadEvent **/
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
@@ -67,7 +66,7 @@ class GenieGenerator : public Ship::Generator {
   TH1D* pxhist[3000];        //!
   TH1D* pyslice[3000][100];  //!
 
-  ClassDefOverride(GenieGenerator, 1);
+  ClassDefOverride(GenieGenerator, 2);
 };
 
 #endif  // SHIPGEN_GENIEGENERATOR_H_ /* !PNDGeGENERATOR_H */

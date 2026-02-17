@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#include "ShipGenerator.h"
-Ship::Generator::~Generator() {}
+#include "Generator.h"
+SHiP::Generator::~Generator() {}
 
-ClassImp(Ship::Generator)
+ClassImp(SHiP::Generator)

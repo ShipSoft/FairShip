@@ -6,8 +6,8 @@
 #define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "Pythia8/Pythia.h"
-#include "ShipGenerator.h"
 #include "TFile.h"
 #include "TROOT.h"
 #include "TRandom1.h"
@@ -39,7 +39,7 @@ class PyTr3Rng : public Pythia8::RndmEngine {
   TRandom3* rng;  //!
 };
 
-class HNLPythia8Generator : public Ship::Generator {
+class HNLPythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   HNLPythia8Generator();
@@ -53,14 +53,13 @@ class HNLPythia8Generator : public Ship::Generator {
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
 
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
 
   Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
   Bool_t Init(const char* inFile, int startEvent) override {
-    std::cout << "ERROR: Init with files not implemented for "
-                 "HNLPythia8Generator. Using default Init() instead"
-              << std::endl;
+    LOG(warning) << "Init with files not implemented for HNLPythia8Generator. "
+                    "Using default Init() instead";
     return Init();
   };
   Bool_t Init() override;
@@ -118,7 +117,7 @@ class HNLPythia8Generator : public Ship::Generator {
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 
-  ClassDefOverride(HNLPythia8Generator, 6);
+  ClassDefOverride(HNLPythia8Generator, 7);
 };
 
 #endif  // SHIPGEN_HNLPYTHIA8GENERATOR_H_

@@ -9,15 +9,15 @@
 #include <vector>
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
-#include "ShipGenerator.h"
 #include "TROOT.h"
 #include "TTree.h"
 
 class FairPrimaryGenerator;
 
-class Pythia8Generator : public Ship::Generator {
+class Pythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   Pythia8Generator();
@@ -30,14 +30,13 @@ class Pythia8Generator : public Ship::Generator {
   void SetParameters(char*);
   void Print();
 
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t Init() override;
   Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
   Bool_t Init(const char* inFile, int startEvent) override {
-    std::cout << "ERROR: Init with files not implemented for Pythia8Generator. "
-                 "Using default Init() instead"
-              << std::endl;
+    LOG(warning) << "Init with files not implemented for Pythia8Generator. "
+                    "Using default Init() instead";
     return Init();
   };
 
@@ -88,7 +87,7 @@ class Pythia8Generator : public Ship::Generator {
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;  //
   GenieGenerator* fMaterialInvestigator;  //!
-  ClassDefOverride(Pythia8Generator, 3);
+  ClassDefOverride(Pythia8Generator, 4);
   TString targetName;
   Double_t xOff;
   Double_t yOff;

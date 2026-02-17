@@ -7,13 +7,13 @@
 
 #include <memory>
 
-#include "ShipGenerator.h"
+#include "Generator.h"
 #include "TFile.h"
 #include "TTree.h"
 
 class FairPrimaryGenerator;
 
-class EvtCalcGenerator : public Ship::Generator {
+class EvtCalcGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   EvtCalcGenerator();
@@ -22,7 +22,7 @@ class EvtCalcGenerator : public Ship::Generator {
   virtual ~EvtCalcGenerator();
 
   /** public method ReadEvent **/
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
@@ -77,7 +77,7 @@ class EvtCalcGenerator : public Ship::Generator {
   int fn;
   int nBranches;
   int Ndau;
-  ClassDefOverride(EvtCalcGenerator, 1);
+  ClassDefOverride(EvtCalcGenerator, 2);
 };
 
 #endif  // SHIPGEN_EVTCALCGENERATOR_H_

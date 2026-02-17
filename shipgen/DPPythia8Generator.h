@@ -12,9 +12,9 @@
 // #endif
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "HNLPythia8Generator.h"
 #include "Pythia8/Pythia.h"
-#include "ShipGenerator.h"
 #include "TFile.h"
 #include "TH2F.h"
 #include "TROOT.h"
@@ -25,7 +25,7 @@
 
 class FairPrimaryGenerator;
 
-class DPPythia8Generator : public Ship::Generator {
+class DPPythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   DPPythia8Generator();
@@ -44,14 +44,13 @@ class DPPythia8Generator : public Ship::Generator {
   // fHadDecay = true;
   // };
 
-  using Ship::Generator::Init;
+  using SHiP::Generator::Init;
   Bool_t Init() override;
   Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
   Bool_t Init(const char* inFile, int startEvent) override {
-    std::cout << "ERROR: Init with files not implemented for "
-                 "DPPythia8Generator. Using default Init() instead"
-              << std::endl;
+    LOG(warning) << "Init with files not implemented for DPPythia8Generator. "
+                    "Using default Init() instead";
     return Init();
   };
 
@@ -126,7 +125,7 @@ class DPPythia8Generator : public Ship::Generator {
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 
-  ClassDefOverride(DPPythia8Generator, 2);
+  ClassDefOverride(DPPythia8Generator, 3);
 };
 
 #endif  // SHIPGEN_DPPYTHIA8GENERATOR_H_
