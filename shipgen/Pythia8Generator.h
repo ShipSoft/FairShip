@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
+#include "ShipGenerator.h"
 #include "TROOT.h"
 #include "TTree.h"
 
@@ -65,10 +65,10 @@ class Pythia8Generator : public Ship::Generator {
 #endif
 
  protected:
-  Double_t fMom;         // proton momentum
-  Int_t fId;             // target type
-  Bool_t fUseRandom1;    // flag to use TRandom1
-  Bool_t fUseRandom3;    // flag to use TRandom3 (default)
+  Double_t fMom;       // proton momentum
+  Int_t fId;           // target type
+  Bool_t fUseRandom1;  // flag to use TRandom1
+  Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1], ck[1];
   Float_t ancestors[16], subprocCodes[16];

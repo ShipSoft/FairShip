@@ -5,10 +5,10 @@
 #ifndef SHIPGEN_FIXEDTARGETGENERATOR_H_
 #define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
+#include "ShipGenerator.h"
 #include "TNtuple.h"
 #include "TROOT.h"
 #include "TTree.h"

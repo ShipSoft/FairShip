@@ -5,9 +5,9 @@
 #ifndef SHIPGEN_HNLPYTHIA8GENERATOR_H_
 #define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Pythia8/Pythia.h"
+#include "ShipGenerator.h"
 #include "TFile.h"
 #include "TROOT.h"
 #include "TRandom1.h"
@@ -99,10 +99,10 @@ class HNLPythia8Generator : public Ship::Generator {
   Int_t fnRetries;     // number of events without any HNL
   Double_t fctau;      // hnl lifetime
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
-  Double_t fsmearBeam;   // finite beam size
-  Double_t fPaintBeam;   // beam painting radius
-  TFile* fInputFile;     //! pointer to a file
-  TTree* fTree;          //!
+  Double_t fsmearBeam;  // finite beam size
+  Double_t fPaintBeam;  // beam painting radius
+  TFile* fInputFile;    //! pointer to a file
+  TTree* fTree;         //!
   Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];
