@@ -54,6 +54,15 @@ class HNLPythia8Generator : public Ship::Generator {
   void List(int id) { fPythia->particleData.list(id); };
 
   using Ship::Generator::Init;
+
+  Bool_t Init(const char* inFile) override{
+      return Init(inFile, 0);
+  };
+  
+  Bool_t Init(const char* inFile, int startEvent) override{
+      std::cout<<"ERROR: Init with files not implemented for HNLPythia8Generator. Using default Init() instead"<<std::endl;
+      return Init();
+  };
   Bool_t Init() override;
 
   void SetMom(Double_t mom) { fMom = mom; };
