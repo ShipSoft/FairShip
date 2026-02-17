@@ -54,8 +54,9 @@ class Generator : public FairGenerator {
   }
 
  protected:
-  const char* fextFile;
-  Int_t firstEvent;
+  const char* fextFile = nullptr;
+  Int_t firstEvent = 0;
+  ClassDef(Ship::Generator, 1);
 };
 }  // namespace Ship
 #endif  // SHIPGEN_SHIPGENERATOR_H_

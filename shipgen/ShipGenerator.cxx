@@ -4,3 +4,5 @@
 
 #include "ShipGenerator.h"
 Ship::Generator::~Generator() {}
+
+ClassImp(Ship::Generator)

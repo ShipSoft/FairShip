@@ -6,7 +6,8 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class  ShipGenerator+;
+#pragma link C++ namespace Ship;
+#pragma link C++ class  Ship::Generator+;
 #pragma link C++ class  tPythia6Generator+;
 #pragma link C++ class  Pythia6Generator+;
 #pragma link C++ class  Pythia8Generator+;
