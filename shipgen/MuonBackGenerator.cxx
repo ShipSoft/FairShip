@@ -196,7 +196,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return fUseSTL ? MCTrack_vec->size() : MCTrack->GetEntries();
   };
 
-  while (fn < fNevents - 1) {
+  while (fn < fNevents) {
     fTree->GetEntry(fn);
     muList.clear();
     moList.clear();
