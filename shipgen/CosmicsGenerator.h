@@ -71,8 +71,8 @@ class CosmicsGenerator : public Ship::Generator {
   };
   
   Bool_t Init(const char* inFile, int startEvent) override{
-      std::cout<<"ERROR: Init with files not implemented for CosmicsGenerator. Using default Init() instead"<<std::endl;
-      return Init();
+      std::cout<<"ERROR: Init with files not implemented for CosmicsGenerator."<<std::endl;
+      return false;
   };
 
   double z0, yBox, xBox, zBox, xdist, zdist, minE;

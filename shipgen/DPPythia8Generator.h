@@ -11,10 +11,10 @@
 // #define _DLFCN_H
 // #endif
 
-#include "ShipGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "HNLPythia8Generator.h"
 #include "Pythia8/Pythia.h"
+#include "ShipGenerator.h"
 #include "TFile.h"
 #include "TH2F.h"
 #include "TROOT.h"
@@ -117,9 +117,9 @@ class DPPythia8Generator : public Ship::Generator {
   Int_t fnDPtot;  // total number of DP from multiple mesons in single collision
   Double_t fctau;  // dark photon lifetime
   Double_t fFDs;   // correction for Pythia6 to match measured Ds production
-  Double_t fsmearBeam;   // finite beam size
-  TFile* fInputFile;     //! pointer to a file
-  TTree* fTree;          //!
+  Double_t fsmearBeam;  // finite beam size
+  TFile* fInputFile;    //! pointer to a file
+  TTree* fTree;         //!
   Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];
