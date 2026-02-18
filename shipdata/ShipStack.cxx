@@ -206,7 +206,11 @@ void ShipStack::AddParticle(TParticle* oldPart) {
 void ShipStack::FillTrackArray() {
   LOG(debug) << "ShipStack: Filling MCTrack array...";
 
-  Int_t evtNo = gMC->CurrentEvent();
+  // Some safeties to make sure everything exists
+  if(!gMC) return;
+  if (gMC->GetStack() == nullptr) return;
+
+  Int_t evtNo = -1;
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -214,6 +218,9 @@ void ShipStack::FillTrackArray() {
 
   // --> Check tracks for selection criteria
   SelectTracks();
+
+  if(fNParticles > 0)
+      evtNo = gMC->CurrentEvent();
 
   // --> Loop over fParticles array and copy selected tracks
   for (Int_t iPart = 0; iPart < fNParticles; iPart++) {
