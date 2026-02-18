@@ -106,6 +106,7 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047</li>
 <li>Add file glob to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041</li>
 <li>Turn warning to debug in <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> to prevent overly verbose output. #1036</li>
 <li>Changed input file reading to TChain and modified <a class="el" href="run__simScript_8py.html">run_simScript.py</a> command line argument to take list of files. #1027</li>
@@ -595,7 +596,7 @@ Removed</h2>
 <h2><a class="anchor" id="autotoc_md53"></a>
 Added</h2>
 <ul>
-<li>Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
+<li>Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th <a class="el" href="namespaceSHiP.html">SHiP</a> CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
 <li>Add a conversion script, <code><a class="el" href="convertEvtCalc_8py.html">FairShip/macro/convertEvtCalc.py</a></code>, to convert EventCalc's output kinematics to a format compatible with the simulation script.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md54"></a>

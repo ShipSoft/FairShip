@@ -94,8 +94,10 @@ $(document).ready(function(){initNavTree('Pythia8Generator_8h.html',''); initRes
   <div class="headertitle"><div class="title">Pythia8Generator.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;FairGenerator.h&quot;</code><br />
+<div class="textblock"><code>#include &lt;string&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;FairLogger.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="Generator_8h_source.html">Generator.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GenieGenerator_8h_source.html">GenieGenerator.h</a>&quot;</code><br />
 <code>#include &quot;Pythia8/Pythia.h&quot;</code><br />
 <code>#include &quot;TROOT.h&quot;</code><br />
@@ -105,33 +107,41 @@ Include dependency graph for Pythia8Generator.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Pythia8Generator_8h__incl.png" border="0" usemap="#ashipgen_2Pythia8Generator_8h" alt=""/></div>
 <map name="ashipgen_2Pythia8Generator_8h" id="ashipgen_2Pythia8Generator_8h">
-<area shape="rect" title=" " alt="" coords="457,5,659,31"/>
-<area shape="rect" title=" " alt="" coords="5,152,127,177"/>
-<area shape="poly" title=" " alt="" coords="519,33,353,81,118,151,117,145,352,76,517,28"/>
-<area shape="rect" title=" " alt="" coords="151,152,251,177"/>
-<area shape="poly" title=" " alt="" coords="530,33,243,149,241,144,528,28"/>
-<area shape="rect" href="GenieGenerator_8h.html" title=" " alt="" coords="438,79,574,104"/>
-<area shape="poly" title=" " alt="" coords="552,33,525,69,520,66,547,29"/>
-<area shape="rect" title=" " alt="" coords="729,152,808,177"/>
-<area shape="poly" title=" " alt="" coords="569,29,601,64,645,102,685,126,726,144,724,149,683,131,642,106,597,68,566,33"/>
-<area shape="rect" title=" " alt="" coords="833,152,902,177"/>
-<area shape="poly" title=" " alt="" coords="576,29,635,69,689,102,757,129,820,149,819,154,755,134,686,106,632,73,573,33"/>
-<area shape="rect" title=" " alt="" coords="699,79,827,104"/>
-<area shape="poly" title=" " alt="" coords="592,28,718,72,716,77,590,33"/>
-<area shape="poly" title=" " alt="" coords="438,106,141,154,140,149,437,101"/>
-<area shape="poly" title=" " alt="" coords="458,107,264,151,263,146,456,101"/>
-<area shape="rect" title=" " alt="" coords="562,152,621,177"/>
-<area shape="poly" title=" " alt="" coords="521,102,569,141,565,145,518,106"/>
-<area shape="rect" title=" " alt="" coords="645,152,705,177"/>
-<area shape="poly" title=" " alt="" coords="534,102,636,144,634,149,532,106"/>
-<area shape="rect" title=" " alt="" coords="275,152,335,177"/>
-<area shape="poly" title=" " alt="" coords="475,107,348,151,347,146,473,102"/>
-<area shape="poly" title=" " alt="" coords="549,101,717,147,715,152,548,107"/>
-<area shape="poly" title=" " alt="" coords="572,101,820,149,819,154,571,107"/>
-<area shape="rect" title=" " alt="" coords="359,152,450,177"/>
-<area shape="poly" title=" " alt="" coords="491,106,434,146,431,142,488,102"/>
-<area shape="rect" title=" " alt="" coords="475,152,537,177"/>
-<area shape="poly" title=" " alt="" coords="509,104,509,138,503,138,503,104"/>
+<area shape="rect" title=" " alt="" coords="271,5,473,31"/>
+<area shape="rect" title=" " alt="" coords="5,225,64,251"/>
+<area shape="poly" title=" " alt="" coords="303,33,240,51,207,65,177,81,137,112,102,148,51,215,47,212,98,145,134,108,175,76,205,60,238,46,302,28"/>
+<area shape="rect" title=" " alt="" coords="358,225,421,251"/>
+<area shape="poly" title=" " alt="" coords="375,31,379,104,389,212,384,212,373,104,370,31"/>
+<area shape="rect" title=" " alt="" coords="234,225,334,251"/>
+<area shape="poly" title=" " alt="" coords="323,33,276,49,225,73,177,108,158,129,142,153,138,165,142,176,155,187,176,198,231,219,229,224,174,203,152,191,138,179,133,165,138,151,154,126,174,104,222,69,274,44,321,28"/>
+<area shape="rect" href="Generator_8h.html" title=" " alt="" coords="152,152,251,177"/>
+<area shape="poly" title=" " alt="" coords="348,33,310,53,271,81,242,111,218,142,214,139,238,108,268,77,307,49,345,29"/>
+<area shape="rect" href="GenieGenerator_8h.html" title=" " alt="" coords="388,79,524,104"/>
+<area shape="poly" title=" " alt="" coords="387,29,433,67,430,72,384,33"/>
+<area shape="rect" title=" " alt="" coords="794,152,873,177"/>
+<area shape="poly" title=" " alt="" coords="406,28,537,76,594,101,678,124,781,149,780,154,677,130,592,107,535,81,405,33"/>
+<area shape="rect" title=" " alt="" coords="897,152,967,177"/>
+<area shape="poly" title=" " alt="" coords="421,28,498,49,584,76,611,89,638,101,704,120,758,129,813,137,884,149,883,154,813,142,757,134,703,125,636,107,609,94,582,81,497,54,420,33"/>
+<area shape="rect" title=" " alt="" coords="649,79,777,104"/>
+<area shape="poly" title=" " alt="" coords="427,28,645,73,644,78,426,33"/>
+<area shape="poly" title=" " alt="" coords="176,180,75,222,73,217,174,175"/>
+<area shape="poly" title=" " alt="" coords="232,175,347,218,345,223,231,180"/>
+<area shape="poly" title=" " alt="" coords="216,175,262,214,258,218,213,179"/>
+<area shape="rect" title=" " alt="" coords="89,225,210,251"/>
+<area shape="poly" title=" " alt="" coords="195,179,168,216,164,213,191,176"/>
+<area shape="poly" title=" " alt="" coords="448,106,417,153,405,184,397,213,392,211,400,182,412,151,444,103"/>
+<area shape="poly" title=" " alt="" coords="444,106,310,218,307,214,440,102"/>
+<area shape="poly" title=" " alt="" coords="416,107,256,151,255,146,414,101"/>
+<area shape="rect" title=" " alt="" coords="427,152,485,177"/>
+<area shape="poly" title=" " alt="" coords="459,104,459,138,453,138,453,104"/>
+<area shape="rect" title=" " alt="" coords="510,152,570,177"/>
+<area shape="poly" title=" " alt="" coords="471,102,517,141,514,145,468,106"/>
+<area shape="rect" title=" " alt="" coords="594,152,654,177"/>
+<area shape="poly" title=" " alt="" coords="484,102,585,144,583,149,482,106"/>
+<area shape="poly" title=" " alt="" coords="523,101,781,149,780,155,522,107"/>
+<area shape="poly" title=" " alt="" coords="524,97,685,117,884,149,883,155,684,123,524,103"/>
+<area shape="rect" title=" " alt="" coords="679,152,769,177"/>
+<area shape="poly" title=" " alt="" coords="500,101,668,146,667,151,498,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">

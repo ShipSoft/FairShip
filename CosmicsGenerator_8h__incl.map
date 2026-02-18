@@ -1,15 +1,23 @@
 <map id="shipgen/CosmicsGenerator.h" name="shipgen/CosmicsGenerator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="206,5,414,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,127,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,33,119,77,118,72,270,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="151,79,210,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="290,33,215,74,213,69,288,28"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="235,79,295,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="305,32,282,69,277,66,300,30"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="319,79,394,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="320,30,344,66,339,69,315,32"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="419,79,497,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="335,28,423,70,420,75,333,33"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="522,79,626,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="353,28,519,72,517,78,352,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="305,5,513,31"/>
+<area shape="rect" id="Node000002" href="$Generator_8h.html" title=" " alt="" coords="128,79,227,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="373,33,229,77,227,72,371,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="251,79,309,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="390,33,315,74,312,69,387,28"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="334,79,394,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="404,32,381,69,376,66,400,30"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="419,79,493,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="419,30,443,66,439,69,415,32"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="518,79,597,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="434,28,522,70,520,75,432,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="621,79,725,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="452,28,618,72,617,78,451,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,64,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="156,106,71,148,69,143,153,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="89,152,151,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="170,106,140,143,136,139,166,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="175,152,297,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="189,103,220,140,216,143,185,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="321,152,421,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="209,102,327,145,326,150,207,107"/>
 </map>

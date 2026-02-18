@@ -1330,6 +1330,7 @@ var namespaces_dup =
     ] ],
     [ "SBTDetector", "namespaceSBTDetector.html", "namespaceSBTDetector" ],
     [ "SciFiMapping", "namespaceSciFiMapping.html", "namespaceSciFiMapping" ],
+    [ "SHiP", "namespaceSHiP.html", "namespaceSHiP" ],
     [ "ShipAna", "namespaceShipAna.html", [
       [ "access2SmearedHits", "namespaceShipAna.html#a15de66a7d330dfcee067f46e4f1a5469", null ],
       [ "checkFiducialVolume", "namespaceShipAna.html#add600534e6df6909726258d95b473c75", null ],

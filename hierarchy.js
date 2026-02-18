@@ -40,18 +40,20 @@ var hierarchy =
       [ "ShipFieldCreator", "classShipFieldCreator.html", null ]
     ] ],
     [ "FairGenerator", null, [
-      [ "CosmicsGenerator", "classCosmicsGenerator.html", null ],
-      [ "DPPythia8Generator", "classDPPythia8Generator.html", null ],
-      [ "EvtCalcGenerator", "classEvtCalcGenerator.html", null ],
-      [ "FixedTargetGenerator", "classFixedTargetGenerator.html", null ],
-      [ "GenieGenerator", "classGenieGenerator.html", null ],
-      [ "HNLPythia8Generator", "classHNLPythia8Generator.html", null ],
-      [ "MuDISGenerator", "classMuDISGenerator.html", null ],
-      [ "MuonBackGenerator", "classMuonBackGenerator.html", null ],
-      [ "NtupleGenerator", "classNtupleGenerator.html", null ],
-      [ "Pythia6Generator", "classPythia6Generator.html", null ],
-      [ "Pythia8Generator", "classPythia8Generator.html", null ],
-      [ "tPythia6Generator", "classtPythia6Generator.html", null ]
+      [ "SHiP::Generator", "classSHiP_1_1Generator.html", [
+        [ "CosmicsGenerator", "classCosmicsGenerator.html", null ],
+        [ "DPPythia8Generator", "classDPPythia8Generator.html", null ],
+        [ "EvtCalcGenerator", "classEvtCalcGenerator.html", null ],
+        [ "FixedTargetGenerator", "classFixedTargetGenerator.html", null ],
+        [ "GenieGenerator", "classGenieGenerator.html", null ],
+        [ "HNLPythia8Generator", "classHNLPythia8Generator.html", null ],
+        [ "MuDISGenerator", "classMuDISGenerator.html", null ],
+        [ "MuonBackGenerator", "classMuonBackGenerator.html", null ],
+        [ "NtupleGenerator", "classNtupleGenerator.html", null ],
+        [ "Pythia6Generator", "classPythia6Generator.html", null ],
+        [ "Pythia8Generator", "classPythia8Generator.html", null ],
+        [ "tPythia6Generator", "classtPythia6Generator.html", null ]
+      ] ]
     ] ],
     [ "FairGenericStack", null, [
       [ "ShipStack", "classShipStack.html", null ]
