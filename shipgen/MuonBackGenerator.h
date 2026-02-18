@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "TChain.h"      // for TChain
+#include "Generator.h"
+#include "TChain.h"  // for TChain
 #include "TClonesArray.h"
 #include "TROOT.h"
 
@@ -17,7 +17,7 @@ class FairPrimaryGenerator;
 class ShipMCTrack;
 class vetoPoint;
 
-class MuonBackGenerator : public FairGenerator {
+class MuonBackGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   MuonBackGenerator();
@@ -26,11 +26,11 @@ class MuonBackGenerator : public FairGenerator {
   virtual ~MuonBackGenerator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
-  virtual Bool_t Init(const std::vector<std::string>&, int);
-  virtual Bool_t Init(const std::vector<std::string>&);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
+  Bool_t Init(const std::vector<std::string>&, int) override;
+  Bool_t Init(const std::vector<std::string>&) override;
 
   Int_t GetNevents();
   void CloseFile();
@@ -64,7 +64,7 @@ class MuonBackGenerator : public FairGenerator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
-  ClassDef(MuonBackGenerator, 6);
+  ClassDefOverride(MuonBackGenerator, 7);
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

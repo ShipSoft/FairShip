@@ -32,7 +32,7 @@ MuDISGenerator::MuDISGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t MuDISGenerator::Init(const char* fileName) { return Init(fileName, 0); }
-Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
   LOGF(info, "Opening input file %s", fileName);
 
   iMuon = 0;
@@ -45,7 +45,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
   }
   fTree = fInputFile->Get<TTree>("DIS");
   fNevents = fTree->GetEntries();
-  fn = firstEvent;
+  fn = startEvent;
 
   fTree->SetBranchAddress("InMuon", &iMuon);  // incoming muon
   fTree->SetBranchAddress("DISParticles", &dPart);

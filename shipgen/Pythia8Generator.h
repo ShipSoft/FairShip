@@ -5,8 +5,11 @@
 #ifndef SHIPGEN_PYTHIA8GENERATOR_H_
 #define SHIPGEN_PYTHIA8GENERATOR_H_
 
-#include "FairGenerator.h"
+#include <string>
+#include <vector>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
 #include "TROOT.h"
@@ -14,7 +17,7 @@
 
 class FairPrimaryGenerator;
 
-class Pythia8Generator : public FairGenerator {
+class Pythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   Pythia8Generator();
@@ -23,11 +26,19 @@ class Pythia8Generator : public FairGenerator {
   virtual ~Pythia8Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print();
 
-  virtual Bool_t Init();
+  using SHiP::Generator::Init;
+  Bool_t Init() override;
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    LOG(warning) << "Init with files not implemented for Pythia8Generator. "
+                    "Using default Init() instead";
+    return Init();
+  };
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId = id; };
@@ -39,10 +50,7 @@ class Pythia8Generator : public FairGenerator {
     fUseRandom1 = kFALSE;
     fUseRandom3 = kTRUE;
   };
-  void UseExternalFile(const char* x, Int_t i) {
-    fextFile = x;
-    firstEvent = i;
-  };
+
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x, Double_t y) {
     targetName = s;
@@ -64,16 +72,14 @@ class Pythia8Generator : public FairGenerator {
 #endif
 
  protected:
-  Double_t fMom;         // proton momentum
-  Int_t fId;             // target type
-  Bool_t fUseRandom1;    // flag to use TRandom1
-  Bool_t fUseRandom3;    // flag to use TRandom3 (default)
-  const char* fextFile;  // read charm and beauty hadrons from external file,
-                         // decay with Pythia
+  Double_t fMom;       // proton momentum
+  Int_t fId;           // target type
+  Bool_t fUseRandom1;  // flag to use TRandom1
+  Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1], ck[1];
   Float_t ancestors[16], subprocCodes[16];
-  Int_t fNevents, fn, firstEvent, fShipEventNr;
+  Int_t fNevents, fn, fShipEventNr;
   TFile* fInputFile;         //! pointer to a file
   FairLogger* fLogger;       //!   don't make it persistent, magic ROOT command
   TTree* fTree;              //!
@@ -81,7 +87,7 @@ class Pythia8Generator : public FairGenerator {
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;  //
   GenieGenerator* fMaterialInvestigator;  //!
-  ClassDef(Pythia8Generator, 3);
+  ClassDefOverride(Pythia8Generator, 4);
   TString targetName;
   Double_t xOff;
   Double_t yOff;

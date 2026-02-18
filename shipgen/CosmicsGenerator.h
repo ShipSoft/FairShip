@@ -11,7 +11,7 @@
 #ifndef SHIPGEN_COSMICSGENERATOR_H_
 #define SHIPGEN_COSMICSGENERATOR_H_
 
-#include "FairGenerator.h"
+#include "Generator.h"
 #include "TF1.h"
 #include "TH1.h"
 #include "TMath.h"
@@ -44,7 +44,7 @@ class Co3Rng {
   TRandom3* rng;  //!
 };
 
-class CosmicsGenerator : public FairGenerator {
+class CosmicsGenerator : public SHiP::Generator {
  public:
   /** constructor,destructor **/
   CosmicsGenerator() {};
@@ -62,9 +62,16 @@ class CosmicsGenerator : public FairGenerator {
   };
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  using SHiP::Generator::Init;
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   //  virtual Bool_t Init(); //!
   virtual Bool_t Init(Bool_t largeMom);
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    LOG(warning) << "Init with files not implemented for CosmicsGenerator.";
+    return false;
+  };
 
   double z0, yBox, xBox, zBox, xdist, zdist, minE;
   int n_EVENTS;
@@ -79,7 +86,7 @@ class CosmicsGenerator : public FairGenerator {
 
   void GenerateDynamics();
   Bool_t DetectorBox();
-  ClassDef(CosmicsGenerator, 4);
+  ClassDefOverride(CosmicsGenerator, 5);
 };
 
 #endif  // SHIPGEN_COSMICSGENERATOR_H_ /* !PNDCoGENERATOR_H */

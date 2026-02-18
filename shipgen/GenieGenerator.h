@@ -5,11 +5,11 @@
 #ifndef SHIPGEN_GENIEGENERATOR_H_
 #define SHIPGEN_GENIEGENERATOR_H_ 1
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
-#include "TF1.h"         // for TF1
-#include "TH1.h"         // for TH1
-#include "TH2.h"         // for TH2
+#include "Generator.h"
+#include "TF1.h"  // for TF1
+#include "TH1.h"  // for TH1
+#include "TH2.h"  // for TH2
 #include "TROOT.h"
 #include "TTree.h"  // for TTree
 #include "TVector3.h"
@@ -17,7 +17,7 @@
 
 class FairPrimaryGenerator;
 
-class GenieGenerator : public FairGenerator {
+class GenieGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   GenieGenerator();
@@ -26,10 +26,11 @@ class GenieGenerator : public FairGenerator {
   virtual ~GenieGenerator();
 
   /** public method ReadEvent **/
+  using SHiP::Generator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
-  Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int);
-  virtual Bool_t Init(const char*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
+  Bool_t Init(const char*, int) override;
+  Bool_t Init(const char*) override;
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {
@@ -65,7 +66,7 @@ class GenieGenerator : public FairGenerator {
   TH1D* pxhist[3000];        //!
   TH1D* pyslice[3000][100];  //!
 
-  ClassDef(GenieGenerator, 1);
+  ClassDefOverride(GenieGenerator, 2);
 };
 
 #endif  // SHIPGEN_GENIEGENERATOR_H_ /* !PNDGeGENERATOR_H */

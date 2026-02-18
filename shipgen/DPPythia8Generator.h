@@ -11,8 +11,8 @@
 // #define _DLFCN_H
 // #endif
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "HNLPythia8Generator.h"
 #include "Pythia8/Pythia.h"
 #include "TFile.h"
@@ -25,7 +25,7 @@
 
 class FairPrimaryGenerator;
 
-class DPPythia8Generator : public FairGenerator {
+class DPPythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   DPPythia8Generator();
@@ -34,7 +34,7 @@ class DPPythia8Generator : public FairGenerator {
   virtual ~DPPythia8Generator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
@@ -44,7 +44,15 @@ class DPPythia8Generator : public FairGenerator {
   // fHadDecay = true;
   // };
 
-  virtual Bool_t Init();
+  using SHiP::Generator::Init;
+  Bool_t Init() override;
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+
+  Bool_t Init(const char* inFile, int startEvent) override {
+    LOG(warning) << "Init with files not implemented for DPPythia8Generator. "
+                    "Using default Init() instead";
+    return Init();
+  };
 
   void SetMom(Double_t mom) { fMom = mom; };
   Double_t GetMom() { return fMom; };
@@ -63,10 +71,7 @@ class DPPythia8Generator : public FairGenerator {
     fUseRandom1 = kFALSE;
     fUseRandom3 = kTRUE;
   };
-  void UseExternalFile(const char* x, Int_t i) {
-    fextFile = x;
-    firstEvent = i;
-  };
+
   void SetPbrem(TH2F* pdf) {
     fpbrem = kTRUE;
     fpbremPDF = pdf;
@@ -111,18 +116,16 @@ class DPPythia8Generator : public FairGenerator {
   Int_t fnDPtot;  // total number of DP from multiple mesons in single collision
   Double_t fctau;  // dark photon lifetime
   Double_t fFDs;   // correction for Pythia6 to match measured Ds production
-  Double_t fsmearBeam;   // finite beam size
-  const char* fextFile;  // read charm and beauty hadrons from external file,
-                         // decay with Pythia
-  TFile* fInputFile;     //! pointer to a file
-  TTree* fTree;          //!
-  Int_t fNevents, fn, firstEvent, fShipEventNr;
+  Double_t fsmearBeam;  // finite beam size
+  TFile* fInputFile;    //! pointer to a file
+  TTree* fTree;         //!
+  Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 
-  ClassDef(DPPythia8Generator, 2);
+  ClassDefOverride(DPPythia8Generator, 3);
 };
 
 #endif  // SHIPGEN_DPPYTHIA8GENERATOR_H_

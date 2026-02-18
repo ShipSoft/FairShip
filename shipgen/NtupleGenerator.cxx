@@ -22,7 +22,7 @@ NtupleGenerator::NtupleGenerator() {}
 // -----   Default constructor   -------------------------------------------
 Bool_t NtupleGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
-Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t NtupleGenerator::Init(const char* fileName, const int startEvent) {
   cout << "Info NtupleGenerator: Opening input file " << fileName << endl;
   fInputFile = new TFile(fileName);
   if (fInputFile->IsZombie()) {
@@ -31,7 +31,7 @@ Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent) {
   }
   fTree = dynamic_cast<TTree*>(fInputFile->Get("ntuple"));
   fNevents = fTree->GetEntries();
-  fn = firstEvent;
+  fn = startEvent;
   fTree->SetBranchAddress("id", &id);  // particle id
   if (fTree->FindBranch("parentid")) {
     fTree->SetBranchAddress("parentid", &parentid);

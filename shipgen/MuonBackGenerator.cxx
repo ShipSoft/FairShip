@@ -45,14 +45,14 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames) {
 }
 
 Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
-                               const int firstEvent) {
-  LOG(info) << "Opening input file " << fileNames.at(0);
+                               const int startEvent) {
+  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
   TFile testFile(fileNames.at(0).c_str());
   auto testKeys = testFile.GetListOfKeys();
   if (testKeys == nullptr) {
     LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
   }
-  fn = firstEvent;
+  fn = startEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
   fSameSeed = 0;
   fPhiRandomize = false;      // default value for phi randomization
@@ -140,9 +140,9 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
 }
 
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t MuonBackGenerator::Init(const char* fileName, const int startEvent) {
   std::vector<std::string> fileNames = {fileName};
-  return Init(fileNames, firstEvent);
+  return Init(fileNames, startEvent);
 }
 // -----   Destructor   ----------------------------------------------------
 MuonBackGenerator::~MuonBackGenerator() {

@@ -33,7 +33,7 @@ GenieGenerator::GenieGenerator() {}
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
-Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
   fNuOnly = false;
   fInputFile = TFile::Open(fileName);
   LOG(info) << "Opening input file " << fileName;
@@ -43,7 +43,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   }
   fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
   fNevents = fTree->GetEntries();
-  fn = firstEvent;
+  fn = startEvent;
   fTree->SetBranchAddress("Ev", &Ev);  // incoming neutrino energy
   fTree->SetBranchAddress("pxv", &pxv);
   fTree->SetBranchAddress("pyv", &pyv);

@@ -5,8 +5,8 @@
 #ifndef SHIPGEN_FIXEDTARGETGENERATOR_H_
 #define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
-#include "FairGenerator.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
+#include "Generator.h"
 #include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
 #include "TNtuple.h"
@@ -23,7 +23,7 @@ class EvtGenDecays;
 
 class FairPrimaryGenerator;
 
-class FixedTargetGenerator : public FairGenerator {
+class FixedTargetGenerator : public SHiP::Generator {
  public:
   /** default constructor **/
   FixedTargetGenerator();
@@ -32,11 +32,19 @@ class FixedTargetGenerator : public FairGenerator {
   virtual ~FixedTargetGenerator();
 
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
   void Print();
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
 
-  virtual Bool_t Init();
+  Bool_t Init(const char* inFile, int startEvent) override {
+    LOG(warning) << "Init with files not implemented for FixedTargetGenerator. "
+                    "Using default Init() instead";
+    return Init();
+  };
+  using SHiP::Generator::Init;
+  Bool_t Init() override;
+
   Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots = 5E13,
                               Int_t nStart = 0);
 
@@ -149,6 +157,6 @@ class FixedTargetGenerator : public FairGenerator {
       ck;
   Int_t heartbeat;
 
-  ClassDef(FixedTargetGenerator, 2);
+  ClassDefOverride(FixedTargetGenerator, 3);
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_
