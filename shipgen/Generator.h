@@ -32,7 +32,7 @@ class Generator : public FairGenerator {
     return Init(inFiles.at(0).c_str(), 0);
   };
 
-  virtual void UseExternalFile(const char* x, Int_t i) {
+  virtual void UseExternalFile(std::string x, Int_t i) {
     fextFile = x;
     firstEvent = i;
   };
