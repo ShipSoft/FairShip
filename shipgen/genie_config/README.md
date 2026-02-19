@@ -36,7 +36,7 @@ https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/C
 
 GENIE by default does not make tau and charmed hadron decay anymore.
 
-(That was the default in our old branch, 
+(That was the default in our old branch,
 
 https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml)
 

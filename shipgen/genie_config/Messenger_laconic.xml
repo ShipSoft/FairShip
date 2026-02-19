@@ -21,7 +21,7 @@
     same stream is listed twice with conflicting priority then the
     one found last is used
    -->
-  <priority msgstream="ResonanceDecay">                WARN   </priority>  
+  <priority msgstream="ResonanceDecay">                WARN   </priority>
   <priority msgstream="Pythia6Decay">                  WARN   </priority>
   <priority msgstream="Pythia8Decay">                  WARN   </priority>
   <priority msgstream="Messenger">                     WARN   </priority>

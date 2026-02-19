@@ -101,7 +101,7 @@ def _ensure_dir(path: Path) -> None:
 
 def _build_env(gxmlpath: Path | None) -> Mapping[str, str | None] | None:
     """Build per-call env overrides (sets GXMLPATH)."""
-    val = str(gxmlpath) if gxmlpath else os.getenv("FAIRSHIP_ROOT")+"/shipgen/genie_config"
+    val = str(gxmlpath) if gxmlpath else os.getenv("FAIRSHIP_ROOT") + "/shipgen/genie_config"
     return {"GXMLPATH": val}
 
 
@@ -161,9 +161,7 @@ def make_events(
         out_dir = work_dir / f"genie-{pdg_name}_{N}_events"
         _ensure_dir(out_dir)
 
-        filename = (
-            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}.ghep.root"
-        )
+        filename = f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}.ghep.root"
         ghep_path = out_dir / filename
         gst_path = out_dir / f"genie-{filename}"
 
@@ -322,11 +320,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     particles = _pdg_list(args.particles)
     nu_over_nubar = extract_nu_over_nubar(flux, particles)
 
-    logging.info(
-        f"Seed: {args.seed} | "
-        f"Target: {args.target} ({targetcode}) | "
-        f"Process: {args.evtype or 'ALL'}"
-    )
+    logging.info(f"Seed: {args.seed} | Target: {args.target} ({targetcode}) | Process: {args.evtype or 'ALL'}")
     make_events(
         run=int(args.run),
         nevents=int(args.nevents),
