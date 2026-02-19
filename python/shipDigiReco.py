@@ -45,10 +45,15 @@ class ShipDigiReco:
         self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
 
         # Register track fields
-        self.fitTrack2MC_field = self.model.MakeField["std::vector<int>"]("fitTrack2MC")
-        self.goodTracks_field = self.model.MakeField["std::vector<int>"]("goodTracks")
-        self.tracklets_field = self.model.MakeField["std::vector<Tracklet>"]("Tracklets")
-        self.vetoHitOnTrack_field = self.model.MakeField["std::vector<vetoHitOnTrack>"]("VetoHitOnTrack")
+        self.fitTrack2MC_field_name = "fitTrack2MC"
+        self.goodTracks_field_name = "goodTracks"
+        self.tracklets_field_name = "Tracklets"
+        self.vetoHitOnTrack_field_name = "VetoHitOnTrack"
+
+        self.model.MakeField["std::vector<int>"](self.fitTrack2MC_field_name)
+        self.model.MakeField["std::vector<int>"](self.goodTracks_field_name)
+        self.model.MakeField["std::vector<Tracklet>"](self.tracklets_field_name)
+        self.model.MakeField["std::vector<vetoHitOnTrack>"](self.vetoHitOnTrack_field_name)
 
         # Initialize detector digitizers with model
         self.strawtubes = strawtubesDetector("strawtubes", self.sTree, self.model)
@@ -68,7 +73,8 @@ class ShipDigiReco:
         # The vertexing will add particles to our particle array
         self.dummyTree = ROOT.TTree("dummy", "dummy")
         self.fPartArray = ROOT.std.vector("ShipParticle")()
-        self.particles_field = self.model.MakeField["std::vector<ShipParticle>"]("Particles")
+        self.particles_field_name = "Particles"
+        self.model.MakeField["std::vector<ShipParticle>"](self.particles_field_name)
 
         # Create RNTuple writer after all fields are registered
         self.writer = ROOT.RNTupleWriter.Recreate(self.model, "ship_reco_sim", self.outputFilename)
@@ -127,13 +133,13 @@ class ShipDigiReco:
     def fillEntry(self):
         """Fill all reconstruction data into the RNTuple entry."""
         # Fill track data
-        self.entry[self.fitTrack2MC_field.GetFieldName()] = self.fitTrack2MC
-        self.entry[self.goodTracks_field.GetFieldName()] = self.goodTracksVect
-        self.entry[self.tracklets_field.GetFieldName()] = self.fTrackletsArray
-        self.entry[self.vetoHitOnTrack_field.GetFieldName()] = self.vetoHitOnTrackArray
+        self.entry[self.fitTrack2MC_field_name] = self.fitTrack2MC
+        self.entry[self.goodTracks_field_name] = self.goodTracksVect
+        self.entry[self.tracklets_field_name] = self.fTrackletsArray
+        self.entry[self.vetoHitOnTrack_field_name] = self.vetoHitOnTrackArray
 
         # Fill particles from vertexing
-        self.entry[self.particles_field.GetFieldName()] = self.fPartArray
+        self.entry[self.particles_field_name] = self.fPartArray
 
         # Fill the entry and commit to RNTuple
         self.writer.Fill(self.entry)

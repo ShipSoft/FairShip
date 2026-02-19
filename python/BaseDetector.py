@@ -35,21 +35,22 @@ class BaseDetector(ABC):
         self.model = model
         self.det = ROOT.std.vector(f"{name}Hit")()
         self.MCdet = None
-        self.det_field = None
-        self.mc_field = None
+        self.det_field_name = None
+        self.mc_field_name = None
 
         # Register hit field with model
         if branchName:
-            field_name = f"Digi_{branchName}Hits"
+            self.det_field_name = f"Digi_{branchName}Hits"
         else:
-            field_name = f"Digi_{name}Hits"
+            self.det_field_name = f"Digi_{name}Hits"
 
-        self.det_field = self.model.MakeField[f"std::vector<{name}Hit>"](field_name)
+        self.model.MakeField[f"std::vector<{name}Hit>"](self.det_field_name)
 
         # Register MC field if requested
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mc_field = self.model.MakeField["std::vector<std::vector<int>>"](mcBranchName)
+            self.mc_field_name = mcBranchName
+            self.model.MakeField["std::vector<std::vector<int>>"](self.mc_field_name)
 
     def delete(self):
         """Clear detector hit containers."""
@@ -64,12 +65,12 @@ class BaseDetector(ABC):
             entry: RNTuple entry to fill
         """
         # Fill hit field
-        if self.det_field:
-            entry[self.det_field.GetFieldName()] = self.det
+        if self.det_field_name:
+            entry[self.det_field_name] = self.det
 
         # Fill MC field if present
-        if self.mc_field and self.MCdet:
-            entry[self.mc_field.GetFieldName()] = self.MCdet
+        if self.mc_field_name and self.MCdet:
+            entry[self.mc_field_name] = self.MCdet
 
     @abstractmethod
     def digitize(self):

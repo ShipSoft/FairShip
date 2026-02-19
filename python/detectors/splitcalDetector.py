@@ -12,7 +12,8 @@ class splitcalDetector(BaseDetector):
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
         # Register cluster field with model
-        self.reco_field = self.model.MakeField["std::vector<splitcalCluster>"]("Reco_SplitcalClusters")
+        self.reco_field_name = "Reco_SplitcalClusters"
+        self.model.MakeField["std::vector<splitcalCluster>"](self.reco_field_name)
 
     def delete(self):
         # Override to also clear reconstruction branch
@@ -28,8 +29,8 @@ class splitcalDetector(BaseDetector):
         # Fill hit field
         super().fill(entry)
         # Fill cluster field
-        if self.reco_field:
-            entry[self.reco_field.GetFieldName()] = self.reco
+        if self.reco_field_name:
+            entry[self.reco_field_name] = self.reco
 
     def digitize(self):
         """Digitize splitcal hits and perform cluster reconstruction."""
