@@ -121,11 +121,11 @@ class ShipDigiReco:
         self.findTracks()
         self.findGoodTracks()
         self.linkVetoOnTracks()
+        self.fPartArray.clear()  # Always clear particles
         if global_variables.vertexing:
             # now go for 2-track combinations
             self.Vertexing.execute()
             # Copy particles from vertexing to our array
-            self.fPartArray.clear()
             for particle in self.Vertexing.fPartArray:
                 self.fPartArray.push_back(particle)
 
@@ -169,6 +169,9 @@ class ShipDigiReco:
         hit_detector_ids = {}
         stationCrossed = {}
         listOfIndices = {}
+        # Delete existing tracks before clearing to prevent memory leak
+        for track in self.fGenFitArray:
+            del track
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
         self.fitTrack2MC.clear()
