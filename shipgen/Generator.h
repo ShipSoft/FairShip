@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 
 #include "FairGenerator.h"
 #include "FairLogger.h"
@@ -43,7 +44,7 @@ class Generator : public FairGenerator {
   }
 
  protected:
-  const char* fextFile = nullptr;
+  std::optional<std::string> fextFile;
   Int_t firstEvent = 0;
   ClassDef(SHiP::Generator, 2);
 };
