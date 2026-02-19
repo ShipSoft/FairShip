@@ -20,6 +20,7 @@ it in future.
 
 ### Changed
 
+* Replace TTree with RNTuple for digitisation and reconstruction output
 * Change a const char* in SHiP::Generator to optional<string>. #1053
 * Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
 * Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047
