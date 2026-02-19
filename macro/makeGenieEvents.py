@@ -101,7 +101,10 @@ def _ensure_dir(path: Path) -> None:
 
 def _build_env(gxmlpath: Path | None) -> Mapping[str, str | None] | None:
     """Build per-call env overrides (sets GXMLPATH)."""
-    val = str(gxmlpath) if gxmlpath else os.getenv("FAIRSHIP_ROOT") + "/shipgen/genie_config"
+    fairship_root_path = os.getenv("FAIRSHIP_ROOT")
+    if not fairship_root_path:
+    	raise EnvironmentError("undefined FAIRSHIP_ROOT environment variable")
+    val = str(gxmlpath) if gxmlpath else fairship_root_path + "/shipgen/genie_config"
     return {"GXMLPATH": val}
 
 
