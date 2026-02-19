@@ -5,9 +5,9 @@
 #ifndef SHIPGEN_GENERATOR_H_
 #define SHIPGEN_GENERATOR_H_ 1
 
+#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
 
 #include "FairGenerator.h"
 #include "FairLogger.h"
