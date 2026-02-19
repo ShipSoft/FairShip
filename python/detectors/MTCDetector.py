@@ -8,8 +8,8 @@ from BaseDetector import BaseDetector
 
 
 class MTCDetector(BaseDetector):
-    def __init__(self, name, intree, branchName=None, outtree=None):
-        super().__init__(name, intree, branchName, outtree=outtree)
+    def __init__(self, name, intree, model, branchName=None):
+        super().__init__(name, intree, model, branchName)
         # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
         # make SiPM to fibre mapping
         if intree.GetBranch("MTCDetPoint"):

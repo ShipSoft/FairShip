@@ -6,8 +6,8 @@ from BaseDetector import BaseDetector
 
 
 class timeDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
-        super().__init__(name, intree, outtree=outtree)
+    def __init__(self, name, intree, model):
+        super().__init__(name, intree, model)
 
     def digitize(self):
         """Digitize timing detector MC hits.

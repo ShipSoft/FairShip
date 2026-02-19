@@ -5,28 +5,31 @@ from BaseDetector import BaseDetector
 
 
 class splitcalDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
+    def __init__(self, name, intree, model):
         # Initialize base class for digitized hits
-        super().__init__(name, intree, "Splitcal", outtree=outtree)
+        super().__init__(name, intree, model, "Splitcal")
 
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
-        # Use outtree if provided, otherwise intree (backward compatibility)
-        tree_for_output = self.outtree if outtree is not None else intree
-        self.recoBranch = tree_for_output.Branch("Reco_SplitcalClusters", self.reco)
+        # Register cluster field with model
+        self.reco_field = self.model.MakeField["std::vector<splitcalCluster>"]("Reco_SplitcalClusters")
 
     def delete(self):
         # Override to also clear reconstruction branch
         super().delete()
         self.reco.clear()
 
-    def fill(self):
-        """Fill detector hit branches.
+    def fill(self, entry):
+        """Fill detector hit and cluster fields into RNTuple entry.
 
-        Note: This method is now a no-op to prevent double-filling.
-        All branches are filled synchronously by recoTree.Fill() in the main loop.
+        Args:
+            entry: RNTuple entry to fill
         """
-        pass
+        # Fill hit field
+        super().fill(entry)
+        # Fill cluster field
+        if self.reco_field:
+            entry[self.reco_field.GetFieldName()] = self.reco
 
     def digitize(self):
         """Digitize splitcal hits and perform cluster reconstruction."""

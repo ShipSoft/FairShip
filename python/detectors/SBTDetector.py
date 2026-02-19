@@ -10,18 +10,18 @@ class SBTDetector(BaseDetector):
         self,
         name,
         intree,
+        model,
         branchName=None,
         mcBranchType=None,
         mcBranchName="digiSBT2MC",
-        outtree=None,
     ):
         super().__init__(
             name,
             intree,
+            model,
             branchName,
             mcBranchType,
             mcBranchName,
-            outtree=outtree,
         )
 
     def digitize(self):

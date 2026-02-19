@@ -15,28 +15,41 @@ class BaseDetector(ABC):
         self,
         name,
         intree,
+        model,
         branchName=None,
         mcBranchType=None,
         mcBranchName=None,
-        splitLevel=99,
-        outtree=None,
     ):
-        """Initialize the detector digitizer."""
+        """Initialize the detector digitizer.
+
+        Args:
+            name: Detector name
+            intree: Input TTree for reading MC data
+            model: RNTupleModel for registering output fields
+            branchName: Optional custom branch name
+            mcBranchType: Type for MC branch (unused in RNTuple)
+            mcBranchName: Name for MC branch
+        """
         self.name = name
         self.intree = intree
-        # If outtree provided, use it for output; else intree for compatibility
-        self.outtree = outtree if outtree is not None else intree
+        self.model = model
         self.det = ROOT.std.vector(f"{name}Hit")()
         self.MCdet = None
-        self.mcBranch = None
+        self.det_field = None
+        self.mc_field = None
+
+        # Register hit field with model
+        if branchName:
+            field_name = f"Digi_{branchName}Hits"
+        else:
+            field_name = f"Digi_{name}Hits"
+
+        self.det_field = self.model.MakeField[f"std::vector<{name}Hit>"](field_name)
+
+        # Register MC field if requested
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mcBranch = self.outtree.Branch(mcBranchName, self.MCdet, 32000, splitLevel)
-
-        if branchName:
-            self.branch = self.outtree.Branch(f"Digi_{branchName}Hits", self.det, 32000, splitLevel)
-        else:
-            self.branch = self.outtree.Branch(f"Digi_{name}Hits", self.det, 32000, splitLevel)
+            self.mc_field = self.model.MakeField["std::vector<std::vector<int>>"](mcBranchName)
 
     def delete(self):
         """Clear detector hit containers."""
@@ -44,13 +57,19 @@ class BaseDetector(ABC):
         if self.MCdet:
             self.MCdet.clear()
 
-    def fill(self):
-        """Fill detector hit branches.
+    def fill(self, entry):
+        """Fill detector hit fields into RNTuple entry.
 
-        Note: This method is now a no-op to prevent double-filling.
-        All branches are filled synchronously by recoTree.Fill() in the main loop.
+        Args:
+            entry: RNTuple entry to fill
         """
-        pass
+        # Fill hit field
+        if self.det_field:
+            entry[self.det_field.GetFieldName()] = self.det
+
+        # Fill MC field if present
+        if self.mc_field and self.MCdet:
+            entry[self.mc_field.GetFieldName()] = self.MCdet
 
     @abstractmethod
     def digitize(self):
@@ -61,8 +80,13 @@ class BaseDetector(ABC):
         """
         pass
 
-    def process(self):
-        """Process one event: delete, digitize, and fill."""
+    def process(self, entry=None):
+        """Process one event: delete, digitize, and fill.
+
+        Args:
+            entry: RNTuple entry to fill (optional for backward compatibility)
+        """
         self.delete()
         self.digitize()
-        self.fill()
+        if entry is not None:
+            self.fill(entry)

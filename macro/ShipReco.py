@@ -172,7 +172,7 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
     SHiP.reconstruct()
-    SHiP.recoTree.Fill()
+    SHiP.fillEntry()
 # memory monitoring
 # mem_monitor()
 # end loop over events
