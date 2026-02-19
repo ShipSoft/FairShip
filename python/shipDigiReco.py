@@ -69,6 +69,12 @@ class ShipDigiReco:
             self.digiSplitcal = self.splitcalDetector.det
             self.recoSplitcal = self.splitcalDetector.reco
 
+        # prepare vertexing - create a dummy tree that has the required branches
+        # The vertexing will add particles to our particle array
+        self.dummyTree = ROOT.TTree("dummy", "dummy")
+        self.fPartArray = ROOT.std.vector("ShipParticle")()
+        self.particles_field = self.model.MakeField["std::vector<ShipParticle>"]("Particles")
+
         # Create RNTuple writer after all fields are registered
         self.writer = ROOT.RNTupleWriter.Recreate(self.model, "ship_reco_sim", self.outputFile)
 
@@ -78,12 +84,6 @@ class ShipDigiReco:
         # for the digitizing step
         self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
         self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
-
-        # prepare vertexing - create a dummy tree that has the required branches
-        # The vertexing will add particles to our particle array
-        self.dummyTree = ROOT.TTree("dummy", "dummy")
-        self.fPartArray = ROOT.std.vector("ShipParticle")()
-        self.particles_field = self.model.MakeField["std::vector<ShipParticle>"]("Particles")
         # Create dummy branches for vertexing compatibility
         self.dummyTree.Branch("FitTracks", self.fGenFitArray)
         self.dummyTree.Branch("goodTracks", self.goodTracksVect)
@@ -124,7 +124,10 @@ class ShipDigiReco:
         if global_variables.vertexing:
             # now go for 2-track combinations
             self.Vertexing.execute()
-            # The particles are now in self.fPartArray (shared with Vertexing)
+            # Copy particles from vertexing to our array
+            self.fPartArray.clear()
+            for particle in self.Vertexing.fPartArray:
+                self.fPartArray.push_back(particle)
 
     def fillEntry(self):
         """Fill all reconstruction data into the RNTuple entry."""
@@ -365,7 +368,7 @@ class ShipDigiReco:
         # debug
         if global_variables.debug:
             print("save tracklets:")
-            for x in self.recoTree.Tracklets:
+            for x in self.fTrackletsArray:
                 print(x.getType(), len(x.getList()))
         return len(self.fGenFitArray)
 
