@@ -25,8 +25,8 @@ class ShipDigiReco:
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
 
-        # Create output file
-        self.outputFile = ROOT.TFile.Open(fout, "recreate")
+        # Store output filename for RNTuple writer
+        self.outputFilename = fout
 
         # Disable GeoTracks branch if present in input
         if self.sTree.GetBranch("GeoTracks"):
@@ -71,7 +71,7 @@ class ShipDigiReco:
         self.particles_field = self.model.MakeField["std::vector<ShipParticle>"]("Particles")
 
         # Create RNTuple writer after all fields are registered
-        self.writer = ROOT.RNTupleWriter.Recreate(self.model, "ship_reco_sim", self.outputFile)
+        self.writer = ROOT.RNTupleWriter.Recreate(self.model, "ship_reco_sim", self.outputFilename)
 
         # Create entry for filling
         self.entry = self.writer.CreateEntry()
@@ -433,5 +433,4 @@ class ShipDigiReco:
         ut.writeHists(global_variables.h, "recohists.root")
         if global_variables.realPR:
             shipPatRec.finalize()
-        self.outputFile.Close()
         self.inputFile.Close()
