@@ -45,7 +45,6 @@ class ShipDigiReco:
         self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
 
         # Register track fields
-        self.fitTracks_field = self.model.MakeField["std::vector<genfit::Track*>"]("FitTracks")
         self.fitTrack2MC_field = self.model.MakeField["std::vector<int>"]("fitTrack2MC")
         self.goodTracks_field = self.model.MakeField["std::vector<int>"]("goodTracks")
         self.tracklets_field = self.model.MakeField["std::vector<Tracklet>"]("Tracklets")
@@ -128,7 +127,6 @@ class ShipDigiReco:
     def fillEntry(self):
         """Fill all reconstruction data into the RNTuple entry."""
         # Fill track data
-        self.entry[self.fitTracks_field.GetFieldName()] = self.fGenFitArray
         self.entry[self.fitTrack2MC_field.GetFieldName()] = self.fitTrack2MC
         self.entry[self.goodTracks_field.GetFieldName()] = self.goodTracksVect
         self.entry[self.tracklets_field.GetFieldName()] = self.fTrackletsArray
