@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<alg_conf>
+
+<!--
+Configuration sets for the UnstableParticleDecayer EventRecordVisitorI
+
+Configurable Parameters:
+.......................................................................................................
+Name             Type     Optional   Comment               Default
+.......................................................................................................
+-->
+
+  <param_set name="BeforeHadronTransport">
+     <param type="int" name="NDecayers">  2                                                    </param>
+     <param type="alg" name="Decayer-0">  genie::Pythia8Decayer2023/BeforeHadronTransport      </param>
+     <param type="alg" name="Decayer-1">  genie::BaryonResonanceDecayer/BeforeHadronTransport  </param>
+  </param_set>
+
+  <param_set name="AfterHadronTransport">
+     <param type="int" name="NDecayers">  2                                                    </param>
+     <param type="alg" name="Decayer-0">  genie::Pythia8Decayer2023/AfterHadronTransport       </param>
+     <param type="alg" name="Decayer-1">  genie::BaryonResonanceDecayer/AfterHadronTransport   </param>
+  </param_set>
+
+  <param_set name="DarkSector">
+     <param type="int" name="NDecayers">  3                                                    </param>
+     <param type="alg" name="Decayer-0">  genie::Pythia8Decayer2023/AfterHadronTransport       </param>
+     <param type="alg" name="Decayer-1">  genie::BaryonResonanceDecayer/AfterHadronTransport   </param>
+     <param type="alg" name="Decayer-2">  genie::DarkSectorDecayer/Default </param>
+  </param_set>
+
+
+</alg_conf>
