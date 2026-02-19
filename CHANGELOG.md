@@ -18,9 +18,11 @@ it in future.
 
 * New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
 
+* Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer
 ### Changed
 
 * Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
+* makeGenieEvents: automatically set GXMLPATH to the genie_config folder. Remove option --nudet since now GXMLPATH always needs to be set.
 * Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047
 * Add file glob to run_simScript.py input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041
 * Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
