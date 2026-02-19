@@ -35,10 +35,6 @@ class ShipDigiReco:
         # Create RNTuple model and register all fields
         self.model = ROOT.RNTupleModel.Create()
 
-        # Event header
-        self.header = ROOT.FairEventHeader()
-        self.header_field = self.model.MakeField["FairEventHeader"]("ShipEventHeader")
-
         # Fitted tracks - using pointer storage for genfit::Track
         # Must use pointer storage: genfit::Track has circular references with TrackPoint
         # requiring stable memory addresses (value storage would invalidate back-pointers on vector resize)
@@ -146,12 +142,6 @@ class ShipDigiReco:
 
     def digitize(self):
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
-        self.header.SetEventTime(self.sTree.t0)
-        self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())
-        self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
-
-        # Fill header into entry
-        self.entry[self.header_field.GetFieldName()] = self.header
 
         # Process detectors and fill into entry
         self.digiSBT.process(self.entry)
