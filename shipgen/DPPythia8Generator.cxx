@@ -64,7 +64,7 @@ Bool_t DPPythia8Generator::Init() {
       return kFALSE; }
     }else{
       fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty
-    hadrons: %s",fextFile); fInputFile  = new TFile(fextFile.c_str()); if
+    hadrons: %s",fextFile); fInputFile  = new TFile(fextFile->c_str()); if
     (!fInputFile) { fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
     return kFALSE;
     }
