@@ -5,7 +5,6 @@
 
 This “launcher” wraps `genie_utils` (gmkspl/gevgen/gntpc helpers) and adds:
 - Argument parsing with sensible defaults and validation
-- Optional *nudet* mode (disables charm/tau decays via GXMLPATH)
 - Automatic neutrino/antineutrino scaling based on flux hist sums
 - Structured logging and robust error reporting
 
@@ -22,13 +21,11 @@ $ python $FAIRSHIP/macro/makeGenieEvents sim \
     --xsec-file gxspl-FNALsmall.xml \
     --flux-file pythia8_Geant4_1.0_withCharm_nu.root \
     --event-generator-list CC \
-    --nudet
 
 Notes
 -----
 - This tool *does not* modify your parent shell environment.
-- `--nudet` sets `GXMLPATH` for the child process only (you can override path
-  with `--gxmlpath`).
+- you can override path with `--gxmlpath`.
 
 """
 
@@ -36,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
@@ -101,11 +99,9 @@ def _ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def _build_env(nudet: bool, gxmlpath: Path | None) -> Mapping[str, str | None] | None:
-    """Build per-call env overrides (sets GXMLPATH only in nudet mode)."""
-    if not nudet:
-        return None
-    val = str(gxmlpath) if gxmlpath else "/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines"
+def _build_env(gxmlpath: Path | None) -> Mapping[str, str | None] | None:
+    """Build per-call env overrides (sets GXMLPATH)."""
+    val = str(gxmlpath) if gxmlpath else os.getenv("FAIRSHIP_ROOT")+"/shipgen/genie_config"
     return {"GXMLPATH": val}
 
 
@@ -165,9 +161,8 @@ def make_events(
         out_dir = work_dir / f"genie-{pdg_name}_{N}_events"
         _ensure_dir(out_dir)
 
-        nudet_suffix = "_nudet" if env_vars and env_vars.get("GXMLPATH") else ""
         filename = (
-            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}{nudet_suffix}.ghep.root"
+            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}.ghep.root"
         )
         ghep_path = out_dir / filename
         gst_path = out_dir / f"genie-{filename}"
@@ -259,8 +254,7 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="GENIE generator list (e.g. CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, ...)",
     )
-    ap.add_argument("--nudet", action="store_true", help="Disable charm & tau decays via GXMLPATH")
-    ap.add_argument("--gxmlpath", type=Path, default=None, help="Override GXMLPATH in --nudet mode")
+    ap.add_argument("--gxmlpath", type=Path, default=None, help="Override GXMLPATH")
     ap.add_argument(
         "-p",
         "--particles",
@@ -315,7 +309,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
     # sim
-    env_vars = _build_env(nudet=bool(args.nudet), gxmlpath=args.gxmlpath)
+    env_vars = _build_env(gxmlpath=args.gxmlpath)
     targetcode = _target_code(args.target)
 
     splines = (args.splinedir / args.xsec_file).resolve()
@@ -331,8 +325,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     logging.info(
         f"Seed: {args.seed} | "
         f"Target: {args.target} ({targetcode}) | "
-        f"Process: {args.evtype or 'ALL'} | "
-        f"nudet={bool(args.nudet)}"
+        f"Process: {args.evtype or 'ALL'}"
     )
     make_events(
         run=int(args.run),
