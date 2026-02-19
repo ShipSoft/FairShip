@@ -1,18 +1,20 @@
 <map id="shipgen/NtupleGenerator.h" name="shipgen/NtupleGenerator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="116,5,312,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="169,5,365,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,152,105,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,33,137,52,99,81,78,109,65,139,60,137,74,107,95,77,135,47,176,28"/>
-<area shape="rect" id="Node000003" href="$Generator_8h.html" title=" " alt="" coords="109,79,207,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,33,178,69,173,66,203,29"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="232,79,311,104"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="226,29,255,66,251,70,221,33"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="335,79,405,104"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="240,28,333,70,331,75,238,33"/>
-<area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="143,106,85,146,82,142,140,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="129,152,187,177"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="161,104,161,138,155,138,155,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="212,152,275,177"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="173,102,221,141,217,145,170,106"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="299,152,420,177"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="191,102,315,145,313,150,189,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="241,33,198,54,152,81,111,113,78,144,74,140,108,109,148,76,195,49,238,28"/>
+<area shape="rect" id="Node000003" href="$Generator_8h.html" title=" " alt="" coords="162,79,261,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,33,231,69,227,66,256,29"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="285,79,364,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="279,29,309,66,305,70,275,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="389,79,458,104"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="293,28,386,70,384,75,291,33"/>
+<area shape="poly" id="edge7_Node000003_Node000002" title=" " alt="" coords="187,106,94,149,92,144,185,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="129,152,203,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="206,106,183,142,178,139,202,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="227,152,286,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="221,103,244,139,240,142,217,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="311,152,373,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="234,102,310,143,308,148,231,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="397,152,519,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="252,101,406,146,404,151,250,107"/>
 </map>
