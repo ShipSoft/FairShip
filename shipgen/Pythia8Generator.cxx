@@ -29,7 +29,6 @@ Pythia8Generator::Pythia8Generator() {
   fId = 2212;         // proton
   fMom = 400;         // proton
   fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
-  fextFile = "";
   fInputFile = NULL;
   targetName = "";
   xOff = 0;
@@ -48,10 +47,10 @@ Bool_t Pythia8Generator::Init() {
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
 #endif
-  if (fextFile && *fextFile) {
-    fInputFile = TFile::Open(fextFile);
+  if (fextFile) {
+    fInputFile = TFile::Open(fextFile->c_str());
     LOG(info) << "Open external file with charm or beauty hadrons: "
-              << fextFile;
+              << *fextFile;
     if (!fInputFile) {
       LOG(fatal) << "Error opening input file.";
       return kFALSE;

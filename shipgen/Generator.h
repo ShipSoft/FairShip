@@ -5,6 +5,7 @@
 #ifndef SHIPGEN_GENERATOR_H_
 #define SHIPGEN_GENERATOR_H_ 1
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -31,7 +32,7 @@ class Generator : public FairGenerator {
     return Init(inFiles.at(0).c_str(), 0);
   };
 
-  virtual void UseExternalFile(const char* x, Int_t i) {
+  virtual void UseExternalFile(std::string x, Int_t i) {
     fextFile = x;
     firstEvent = i;
   };
@@ -43,7 +44,7 @@ class Generator : public FairGenerator {
   }
 
  protected:
-  const char* fextFile = nullptr;
+  std::optional<std::string> fextFile;
   Int_t firstEvent = 0;
   ClassDef(SHiP::Generator, 2);
 };
