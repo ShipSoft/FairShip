@@ -1,43 +1,33 @@
-# Config files for GENIE simulations without Pythia6Decayer
+# Configuration files for GENIE simulations
 
-## Intro
+## Introduction
 
-Following ROOT deprecation of TPythia6,
-
-these files replace the Pythia6Decayer with Pythia8Decayer.
+Following ROOT's deprecation of TPythia6, these files replace the Pythia6Decayer
+with Pythia8Decayer in GENIE.
 
 ## Details
 
-For info, see:
+For more information, see:
 
-* https://genie-mc.github.io/releases.html
-* https://github.com/GENIE-MC/Generator/pull/430
+- https://genie-mc.github.io/releases.html
+- https://github.com/GENIE-MC/Generator/pull/430
 
-to use them, set GXMLPATH env variable to this folder before launching this simulation.
+To use these files, set the `GXMLPATH` environment variable to this folder before
+launching the simulation. This is done automatically by `makeGenieEvents.py`.
 
-To avoid confusion, this folder is exactly the same as the GENIE one.
+This folder mirrors the structure of the default GENIE configuration and currently
+only contains the files needed to switch from Pythia6Decayer to Pythia8Decayer.
 
-Therefore, it does not contain any modifications we would like to make.
+## History
 
-For that, it is best to create our own tune config folder, with these files and any additional change we may need.
+- February 2026: Initial creation (Antonio Iuliano)
 
-See comment line down.
+## Notes on particle decays
 
-## Creation Date
-
-Antonio Iuliano, 18 February 2026
-
-## Unrelated comments
-Particle Decays were once set in UsersPhyicsOptions.xml
-
-Now they are provided in a "tune" folder, see for example
-
+Particle decays were previously configured in `UserPhysicsOptions.xml`. They are
+now provided in a "tune" folder. See for example:
 https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml
 
-GENIE by default does not make tau and charmed hadron decay anymore.
-
-(That was the default in our old branch,
-
-https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml)
-
-So we do not need to override these lines anymore.
+GENIE no longer decays tau and charmed hadrons by default (this was the default
+in our old branch: https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml),
+so we no longer need to override these settings.

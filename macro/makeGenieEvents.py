@@ -3,14 +3,14 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 """Generate GENIE neutrino interaction events from flux histograms.
 
-This “launcher” wraps `genie_utils` (gmkspl/gevgen/gntpc helpers) and adds:
+This "launcher" wraps `genie_utils` (gmkspl/gevgen/gntpc helpers) and adds:
 - Argument parsing with sensible defaults and validation
 - Automatic neutrino/antineutrino scaling based on flux hist sums
 - Structured logging and robust error reporting
 
 Typical use
 -----------
-$ python $FAIRSHIP/macro/makeGenieEvents sim \
+$ python $FAIRSHIP/macro/makeGenieEvents.py sim \
     --seed 65539 \
     --output ./work \
     --filedir /eos/experiment/ship/data/Mbias/background-prod-2018 \
@@ -20,12 +20,13 @@ $ python $FAIRSHIP/macro/makeGenieEvents sim \
     --emin 0.5 --emax 350 \
     --xsec-file gxspl-FNALsmall.xml \
     --flux-file pythia8_Geant4_1.0_withCharm_nu.root \
-    --event-generator-list CC \
+    --event-generator-list CC
 
 Notes
 -----
 - This tool *does not* modify your parent shell environment.
-- you can override path with `--gxmlpath`.
+- GXMLPATH is automatically set to $FAIRSHIP_ROOT/shipgen/genie_config by default.
+- Use `--gxmlpath` to override the default GXMLPATH if needed.
 
 """
 
@@ -101,9 +102,12 @@ def _ensure_dir(path: Path) -> None:
 
 def _build_env(gxmlpath: Path | None) -> Mapping[str, str | None] | None:
     """Build per-call env overrides (sets GXMLPATH)."""
-    fairship_root_path = os.getenv("FAIRSHIP_ROOT")
+    fairship_root_path = os.getenv("FAIRSHIP_ROOT") or os.getenv("FAIRSHIP")
     if not fairship_root_path:
-        raise OSError("undefined FAIRSHIP_ROOT environment variable")
+        raise OSError(
+            "FAIRSHIP_ROOT (or FAIRSHIP) environment variable is not set. "
+            "Please run inside the FairShip alienv environment."
+        )
     val = str(gxmlpath) if gxmlpath else fairship_root_path + "/shipgen/genie_config"
     return {"GXMLPATH": val}
 
