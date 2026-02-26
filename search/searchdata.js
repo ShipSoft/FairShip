@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "bcdfs",
   8: "dkmuvxyz",
   9: "dep",
-  10: "cdfr"
+  10: "cdfgrs"
 };
 
 var indexSectionNames =

@@ -112,6 +112,12 @@ var NAVTREE =
       [ "License", "md_README.html#autotoc_md72", null ],
       [ "Contributing code", "md_README.html#autotoc_md73", null ]
     ] ],
+    [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
+      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md75", null ],
+      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md76", null ],
+      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md77", null ],
+      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md78", null ]
+    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -165,21 +171,21 @@ var NAVTREEINDEX =
 "classsplitcal.html#a232518ea0a85e24687831a0ac5350c54",
 "classstrawtubes.html#a90ba7531a587252cef45698994b4cafe",
 "classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f",
-"extractMuonsAndUpdateWeight_8py.html#a202e852d3bdae40e39b5742ee2457b1d",
-"hepunit_8py.html#a74d89fed7986f7e1fba28cc79d604bef",
-"makeMuonEM_8py.html#ab601c963f2068c0096eee496020b9003",
-"muonDIS_2makeMuonDIS_8py_source.html",
-"namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9",
-"namespaceeventDisplay.html#afedef7eb0449fbf3f27e38df56eae03c",
-"namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5",
-"namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de",
-"namespacepythia8__conf__utils.html#a65a64823ec85647ac87d464dcd43be4c",
-"namespacerun__reco.html#ab11bee5e2fac20519bd1e0888eaa6790",
-"namespaceshipunit.html#a769bccb7cf9668d11356e77e591ef4fd",
-"pythia8__conf__utils_8py.html#a077efc9290c3db6c744aead97d1b9d4f",
-"run__prod_8py.html#a6c000f747a21da2c39df0901296bb770",
-"shipunit_8py.html#a37554b94c872b532446a17f2e602abde",
-"study__muMSC_8py.html#ac983624e260a9dc5430659252a084b1a"
+"extractMuonsAndUpdateWeight_8py.html#a1cdf3f365964f648f0eeab3b202234ef",
+"hepunit_8py.html#a73e3e8b5ea88fbae4c8cb548b32879e2",
+"makeMuonEM_8py.html#aa5ad61c03c3524787a582bfe545ca6cc",
+"muonDIS_2makeMuonDIS_8py.html#a92793b82e133944d8355b8d3dd8e7c92",
+"namespaceana__ShipMuon.html#a4b0bba4dadca42515d4dfc5fc2451aa5",
+"namespaceeventDisplay.html#adba141c1a1c4d0b578c4334a40346649",
+"namespacehepunit.html#afbe2aac34a4878d7d20dbb12b5143afc",
+"namespacemake__nTuple__SBT.html#a30fc5b9f56d4024deea048ae9f4b19ce",
+"namespacepythia8__conf__utils.html#a296d6528082699a77e557fae82850349",
+"namespacerun__reco.html#a73cbd0f6d7d8add2128f07b538176260",
+"namespaceshipunit.html#a6b859e93b8e87bcbe54fac2b365c6ba3",
+"pythia8__conf_8py.html#ab07a0d848feb83df22d2d5b6e85fb374",
+"run__fixedTarget_8py.html#af90f2a88330fe43e2fc455313465f260",
+"shipunit_8py.html#a30c0d4ca4337138f96a4fcf7a5e31bc9",
+"study__muMSC_8py.html#aab2ba86175905624f247b64deb3c9426"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

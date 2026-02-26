@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FairShip: Namespace Members</title>
+<title>FairShip: Configuration files for GENIE simulations</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('namespacemembers_func.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_shipgen_2genie__config_2README.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -88,21 +88,34 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html',''); initR
 </div>
 </div>
 
+<div><div class="header">
+  <div class="headertitle"><div class="title">Configuration files for GENIE simulations</div></div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all namespace functions with links to the namespace documentation for each function:</div>
-
-<h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
-<li>_build_env()&#160;:&#160;<a class="el" href="namespacemakeGenieEvents.html#a2753d22aa456638fb09ae9f003523cee">makeGenieEvents</a></li>
-<li>_build_parser()&#160;:&#160;<a class="el" href="namespacemakeGenieEvents.html#ab534ac1a6f852d893e005ce778e06a05">makeGenieEvents</a></li>
-<li>_collectVolumeNames()&#160;:&#160;<a class="el" href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">geomGeant4</a></li>
-<li>_ensure_dir()&#160;:&#160;<a class="el" href="namespacemakeGenieEvents.html#a698a7c30dc81870f2fe1001c44e3b98e">makeGenieEvents</a></li>
-<li>_merge_env()&#160;:&#160;<a class="el" href="namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e">genie_interface</a></li>
-<li>_parse_env_kv()&#160;:&#160;<a class="el" href="namespacegenie__interface.html#a36e3c8840e30c0734cba98f769903d7d">genie_interface</a></li>
-<li>_pdg_list()&#160;:&#160;<a class="el" href="namespacemakeGenieEvents.html#a8d85a53750f8937b2e67972a0871d41e">makeGenieEvents</a></li>
-<li>_run()&#160;:&#160;<a class="el" href="namespacegenie__interface.html#a466b0df6aee34de143ec73457187718b">genie_interface</a></li>
-<li>_target_code()&#160;:&#160;<a class="el" href="namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab">makeGenieEvents</a></li>
+<div class="textblock"><p><a class="anchor" id="autotoc_md74"></a> </p>
+<h1><a class="anchor" id="autotoc_md75"></a>
+Introduction</h1>
+<p>Following ROOT's deprecation of TPythia6, these files replace the Pythia6Decayer with Pythia8Decayer in GENIE.</p>
+<h1><a class="anchor" id="autotoc_md76"></a>
+Details</h1>
+<p>For more information, see:</p>
+<ul>
+<li><a href="https://genie-mc.github.io/releases.html">https://genie-mc.github.io/releases.html</a></li>
+<li><a href="https://github.com/GENIE-MC/Generator/pull/430">https://github.com/GENIE-MC/Generator/pull/430</a></li>
 </ul>
-</div><!-- contents -->
+<p>To use these files, set the <code>GXMLPATH</code> environment variable to this folder before launching the simulation. This is done automatically by <code><a class="el" href="makeGenieEvents_8py.html">makeGenieEvents.py</a></code>.</p>
+<p>This folder mirrors the structure of the default GENIE configuration and currently only contains the files needed to switch from Pythia6Decayer to Pythia8Decayer.</p>
+<h1><a class="anchor" id="autotoc_md77"></a>
+History</h1>
+<ul>
+<li>February 2026: Initial creation (Antonio Iuliano)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md78"></a>
+Notes on particle decays</h1>
+<p>Particle decays were previously configured in <code>UserPhysicsOptions.xml</code>. They are now provided in a "tune" folder. See for example: <a href="https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml">https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml</a></p>
+<p>GENIE no longer decays tau and charmed hadrons by default (this was the default in our old branch: <a href="https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml">https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml</a>), so we no longer need to override these settings. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
