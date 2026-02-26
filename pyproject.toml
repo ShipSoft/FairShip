@@ -12,4 +12,4 @@ ignore = [
 
 
 [tool.codespell]
-ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te'
+ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'

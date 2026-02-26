@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<messenger_config>
+
+  <!--
+    Defines the priority levels for GENIE message streams
+
+    The priority (in descending importance order) can be
+    FATAL, ALERT, CRIT, ERROR, WARN, NOTICE, INFO, DEBUG
+
+    To change the default priority level for a message stream
+    or to add a default priority level for a new message stream
+    a) edit this file OR b) set the GMSGCONF env. var to point to
+    your custom messenger config file. More than one custom files
+    may defined in the GMSGCONF var delimited with a ':'. Example:
+    export GMSGCONF= /home/me/msgconf1.xml:/home/me/tmp/msgconf2.xml
+
+    These files are read in addition to the default priority levels
+    file and after it. The later each file is in the Messenger
+    configuration file chain the higher priority it has, eg. if the
+    same stream is listed twice with conflicting priority then the
+    one found last is used
+   -->
+
+  <priority msgstream="Messenger">             NOTICE </priority>
+  <priority msgstream="AhrensNCEL">            WARN   </priority>
+  <!-- EDIT: add notification for DM EL algorithm -->
+  <priority msgstream="AhrensDMEL">            WARN   </priority>
+  <priority msgstream="AlgFactory">            INFO   </priority>
+  <priority msgstream="Algorithm">             WARN   </priority>
+  <priority msgstream="AlgConfigPool">         WARN   </priority>
+  <priority msgstream="AlvarezRusoCohPi">      INFO   </priority>
+  <priority msgstream="BergerSehgalCohPi">     INFO   </priority>
+  <priority msgstream="SKXSec">                INFO   </priority>
+  <priority msgstream="SKKinematics">          INFO   </priority>
+  <priority msgstream="SKLepton">              INFO   </priority>
+  <priority msgstream="SKHadron">              DEBUG  </priority>
+  <priority msgstream="BardinIMD">             NOTICE </priority>
+  <priority msgstream="BaryonResList">         WARN   </priority>
+  <priority msgstream="BaryonResUtils">        WARN   </priority>
+  <priority msgstream="SppChannel">            WARN   </priority>
+  <priority msgstream="BaseHad">               NOTICE </priority>
+  <priority msgstream="BertuzzoDNuCOH">        INFO </priority>
+  <priority msgstream="BSKLNBaseRESPXSec2014"> INFO   </priority>
+  <priority msgstream="MKSPPPXSec2020">        INFO   </priority>
+  <priority msgstream="SPPXSec">               INFO   </priority>
+  <priority msgstream="SPPCache">              INFO   </priority>
+  <priority msgstream="BreitWignet">           INFO   </priority>
+  <priority msgstream="Bardin">                INFO   </priority>
+  <priority msgstream="BodekYang">             INFO   </priority>
+  <priority msgstream="BodekRitchie">          WARN   </priority>
+  <priority msgstream="SmithMoniz">            WARN   </priority>
+  <priority msgstream="SMQELXSec">             NOTICE </priority>
+  <priority msgstream="Cache">                 WARN   </priority>
+  <priority msgstream="CharmHad">              NOTICE </priority>
+  <priority msgstream="CFracTab">              INFO   </priority>
+  <priority msgstream="CEvNS">                 NOTICE </priority>
+  <priority msgstream="COHDNu">                NOTICE </priority>
+  <priority msgstream="COHDNuXSec">            NOTICE </priority>
+  <priority msgstream="COHXSec">               NOTICE </priority>
+  <priority msgstream="COHXSecAR">             NOTICE </priority>
+  <priority msgstream="CLAP">                  NOTICE </priority>
+  <priority msgstream="COHHadronicVtx">        INFO   </priority>
+  <priority msgstream="COHKinematics">         NOTICE </priority>
+  <priority msgstream="DarkSectorDecayer">     INFO   </priority>
+  <priority msgstream="DFRHadronicVtx">        DEBUG  </priority>
+  <priority msgstream="DFRKinematics">         DEBUG  </priority>
+  <priority msgstream="Decay">                 NOTICE </priority>
+  <priority msgstream="DISSF">                 NOTICE </priority>
+  <priority msgstream="DISXSec">               NOTICE </priority>
+  <priority msgstream="DISCharmXSec">          INFO   </priority>
+  <priority msgstream="DISPXSec">              NOTICE </priority>
+  <priority msgstream="DISHadronicVtx">        INFO   </priority>
+  <priority msgstream="DISKinematics">         NOTICE </priority>
+  <!-- EDIT: add notification for DM DIS processes -->
+  <priority msgstream="DMDISKinematics">       NOTICE </priority>
+  <priority msgstream="DMDISPXSec">            NOTICE </priority>
+  <priority msgstream="DMDISXSec">             NOTICE </priority>
+  <!-- EDIT: add notification for DM EL processes -->
+  <priority msgstream="DMELEvent">             NOTICE </priority>
+  <priority msgstream="DMELKinematics">        NOTICE </priority>
+  <priority msgstream="DMELXSec">              NOTICE </priority>
+  <priority msgstream="EventGenerator">        NOTICE </priority>
+  <priority msgstream="EffectiveSF">           INFO   </priority>
+  <priority msgstream="Elastic">               INFO   </priority>
+  <priority msgstream="EVGChain">              INFO   </priority>
+  <priority msgstream="EvGenListAssembler">    WARN   </priority>
+  <priority msgstream="ELFormFactors">         INFO   </priority>
+  <priority msgstream="EngelFormFactor">       INFO   </priority>
+  <priority msgstream="FermiMover">            INFO   </priority>
+  <priority msgstream="FermiP">                NOTICE </priority>
+  <priority msgstream="Flux">                  NOTICE </priority>
+  <priority msgstream="FMap">                  WARN   </priority>
+  <priority msgstream="FragmRecUtils">         NOTICE </priority>
+  <priority msgstream="GEVGDriver">            NOTICE </priority>
+  <priority msgstream="GMCJDriver">            NOTICE </priority>
+  <priority msgstream="GEVGPool">              INFO   </priority>
+  <priority msgstream="GMCJob">                INFO   </priority>
+  <priority msgstream="GMCJMonitor">           WARN   </priority>
+  <priority msgstream="GROOTGeom">             NOTICE </priority>
+  <priority msgstream="GHEP">                  WARN   </priority>
+  <priority msgstream="GHepParticle">          INFO   </priority>
+  <priority msgstream="GHepUtils">             INFO   </priority>
+  <priority msgstream="GuiUtils">              INFO   </priority>
+  <priority msgstream="GRV98LO">               NOTICE </priority>
+  <priority msgstream="GXSecFunc">             WARN   </priority>
+  <priority msgstream="GLRES">                 WARN   </priority>
+  <priority msgstream="HadTransp">             INFO   </priority>
+  <priority msgstream="HadronicVtx">           NOTICE </priority>
+  <priority msgstream="HybridHad">             INFO   </priority>
+  <priority msgstream="IBD">                   NOTICE </priority>
+  <priority msgstream="IMDXSec">               NOTICE </priority>
+  <priority msgstream="IMDAnnihilation">       NOTICE </priority>
+  <priority msgstream="IntSel">                NOTICE </priority>
+  <priority msgstream="IntLst">                NOTICE </priority>
+  <priority msgstream="Interaction">           NOTICE </priority>
+  <priority msgstream="Intranuke">             NOTICE </priority>
+  <priority msgstream="Intranuke2018">         NOTICE </priority>
+  <priority msgstream="Intranuke2019">         NOTICE </priority>
+  <priority msgstream="HAIntranuke">           NOTICE </priority>
+  <priority msgstream="HAIntranuke2018">       NOTICE </priority>
+  <priority msgstream="HAIntranuke2019">       NOTICE </priority>
+  <priority msgstream="TwoBodyCollision">      NOTICE </priority>
+  <priority msgstream="HNIntranuke">           NOTICE </priority>
+  <priority msgstream="HNIntranuke2018">       NOTICE </priority>
+  <priority msgstream="HNIntranuke2019">       NOTICE </priority>
+  <priority msgstream="INukeData">             NOTICE </priority>
+  <priority msgstream="INukeData2018">         NOTICE </priority>
+  <priority msgstream="INukeData2019">         NOTICE </priority>
+  <priority msgstream="INukeUtils">            NOTICE </priority> <!-- notice-->
+  <priority msgstream="INukeUtils2018">        NOTICE </priority> <!-- notice-->
+  <priority msgstream="INukeUtils2019">        NOTICE </priority> <!-- notice-->
+  <priority msgstream="HINCLCascadeIntranuke"> NOTICE </priority>
+  <priority msgstream="HG4BertCascIntranuke">  NOTICE </priority>
+  <priority msgstream="INukeNucleonCorr">      NOTICE </priority>
+  <priority msgstream="ISApp">                 INFO   </priority>
+  <priority msgstream="IntGenMap">             WARN   </priority>
+  <priority msgstream="KNOHad">                NOTICE </priority>
+  <priority msgstream="KineLimits">            INFO   </priority>
+  <priority msgstream="Kinematics">            INFO   </priority>
+  <priority msgstream="MArunAxialFormFactorModel"> INFO </priority>
+  <priority msgstream="LeptonicVertex">        INFO   </priority>
+  <priority msgstream="LwlynSmith">            NOTICE </priority>
+  <priority msgstream="LocalFGM">              WARN   </priority>
+  <priority msgstream="Math">                  NOTICE </priority>
+  <priority msgstream="MEC">                   INFO   </priority>
+  <priority msgstream="MuELoss">               NOTICE </priority>
+  <priority msgstream="MultProb">              INFO   </priority>
+  <priority msgstream="Nieves">                NOTICE </priority>
+  <priority msgstream="NucDeEx">               NOTICE </priority>
+  <priority msgstream="NucleonDecay">          NOTICE </priority>
+  <priority msgstream="ResonanceDecay">        NOTICE </priority>
+  <priority msgstream="NucleonP">              INFO   </priority>
+  <priority msgstream="Nuclear">               NOTICE </priority>
+  <priority msgstream="Numerical">             INFO   </priority>
+  <priority msgstream="NuEXSec">               INFO   </priority>
+  <priority msgstream="Ntp">                   NOTICE </priority>
+  <priority msgstream="NuVld">                 INFO   </priority>
+  <priority msgstream="NuETargetRemnant">      INFO   </priority>
+  <priority msgstream="NuEKinematics">         INFO   </priority>
+  <priority msgstream="PartonModel">           INFO   </priority>
+  <priority msgstream="PauliBlock">            INFO   </priority>
+  <priority msgstream="ParticleDecayer">       INFO   </priority>
+  <priority msgstream="PaschLal">              INFO   </priority>
+  <priority msgstream="PythiaDec">             NOTICE </priority>
+  <priority msgstream="Pythia6Decay">          NOTICE </priority>
+  <priority msgstream="Pythia8Decay">          NOTICE </priority>
+  <priority msgstream="PythiaHad">             NOTICE </priority>
+  <priority msgstream="Pythia6Had">            NOTICE </priority>
+  <priority msgstream="Pythia8Had">            NOTICE </priority>
+  <priority msgstream="PDG">                   INFO   </priority>
+  <priority msgstream="PathL">                 NOTICE </priority>
+  <priority msgstream="PhysUtil">              NOTICE </priority>
+  <priority msgstream="QELXSec">               NOTICE </priority>
+  <priority msgstream="QELCharmXSec">          NOTICE </priority>
+  <priority msgstream="QELEvent">              INFO   </priority>
+  <priority msgstream="QELHadronicVtx">        INFO   </priority>
+  <priority msgstream="QELKinematics">         INFO   </priority>
+  <priority msgstream="SPPEventGen">           INFO   </priority>
+  <priority msgstream="RESXSec">               INFO   </priority>
+  <priority msgstream="RESPXSec">              WARN   </priority>
+  <priority msgstream="ReinSehgalCohPi">       WARN   </priority>
+  <priority msgstream="ReinDFR">               WARN   </priority>
+  <priority msgstream="ReinSehgalRes">         WARN   </priority>
+  <priority msgstream="ReinSehgalResT">        NOTICE </priority>
+  <priority msgstream="ReinSehgalResC">        NOTICE </priority>
+  <priority msgstream="ReinSehgalResTF">       NOTICE </priority>
+  <priority msgstream="ReinSehgalResCF">       NOTICE </priority>
+  <priority msgstream="ReinSehgalSpp">         NOTICE </priority>
+  <priority msgstream="RSHAmpl">               WARN   </priority>
+  <priority msgstream="Registry">              WARN   </priority>
+  <priority msgstream="ReW">                   DEBUG  </priority>
+  <priority msgstream="RESHadronicVtx">        INFO   </priority>
+  <priority msgstream="RESKinematics">         INFO   </priority>
+  <priority msgstream="RESSelector">           NOTICE </priority>
+  <priority msgstream="Rndm">                  NOTICE </priority>
+  <priority msgstream="Rosenbluth">            NOTICE </priority>
+  <priority msgstream="StrumiaVissani">        NOTICE </priority>
+  <priority msgstream="SpectralFunc1">         NOTICE </priority>
+  <priority msgstream="SpectralFunc">          NOTICE </priority>
+  <priority msgstream="Spline">                INFO   </priority>
+  <priority msgstream="Target">                INFO   </priority>
+  <priority msgstream="Utils">                 INFO   </priority>
+  <priority msgstream="Vtx">                   INFO   </priority>
+  <priority msgstream="VldContext">            NOTICE </priority>
+  <priority msgstream="VldTestInputs">         WARN   </priority>
+  <priority msgstream="XSecBase">              NOTICE </priority>
+  <priority msgstream="XSecAlgMap">            NOTICE </priority>
+  <priority msgstream="XSecSplLst">            NOTICE </priority>
+  <priority msgstream="GLRESPXSec">            WARN   </priority>
+  <priority msgstream="GLRESGenerator">        WARN   </priority>
+  <priority msgstream="HENuElPXSec">           WARN   </priority>
+  <priority msgstream="HENuElGenerator">       WARN   </priority>
+  <priority msgstream="PhotonRESPXSec">        WARN   </priority>
+  <priority msgstream="PhotonRESGenerator">    WARN   </priority>
+  <priority msgstream="PhotonCOHPXSec">        WARN   </priority>
+  <priority msgstream="PhotonCOHGenerator">    WARN   </priority>
+  <priority msgstream="HEDISXSec">             WARN   </priority>
+  <priority msgstream="HEDISPXSec">            WARN   </priority>
+  <priority msgstream="HEDISGenerator">        WARN   </priority>
+  <priority msgstream="HEDISKinematics">       WARN   </priority>
+  <priority msgstream="HEDISStrucFunc">        WARN   </priority>
+  <priority msgstream="LeptoHad">              ERROR  </priority>
+
+  <priority msgstream="gevgen">                NOTICE </priority>
+  <priority msgstream="gevgen_dm">             NOTICE </priority>
+  <priority msgstream="gevgen_ndcy">           NOTICE </priority>
+  <priority msgstream="gevgen_atmo">           NOTICE </priority>
+  <priority msgstream="gevgen_upmu">           NOTICE </priority>
+  <priority msgstream="gevgen_t2k">            NOTICE </priority>
+  <priority msgstream="gevgen_numi">           NOTICE </priority>
+  <priority msgstream="gevgen_hadron">         NOTICE </priority>
+  <priority msgstream="grwght1scan">           INFO   </priority>
+  <priority msgstream="gvldtest">              NOTICE </priority>
+  <priority msgstream="gtune">                 INFO   </priority>
+  <priority msgstream="gntpc">                 INFO   </priority>
+  <priority msgstream="gmkspl">                INFO   </priority>
+  <priority msgstream="gmkspl_dm">             INFO   </priority>
+  <priority msgstream="gcalchedisdiffxsec">    INFO   </priority>
+  <priority msgstream="gmkhedissf">            INFO   </priority>
+  <priority msgstream="gmkphotonsf">           INFO   </priority>
+
+</messenger_config>
