@@ -170,7 +170,7 @@ def make_events(
 
         filename = f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_{process or 'ALL'}.ghep.root"
         ghep_path = out_dir / filename
-        gst_path = out_dir / f"genie-{filename}"
+        gst_path = out_dir / f"genie-{filename.replace('ghep.root', 'gst.root')}"
 
         logging.info(f"Generating {N} events for PDG {pdg_name} (run={run}) -> {ghep_path}")
 
