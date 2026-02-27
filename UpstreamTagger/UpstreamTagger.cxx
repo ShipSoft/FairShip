@@ -230,12 +230,13 @@ void UpstreamTagger::ConstructGeometry() {
   return;
 }
 
-UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                                            TVector3 pos, TVector3 mom,
-                                            Double_t time, Double_t length,
-                                            Double_t eLoss, Int_t pdgCode,
-                                            TVector3 Lpos, TVector3 Lmom) {
-  fUpstreamTaggerPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                                      eLoss, pdgCode, Lpos, Lmom);
+UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t eventID, Int_t trackID,
+                                            Int_t detID, TVector3 pos,
+                                            TVector3 mom, Double_t time,
+                                            Double_t length, Double_t eLoss,
+                                            Int_t pdgCode, TVector3 Lpos,
+                                            TVector3 Lmom) {
+  fUpstreamTaggerPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
+                                      length, eLoss, pdgCode, Lpos, Lmom);
   return &(fUpstreamTaggerPoints->back());
 }
