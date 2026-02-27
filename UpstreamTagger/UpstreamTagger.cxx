@@ -46,6 +46,7 @@ using std::endl;
 
 UpstreamTagger::UpstreamTagger()
     : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -64,6 +65,7 @@ UpstreamTagger::UpstreamTagger()
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     : FairDetector(name, active, kUpstreamTagger),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -131,7 +133,7 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
     }
 
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-
+    fEventID = gMC->CurrentEvent();
     Int_t uniqueId;
     gMC->CurrentVolID(uniqueId);
     if (uniqueId > 1000000)  // Solid scintillator case
@@ -151,7 +153,7 @@ Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
     Double_t ymean = (fPos.Y() + Pos.Y()) / 2.;
     Double_t zmean = (fPos.Z() + Pos.Z()) / 2.;
 
-    AddHit(fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -228,12 +230,12 @@ void UpstreamTagger::ConstructGeometry() {
   return;
 }
 
-UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t trackID, Int_t detID,
+UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
                                             TVector3 pos, TVector3 mom,
                                             Double_t time, Double_t length,
                                             Double_t eLoss, Int_t pdgCode,
                                             TVector3 Lpos, TVector3 Lmom) {
-  fUpstreamTaggerPoints->emplace_back(trackID, detID, pos, mom, time, length,
+  fUpstreamTaggerPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
                                       eLoss, pdgCode, Lpos, Lmom);
   return &(fUpstreamTaggerPoints->back());
 }

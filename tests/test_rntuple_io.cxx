@@ -349,9 +349,9 @@ int main(int argc, char** argv) {
     TVector3 mom(0.1, 0.2, 0.3);
     TVector3 lpos(1.1, 2.1, 3.1);
     TVector3 lmom(0.11, 0.21, 0.31);
-    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212, lpos,
+    objects.emplace_back(1, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212, lpos,
                          lmom);
-    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
+    objects.emplace_back(2, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
                          lmom);
     total++;
     if (test_rntuple_io("UpstreamTaggerPoint", objects)) passed++;
