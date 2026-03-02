@@ -23,7 +23,7 @@ class splitcalPoint : public SHiP::DetectorPoint {
   void extraPrintInfo() const override;
 
  private:
-  ClassDefOverride(splitcalPoint, 3)
+  ClassDefOverride(splitcalPoint, 4)
 };
 
 #endif  // SPLITCAL_SPLITCALPOINT_H_

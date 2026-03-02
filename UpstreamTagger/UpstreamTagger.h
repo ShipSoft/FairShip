@@ -135,7 +135,7 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   UpstreamTagger& operator=(const UpstreamTagger&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(UpstreamTagger, 1)
+  ClassDef(UpstreamTagger, 2)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

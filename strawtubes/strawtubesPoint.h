@@ -42,7 +42,7 @@ class strawtubesPoint : public SHiP::DetectorPoint {
 
  private:
   Double_t fdist2Wire;
-  ClassDefOverride(strawtubesPoint, 4);
+  ClassDefOverride(strawtubesPoint, 5);
 };
 
 #endif  // STRAWTUBES_STRAWTUBESPOINT_H_

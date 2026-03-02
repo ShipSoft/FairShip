@@ -141,7 +141,7 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
   strawtubes(const strawtubes&);
   strawtubes& operator=(const strawtubes&);
   Int_t InitMedium(const char* name);
-  ClassDef(strawtubes, 6)
+  ClassDef(strawtubes, 7)
 };
 
 #endif  // STRAWTUBES_STRAWTUBES_H_

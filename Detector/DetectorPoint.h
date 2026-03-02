@@ -45,7 +45,7 @@ class DetectorPoint : public FairMCPoint {
   std::string fDetectorName = "detector";
 
  private:
-  ClassDef(SHiP::DetectorPoint, 2);
+  ClassDef(SHiP::DetectorPoint, 1);
 };
 }  // namespace SHiP
 
