@@ -18,10 +18,6 @@ class TimeDetPoint : public SHiP::DetectorPoint {
 
   using SHiP::DetectorPoint::DetectorPoint;
 
-  TimeDetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-               Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
-               TVector3 Lpos, TVector3 Lmom);
-
   /** Destructor **/
   virtual ~TimeDetPoint();
 

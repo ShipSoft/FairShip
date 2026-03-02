@@ -456,6 +456,6 @@ splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
                                 Double_t length, Double_t eLoss,
                                 Int_t pdgCode) {
   fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                                eLoss, pdgCode, pos, mom);
+                                eLoss, pdgCode);
   return &(fsplitcalPoints->back());
 }
