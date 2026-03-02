@@ -50,7 +50,7 @@ class UpstreamTaggerPoint : public FairMCPoint {
   Int_t fPdgCode;
   std::array<Double_t, 3> fLpos, fLmom;
 
-  ClassDef(UpstreamTaggerPoint, 3)
+  ClassDef(UpstreamTaggerPoint, 4)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_
