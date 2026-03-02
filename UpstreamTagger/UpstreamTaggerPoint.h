@@ -19,7 +19,6 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
   UpstreamTaggerPoint();
 
   using SHiP::DetectorPoint::DetectorPoint;
-
   /** Destructor **/
   virtual ~UpstreamTaggerPoint();
 
@@ -28,7 +27,7 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
 
  private:
 
-  ClassDefOverride(UpstreamTaggerPoint, 3)
+  ClassDef(UpstreamTaggerPoint, 4)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_

@@ -90,10 +90,10 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type TimeRpcPoint to the clones array
    */
-  UpstreamTaggerPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                              TVector3 mom, Double_t time, Double_t length,
-                              Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
-                              TVector3 Lmom);
+  UpstreamTaggerPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                              TVector3 pos, TVector3 mom, Double_t time,
+                              Double_t length, Double_t eLoss, Int_t pdgCode,
+                              TVector3 Lpos, TVector3 Lmom);
 
   virtual void EndOfEvent();
   virtual void FinishPrimary() { ; }
