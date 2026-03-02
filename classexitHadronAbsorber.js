@@ -3,7 +3,7 @@ var classexitHadronAbsorber =
     [ "exitHadronAbsorber", "classexitHadronAbsorber.html#aadcd55041e13a51a5148b5006be0e9ab", null ],
     [ "exitHadronAbsorber", "classexitHadronAbsorber.html#a9f7effe71e1e24bf0ba2d7a7bd1467ea", null ],
     [ "~exitHadronAbsorber", "classexitHadronAbsorber.html#a1c94fe59e4f92a5402fc72cdb2b1ef42", null ],
-    [ "AddHit", "classexitHadronAbsorber.html#a490f0810b2339f9727668c15de8e78cb", null ],
+    [ "AddHit", "classexitHadronAbsorber.html#a2a2c1b7b6f7cff7887c37a2e58f091ee", null ],
     [ "BeginEvent", "classexitHadronAbsorber.html#ab47c275ee25a7baf249af0eaa206e0de", null ],
     [ "BeginPrimary", "classexitHadronAbsorber.html#ad4d369912bf2c0529f686cf420a56e7e", null ],
     [ "ConstructGeometry", "classexitHadronAbsorber.html#a26446694d4fc4b9813d89ae1c983775f", null ],

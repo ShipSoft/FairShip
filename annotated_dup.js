@@ -46,6 +46,7 @@ var annotated_dup =
       [ "SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", "classSciFiMapping_1_1SciFiMapping" ]
     ] ],
     [ "SHiP", "namespaceSHiP.html", [
+      [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
       [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [

@@ -1,9 +1,14 @@
 <map id="splitcal/splitcalPoint.h" name="splitcal/splitcalPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="99,5,265,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,116,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,33,93,74,91,69,161,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="140,79,224,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,31,185,65,179,65,179,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="249,79,339,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,28,265,69,262,73,199,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,5,343,31"/>
+<area shape="rect" id="Node000002" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,79,216,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,33,184,73,182,69,242,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="221,152,312,177"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="263,31,268,138,263,138,258,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="298,79,382,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="275,29,319,68,315,72,271,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,61,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,106,66,147,63,143,134,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="86,152,197,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="155,105,149,139,143,138,150,104"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="174,102,238,142,235,147,171,106"/>
 </map>

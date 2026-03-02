@@ -165,8 +165,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af7373cf9b90b71e1ae58ab3d71566ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab47c275ee25a7baf249af0eaa206e0de" id="r_ab47c275ee25a7baf249af0eaa206e0de"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#ab47c275ee25a7baf249af0eaa206e0de">BeginEvent</a> ()</td></tr>
 <tr class="separator:ab47c275ee25a7baf249af0eaa206e0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a490f0810b2339f9727668c15de8e78cb" id="r_a490f0810b2339f9727668c15de8e78cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classvetoPoint.html">vetoPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a490f0810b2339f9727668c15de8e78cb">AddHit</a> (Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode, TVector3 Lpos, TVector3 Lmom, Int_t eventId)</td></tr>
-<tr class="separator:a490f0810b2339f9727668c15de8e78cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a2c1b7b6f7cff7887c37a2e58f091ee" id="r_a2a2c1b7b6f7cff7887c37a2e58f091ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classvetoPoint.html">vetoPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a2a2c1b7b6f7cff7887c37a2e58f091ee">AddHit</a> (Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode, TVector3 Lpos, TVector3 Lmom)</td></tr>
+<tr class="separator:a2a2c1b7b6f7cff7887c37a2e58f091ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab77815789c4a566bf96bd77f60112bd3" id="r_ab77815789c4a566bf96bd77f60112bd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#ab77815789c4a566bf96bd77f60112bd3">SetEnergyCut</a> (Float_t emax)</td></tr>
 <tr class="separator:ab77815789c4a566bf96bd77f60112bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0153de6b557884aae13ecd7ad0a224db" id="r_a0153de6b557884aae13ecd7ad0a224db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classexitHadronAbsorber.html#a0153de6b557884aae13ecd7ad0a224db">SetOnlyMuons</a> ()</td></tr>
@@ -291,19 +291,19 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a>(kFALSE),</div>
 <div class="line"><span class="lineno">   57</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">fexitHadronAbsorberPointCollection</a>(<span class="keyword">new</span> std::vector&lt;vetoPoint&gt;()) {}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a></div><div class="ttdeci">@ kVETO</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00017">ShipDetectorList.h:17</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a3bb38e3444782fbfc6a311bc607dcce7"><div class="ttname"><a href="classexitHadronAbsorber.html#a3bb38e3444782fbfc6a311bc607dcce7">exitHadronAbsorber::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00095">exitHadronAbsorber.h:95</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a4dc27337daaf8d7322129140872f164a"><div class="ttname"><a href="classexitHadronAbsorber.html#a4dc27337daaf8d7322129140872f164a">exitHadronAbsorber::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00096">exitHadronAbsorber.h:96</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a59c281a7e79267adf55967c31f0cb471"><div class="ttname"><a href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">exitHadronAbsorber::fexitHadronAbsorberPointCollection</a></div><div class="ttdeci">std::vector&lt; vetoPoint &gt; * fexitHadronAbsorberPointCollection</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00121">exitHadronAbsorber.h:121</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a641cd35ce14c19ba2084545179ea8361"><div class="ttname"><a href="classexitHadronAbsorber.html#a641cd35ce14c19ba2084545179ea8361">exitHadronAbsorber::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00100">exitHadronAbsorber.h:100</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a7afd9165e5164e731416518f42f7c8f0"><div class="ttname"><a href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">exitHadronAbsorber::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00097">exitHadronAbsorber.h:97</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a7be0ddff85460bb24c31c0369cc9dd57"><div class="ttname"><a href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">exitHadronAbsorber::fCylindricalPlane</a></div><div class="ttdeci">Bool_t fCylindricalPlane</div><div class="ttdoc">max energy to transport</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00112">exitHadronAbsorber.h:112</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a870b8583ed055da51139171aac19ef9b"><div class="ttname"><a href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">exitHadronAbsorber::fzPos</a></div><div class="ttdeci">Double_t fzPos</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00108">exitHadronAbsorber.h:108</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a9b5c7cc13139842a3699ab3b23e6975f"><div class="ttname"><a href="classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f">exitHadronAbsorber::withNtuple</a></div><div class="ttdeci">Bool_t withNtuple</div><div class="ttdoc">zPos, optional</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00109">exitHadronAbsorber.h:109</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_aa4e8f6cd05c66e10dc3adb13fbaefaaa"><div class="ttname"><a href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">exitHadronAbsorber::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00098">exitHadronAbsorber.h:98</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_aabf04f58900c97c93b829724a1dbd871"><div class="ttname"><a href="classexitHadronAbsorber.html#aabf04f58900c97c93b829724a1dbd871">exitHadronAbsorber::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00099">exitHadronAbsorber.h:99</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_abad68307a244613567d1fc695117984f"><div class="ttname"><a href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">exitHadronAbsorber::fVetoName</a></div><div class="ttdeci">TString fVetoName</div><div class="ttdoc">flag if neutrinos should be ignored</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00103">exitHadronAbsorber.h:103</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_ac793f753d95381d47a457cdb6d685204"><div class="ttname"><a href="classexitHadronAbsorber.html#ac793f753d95381d47a457cdb6d685204">exitHadronAbsorber::fSkipNeutrinos</a></div><div class="ttdeci">Bool_t fSkipNeutrinos</div><div class="ttdoc">flag if only muons should be stored</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00102">exitHadronAbsorber.h:102</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5"><div class="ttname"><a href="classexitHadronAbsorber.html#ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5">exitHadronAbsorber::fOnlyMuons</a></div><div class="ttdeci">Bool_t fOnlyMuons</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00101">exitHadronAbsorber.h:101</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a3bb38e3444782fbfc6a311bc607dcce7"><div class="ttname"><a href="classexitHadronAbsorber.html#a3bb38e3444782fbfc6a311bc607dcce7">exitHadronAbsorber::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00096">exitHadronAbsorber.h:96</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a4dc27337daaf8d7322129140872f164a"><div class="ttname"><a href="classexitHadronAbsorber.html#a4dc27337daaf8d7322129140872f164a">exitHadronAbsorber::fVolumeID</a></div><div class="ttdeci">Int_t fVolumeID</div><div class="ttdoc">track index</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00097">exitHadronAbsorber.h:97</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a59c281a7e79267adf55967c31f0cb471"><div class="ttname"><a href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">exitHadronAbsorber::fexitHadronAbsorberPointCollection</a></div><div class="ttdeci">std::vector&lt; vetoPoint &gt; * fexitHadronAbsorberPointCollection</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00122">exitHadronAbsorber.h:122</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a641cd35ce14c19ba2084545179ea8361"><div class="ttname"><a href="classexitHadronAbsorber.html#a641cd35ce14c19ba2084545179ea8361">exitHadronAbsorber::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00101">exitHadronAbsorber.h:101</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a7afd9165e5164e731416518f42f7c8f0"><div class="ttname"><a href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">exitHadronAbsorber::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00098">exitHadronAbsorber.h:98</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a7be0ddff85460bb24c31c0369cc9dd57"><div class="ttname"><a href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">exitHadronAbsorber::fCylindricalPlane</a></div><div class="ttdeci">Bool_t fCylindricalPlane</div><div class="ttdoc">max energy to transport</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00113">exitHadronAbsorber.h:113</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a870b8583ed055da51139171aac19ef9b"><div class="ttname"><a href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">exitHadronAbsorber::fzPos</a></div><div class="ttdeci">Double_t fzPos</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00109">exitHadronAbsorber.h:109</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a9b5c7cc13139842a3699ab3b23e6975f"><div class="ttname"><a href="classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f">exitHadronAbsorber::withNtuple</a></div><div class="ttdeci">Bool_t withNtuple</div><div class="ttdoc">zPos, optional</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00110">exitHadronAbsorber.h:110</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_aa4e8f6cd05c66e10dc3adb13fbaefaaa"><div class="ttname"><a href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">exitHadronAbsorber::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00099">exitHadronAbsorber.h:99</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_aabf04f58900c97c93b829724a1dbd871"><div class="ttname"><a href="classexitHadronAbsorber.html#aabf04f58900c97c93b829724a1dbd871">exitHadronAbsorber::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00100">exitHadronAbsorber.h:100</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_abad68307a244613567d1fc695117984f"><div class="ttname"><a href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">exitHadronAbsorber::fVetoName</a></div><div class="ttdeci">TString fVetoName</div><div class="ttdoc">flag if neutrinos should be ignored</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00104">exitHadronAbsorber.h:104</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_ac793f753d95381d47a457cdb6d685204"><div class="ttname"><a href="classexitHadronAbsorber.html#ac793f753d95381d47a457cdb6d685204">exitHadronAbsorber::fSkipNeutrinos</a></div><div class="ttdeci">Bool_t fSkipNeutrinos</div><div class="ttdoc">flag if only muons should be stored</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00103">exitHadronAbsorber.h:103</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5"><div class="ttname"><a href="classexitHadronAbsorber.html#ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5">exitHadronAbsorber::fOnlyMuons</a></div><div class="ttdeci">Bool_t fOnlyMuons</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00102">exitHadronAbsorber.h:102</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -342,9 +342,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a>(kFALSE),</div>
 <div class="line"><span class="lineno">   75</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a>(kFALSE),</div>
 <div class="line"><span class="lineno">   76</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">fexitHadronAbsorberPointCollection</a>(<span class="keyword">new</span> std::vector&lt;vetoPoint&gt;()) {}</div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a4d4cd3311eecc6ab8eae0bcde429a812"><div class="ttname"><a href="classexitHadronAbsorber.html#a4d4cd3311eecc6ab8eae0bcde429a812">exitHadronAbsorber::fEventId</a></div><div class="ttdeci">Int_t fEventId</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00094">exitHadronAbsorber.h:94</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a4e344e5ef687176c93495090272a6778"><div class="ttname"><a href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">exitHadronAbsorber::fUseCaveCoordinates</a></div><div class="ttdeci">Bool_t fUseCaveCoordinates</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00114">exitHadronAbsorber.h:114</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a6bd7fb975c4e22d2060023a076c9608e"><div class="ttname"><a href="classexitHadronAbsorber.html#a6bd7fb975c4e22d2060023a076c9608e">exitHadronAbsorber::fUniqueID</a></div><div class="ttdeci">Int_t fUniqueID</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00093">exitHadronAbsorber.h:93</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a4d4cd3311eecc6ab8eae0bcde429a812"><div class="ttname"><a href="classexitHadronAbsorber.html#a4d4cd3311eecc6ab8eae0bcde429a812">exitHadronAbsorber::fEventId</a></div><div class="ttdeci">Int_t fEventId</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00095">exitHadronAbsorber.h:95</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a4e344e5ef687176c93495090272a6778"><div class="ttname"><a href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">exitHadronAbsorber::fUseCaveCoordinates</a></div><div class="ttdeci">Bool_t fUseCaveCoordinates</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00115">exitHadronAbsorber.h:115</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a6bd7fb975c4e22d2060023a076c9608e"><div class="ttname"><a href="classexitHadronAbsorber.html#a6bd7fb975c4e22d2060023a076c9608e">exitHadronAbsorber::fUniqueID</a></div><div class="ttdeci">Int_t fUniqueID</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00094">exitHadronAbsorber.h:94</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -383,8 +383,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a490f0810b2339f9727668c15de8e78cb" name="a490f0810b2339f9727668c15de8e78cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a490f0810b2339f9727668c15de8e78cb">&#9670;&#160;</a></span>AddHit()</h2>
+<a id="a2a2c1b7b6f7cff7887c37a2e58f091ee" name="a2a2c1b7b6f7cff7887c37a2e58f091ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a2c1b7b6f7cff7887c37a2e58f091ee">&#9670;&#160;</a></span>AddHit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -392,6 +392,12 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classvetoPoint.html">vetoPoint</a> * exitHadronAbsorber::AddHit </td>
           <td>(</td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>eventID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Int_t&#160;</td>
           <td class="paramname"><em>trackID</em>, </td>
         </tr>
@@ -447,13 +453,7 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TVector3&#160;</td>
-          <td class="paramname"><em>Lmom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Int_t&#160;</td>
-          <td class="paramname"><em>eventId</em>&#160;</td>
+          <td class="paramname"><em>Lmom</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -464,10 +464,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00369">369</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  373</span>                                                                    {</div>
-<div class="line"><span class="lineno">  374</span>  <a class="code hl_variable" href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">fexitHadronAbsorberPointCollection</a>-&gt;emplace_back(trackID, detID, pos, mom,</div>
-<div class="line"><span class="lineno">  375</span>                                                   time, length, eLoss, pdgCode,</div>
-<div class="line"><span class="lineno">  376</span>                                                   Lpos, Lmom, eventID);</div>
+<div class="fragment"><div class="line"><span class="lineno">  373</span>                                                     {</div>
+<div class="line"><span class="lineno">  374</span>  <a class="code hl_variable" href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">fexitHadronAbsorberPointCollection</a>-&gt;emplace_back(eventID, trackID, detID, pos,</div>
+<div class="line"><span class="lineno">  375</span>                                                   mom, time, length, eLoss,</div>
+<div class="line"><span class="lineno">  376</span>                                                   pdgCode, Lpos, Lmom);</div>
 <div class="line"><span class="lineno">  377</span>  <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classexitHadronAbsorber.html#a59c281a7e79267adf55967c31f0cb471">fexitHadronAbsorberPointCollection</a>-&gt;back());</div>
 <div class="line"><span class="lineno">  378</span>}</div>
 </div><!-- fragment -->
@@ -814,8 +814,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="classexitHadronAbsorber.html#ac31f7b6b808a04741d98cc9fba322aeb">fNtuple</a>-&gt;Write();</div>
 <div class="line"><span class="lineno">  283</span>  }</div>
 <div class="line"><span class="lineno">  284</span>}</div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_ac05fcd31d19370c4c52ecff07a3d7cde"><div class="ttname"><a href="classexitHadronAbsorber.html#ac05fcd31d19370c4c52ecff07a3d7cde">exitHadronAbsorber::fout</a></div><div class="ttdeci">TFile * fout</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00117">exitHadronAbsorber.h:117</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_ac31f7b6b808a04741d98cc9fba322aeb"><div class="ttname"><a href="classexitHadronAbsorber.html#ac31f7b6b808a04741d98cc9fba322aeb">exitHadronAbsorber::fNtuple</a></div><div class="ttdeci">TNtuple * fNtuple</div><div class="ttdoc">special option for Dark Photon physics studies</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00110">exitHadronAbsorber.h:110</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_ac05fcd31d19370c4c52ecff07a3d7cde"><div class="ttname"><a href="classexitHadronAbsorber.html#ac05fcd31d19370c4c52ecff07a3d7cde">exitHadronAbsorber::fout</a></div><div class="ttdeci">TFile * fout</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00118">exitHadronAbsorber.h:118</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_ac31f7b6b808a04741d98cc9fba322aeb"><div class="ttname"><a href="classexitHadronAbsorber.html#ac31f7b6b808a04741d98cc9fba322aeb">exitHadronAbsorber::fNtuple</a></div><div class="ttdeci">TNtuple * fNtuple</div><div class="ttdoc">special option for Dark Photon physics studies</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00111">exitHadronAbsorber.h:111</a></div></div>
 <div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00044">extractNeutrinosAndUpdateWeight.py:44</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a01404b2f458b9421e40c21a5c483f109"><div class="ttname"><a href="namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109">makeCascade.idw</a></div><div class="ttdeci">list idw</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00243">makeCascade.py:243</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a66d67df4128c56a2de1726b2bcfe151f"><div class="ttname"><a href="namespacemakeCascade.html#a66d67df4128c56a2de1726b2bcfe151f">makeCascade.idadd</a></div><div class="ttdeci">int idadd</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00256">makeCascade.py:256</a></div></div>
@@ -1057,7 +1057,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  233</span>    }</div>
 <div class="line"><span class="lineno">  234</span>  }</div>
 <div class="line"><span class="lineno">  235</span>}</div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_ad60adebeb36d9c452ac1460abc39afe2"><div class="ttname"><a href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">exitHadronAbsorber::EMax</a></div><div class="ttdeci">Float_t EMax</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00111">exitHadronAbsorber.h:111</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_ad60adebeb36d9c452ac1460abc39afe2"><div class="ttname"><a href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">exitHadronAbsorber::EMax</a></div><div class="ttdeci">Float_t EMax</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8h_source.html#l00112">exitHadronAbsorber.h:112</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a6727d7bb8472fc986a59166a91b33c15"><div class="ttname"><a href="namespacemakeCascade.html#a6727d7bb8472fc986a59166a91b33c15">makeCascade.idabs</a></div><div class="ttdeci">idabs</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00359">makeCascade.py:359</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a65aea31e5d35b9671f40a2432dcfded2"><div class="ttname"><a href="namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2">makeDecay.l10pt</a></div><div class="ttdeci">l10pt</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00170">makeDecay.py:170</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
@@ -1107,10 +1107,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   95</span>      <a class="code hl_variable" href="classexitHadronAbsorber.html#a641cd35ce14c19ba2084545179ea8361">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
 <div class="line"><span class="lineno">   96</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>);</div>
 <div class="line"><span class="lineno">   97</span>      <span class="keywordflow">if</span> ((<a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.E() - <a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.M()) &gt; <a class="code hl_variable" href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">EMax</a>) {</div>
-<div class="line"><span class="lineno">   98</span>        <a class="code hl_function" href="classexitHadronAbsorber.html#a490f0810b2339f9727668c15de8e78cb">AddHit</a>(<a class="code hl_variable" href="classexitHadronAbsorber.html#a3bb38e3444782fbfc6a311bc607dcce7">fTrackID</a>, 111, TVector3(<a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.X(), <a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.Y(), <a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.Z()),</div>
+<div class="line"><span class="lineno">   98</span>        <a class="code hl_function" href="classexitHadronAbsorber.html#a2a2c1b7b6f7cff7887c37a2e58f091ee">AddHit</a>(<a class="code hl_variable" href="classexitHadronAbsorber.html#a4d4cd3311eecc6ab8eae0bcde429a812">fEventId</a>, <a class="code hl_variable" href="classexitHadronAbsorber.html#a3bb38e3444782fbfc6a311bc607dcce7">fTrackID</a>, 111, TVector3(<a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.X(), <a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.Y(), <a class="code hl_variable" href="classexitHadronAbsorber.html#a7afd9165e5164e731416518f42f7c8f0">fPos</a>.Z()),</div>
 <div class="line"><span class="lineno">   99</span>               TVector3(<a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.Px(), <a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.Py(), <a class="code hl_variable" href="classexitHadronAbsorber.html#aa4e8f6cd05c66e10dc3adb13fbaefaaa">fMom</a>.Pz()), <a class="code hl_variable" href="classexitHadronAbsorber.html#aabf04f58900c97c93b829724a1dbd871">fTime</a>, <a class="code hl_variable" href="classexitHadronAbsorber.html#a641cd35ce14c19ba2084545179ea8361">fLength</a>, 0,</div>
 <div class="line"><span class="lineno">  100</span>               pdgCode, TVector3(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Vx(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Vy(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Vz()),</div>
-<div class="line"><span class="lineno">  101</span>               TVector3(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Px(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Py(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Pz()), <a class="code hl_variable" href="classexitHadronAbsorber.html#a4d4cd3311eecc6ab8eae0bcde429a812">fEventId</a>);</div>
+<div class="line"><span class="lineno">  101</span>               TVector3(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Px(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Py(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Pz()));</div>
 <div class="line"><span class="lineno">  102</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
 <div class="line"><span class="lineno">  103</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>);</div>
 <div class="line"><span class="lineno">  104</span>      }</div>
@@ -1122,7 +1122,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  110</span>  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00048">ShipStack.h:48</a></div></div>
-<div class="ttc" id="aclassexitHadronAbsorber_html_a490f0810b2339f9727668c15de8e78cb"><div class="ttname"><a href="classexitHadronAbsorber.html#a490f0810b2339f9727668c15de8e78cb">exitHadronAbsorber::AddHit</a></div><div class="ttdeci">vetoPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode, TVector3 Lpos, TVector3 Lmom, Int_t eventId)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00369">exitHadronAbsorber.cxx:369</a></div></div>
+<div class="ttc" id="aclassexitHadronAbsorber_html_a2a2c1b7b6f7cff7887c37a2e58f091ee"><div class="ttname"><a href="classexitHadronAbsorber.html#a2a2c1b7b6f7cff7887c37a2e58f091ee">exitHadronAbsorber::AddHit</a></div><div class="ttdeci">vetoPoint * AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgcode, TVector3 Lpos, TVector3 Lmom)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00369">exitHadronAbsorber.cxx:369</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00326">makeCascade.py:326</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1216,8 +1216,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00086">86</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a> = kTRUE; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00087">87</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a7be0ddff85460bb24c31c0369cc9dd57">fCylindricalPlane</a> = kTRUE; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1245,10 +1245,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00078">78</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>                                         {</div>
-<div class="line"><span class="lineno">   79</span>    <a class="code hl_variable" href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">EMax</a> = emax;</div>
-<div class="line"><span class="lineno">   80</span>  }  <span class="comment">// min energy to be copied to Geant4</span></div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00079">79</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>                                         {</div>
+<div class="line"><span class="lineno">   80</span>    <a class="code hl_variable" href="classexitHadronAbsorber.html#ad60adebeb36d9c452ac1460abc39afe2">EMax</a> = emax;</div>
+<div class="line"><span class="lineno">   81</span>  }  <span class="comment">// min energy to be copied to Geant4</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1275,8 +1275,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00081">81</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5">fOnlyMuons</a> = kTRUE; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00082">82</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#ac8ff84fd2fc2492ca2bcbd7ccf1f1ba5">fOnlyMuons</a> = kTRUE; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1303,8 +1303,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00082">82</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f">withNtuple</a> = kTRUE; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00083">83</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a9b5c7cc13139842a3699ab3b23e6975f">withNtuple</a> = kTRUE; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1359,8 +1359,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00087">87</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a> = kTRUE; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00088">88</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778">fUseCaveCoordinates</a> = kTRUE; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1388,8 +1388,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00085">85</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a> = <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00086">86</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#abad68307a244613567d1fc695117984f">fVetoName</a> = <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1417,8 +1417,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00084">84</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">fzPos</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00085">85</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">fzPos</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a>; }</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00488">run_fixedTarget.py:488</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1446,8 +1446,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00083">83</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#ac793f753d95381d47a457cdb6d685204">fSkipNeutrinos</a> = kTRUE; }</div>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00084">84</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <a class="code hl_variable" href="classexitHadronAbsorber.html#ac793f753d95381d47a457cdb6d685204">fSkipNeutrinos</a> = kTRUE; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1514,7 +1514,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00111">111</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00112">112</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1540,7 +1540,7 @@ Private Attributes</h2></td></tr>
 
 <p>max energy to transport </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00112">112</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00113">113</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1564,7 +1564,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00118">118</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00119">119</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1588,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00094">94</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00095">95</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1613,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>container for data points </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00121">121</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00122">122</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +1639,7 @@ Private Attributes</h2></td></tr>
 
 <p>time </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00100">100</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00101">101</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1665,7 @@ Private Attributes</h2></td></tr>
 
 <p>position at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00098">98</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00099">99</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1691,7 @@ Private Attributes</h2></td></tr>
 
 <p>special option for Dark Photon physics studies </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00110">110</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00111">111</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1717,7 +1717,7 @@ Private Attributes</h2></td></tr>
 
 <p>length </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00101">101</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00102">102</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1742,7 +1742,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>set position from cave rather than from muon shield, default is false </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00117">117</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00118">118</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1768,7 +1768,7 @@ Private Attributes</h2></td></tr>
 
 <p>volume id </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00097">97</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00098">98</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1794,7 +1794,7 @@ Private Attributes</h2></td></tr>
 
 <p>flag if only muons should be stored </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00102">102</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00103">103</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1820,7 +1820,7 @@ Private Attributes</h2></td></tr>
 
 <p>momentum at entrance </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00099">99</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00100">100</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1846,7 +1846,7 @@ Private Attributes</h2></td></tr>
 
 <p>event index </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00095">95</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00096">96</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1871,7 +1871,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Track information to be stored until the track leaves the active volume. </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00093">93</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00094">94</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1896,7 +1896,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>flag if the sensPlane to be created should be cylindrical (by default it is not) </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00114">114</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00115">115</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1922,7 +1922,7 @@ Private Attributes</h2></td></tr>
 
 <p>flag if neutrinos should be ignored </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00103">103</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00104">104</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1948,7 +1948,7 @@ Private Attributes</h2></td></tr>
 
 <p>track index </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00096">96</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00097">97</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1972,7 +1972,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00108">108</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00109">109</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -1996,7 +1996,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00119">119</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00120">120</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>
@@ -2022,7 +2022,7 @@ Private Attributes</h2></td></tr>
 
 <p>zPos, optional </p>
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00109">109</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8h_source.html#l00110">110</a> of file <a class="el" href="exitHadronAbsorber_8h_source.html">exitHadronAbsorber.h</a>.</p>
 
 </div>
 </div>

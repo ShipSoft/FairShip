@@ -107,6 +107,7 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059</li>
 <li>Change a const char* in <a class="el" href="classSHiP_1_1Generator.html">SHiP::Generator</a> to optional&lt;string&gt;. #1053</li>
 <li>Only get evtNo in <a class="el" href="classShipStack.html">ShipStack</a> if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051</li>
 <li><a class="el" href="namespacemakeGenieEvents.html">makeGenieEvents</a>: automatically set GXMLPATH to the genie_config folder. Remove option &ndash;nudet since now GXMLPATH always needs to be set.</li>
@@ -407,7 +408,7 @@ Code Quality and Maintenance</h3>
 <ul>
 <li>Consolidate basiclibs module into <a class="el" href="eventDisplay_8py.html">eventDisplay.py</a> as it was only used by that single script</li>
 <li>Don't special case EOS paths (fix #566)</li>
-<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> use options directly internally instead of using intermediate variables</li>
+<li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: use options directly internally instead of using intermediate variables</li>
 <li><a class="el" href="namespacemakeCascade.html">makeCascade</a>: Added new default target, moved to argparse</li>
 <li>The decorators from <a class="el" href="decorators_8py.html">decorators.py</a> now need to be applied explicitly using the new <code>apply_decorators</code> function.</li>
 <li>The &ndash;debug flag to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> now controls the severity that FairLogger logs.</li>
@@ -523,8 +524,8 @@ Muon Shield</h3>
 <li>MS: Removed cobalt option</li>
 <li>MS: Removed stepGeo option</li>
 <li>MS: Removed the flag constant field in Absorber (HS) -&gt; fixed to 1.7 T</li>
-<li>MS: <a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
-<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> remove &ndash;muShieldDesign flag</li>
+<li>MS: <a class="el" href="run__simScript_8py.html">run_simScript.py</a>: The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
+<li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: remove &ndash;muShieldDesign flag</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md44"></a>
 Detector Components</h3>
