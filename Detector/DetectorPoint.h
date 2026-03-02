@@ -2,8 +2,8 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#ifndef SHIP_DETECTORPOINT_H_
-#define SHIP_DETECTORPOINT_H_
+#ifndef DETECTOR_DETECTORPOINT_H_
+#define DETECTOR_DETECTORPOINT_H_
 
 #include <array>
 
@@ -49,4 +49,4 @@ class DetectorPoint : public FairMCPoint {
 };
 }  // namespace SHiP
 
-#endif  // SHIP_DETECTORPOINT_H_
+#endif  // DETECTOR_DETECTORPOINT_H_
