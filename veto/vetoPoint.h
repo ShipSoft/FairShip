@@ -39,7 +39,6 @@ class vetoPoint : public SHiP::DetectorPoint {
   /** Output to screen **/
 
  private:
-
   ClassDefOverride(vetoPoint, 5)
 };
 

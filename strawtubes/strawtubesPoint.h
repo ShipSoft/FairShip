@@ -26,9 +26,9 @@ class strawtubesPoint : public SHiP::DetectorPoint {
    *@param length   Track length since creation [cm]
    *@param eLoss    Energy deposit [GeV]
    **/
-  strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                  Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode,
-                  Double_t dist);
+  strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                  TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
+                  Int_t pdgcode, Double_t dist);
 
   /** Destructor **/
   virtual ~strawtubesPoint();
@@ -39,6 +39,7 @@ class strawtubesPoint : public SHiP::DetectorPoint {
 
   void setDetectorName() override;
   void extraPrintInfo() const override;
+
  private:
   Double_t fdist2Wire;
   ClassDefOverride(strawtubesPoint, 4);

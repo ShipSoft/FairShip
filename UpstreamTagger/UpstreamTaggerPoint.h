@@ -26,7 +26,6 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
   void extraPrintInfo() const override;
 
  private:
-
   ClassDef(UpstreamTaggerPoint, 4)
 };
 

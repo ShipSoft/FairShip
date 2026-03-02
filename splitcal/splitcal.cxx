@@ -131,7 +131,8 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     //    if(fVolumeID<405 && fTime<70){
-    AddHit(fEventID, fTrackID, fVolumeID, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
+    AddHit(fEventID, fTrackID, fVolumeID,
+           TVector3(fPos.X(), fPos.Y(), fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode);
 
@@ -450,10 +451,11 @@ void splitcal::ConstructGeometry() {
   //    c1->SaveAs(TString("splitcal.pdf"));
 }
 
-splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                                TVector3 mom, Double_t time, Double_t length,
-                                Double_t eLoss, Int_t pdgCode) {
-  fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length, eLoss,
-                                pdgCode, pos, mom);
+splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                                TVector3 pos, TVector3 mom, Double_t time,
+                                Double_t length, Double_t eLoss,
+                                Int_t pdgCode) {
+  fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                                eLoss, pdgCode, pos, mom);
   return &(fsplitcalPoints->back());
 }

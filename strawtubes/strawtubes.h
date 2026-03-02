@@ -80,9 +80,10 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type strawtubesPoint to the clones array
    */
-  strawtubesPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                          TVector3 mom, Double_t time, Double_t length,
-                          Double_t eLoss, Int_t pdgCode, Double_t dist2Wire);
+  strawtubesPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                          TVector3 pos, TVector3 mom, Double_t time,
+                          Double_t length, Double_t eLoss, Int_t pdgCode,
+                          Double_t dist2Wire);
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.

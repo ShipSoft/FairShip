@@ -29,7 +29,6 @@ class TimeDetPoint : public SHiP::DetectorPoint {
   void extraPrintInfo() const override;
 
  private:
-
   ClassDefOverride(TimeDetPoint, 3)
 };
 

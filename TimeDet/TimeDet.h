@@ -72,9 +72,10 @@ class TimeDet : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type TimeDetPoint to the clones array
    */
-  TimeDetPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                       Double_t time, Double_t length, Double_t eLoss,
-                       Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
+  TimeDetPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                       TVector3 mom, Double_t time, Double_t length,
+                       Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
+                       TVector3 Lmom);
 
   virtual void EndOfEvent();
   virtual void FinishPrimary() { ; }

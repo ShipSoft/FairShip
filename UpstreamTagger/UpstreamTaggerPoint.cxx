@@ -16,11 +16,10 @@ UpstreamTaggerPoint::UpstreamTaggerPoint() : SHiP::DetectorPoint() {}
 UpstreamTaggerPoint::~UpstreamTaggerPoint() {}
 // -------------------------------------------------------------------------
 
-
-void UpstreamTaggerPoint::setDetectorName(){
-    fDetectorName = "UpstreamTagger";
-    }
+void UpstreamTaggerPoint::setDetectorName() {
+  fDetectorName = "UpstreamTagger";
+}
 
 void UpstreamTaggerPoint::extraPrintInfo() const {
-    LOG(info) << "This is the upstream tagger";
+  LOG(info) << "This is the upstream tagger";
 }

@@ -939,10 +939,11 @@ void veto::ConstructGeometry() {
   }
 }
 
-vetoPoint* veto::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                        Double_t time, Double_t length, Double_t eLoss,
-                        Int_t pdgCode, TVector3 Lpos, TVector3 Lmom) {
-  fvetoPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length, eLoss,
-                            pdgCode, Lpos, Lmom);
+vetoPoint* veto::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                        TVector3 mom, Double_t time, Double_t length,
+                        Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
+                        TVector3 Lmom) {
+  fvetoPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                            eLoss, pdgCode, Lpos, Lmom);
   return &(fvetoPoints->back());
 }

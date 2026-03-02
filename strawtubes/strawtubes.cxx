@@ -595,11 +595,11 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
 }
-strawtubesPoint* strawtubes::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                                    TVector3 mom, Double_t time,
+strawtubesPoint* strawtubes::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                                    TVector3 pos, TVector3 mom, Double_t time,
                                     Double_t length, Double_t eLoss,
                                     Int_t pdgCode, Double_t dist2Wire) {
-  fstrawtubesPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length, eLoss,
-                                  pdgCode, dist2Wire);
+  fstrawtubesPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
+                                  length, eLoss, pdgCode, dist2Wire);
   return &(fstrawtubesPoints->back());
 }

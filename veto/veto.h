@@ -91,9 +91,10 @@ class veto : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type vetoPoint to the clones array
    */
-  vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                    Double_t time, Double_t length, Double_t eLoss,
-                    Int_t pdgcode, TVector3 Lpos, TVector3 Lmom);
+  vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                    TVector3 mom, Double_t time, Double_t length,
+                    Double_t eLoss, Int_t pdgcode, TVector3 Lpos,
+                    TVector3 Lmom);
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
