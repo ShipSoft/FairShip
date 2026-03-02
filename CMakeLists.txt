@@ -172,6 +172,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # cmake executable to run. The same process will walk through the project's
 # entire directory structure.
 add_subdirectory(shipdata)
+add_subdirectory(Detector)
 add_subdirectory(passive)
 add_subdirectory(SND/EmulsionTarget)
 add_subdirectory(SND/MTC)

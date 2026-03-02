@@ -5,5 +5,5 @@ ship_add_library(
   NAME TimeDet
   SOURCES TimeDetPoint.cxx TimeDetHit.cxx TimeDet.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger
+  DEPENDENCIES Base ShipData FairLogger::FairLogger DetectorPoint
 )

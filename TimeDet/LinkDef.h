@@ -7,6 +7,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
+#pragma link C++ namespace SHiP;
 #pragma link C++ class TimeDet+;
 #pragma link C++ class TimeDetPoint+;
 #pragma link C++ class TimeDetHit+;
