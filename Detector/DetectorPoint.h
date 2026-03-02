@@ -10,44 +10,43 @@
 #include "FairMCPoint.h"
 #include "TVector3.h"
 
-namespace SHiP{
+namespace SHiP {
 class DetectorPoint : public FairMCPoint {
-    public:
-        DetectorPoint() {};
-        ~DetectorPoint() = default;
+ public:
+  DetectorPoint() {};
+  ~DetectorPoint() = default;
 
-        DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                      Double_t tof, Double_t length, Double_t eLoss,
-                      Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
+  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
+                Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
 
-        DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                      Double_t tof, Double_t length, Double_t eLoss,
-                      Int_t pdgCode);
+  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
+                Int_t pdgCode);
 
+  /** Copy constructor **/
+  DetectorPoint(const DetectorPoint& point) = default;
+  DetectorPoint& operator=(const DetectorPoint& point) = default;
 
-        /** Copy constructor **/
-        DetectorPoint(const DetectorPoint& point) = default;
-        DetectorPoint& operator=(const DetectorPoint& point) = default;
+  /** Output to screen **/
+  using FairMCPoint::Print;
+  virtual void Print() const;
+  Int_t PdgCode() const { return fPdgCode; }
+  TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
+  TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
 
-        /** Output to screen **/
-        using FairMCPoint::Print;
-        virtual void Print() const;
-        Int_t PdgCode() const { return fPdgCode; }
-        TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
-        TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
+  virtual void setDetectorName();
 
-        virtual void setDetectorName();
+  virtual void extraPrintInfo() const;
 
-        virtual void extraPrintInfo() const;
+ protected:
+  Int_t fPdgCode;
+  std::array<Double_t, 3> fLpos, fLmom;
+  std::string fDetectorName = "detector";
 
-    protected:
-        Int_t fPdgCode;
-        std::array<Double_t, 3> fLpos, fLmom;
-        std::string fDetectorName = "detector";
-    private:
-
-    ClassDef(SHiP::DetectorPoint, 2);
+ private:
+  ClassDef(SHiP::DetectorPoint, 2);
 };
-}
+}  // namespace SHiP
 
-#endif // SHIP_DETECTORPOINT_H_
+#endif  // SHIP_DETECTORPOINT_H_
