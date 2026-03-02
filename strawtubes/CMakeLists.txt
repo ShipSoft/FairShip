@@ -6,5 +6,5 @@ ship_add_library(
   SOURCES strawtubes.cxx strawtubesContFact.cxx strawtubesPoint.cxx strawtubesHit.cxx
           Tracklet.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger
+  DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
 )

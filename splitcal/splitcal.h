@@ -84,9 +84,9 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type splitcalPoint to the clones array
    */
-  splitcalPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                        Double_t time, Double_t length, Double_t eLoss,
-                        Int_t pdgcode);
+  splitcalPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                        TVector3 mom, Double_t time, Double_t length,
+                        Double_t eLoss, Int_t pdgcode);
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
@@ -108,6 +108,7 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   /** Track information to be stored until the track leaves the
   active volume.
   */
+  Int_t fEventID;       //!  event id;
   Int_t fTrackID;       //!  track index
   Int_t fVolumeID;      //!  volume id
   TLorentzVector fPos;  //!  position at entrance
@@ -140,7 +141,7 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   splitcal& operator=(const splitcal&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(splitcal, 1)
+  ClassDef(splitcal, 2)
 };
 
 #endif  // SPLITCAL_SPLITCAL_H_

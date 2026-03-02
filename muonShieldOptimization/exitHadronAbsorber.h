@@ -72,9 +72,10 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   virtual void PreTrack();
   virtual void BeginEvent() { ; }
 
-  vetoPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                    Double_t time, Double_t length, Double_t eLoss,
-                    Int_t pdgcode, TVector3 Lpos, TVector3 Lmom, Int_t eventId);
+  vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                    TVector3 mom, Double_t time, Double_t length,
+                    Double_t eLoss, Int_t pdgcode, TVector3 Lpos,
+                    TVector3 Lmom);
   inline void SetEnergyCut(Float_t emax) {
     EMax = emax;
   }  // min energy to be copied to Geant4

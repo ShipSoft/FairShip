@@ -5,5 +5,5 @@ ship_add_library(
   NAME UpstreamTagger
   SOURCES UpstreamTagger.cxx UpstreamTaggerPoint.cxx UpstreamTaggerHit.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger
+  DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
 )

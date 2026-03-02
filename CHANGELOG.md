@@ -21,6 +21,7 @@ it in future.
 * Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer
 ### Changed
 
+* Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
 * Change a const char* in SHiP::Generator to optional<string>. #1053
 * Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
 * makeGenieEvents: automatically set GXMLPATH to the genie_config folder. Remove option --nudet since now GXMLPATH always needs to be set.

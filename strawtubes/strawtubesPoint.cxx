@@ -7,19 +7,20 @@
 #include <math.h>
 
 #include <iostream>
-using std::cout;
-using std::endl;
+
+#include "FairLogger.h"
 
 // -----   Default constructor   -------------------------------------------
-strawtubesPoint::strawtubesPoint() : FairMCPoint() {}
+strawtubesPoint::strawtubesPoint() : DetectorPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-strawtubesPoint::strawtubesPoint(Int_t trackID, Int_t detID, TVector3 pos,
-                                 TVector3 mom, Double_t tof, Double_t length,
-                                 Double_t eLoss, Int_t pdgcode, Double_t dist)
-    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
-      fPdgCode(pdgcode),
+strawtubesPoint::strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID,
+                                 TVector3 pos, TVector3 mom, Double_t tof,
+                                 Double_t length, Double_t eLoss, Int_t pdgcode,
+                                 Double_t dist)
+    : DetectorPoint(eventID, trackID, detID, pos, mom, tof, length, eLoss,
+                    pdgcode, pos, mom),
       fdist2Wire(dist) {}
 // -------------------------------------------------------------------------
 
@@ -27,15 +28,9 @@ strawtubesPoint::strawtubesPoint(Int_t trackID, Int_t detID, TVector3 pos,
 strawtubesPoint::~strawtubesPoint() {}
 // -------------------------------------------------------------------------
 
-// -----   Public method Print   -------------------------------------------
-void strawtubesPoint::Print() const {
-  cout << "-I- strawtubesPoint: strawtubes point for track " << fTrackID
-       << " in detector " << fDetectorID << endl;
-  cout << "    Position (" << fX << ", " << fY << ", " << fZ << ", "
-       << fdist2Wire << ") cm" << endl;
-  cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV"
-       << endl;
-  cout << "    Time " << fTime << " ns,  Length " << fLength << "pdgid"
-       << fPdgCode << " cm,  Energy loss " << fELoss * 1.0e06 << " keV" << endl;
+void strawtubesPoint::setDetectorName() { fDetectorName = "UpstreamTagger"; }
+
+void strawtubesPoint::extraPrintInfo() const {
+  LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ", "
+            << fdist2Wire << ") cm";
 }
-// -------------------------------------------------------------------------

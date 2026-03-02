@@ -63,6 +63,7 @@ Double_t mm = 0.1 * cm;  //  mm
  */
 veto::veto()
     : FairDetector("Veto", kTRUE, kVETO),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -820,7 +821,7 @@ Bool_t veto::ProcessHits(FairVolume* vol) {
     }
 
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-
+    fEventID = gMC->CurrentEvent();
     Int_t veto_uniqueId;
     gMC->CurrentVolID(veto_uniqueId);
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
@@ -832,7 +833,7 @@ Bool_t veto::ProcessHits(FairVolume* vol) {
     Double_t xmean = (fPos.X() + pos.X()) / 2.;
     Double_t ymean = (fPos.Y() + pos.Y()) / 2.;
     Double_t zmean = (fPos.Z() + pos.Z()) / 2.;
-    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, veto_uniqueId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(pos.X(), pos.Y(), pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -938,10 +939,11 @@ void veto::ConstructGeometry() {
   }
 }
 
-vetoPoint* veto::AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                        Double_t time, Double_t length, Double_t eLoss,
-                        Int_t pdgCode, TVector3 Lpos, TVector3 Lmom) {
-  fvetoPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss,
-                            pdgCode, Lpos, Lmom);
+vetoPoint* veto::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
+                        TVector3 mom, Double_t time, Double_t length,
+                        Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
+                        TVector3 Lmom) {
+  fvetoPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                            eLoss, pdgCode, Lpos, Lmom);
   return &(fvetoPoints->back());
 }

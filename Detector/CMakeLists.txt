@@ -2,8 +2,8 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 ship_add_library(
-  NAME TimeDet
-  SOURCES TimeDetPoint.cxx TimeDetHit.cxx TimeDet.cxx
+  NAME Detector
+  SOURCES DetectorPoint.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
+  DEPENDENCIES Base ShipData FairLogger::FairLogger
 )

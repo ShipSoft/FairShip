@@ -90,10 +90,10 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   /**      This method is an example of how to add your own point
    *       of type TimeRpcPoint to the clones array
    */
-  UpstreamTaggerPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                              TVector3 mom, Double_t time, Double_t length,
-                              Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
-                              TVector3 Lmom);
+  UpstreamTaggerPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                              TVector3 pos, TVector3 mom, Double_t time,
+                              Double_t length, Double_t eLoss, Int_t pdgCode,
+                              TVector3 Lpos, TVector3 Lmom);
 
   virtual void EndOfEvent();
   virtual void FinishPrimary() { ; }
@@ -107,6 +107,7 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   // TODO Avoid 1-indexed array!
 
   /** Track information to be stored until the track leaves the active volume.*/
+  Int_t fEventID;       //!  event index
   Int_t fTrackID;       //!  track index
   Int_t fVolumeID;      //!  volume id
   TLorentzVector fPos;  //!  position at entrance
@@ -134,7 +135,7 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   UpstreamTagger& operator=(const UpstreamTagger&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(UpstreamTagger, 1)
+  ClassDef(UpstreamTagger, 2)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

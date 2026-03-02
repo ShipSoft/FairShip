@@ -43,6 +43,7 @@ using std::endl;
 
 strawtubes::strawtubes()
     : FairDetector("strawtubes", kTRUE, kStraw),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -55,6 +56,7 @@ strawtubes::strawtubes()
 
 strawtubes::strawtubes(std::string medium)
     : FairDetector("strawtubes", kTRUE, kStraw),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -67,6 +69,7 @@ strawtubes::strawtubes(std::string medium)
 
 strawtubes::strawtubes(const char* name, Bool_t active)
     : FairDetector(name, active, kStraw),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -130,6 +133,7 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
+    fEventID = gMC->CurrentEvent();
     Int_t straw_uniqueId;
     gMC->CurrentVolID(straw_uniqueId);
     if (fVolumeID == straw_uniqueId) {
@@ -155,7 +159,7 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
     TVector3 uCrossv = u.Cross(v);
     Double_t dist2Wire = fabs(pq.Dot(uCrossv)) / (uCrossv.Mag() + 1E-8);
     Double_t deltaTrackLength = gMC->TrackLength() - fLength;
-    AddHit(fTrackID, straw_uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, straw_uniqueId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
            fELoss, pdgCode, dist2Wire);
     if (dist2Wire > f_inner_straw_diameter / 2) {
@@ -591,11 +595,11 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
 }
-strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                                    TVector3 mom, Double_t time,
+strawtubesPoint* strawtubes::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                                    TVector3 pos, TVector3 mom, Double_t time,
                                     Double_t length, Double_t eLoss,
                                     Int_t pdgCode, Double_t dist2Wire) {
-  fstrawtubesPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss,
-                                  pdgCode, dist2Wire);
+  fstrawtubesPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
+                                  length, eLoss, pdgCode, dist2Wire);
   return &(fstrawtubesPoints->back());
 }

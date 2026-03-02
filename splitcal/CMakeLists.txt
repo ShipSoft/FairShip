@@ -6,5 +6,5 @@ ship_add_library(
   SOURCES splitcal.cxx splitcalContFact.cxx splitcalPoint.cxx splitcalHit.cxx
           splitcalCluster.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData FairLogger::FairLogger
+  DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
 )

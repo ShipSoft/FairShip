@@ -280,9 +280,9 @@ int main(int argc, char** argv) {
     TVector3 mom(0.1, 0.2, 0.3);
     TVector3 lpos(1.1, 2.1, 3.1);
     TVector3 lmom(0.11, 0.21, 0.31);
-    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212, lpos,
-                         lmom);
-    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
+    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,
+                         lpos, lmom);
+    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
                          lmom);
     total++;
     if (test_rntuple_io("vetoPoint", objects)) passed++;
@@ -292,9 +292,10 @@ int main(int argc, char** argv) {
     std::vector<strawtubesPoint> objects;
     TVector3 pos(1.0, 2.0, 3.0);
     TVector3 mom(0.1, 0.2, 0.3);
-    objects.emplace_back(1, 1001000, pos, mom, 123.45, 234.56, 0.001, 2212,
+    objects.emplace_back(0, 1, 1001000, pos, mom, 123.45, 234.56, 0.001, 2212,
                          0.5);
-    objects.emplace_back(2, 2002000, pos, mom, 345.67, 456.78, 0.002, 211, 0.6);
+    objects.emplace_back(1, 2, 2002000, pos, mom, 345.67, 456.78, 0.002, 211,
+                         0.6);
     total++;
     if (test_rntuple_io("strawtubesPoint", objects)) passed++;
   }
@@ -303,8 +304,8 @@ int main(int argc, char** argv) {
     std::vector<splitcalPoint> objects;
     TVector3 pos(1.0, 2.0, 3.0);
     TVector3 mom(0.1, 0.2, 0.3);
-    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);
-    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);
+    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212);
+    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211);
     total++;
     if (test_rntuple_io("splitcalPoint", objects)) passed++;
   }
@@ -335,9 +336,9 @@ int main(int argc, char** argv) {
     TVector3 mom(0.1, 0.2, 0.3);
     TVector3 lpos(1.1, 2.1, 3.1);
     TVector3 lmom(0.11, 0.21, 0.31);
-    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212, lpos,
-                         lmom);
-    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
+    objects.emplace_back(0, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,
+                         lpos, lmom);
+    objects.emplace_back(1, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
                          lmom);
     total++;
     if (test_rntuple_io("TimeDetPoint", objects)) passed++;
@@ -349,9 +350,9 @@ int main(int argc, char** argv) {
     TVector3 mom(0.1, 0.2, 0.3);
     TVector3 lpos(1.1, 2.1, 3.1);
     TVector3 lmom(0.11, 0.21, 0.31);
-    objects.emplace_back(1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212, lpos,
-                         lmom);
-    objects.emplace_back(2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
+    objects.emplace_back(1, 1, 1001, pos, mom, 123.45, 234.56, 0.001, 2212,
+                         lpos, lmom);
+    objects.emplace_back(2, 2, 2002, pos, mom, 345.67, 456.78, 0.002, 211, lpos,
                          lmom);
     total++;
     if (test_rntuple_io("UpstreamTaggerPoint", objects)) passed++;

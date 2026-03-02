@@ -38,6 +38,7 @@ using std::endl;
 
 splitcal::splitcal()
     : FairDetector("splitcal", kTRUE, kSplitCal),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -49,6 +50,7 @@ splitcal::splitcal()
 
 splitcal::splitcal(const char* name, Bool_t active)
     : FairDetector(name, active, kSplitCal),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -106,6 +108,7 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
   // Create splitcalPoint at exit of active volume
   if (gMC->IsTrackExiting() || gMC->IsTrackStop() ||
       gMC->IsTrackDisappeared()) {
+    fEventID = gMC->CurrentEvent();
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
     // fVolumeID = vol->getMCid();
     // cout << "splitcal proc "<< fVolumeID<<" "<<vol->GetName()<<"
@@ -128,7 +131,8 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     //    if(fVolumeID<405 && fTime<70){
-    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
+    AddHit(fEventID, fTrackID, fVolumeID,
+           TVector3(fPos.X(), fPos.Y(), fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode);
 
@@ -447,10 +451,11 @@ void splitcal::ConstructGeometry() {
   //    c1->SaveAs(TString("splitcal.pdf"));
 }
 
-splitcalPoint* splitcal::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                                TVector3 mom, Double_t time, Double_t length,
-                                Double_t eLoss, Int_t pdgCode) {
-  fsplitcalPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss,
-                                pdgCode);
+splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                                TVector3 pos, TVector3 mom, Double_t time,
+                                Double_t length, Double_t eLoss,
+                                Int_t pdgCode) {
+  fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                                eLoss, pdgCode);
   return &(fsplitcalPoints->back());
 }

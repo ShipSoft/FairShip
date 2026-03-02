@@ -41,6 +41,7 @@ using std::endl;
 
 TimeDet::TimeDet()
     : FairDetector("TimeDet", kTRUE, kTimeDet),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -78,6 +79,7 @@ TimeDet::TimeDet()
 
 TimeDet::TimeDet(const char* name, Bool_t active)
     : FairDetector(name, active, kTimeDet),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -164,7 +166,7 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
     }
 
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-
+    fEventID = gMC->CurrentEvent();
     Int_t uniqueId;
     gMC->CurrentVolID(uniqueId);
     if (uniqueId > 1000000)  // Solid scintillator case
@@ -187,7 +189,7 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
     // cout << uniqueId << " :(" << xmean << ", " << ymean << ", " << zmean <<
     // "): " << gMC->CurrentVolName() << endl;
 
-    AddHit(fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -266,12 +268,12 @@ void TimeDet::ConstructGeometry() {
   return;
 }
 
-TimeDetPoint* TimeDet::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                              TVector3 mom, Double_t time, Double_t length,
-                              Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
-                              TVector3 Lmom) {
-  fTimeDetPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss,
-                               pdgCode, Lpos, Lmom);
+TimeDetPoint* TimeDet::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                              TVector3 pos, TVector3 mom, Double_t time,
+                              Double_t length, Double_t eLoss, Int_t pdgCode,
+                              TVector3 Lpos, TVector3 Lmom) {
+  fTimeDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                               eLoss, pdgCode, Lpos, Lmom);
   return &(fTimeDetPoints->back());
 }
 

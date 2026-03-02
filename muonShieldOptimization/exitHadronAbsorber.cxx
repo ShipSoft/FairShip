@@ -95,10 +95,10 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       fLength = gMC->TrackLength();
       gMC->TrackPosition(fPos);
       if ((fMom.E() - fMom.M()) > EMax) {
-        AddHit(fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
+        AddHit(fEventId, fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
                pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
-               TVector3(p->Px(), p->Py(), p->Pz()), fEventId);
+               TVector3(p->Px(), p->Py(), p->Pz()));
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kVETO);
       }
@@ -366,14 +366,14 @@ void exitHadronAbsorber::ConstructGeometry() {
   }
 }
 
-vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                                      TVector3 mom, Double_t time,
+vetoPoint* exitHadronAbsorber::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                                      TVector3 pos, TVector3 mom, Double_t time,
                                       Double_t length, Double_t eLoss,
                                       Int_t pdgCode, TVector3 Lpos,
-                                      TVector3 Lmom, Int_t eventID) {
-  fexitHadronAbsorberPointCollection->emplace_back(trackID, detID, pos, mom,
-                                                   time, length, eLoss, pdgCode,
-                                                   Lpos, Lmom, eventID);
+                                      TVector3 Lmom) {
+  fexitHadronAbsorberPointCollection->emplace_back(eventID, trackID, detID, pos,
+                                                   mom, time, length, eLoss,
+                                                   pdgCode, Lpos, Lmom);
   return &(fexitHadronAbsorberPointCollection->back());
 }
 
