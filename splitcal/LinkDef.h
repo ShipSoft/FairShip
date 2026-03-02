@@ -7,7 +7,6 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ namespace SHiP;
 #pragma link C++ class splitcalContFact;
 #pragma link C++ class splitcal+;
 #pragma link C++ class splitcalPoint+;
