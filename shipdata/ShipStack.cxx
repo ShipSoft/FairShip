@@ -8,6 +8,7 @@
 #include "ShipStack.h"
 
 #include <stddef.h>  // for NULL
+#include <math.h>
 
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, etc
@@ -94,6 +95,11 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 
   // --> Create new TParticle and add it to the TParticle array
   Int_t trackId = fNParticles;
+
+  Int_t n_splits = std::getenv("KAON_PION_SPLITS") ? std::atoi(std::getenv("KAON_PION_SPLITS")) : 0;
+  Bool_t pion_or_kaon_id_bool = (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
+  Bool_t pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) && (is != 999) && (n_splits > 0);
+
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
@@ -125,11 +131,29 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   // --> Set argument variable
   ntr = trackId;
 
-  // --> Push particle on the stack if toBeDone is set
-  if (toBeDone == 1) {
-    particle->SetBit(kDoneBit);
-    fStack.push(particle);
+  // Split kaons and pions if splitting is required
+  if (pion_or_kaon_bool) {
+      Double_t scaled_weight = weight / n_splits;
+      Double_t expiredTime = time + 100.0;
+      for (Int_t i = 0; i < n_splits; ++i) {
+          gMC->GetStack()->PushTrack(1,
+                                     parentId,
+                                     pdgCode,
+                                     px, py, pz, e,
+                                     vx, vy, vz, expiredTime,
+                                     polx, poly, polz,
+                                     kPDecay,
+                                     ntr,
+                                     scaled_weight,
+                                     999
+                                     );
+        }
+  } else if (toBeDone == 1) {
+      // --> Push particle on the stack if toBeDone is set
+      particle->SetBit(kDoneBit);
+      fStack.push(particle);
   }
+
 }
 // -------------------------------------------------------------------------
 

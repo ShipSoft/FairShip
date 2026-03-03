@@ -30,9 +30,11 @@ void Config() {
   /// - stackPopper       - stackPopper process
   /// When more than one options are selected, they should be separated with '+'
   /// character: eg. stepLimit+specialCuts.
+
+  /// stackPopper is required when adding secondaries, e.g. when splitting the pions and kaons
   TG4RunConfiguration* runConfiguration =
       new TG4RunConfiguration("geomRoot", "FTFP_BERT_HP_EMZ",
-                              "stepLimiter+specialCuts+specialControls");
+                              "stepLimiter+specialCuts+specialControls+stackPopper");
 
   /// Create the G4 VMC
   TGeant4* geant4 =
