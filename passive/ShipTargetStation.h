@@ -20,15 +20,15 @@ class ShipTargetStation : public FairModule {
   ShipTargetStation();
   ~ShipTargetStation() override;
   void ConstructGeometry();
-  void SetLayerPosMat(Float_t d, std::vector<float> L, std::vector<float> G,
-                      std::vector<std::string> M) {
+  void SetLayerPosMat(Float_t d, const std::vector<float>& L,
+                      const std::vector<float>& G,
+                      const std::vector<std::string>& M) {
     fDiameter = d;
-    // C-AMM better error reporting ?
-    assert(fL.size() == fnS);
+    assert(L.size() == fnS);
     fL = L;
-    assert(fM.size() == fnS);
+    assert(M.size() == fnS);
     fM = M;
-    assert(fG.size() == fnS);
+    assert(G.size() == fnS);
     fG = G;
   }
   ClassDef(ShipTargetStation, 6);

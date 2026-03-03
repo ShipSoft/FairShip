@@ -24,6 +24,7 @@ it in future.
 ### Changed
 
 * Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
+* Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
 
 ### Added
 
