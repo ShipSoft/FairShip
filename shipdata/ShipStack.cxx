@@ -7,8 +7,8 @@
 // -------------------------------------------------------------------------
 #include "ShipStack.h"
 
-#include <stddef.h>  // for NULL
 #include <math.h>
+#include <stddef.h>  // for NULL
 
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, etc
@@ -55,7 +55,9 @@ ShipStack::ShipStack(int32_t size)
       fNsplits(0) {
   fTracks = new std::vector<ShipMCTrack>();
   fTracks->reserve(size);
-  fNsplits = std::getenv("KAON_PION_SPLITS") ? std::atoi(std::getenv("KAON_PION_SPLITS")) : 0;
+  fNsplits = std::getenv("KAON_PION_SPLITS")
+                 ? std::atoi(std::getenv("KAON_PION_SPLITS"))
+                 : 0;
 }
 
 // -------------------------------------------------------------------------
@@ -73,22 +75,21 @@ ShipStack::~ShipStack() {
 // -------------------------------------------------------------------------
 
 void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
-                          double px, double py, double pz, double e,
-                          double vx, double vy, double vz, double time,
-                          double polx, double poly, double polz,
-                          TMCProcess proc, int32_t& ntr, double weight,
-                          int32_t is) {
+                          double px, double py, double pz, double e, double vx,
+                          double vy, double vz, double time, double polx,
+                          double poly, double polz, TMCProcess proc,
+                          int32_t& ntr, double weight, int32_t is) {
   PushTrack(toBeDone, parentId, pdgCode, px, py, pz, e, vx, vy, vz, time, polx,
             poly, polz, proc, ntr, weight, is, -1);
 }
 
 // -----   Virtual public method PushTrack   -------------------------------
 void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
-                          double px, double py, double pz, double e,
-                          double vx, double vy, double vz, double time,
-                          double polx, double poly, double polz,
-                          TMCProcess proc, int32_t& ntr, double weight,
-                          int32_t is, int32_t secondparentID) {
+                          double px, double py, double pz, double e, double vx,
+                          double vy, double vz, double time, double polx,
+                          double poly, double polz, TMCProcess proc,
+                          int32_t& ntr, double weight, int32_t is,
+                          int32_t secondparentID) {
   // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
   // <<    " " << secondparentID<<" "<<proc<< endl;
 
@@ -98,8 +99,10 @@ void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
   // --> Create new TParticle and add it to the TParticle array
   int32_t trackId = fNParticles;
 
-  bool pion_or_kaon_id_bool = (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
-  bool pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) && (is < 999) && (fNsplits > 0);  // && (time < 1e-7);
+  bool pion_or_kaon_id_bool =
+      (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
+  bool pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) &&
+                           (is < 999) && (fNsplits > 0);  // && (time < 1e-7);
 
   int32_t nPoints = 0;
   int32_t daughter1Id = -1;
@@ -134,28 +137,19 @@ void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
 
   // Split kaons and pions if splitting is required
   if (pion_or_kaon_bool) {
-      double scaled_weight = weight / fNsplits;
-      double expiredTime = time + 1.0;
-      for (int32_t i = 0; i < fNsplits; ++i) {
-          gMC->GetStack()->PushTrack(1,
-                                     parentId,
-                                     pdgCode,
-                                     px, py, pz, e,
-                                     vx, vy, vz, expiredTime,
-                                     polx, poly, polz,
-                                     kPDecay,
-                                     ntr,
-                                     scaled_weight,
-                                     999 + i
-                                     );
-        }
-      particle->SetBit(kDoneBit);
+    double scaled_weight = weight / fNsplits;
+    double expiredTime = time + 1.0;
+    for (int32_t i = 0; i < fNsplits; ++i) {
+      gMC->GetStack()->PushTrack(1, parentId, pdgCode, px, py, pz, e, vx, vy,
+                                 vz, expiredTime, polx, poly, polz, kPDecay,
+                                 ntr, scaled_weight, 999 + i);
+    }
+    particle->SetBit(kDoneBit);
   } else if (toBeDone == 1) {
-      // --> Push particle on the stack if toBeDone is set
-      particle->SetBit(kDoneBit);
-      fStack.push(particle);
+    // --> Push particle on the stack if toBeDone is set
+    particle->SetBit(kDoneBit);
+    fStack.push(particle);
   }
-
 }
 // -------------------------------------------------------------------------
 

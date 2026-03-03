@@ -70,17 +70,16 @@ class ShipStack : public FairGenericStack {
    *@param is        Generation status code (whatever that means)
    **/
   virtual void PushTrack(int32_t toBeDone, int32_t parentID, int32_t pdgCode,
-                         double px, double py, double pz, double e,
-                         double vx, double vy, double vz, double time,
-                         double polx, double poly, double polz,
-                         TMCProcess proc, int32_t& ntr, double weight,
-                         int32_t is);
+                         double px, double py, double pz, double e, double vx,
+                         double vy, double vz, double time, double polx,
+                         double poly, double polz, TMCProcess proc,
+                         int32_t& ntr, double weight, int32_t is);
 
   virtual void PushTrack(int32_t toBeDone, int32_t parentID, int32_t pdgCode,
-                         double px, double py, double pz, double e,
-                         double vx, double vy, double vz, double time,
-                         double polx, double poly, double polz,
-                         TMCProcess proc, int32_t& ntr, double weight, int32_t is,
+                         double px, double py, double pz, double e, double vx,
+                         double vy, double vz, double time, double polx,
+                         double poly, double polz, TMCProcess proc,
+                         int32_t& ntr, double weight, int32_t is,
                          int32_t secondParentId);
 
   /** Get next particle for tracking from the stack.

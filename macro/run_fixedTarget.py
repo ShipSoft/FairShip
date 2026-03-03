@@ -72,8 +72,13 @@ ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest=
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
-ap.add_argument("-kpi", "--kaon-pion-splits", type=int, default=0,
-                help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays")
+ap.add_argument(
+    "-kpi",
+    "--kaon-pion-splits",
+    type=int,
+    default=0,
+    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+)
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
