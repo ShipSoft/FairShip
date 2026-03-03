@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 
+#include "FairLogger.h"
 #include "ShipBFieldMap.h"
 #include "ShipBellField.h"
 #include "ShipConstField.h"
@@ -73,7 +74,12 @@ void ShipFieldMaker::readInputFile(const std::string& inputFile) {
     return;
   }
 
-  std::string fullFileName = getenv("VMCWORKDIR");
+  const char* vmcworkdir = getenv("VMCWORKDIR");
+  if (!vmcworkdir) {
+    LOG(fatal) << "VMCWORKDIR environment variable not set";
+    return;
+  }
+  std::string fullFileName = vmcworkdir;
   fullFileName += "/";
   fullFileName += inputFile.c_str();
 
@@ -387,7 +393,12 @@ void ShipFieldMaker::defineFieldMap(const TString& name,
   // Check if the field is already in the map
   if (!this->gotField(name)) {
     // Add the VMCWORKDIR prefix to this map file location
-    std::string fullFileName = getenv("VMCWORKDIR");
+    const char* vmcworkdir = getenv("VMCWORKDIR");
+    if (!vmcworkdir) {
+      LOG(fatal) << "VMCWORKDIR environment variable not set";
+      return;
+    }
+    std::string fullFileName = vmcworkdir;
     fullFileName += "/";
     fullFileName += mapFileName.Data();
 

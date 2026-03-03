@@ -32,7 +32,7 @@ class FairShipFields : public AbsBField {
            double& Bx, double& By, double& Bz) const;
 
  private:
-  ShipCompField* gField_;
+  ShipCompField* gField_{nullptr};
 };
 
 } /* End of namespace genfit */
