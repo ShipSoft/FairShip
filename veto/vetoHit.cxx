@@ -22,12 +22,9 @@
 #include "vetoPoint.h"
 
 // -----   Default constructor   -------------------------------------------
-vetoHit::vetoHit() : ShipHit() { flag = true; }
+vetoHit::vetoHit() : ShipHit() {}
 // -----   Standard constructor   ------------------------------------------
-vetoHit::vetoHit(Int_t detID, Float_t adc) : ShipHit(detID, adc) {
-  ft = -1;
-  flag = true;
-}
+vetoHit::vetoHit(Int_t detID, Float_t adc) : ShipHit(detID, adc) {}
 
 // -------------------------------------------------------------------------
 
