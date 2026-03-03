@@ -18,14 +18,15 @@ class ShipMagnet : public FairModule {
                       Double_t dy = 5, Double_t fl = 2, Double_t YW = 1.,
                       Double_t YD = 1., Double_t CT = 1.);
   ShipMagnet();
-  virtual ~ShipMagnet();
+  ~ShipMagnet() override;
   void ConstructGeometry();
- ClassDef(ShipMagnet, 5) protected :
+  ClassDef(ShipMagnet, 5);
 
-     Int_t fDesign;  // design, 1=circular 5m, 2 = ellipse 5x10, 3 = rectangular
-  Int_t fSpecMagz;   // z position
-  Double_t fDy;      // y diameter of ellipse
-  Double_t fDx;      // x diameter of ellipse
+ protected:
+  Int_t fDesign;    // design, 1=circular 5m, 2 = ellipse 5x10, 3 = rectangular
+  Int_t fSpecMagz;  // z position
+  Double_t fDy;     // y diameter of ellipse
+  Double_t fDx;     // x diameter of ellipse
   Double_t YokeWidth, YokeDepth, CoilThick;
   Double_t floorheight;
   TGeoVolume* MagnetSupport(Double_t hwidth, Double_t hheight, Double_t dz,

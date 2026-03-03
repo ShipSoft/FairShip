@@ -21,7 +21,7 @@ class ShipHit : public TObject {
   ShipHit(Int_t detID, Float_t digi);
 
   /** Destructor **/
-  virtual ~ShipHit();
+  ~ShipHit() override = default;
 
   /** Accessors **/
   Double_t GetDigi() const { return fdigi; };

@@ -22,7 +22,7 @@ class MuDISGenerator : public SHiP::Generator {
   MuDISGenerator();
 
   /** destructor **/
-  virtual ~MuDISGenerator();
+  ~MuDISGenerator() override;
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;

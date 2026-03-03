@@ -232,7 +232,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
             mparam[8] * intLengthFactor *
             1.7;  // 1.7 = interaction length / collision length from PDG Tables
         TGeoNode* node = gGeoManager->FindNode(point[0], point[1], point[2]);
-        TGeoMaterial* mat = 0;
+        TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
           Double_t n = mat->GetDensity() / mat->GetA();

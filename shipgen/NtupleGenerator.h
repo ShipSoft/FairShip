@@ -18,7 +18,7 @@ class NtupleGenerator : public SHiP::Generator {
   NtupleGenerator();
 
   /** destructor **/
-  virtual ~NtupleGenerator();
+  ~NtupleGenerator() override;
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;

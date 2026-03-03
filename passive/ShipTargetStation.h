@@ -18,7 +18,7 @@ class ShipTargetStation : public FairModule {
                     const int nS, const int HeT,
                     const char* Title = "ShipTargetStation");
   ShipTargetStation();
-  virtual ~ShipTargetStation();
+  ~ShipTargetStation() override;
   void ConstructGeometry();
   void SetLayerPosMat(Float_t d, std::vector<float> L, std::vector<float> G,
                       std::vector<std::string> M) {

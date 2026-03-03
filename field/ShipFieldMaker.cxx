@@ -41,13 +41,13 @@
 
 ShipFieldMaker::ShipFieldMaker(Bool_t verbose)
     : TG4VUserPostDetConstruction(),
-      globalField_(0),
+      globalField_(nullptr),
       theFields_(),
       regionInfo_(),
       localInfo_(),
       verbose_(verbose),
       Tesla_(10.0),  // To convert T to kGauss for VMC/FairRoot
-      theNode_(0),
+      theNode_(nullptr),
       gotNode_(kFALSE) {}
 
 ShipFieldMaker::~ShipFieldMaker() {

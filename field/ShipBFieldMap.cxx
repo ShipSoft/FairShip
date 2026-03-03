@@ -52,7 +52,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& label,
       psi_(psi),
       scale_(scale),
       isSymmetric_(isSymmetric),
-      theTrans_(0),
+      theTrans_(nullptr),
       Tesla_(10.0) {
   this->initialise();
 }
@@ -61,12 +61,12 @@ ShipBFieldMap::~ShipBFieldMap() {
   // Delete the internal vector storing the field map values
   if (fieldMap_ && isCopy_ == kFALSE) {
     delete fieldMap_;
-    fieldMap_ = 0;
+    fieldMap_ = nullptr;
   }
 
   if (theTrans_) {
     delete theTrans_;
-    theTrans_ = 0;
+    theTrans_ = nullptr;
   }
 }
 
@@ -104,7 +104,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName,
       psi_(newPsi),
       scale_(newScale),
       isSymmetric_(rhs.isSymmetric_),
-      theTrans_(0),
+      theTrans_(nullptr),
       Tesla_(10.0) {
   // Copy constructor with new label and different global offset, which uses
   // the same field map data (pointer) and distance units as the rhs object

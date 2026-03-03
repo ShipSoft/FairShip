@@ -48,7 +48,7 @@ class CosmicsGenerator : public SHiP::Generator {
  public:
   /** constructor,destructor **/
   CosmicsGenerator() {};
-  virtual ~CosmicsGenerator() {
+  ~CosmicsGenerator() override {
     delete fRandomEngine;
     std::cout << nInside << " events have been generated." << std::endl;
     std::cout << "There is a total of " << nInside << "/" << nTest

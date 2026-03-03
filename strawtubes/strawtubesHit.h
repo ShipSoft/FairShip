@@ -23,7 +23,7 @@ class strawtubesHit : public ShipHit {
   strawtubesHit(Int_t detID, Float_t tdc);
   strawtubesHit(strawtubesPoint* p, Double_t t0);
   /** Destructor **/
-  virtual ~strawtubesHit();
+  ~strawtubesHit() override = default;
 
   /** Accessors **/
   Int_t GetStationNumber() const;

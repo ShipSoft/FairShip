@@ -19,7 +19,7 @@ class tPythia6Generator : public SHiP::Generator {
   tPythia6Generator();
 
   /** destructor **/
-  virtual ~tPythia6Generator();
+  ~tPythia6Generator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

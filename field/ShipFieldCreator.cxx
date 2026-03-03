@@ -17,9 +17,9 @@ using std::endl;
 
 static ShipFieldCreator gShipFieldCreator;
 
-ShipFieldCreator::ShipFieldCreator() : FairFieldFactory(), fFieldPar(NULL) {}
+ShipFieldCreator::ShipFieldCreator() : FairFieldFactory(), fFieldPar(nullptr) {}
 
-ShipFieldCreator::~ShipFieldCreator() {}
+ShipFieldCreator::~ShipFieldCreator() = default;
 
 void ShipFieldCreator::SetParm() {
   FairRunAna* Run = FairRunAna::Instance();
@@ -28,7 +28,7 @@ void ShipFieldCreator::SetParm() {
 }
 
 FairField* ShipFieldCreator::createFairField() {
-  FairField* fMagneticField = 0;
+  FairField* fMagneticField = nullptr;
 
   if (!fFieldPar) {
     cerr << "-E-  No field parameters available!" << endl;
