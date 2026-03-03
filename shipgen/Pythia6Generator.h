@@ -103,7 +103,7 @@ class Pythia6Generator : public SHiP::Generator {
   explicit Pythia6Generator(const char* fileName);
 
   /** Destructor. **/
-  virtual ~Pythia6Generator();
+  ~Pythia6Generator() override;
 
   /** Reads on event from the input file and pushes the tracks onto
    ** the stack. Abstract method in base class.

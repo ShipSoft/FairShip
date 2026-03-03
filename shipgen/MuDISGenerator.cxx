@@ -132,7 +132,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     ymu = y - (z - zmu) * tymu;
     // get local material at this point
     TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
-    TGeoMaterial* mat = 0;
+    TGeoMaterial* mat = nullptr;
     if (node && !gGeoManager->IsOutside())
       mat = node->GetVolume()->GetMaterial();
     LOG(debug) << "Info MuDISGenerator: mat " << count << ", " << mat->GetName()

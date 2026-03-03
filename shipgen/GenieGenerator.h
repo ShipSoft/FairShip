@@ -23,7 +23,7 @@ class GenieGenerator : public SHiP::Generator {
   GenieGenerator();
 
   /** destructor **/
-  virtual ~GenieGenerator();
+  ~GenieGenerator() override;
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;

@@ -24,7 +24,7 @@
 using ShipUnit::cm;
 using ShipUnit::mm;
 
-ShipTargetStation::~ShipTargetStation() {}
+ShipTargetStation::~ShipTargetStation() = default;
 ShipTargetStation::ShipTargetStation() : FairModule("ShipTargetStation", "") {}
 
 ShipTargetStation::ShipTargetStation(const char* name, const Double_t tl,

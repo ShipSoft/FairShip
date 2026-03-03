@@ -19,9 +19,9 @@ class FairField;
 class ShipFieldCreator : public FairFieldFactory {
  public:
   ShipFieldCreator();
-  virtual ~ShipFieldCreator();
-  virtual FairField* createFairField();
-  virtual void SetParm();
+  ~ShipFieldCreator() override;
+  FairField* createFairField() override;
+  void SetParm() override;
   ClassDef(ShipFieldCreator, 1);
 
  protected:

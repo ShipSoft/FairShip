@@ -28,7 +28,7 @@ using ShipUnit::m;
 using ShipUnit::mm;
 using ShipUnit::tesla;
 
-ShipMuonShield::~ShipMuonShield() {}
+ShipMuonShield::~ShipMuonShield() = default;
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,

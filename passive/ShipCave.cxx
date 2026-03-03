@@ -110,10 +110,6 @@ void ShipCave::ConstructGeometry() {
 }
 ShipCave::ShipCave() : FairModule() {}
 
-ShipCave::~ShipCave() {}
+ShipCave::~ShipCave() = default;
 ShipCave::ShipCave(const char* name, const char* Title)
-    : FairModule(name, Title) {
-  world[0] = 0;
-  world[1] = 0;
-  world[2] = 0;
-}
+    : FairModule(name, Title), world{} {}

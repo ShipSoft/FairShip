@@ -23,7 +23,7 @@ class Pythia8Generator : public SHiP::Generator {
   Pythia8Generator();
 
   /** destructor **/
-  virtual ~Pythia8Generator();
+  ~Pythia8Generator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

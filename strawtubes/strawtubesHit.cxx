@@ -47,8 +47,6 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0) : ShipHit() {
 
 // -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
-strawtubesHit::~strawtubesHit() {}
 // -------------------------------------------------------------------------
 
 Int_t strawtubesHit::GetStationNumber() const {

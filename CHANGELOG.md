@@ -21,6 +21,10 @@ it in future.
 * Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
 * Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
 
+### Changed
+
+* Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
+
 ### Added
 
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork

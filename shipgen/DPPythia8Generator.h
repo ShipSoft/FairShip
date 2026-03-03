@@ -31,7 +31,7 @@ class DPPythia8Generator : public SHiP::Generator {
   DPPythia8Generator();
 
   /** destructor **/
-  virtual ~DPPythia8Generator();
+  ~DPPythia8Generator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

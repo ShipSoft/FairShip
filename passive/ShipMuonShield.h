@@ -24,7 +24,7 @@ class ShipMuonShield : public FairModule {
   ShipMuonShield(std::vector<double> in_params, Double_t z,
                  const Bool_t WithConstShieldField, const Bool_t SC_key);
   ShipMuonShield();
-  virtual ~ShipMuonShield();
+  ~ShipMuonShield() override;
   void ConstructGeometry();
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy);
 

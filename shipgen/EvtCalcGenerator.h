@@ -19,7 +19,7 @@ class EvtCalcGenerator : public SHiP::Generator {
   EvtCalcGenerator();
 
   /** destructor **/
-  virtual ~EvtCalcGenerator();
+  ~EvtCalcGenerator() override;
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;

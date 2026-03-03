@@ -45,7 +45,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   HNLPythia8Generator();
 
   /** destructor **/
-  virtual ~HNLPythia8Generator();
+  ~HNLPythia8Generator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

@@ -29,7 +29,7 @@ class FixedTargetGenerator : public SHiP::Generator {
   FixedTargetGenerator();
 
   /** destructor **/
-  virtual ~FixedTargetGenerator();
+  ~FixedTargetGenerator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

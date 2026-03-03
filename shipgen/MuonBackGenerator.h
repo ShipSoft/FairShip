@@ -23,7 +23,7 @@ class MuonBackGenerator : public SHiP::Generator {
   MuonBackGenerator();
 
   /** destructor **/
-  virtual ~MuonBackGenerator();
+  ~MuonBackGenerator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;

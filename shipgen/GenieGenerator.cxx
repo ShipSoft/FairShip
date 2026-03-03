@@ -396,7 +396,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       // get local material at this point, to calculate probability that
       // interaction is at this point.
       TGeoNode* node = gGeoManager->FindNode(x, y, z);
-      TGeoMaterial* mat = 0;
+      TGeoMaterial* mat = nullptr;
       if (node && !gGeoManager->IsOutside()) {
         mat = node->GetVolume()->GetMaterial();
         // cout << "Info GenieGenerator: mat " <<  count << ", " <<

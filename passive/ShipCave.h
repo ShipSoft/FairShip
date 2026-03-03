@@ -13,8 +13,8 @@ class ShipCave : public FairModule {
   explicit ShipCave(Double_t z);
   explicit ShipCave(const char* name, const char* Title = "Exp Cave");
   ShipCave();
-  virtual ~ShipCave();
-  virtual void ConstructGeometry();
+  ~ShipCave() override;
+  void ConstructGeometry() override;
 
  private:
   Double_t z_end_of_proximity_shielding;

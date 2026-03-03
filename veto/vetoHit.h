@@ -21,7 +21,7 @@ class vetoHit : public ShipHit {
    **/
   vetoHit(Int_t detID, Float_t adc);
   /** Destructor **/
-  virtual ~vetoHit();
+  ~vetoHit() override = default;
 
   /** Accessors **/
   Double_t GetX() const;
