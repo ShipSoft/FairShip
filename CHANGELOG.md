@@ -12,6 +12,13 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
+* Fix uninitialised gField_ pointer in FairShipFields
+* Fix null dereference in FixedTargetGenerator on missing input file or histogram
+* Fix off-by-one in FixedTargetGenerator target node access
+
 ### Added
 
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork
