@@ -254,6 +254,68 @@ jobs:
   #               body: comment
   #             });
   #           }
+
+  static-analysis:
+    runs-on: self-hosted
+    needs: build
+    if: github.event_name == 'pull_request'
+
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+
+    env:
+      version: 26.02
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: FairShip
+          fetch-depth: 0
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: sw/
+
+      - name: Fix source symlinks
+        run: |
+          rm -rf sw/SOURCES/FairShip/master/0
+          ln -s $GITHUB_WORKSPACE/FairShip sw/SOURCES/FairShip/master/0
+
+      - name: Get changed files
+        id: changed
+        run: |
+          cd FairShip
+          git fetch origin ${{ github.base_ref }}
+          CPP_FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- '*.cxx' '*.h' '*.cpp' '*.cc' '*.hxx' '*.hpp' | tr '\n' ' ')
+          PY_FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- '*.py' | tr '\n' ' ')
+          echo "cpp=$CPP_FILES" >> "$GITHUB_OUTPUT"
+          echo "py=$PY_FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Run clang-tidy
+        if: steps.changed.outputs.cpp != ''
+        continue-on-error: true
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          cd FairShip
+          echo "${{ steps.changed.outputs.cpp }}" | xargs -P $(nproc) clang-tidy -p $GITHUB_WORKSPACE/sw/BUILD/FairShip-latest/FairShip 2>&1 | python3 .github/scripts/annotate_build.py
+
+      - name: Install pyrefly
+        if: steps.changed.outputs.py != ''
+        run: pip install pyrefly
+
+      - name: Run pyrefly
+        if: steps.changed.outputs.py != ''
+        continue-on-error: true
+        run: |
+          cd FairShip
+          pyrefly check --output-format=github ${{ steps.changed.outputs.py }}
+
   run-fixed-target:
     runs-on: self-hosted
     needs: build
