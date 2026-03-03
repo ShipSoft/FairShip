@@ -19,7 +19,12 @@ it in future.
 * New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
 
 * Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer
+
+* Add clang-tidy and pyrefly static analysis to CI
+
 ### Changed
+
+* Replace mypy with pyrefly for Python type checking
 
 * Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
 * Change a const char* in SHiP::Generator to optional<string>. #1053

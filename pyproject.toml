@@ -13,3 +13,9 @@ ignore = [
 
 [tool.codespell]
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'
+
+[tool.pyrefly]
+python-version = "3.12"
+
+[tool.pyrefly.errors]
+import-error = false
