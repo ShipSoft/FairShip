@@ -18,6 +18,8 @@ it in future.
 * Fix uninitialised gField_ pointer in FairShipFields
 * Fix null dereference in FixedTargetGenerator on missing input file or histogram
 * Fix off-by-one in FixedTargetGenerator target node access
+* Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
+* Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
 
 ### Added
 

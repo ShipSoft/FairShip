@@ -29,15 +29,15 @@ class ShipMuonShield : public FairModule {
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy);
 
  protected:
-  Double_t dZ0, dZ1, dZ2, dZ3, dZ4, dZ5, dZ6, dZ7, dXgap,
-      z_end_of_proximity_shielding;
-  size_t nMagnets;
+  Double_t dZ0{0.}, dZ1{0.}, dZ2{0.}, dZ3{0.}, dZ4{0.}, dZ5{0.}, dZ6{0.},
+      dZ7{0.}, dXgap{0.}, z_end_of_proximity_shielding{0.};
+  size_t nMagnets{0};
   Int_t InitMedium(TString name);
-  Int_t nParams;
-  Bool_t fWithConstShieldField;
-  Bool_t fSC_mag;
+  Int_t nParams{0};
+  Bool_t fWithConstShieldField{false};
+  Bool_t fSC_mag{false};
   std::vector<Double_t> shield_params;
-  Bool_t snd_hole;
+  Bool_t snd_hole{false};
   Double_t snd_hole_dx = 0., snd_hole_dy = 0.;
 
   void CreateArb8(TString arbName, TGeoMedium* medium, Double_t dZ,

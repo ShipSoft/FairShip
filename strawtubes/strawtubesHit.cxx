@@ -26,11 +26,9 @@ using std::endl;
 Double_t speedOfLight =
     TMath::C() * 100. / 1000000000.0;  // from m/sec to cm/ns
 // -----   Default constructor   -------------------------------------------
-strawtubesHit::strawtubesHit() : ShipHit() { flag = true; }
+strawtubesHit::strawtubesHit() : ShipHit() {}
 // -----   Standard constructor   ------------------------------------------
-strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {
-  flag = true;
-}
+strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {}
 // -----   constructor from strawtubesPoint
 // ------------------------------------------
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0) : ShipHit() {
@@ -45,7 +43,6 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0) : ShipHit() {
   Double_t t_drift =
       fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
   fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
-  flag = true;
 }
 
 // -------------------------------------------------------------------------
