@@ -25,6 +25,7 @@ it in future.
 
 * Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
 * Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
+* Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
 
 ### Added
 
