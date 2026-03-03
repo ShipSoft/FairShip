@@ -1,7 +1,7 @@
 var classGenieGenerator =
 [
     [ "GenieGenerator", "classGenieGenerator.html#a607bebd897ae9909b9326fa6d4572c78", null ],
-    [ "~GenieGenerator", "classGenieGenerator.html#a5a39ccddc811b97e7e61500af96c508b", null ],
+    [ "~GenieGenerator", "classGenieGenerator.html#a4f23d02e7bed14036022b335897fb9ee", null ],
     [ "AddBox", "classGenieGenerator.html#abb3327135face79d630176d066548e4a", null ],
     [ "ClassDefOverride", "classGenieGenerator.html#a944fb078e8780340e2ed17528ed2af7b", null ],
     [ "GetNevents", "classGenieGenerator.html#aa6d9e0479694d6fbd404f15489e75ad4", null ],

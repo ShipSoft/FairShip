@@ -2,9 +2,9 @@ var classvetoHit =
 [
     [ "vetoHit", "classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f", null ],
     [ "vetoHit", "classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d", null ],
-    [ "~vetoHit", "classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a", null ],
+    [ "~vetoHit", "classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3", null ],
     [ "vetoHit", "classvetoHit.html#ab175a0d700526b9ca4611b4bfbd67516", null ],
-    [ "ClassDef", "classvetoHit.html#a3472ffa73af9b08c8a95811c10ac0b22", null ],
+    [ "ClassDef", "classvetoHit.html#a28c2a34bdcab5f0947f69172bb8025e6", null ],
     [ "GetADC", "classvetoHit.html#a24f871c8ff5286470451080a9c0cbed3", null ],
     [ "GetEloss", "classvetoHit.html#acc59e65dc99ccd1c2078c8d970ab527a", null ],
     [ "GetNode", "classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e", null ],
@@ -21,6 +21,6 @@ var classvetoHit =
     [ "setInvalid", "classvetoHit.html#a05b5dab70909e140e471d910e4e3810a", null ],
     [ "setIsValid", "classvetoHit.html#aae48832a3b89dfa73b17d595ca03ccc0", null ],
     [ "SetTDC", "classvetoHit.html#a02dd768411f15085a2a0ab97fc250a68", null ],
-    [ "flag", "classvetoHit.html#a0eba79d46341d7448729a86e949c768c", null ],
+    [ "flag", "classvetoHit.html#ab7fc0012d62448073771641bc99d6834", null ],
     [ "ft", "classvetoHit.html#a5ee40a489b0d2248c9c8cdcea37aead8", null ]
 ];

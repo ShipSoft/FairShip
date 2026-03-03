@@ -11,7 +11,7 @@ var classEvtCalcGenerator =
       [ "Vz", "classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46aca6c3e6ccbc5f7701ffc4e2efefd6812", null ]
     ] ],
     [ "EvtCalcGenerator", "classEvtCalcGenerator.html#a1deb006d5a0eb8b47e8a5281f5fa238e", null ],
-    [ "~EvtCalcGenerator", "classEvtCalcGenerator.html#aa08fb2f1b619b937a0f83ed954d94423", null ],
+    [ "~EvtCalcGenerator", "classEvtCalcGenerator.html#af8c7129d55af02c6befe0f3451788a6f", null ],
     [ "ClassDefOverride", "classEvtCalcGenerator.html#aa8a7cfddbab6aa406d008cf5f681e1b2", null ],
     [ "GetBranchValue", "classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f", null ],
     [ "GetDauE", "classEvtCalcGenerator.html#a2c90eefbf22b69eb15b52c94f4fcb46f", null ],

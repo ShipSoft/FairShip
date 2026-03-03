@@ -130,8 +130,8 @@ Collaboration diagram for MuDISGenerator:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a43dc0272efe9a2ec3ccb3120396c91ef" id="r_a43dc0272efe9a2ec3ccb3120396c91ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a43dc0272efe9a2ec3ccb3120396c91ef">MuDISGenerator</a> ()</td></tr>
 <tr class="separator:a43dc0272efe9a2ec3ccb3120396c91ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec2f2e2622af19a9e93cca1afe4d8c7" id="r_a7ec2f2e2622af19a9e93cca1afe4d8c7"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a7ec2f2e2622af19a9e93cca1afe4d8c7">~MuDISGenerator</a> ()</td></tr>
-<tr class="separator:a7ec2f2e2622af19a9e93cca1afe4d8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3312220a357126a1e5e9000fb96f8b2f" id="r_a3312220a357126a1e5e9000fb96f8b2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a3312220a357126a1e5e9000fb96f8b2f">~MuDISGenerator</a> () override</td></tr>
+<tr class="separator:a3312220a357126a1e5e9000fb96f8b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37fde2a9187bfcaf0652fbc47f180a0d" id="r_a37fde2a9187bfcaf0652fbc47f180a0d"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a37fde2a9187bfcaf0652fbc47f180a0d">ReadEvent</a> (FairPrimaryGenerator *) override</td></tr>
 <tr class="separator:a37fde2a9187bfcaf0652fbc47f180a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3546c6fccc4aafd141aed290131ae4c0" id="r_a3546c6fccc4aafd141aed290131ae4c0"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a3546c6fccc4aafd141aed290131ae4c0">Init</a> (const char *, int) override</td></tr>
@@ -220,8 +220,8 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a7ec2f2e2622af19a9e93cca1afe4d8c7" name="a7ec2f2e2622af19a9e93cca1afe4d8c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ec2f2e2622af19a9e93cca1afe4d8c7">&#9670;&#160;</a></span>~MuDISGenerator()</h2>
+<a id="a3312220a357126a1e5e9000fb96f8b2f" name="a3312220a357126a1e5e9000fb96f8b2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3312220a357126a1e5e9000fb96f8b2f">&#9670;&#160;</a></span>~MuDISGenerator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +238,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -506,7 +506,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  132</span>    ymu = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> - (<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - zmu) * tymu;</div>
 <div class="line"><span class="lineno">  133</span>    <span class="comment">// get local material at this point</span></div>
 <div class="line"><span class="lineno">  134</span>    TGeoNode* node = gGeoManager-&gt;FindNode(xmu, ymu, zmu);</div>
-<div class="line"><span class="lineno">  135</span>    TGeoMaterial* mat = 0;</div>
+<div class="line"><span class="lineno">  135</span>    TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside())</div>
 <div class="line"><span class="lineno">  137</span>      mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
 <div class="line"><span class="lineno">  138</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Info MuDISGenerator: mat &quot;</span> &lt;&lt; count &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; mat-&gt;GetName()</div>

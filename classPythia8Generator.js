@@ -1,7 +1,7 @@
 var classPythia8Generator =
 [
     [ "Pythia8Generator", "classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4", null ],
-    [ "~Pythia8Generator", "classPythia8Generator.html#ac9f5d4d331f6ee38f2ee78a02d94c1d3", null ],
+    [ "~Pythia8Generator", "classPythia8Generator.html#a0b6bd2a581f8ac6ac02552e7f8aa2162", null ],
     [ "ClassDefOverride", "classPythia8Generator.html#a0a7c189abeee6930332b4116e78f7d28", null ],
     [ "Init", "classPythia8Generator.html#a34192fdefd0b0476a295c9f506a67752", null ],
     [ "Init", "classPythia8Generator.html#a74134af826fac3ad789403d9eb60a911", null ],

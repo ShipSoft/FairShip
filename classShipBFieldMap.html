@@ -640,7 +640,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>(psi),</div>
 <div class="line"><span class="lineno">   53</span>      <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a>(scale),</div>
 <div class="line"><span class="lineno">   54</span>      <a class="code hl_variable" href="classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5">isSymmetric_</a>(isSymmetric),</div>
-<div class="line"><span class="lineno">   55</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>(0),</div>
+<div class="line"><span class="lineno">   55</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">   56</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>(10.0) {</div>
 <div class="line"><span class="lineno">   57</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a71e32d01e93ebca9882ad005615567cd">initialise</a>();</div>
 <div class="line"><span class="lineno">   58</span>}</div>
@@ -793,7 +793,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  104</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a18a79ff151a25d3051a0beb0e398cb9a">psi_</a>(newPsi),</div>
 <div class="line"><span class="lineno">  105</span>      <a class="code hl_variable" href="classShipBFieldMap.html#aaff1f8dc28c0bf4b9d9ba2960f454608">scale_</a>(newScale),</div>
 <div class="line"><span class="lineno">  106</span>      <a class="code hl_variable" href="classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5">isSymmetric_</a>(rhs.<a class="code hl_variable" href="classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5">isSymmetric_</a>),</div>
-<div class="line"><span class="lineno">  107</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>(0),</div>
+<div class="line"><span class="lineno">  107</span>      <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">  108</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>(10.0) {</div>
 <div class="line"><span class="lineno">  109</span>  <span class="comment">// Copy constructor with new label and different global offset, which uses</span></div>
 <div class="line"><span class="lineno">  110</span>  <span class="comment">// the same field map data (pointer) and distance units as the rhs object</span></div>
@@ -833,12 +833,12 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>  <span class="comment">// Delete the internal vector storing the field map values</span></div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> &amp;&amp; <a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
 <div class="line"><span class="lineno">   63</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>;</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> = 0;</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>) {</div>
 <div class="line"><span class="lineno">   68</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>;</div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = 0;</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   70</span>  }</div>
 <div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->

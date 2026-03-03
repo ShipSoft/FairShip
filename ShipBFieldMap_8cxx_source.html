@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('ShipBFieldMap_8cxx_source.html',''); i
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      psi_(psi),</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      scale_(scale),</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      isSymmetric_(isSymmetric),</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      theTrans_(0),</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      theTrans_(nullptr),</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      Tesla_(10.0) {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  this-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a71e32d01e93ebca9882ad005615567cd">initialise</a>();</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
@@ -156,12 +156,12 @@ $(document).ready(function(){initNavTree('ShipBFieldMap_8cxx_source.html',''); i
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// Delete the internal vector storing the field map values</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> &amp;&amp; <a class="code hl_variable" href="classShipBFieldMap.html#a5cf3d9cf22af3b789ec42a2f475bf241">isCopy_</a> == kFALSE) {</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> = 0;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>) {</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = 0;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_variable" href="classShipBFieldMap.html#ab61086f56e1773a61db05e0e089e9aff">theTrans_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
 </div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('ShipBFieldMap_8cxx_source.html',''); i
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      psi_(newPsi),</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      scale_(newScale),</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      isSymmetric_(rhs.isSymmetric_),</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      theTrans_(0),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      theTrans_(nullptr),</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      Tesla_(10.0) {</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// Copy constructor with new label and different global offset, which uses</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// the same field map data (pointer) and distance units as the rhs object</span></div>

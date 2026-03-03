@@ -128,10 +128,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afc5ff9240cbec843940578a4c6eb3bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a134a52cd86cb6c2f5246bbaab8bbc9" id="r_a7a134a52cd86cb6c2f5246bbaab8bbc9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipCave.html#a7a134a52cd86cb6c2f5246bbaab8bbc9">ShipCave</a> ()</td></tr>
 <tr class="separator:a7a134a52cd86cb6c2f5246bbaab8bbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70247a53e65aae999137aa5701be4e07" id="r_a70247a53e65aae999137aa5701be4e07"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipCave.html#a70247a53e65aae999137aa5701be4e07">~ShipCave</a> ()</td></tr>
-<tr class="separator:a70247a53e65aae999137aa5701be4e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f601ef54d20951940b0134923990e0c" id="r_a2f601ef54d20951940b0134923990e0c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipCave.html#a2f601ef54d20951940b0134923990e0c">ConstructGeometry</a> ()</td></tr>
-<tr class="separator:a2f601ef54d20951940b0134923990e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633084f6b1b7e491556f155ca944f159" id="r_a633084f6b1b7e491556f155ca944f159"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipCave.html#a633084f6b1b7e491556f155ca944f159">~ShipCave</a> () override</td></tr>
+<tr class="separator:a633084f6b1b7e491556f155ca944f159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cb2f4ea18618e936f484b0b64506030" id="r_a8cb2f4ea18618e936f484b0b64506030"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipCave.html#a8cb2f4ea18618e936f484b0b64506030">ConstructGeometry</a> () override</td></tr>
+<tr class="separator:a8cb2f4ea18618e936f484b0b64506030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -217,11 +217,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00114">114</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>    : FairModule(name, Title) {</div>
-<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[0] = 0;</div>
-<div class="line"><span class="lineno">  117</span>  <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[1] = 0;</div>
-<div class="line"><span class="lineno">  118</span>  <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>[2] = 0;</div>
-<div class="line"><span class="lineno">  119</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>    : FairModule(name, Title), <a class="code hl_variable" href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">world</a>{} {}</div>
 <div class="ttc" id="aclassShipCave_html_a8cbdea1cf52198304407f44a7a21e305"><div class="ttname"><a href="classShipCave.html#a8cbdea1cf52198304407f44a7a21e305">ShipCave::world</a></div><div class="ttdeci">Double_t world[3]</div><div class="ttdef"><b>Definition</b> <a href="ShipCave_8h_source.html#l00021">ShipCave.h:21</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -246,8 +242,8 @@ Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a70247a53e65aae999137aa5701be4e07" name="a70247a53e65aae999137aa5701be4e07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70247a53e65aae999137aa5701be4e07">&#9670;&#160;</a></span>~ShipCave()</h2>
+<a id="a633084f6b1b7e491556f155ca944f159" name="a633084f6b1b7e491556f155ca944f159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a633084f6b1b7e491556f155ca944f159">&#9670;&#160;</a></span>~ShipCave()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,19 +260,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipCave_8cxx_source.html#l00113">113</a> of file <a class="el" href="ShipCave_8cxx_source.html">ShipCave.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2f601ef54d20951940b0134923990e0c" name="a2f601ef54d20951940b0134923990e0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f601ef54d20951940b0134923990e0c">&#9670;&#160;</a></span>ConstructGeometry()</h2>
+<a id="a8cb2f4ea18618e936f484b0b64506030" name="a8cb2f4ea18618e936f484b0b64506030"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cb2f4ea18618e936f484b0b64506030">&#9670;&#160;</a></span>ConstructGeometry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,7 +286,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

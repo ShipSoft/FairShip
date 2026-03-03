@@ -2,7 +2,7 @@ var classShipHit =
 [
     [ "ShipHit", "classShipHit.html#a1916d57d722314c27531a77a49ef655f", null ],
     [ "ShipHit", "classShipHit.html#a2ff089ef0408b99cbe73f03c14bf4e24", null ],
-    [ "~ShipHit", "classShipHit.html#a61d95fbbe9a88550491cfb453a3b7cd2", null ],
+    [ "~ShipHit", "classShipHit.html#a5927548fdb597ae2e5f55133e1dfbe41", null ],
     [ "ClassDef", "classShipHit.html#a2b9843d59e2a223dc0b3a82f4b50036e", null ],
     [ "GetDetectorID", "classShipHit.html#ad2dd2afbccd9e5a7fd09f89344f80fab", null ],
     [ "GetDigi", "classShipHit.html#a5f4d76d931619ff05dd90c8d98649954", null ],

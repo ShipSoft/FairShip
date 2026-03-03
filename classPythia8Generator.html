@@ -137,8 +137,8 @@ Collaboration diagram for Pythia8Generator:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0e02d13911bdc97f07817b0e5435fba4" id="r_a0e02d13911bdc97f07817b0e5435fba4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4">Pythia8Generator</a> ()</td></tr>
 <tr class="separator:a0e02d13911bdc97f07817b0e5435fba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9f5d4d331f6ee38f2ee78a02d94c1d3" id="r_ac9f5d4d331f6ee38f2ee78a02d94c1d3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPythia8Generator.html#ac9f5d4d331f6ee38f2ee78a02d94c1d3">~Pythia8Generator</a> ()</td></tr>
-<tr class="separator:ac9f5d4d331f6ee38f2ee78a02d94c1d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6bd2a581f8ac6ac02552e7f8aa2162" id="r_a0b6bd2a581f8ac6ac02552e7f8aa2162"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPythia8Generator.html#a0b6bd2a581f8ac6ac02552e7f8aa2162">~Pythia8Generator</a> () override</td></tr>
+<tr class="separator:a0b6bd2a581f8ac6ac02552e7f8aa2162"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24e1a096928de68e6772e46fb45ad8c" id="r_aa24e1a096928de68e6772e46fb45ad8c"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPythia8Generator.html#aa24e1a096928de68e6772e46fb45ad8c">ReadEvent</a> (FairPrimaryGenerator *) override</td></tr>
 <tr class="separator:aa24e1a096928de68e6772e46fb45ad8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33afe32a92d283ca600f91e496019958" id="r_a33afe32a92d283ca600f91e496019958"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPythia8Generator.html#a33afe32a92d283ca600f91e496019958">SetParameters</a> (char *)</td></tr>
@@ -330,8 +330,8 @@ Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ac9f5d4d331f6ee38f2ee78a02d94c1d3" name="ac9f5d4d331f6ee38f2ee78a02d94c1d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9f5d4d331f6ee38f2ee78a02d94c1d3">&#9670;&#160;</a></span>~Pythia8Generator()</h2>
+<a id="a0b6bd2a581f8ac6ac02552e7f8aa2162" name="a0b6bd2a581f8ac6ac02552e7f8aa2162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b6bd2a581f8ac6ac02552e7f8aa2162">&#9670;&#160;</a></span>~Pythia8Generator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +348,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -796,7 +796,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  232</span>            <a class="code hl_variable" href="classPythia8Generator.html#a115f4c756a4644f7ad98d3d4bd4c97fd">mparam</a>[8] * intLengthFactor *</div>
 <div class="line"><span class="lineno">  233</span>            1.7;  <span class="comment">// 1.7 = interaction length / collision length from PDG Tables</span></div>
 <div class="line"><span class="lineno">  234</span>        TGeoNode* node = gGeoManager-&gt;FindNode(point[0], point[1], point[2]);</div>
-<div class="line"><span class="lineno">  235</span>        TGeoMaterial* mat = 0;</div>
+<div class="line"><span class="lineno">  235</span>        TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  236</span>        <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
 <div class="line"><span class="lineno">  237</span>          mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
 <div class="line"><span class="lineno">  238</span>          Double_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = mat-&gt;GetDensity() / mat-&gt;GetA();</div>

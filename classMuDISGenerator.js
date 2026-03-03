@@ -1,7 +1,7 @@
 var classMuDISGenerator =
 [
     [ "MuDISGenerator", "classMuDISGenerator.html#a43dc0272efe9a2ec3ccb3120396c91ef", null ],
-    [ "~MuDISGenerator", "classMuDISGenerator.html#a7ec2f2e2622af19a9e93cca1afe4d8c7", null ],
+    [ "~MuDISGenerator", "classMuDISGenerator.html#a3312220a357126a1e5e9000fb96f8b2f", null ],
     [ "ClassDefOverride", "classMuDISGenerator.html#a0263f61092a254678c6c6cc66031ec65", null ],
     [ "GetNevents", "classMuDISGenerator.html#a0ce1232934fc28d9259d5255e0c34f57", null ],
     [ "Init", "classMuDISGenerator.html#afe54d2605355d0f34e6f695acf1e7587", null ],

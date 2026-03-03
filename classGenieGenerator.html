@@ -133,8 +133,8 @@ Collaboration diagram for GenieGenerator:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a607bebd897ae9909b9326fa6d4572c78" id="r_a607bebd897ae9909b9326fa6d4572c78"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenieGenerator.html#a607bebd897ae9909b9326fa6d4572c78">GenieGenerator</a> ()</td></tr>
 <tr class="separator:a607bebd897ae9909b9326fa6d4572c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a39ccddc811b97e7e61500af96c508b" id="r_a5a39ccddc811b97e7e61500af96c508b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenieGenerator.html#a5a39ccddc811b97e7e61500af96c508b">~GenieGenerator</a> ()</td></tr>
-<tr class="separator:a5a39ccddc811b97e7e61500af96c508b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f23d02e7bed14036022b335897fb9ee" id="r_a4f23d02e7bed14036022b335897fb9ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenieGenerator.html#a4f23d02e7bed14036022b335897fb9ee">~GenieGenerator</a> () override</td></tr>
+<tr class="separator:a4f23d02e7bed14036022b335897fb9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1c2f02b4fe0e6cfc28c2bfef6919744" id="r_ab1c2f02b4fe0e6cfc28c2bfef6919744"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenieGenerator.html#ab1c2f02b4fe0e6cfc28c2bfef6919744">OldReadEvent</a> (FairPrimaryGenerator *)</td></tr>
 <tr class="separator:ab1c2f02b4fe0e6cfc28c2bfef6919744"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76d001e6e62c10c3ae670913a8781e6d" id="r_a76d001e6e62c10c3ae670913a8781e6d"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenieGenerator.html#a76d001e6e62c10c3ae670913a8781e6d">ReadEvent</a> (FairPrimaryGenerator *) override</td></tr>
@@ -312,8 +312,8 @@ Private Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a5a39ccddc811b97e7e61500af96c508b" name="a5a39ccddc811b97e7e61500af96c508b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a39ccddc811b97e7e61500af96c508b">&#9670;&#160;</a></span>~GenieGenerator()</h2>
+<a id="a4f23d02e7bed14036022b335897fb9ee" name="a4f23d02e7bed14036022b335897fb9ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f23d02e7bed14036022b335897fb9ee">&#9670;&#160;</a></span>~GenieGenerator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +330,7 @@ Private Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -953,7 +953,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  396</span>      <span class="comment">// get local material at this point, to calculate probability that</span></div>
 <div class="line"><span class="lineno">  397</span>      <span class="comment">// interaction is at this point.</span></div>
 <div class="line"><span class="lineno">  398</span>      TGeoNode* node = gGeoManager-&gt;FindNode(x, y, z);</div>
-<div class="line"><span class="lineno">  399</span>      TGeoMaterial* mat = 0;</div>
+<div class="line"><span class="lineno">  399</span>      TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  400</span>      <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
 <div class="line"><span class="lineno">  401</span>        mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
 <div class="line"><span class="lineno">  402</span>        <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator: mat &quot; &lt;&lt;  count &lt;&lt; &quot;, &quot; &lt;&lt;</span></div>

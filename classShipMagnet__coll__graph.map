@@ -1,6 +1,5 @@
 <map id="ShipMagnet" name="ShipMagnet">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,104,105"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="119,85,131,93,122,100,104,102,104,97,120,95,125,93,116,89"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,104,104"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="8,5,101,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="57,45,57,80,52,80,52,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="57,44,57,79,52,79,52,44"/>
 </map>

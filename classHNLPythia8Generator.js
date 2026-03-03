@@ -1,7 +1,7 @@
 var classHNLPythia8Generator =
 [
     [ "HNLPythia8Generator", "classHNLPythia8Generator.html#aaea0a3e2bf81106eaf2c2b06c45f7c7a", null ],
-    [ "~HNLPythia8Generator", "classHNLPythia8Generator.html#a159fb77f0c3480cee04b466df2a0df74", null ],
+    [ "~HNLPythia8Generator", "classHNLPythia8Generator.html#afb006964b4a9869e13857906c0c728ef", null ],
     [ "ClassDefOverride", "classHNLPythia8Generator.html#a5181f30c0052285fb6e4763a332e182e", null ],
     [ "getPythiaInstance", "classHNLPythia8Generator.html#ab9f77d69b880a5447d645d6b74196c3d", null ],
     [ "Init", "classHNLPythia8Generator.html#a93f9cfd20f66faece5e2a8de3c7f1842", null ],
