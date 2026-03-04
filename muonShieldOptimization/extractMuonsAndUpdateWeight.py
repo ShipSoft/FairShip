@@ -23,7 +23,7 @@ weightCharm = 489.24 * 2.0 / 3.0
 weightBeauty = 9.37
 
 
-def muonUpdateWeight(sTree, diMuboost, xSecboost, noCharm=True):
+def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) -> int:
     nMu = 0
     for v in sTree.vetoPoint:
         mu = v.GetTrackID()
@@ -48,7 +48,7 @@ def muonUpdateWeight(sTree, diMuboost, xSecboost, noCharm=True):
     return nMu
 
 
-def PoT(f):
+def PoT(f) -> tuple[float | int, float, float]:
     nTot = 0
     # POT = 1000000000 with ecut=10.0 diMu100.0 X100.0
     diMuboost = 0.0
@@ -89,7 +89,7 @@ def PoT(f):
     return nTot, diMuboost, xSecboost
 
 
-def TotStat():
+def TotStat() -> None:
     lfiles = os.listdir(path)
     ntot = 0
     for fn in lfiles:
@@ -99,7 +99,7 @@ def TotStat():
     print("Total statistics so far", ntot / 1.0e9, " billion")
 
 
-def processFile(fin, noCharm=True):
+def processFile(fin: str, noCharm: bool = True) -> int:
     f = ROOT.TFile.Open(os.environ["EOSSHIP"] + path + fin)
     nPot, diMuboost, xSecboost = PoT(f)
     sTree = f.Get("cbmsim")
@@ -123,7 +123,7 @@ def processFile(fin, noCharm=True):
     return 0
 
 
-def run():
+def run() -> None:
     tmp = "pythia8_Geant4_10.0_cXX.root"
     global weight
     weight = weightMbias
@@ -138,7 +138,7 @@ def run():
                 rc = os.system("rm " + fmu)
 
 
-def run4Charm():
+def run4Charm() -> None:
     tmp = "pythia8_Geant4_charm_XX-YY_10.0.root"
     global weight
     weight = weightCharm
@@ -156,7 +156,7 @@ def run4Charm():
                     rc = os.system("rm " + fmu)
 
 
-def run4beauty():
+def run4beauty() -> None:
     global weight
     weight = weightBeauty
     fname = "pythia8_Geant4_beauty_5336B_10.0.root"
@@ -176,7 +176,7 @@ def run4beauty():
 # finished one file pythia8_Geant4_10.0_withCharm44000_mu.root 2712798 1113638
 
 
-def mergeCharm():
+def mergeCharm() -> None:
     tmp = "pythia8_Geant4_charm_XX-YY_10.0.root"
     mergedFile = "pythia8_Geant4_charm_102.2B_10.0_mu.root"
     cmd = "hadd " + mergedFile
@@ -190,7 +190,7 @@ def mergeCharm():
     os.system("xrdcp " + mergedFile + " $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/" + mergedFile)
 
 
-def mergeMbiasAndCharm(flavour="charm"):
+def mergeMbiasAndCharm(flavour: str = "charm") -> None:
     done = []
     timer = ROOT.TStopwatch()
     timer.Start()
@@ -277,7 +277,7 @@ def mergeMbiasAndCharm(flavour="charm"):
             rc = os.system("rm " + outFile)
 
 
-def testRatio(fname):
+def testRatio(fname) -> None:
     f = ROOT.TFile.Open(os.environ["EOSSHIP"] + path + fname)
     sTree = f.Get("cbmsim")
     Nall = sTree.GetEntries()

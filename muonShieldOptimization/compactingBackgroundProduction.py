@@ -31,7 +31,7 @@ fnames = "pythia8_Geant4_1_1.0.root"
 ecut = "1.0"
 
 
-def GetGoodAndBadRuns(startDate, endDate):
+def GetGoodAndBadRuns(startDate, endDate) -> tuple[list[str], list[int]]:
     # find bad runs, try to recover
     goodRuns = []
     badRuns = []
@@ -98,7 +98,7 @@ def GetGoodAndBadRuns(startDate, endDate):
     return goodRuns, badRuns
 
 
-def addRuns(goodRuns, Nstart=0):
+def addRuns(goodRuns, Nstart: int = 0) -> None:
     N = 0
     while 1 > 0:
         cmd = ""
@@ -119,7 +119,7 @@ def addRuns(goodRuns, Nstart=0):
             break
 
 
-def YandexProd(startDate, endDate):
+def YandexProd(startDate, endDate) -> None:
     # startDate = datetime.datetime(2018, 1, 1, 0, 0)  # N=0
     # endDate   = datetime.datetime(2018, 2, 1, 0, 0)
     # startDate = datetime.datetime(2018, 2, 1, 0, 0)  # N=23000
@@ -159,7 +159,7 @@ def YandexProd(startDate, endDate):
     addRuns(database["goodruns"], 20000)  # next cycle
 
 
-def addAllHistograms():
+def addAllHistograms() -> None:
     h = {}
     ecut = "10.0"
     Nmax = 45000
@@ -177,7 +177,7 @@ def addAllHistograms():
     ut.writeHists(h, "pythia8_Geant4_" + ecut + "_c" + str(Nmax) + "-histos.root")
 
 
-def compactifyCascade(cycle):
+def compactifyCascade(cycle) -> None:
     ncpus = 20
     path = "/afs/cern.ch/project/lbcern/vol1/truf/charm/"
     cmd = ""
@@ -210,7 +210,7 @@ def compactifyCascade(cycle):
 
 
 # some old stuff
-def compactify(charm, runMin=0, runMax=0, checkOnly=False):
+def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
     globalPath = "/afs/cern.ch/project/lbcern/vol2/truf/muonBackground"
     ecut = "10.0"
     if charm:
@@ -284,7 +284,7 @@ def compactify(charm, runMin=0, runMax=0, checkOnly=False):
             makeHistos(output)
 
 
-def makeHistos(rfile):
+def makeHistos(rfile: str) -> None:
     f = ROOT.TFile.Open(rfile)
     sTree = f.Get("cbmsim")
     nTot = 0
@@ -332,7 +332,7 @@ hbiased = {}
 import operator
 
 
-def makePrintout():
+def makePrintout() -> None:
     # Histos_2000000-2001500_10.0.root
     ut.readHists(hunbiased, "/media/microdisk/HNL/muonBackground/Histos_1000000-1000600_10.0.root")
     ut.readHists(hbiased, "hadded_Histos_1_10.0.root")
@@ -404,7 +404,7 @@ else:
 
 
 # something went wrong Yandex2018Prod-23000.root onwards up to 43000, only have of yield, 44000 ok !!!
-def removeStupidFiles():
+def removeStupidFiles() -> None:
     path = "/eos/experiment/ship/data/Mbias/background-prod-2018"
     for f in os.listdir(path):
         ff = path + "/" + f
@@ -413,7 +413,7 @@ def removeStupidFiles():
             os.remove(ff)
 
 
-def check4DoubleRuns():
+def check4DoubleRuns() -> None:
     allRuns = [
         "goodAndBadRuns_2018-01-01_2018-02-01.pkl",
         "goodAndBadRuns_2018-02-01_2018-02-06.pkl",

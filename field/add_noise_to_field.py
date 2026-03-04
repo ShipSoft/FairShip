@@ -11,7 +11,7 @@ import pandas as pd
 from scipy.ndimage import gaussian_filter
 
 
-def plot_my_hist(datum):
+def plot_my_hist(datum) -> None:
     plotData = datum[datum["y"] == 0]
     H, xedges, yedges = np.histogram2d(plotData["x"], plotData["z"], bins=[50, 500], weights=plotData["by"])
     plt.figure(figsize=[20, 10])
@@ -20,7 +20,7 @@ def plot_my_hist(datum):
     plt.show()
 
 
-def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None):
+def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None) -> None:
     # (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)
     field = pd.read_csv(input_fileName, skiprows=1, sep=r"\s+", names=["x", "y", "z", "bx", "by", "bz"])
 

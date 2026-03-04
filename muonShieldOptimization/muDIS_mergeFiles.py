@@ -9,7 +9,7 @@ import rootUtils as ut
 h = {}
 
 
-def merge():
+def merge() -> None:
     sTree = ROOT.TChain("DIS")
     for i in range(0, 12):
         fn = "muonDis_" + str(i) + ".root"
@@ -42,14 +42,14 @@ def merge():
     fm.Close()
 
 
-def hadd():
+def hadd() -> None:
     cmd = "hadd -f muonDIS.root "
     for i in range(0, 12):
         cmd += " muonDis_" + str(i) + ".root "
     os.system(cmd)
 
 
-def makePlots(sTree):
+def makePlots(sTree) -> None:
     ut.bookHist(h, "muP", "muon mom", 100, 0.0, 400.0)
     ut.bookHist(h, "nOut", "outgoing part", 100, -0.5, 99.5)
     ut.bookHist(h, "pos", "position", 100, -25.0, 100.0, 100, -12.0, 12.0, 100, -13.0, 13.0)
@@ -63,7 +63,7 @@ def makePlots(sTree):
         h["pos"].Fill(inMu[7], inMu[5], inMu[6])
 
 
-def test(fn="test.root"):
+def test(fn: str = "test.root") -> None:
     fm = ROOT.TFile(fn)
     sTree = fm.DIS
     makePlots(sTree)

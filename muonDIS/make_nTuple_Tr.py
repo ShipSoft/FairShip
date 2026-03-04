@@ -87,7 +87,7 @@ h["n_muon"] = r.TH2I(
 h["n_softtracks"] = r.TH1I("n_softtracks", "Number of soft tracks per muon;;(unweighted)", 200, 0, 2000)
 
 
-def printMCTrack(n, MCTrack):
+def printMCTrack(n: int, MCTrack) -> None:
     """Print MCTrack truth."""
     mcp = MCTrack[n]
 
@@ -137,7 +137,7 @@ def printMCTrack(n, MCTrack):
         )
 
 
-def dump(event, pcut=0, print_whole_event=True):
+def dump(event, pcut: int = 0, print_whole_event: bool = True) -> None:
     """Dump the whole event."""
     if print_whole_event:
         print(

@@ -4,6 +4,7 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import multiprocessing as mp
 import os
+from io import TextIOWrapper
 
 import ROOT
 from ROOT import TF1
@@ -386,7 +387,7 @@ modules = shipDet_conf.configure(run, ShipGeo)
 rz_inter = -1.0, 0.0
 
 
-def origin(sTree, it):
+def origin(sTree, it) -> None:
     at = sTree.MCTrack[it]
     im = at.GetMotherId()
     if im > 0:
@@ -446,7 +447,7 @@ else:
     prefix = ""
 
 
-def makeProd():
+def makeProd() -> None:
     ntot = 736406
     ncpu = 4
     n3 = int(ntot / ncpu)
@@ -480,7 +481,7 @@ def detMap():
     return detList
 
 
-def fitSingleGauss(x, ba=None, be=None):
+def fitSingleGauss(x, ba=None, be=None) -> None:
     name = "myGauss_" + x
     myGauss = h[x].GetListOfFunctions().FindObject(name)
     if not myGauss:
@@ -510,7 +511,7 @@ labels = {}
 logVols = detMap()
 
 
-def bookHist(detName):
+def bookHist(detName) -> None:
     for mu in ["", "_mu", "_muV0"]:
         tag = detName + mu
         if detName.find("LS") < 0:
@@ -582,7 +583,7 @@ mom = ROOT.TVector3()
 pos = ROOT.TVector3()
 
 
-def BigEventLoop():
+def BigEventLoop() -> None:
     pid = 1
     for fn in fchain:
         if os.path.islink(fn):
@@ -666,7 +667,7 @@ def BigEventLoop():
     makePlots(nstations)
 
 
-def executeOneFile(fn, output=None, pid=None):
+def executeOneFile(fn, output=None, pid=None) -> None:
     f = ROOT.TFile.Open(fn)
     sTree = f.Get("cbmsim")
     nEvents = sTree.GetEntries()
@@ -791,7 +792,7 @@ def executeOneFile(fn, output=None, pid=None):
 
 
 #
-def makePlots(nstations):
+def makePlots(nstations: int) -> None:
     cxcy = {
         1: [2, 1],
         2: [3, 1],
@@ -931,7 +932,7 @@ def makePlots(nstations):
 
 
 #
-def AnaEventLoop():
+def AnaEventLoop() -> None:
     fout = open("rareEvents.txt", "w")
     for fn in fchainRec:
         f = ROOT.TFile(fn)
@@ -983,7 +984,7 @@ def AnaEventLoop():
 
 
 #
-def muDISntuple(fn):
+def muDISntuple(fn) -> None:
     # take as input the rare events
     fout = ROOT.TFile("muDISVetoCounter.root", "recreate")
     h["ntuple"] = ROOT.TNtuple("muons", "muon flux VetoCounter", "id:px:py:pz:x:y:z:w")
@@ -1019,7 +1020,7 @@ def muDISntuple(fn):
     h["ntuple"].Write()
 
 
-def analyzeConcrete():
+def analyzeConcrete() -> None:
     h["fout"] = ROOT.TFile("muConcrete.root", "recreate")
     h["ntuple"] = ROOT.TNtuple("muons", "muon flux concrete", "id:px:py:pz:x:y:z:w")
     for m in ["", "mu", "V0"]:
@@ -1097,7 +1098,7 @@ def analyzeConcrete():
         h["ntuple"].Write()
 
 
-def rareEventEmulsion(fname="rareEmulsion.txt"):
+def rareEventEmulsion(fname: str = "rareEmulsion.txt") -> None:
     fout = open(fname, "w")
     for fn in fchainRec:
         f = ROOT.TFile(fn)
@@ -1153,7 +1154,7 @@ def rareEventEmulsion(fname="rareEmulsion.txt"):
 
 
 #
-def extractRareEvents(single=None):
+def extractRareEvents(single=None) -> None:
     for fn in fchainRec:
         if single:
             if fn.find(str(single)) < 0:
@@ -1190,7 +1191,7 @@ def extractRareEvents(single=None):
 
 
 #
-def extractMuCloseByEvents(single=None):
+def extractMuCloseByEvents(single=None) -> None:
     mom = ROOT.TVector3()
     pos = ROOT.TVector3()
     # Goliath magnet has been removed from geometry
@@ -1240,7 +1241,7 @@ def extractMuCloseByEvents(single=None):
 
 
 #
-def MergeRareEvents(runs=["61", "62"]):
+def MergeRareEvents(runs: list[str] = ["61", "62"]) -> None:
     for prefix in runs:
         cmd = "$ROOTSYS/bin/hadd rareEvents_" + prefix + ".root -f "
         for fn in fchainRec:
@@ -1252,12 +1253,12 @@ def MergeRareEvents(runs=["61", "62"]):
 
 
 #
-def persistency():
+def persistency() -> None:
     printAndCopy(prefix)
     ut.writeHists(h, prefix + ".root", plusCanvas=True)
 
 
-def reDraw(fn):
+def reDraw(fn) -> None:
     if fn.find("root") < 0:
         fn = fn + ".root"
     if "tc" not in h:
@@ -1267,7 +1268,7 @@ def reDraw(fn):
         h[x].Draw()
 
 
-def printAndCopy(prefix=None):
+def printAndCopy(prefix: str | None = None) -> None:
     if not prefix:
         prefix = (h["tc"].GetName()).replace(".root", "")
     for x in ["ResultsI", "ResultsII", "ResultsImu", "ResultsImuV0", "ResultsIII", "ResultsIV", "ResultsV"]:
@@ -1285,7 +1286,7 @@ def printAndCopy(prefix=None):
     os.chdir("../")
 
 
-def drawBoth(tag, hn):
+def drawBoth(tag: str, hn) -> None:
     n1 = h[hn + "_mu" + tag].GetMaximum()
     n2 = h[hn + tag].GetMaximum()
     if n1 > n2:
@@ -1296,7 +1297,7 @@ def drawBoth(tag, hn):
     h[hn + tag].Draw("same")
 
 
-def debugGeoTracks(sTree):
+def debugGeoTracks(sTree) -> None:
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
         n = 0
@@ -1307,7 +1308,7 @@ def debugGeoTracks(sTree):
             n += 1
 
 
-def eventsWithStrawPoints(i):
+def eventsWithStrawPoints(i) -> None:
     sTree = fchain[i].Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
@@ -1324,7 +1325,7 @@ def eventsWithStrawPoints(i):
             print("-----------------------")
 
 
-def eventsWithEntryPoints(i):
+def eventsWithEntryPoints(i) -> None:
     sTree = fchain[i].Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
@@ -1340,7 +1341,7 @@ def eventsWithEntryPoints(i):
             print("-----------------------")
 
 
-def depEnergy(sTree):
+def depEnergy(sTree) -> None:
     for n in range(sTree.GetEntries()):
         sTree.GetEntry(n)
         for ahit in sTree.strawtubesPoint:
@@ -1355,7 +1356,7 @@ def depEnergy(sTree):
         h["dE"].SetYTitle("MeV")
 
 
-def originOfMuon(fout, n, fn, nEvents):
+def originOfMuon(fout: TextIOWrapper, n: int, fn, nEvents) -> None:
     # from fn extract Yandex or CERN/cracow
     ncpu = 9
     x = fn.find("/")
@@ -1382,7 +1383,7 @@ def originOfMuon(fout, n, fn, nEvents):
 
 
 # ShipAna
-def pers():
+def pers() -> None:
     xdisk = "/media/Work/HNL/"
     for x in h:
         if isinstance(h[x], ROOT.TCanvas):
@@ -1402,7 +1403,7 @@ def pers():
 from operator import itemgetter
 
 
-def makeNicePrintout(x=["rareEvents_61-62.txt", "rareEvents_71-72.txt"]):
+def makeNicePrintout(x: list[str] = ["rareEvents_61-62.txt", "rareEvents_71-72.txt"]):
     result = []
     cor = 1.0
     for fn in x:
@@ -1480,7 +1481,7 @@ def makeNicePrintout(x=["rareEvents_61-62.txt", "rareEvents_71-72.txt"]):
 
 
 #
-def readAndMergeHistos(prods):
+def readAndMergeHistos(prods) -> None:
     for p in prods:
         x = p
         if p.find(".root") < 0:

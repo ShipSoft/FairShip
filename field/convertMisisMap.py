@@ -41,11 +41,11 @@ ROOT.gROOT.ProcessLine(
 )
 
 
-def run(inFileName="BFieldTest.txt", rootFileName="BFieldTest.root"):
+def run(inFileName: str = "BFieldTest.txt", rootFileName: str = "BFieldTest.root") -> None:
     createRootMap(inFileName, rootFileName)
 
 
-def createRootMap(inFileName, rootFileName):
+def createRootMap(inFileName, rootFileName) -> None:
     print(f"Create ROOT map {rootFileName} from {inFileName}")
 
     # Define ROOT file and its TTree

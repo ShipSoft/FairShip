@@ -70,11 +70,11 @@ run.AddModule(cave)
 class Block(ROOT.pyFairModule):
     "block of material"
 
-    def __init__(self):
+    def __init__(self) -> None:
         ROOT.pyFairModule.__init__(self, self)
         self.sensPlane = None
 
-    def ConstructGeometry(self):
+    def ConstructGeometry(self) -> None:
         print("Construct Block")
         top = ROOT.gGeoManager.GetTopVolume()
         geoLoad = ROOT.FairGeoLoader.Instance()
@@ -91,10 +91,10 @@ class Block(ROOT.pyFairModule):
         if self.sensPlane:
             self.sensPlane.AddSensitiveVolume(aBox)
 
-    def InitParContainers():
+    def InitParContainers() -> None:
         print("not implemented!")
 
-    def makeSensitive(self, sensPlane):
+    def makeSensitive(self, sensPlane) -> None:
         self.sensPlane = sensPlane
 
 

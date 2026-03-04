@@ -66,10 +66,10 @@ run.AddModule(cave)
 class Block(ROOT.pyFairModule):
     "block of material"
 
-    def __init__(self):
+    def __init__(self) -> None:
         ROOT.pyFairModule.__init__(self, self)
 
-    def ConstructGeometry(self):
+    def ConstructGeometry(self) -> None:
         print("Construct Block")
         top = ROOT.gGeoManager.GetTopVolume()
         geoLoad = ROOT.FairGeoLoader.Instance()
@@ -84,7 +84,7 @@ class Block(ROOT.pyFairModule):
         aBox = ROOT.gGeoManager.MakeBox("target", W, 100.0 * u.cm, 100.0 * u.cm, thickness)
         top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0))
 
-    def InitParContainers():
+    def InitParContainers() -> None:
         print("not implemented!")
 
 

@@ -40,7 +40,7 @@ ROOT.gROOT.ProcessLine(
 )
 
 
-def run(inFileName="test07_10cm_grid.table", outFileName="MuonFilterBFieldMap1.txt"):
+def run(inFileName: str = "test07_10cm_grid.table", outFileName: str = "MuonFilterBFieldMap1.txt") -> None:
     # Text format
     createTextMap(inFileName, outFileName)
 
@@ -49,7 +49,7 @@ def run(inFileName="test07_10cm_grid.table", outFileName="MuonFilterBFieldMap1.t
     createRootMap(outFileName, rootFileName)
 
 
-def createTextMap(inFileName, outFileName):
+def createTextMap(inFileName, outFileName) -> None:
     print(f"Creating text map {outFileName} from {inFileName}")
 
     tmpFileName = "tmpFile.txt"
@@ -177,7 +177,7 @@ def createTextMap(inFileName, outFileName):
     tmpFile2.close()
 
 
-def formatNumber(x):
+def formatNumber(x: float) -> str:
     # To save disk space, reduce the precision of the field value
     # as we go below various thresholds
 
@@ -192,7 +192,7 @@ def formatNumber(x):
     return xWord
 
 
-def createRootMap(inFileName, outFileName):
+def createRootMap(inFileName, outFileName) -> None:
     print(f"Create ROOT map {outFileName} from {inFileName}")
 
     # Define ROOT file and its TTree

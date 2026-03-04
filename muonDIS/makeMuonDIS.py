@@ -66,7 +66,7 @@ def rotate(px, py, pz, theta, phi):
     return rotated_momentum.X(), rotated_momentum.Y(), rotated_momentum.Z()
 
 
-def update_file(filename, final_xsec):
+def update_file(filename: str, final_xsec) -> None:
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
 
@@ -103,7 +103,7 @@ headers = [
 Fixtarget = {1: "p+", 0: "n0"}
 
 
-def inspect_file(filename):
+def inspect_file(filename: str) -> None:
     """Inspect the contents of muonDis file."""
     file = r.TFile.Open(filename, "READ")
     tree = file.DIS
@@ -127,7 +127,7 @@ def inspect_file(filename):
     logging.info("\n" + tabulate(table_rows, headers=headers, tablefmt="grid"))
 
 
-def makeMuonDIS():
+def makeMuonDIS() -> None:
     """Generate DIS events."""
     final_xsec = {}
 

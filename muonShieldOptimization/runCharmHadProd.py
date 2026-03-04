@@ -30,7 +30,7 @@ else:
 # nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.;  // pot are counted double, i.e. for each signal, i.e. pot/2.
 
 
-def makeHadrons(run):
+def makeHadrons(run) -> None:
     for n in range(ncpus):
         x.Rndm() * 1000000000.0
         os.system("mkdir run" + str(run))
@@ -52,7 +52,7 @@ def makeHadrons(run):
         run += 1
 
 
-def makeBackground(run, cycle=0):
+def makeBackground(run, cycle: int = 0) -> None:
     for n in range(ncpus):
         orun = run + cycle * 1000
         os.chdir("run" + str(run))
@@ -88,7 +88,7 @@ cycle = 2
 runList = [20, 28, 30, 33]
 
 
-def makeBackgroundX(runList, cycle=0):
+def makeBackgroundX(runList, cycle: int = 0) -> None:
     for run in runList:
         orun = run + cycle * 1000
         os.chdir("run" + str(run))
@@ -110,7 +110,7 @@ def makeBackgroundX(runList, cycle=0):
         os.chdir("../")
 
 
-def merge(run, cycle=0):
+def merge(run, cycle: int = 0) -> None:
     fname = "pythia8_Geant4_XX_10.0.root"
     cmd = " "
     for n in range(ncpus):
@@ -137,7 +137,7 @@ def merge(run, cycle=0):
             rc = os.system("rm " + outFile)
 
 
-def mergeAll():
+def mergeAll() -> None:
     cmd = "hadd pythia8_Geant4_charm_153.3B_10.0_mu.root "
     tmp = "/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_charm_XX_10.0_mu.root"
     for x in [
@@ -161,7 +161,7 @@ def mergeAll():
     os.system(cmd)
 
 
-def compactifyCascade(run):
+def compactifyCascade(run) -> None:
     ncpus = 20
     cmd = ""
     Ntot = 0
@@ -219,7 +219,7 @@ def compactifyCascade(run):
             rc = os.system("rm " + outFile)
 
 
-def statistics():
+def statistics() -> None:
     path = os.environ["EOSSHIP"] + "/eos/experiment/ship/data/Mbias/background-prod-2018/"
     fname = "Cascade-runAA-BB-parp16-MSTP82-1-MSEL4-40Mpot.root"
     nPot = 0
@@ -232,7 +232,7 @@ def statistics():
     print("total nr of hadrons:", nhadrons, nPot / chicc / 1.0e9, "Billion")
 
 
-def potFromFileHeader(f):
+def potFromFileHeader(f) -> None:
     pot = 0
     for x in f.GetListOfKeys():
         if x.GetName() == "FileHeader":
