@@ -33,7 +33,7 @@ class Config(AttrDict):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def loads(self, buff: str):
+    def loads(self, buff: bytes):
         rv = pickle.loads(buff)
         self.clear()
         self.update(rv)
@@ -78,12 +78,12 @@ class Config(AttrDict):
         return json.dumps(self, indent=2, default=str)
 
     def load(self, filename):
-        with open(os.path.expandvars(filename)) as fh:
+        with open(os.path.expandvars(filename), "rb") as fh:
             self.loads(fh.read())
         return self
 
     def dump(self, filename) -> int:
-        with open(os.path.expandvars(filename), "w") as fh:
+        with open(os.path.expandvars(filename), "wb") as fh:
             return fh.write(self.dumps())
 
     def __str__(self) -> str:

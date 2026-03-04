@@ -96,7 +96,7 @@ class Task:
             if fstatus.getNdf() < 25:
                 continue
             nMultCon += 1
-        w = 1
+        w = 1.0
         veto = nMultCon > 2
         if veto:
             w = 0.0
