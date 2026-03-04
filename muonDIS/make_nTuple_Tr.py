@@ -137,7 +137,7 @@ def printMCTrack(n: int, MCTrack) -> None:
         )
 
 
-def dump(event, pcut: int = 0, print_whole_event: bool = True) -> None:
+def dump(event, pcut: float = 0, print_whole_event: bool = True) -> None:
     """Dump the whole event."""
     if print_whole_event:
         print(
