@@ -20,12 +20,13 @@ DownScaleDiMuon = False
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
 theProductionCouplings = theDecayCouplings = None
+theCouplings: list[float] | None = None
 
 # Default dark photon parameters
 theDPmass = 0.2 * u.GeV
 
 # Alpaca
-# motherMode = True
+motherMode: str = "pi0"
 
 mcEngine = "TGeant4"
 
@@ -285,6 +286,7 @@ if options.A != "c":
         inclusive = True
 if options.MM:
     motherMode = options.MM
+Opt_high: int = 0
 if options.cosmics:
     Opt_high = int(options.cosmics)
 if options.inputFile:
@@ -424,6 +426,7 @@ if options.pythia8:
                 P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
             )
         if options.RPVSUSY:
+            assert theCouplings is not None
             print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
             print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
             print("and with stop mass=%.3f GeV\n" % theCouplings[2])
@@ -455,14 +458,16 @@ if options.pythia8:
         if passDPconf != 1:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
-        P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
-        P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
-        P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
-        P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
+        P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # pyrefly: ignore[unbound-name]
+        P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # pyrefly: ignore[unbound-name]
+        P8gen.SetLmin(
+            (ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0
+        )  # pyrefly: ignore[unbound-name]
+        P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)  # pyrefly: ignore[unbound-name]
     # pion on proton 500GeV
     # P8gen.SetMom(500.*u.GeV)
     # P8gen.SetId(-211)
-    primGen.AddGenerator(P8gen)
+    primGen.AddGenerator(P8gen)  # pyrefly: ignore[unbound-name]
 if options.fixedTarget:
     HNL = False
     P8gen = ROOT.FixedTargetGenerator()
@@ -694,6 +699,7 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
+fieldMaker = None
 if ship_geo.Bfield.fieldMap:
     if options.field_map:
         ship_geo.Bfield.fieldMap = options.field_map
@@ -746,10 +752,12 @@ print(" ")
 print("Macro finished successfully.")
 if "P8gen" in globals():
     if HNL:
-        print("number of retries, events without HNL ", P8gen.nrOfRetries())
+        print("number of retries, events without HNL ", P8gen.nrOfRetries())  # pyrefly: ignore[unbound-name]
     elif options.DarkPhoton:
-        print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())
-        print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
+        print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())  # pyrefly: ignore[unbound-name]
+        print(
+            "total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP()
+        )  # pyrefly: ignore[unbound-name]
 
 print("Output file is ", outFile)
 print("Parameter file is ", parFile)
