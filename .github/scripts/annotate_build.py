@@ -37,7 +37,7 @@ def parse_compiler_output(line):
     }
 
 
-def make_relative_path(file_path, repo_name="FairShip"):
+def make_relative_path(file_path, repo_name="FairShip") -> str:
     """
     Convert absolute path to relative path from repo root.
 
@@ -92,7 +92,7 @@ def make_relative_path(file_path, repo_name="FairShip"):
     return path.name
 
 
-def create_annotation(parsed, repo_dir="FairShip"):
+def create_annotation(parsed, repo_dir="FairShip") -> str:
     """
     Create GitHub annotation command from parsed compiler output.
 
@@ -118,7 +118,7 @@ def create_annotation(parsed, repo_dir="FairShip"):
     return annotation
 
 
-def main():
+def main() -> None:
     """Parse stdin and output annotations."""
     annotation_count = {"error": 0, "warning": 0, "notice": 0}
 

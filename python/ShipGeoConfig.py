@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from __future__ import annotations
+
 import json
 import os
 import pickle
@@ -13,11 +15,11 @@ class AttrDict(dict):
     assert d.key == 1
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.__dict__ = self
 
-    def clone(self):
+    def clone(self) -> AttrDict:
         result = AttrDict()
         for k, v in self.items():
             if isinstance(v, AttrDict):
@@ -28,16 +30,16 @@ class AttrDict(dict):
 
 
 class Config(AttrDict):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def loads(self, buff):
+    def loads(self, buff: str):
         rv = pickle.loads(buff)
         self.clear()
         self.update(rv)
         return self
 
-    def loads_json(self, json_str):
+    def loads_json(self, json_str: str):
         """Deserialize config from JSON string"""
 
         def dict_to_attrdict(d):
@@ -59,7 +61,7 @@ class Config(AttrDict):
             self[k] = dict_to_attrdict(v)
         return self
 
-    def clone(self):
+    def clone(self) -> Config:
         result = Config()
         for k, v in self.items():
             if isinstance(v, AttrDict):
@@ -68,10 +70,10 @@ class Config(AttrDict):
                 result[k] = v
         return result
 
-    def dumps(self):
+    def dumps(self) -> bytes:
         return pickle.dumps(self)
 
-    def dumps_json(self):
+    def dumps_json(self) -> str:
         """Serialize config to JSON string"""
         return json.dumps(self, indent=2, default=str)
 
@@ -80,17 +82,17 @@ class Config(AttrDict):
             self.loads(fh.read())
         return self
 
-    def dump(self, filename):
+    def dump(self, filename) -> int:
         with open(os.path.expandvars(filename), "w") as fh:
             return fh.write(self.dumps())
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "ShipGeoConfig:\n  " + "\n  ".join(
             [f"{k}: {self[k].__str__()}" for k in sorted(self.keys()) if not k.startswith("_")]
         )
 
 
-def load_from_root_file(root_file, key="ShipGeo"):
+def load_from_root_file(root_file, key: str = "ShipGeo") -> Config:
     """
     Load configuration from ROOT file.
 

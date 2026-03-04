@@ -27,7 +27,7 @@ class MethodLogger:
     >>> sink.close()
     """
 
-    def __init__(self, wrapped_instance, sink=sys.stdout):
+    def __init__(self, wrapped_instance, sink=sys.stdout) -> None:
         self._class = wrapped_instance
         self._sink = sink
         self._prefix = type(wrapped_instance).__name__ + "."
