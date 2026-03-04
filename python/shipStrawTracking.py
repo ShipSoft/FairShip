@@ -4,6 +4,7 @@
 """Script to run and test tracking in the straw tubes"""
 
 from argparse import ArgumentParser
+from typing import Any
 
 import geometry_config
 import global_variables
@@ -117,8 +118,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     ########################################## Start Track Pattern Recognition #########################################
 
     # Init book of hists for the quality measurements
-    metrics = {
-        "n_hits": [],
+    counters: dict[str, int] = {
         "reconstructible": 0,
         "passed_y12": 0,
         "passed_stereo12": 0,
@@ -129,6 +129,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
         "passed_combined": 0,
         "reco_passed": 0,
         "reco_passed_no_clones": 0,
+    }
+    accumulators: dict[str, list[float]] = {
+        "n_hits": [],
         "frac_y12": [],
         "frac_stereo12": [],
         "frac_12": [],
@@ -162,7 +165,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
         reconstructible_tracks = getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo)
 
-        metrics["reconstructible"] += len(reconstructible_tracks)
+        counters["reconstructible"] += len(reconstructible_tracks)
         for i_reco in reconstructible_tracks:
             h["TracksPassed"].Fill("Reconstructible tracks", 1)
             h["TracksPassedU"].Fill("Reconstructible tracks", 1)
@@ -199,7 +202,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             if len(atrack) == 0:
                 continue
 
-            hits = {
+            hits: dict[str, Any] = {
                 "X": [],
                 "Y": [],
                 "Z": [],
@@ -238,7 +241,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             is_after = (decode[0] == 3) + (decode[0] == 4)
 
             # Metrics
-            metrics["n_hits"] += [get_n_hits(hits["TrackID"])]
+            accumulators["n_hits"].append(get_n_hits(hits["TrackID"]))
 
             # Tracks passed
             frac_y12, tmax_y12 = fracMCsame(hits["TrackID"][is_before * is_y])
@@ -280,68 +283,68 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             is_reconstructed = 0
 
             if tmax_y12 in reconstructible_tracks:
-                metrics["passed_y12"] += 1
-                metrics["frac_y12"] += [frac_y12]
+                counters["passed_y12"] += 1
+                accumulators["frac_y12"].append(frac_y12)
                 h["TracksPassed"].Fill("Y view station 1&2", 1)
                 if tmax_y12 not in in_y12:
                     h["TracksPassedU"].Fill("Y view station 1&2", 1)
                     in_y12.append(tmax_y12)
 
                 if tmax_stereo12 == tmax_y12:
-                    metrics["passed_stereo12"] += 1
-                    metrics["frac_stereo12"] += [frac_stereo12]
+                    counters["passed_stereo12"] += 1
+                    accumulators["frac_stereo12"].append(frac_stereo12)
                     h["TracksPassed"].Fill("Stereo station 1&2", 1)
                     if tmax_stereo12 not in in_stereo12:
                         h["TracksPassedU"].Fill("Stereo station 1&2", 1)
                         in_stereo12.append(tmax_stereo12)
 
                     if tmax_12 == tmax_y12:
-                        metrics["passed_12"] += 1
-                        metrics["frac_12"] += [frac_12]
+                        counters["passed_12"] += 1
+                        accumulators["frac_12"].append(frac_12)
                         h["TracksPassed"].Fill("station 1&2", 1)
                         if tmax_12 not in in_12:
                             h["TracksPassedU"].Fill("station 1&2", 1)
                             in_12.append(tmax_12)
 
                         if tmax_y34 in reconstructible_tracks:
-                            metrics["passed_y34"] += 1
-                            metrics["frac_y34"] += [frac_y34]
+                            counters["passed_y34"] += 1
+                            accumulators["frac_y34"].append(frac_y34)
                             h["TracksPassed"].Fill("Y view station 3&4", 1)
                             if tmax_y34 not in in_y34:
                                 h["TracksPassedU"].Fill("Y view station 3&4", 1)
                                 in_y34.append(tmax_y34)
 
                             if tmax_stereo34 == tmax_y34:
-                                metrics["passed_stereo34"] += 1
-                                metrics["frac_stereo34"] += [frac_stereo34]
+                                counters["passed_stereo34"] += 1
+                                accumulators["frac_stereo34"].append(frac_stereo34)
                                 h["TracksPassed"].Fill("Stereo station 3&4", 1)
                                 if tmax_stereo34 not in in_stereo34:
                                     h["TracksPassedU"].Fill("Stereo station 3&4", 1)
                                     in_stereo34.append(tmax_stereo34)
 
                                 if tmax_34 == tmax_y34:
-                                    metrics["passed_34"] += 1
-                                    metrics["frac_34"] += [frac_34]
+                                    counters["passed_34"] += 1
+                                    accumulators["frac_34"].append(frac_34)
                                     h["TracksPassed"].Fill("station 3&4", 1)
                                     if tmax_34 not in in_34:
                                         h["TracksPassedU"].Fill("station 3&4", 1)
                                         in_34.append(tmax_34)
 
                                     if tmax_12 == tmax_34:
-                                        metrics["passed_combined"] += 1
+                                        counters["passed_combined"] += 1
                                         h["TracksPassed"].Fill("Combined stations 1&2/3&4", 1)
-                                        metrics["reco_passed"] += 1
+                                        counters["reco_passed"] += 1
                                         is_reconstructed = 1
                                         if tmax_34 not in in_combo:
                                             h["TracksPassedU"].Fill("Combined stations 1&2/3&4", 1)
-                                            metrics["reco_passed_no_clones"] += 1
+                                            counters["reco_passed_no_clones"] += 1
                                             in_combo.append(tmax_34)
 
             # For reconstructed tracks
             if is_reconstructed == 0:
                 continue
 
-            metrics["reco_frac_tot"] += [frac_tot]
+            accumulators["reco_frac_tot"].append(frac_tot)
 
             # Momentum
             hits["Pz"]
@@ -361,7 +364,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                     X_true.append(ax)
                     Y_true.append(ay)
 
-            metrics["reco_mc_p"] += [p]
+            accumulators["reco_mc_p"].append(p)
             h["TracksPassed_p"].Fill(p, 1)
 
             # Direction
@@ -375,7 +378,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             Theta = numpy.arccos(Z[1:] / R[1:])
             theta = numpy.mean(Theta)
 
-            metrics["reco_mc_theta"] += [theta]
+            accumulators["reco_mc_theta"].append(theta)
 
             h["n_hits_reco_y12"].Fill(n_hits_y12)
             h["n_hits_reco_stereo12"].Fill(n_hits_stereo12)
@@ -419,8 +422,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             pval = fitStatus.getPVal()
             chi2 = fitStatus.getChi2() / nmeas
 
-            metrics["fitted_pval"] += [pval]
-            metrics["fitted_chi"] += [chi2]
+            accumulators["fitted_pval"].append(pval)
+            accumulators["fitted_chi"].append(chi2)
 
             h["chi2fittedtracks"].Fill(chi2)
             h["pvalfittedtracks"].Fill(pval)
@@ -434,7 +437,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 p_fit = fittedMom
                 pt_fit = math.sqrt(px_fit**2 + py_fit**2)
 
-                metrics["fitted_p"] += [p_fit]
+                accumulators["fitted_p"].append(p_fit)
                 perr = (p - p_fit) / p
                 h["ptrue-p/ptrue"].Fill(perr)
                 h["perr"].Fill(p, perr)
@@ -465,16 +468,17 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 h["zdirectionfittedtracks"].Fill(fittedz)
                 h["massfittedtracks"].Fill(fittedmass)
 
-                metrics["fitted_x"] += [fittedx]
-                metrics["fitted_y"] += [fittedy]
-                metrics["fitted_z"] += [fittedz]
-                metrics["fitted_mass"] += [fittedmass]
+                accumulators["fitted_x"].append(fittedx)
+                accumulators["fitted_y"].append(fittedy)
+                accumulators["fitted_z"].append(fittedz)
+                accumulators["fitted_mass"].append(fittedmass)
 
                 Z_fit = []
                 X_fit = []
                 Y_fit = []
                 for az in Z_true:
                     rc, pos, mom = extrapolateToPlane(thetrack, az)
+                    assert pos is not None
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
@@ -503,7 +507,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     save_hists(h, output_file)
 
-    return metrics
+    return {"counters": counters, "accumulators": accumulators}
 
 
 ################################################################################################################################
@@ -574,7 +578,7 @@ def fracMCsame(trackids):
 
     # now get track with largest number of hits
     if track != {}:
-        tmax = max(track, key=track.get)
+        tmax = max(track, key=track.get)  # pyrefly: ignore[no-matching-overload]
     else:
         track = {-999: 0}
         tmax = -999
