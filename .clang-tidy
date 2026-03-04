@@ -9,6 +9,8 @@ HeaderFilterRegex: '.*'
 #   Avoid undefined behaviour
 # * cppcoreguidelines-pro-type-cstyle-cast
 #   Avoid C-Style Casts which might be problematic
+# * -bugprone-multi-level-implicit-pointer-conversion
+#   Triggered by ROOT's TTree::SetBranchAddress(void*) API pattern
 # google-build-using-namespace:
 #   "using namespace" imports a changing amount of symbols, avoid it
 # readability-simplify-boolean-expr:
@@ -29,6 +31,7 @@ Checks: >-
   -bugprone-virtual-near-miss,
   -bugprone-unhandled-self-assignment,
   -bugprone-reserved-identifier,
+  -bugprone-multi-level-implicit-pointer-conversion,
   cppcoreguidelines-pro-type-cstyle-cast,
   cppcoreguidelines-virtual-class-destructor,
   modernize-make-unique,
