@@ -14,11 +14,11 @@ r_scale = 1.0
 max_x = global_variables.ShipGeo.strawtubes_geo.width  # == 200 * u.cm
 
 
-def initialize(fgeo):
+def initialize(fgeo) -> None:
     pass
 
 
-def execute(smeared_hits, ship_geo, method=""):
+def execute(smeared_hits, ship_geo, method: str = ""):
     """
     Main function of track pattern recognition.
 
@@ -49,7 +49,7 @@ def execute(smeared_hits, ship_geo, method=""):
     return recognized_tracks
 
 
-def finalize():
+def finalize() -> None:
     pass
 
 
@@ -129,7 +129,7 @@ def template_matching_pattern_recognition(SmearedHits, ShipGeo):
     return recognized_tracks
 
 
-def pat_rec_view(SmearedHits, min_hits):
+def pat_rec_view(SmearedHits, min_hits: int):
     """
     Main function of track pattern recognition.
 
@@ -269,7 +269,7 @@ def fast_hough_transform_pattern_recognition(SmearedHits, ShipGeo):
     return recognized_tracks
 
 
-def fast_hough_pat_rec_y_view(SmearedHits, min_hits):
+def fast_hough_pat_rec_y_view(SmearedHits, min_hits: int):
     """
     Main function of track pattern recognition.
 
@@ -338,7 +338,7 @@ def fast_hough_pat_rec_y_view(SmearedHits, min_hits):
     return recognized_tracks
 
 
-def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits):
+def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []
@@ -539,7 +539,7 @@ def artificial_retina_pattern_recognition(SmearedHits, ShipGeo):
     return recognized_tracks
 
 
-def artificial_retina_pat_rec_y_view(SmearedHits, min_hits):
+def artificial_retina_pat_rec_y_view(SmearedHits, min_hits: int):
     """
     Main function of track pattern recognition.
 
@@ -614,7 +614,7 @@ def artificial_retina_pat_rec_y_view(SmearedHits, min_hits):
     return recognized_tracks
 
 
-def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits):
+def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []
@@ -705,7 +705,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
     return recognized_tracks_stereo
 
 
-def get_best_seed(x, y, sigma, sample_weight=None):
+def get_best_seed(x, y, sigma: float, sample_weight=None):
     best_retina_val = 0
     best_seed_params = [0, 0]
 
@@ -841,7 +841,7 @@ def hits_split(smeared_hits):
     return smeared_hits_12y, smeared_hits_12stereo, smeared_hits_34y, smeared_hits_34stereo
 
 
-def reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits=3):
+def reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits: int = 3):
     """
     Split hits into groups of station views.
 
@@ -934,7 +934,7 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
     return recognized_tracks_combo
 
 
-def hit_in_window(x, y, k_bin, b_bin, window_width=1.0):
+def hit_in_window(x, y, k_bin, b_bin, window_width=1.0) -> bool:
     """
     Counts hits in a bin of track parameter space (b, k).
 
@@ -973,7 +973,7 @@ def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
     return y
 
 
-def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits):
+def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []

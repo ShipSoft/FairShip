@@ -15,7 +15,7 @@ import rootUtils as ut
 class Task:
     "initialize"
 
-    def __init__(self, hp, sTree, mcTree=None):
+    def __init__(self, hp, sTree, mcTree=None) -> None:
         self.sTree = sTree
         self.mcTree = mcTree if mcTree is not None else sTree
         self.fPartArray = ROOT.std.vector("ShipParticle")()
@@ -48,7 +48,7 @@ class Task:
         # ut.bookHist(self.h,'N_raveVtx','Number of RAVE vtx',5,-0.5,4.5)
         # ut.bookHist(self.h,'N_Vtx','Number of vtx',5,-0.5,4.5)
 
-    def execute(self):
+    def execute(self) -> None:
         # make particles persistent
         self.TwoTrackVertex()
 
@@ -57,13 +57,13 @@ class Task:
     z0 = 0
     Vy = np.zeros(100)
 
-    def chi2(self, res, Vy):
+    def chi2(self, res, Vy) -> int:
         s = 0
         for i in range(100):
             s += Vy[i] * res[i // 10] * res[i % 10]
         return s
 
-    def residuals(self, y_data, a, z0):
+    def residuals(self, y_data, a, z0: int):
         res = np.zeros(10)
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
@@ -77,12 +77,12 @@ class Task:
         res[9] = y_data[9] - a[1] - a[7] * (a[2] - z0)
         return res
 
-    def fcn(self, npar, gin, f, par, iflag):
+    def fcn(self, npar, gin, f, par, iflag) -> None:
         res = self.residuals(self.y_data, par, self.z0)
         self.chi2(res, self.Vy)
         return
 
-    def TwoTrackVertex(self):
+    def TwoTrackVertex(self) -> None:
         self.fPartArray.clear()
         fittedTracks = getattr(self.sTree, self.fitTrackLoc)
         goodTracks = getattr(self.sTree, self.goodTracksLoc)
@@ -334,7 +334,7 @@ class Task:
                 # self.h['dVyFit'].Fill( (mctrack.GetStartY()-yFit) )
                 # self.h['dVzFit'].Fill( (mctrack.GetStartZ()-zFit) )
 
-                def getP(fitValues, cov, m1, m2):
+                def getP(fitValues: array[float], cov: array[float], m1, m2):
                     a3 = fitValues[3]
                     a4 = fitValues[4]
                     a5 = fitValues[5]

@@ -10,7 +10,7 @@ import ROOT
 class Task:
     "initialize and give response of the veto systems"
 
-    def __init__(self, t):
+    def __init__(self, t) -> None:
         self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
         self.UBTefficiency = 0.9  # Upstream background tagger
         self.random = ROOT.TRandom()
@@ -27,13 +27,13 @@ class Task:
             detList[i] = nm
         return detList
 
-    def SBT_plastic_decision(self, mcParticle=None):
+    def SBT_plastic_decision(self, mcParticle=None) -> None:
         self.SBT_decision(mcParticle, detector="plastic")
 
-    def SBT_liquid_decision(self, mcParticle=None):
+    def SBT_liquid_decision(self, mcParticle=None) -> None:
         self.SBT_decision(mcParticle, detector="liquid")
 
-    def SBT_decision(self, mcParticle=None, detector="liquid"):
+    def SBT_decision(self, mcParticle=None, detector="liquid") -> tuple[bool, float, int]:
         # if mcParticle >0, only count hits with this particle
         # if mcParticle <0, do not count hits with this particle
         hitSegments = 0
@@ -64,7 +64,7 @@ class Task:
         # print 'SBT :',hitSegments
         return veto, w, hitSegments
 
-    def UBT_decision(self, mcParticle=None):
+    def UBT_decision(self, mcParticle=None) -> tuple[bool, float, int]:
         nHits = 0
         mom = ROOT.TVector3()
         for ahit in self.sTree.UpstreamTaggerPoint:
@@ -80,7 +80,7 @@ class Task:
         veto = self.random.Rndm() > w
         return veto, w, nHits
 
-    def Track_decision(self, mcParticle=None):
+    def Track_decision(self, mcParticle=None) -> tuple[bool, int | float, int]:
         nMultCon = 0
         k = -1
         for aTrack in self.sTree.FitTracks:
