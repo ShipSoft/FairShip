@@ -143,6 +143,7 @@ Changed</h2>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Fixed</h2>
 <ul>
+<li>Fix clang-tidy findings: null-check getenv, incorrect rounding, pointer arithmetic on polymorphic type, integer abs on floats, VLA, literal truncation, unused variables, and using-namespace directives</li>
 <li>Fix <code>errorSummary</code> not printing its header (bare string expression instead of <code>print</code>)</li>
 <li>Fix <code>reportError</code>/<code>errorSummary</code> using fragile &lsquo;sys.modules[&rsquo;<b>main</b>'].log` pattern; use module-level counter instead</li>
 <li>Fix file-filtering logic to support STL branches</li>

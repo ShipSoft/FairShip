@@ -280,7 +280,7 @@ var searchData=
   ['shiptaumagneticspectrometer_277',['shiptaumagneticspectrometer',['../classShipTAUMagneticSpectrometer.html#a0a95a5ea4f48efeb38ca809103823203',1,'ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer(const char *name, const Double_t zLS, const Double_t FeL, const Double_t AirL, const Double_t SpectroL, const Double_t GapV, const Double_t DGap, const Double_t MGap, const Double_t mf, const char *Title=&quot;ShipTAUMagneticSpectrometer&quot;)'],['../classShipTAUMagneticSpectrometer.html#aa034db1318c65af7e7267bdccb1a4ca8',1,'ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer()'],['../classShipTAUMagneticSpectrometer.html',1,'ShipTAUMagneticSpectrometer']]],
   ['shiptaumagneticspectrometer_2ecxx_278',['ShipTAUMagneticSpectrometer.cxx',['../ShipTAUMagneticSpectrometer_8cxx.html',1,'']]],
   ['shiptaumagneticspectrometer_2eh_279',['ShipTAUMagneticSpectrometer.h',['../ShipTAUMagneticSpectrometer_8h.html',1,'']]],
-  ['shipunit_280',['shipunit',['../namespaceShipUnit.html',1,'ShipUnit'],['../namespaceshipunit.html',1,'shipunit']]],
+  ['shipunit_280',['shipunit',['../namespaceshipunit.html',1,'shipunit'],['../namespaceShipUnit.html',1,'ShipUnit']]],
   ['shipunit_2eh_281',['ShipUnit.h',['../ShipUnit_8h.html',1,'']]],
   ['shipunit_2epy_282',['shipunit.py',['../shipunit_8py.html',1,'']]],
   ['shipvertex_283',['shipVertex',['../namespaceshipVertex.html',1,'']]],

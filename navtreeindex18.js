@@ -1,6 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"method__logger_8py.html":[7,0,11,18],
 "method__logger_8py_source.html":[7,0,11,18],
 "muDIS__mergeFiles_8py.html":[7,0,9,9],
 "muDIS__mergeFiles_8py.html#a1a441eb731971198a418bf5e43b8498f":[7,0,9,9,0],
@@ -216,7 +215,7 @@ var NAVTREEINDEX18 =
 "namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4":[5,0,81,15],
 "namespaceShipReco.html#af29bc13f95d9544b1f56ece16b06a4c6":[5,0,81,28],
 "namespaceShipReco.html#afb5b701e9d769b20a4bf56ac2b4e5600":[5,0,81,19],
-"namespaceShipUnit.html":[5,0,85],
+"namespaceShipUnit.html":[5,0,84],
 "namespaceTrackExtrapolateTool.html":[5,0,94],
 "namespaceTrackExtrapolateTool.html#a1104e7a5752dd65cba8fc8bdb76a5ce5":[5,0,94,3],
 "namespaceTrackExtrapolateTool.html#a88649c5e9feda4744213d5c7a41a94ad":[5,0,94,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX18 =
 "namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f":[5,0,2,13],
 "namespaceadd__noise__to__field.html#ac2f8eee2da4664aeddd4d34a8cabd99e":[5,0,2,9],
 "namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01":[5,0,2,11],
-"namespaceadd__noise__to__field.html#ad3bdeebe3d0279aca028937b765abdb3":[5,0,2,4]
+"namespaceadd__noise__to__field.html#ad3bdeebe3d0279aca028937b765abdb3":[5,0,2,4],
+"namespaceadd__noise__to__field.html#ad9efc3056172174fd51491e6695173bc":[5,0,2,0]
 };

@@ -435,8 +435,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="GenieGenerator_8cxx_source.html#l00450">450</a> of file <a class="el" href="GenieGenerator_8cxx_source.html">GenieGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  450</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="GenieGenerator_8cxx_source.html#l00448">448</a> of file <a class="el" href="GenieGenerator_8cxx_source.html">GenieGenerator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  448</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>; }</div>
 <div class="ttc" id="aclassGenieGenerator_html_af0f84554d20d2491d7414948b5d6f2dd"><div class="ttname"><a href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">GenieGenerator::fNevents</a></div><div class="ttdeci">int fNevents</div><div class="ttdef"><b>Definition</b> <a href="GenieGenerator_8h_source.html#l00060">GenieGenerator.h:60</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -939,70 +939,68 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  382</span>  Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = 0.;</div>
 <div class="line"><span class="lineno">  383</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = 0.;</div>
 <div class="line"><span class="lineno">  384</span>  Double_t <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = 0.;</div>
-<div class="line"><span class="lineno">  385</span>  Int_t count = 0;</div>
-<div class="line"><span class="lineno">  386</span>  <span class="keywordflow">while</span> (prob2int &lt; gRandom-&gt;Uniform(0., 1.)) {</div>
-<div class="line"><span class="lineno">  387</span>    <span class="comment">// place x,y,z uniform along path</span></div>
-<div class="line"><span class="lineno">  388</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = gRandom-&gt;Uniform(start[2], end[2]);</div>
-<div class="line"><span class="lineno">  389</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = txnu * (<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>);</div>
-<div class="line"><span class="lineno">  390</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = tynu * (<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>);</div>
-<div class="line"><span class="lineno">  391</span>    <span class="keywordflow">if</span> (mparam[6] &lt; 0.5) {</div>
-<div class="line"><span class="lineno">  392</span>      <span class="comment">// mparam is number of boundaries along path. mparam[6]=0.: uniform</span></div>
-<div class="line"><span class="lineno">  393</span>      <span class="comment">// material budget along path, use present x,y,z</span></div>
-<div class="line"><span class="lineno">  394</span>      prob2int = 2.;</div>
-<div class="line"><span class="lineno">  395</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  396</span>      <span class="comment">// get local material at this point, to calculate probability that</span></div>
-<div class="line"><span class="lineno">  397</span>      <span class="comment">// interaction is at this point.</span></div>
-<div class="line"><span class="lineno">  398</span>      TGeoNode* node = gGeoManager-&gt;FindNode(x, y, z);</div>
-<div class="line"><span class="lineno">  399</span>      TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  400</span>      <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
-<div class="line"><span class="lineno">  401</span>        mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  402</span>        <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator: mat &quot; &lt;&lt;  count &lt;&lt; &quot;, &quot; &lt;&lt;</span></div>
-<div class="line"><span class="lineno">  403</span>        <span class="comment">// mat-&gt;GetName() &lt;&lt; &quot;, &quot; &lt;&lt; mat-&gt;GetDensity() &lt;&lt; endl; density relative</span></div>
-<div class="line"><span class="lineno">  404</span>        <span class="comment">// to Prob largest density along this trajectory, i.e. use rho(Pt)</span></div>
-<div class="line"><span class="lineno">  405</span>        prob2int = mat-&gt;GetDensity() / mparam[7];</div>
-<div class="line"><span class="lineno">  406</span>        <span class="keywordflow">if</span> (prob2int &gt; 1.)</div>
-<div class="line"><span class="lineno">  407</span>          cout &lt;&lt; <span class="stringliteral">&quot;***WARNING*** GenieGenerator: prob2int &gt; Maximum density????&quot;</span></div>
-<div class="line"><span class="lineno">  408</span>               &lt;&lt; prob2int &lt;&lt; <span class="stringliteral">&quot; maxrho:&quot;</span> &lt;&lt; mparam[7]</div>
-<div class="line"><span class="lineno">  409</span>               &lt;&lt; <span class="stringliteral">&quot; material: &quot;</span> &lt;&lt; mat-&gt;GetName() &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  410</span>        count += 1;</div>
-<div class="line"><span class="lineno">  411</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  412</span>        prob2int = 0.;</div>
-<div class="line"><span class="lineno">  413</span>      }</div>
-<div class="line"><span class="lineno">  414</span>    }</div>
-<div class="line"><span class="lineno">  415</span>  }</div>
-<div class="line"><span class="lineno">  416</span>  <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator: prob2int &quot; &lt;&lt; prob2int &lt;&lt; &quot;, &quot; &lt;&lt; count &lt;&lt;</span></div>
-<div class="line"><span class="lineno">  417</span>  <span class="comment">// endl;</span></div>
-<div class="line"><span class="lineno">  418</span> </div>
-<div class="line"><span class="lineno">  419</span>  Double_t zrelative = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>;</div>
-<div class="line"><span class="lineno">  420</span>  Double_t tof = TMath::Sqrt(x * x + y * y + zrelative * zrelative) /</div>
-<div class="line"><span class="lineno">  421</span>                 2.99792458e+10;  <span class="comment">// speed of light in cm/s</span></div>
-<div class="line"><span class="lineno">  422</span>  cpg-&gt;AddTrack(</div>
-<div class="line"><span class="lineno">  423</span>      <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>, pout[0], pout[1], pout[2], x, y, z, -1, <span class="keyword">false</span>,</div>
-<div class="line"><span class="lineno">  424</span>      TMath::Sqrt(pout[0] * pout[0] + pout[1] * pout[1] + pout[2] * pout[2]),</div>
-<div class="line"><span class="lineno">  425</span>      tof, mparam[0] * mparam[4]);</div>
-<div class="line"><span class="lineno">  426</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classGenieGenerator.html#a4569f26c9518a1c247b6ac4b043c4c49">fNuOnly</a>) {</div>
-<div class="line"><span class="lineno">  427</span>    <span class="comment">// second, outgoing lepton</span></div>
-<div class="line"><span class="lineno">  428</span>    std::vector&lt;double&gt; pp = <a class="code hl_function" href="classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902">Rotate</a>(x, y, zrelative, <a class="code hl_variable" href="classGenieGenerator.html#a4aa56e0180670b29e63dd0cd758c37d1">pxl</a>, <a class="code hl_variable" href="classGenieGenerator.html#afd16e50e7e921ed4b9c6d6ea270504ac">pyl</a>, <a class="code hl_variable" href="classGenieGenerator.html#af171ff89a6f21d1795c8cf0c225af84f">pzl</a>);</div>
-<div class="line"><span class="lineno">  429</span>    Int_t oLPdgCode = <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>;</div>
-<div class="line"><span class="lineno">  430</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ac4de05620c620d858bf0fa433628b5bf">cc</a>) {</div>
-<div class="line"><span class="lineno">  431</span>      oLPdgCode = copysign(TMath::Abs(<a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>) - 1, <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>);</div>
-<div class="line"><span class="lineno">  432</span>    }</div>
-<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad946874c5703b0bc83863a3247c37da2">nuel</a>) {</div>
-<div class="line"><span class="lineno">  434</span>      oLPdgCode = 11;</div>
-<div class="line"><span class="lineno">  435</span>    }</div>
-<div class="line"><span class="lineno">  436</span>    cpg-&gt;AddTrack(oLPdgCode, pp[0], pp[1], pp[2], x, y, z, 0, <span class="keyword">true</span>, <a class="code hl_variable" href="classGenieGenerator.html#a0eff1f335e976e9bf72f9eea7e5e759d">El</a>, tof,</div>
-<div class="line"><span class="lineno">  437</span>                  mparam[0] * mparam[4]);</div>
-<div class="line"><span class="lineno">  438</span>    <span class="comment">// last, all others</span></div>
-<div class="line"><span class="lineno">  439</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classGenieGenerator.html#a6daf7957dd1346baf108e818ac551578">nf</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  440</span>      pp = <a class="code hl_function" href="classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902">Rotate</a>(x, y, zrelative, <a class="code hl_variable" href="classGenieGenerator.html#a94acc92a2ad9168042f3ba1cb87a1dff">pxf</a>[i], <a class="code hl_variable" href="classGenieGenerator.html#abb250a301b37dd4157199f6cb5d861bb">pyf</a>[i], <a class="code hl_variable" href="classGenieGenerator.html#a1591335f41667034a9c7108712f26b4a">pzf</a>[i]);</div>
-<div class="line"><span class="lineno">  441</span>      cpg-&gt;AddTrack(<a class="code hl_variable" href="classGenieGenerator.html#a7ba80fdfb680d276aac73f4d751428d5">pdgf</a>[i], pp[0], pp[1], pp[2], x, y, z, 0, <span class="keyword">true</span>, <a class="code hl_variable" href="classGenieGenerator.html#aeccda1bacf472b4e29661781d21653b0">Ef</a>[i], tof,</div>
-<div class="line"><span class="lineno">  442</span>                    mparam[0] * mparam[4]);</div>
-<div class="line"><span class="lineno">  443</span>      <span class="comment">// cout &lt;&lt; &quot;f &quot; &lt;&lt; pdgf[i] &lt;&lt; &quot; pz &quot;&lt;&lt; pzf[i] &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  444</span>    }</div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator Return from GenieGenerator&quot; &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  446</span>  }</div>
-<div class="line"><span class="lineno">  447</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  448</span>}</div>
+<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">while</span> (prob2int &lt; gRandom-&gt;Uniform(0., 1.)) {</div>
+<div class="line"><span class="lineno">  386</span>    <span class="comment">// place x,y,z uniform along path</span></div>
+<div class="line"><span class="lineno">  387</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = gRandom-&gt;Uniform(start[2], end[2]);</div>
+<div class="line"><span class="lineno">  388</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = txnu * (<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>);</div>
+<div class="line"><span class="lineno">  389</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = tynu * (<a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>);</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">if</span> (mparam[6] &lt; 0.5) {</div>
+<div class="line"><span class="lineno">  391</span>      <span class="comment">// mparam is number of boundaries along path. mparam[6]=0.: uniform</span></div>
+<div class="line"><span class="lineno">  392</span>      <span class="comment">// material budget along path, use present x,y,z</span></div>
+<div class="line"><span class="lineno">  393</span>      prob2int = 2.;</div>
+<div class="line"><span class="lineno">  394</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  395</span>      <span class="comment">// get local material at this point, to calculate probability that</span></div>
+<div class="line"><span class="lineno">  396</span>      <span class="comment">// interaction is at this point.</span></div>
+<div class="line"><span class="lineno">  397</span>      TGeoNode* node = gGeoManager-&gt;FindNode(x, y, z);</div>
+<div class="line"><span class="lineno">  398</span>      TGeoMaterial* mat = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  399</span>      <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
+<div class="line"><span class="lineno">  400</span>        mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
+<div class="line"><span class="lineno">  401</span>        <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator: mat &quot; &lt;&lt;  count &lt;&lt; &quot;, &quot; &lt;&lt;</span></div>
+<div class="line"><span class="lineno">  402</span>        <span class="comment">// mat-&gt;GetName() &lt;&lt; &quot;, &quot; &lt;&lt; mat-&gt;GetDensity() &lt;&lt; endl; density relative</span></div>
+<div class="line"><span class="lineno">  403</span>        <span class="comment">// to Prob largest density along this trajectory, i.e. use rho(Pt)</span></div>
+<div class="line"><span class="lineno">  404</span>        prob2int = mat-&gt;GetDensity() / mparam[7];</div>
+<div class="line"><span class="lineno">  405</span>        <span class="keywordflow">if</span> (prob2int &gt; 1.)</div>
+<div class="line"><span class="lineno">  406</span>          cout &lt;&lt; <span class="stringliteral">&quot;***WARNING*** GenieGenerator: prob2int &gt; Maximum density????&quot;</span></div>
+<div class="line"><span class="lineno">  407</span>               &lt;&lt; prob2int &lt;&lt; <span class="stringliteral">&quot; maxrho:&quot;</span> &lt;&lt; mparam[7]</div>
+<div class="line"><span class="lineno">  408</span>               &lt;&lt; <span class="stringliteral">&quot; material: &quot;</span> &lt;&lt; mat-&gt;GetName() &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  409</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  410</span>        prob2int = 0.;</div>
+<div class="line"><span class="lineno">  411</span>      }</div>
+<div class="line"><span class="lineno">  412</span>    }</div>
+<div class="line"><span class="lineno">  413</span>  }</div>
+<div class="line"><span class="lineno">  414</span>  <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator: prob2int &quot; &lt;&lt; prob2int &lt;&lt; &quot;, &quot; &lt;&lt; count &lt;&lt;</span></div>
+<div class="line"><span class="lineno">  415</span>  <span class="comment">// endl;</span></div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>  Double_t zrelative = <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> - <a class="code hl_variable" href="classGenieGenerator.html#a0b934c83601ea29b2d32f9a2635ec686">ztarget</a>;</div>
+<div class="line"><span class="lineno">  418</span>  Double_t tof = TMath::Sqrt(x * x + y * y + zrelative * zrelative) /</div>
+<div class="line"><span class="lineno">  419</span>                 2.99792458e+10;  <span class="comment">// speed of light in cm/s</span></div>
+<div class="line"><span class="lineno">  420</span>  cpg-&gt;AddTrack(</div>
+<div class="line"><span class="lineno">  421</span>      <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>, pout[0], pout[1], pout[2], x, y, z, -1, <span class="keyword">false</span>,</div>
+<div class="line"><span class="lineno">  422</span>      TMath::Sqrt(pout[0] * pout[0] + pout[1] * pout[1] + pout[2] * pout[2]),</div>
+<div class="line"><span class="lineno">  423</span>      tof, mparam[0] * mparam[4]);</div>
+<div class="line"><span class="lineno">  424</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classGenieGenerator.html#a4569f26c9518a1c247b6ac4b043c4c49">fNuOnly</a>) {</div>
+<div class="line"><span class="lineno">  425</span>    <span class="comment">// second, outgoing lepton</span></div>
+<div class="line"><span class="lineno">  426</span>    std::vector&lt;double&gt; pp = <a class="code hl_function" href="classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902">Rotate</a>(x, y, zrelative, <a class="code hl_variable" href="classGenieGenerator.html#a4aa56e0180670b29e63dd0cd758c37d1">pxl</a>, <a class="code hl_variable" href="classGenieGenerator.html#afd16e50e7e921ed4b9c6d6ea270504ac">pyl</a>, <a class="code hl_variable" href="classGenieGenerator.html#af171ff89a6f21d1795c8cf0c225af84f">pzl</a>);</div>
+<div class="line"><span class="lineno">  427</span>    Int_t oLPdgCode = <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>;</div>
+<div class="line"><span class="lineno">  428</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ac4de05620c620d858bf0fa433628b5bf">cc</a>) {</div>
+<div class="line"><span class="lineno">  429</span>      oLPdgCode = copysign(TMath::Abs(<a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>) - 1, <a class="code hl_variable" href="classGenieGenerator.html#a1c0fa21753f252e11ebbbd43ac06a6df">neu</a>);</div>
+<div class="line"><span class="lineno">  430</span>    }</div>
+<div class="line"><span class="lineno">  431</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad946874c5703b0bc83863a3247c37da2">nuel</a>) {</div>
+<div class="line"><span class="lineno">  432</span>      oLPdgCode = 11;</div>
+<div class="line"><span class="lineno">  433</span>    }</div>
+<div class="line"><span class="lineno">  434</span>    cpg-&gt;AddTrack(oLPdgCode, pp[0], pp[1], pp[2], x, y, z, 0, <span class="keyword">true</span>, <a class="code hl_variable" href="classGenieGenerator.html#a0eff1f335e976e9bf72f9eea7e5e759d">El</a>, tof,</div>
+<div class="line"><span class="lineno">  435</span>                  mparam[0] * mparam[4]);</div>
+<div class="line"><span class="lineno">  436</span>    <span class="comment">// last, all others</span></div>
+<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classGenieGenerator.html#a6daf7957dd1346baf108e818ac551578">nf</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  438</span>      pp = <a class="code hl_function" href="classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902">Rotate</a>(x, y, zrelative, <a class="code hl_variable" href="classGenieGenerator.html#a94acc92a2ad9168042f3ba1cb87a1dff">pxf</a>[i], <a class="code hl_variable" href="classGenieGenerator.html#abb250a301b37dd4157199f6cb5d861bb">pyf</a>[i], <a class="code hl_variable" href="classGenieGenerator.html#a1591335f41667034a9c7108712f26b4a">pzf</a>[i]);</div>
+<div class="line"><span class="lineno">  439</span>      cpg-&gt;AddTrack(<a class="code hl_variable" href="classGenieGenerator.html#a7ba80fdfb680d276aac73f4d751428d5">pdgf</a>[i], pp[0], pp[1], pp[2], x, y, z, 0, <span class="keyword">true</span>, <a class="code hl_variable" href="classGenieGenerator.html#aeccda1bacf472b4e29661781d21653b0">Ef</a>[i], tof,</div>
+<div class="line"><span class="lineno">  440</span>                    mparam[0] * mparam[4]);</div>
+<div class="line"><span class="lineno">  441</span>      <span class="comment">// cout &lt;&lt; &quot;f &quot; &lt;&lt; pdgf[i] &lt;&lt; &quot; pz &quot;&lt;&lt; pzf[i] &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  442</span>    }</div>
+<div class="line"><span class="lineno">  443</span>    <span class="comment">// cout &lt;&lt; &quot;Info GenieGenerator Return from GenieGenerator&quot; &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  444</span>  }</div>
+<div class="line"><span class="lineno">  445</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  446</span>}</div>
 <div class="ttc" id="aclassGenieGenerator_html_a29396a1cf89c0f75beefde980874eefc"><div class="ttname"><a href="classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc">GenieGenerator::endZ</a></div><div class="ttdeci">Double_t endZ</div><div class="ttdef"><b>Definition</b> <a href="GenieGenerator_8h_source.html#l00049">GenieGenerator.h:49</a></div></div>
 <div class="ttc" id="aclassGenieGenerator_html_a61eafbab79fd865f54a3c87cd2ba8744"><div class="ttname"><a href="classGenieGenerator.html#a61eafbab79fd865f54a3c87cd2ba8744">GenieGenerator::startZ</a></div><div class="ttdeci">Double_t startZ</div><div class="ttdef"><b>Definition</b> <a href="GenieGenerator_8h_source.html#l00049">GenieGenerator.h:49</a></div></div>
 <div class="ttc" id="aclassGenieGenerator_html_a8ed3e59d3b7b1752b2408a1f81cf96f8"><div class="ttname"><a href="classGenieGenerator.html#a8ed3e59d3b7b1752b2408a1f81cf96f8">GenieGenerator::pxhist</a></div><div class="ttdeci">TH1D * pxhist[3000]</div><div class="ttdef"><b>Definition</b> <a href="GenieGenerator_8h_source.html#l00066">GenieGenerator.h:66</a></div></div>

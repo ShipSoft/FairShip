@@ -13,7 +13,7 @@ var searchData=
   ['shipreco_10',['ShipReco',['../namespaceShipReco.html',1,'']]],
   ['shiproot_5fconf_11',['shipRoot_conf',['../namespaceshipRoot__conf.html',1,'']]],
   ['shipstrawtracking_12',['shipStrawTracking',['../namespaceshipStrawTracking.html',1,'']]],
-  ['shipunit_13',['shipunit',['../namespaceshipunit.html',1,'shipunit'],['../namespaceShipUnit.html',1,'ShipUnit']]],
+  ['shipunit_13',['shipunit',['../namespaceShipUnit.html',1,'ShipUnit'],['../namespaceshipunit.html',1,'shipunit']]],
   ['shipvertex_14',['shipVertex',['../namespaceshipVertex.html',1,'']]],
   ['shipveto_15',['shipVeto',['../namespaceshipVeto.html',1,'']]],
   ['splitcaldetector_16',['splitcalDetector',['../namespacesplitcalDetector.html',1,'']]],
