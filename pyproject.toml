@@ -24,6 +24,7 @@ replace-imports-with-any = [
     "genfit", "genfit.*",
     "cppyy", "cppyy.*",
     "shipRoot_conf", "shipRoot_conf.*",
+    "global_variables", "global_variables.*",
 ]
 
 ignore-missing-imports = [

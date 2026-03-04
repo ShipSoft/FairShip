@@ -35,7 +35,6 @@ MCTracksWithHitsOnly = False  # copy particles which produced a hit and their hi
 MCTracksWithEnergyCutOnly = True  # copy particles above a certain kin energy cut
 MCTracksWithHitsOrEnergyCut = False  # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
 
-charmonly = False  # option to be set with -A to enable only charm decays, charm x-sec measurement
 HNL = True
 
 inputFile = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
@@ -282,9 +281,6 @@ if options.A != "c":
     inclusive = options.A
     if options.A == "b":
         inputFile = "$EOSSHIP/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
-    if options.A.lower() == "charmonly":
-        charmonly = True
-        HNL = False
     if options.A not in ["b", "c", "bc", "meson", "pbrem", "qcd"]:
         inclusive = True
 if options.MM:
@@ -463,21 +459,6 @@ if options.pythia8:
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
         P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
-    if charmonly:
-        primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
-        ut.checkFileExists(inputFile)
-        if ship_geo.Box.gausbeam:
-            primGen.SetBeam(0.0, 0.0, 0.5, 0.5)  # more central beam, for hits in downstream detectors
-            primGen.SmearGausVertexXY(True)  # sigma = x
-        else:
-            primGen.SetBeam(
-                0.0, 0.0, ship_geo.Box.TX - 1.0, ship_geo.Box.TY - 1.0
-            )  # Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
-            primGen.SmearVertexXY(True)
-        P8gen = ROOT.Pythia8Generator()
-        P8gen.UseExternalFile(inputFile, options.firstEvent)
-        # Use geometry constants instead of fragile TGeo navigation
-        P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
     # pion on proton 500GeV
     # P8gen.SetMom(500.*u.GeV)
     # P8gen.SetId(-211)
