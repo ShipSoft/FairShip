@@ -22,7 +22,7 @@ hGeV = 6.58211928 * pow(10.0, -16) * pow(10.0, -9)  # no units or it messes up!!
 class DarkPhoton:
     "dark photon setup"
 
-    def __init__(self, mass, eps):
+    def __init__(self, mass, eps) -> None:
         self.mDarkPhoton = mass
         self.epsilon = eps
         self.dataEcm, self.dataR = self.readPDGtable()
@@ -61,7 +61,7 @@ class DarkPhoton:
         fun.SetData(self.dataEcm, self.dataR)
         return fun
 
-    def Ree_interp(self, s):  # s in GeV
+    def Ree_interp(self, s) -> float | int:  # s in GeV
         """Using PDG values for sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)"""
         # Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots
         # ecm = math.sqrt(s)
@@ -78,7 +78,7 @@ class DarkPhoton:
         # print 'Ree_interp for mass %3.3f is %.3e'%(s,result)
         return result
 
-    def leptonicDecayWidth(self, lepton):  # mDarkPhoton in GeV
+    def leptonicDecayWidth(self, lepton: str) -> float:  # mDarkPhoton in GeV
         """Dark photon decay width into leptons, in GeV (input short name of lepton family)"""
         ml = mass(lepton)
         # print 'lepton %s mass %.3e'%(lepton,ml)
@@ -94,10 +94,10 @@ class DarkPhoton:
         # print 'Leptonic decay width to %s is %.3e'%(lepton,tdw)
         return tdw
 
-    def leptonicBranchingRatio(self, lepton):
+    def leptonicBranchingRatio(self, lepton: str) -> float:
         return self.leptonicDecayWidth(lepton) / self.totalDecayWidth()
 
-    def hadronicDecayWidth(self):
+    def hadronicDecayWidth(self) -> float:
         """Dark photon decay into hadrons"""
         """(mumu)*R"""
         gmumu = self.leptonicDecayWidth("mu-")
@@ -105,10 +105,10 @@ class DarkPhoton:
         # print 'Hadronic decay width is %.3e'%(tdw)
         return tdw
 
-    def hadronicBranchingRatio(self):
+    def hadronicBranchingRatio(self) -> float:
         return self.hadronicDecayWidth() / self.totalDecayWidth()
 
-    def totalDecayWidth(self):  # mDarkPhoton in GeV
+    def totalDecayWidth(self) -> float:  # mDarkPhoton in GeV
         """Total decay width in GeV"""
         # return hGeV*c / cTau(mDarkPhoton, epsilon)
         tdw = (
@@ -122,16 +122,16 @@ class DarkPhoton:
 
         return tdw
 
-    def cTau(self):  # decay length in meters, dark photon mass in GeV
+    def cTau(self) -> float:  # decay length in meters, dark photon mass in GeV
         """Dark Photon lifetime in cm"""
         ctau = hGeV * ccm / self.totalDecayWidth()
         # print "ctau dp.py %.3e"%(ctau)
         return ctau  # GeV/MeV conversion
 
-    def lifetime(self):
+    def lifetime(self) -> float:
         return self.cTau() / ccm
 
-    def findBranchingRatio(self, decayString):
+    def findBranchingRatio(self, decayString) -> float:
         br = 0.0
         if decayString == "A -> e- e+":
             br = self.leptonicBranchingRatio("e-")
@@ -147,7 +147,7 @@ class DarkPhoton:
 
         return br
 
-    def allowedChannels(self):
+    def allowedChannels(self) -> dict[str, str]:
         print("Allowed channels for dark photon mass = %3.3f" % self.mDarkPhoton)
         allowedDecays = {"A -> hadrons": "yes"}
         if self.mDarkPhoton > 2.0 * mass("e-"):

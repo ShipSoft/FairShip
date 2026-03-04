@@ -73,7 +73,7 @@ def PDGname(particle):
     return particle
 
 
-def PDGcode(particle):
+def PDGcode(particle: str) -> int:
     """
     Read particle ID from PDG database
     """
@@ -125,7 +125,7 @@ class constants:
     Store some constants useful for HNL physics
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.decayConstant = {
             "K+": 0.156 * u.GeV,
             "K-": 0.156 * u.GeV,
@@ -180,7 +180,7 @@ class RPVSUSYbranchings:
     Lifetime and total and partial decay widths of an RPV neutralino
     """
 
-    def __init__(self, mass, couplings, sfmass, benchmark, debug=False):
+    def __init__(self, mass, couplings, sfmass, benchmark, debug: bool = False) -> None:
         r"""
         Initialize with mass and couplings of the RPV neutralino
 
@@ -231,13 +231,13 @@ class RPVSUSYbranchings:
             print("and mass:")
             print("\tm = %s GeV" % (self.MN))
 
-    def Get_Prod_Modes(self):
+    def Get_Prod_Modes(self) -> list[str]:
         return self.prods[self.bench]
 
-    def Get_Dec_Modes(self):
+    def Get_Dec_Modes(self) -> list[str]:
         return self.decays[self.bench]
 
-    def AddChannelsToPythia(self, P8Gen, verbose=True):
+    def AddChannelsToPythia(self, P8Gen, verbose: bool = True) -> None:
         decays_tmp = self.decays[self.bench]
         for decay in decays_tmp:
             decay_cpy = decay
@@ -414,7 +414,7 @@ class RPVSUSYbranchings:
         totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
         return totalwidth
 
-    def findDecayBranchingRatio(self, decayString):
+    def findDecayBranchingRatio(self, decayString: str):
         """
         Returns the branching ratio of the selected SUSY RPV neutralino decay channel
 
@@ -497,7 +497,7 @@ class RPVSUSY(RPVSUSYbranchings):
     SUSY RPV neutralino  physics according to the nuMSM
     """
 
-    def __init__(self, mass, couplings, sfmass, benchmark, debug=False):
+    def __init__(self, mass, couplings, sfmass, benchmark, debug: bool = False) -> None:
         r"""
         Initialize with mass and couplings of the HNL
 
@@ -509,7 +509,7 @@ class RPVSUSY(RPVSUSYbranchings):
         """
         RPVSUSYbranchings.__init__(self, mass, couplings, sfmass, benchmark, debug)
 
-    def computeNLifetime(self, system="SI"):
+    def computeNLifetime(self, system: str = "SI"):
         """
         Compute the RPV neutralino lifetime
 

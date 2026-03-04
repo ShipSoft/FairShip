@@ -9,7 +9,7 @@ import ROOT
 import scipy.interpolate
 
 
-def addHNLtoROOT(pid=9900015, m=1.0, g=3.654203020370371e-21):
+def addHNLtoROOT(pid: int = 9900015, m: float = 1.0, g: float = 3.654203020370371e-21) -> None:
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle("N2", "HNL", m, False, g, 0.0, "N2", pid)
 
@@ -41,7 +41,7 @@ def getmaxsumbrrpvsusy(h, histograms, mass, couplings):
     return maxsumbr
 
 
-def gettotalbrrpvsusy(h, histograms, mass, couplings):
+def gettotalbrrpvsusy(h, histograms, mass, couplings) -> float:
     totalbr = 0.0
     for histoname in histograms:
         histoname.split("_")
@@ -50,7 +50,7 @@ def gettotalbrrpvsusy(h, histograms, mass, couplings):
     return totalbr
 
 
-def make_particles_stable(P8gen, above_lifetime):
+def make_particles_stable(P8gen, above_lifetime) -> None:
     # FIXME: find time unit and add it to the docstring
     """
     Make the particles with a lifetime above the specified one stable, to allow
@@ -113,7 +113,7 @@ def parse_histograms(filepath):
     return histograms
 
 
-def make_interpolators(filepath, kind="linear"):
+def make_interpolators(filepath, kind: str = "linear"):
     """
     This function reads a file containing branching ratio histograms, and
     returns a dictionary of interpolators of the branching ratios, indexed by
@@ -139,7 +139,7 @@ def get_br(histograms, channel, mass, couplings):
     return normalized_br * coupling
 
 
-def add_particles(P8gen, particles, data):
+def add_particles(P8gen, particles, data) -> None:
     """
     Adds the corresponding particles to PYTHIA.
 
@@ -159,7 +159,7 @@ def add_particles(P8gen, particles, data):
         P8gen.SetParameters(particle["cmd"])
 
 
-def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
+def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -> None:
     "Add to PYTHIA a leptonic or semileptonic decay channel to HNL."
     if "idlepton" in ch:
         br = get_br(histograms, ch, mass, couplings)
@@ -181,7 +181,7 @@ def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         raise ValueError(f"Missing key 'idlepton' in channel {ch}")
 
 
-def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
+def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -> None:
     "Add to PYTHIA a tau decay channel to HNL."
     if "idhadron" in ch:
         br = get_br(histograms, ch, mass, couplings)
@@ -203,7 +203,7 @@ def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         raise ValueError(f"Missing key 'idhadron' in channel {ch}")
 
 
-def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
+def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon: float = 1e-6) -> None:
     """
     Add dummy channels for correct rejection sampling.
 
@@ -223,7 +223,7 @@ def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
             add_dummy_channel(P8gen, particle, remainder)
 
 
-def add_dummy_channel(P8gen, particle, remainder):
+def add_dummy_channel(P8gen, particle, remainder) -> None:
     """
     Add a dummy channel to PYTHIA, with branching ratio equal to `remainder.`
 
@@ -250,7 +250,7 @@ def add_dummy_channel(P8gen, particle, remainder):
         P8gen.SetParameters(f"{particle}:addChannel      1   {remainder:.16}    0       22      22")
 
 
-def compute_max_total_br(decay_chains):
+def compute_max_total_br(decay_chains) -> int:
     """
     This function computes the maximum total branching ratio for all decay chains.
 
@@ -272,7 +272,7 @@ def compute_max_total_br(decay_chains):
     return max(total_branching_ratios)
 
 
-def compute_total_br(particle, decay_chains):
+def compute_total_br(particle, decay_chains) -> int:
     """
     Returns the total branching ratio to HNLs for a given particle.
     """
@@ -286,12 +286,12 @@ def get_top_level_particles(decay_chains):
     return {top for (top, branching_ratios) in decay_chains}
 
 
-def exit_if_zero_br(max_total_br, selection, mass, particle="HNL"):
+def exit_if_zero_br(max_total_br, selection, mass, particle: str = "HNL") -> None:
     if max_total_br <= 0:
         print(f"No phase space for {particle} from {selection} at this mass: {mass}. Quitting.")
         sys.exit()
 
 
-def print_scale_factor(scaling_factor):
+def print_scale_factor(scaling_factor) -> None:
     "Prints the scale factor used to make event generation more efficient."
     print(f"One simulated event per {scaling_factor:.4g} meson decays")
