@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 
-def parse_comparison_file(comparison_file):
+def parse_comparison_file(comparison_file: Path):
     """
     Parse a comparison result file and extract summary.
 
@@ -81,7 +81,7 @@ def parse_comparison_file(comparison_file):
     }
 
 
-def generate_comment(comparison_dir):
+def generate_comment(comparison_dir) -> str:
     """Generate markdown PR comment from comparison results."""
     comparison_files = list(Path(comparison_dir).glob("comparison_*.txt"))
 
@@ -187,7 +187,7 @@ def generate_comment(comparison_dir):
     return "\n".join(lines)
 
 
-def main():
+def main() -> int:
     """Generate PR comment from comparison results."""
     parser = argparse.ArgumentParser(description="Generate PR comment from comparison results")
     parser.add_argument(
