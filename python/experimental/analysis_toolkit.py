@@ -4,6 +4,8 @@
 
 """Toolkit for Analysis."""
 
+from typing import Any
+
 import numpy as np
 import pythia8_conf
 import ROOT
@@ -23,11 +25,12 @@ class selection_check:
 
         fairship = ROOT.gSystem.Getenv("FAIRSHIP")
 
+        # TODO: replace with typed config
         if self.ship_geo.DecayVolumeMedium == "helium":
             with open(fairship + "/geometry/veto_config_helium.yaml") as file:
                 config = yaml.safe_load(file)
-                self.veto_geo = AttrDict(config)
-                self.veto_geo.z0
+                self.veto_geo: Any = AttrDict(config)
+                self.veto_geo.z0  # pyrefly: ignore[missing-attribute]
         if self.ship_geo.DecayVolumeMedium == "vacuums":
             with open(fairship + "/geometry/veto_config_vacuums.yaml") as file:
                 config = yaml.safe_load(file)

@@ -14,7 +14,7 @@ import dataclasses
 import json
 import typing
 from dataclasses import dataclass, field
-from typing import Any, Union
+from typing import Any, Self, Union
 
 
 class ConfigMixin:
@@ -64,7 +64,7 @@ class ConfigMixin:
         return f"{name}:\n" + "\n".join(sorted(lines))
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]):
+    def from_dict(cls, d: dict[str, Any]) -> Self:
         """Recursively construct a typed config from a plain dict.
 
         Unknown keys are silently ignored (for forward compatibility).

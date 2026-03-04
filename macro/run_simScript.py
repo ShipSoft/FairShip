@@ -460,9 +460,9 @@ if options.pythia8:
     if HNL or options.RPVSUSY or options.DarkPhoton:
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # pyrefly: ignore[unbound-name]
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # pyrefly: ignore[unbound-name]
-        P8gen.SetLmin(
+        P8gen.SetLmin(  # pyrefly: ignore[unbound-name]
             (ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0
-        )  # pyrefly: ignore[unbound-name]
+        )
         P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)  # pyrefly: ignore[unbound-name]
     # pion on proton 500GeV
     # P8gen.SetMom(500.*u.GeV)
@@ -756,8 +756,9 @@ if "P8gen" in globals():
     elif options.DarkPhoton:
         print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())  # pyrefly: ignore[unbound-name]
         print(
-            "total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP()
-        )  # pyrefly: ignore[unbound-name]
+            "total number of dark photons (including multiple meson decays per single collision) ",
+            P8gen.nrOfDP(),  # pyrefly: ignore[unbound-name]
+        )
 
 print("Output file is ", outFile)
 print("Parameter file is ", parFile)

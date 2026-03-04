@@ -573,6 +573,7 @@ def artificial_retina_pat_rec_y_view(SmearedHits, min_hits: int):
             jac=retina_grad,
             options={"gtol": 1e-6, "disp": False, "maxiter": 5},
         )
+        assert res is not None
         [k_seed_upd, b_seed_upd] = res.x
 
         atrack = {}
@@ -653,6 +654,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
             jac=retina_grad,
             options={"gtol": 1e-6, "disp": False, "maxiter": 5},
         )
+        assert res is not None
         [k_seed_upd, b_seed_upd] = res.x
 
         atrack_stereo = {}
