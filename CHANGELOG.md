@@ -24,6 +24,10 @@ it in future.
 * Make the MTC scintillating tile size configurable (#1091)
 * Change the default magnetic field of MTC (-1.2 T -> -1.7 T) and the size of the scintillating tile (1 cm -> 5 cm) (#1091)
 
+### Removed
+
+* Remove dead `charmonly` code path from `run_simScript.py` (depended on removed charmdet module)
+
 ### Fixed
 
 * Fix `MuonBackGenerator` off-by-one returning `kFALSE` when a muon is found on the last event, and gracefully stop the MC run via `gMC->StopRun()` instead of triggering FairRoot's `exit(0)`
