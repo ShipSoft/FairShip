@@ -8,6 +8,7 @@ import random
 import sys
 import time
 from array import array
+from typing import Any
 
 import ROOT
 import rootUtils as ut
@@ -323,7 +324,7 @@ for kf in idsig:
     kc = myPythia.Pycomp(kf)
     myPythia.SetMDCY(kc, 1, 0)
 
-stack = 1000 * [0]  # declare the stack for the cascade particles
+stack: list[Any] = [[] for _ in range(1000)]  # declare the stack for the cascade particles
 for iev in range(args.nevgen):
     if iev % 1000 == 0:
         print("Generate event ", iev)
@@ -336,6 +337,7 @@ for iev in range(args.nevgen):
         # generate a signal based on probabilities in hists i*10+8?
         ptot = ROOT.TMath.Sqrt(stack[nstack][1] ** 2 + stack[nstack][2] ** 2 + stack[nstack][3] ** 2)
         prbsig = 0.0
+        idpn = 0
         for i in range(1, id + 1):
             if stack[nstack][0] == idhist[i]:  # get hist id for this beam particle
                 idpn = 0
