@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os
+from typing import TypedDict
 
 import shipunit as u
 import yaml
@@ -32,7 +33,15 @@ from ship_geo_config_types import (
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
-shield_db = {
+
+
+class _ShieldEntry(TypedDict):
+    hybrid: bool
+    WithConstField: bool
+    params: list[list[float]]
+
+
+shield_db: dict[str, _ShieldEntry] = {
     "TRY_2025": {
         "hybrid": False,
         "WithConstField": False,
@@ -186,8 +195,10 @@ def create_config(
     if not shieldName:
         raise ValueError("shieldName must not be empty!")
 
-    sc_mag = shield_db[shieldName]["hybrid"]
-    with_const_field = shield_db[shieldName]["WithConstField"]
+    shield_entry = shield_db[shieldName]
+    sc_mag: bool = shield_entry["hybrid"]
+    with_const_field: bool = shield_entry["WithConstField"]
+    params: list[list[float]] = shield_entry["params"]
     yheight_cm = Yheight * u.m
     extraVesselLength = 10 * u.m
     windowBulge = 25 * u.cm
@@ -264,7 +275,6 @@ def create_config(
     hadronAbsorber = HadronAbsorberConfig(z=hadron_absorber_z, WithConstField=with_const_field)
 
     # --- Muon Shield ---
-    params = shield_db[shieldName]["params"]
     mu_shield_length = sum(line[0] + line[1] * 2 for line in params)
     n_magnets = len(params)
 
