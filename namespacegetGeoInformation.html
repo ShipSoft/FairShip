@@ -100,8 +100,8 @@ $(document).ready(function(){initNavTree('namespacegetGeoInformation.html',''); 
 Functions</h2></td></tr>
 <tr class="memitem:a448cb3b3e4a85101cc5feed35c977556" id="r_a448cb3b3e4a85101cc5feed35c977556"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556">local2Global</a> (n)</td></tr>
 <tr class="separator:a448cb3b3e4a85101cc5feed35c977556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94f229a9cbc9abdb99a3df488b8554d4" id="r_a94f229a9cbc9abdb99a3df488b8554d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a> (path, node, level, <a class="el" href="namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b">currentlevel</a>, print_sub_det_info=False)</td></tr>
-<tr class="separator:a94f229a9cbc9abdb99a3df488b8554d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda049f9fca5e1dddccbd42143bf9071" id="r_aeda049f9fca5e1dddccbd42143bf9071"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">print_info</a> (str path, node, int level, int <a class="el" href="namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b">currentlevel</a>, print_sub_det_info=False)</td></tr>
+<tr class="separator:aeda049f9fca5e1dddccbd42143bf9071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -196,16 +196,16 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a94f229a9cbc9abdb99a3df488b8554d4" name="a94f229a9cbc9abdb99a3df488b8554d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94f229a9cbc9abdb99a3df488b8554d4">&#9670;&#160;</a></span>print_info()</h2>
+<a id="aeda049f9fca5e1dddccbd42143bf9071" name="aeda049f9fca5e1dddccbd42143bf9071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeda049f9fca5e1dddccbd42143bf9071">&#9670;&#160;</a></span>print_info()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">getGeoInformation.print_info </td>
+          <td class="memname"> None getGeoInformation.print_info </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
@@ -217,13 +217,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>currentlevel</em>, </td>
         </tr>
         <tr>
@@ -241,7 +241,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="getGeoInformation_8py_source.html#l00063">63</a> of file <a class="el" href="getGeoInformation_8py_source.html">getGeoInformation.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>print_info(path, node, level, currentlevel, print_sub_det_info=False):</div>
+<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>print_info(path: str, node, level: int, currentlevel: int, print_sub_det_info=<span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><span class="lineno">   64</span>    sub_nodes = {}</div>
 <div class="line"><span class="lineno">   65</span>    fullInfo = {}</div>
 <div class="line"><span class="lineno">   66</span>    <span class="keywordflow">for</span> subnode <span class="keywordflow">in</span> node.GetNodes():</div>

@@ -1,10 +1,10 @@
 var shipDet__conf_8py =
 [
     [ "configure", "shipDet__conf_8py.html#a7f232397871353ce80c1ea03eb15bd20", null ],
-    [ "configure_snd_mtc", "shipDet__conf_8py.html#a697153d510ce945f29314cd583b91efd", null ],
-    [ "configure_snd_old", "shipDet__conf_8py.html#a478210005461058986ea79d2f13e6ee9", null ],
-    [ "configure_snd_siliconTarget", "shipDet__conf_8py.html#a66d88267d500973a8eada3f77e213076", null ],
-    [ "configure_strawtubes", "shipDet__conf_8py.html#a9c6d5720e52275dd6fb351ef7b04fa92", null ],
-    [ "configure_veto", "shipDet__conf_8py.html#a39dd79c9e985fa7e9faf4c68d305525b", null ],
+    [ "configure_snd_mtc", "shipDet__conf_8py.html#aa4ac8d6cef9fc6657dedbd2090cf8f13", null ],
+    [ "configure_snd_old", "shipDet__conf_8py.html#a2fecde7180ef767c70ab332f3e6fd134", null ],
+    [ "configure_snd_siliconTarget", "shipDet__conf_8py.html#a840ad4a7a2937c9e65146af686f32d6b", null ],
+    [ "configure_strawtubes", "shipDet__conf_8py.html#a2f1dbf4e6c24e237425ed38e92d377db", null ],
+    [ "configure_veto", "shipDet__conf_8py.html#a33cb48af606d69d43984820ec74cbe1f", null ],
     [ "detectorList", "shipDet__conf_8py.html#a0507a6f94174d43157cb96b2984eb98d", null ]
 ];

@@ -140,18 +140,18 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#aea9b30d9ce1d2787ce84f7dd5446c73c">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#aea9b30d9ce1d2787ce84f7dd5446c73c">run</a>(inFileName=&quot;test07_10cm_grid.table&quot;, outFileName=&quot;MuonFilterBFieldMap1.txt&quot;):</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a58a18ef491c14bf6d5b39d788b9cf9f9">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a58a18ef491c14bf6d5b39d788b9cf9f9">run</a>(inFileName: str = <span class="stringliteral">&quot;test07_10cm_grid.table&quot;</span>, outFileName: str = <span class="stringliteral">&quot;MuonFilterBFieldMap1.txt&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="comment"># Text format</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#a5f671477f0f68c291783d295f35fab1d">createTextMap</a>(inFileName, outFileName)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#a3fc83a2a7d80500e68ade077c1d2d61e">createTextMap</a>(inFileName, outFileName)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment"># Also create ROOT file based on the restructured text output</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    rootFileName = outFileName.replace(<span class="stringliteral">&quot;.txt&quot;</span>, <span class="stringliteral">&quot;.root&quot;</span>)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#a16e4f25b2e07cddfa6753fe9d01cb9f3">createRootMap</a>(outFileName, rootFileName)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#a094819cd077b38a2a86679030e81d9aa">createRootMap</a>(outFileName, rootFileName)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 </div>
 <div class="foldopen" id="foldopen00052" data-start="" data-end="">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a5f671477f0f68c291783d295f35fab1d">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a5f671477f0f68c291783d295f35fab1d">createTextMap</a>(inFileName, outFileName):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a3fc83a2a7d80500e68ade077c1d2d61e">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a3fc83a2a7d80500e68ade077c1d2d61e">createTextMap</a>(inFileName, outFileName) -&gt; None:</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    print(f<span class="stringliteral">&quot;Creating text map {outFileName} from {inFileName}&quot;</span>)</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    tmpFileName = <span class="stringliteral">&quot;tmpFile.txt&quot;</span></div>
@@ -203,9 +203,9 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            By = float(words[4])</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            Bz = float(words[5])</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            BxWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">formatNumber</a>(Bx)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            ByWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">formatNumber</a>(By)</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            BzWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">formatNumber</a>(Bz)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            BxWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">formatNumber</a>(Bx)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            ByWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">formatNumber</a>(By)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            BzWord = <a class="code hl_function" href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">formatNumber</a>(Bz)</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            <span class="comment"># Write out the new line. Just print out the B field components, since we</span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="comment"># can infer x,y,z co-ords from the ordering</span></div>
@@ -281,7 +281,7 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 </div>
 <div class="foldopen" id="foldopen00180" data-start="" data-end="">
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">  180</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">formatNumber</a>(x):</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">  180</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">formatNumber</a>(x: float) -&gt; str:</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="comment"># To save disk space, reduce the precision of the field value</span></div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="comment"># as we go below various thresholds</span></div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
@@ -298,7 +298,7 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 </div>
 <div class="foldopen" id="foldopen00195" data-start="" data-end="">
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a16e4f25b2e07cddfa6753fe9d01cb9f3">  195</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a16e4f25b2e07cddfa6753fe9d01cb9f3">createRootMap</a>(inFileName, outFileName):</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="namespaceconvertRALMap.html#a094819cd077b38a2a86679030e81d9aa">  195</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertRALMap.html#a094819cd077b38a2a86679030e81d9aa">createRootMap</a>(inFileName, outFileName) -&gt; None:</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    print(f<span class="stringliteral">&quot;Create ROOT map {outFileName} from {inFileName}&quot;</span>)</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
@@ -390,15 +390,15 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
 </div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#aea9b30d9ce1d2787ce84f7dd5446c73c">run</a>(<span class="stringliteral">&quot;test07_10cm_grid.table&quot;</span>, <span class="stringliteral">&quot;MuonFilterBFieldMap1.txt&quot;</span>)</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <a class="code hl_function" href="namespaceconvertRALMap.html#a58a18ef491c14bf6d5b39d788b9cf9f9">run</a>(<span class="stringliteral">&quot;test07_10cm_grid.table&quot;</span>, <span class="stringliteral">&quot;MuonFilterBFieldMap1.txt&quot;</span>)</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="comment"># run(&#39;test08_10cm_grid.table&#39;, &#39;MuonFilterBFieldMap2.txt&#39;)</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="comment"># run(&#39;test09_10cm_grid.table&#39;, &#39;MuonFilterBFieldMap3.txt&#39;)</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="comment"># run(&#39;test10_10cm_grid.table&#39;, &#39;MuonFilterBFieldMap4.txt&#39;)</span></div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="comment"># run(&#39;test12_10cm_grid.table&#39;, &#39;MuonFilterBFieldMap5.txt&#39;)</span></div>
-<div class="ttc" id="anamespaceconvertRALMap_html_a06b2b44fa51aac743ba6c27d19b0818f"><div class="ttname"><a href="namespaceconvertRALMap.html#a06b2b44fa51aac743ba6c27d19b0818f">convertRALMap.formatNumber</a></div><div class="ttdeci">formatNumber(x)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00180">convertRALMap.py:180</a></div></div>
-<div class="ttc" id="anamespaceconvertRALMap_html_a16e4f25b2e07cddfa6753fe9d01cb9f3"><div class="ttname"><a href="namespaceconvertRALMap.html#a16e4f25b2e07cddfa6753fe9d01cb9f3">convertRALMap.createRootMap</a></div><div class="ttdeci">createRootMap(inFileName, outFileName)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00195">convertRALMap.py:195</a></div></div>
-<div class="ttc" id="anamespaceconvertRALMap_html_a5f671477f0f68c291783d295f35fab1d"><div class="ttname"><a href="namespaceconvertRALMap.html#a5f671477f0f68c291783d295f35fab1d">convertRALMap.createTextMap</a></div><div class="ttdeci">createTextMap(inFileName, outFileName)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00052">convertRALMap.py:52</a></div></div>
-<div class="ttc" id="anamespaceconvertRALMap_html_aea9b30d9ce1d2787ce84f7dd5446c73c"><div class="ttname"><a href="namespaceconvertRALMap.html#aea9b30d9ce1d2787ce84f7dd5446c73c">convertRALMap.run</a></div><div class="ttdeci">run(inFileName=&quot;test07_10cm_grid.table&quot;, outFileName=&quot;MuonFilterBFieldMap1.txt&quot;)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00043">convertRALMap.py:43</a></div></div>
+<div class="ttc" id="anamespaceconvertRALMap_html_a094819cd077b38a2a86679030e81d9aa"><div class="ttname"><a href="namespaceconvertRALMap.html#a094819cd077b38a2a86679030e81d9aa">convertRALMap.createRootMap</a></div><div class="ttdeci">None createRootMap(inFileName, outFileName)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00195">convertRALMap.py:195</a></div></div>
+<div class="ttc" id="anamespaceconvertRALMap_html_a3fc83a2a7d80500e68ade077c1d2d61e"><div class="ttname"><a href="namespaceconvertRALMap.html#a3fc83a2a7d80500e68ade077c1d2d61e">convertRALMap.createTextMap</a></div><div class="ttdeci">None createTextMap(inFileName, outFileName)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00052">convertRALMap.py:52</a></div></div>
+<div class="ttc" id="anamespaceconvertRALMap_html_a58a18ef491c14bf6d5b39d788b9cf9f9"><div class="ttname"><a href="namespaceconvertRALMap.html#a58a18ef491c14bf6d5b39d788b9cf9f9">convertRALMap.run</a></div><div class="ttdeci">None run(str inFileName=&quot;test07_10cm_grid.table&quot;, str outFileName=&quot;MuonFilterBFieldMap1.txt&quot;)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00043">convertRALMap.py:43</a></div></div>
+<div class="ttc" id="anamespaceconvertRALMap_html_a6ccc94556d4744636a48f5e3e967cd36"><div class="ttname"><a href="namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36">convertRALMap.formatNumber</a></div><div class="ttdeci">str formatNumber(float x)</div><div class="ttdef"><b>Definition</b> <a href="convertRALMap_8py_source.html#l00180">convertRALMap.py:180</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

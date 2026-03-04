@@ -97,24 +97,24 @@ $(document).ready(function(){initNavTree('namespaceinspect__tree__branches.html'
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4cbbeae23907d01f454c6a1e8c1cb08e" id="r_a4cbbeae23907d01f454c6a1e8c1cb08e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspect__tree__branches.html#a4cbbeae23907d01f454c6a1e8c1cb08e">inspect_tree_branches</a> (input_file, tree_name)</td></tr>
-<tr class="separator:a4cbbeae23907d01f454c6a1e8c1cb08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e143d67889541c19c63fcd5364ef4ec" id="r_a1e143d67889541c19c63fcd5364ef4ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspect__tree__branches.html#a1e143d67889541c19c63fcd5364ef4ec">main</a> ()</td></tr>
-<tr class="separator:a1e143d67889541c19c63fcd5364ef4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a521ae0ff73061ec00ffcdcbaeb201295" id="r_a521ae0ff73061ec00ffcdcbaeb201295"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspect__tree__branches.html#a521ae0ff73061ec00ffcdcbaeb201295">inspect_tree_branches</a> (input_file, tree_name)</td></tr>
+<tr class="separator:a521ae0ff73061ec00ffcdcbaeb201295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e5ce9f3ca2717af9297073670999454" id="r_a4e5ce9f3ca2717af9297073670999454"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspect__tree__branches.html#a4e5ce9f3ca2717af9297073670999454">main</a> ()</td></tr>
+<tr class="separator:a4e5ce9f3ca2717af9297073670999454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Inspect TTree branches to find which ones use TObjArray or other unsupported types.
 
 This helps identify branches that would prevent RNTuple conversion.
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a4cbbeae23907d01f454c6a1e8c1cb08e" name="a4cbbeae23907d01f454c6a1e8c1cb08e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cbbeae23907d01f454c6a1e8c1cb08e">&#9670;&#160;</a></span>inspect_tree_branches()</h2>
+<a id="a521ae0ff73061ec00ffcdcbaeb201295" name="a521ae0ff73061ec00ffcdcbaeb201295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a521ae0ff73061ec00ffcdcbaeb201295">&#9670;&#160;</a></span>inspect_tree_branches()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inspect_tree_branches.inspect_tree_branches </td>
+          <td class="memname"> bool inspect_tree_branches.inspect_tree_branches </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>input_file</em>, </td>
@@ -139,7 +139,7 @@ Args:
     tree_name: Name of the TTree to inspect
 </pre> 
 <p class="definition">Definition at line <a class="el" href="inspect__tree__branches_8py_source.html#l00016">16</a> of file <a class="el" href="inspect__tree__branches_8py_source.html">inspect_tree_branches.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span><span class="keyword">def </span><a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(input_file, tree_name):</div>
+<div class="fragment"><div class="line"><span class="lineno">   16</span><span class="keyword">def </span><a class="code hl_namespace" href="namespaceinspect__tree__branches.html">inspect_tree_branches</a>(input_file, tree_name) -&gt; bool:</div>
 <div class="line"><span class="lineno">   17</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   18</span><span class="stringliteral">    Inspect all branches in a TTree and report their types.</span></div>
 <div class="line"><span class="lineno">   19</span><span class="stringliteral"></span> </div>
@@ -210,14 +210,14 @@ Args:
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a1e143d67889541c19c63fcd5364ef4ec" name="a1e143d67889541c19c63fcd5364ef4ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e143d67889541c19c63fcd5364ef4ec">&#9670;&#160;</a></span>main()</h2>
+<a id="a4e5ce9f3ca2717af9297073670999454" name="a4e5ce9f3ca2717af9297073670999454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e5ce9f3ca2717af9297073670999454">&#9670;&#160;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inspect_tree_branches.main </td>
+          <td class="memname"> int inspect_tree_branches.main </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -226,7 +226,7 @@ Args:
 </div><div class="memdoc">
 <pre class="fragment">Parse arguments and run the TTree branch inspection.</pre> 
 <p class="definition">Definition at line <a class="el" href="inspect__tree__branches_8py_source.html#l00083">83</a> of file <a class="el" href="inspect__tree__branches_8py_source.html">inspect_tree_branches.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="fragment"><div class="line"><span class="lineno">   83</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() -&gt; int:</div>
 <div class="line"><span class="lineno">   84</span>    <span class="stringliteral">&quot;&quot;&quot;Parse arguments and run the TTree branch inspection.&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   85</span>    parser = argparse.ArgumentParser(description=<span class="stringliteral">&quot;Inspect TTree branches for RNTuple compatibility&quot;</span>)</div>
 <div class="line"><span class="lineno">   86</span>    parser.add_argument(<span class="stringliteral">&quot;-f&quot;</span>, <span class="stringliteral">&quot;--input-file&quot;</span>, required=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;Input ROOT file&quot;</span>)</div>

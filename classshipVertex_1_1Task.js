@@ -1,11 +1,11 @@
 var classshipVertex_1_1Task =
 [
-    [ "__init__", "classshipVertex_1_1Task.html#abbe8c35724edd26fa3443238835a2d24", null ],
-    [ "chi2", "classshipVertex_1_1Task.html#ac68af861c9c137709488fb9461823af6", null ],
-    [ "execute", "classshipVertex_1_1Task.html#aea8fd6acbf344aa7d1104f3dd37e318e", null ],
-    [ "fcn", "classshipVertex_1_1Task.html#a6e2990195bdca1b65f5aa634f6c86c5e", null ],
-    [ "residuals", "classshipVertex_1_1Task.html#adf12a22ecb4fc91a57da42435eb28302", null ],
-    [ "TwoTrackVertex", "classshipVertex_1_1Task.html#a582df5f4779aa45dfab73f22d645330b", null ],
+    [ "__init__", "classshipVertex_1_1Task.html#ad24035fffb7368e2c8b983c307f0f071", null ],
+    [ "chi2", "classshipVertex_1_1Task.html#af4b5b45f380bba6037a12de48b94a0f2", null ],
+    [ "execute", "classshipVertex_1_1Task.html#ad3b6ca33c6dbacdbd127c5dbf9026d32", null ],
+    [ "fcn", "classshipVertex_1_1Task.html#a584a51495b0b99857f7c00d5157edd64", null ],
+    [ "residuals", "classshipVertex_1_1Task.html#acf58b39be9d62ad4e55ef955707b9c41", null ],
+    [ "TwoTrackVertex", "classshipVertex_1_1Task.html#a05c9c6228be8c7358fed28db577e25d7", null ],
     [ "VertexError", "classshipVertex_1_1Task.html#aa67a3ef5247c7f98bdffc19c1de28248", null ],
     [ "fitTrackLoc", "classshipVertex_1_1Task.html#a8f47d281152a1520072deb2591b0fca0", null ],
     [ "fPartArray", "classshipVertex_1_1Task.html#a70ad22db45107af549be32527fb1af7c", null ],

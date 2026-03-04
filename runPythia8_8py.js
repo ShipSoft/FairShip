@@ -1,9 +1,9 @@
 var runPythia8_8py =
 [
-    [ "debugging", "runPythia8_8py.html#ae6a73a659d6a1897400a667a62fe20dc", null ],
-    [ "muflux", "runPythia8_8py.html#a5f965e436da25a417a7fa219d245bb87", null ],
-    [ "na50", "runPythia8_8py.html#ad3343bde85b5ee6fa2d1bccf80b3c16f", null ],
-    [ "yBeam", "runPythia8_8py.html#afaeb74208f80b0b2797ac51b2943a90c", null ],
+    [ "debugging", "runPythia8_8py.html#a6790ed3261cc0c5b3db0280d05f32ac2", null ],
+    [ "muflux", "runPythia8_8py.html#a7e4ed622839ca085a33ce945da6312b8", null ],
+    [ "na50", "runPythia8_8py.html#aee8ad9ec7b436a89728d499ec2bfe518", null ],
+    [ "yBeam", "runPythia8_8py.html#a0773b179ce66354584f56325e5da1bc0", null ],
     [ "A", "runPythia8_8py.html#a527266378c7f0299bad9b3c32d02d15b", null ],
     [ "action", "runPythia8_8py.html#ad69d0c69790bfb569c4217571c0807e6", null ],
     [ "cosCS", "runPythia8_8py.html#a54c0517d8b951828c7d0b1842d8961b2", null ],

@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('muDIS__mergeFiles_8py_source.html','')
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#a500b25fa8ced3622c7a6fb33f4a5c4a9">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#a500b25fa8ced3622c7a6fb33f4a5c4a9">merge</a>():</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6">merge</a>() -&gt; None:</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    sTree = ROOT.TChain(<span class="stringliteral">&quot;DIS&quot;</span>)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0, 12):</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        fn = <span class="stringliteral">&quot;muonDis_&quot;</span> + str(i) + <span class="stringliteral">&quot;.root&quot;</span></div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('muDIS__mergeFiles_8py_source.html','')
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 </div>
 <div class="foldopen" id="foldopen00045" data-start="" data-end="">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#a1a441eb731971198a418bf5e43b8498f">   45</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#a1a441eb731971198a418bf5e43b8498f">hadd</a>():</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#a4272df3d93776489cbaf69a8c4a2ca87">   45</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#a4272df3d93776489cbaf69a8c4a2ca87">hadd</a>() -&gt; None:</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    cmd = <span class="stringliteral">&quot;hadd -f muonDIS.root &quot;</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0, 12):</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        cmd += <span class="stringliteral">&quot; muonDis_&quot;</span> + str(i) + <span class="stringliteral">&quot;.root &quot;</span></div>
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('muDIS__mergeFiles_8py_source.html','')
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 </div>
 <div class="foldopen" id="foldopen00052" data-start="" data-end="">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#ae633d630389477c65ffb7896803ee8db">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#ae633d630389477c65ffb7896803ee8db">makePlots</a>(sTree):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a">makePlots</a>(sTree) -&gt; None:</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    ut.bookHist(h, <span class="stringliteral">&quot;muP&quot;</span>, <span class="stringliteral">&quot;muon mom&quot;</span>, 100, 0.0, 400.0)</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    ut.bookHist(h, <span class="stringliteral">&quot;nOut&quot;</span>, <span class="stringliteral">&quot;outgoing part&quot;</span>, 100, -0.5, 99.5)</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    ut.bookHist(h, <span class="stringliteral">&quot;pos&quot;</span>, <span class="stringliteral">&quot;position&quot;</span>, 100, -25.0, 100.0, 100, -12.0, 12.0, 100, -13.0, 13.0)</div>
@@ -169,15 +169,15 @@ $(document).ready(function(){initNavTree('muDIS__mergeFiles_8py_source.html','')
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 </div>
 <div class="foldopen" id="foldopen00066" data-start="" data-end="">
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#a2ad4e59b5b770f5e8954ae02a12b75c0">   66</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#a2ad4e59b5b770f5e8954ae02a12b75c0">test</a>(fn=&quot;test.root&quot;):</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a">   66</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a">test</a>(fn: str = <span class="stringliteral">&quot;test.root&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    fm = ROOT.TFile(fn)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    sTree = fm.DIS</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_function" href="namespacemuDIS__mergeFiles.html#ae633d630389477c65ffb7896803ee8db">makePlots</a>(sTree)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_function" href="namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a">makePlots</a>(sTree)</div>
 </div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a1a441eb731971198a418bf5e43b8498f"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a1a441eb731971198a418bf5e43b8498f">muDIS_mergeFiles.hadd</a></div><div class="ttdeci">hadd()</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00045">muDIS_mergeFiles.py:45</a></div></div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a2ad4e59b5b770f5e8954ae02a12b75c0"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a2ad4e59b5b770f5e8954ae02a12b75c0">muDIS_mergeFiles.test</a></div><div class="ttdeci">test(fn=&quot;test.root&quot;)</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00066">muDIS_mergeFiles.py:66</a></div></div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a500b25fa8ced3622c7a6fb33f4a5c4a9"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a500b25fa8ced3622c7a6fb33f4a5c4a9">muDIS_mergeFiles.merge</a></div><div class="ttdeci">merge()</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00012">muDIS_mergeFiles.py:12</a></div></div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_ae633d630389477c65ffb7896803ee8db"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#ae633d630389477c65ffb7896803ee8db">muDIS_mergeFiles.makePlots</a></div><div class="ttdeci">makePlots(sTree)</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00052">muDIS_mergeFiles.py:52</a></div></div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a4272df3d93776489cbaf69a8c4a2ca87"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a4272df3d93776489cbaf69a8c4a2ca87">muDIS_mergeFiles.hadd</a></div><div class="ttdeci">None hadd()</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00045">muDIS_mergeFiles.py:45</a></div></div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_ab4fbf22cc0259817a2268d6b4f736bf6"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#ab4fbf22cc0259817a2268d6b4f736bf6">muDIS_mergeFiles.merge</a></div><div class="ttdeci">None merge()</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00012">muDIS_mergeFiles.py:12</a></div></div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_ac9b6cc3beba4698015a60694a23fb16a"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#ac9b6cc3beba4698015a60694a23fb16a">muDIS_mergeFiles.test</a></div><div class="ttdeci">None test(str fn=&quot;test.root&quot;)</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00066">muDIS_mergeFiles.py:66</a></div></div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_aec573fccfc6fe0a2450b5d41ae58767a"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#aec573fccfc6fe0a2450b5d41ae58767a">muDIS_mergeFiles.makePlots</a></div><div class="ttdeci">None makePlots(sTree)</div><div class="ttdef"><b>Definition</b> <a href="muDIS__mergeFiles_8py_source.html#l00052">muDIS_mergeFiles.py:52</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

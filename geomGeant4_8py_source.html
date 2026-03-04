@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="foldopen" id="foldopen00018" data-start="" data-end="">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">   18</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">_collectVolumeNames</a>(volume, listOfVolumes):</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#aced3292aa39fec0f3597a18f514e402f">   18</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#aced3292aa39fec0f3597a18f514e402f">_collectVolumeNames</a>(volume, listOfVolumes) -&gt; None:</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="stringliteral">&quot;&quot;&quot;Recursively walk the geometry tree collecting volume names from nodes.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    nodes = volume.GetNodes()</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> nodes:</div>
@@ -125,16 +125,16 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        name = node.GetVolume().GetName()</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> listOfVolumes:</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            listOfVolumes.append(name)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <a class="code hl_function" href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">_collectVolumeNames</a>(node.GetVolume(), listOfVolumes)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <a class="code hl_function" href="namespacegeomGeant4.html#aced3292aa39fec0f3597a18f514e402f">_collectVolumeNames</a>(node.GetVolume(), listOfVolumes)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 </div>
 <div class="foldopen" id="foldopen00031" data-start="" data-end="">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ae41b6a93f03889dc1a38e05679f5071a">   31</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ae41b6a93f03889dc1a38e05679f5071a">check4OrphanVolumes</a>(fGeo):</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ae3d74ef2d5660273de7239246eed0532">   31</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ae3d74ef2d5660273de7239246eed0532">check4OrphanVolumes</a>(fGeo) -&gt; None:</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment"># fill list with volumes from nodes and compare with list of volumes</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    top = fGeo.GetTopVolume()</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    listOfVolumes = [top.GetName()]</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <a class="code hl_function" href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">_collectVolumeNames</a>(top, listOfVolumes)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <a class="code hl_function" href="namespacegeomGeant4.html#aced3292aa39fec0f3597a18f514e402f">_collectVolumeNames</a>(top, listOfVolumes)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    orphan = []</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    gIndex = {}</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 </div>
 <div class="foldopen" id="foldopen00053" data-start="" data-end="">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ad1bc38dde32ac2c89553e6422eb09cbe">   53</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ad1bc38dde32ac2c89553e6422eb09cbe">setMagnetField</a>(flag=None):</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a6500b277d02453ad29b61dda2281a7d0">   53</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a6500b277d02453ad29b61dda2281a7d0">setMagnetField</a>(flag=None) -&gt; None:</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    print(<span class="stringliteral">&quot;setMagnetField() called. Out of date, does not set field for tau neutrino detector!&quot;</span>)</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    fGeo = ROOT.gGeoManager</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    vols = fGeo.GetListOfVolumes()</div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 </div>
 <div class="foldopen" id="foldopen00104" data-start="" data-end="">
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a94824fb939dfabe0f91f3fdd5af302ff">  104</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a94824fb939dfabe0f91f3fdd5af302ff">printWF</a>(vl, alreadyPrinted, onlyWithField=True):</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a">  104</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a">printWF</a>(vl, alreadyPrinted, onlyWithField: bool = <span class="keyword">True</span>):</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    magnetMass = 0</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    vname = vl.GetName().data()</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> vname <span class="keywordflow">in</span> alreadyPrinted:</div>
@@ -251,7 +251,7 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 </div>
 <div class="foldopen" id="foldopen00146" data-start="" data-end="">
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc">  146</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc">nextLevel</a>(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0">  146</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0">nextLevel</a>(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    tmp = 0</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> range(lv.GetNoDaughters()):</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        lvn = lv.GetDaughter(da)</div>
@@ -260,16 +260,16 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        lvln = lvn.GetLogicalVolume()</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordflow">if</span> lvln.GetNoDaughters() &gt; 0:</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            xtmp, dummy = <a class="code hl_function" href="namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc">nextLevel</a>(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            xtmp, dummy = <a class="code hl_function" href="namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0">nextLevel</a>(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            magnetMass += xtmp</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            tmp += <a class="code hl_function" href="namespacegeomGeant4.html#a94824fb939dfabe0f91f3fdd5af302ff">printWF</a>(lvn, alreadyPrinted, onlyWithField)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            tmp += <a class="code hl_function" href="namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a">printWF</a>(lvn, alreadyPrinted, onlyWithField)</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">return</span> tmp, magnetMass</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
 </div>
 <div class="foldopen" id="foldopen00162" data-start="" data-end="">
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">  162</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">printWeightsandFields</a>(onlyWithField=True, exclude=[]):</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a7db0e00952696006ad5fe31d2c3c5654">  162</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a7db0e00952696006ad5fe31d2c3c5654">printWeightsandFields</a>(onlyWithField: bool = <span class="keyword">True</span>, exclude=[]) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordflow">if</span> len(exclude) != 0:</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        print(<span class="stringliteral">&quot;will not search in &quot;</span>, exclude)</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
@@ -277,14 +277,14 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    magnetMass = 0</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    alreadyPrinted = {}</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    dummy, nM = <a class="code hl_function" href="namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc">nextLevel</a>(world, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    dummy, nM = <a class="code hl_function" href="namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0">nextLevel</a>(world, magnetMass, onlyWithField, exclude, alreadyPrinted)</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    print(<span class="stringliteral">&quot;total magnet mass&quot;</span>, nM / 1000.0, <span class="stringliteral">&quot;t&quot;</span>)</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">return</span></div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
 </div>
 <div class="foldopen" id="foldopen00175" data-start="" data-end="">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a2e0675741c9ad605b9b09b48cfb50be7">  175</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a2e0675741c9ad605b9b09b48cfb50be7">addVMCFields</a>(shipGeo, controlFile=&quot;&quot;, verbose=False, withVirtualMC=True):</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">  175</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">addVMCFields</a>(shipGeo, controlFile: str = <span class="stringliteral">&quot;&quot;</span>, verbose: bool = <span class="keyword">False</span>, withVirtualMC: bool = <span class="keyword">True</span>):</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="stringliteral">    Define VMC B fields, e.g. global field, field maps, local or local+global fields</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
 </div>
 <div class="foldopen" id="foldopen00231" data-start="" data-end="">
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">  231</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">printVMCFields</a>():</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#aba553dcfd77eda82c10886fd0fec4e91">  231</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#aba553dcfd77eda82c10886fd0fec4e91">printVMCFields</a>() -&gt; None:</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="stringliteral">    Method to print out information about VMC fields</span></div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
@@ -375,14 +375,14 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
 </div>
 <div class="foldopen" id="foldopen00260" data-start="" data-end="">
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a288084eb8f8a4fe125651f8d322eb960">  260</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a288084eb8f8a4fe125651f8d322eb960">startUI</a>():</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ab9e46efa9bc333e742210c0da93c42e5">  260</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ab9e46efa9bc333e742210c0da93c42e5">startUI</a>() -&gt; None:</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    session = ROOT.G4UIterminal()</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    session.SessionStart()</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
 </div>
 <div class="foldopen" id="foldopen00265" data-start="" data-end="">
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#ac7fb93820e5ef14db111724b25216d48">  265</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#ac7fb93820e5ef14db111724b25216d48">debug</a>():</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="namespacegeomGeant4.html#a206ac2f71fe1bfc9d80e978e0fdc40e2">  265</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegeomGeant4.html#a206ac2f71fe1bfc9d80e978e0fdc40e2">debug</a>() -&gt; None:</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    gt = ROOT.G4TransportationManager.GetTransportationManager()</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    gn = gt.GetNavigatorForTracking()</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    world = gn.GetWorldVolume().GetLogicalVolume()</div>
@@ -409,17 +409,17 @@ $(document).ready(function(){initNavTree('geomGeant4_8py_source.html',''); initR
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    fl = magB.GetField()</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    print(fl.GetFieldValue()[0], fl.GetFieldValue()[1], fl.GetFieldValue()[2])</div>
 </div>
-<div class="ttc" id="anamespacegeomGeant4_html_a0b3a37be8c641c12bb33aa7dabf9d8dc"><div class="ttname"><a href="namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc">geomGeant4.nextLevel</a></div><div class="ttdeci">nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00146">geomGeant4.py:146</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a288084eb8f8a4fe125651f8d322eb960"><div class="ttname"><a href="namespacegeomGeant4.html#a288084eb8f8a4fe125651f8d322eb960">geomGeant4.startUI</a></div><div class="ttdeci">startUI()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00260">geomGeant4.py:260</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a2cbf5bdfe03787d918546f67d925e597"><div class="ttname"><a href="namespacegeomGeant4.html#a2cbf5bdfe03787d918546f67d925e597">geomGeant4.printWeightsandFields</a></div><div class="ttdeci">printWeightsandFields(onlyWithField=True, exclude=[])</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00162">geomGeant4.py:162</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a2e0675741c9ad605b9b09b48cfb50be7"><div class="ttname"><a href="namespacegeomGeant4.html#a2e0675741c9ad605b9b09b48cfb50be7">geomGeant4.addVMCFields</a></div><div class="ttdeci">addVMCFields(shipGeo, controlFile=&quot;&quot;, verbose=False, withVirtualMC=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00175">geomGeant4.py:175</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a71f637b146dcfe94b369f6ee94958cea"><div class="ttname"><a href="namespacegeomGeant4.html#a71f637b146dcfe94b369f6ee94958cea">geomGeant4.printVMCFields</a></div><div class="ttdeci">printVMCFields()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00231">geomGeant4.py:231</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_a94824fb939dfabe0f91f3fdd5af302ff"><div class="ttname"><a href="namespacegeomGeant4.html#a94824fb939dfabe0f91f3fdd5af302ff">geomGeant4.printWF</a></div><div class="ttdeci">printWF(vl, alreadyPrinted, onlyWithField=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00104">geomGeant4.py:104</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_ac353476aeead59742f229d658ad5f02b"><div class="ttname"><a href="namespacegeomGeant4.html#ac353476aeead59742f229d658ad5f02b">geomGeant4._collectVolumeNames</a></div><div class="ttdeci">_collectVolumeNames(volume, listOfVolumes)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00018">geomGeant4.py:18</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_ac7fb93820e5ef14db111724b25216d48"><div class="ttname"><a href="namespacegeomGeant4.html#ac7fb93820e5ef14db111724b25216d48">geomGeant4.debug</a></div><div class="ttdeci">debug()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00265">geomGeant4.py:265</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a206ac2f71fe1bfc9d80e978e0fdc40e2"><div class="ttname"><a href="namespacegeomGeant4.html#a206ac2f71fe1bfc9d80e978e0fdc40e2">geomGeant4.debug</a></div><div class="ttdeci">None debug()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00265">geomGeant4.py:265</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a6500b277d02453ad29b61dda2281a7d0"><div class="ttname"><a href="namespacegeomGeant4.html#a6500b277d02453ad29b61dda2281a7d0">geomGeant4.setMagnetField</a></div><div class="ttdeci">None setMagnetField(flag=None)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00053">geomGeant4.py:53</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a724303a4fd9998c82c60471393aa37a0"><div class="ttname"><a href="namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0">geomGeant4.nextLevel</a></div><div class="ttdeci">nextLevel(lv, int magnetMass, onlyWithField, exclude, alreadyPrinted)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00146">geomGeant4.py:146</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a7db0e00952696006ad5fe31d2c3c5654"><div class="ttname"><a href="namespacegeomGeant4.html#a7db0e00952696006ad5fe31d2c3c5654">geomGeant4.printWeightsandFields</a></div><div class="ttdeci">None printWeightsandFields(bool onlyWithField=True, exclude=[])</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00162">geomGeant4.py:162</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a8cfc0857eacf293ed0d9c8b83e9f226a"><div class="ttname"><a href="namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a">geomGeant4.printWF</a></div><div class="ttdeci">printWF(vl, alreadyPrinted, bool onlyWithField=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00104">geomGeant4.py:104</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_a92c04a276d287a72320c3f0ed4f5a420"><div class="ttname"><a href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">geomGeant4.addVMCFields</a></div><div class="ttdeci">addVMCFields(shipGeo, str controlFile=&quot;&quot;, bool verbose=False, bool withVirtualMC=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00175">geomGeant4.py:175</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_ab9e46efa9bc333e742210c0da93c42e5"><div class="ttname"><a href="namespacegeomGeant4.html#ab9e46efa9bc333e742210c0da93c42e5">geomGeant4.startUI</a></div><div class="ttdeci">None startUI()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00260">geomGeant4.py:260</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_aba553dcfd77eda82c10886fd0fec4e91"><div class="ttname"><a href="namespacegeomGeant4.html#aba553dcfd77eda82c10886fd0fec4e91">geomGeant4.printVMCFields</a></div><div class="ttdeci">None printVMCFields()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00231">geomGeant4.py:231</a></div></div>
 <div class="ttc" id="anamespacegeomGeant4_html_accd78301c3c7ff189d3039b2930167b1"><div class="ttname"><a href="namespacegeomGeant4.html#accd78301c3c7ff189d3039b2930167b1">geomGeant4.getRunManager</a></div><div class="ttdeci">getRunManager()</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00256">geomGeant4.py:256</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_ad1bc38dde32ac2c89553e6422eb09cbe"><div class="ttname"><a href="namespacegeomGeant4.html#ad1bc38dde32ac2c89553e6422eb09cbe">geomGeant4.setMagnetField</a></div><div class="ttdeci">setMagnetField(flag=None)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00053">geomGeant4.py:53</a></div></div>
-<div class="ttc" id="anamespacegeomGeant4_html_ae41b6a93f03889dc1a38e05679f5071a"><div class="ttname"><a href="namespacegeomGeant4.html#ae41b6a93f03889dc1a38e05679f5071a">geomGeant4.check4OrphanVolumes</a></div><div class="ttdeci">check4OrphanVolumes(fGeo)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00031">geomGeant4.py:31</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_aced3292aa39fec0f3597a18f514e402f"><div class="ttname"><a href="namespacegeomGeant4.html#aced3292aa39fec0f3597a18f514e402f">geomGeant4._collectVolumeNames</a></div><div class="ttdeci">None _collectVolumeNames(volume, listOfVolumes)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00018">geomGeant4.py:18</a></div></div>
+<div class="ttc" id="anamespacegeomGeant4_html_ae3d74ef2d5660273de7239246eed0532"><div class="ttname"><a href="namespacegeomGeant4.html#ae3d74ef2d5660273de7239246eed0532">geomGeant4.check4OrphanVolumes</a></div><div class="ttdeci">None check4OrphanVolumes(fGeo)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00031">geomGeant4.py:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

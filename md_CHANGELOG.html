@@ -119,11 +119,16 @@ Added</h2>
 <ul>
 <li>Add Findgenfit2.cmake module to support both upstream GenFit and the fork</li>
 <li>New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map</li>
-<li>Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer </li>
+<li>Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer</li>
+<li>Add clang-tidy and pyrefly static analysis to CI</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Changed</h2>
 <ul>
+<li>Add type annotations across the Python codebase using pyrefly infer</li>
+<li>Add mypy pre-commit hook for gradual type checking</li>
+<li>Fix pickle serialisation file modes in <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a> (text → binary)</li>
+<li>Fix type annotations for physics quantities (axis limits, momentum/IP cuts) from int to float</li>
 <li>Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059</li>
 <li>Change a const char* in <a class="el" href="classSHiP_1_1Generator.html">SHiP::Generator</a> to optional&lt;string&gt;. #1053</li>
 <li>Only get evtNo in <a class="el" href="classShipStack.html">ShipStack</a> if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051</li>

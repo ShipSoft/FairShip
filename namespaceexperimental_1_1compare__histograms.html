@@ -98,10 +98,10 @@ $(document).ready(function(){initNavTree('namespaceexperimental_1_1compare__hist
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3b917802d991eb03dd0e4b41fda9b16d" id="r_a3b917802d991eb03dd0e4b41fda9b16d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexperimental_1_1compare__histograms.html#a3b917802d991eb03dd0e4b41fda9b16d">compare_histograms</a> (hist1, hist2, use_ks_test=False, significance_threshold=0.05)</td></tr>
-<tr class="separator:a3b917802d991eb03dd0e4b41fda9b16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a144d3fb2ba95b485e443d7b3ce52ab99" id="r_a144d3fb2ba95b485e443d7b3ce52ab99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexperimental_1_1compare__histograms.html#a144d3fb2ba95b485e443d7b3ce52ab99">main</a> (file1_path, file2_path, use_ks_test, significance_threshold)</td></tr>
-<tr class="separator:a144d3fb2ba95b485e443d7b3ce52ab99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50304cf9e3f3b546d1322dad208b569c" id="r_a50304cf9e3f3b546d1322dad208b569c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexperimental_1_1compare__histograms.html#a50304cf9e3f3b546d1322dad208b569c">compare_histograms</a> (hist1, hist2, bool use_ks_test=False, float significance_threshold=0.05)</td></tr>
+<tr class="separator:a50304cf9e3f3b546d1322dad208b569c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9880fe51ce56747e6d4362a16ce5d416" id="r_a9880fe51ce56747e6d4362a16ce5d416"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexperimental_1_1compare__histograms.html#a9880fe51ce56747e6d4362a16ce5d416">main</a> (file1_path, file2_path, use_ks_test, significance_threshold)</td></tr>
+<tr class="separator:a9880fe51ce56747e6d4362a16ce5d416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -120,14 +120,14 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Compare histogreams for exact or statistical equality.</pre> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a3b917802d991eb03dd0e4b41fda9b16d" name="a3b917802d991eb03dd0e4b41fda9b16d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b917802d991eb03dd0e4b41fda9b16d">&#9670;&#160;</a></span>compare_histograms()</h2>
+<a id="a50304cf9e3f3b546d1322dad208b569c" name="a50304cf9e3f3b546d1322dad208b569c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50304cf9e3f3b546d1322dad208b569c">&#9670;&#160;</a></span>compare_histograms()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">experimental.compare_histograms.compare_histograms </td>
+          <td class="memname"> bool experimental.compare_histograms.compare_histograms </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>hist1</em>, </td>
@@ -141,13 +141,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">bool &#160;</td>
           <td class="paramname"><em>use_ks_test</em> = <code>False</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">float &#160;</td>
           <td class="paramname"><em>significance_threshold</em> = <code>0.05</code>&#160;</td>
         </tr>
         <tr>
@@ -169,7 +169,7 @@ Returns:
 bool: True if the histograms are equal or statistically compatible, False otherwise.
 </pre> 
 <p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00012">12</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):</div>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test: bool = <span class="keyword">False</span>, significance_threshold: float = 0.05) -&gt; bool:</div>
 <div class="line"><span class="lineno">   13</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   14</span><span class="stringliteral">    Compare two histograms for equality or statistical compatibility.</span></div>
 <div class="line"><span class="lineno">   15</span><span class="stringliteral"></span> </div>
@@ -203,14 +203,14 @@ bool: True if the histograms are equal or statistically compatible, False otherw
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a144d3fb2ba95b485e443d7b3ce52ab99" name="a144d3fb2ba95b485e443d7b3ce52ab99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a144d3fb2ba95b485e443d7b3ce52ab99">&#9670;&#160;</a></span>main()</h2>
+<a id="a9880fe51ce56747e6d4362a16ce5d416" name="a9880fe51ce56747e6d4362a16ce5d416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9880fe51ce56747e6d4362a16ce5d416">&#9670;&#160;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">experimental.compare_histograms.main </td>
+          <td class="memname"> None experimental.compare_histograms.main </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>file1_path</em>, </td>
@@ -249,7 +249,7 @@ use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical
 significance_threshold (float): The significance threshold for the KS test.
 </pre> 
 <p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00043">43</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold):</div>
+<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold) -&gt; None:</div>
 <div class="line"><span class="lineno">   44</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   45</span><span class="stringliteral">    Compare histograms in two ROOT files.</span></div>
 <div class="line"><span class="lineno">   46</span><span class="stringliteral"></span> </div>
@@ -263,7 +263,7 @@ significance_threshold (float): The significance threshold for the KS test.
 <div class="line"><span class="lineno">   54</span> </div>
 <div class="line"><span class="lineno">   55</span>    <span class="comment"># Get the list of histogram names from the first file</span></div>
 <div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">def </span>isuproothist(inkey, fileno):</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">def </span>isuproothist(inkey, fileno: int) -&gt; bool:</div>
 <div class="line"><span class="lineno">   58</span>        isHist = <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">   59</span>        <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">   60</span>            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)</div>

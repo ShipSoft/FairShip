@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="foldopen" id="foldopen00020" data-start="" data-end="">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">   20</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(x, ba=None, be=None):</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b">   20</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b">fitSingleGauss</a>(x: str, ba: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>, be: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    name = <span class="stringliteral">&quot;myGauss_&quot;</span> + x</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="foldopen" id="foldopen00048" data-start="" data-end="">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">   48</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">execute_parallel</a>(prefix, ncpu=4):</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a50fa30944f4a7323e37b0792b1600765">   48</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a50fa30944f4a7323e37b0792b1600765">execute_parallel</a>(prefix, ncpu: int = 4):</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    cpus = {}</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    log = {}</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ncpu):</div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 </div>
 <div class="foldopen" id="foldopen00082" data-start="" data-end="">
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">   82</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix):</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">   82</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix) -&gt; list[str]:</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    jobs = []</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&quot;.&quot;</span>):</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(prefix) &lt; 0:</div>
@@ -194,7 +194,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
 </div>
 <div class="foldopen" id="foldopen00091" data-start="" data-end="">
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">   91</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>():</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">   91</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">checkRunningProcesses</a>() -&gt; int:</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span> + user).read()</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    nproc = 0</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> processoutput.split(<span class="stringliteral">&quot;\n&quot;</span>):</div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 </div>
 <div class="foldopen" id="foldopen00100" data-start="" data-end="">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">  100</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">killAll</a>():</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a05572a1e4ec79ffd714836761001a55b">  100</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a05572a1e4ec79ffd714836761001a55b">killAll</a>() -&gt; None:</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    processoutput = os.popen(<span class="stringliteral">&quot;ps -u &quot;</span> + user).read()</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> processoutput.split(<span class="stringliteral">&quot;\n&quot;</span>):</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&quot;python&quot;</span>) &lt; 0:</div>
@@ -216,10 +216,10 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 </div>
 <div class="foldopen" id="foldopen00109" data-start="" data-end="">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">  109</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(prefixes, reset=False):</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ad9ba5194ac9252fd33978eae413f84cd">  109</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ad9ba5194ac9252fd33978eae413f84cd">executeSimple</a>(prefixes: list[str], reset=<span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    proc = {}</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix)</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            print(<span class="stringliteral">&quot;change to directory &quot;</span>, x)</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + x)</div>
@@ -236,7 +236,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                inputfile = geofile.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>, <span class="stringliteral">&quot;ship&quot;</span>)</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                nproc = 100</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                <span class="keywordflow">while</span> nproc &gt; ncores:</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                    nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                    nproc = <a class="code hl_function" href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">checkRunningProcesses</a>()</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                    <span class="keywordflow">if</span> nproc &gt; ncores:</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                        print(<span class="stringliteral">&quot;wait a minute&quot;</span>)</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                        time.sleep(100)</div>
@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + p)</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            nproc = 100</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">while</span> nproc &gt; ncores:</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">checkRunningProcesses</a>()</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                <span class="keywordflow">if</span> nproc &gt; ncores:</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    print(<span class="stringliteral">&quot;wait a minute&quot;</span>)</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                    time.sleep(100)</div>
@@ -283,7 +283,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                time.sleep(10)</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                print(<span class="stringliteral">&quot;Rec job not finished yet&quot;</span>, p)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">checkRunningProcesses</a>()</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                nproc = <a class="code hl_function" href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">checkRunningProcesses</a>()</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                <span class="keywordflow">if</span> nproc == 1:</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                    print(<span class="stringliteral">&quot;rec job probably failed, only when python process running&quot;</span>)</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                time.sleep(100)</div>
@@ -292,10 +292,10 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
 </div>
 <div class="foldopen" id="foldopen00183" data-start="" data-end="">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">  183</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">executeAna</a>(prefixes):</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aba8ac18625de3760c9b7b274df03f23b">  183</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#aba8ac18625de3760c9b7b274df03f23b">executeAna</a>(prefixes) -&gt; None:</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    log = {}</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix)</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            print(<span class="stringliteral">&quot;change to directory &quot;</span>, x)</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            os.chdir(<span class="stringliteral">&quot;./&quot;</span> + x)</div>
@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
 <div class="foldopen" id="foldopen00207" data-start="" data-end="">
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">  207</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(p):</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7">  207</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7">mergeHistosMakePlots</a>(p: list[str]) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isinstance(p, list):</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        pl = [p]</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">else</span>:</div>
@@ -359,7 +359,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        cv = h[<span class="stringliteral">&quot;fitresults&quot;</span>].cd(4)</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        h[<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>] = h[<span class="stringliteral">&quot;delPOverP2&quot;</span>].ProjectionY()</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        h[<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>].Draw()</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>)</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <a class="code hl_function" href="namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b">fitSingleGauss</a>(<span class="stringliteral">&quot;delPOverP2_proj&quot;</span>)</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        h[<span class="stringliteral">&quot;fitresults&quot;</span>].Print(<span class="stringliteral">&quot;fitresults.gif&quot;</span>)</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        ut.bookCanvas(h, key=<span class="stringliteral">&quot;fitresults2&quot;</span>, title=<span class="stringliteral">&quot;Fit Results&quot;</span>, nx=1600, ny=1200, cx=2, cy=2)</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        print(<span class="stringliteral">&quot;finished with first canvas&quot;</span>)</div>
@@ -369,7 +369,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        h[<span class="stringliteral">&quot;IP0&quot;</span>].Draw()</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(3)</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        h[<span class="stringliteral">&quot;HNL&quot;</span>].Draw()</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <a class="code hl_function" href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">fitSingleGauss</a>(<span class="stringliteral">&quot;HNL&quot;</span>, 0.0, 2.0)</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <a class="code hl_function" href="namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b">fitSingleGauss</a>(<span class="stringliteral">&quot;HNL&quot;</span>, 0.0, 2.0)</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        cv = h[<span class="stringliteral">&quot;fitresults2&quot;</span>].cd(4)</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        h[<span class="stringliteral">&quot;IP0/mass&quot;</span>].Draw(<span class="stringliteral">&quot;box&quot;</span>)</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        h[<span class="stringliteral">&quot;fitresults2&quot;</span>].Print(<span class="stringliteral">&quot;fitresults2.gif&quot;</span>)</div>
@@ -379,9 +379,9 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
 </div>
 <div class="foldopen" id="foldopen00266" data-start="" data-end="">
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">  266</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(prefixes):</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c">  266</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c">mergeNtuples</a>(prefixes: list[str]) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix)</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        haddCommand = <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
@@ -398,7 +398,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">  280</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(prefixes, quiet=False):</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    summary = {<span class="stringliteral">&quot;Sim&quot;</span>: {}, <span class="stringliteral">&quot;Rec&quot;</span>: {}, <span class="stringliteral">&quot;Ana&quot;</span>: {}}</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix)</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                log = open(x + <span class="stringliteral">&quot;/log&quot;</span>)</div>
@@ -464,7 +464,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
 </div>
 <div class="foldopen" id="foldopen00347" data-start="" data-end="">
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">  347</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">printFailedJobs</a>(pl):</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a65a88e0c2c6866584af433f15bd3c11c">  347</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a65a88e0c2c6866584af433f15bd3c11c">printFailedJobs</a>(pl) -&gt; None:</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl, quiet=<span class="keyword">True</span>)</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> result:</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[p]:</div>
@@ -474,17 +474,17 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
 </div>
 <div class="foldopen" id="foldopen00355" data-start="" data-end="">
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">  355</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">execute</a>():</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <a class="code hl_function" href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">executeSimple</a>(pl, reset=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <a class="code hl_function" href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">mergeHistosMakePlots</a>(pl)</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <a class="code hl_function" href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">mergeNtuples</a>(pl)</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2cd24bf2999c328b3874d12ed65f1560">  355</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2cd24bf2999c328b3874d12ed65f1560">execute</a>() -&gt; None:</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <a class="code hl_function" href="namespacerun__reco.html#ad9ba5194ac9252fd33978eae413f84cd">executeSimple</a>(pl, reset=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <a class="code hl_function" href="namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7">mergeHistosMakePlots</a>(pl)</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <a class="code hl_function" href="namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c">mergeNtuples</a>(pl)</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
 </div>
 <div class="foldopen" id="foldopen00361" data-start="" data-end="">
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">  361</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">removeIntermediateFiles</a>(prefixes):</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a95d22d06377209debcc97fb72320639c">  361</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a95d22d06377209debcc97fb72320639c">removeIntermediateFiles</a>(prefixes) -&gt; None:</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> prefixes:</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">getJobs</a>(prefix)</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        jobs = <a class="code hl_function" href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">getJobs</a>(prefix)</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        <span class="keywordflow">for</span> x <span class="keywordflow">in</span> jobs:</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(x):</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>) &lt; 0:</div>
@@ -494,7 +494,7 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
 </div>
 <div class="foldopen" id="foldopen00371" data-start="" data-end="">
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">  371</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">copyRecoToEos</a>(pl):</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacerun__reco.html#a71b16d9c3ceec3674092360818165322">  371</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__reco.html#a71b16d9c3ceec3674092360818165322">copyRecoToEos</a>(pl) -&gt; None:</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    result = <a class="code hl_function" href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">checkProd</a>(pl, quiet=<span class="keyword">True</span>)</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> result[<span class="stringliteral">&quot;Rec&quot;</span>]:</div>
@@ -537,20 +537,20 @@ $(document).ready(function(){initNavTree('run__reco_8py_source.html',''); initRe
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>print(<span class="stringliteral">&quot; removeIntermediateFiles(pl) only _rec &quot;</span>)</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>print(<span class="stringliteral">&quot; checkRunningProcesses() &quot;</span>)</div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="comment"># 61,611,612,613,614,615,616,62,621,622,623,624,625,626</span></div>
-<div class="ttc" id="anamespacerun__reco_html_a088900932dc88aa02c54b314bb00cd72"><div class="ttname"><a href="namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72">run_reco.removeIntermediateFiles</a></div><div class="ttdeci">removeIntermediateFiles(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00361">run_reco.py:361</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a234045bab4a14769c501bbee93be59cb"><div class="ttname"><a href="namespacerun__reco.html#a234045bab4a14769c501bbee93be59cb">run_reco.fitSingleGauss</a></div><div class="ttdeci">fitSingleGauss(x, ba=None, be=None)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00020">run_reco.py:20</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a2aeff2abc7e871ba3f88c8192c7aad0d"><div class="ttname"><a href="namespacerun__reco.html#a2aeff2abc7e871ba3f88c8192c7aad0d">run_reco.copyRecoToEos</a></div><div class="ttdeci">copyRecoToEos(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00371">run_reco.py:371</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a2ed832760693e6ac7125bfffa8b40227"><div class="ttname"><a href="namespacerun__reco.html#a2ed832760693e6ac7125bfffa8b40227">run_reco.executeSimple</a></div><div class="ttdeci">executeSimple(prefixes, reset=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00109">run_reco.py:109</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a3424015eb33497656d431f179af23295"><div class="ttname"><a href="namespacerun__reco.html#a3424015eb33497656d431f179af23295">run_reco.mergeHistosMakePlots</a></div><div class="ttdeci">mergeHistosMakePlots(p)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00207">run_reco.py:207</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a3887783d2d08cfbc1602f0b78b27ade8"><div class="ttname"><a href="namespacerun__reco.html#a3887783d2d08cfbc1602f0b78b27ade8">run_reco.checkRunningProcesses</a></div><div class="ttdeci">checkRunningProcesses()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00091">run_reco.py:91</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a66ca87893feed968ac57348d5dc6e258"><div class="ttname"><a href="namespacerun__reco.html#a66ca87893feed968ac57348d5dc6e258">run_reco.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00355">run_reco.py:355</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a716d50f4bb1f155dbad1e09376d7ab1f"><div class="ttname"><a href="namespacerun__reco.html#a716d50f4bb1f155dbad1e09376d7ab1f">run_reco.printFailedJobs</a></div><div class="ttdeci">printFailedJobs(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00347">run_reco.py:347</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a05572a1e4ec79ffd714836761001a55b"><div class="ttname"><a href="namespacerun__reco.html#a05572a1e4ec79ffd714836761001a55b">run_reco.killAll</a></div><div class="ttdeci">None killAll()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00100">run_reco.py:100</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a2cd24bf2999c328b3874d12ed65f1560"><div class="ttname"><a href="namespacerun__reco.html#a2cd24bf2999c328b3874d12ed65f1560">run_reco.execute</a></div><div class="ttdeci">None execute()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00355">run_reco.py:355</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a50fa30944f4a7323e37b0792b1600765"><div class="ttname"><a href="namespacerun__reco.html#a50fa30944f4a7323e37b0792b1600765">run_reco.execute_parallel</a></div><div class="ttdeci">execute_parallel(prefix, int ncpu=4)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00048">run_reco.py:48</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a65a88e0c2c6866584af433f15bd3c11c"><div class="ttname"><a href="namespacerun__reco.html#a65a88e0c2c6866584af433f15bd3c11c">run_reco.printFailedJobs</a></div><div class="ttdeci">None printFailedJobs(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00347">run_reco.py:347</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a71b16d9c3ceec3674092360818165322"><div class="ttname"><a href="namespacerun__reco.html#a71b16d9c3ceec3674092360818165322">run_reco.copyRecoToEos</a></div><div class="ttdeci">None copyRecoToEos(pl)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00371">run_reco.py:371</a></div></div>
 <div class="ttc" id="anamespacerun__reco_html_a7460d2d540a34984cc19de7da821a46c"><div class="ttname"><a href="namespacerun__reco.html#a7460d2d540a34984cc19de7da821a46c">run_reco.checkProd</a></div><div class="ttdeci">checkProd(prefixes, quiet=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00280">run_reco.py:280</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_a96a4162b5cd78998373a3bd5daff67fe"><div class="ttname"><a href="namespacerun__reco.html#a96a4162b5cd78998373a3bd5daff67fe">run_reco.execute_parallel</a></div><div class="ttdeci">execute_parallel(prefix, ncpu=4)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00048">run_reco.py:48</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_ab7bd132b6defae6b97e7ca99c9aa6270"><div class="ttname"><a href="namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270">run_reco.executeAna</a></div><div class="ttdeci">executeAna(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00183">run_reco.py:183</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_aba0d272015e806800c99eefda16dd03a"><div class="ttname"><a href="namespacerun__reco.html#aba0d272015e806800c99eefda16dd03a">run_reco.mergeNtuples</a></div><div class="ttdeci">mergeNtuples(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00266">run_reco.py:266</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_ac9462d0c2d3b3b9405fcb71b1baa5794"><div class="ttname"><a href="namespacerun__reco.html#ac9462d0c2d3b3b9405fcb71b1baa5794">run_reco.getJobs</a></div><div class="ttdeci">getJobs(prefix)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00082">run_reco.py:82</a></div></div>
-<div class="ttc" id="anamespacerun__reco_html_acd860dae4886cb6ce24632c1bb22c4f1"><div class="ttname"><a href="namespacerun__reco.html#acd860dae4886cb6ce24632c1bb22c4f1">run_reco.killAll</a></div><div class="ttdeci">killAll()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00100">run_reco.py:100</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a95d22d06377209debcc97fb72320639c"><div class="ttname"><a href="namespacerun__reco.html#a95d22d06377209debcc97fb72320639c">run_reco.removeIntermediateFiles</a></div><div class="ttdeci">None removeIntermediateFiles(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00361">run_reco.py:361</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a9969292effee8b2e7fc302ac9f16ee2c"><div class="ttname"><a href="namespacerun__reco.html#a9969292effee8b2e7fc302ac9f16ee2c">run_reco.mergeNtuples</a></div><div class="ttdeci">None mergeNtuples(list[str] prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00266">run_reco.py:266</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a9d4908376d6fb3dba3e1818b61525af1"><div class="ttname"><a href="namespacerun__reco.html#a9d4908376d6fb3dba3e1818b61525af1">run_reco.getJobs</a></div><div class="ttdeci">list[str] getJobs(prefix)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00082">run_reco.py:82</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_a9f4ed23cf08a48f98b7458496bacfbe7"><div class="ttname"><a href="namespacerun__reco.html#a9f4ed23cf08a48f98b7458496bacfbe7">run_reco.mergeHistosMakePlots</a></div><div class="ttdeci">None mergeHistosMakePlots(list[str] p)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00207">run_reco.py:207</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_aba8ac18625de3760c9b7b274df03f23b"><div class="ttname"><a href="namespacerun__reco.html#aba8ac18625de3760c9b7b274df03f23b">run_reco.executeAna</a></div><div class="ttdeci">None executeAna(prefixes)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00183">run_reco.py:183</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_abfa4660185e9030354d9c6817f975964"><div class="ttname"><a href="namespacerun__reco.html#abfa4660185e9030354d9c6817f975964">run_reco.checkRunningProcesses</a></div><div class="ttdeci">int checkRunningProcesses()</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00091">run_reco.py:91</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_ad9ba5194ac9252fd33978eae413f84cd"><div class="ttname"><a href="namespacerun__reco.html#ad9ba5194ac9252fd33978eae413f84cd">run_reco.executeSimple</a></div><div class="ttdeci">None executeSimple(list[str] prefixes, reset=False)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00109">run_reco.py:109</a></div></div>
+<div class="ttc" id="anamespacerun__reco_html_aeb64b43ab3c678d2c1a20f6f427deb3b"><div class="ttname"><a href="namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b">run_reco.fitSingleGauss</a></div><div class="ttdeci">None fitSingleGauss(str x, float|None ba=None, float|None be=None)</div><div class="ttdef"><b>Definition</b> <a href="run__reco_8py_source.html#l00020">run_reco.py:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

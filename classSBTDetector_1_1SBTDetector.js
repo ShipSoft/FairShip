@@ -1,5 +1,5 @@
 var classSBTDetector_1_1SBTDetector =
 [
-    [ "__init__", "classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1", null ],
-    [ "digitize", "classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e", null ]
+    [ "__init__", "classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c", null ],
+    [ "digitize", "classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960", null ]
 ];

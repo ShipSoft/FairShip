@@ -107,16 +107,16 @@ $(document).ready(function(){initNavTree('SBTDetector_8py_source.html',''); init
 <div class="foldopen" id="foldopen00008" data-start="" data-end="">
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classSBTDetector_1_1SBTDetector.html">SBTDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
 <div class="foldopen" id="foldopen00009" data-start="" data-end="">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">    9</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c">    9</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c">__init__</a>(</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        self,</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        name,</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        intree,</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        branchName=None,</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        mcBranchType=None,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        mcBranchName=&quot;digiSBT2MC&quot;,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        outtree=None,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ):</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        super().<a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">__init__</a>(</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        mcBranchName: str = <span class="stringliteral">&quot;digiSBT2MC&quot;</span>,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        outtree=<span class="keywordtype">None</span>,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        super().<a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c">__init__</a>(</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            name,</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            intree,</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            branchName,</div>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('SBTDetector_8py_source.html',''); init
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 </div>
 <div class="foldopen" id="foldopen00027" data-start="" data-end="">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">   27</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">digitize</a>(self):</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960">   27</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960">digitize</a>(self) -&gt; None:</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize Surrounding Background Tagger MC hits.</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="stringliteral"></span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral">        TDC defined as the time of the first MC hit in the cell.</span></div>
@@ -166,8 +166,8 @@ $(document).ready(function(){initNavTree('SBTDetector_8py_source.html',''); init
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_a44b08d07048c21b3a72e3f6c5b987950"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">BaseDetector.BaseDetector.MCdet</a></div><div class="ttdeci">MCdet</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00030">BaseDetector.py:30</a></div></div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html_ac54365eaaae58490fec19a48f04928b7"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">BaseDetector.BaseDetector.intree</a></div><div class="ttdeci">intree</div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00026">BaseDetector.py:26</a></div></div>
 <div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html">SBTDetector.SBTDetector</a></div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00008">SBTDetector.py:8</a></div></div>
-<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ad0819987e76dc55409ead538c25cf7c1"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ad0819987e76dc55409ead538c25cf7c1">SBTDetector.SBTDetector.__init__</a></div><div class="ttdeci">__init__(self, name, intree, branchName=None, mcBranchType=None, mcBranchName=&quot;digiSBT2MC&quot;, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00009">SBTDetector.py:17</a></div></div>
-<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ae6d48310b5a5d3df02fd2ee24ed21d6e"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">SBTDetector.SBTDetector.digitize</a></div><div class="ttdeci">digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00027">SBTDetector.py:27</a></div></div>
+<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_ad9f86da14fd0c2904d6324e83973e26c"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#ad9f86da14fd0c2904d6324e83973e26c">SBTDetector.SBTDetector.__init__</a></div><div class="ttdeci">None __init__(self, name, intree, branchName=None, mcBranchType=None, str mcBranchName=&quot;digiSBT2MC&quot;, outtree=None)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00009">SBTDetector.py:17</a></div></div>
+<div class="ttc" id="aclassSBTDetector_1_1SBTDetector_html_addad85128a94a0bb4536533125dab960"><div class="ttname"><a href="classSBTDetector_1_1SBTDetector.html#addad85128a94a0bb4536533125dab960">SBTDetector.SBTDetector.digitize</a></div><div class="ttdeci">None digitize(self)</div><div class="ttdef"><b>Definition</b> <a href="SBTDetector_8py_source.html#l00027">SBTDetector.py:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

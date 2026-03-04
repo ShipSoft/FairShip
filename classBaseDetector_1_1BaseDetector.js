@@ -1,10 +1,10 @@
 var classBaseDetector_1_1BaseDetector =
 [
-    [ "__init__", "classBaseDetector_1_1BaseDetector.html#a770798bc9f8dc602ddd63f5e8c99d8a6", null ],
-    [ "delete", "classBaseDetector_1_1BaseDetector.html#a9849299ed6ff5da8cb6c10a61d135a9f", null ],
-    [ "digitize", "classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5", null ],
-    [ "fill", "classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8", null ],
-    [ "process", "classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2", null ],
+    [ "__init__", "classBaseDetector_1_1BaseDetector.html#ad0458fbec6a5ae742036f89bf8f60952", null ],
+    [ "delete", "classBaseDetector_1_1BaseDetector.html#a6bfc2bcf9a634132e4d1bdce53af9245", null ],
+    [ "digitize", "classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71", null ],
+    [ "fill", "classBaseDetector_1_1BaseDetector.html#afb98baebfbe6b254b26fbab440e0e9a9", null ],
+    [ "process", "classBaseDetector_1_1BaseDetector.html#ae6b443140a2e90b05c1421b29ad6fd16", null ],
     [ "branch", "classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46", null ],
     [ "det", "classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492", null ],
     [ "intree", "classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7", null ],

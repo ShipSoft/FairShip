@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c">yBeam</a>(Mproton=0.938272081, pbeam=400.0):</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0">yBeam</a>(Mproton: float = 0.938272081, pbeam: float = 400.0):</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Ebeam = ROOT.TMath.Sqrt(pbeam**2 + Mproton**2)</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    betaCM = pbeam / (Ebeam + Mproton)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    y_beam = 0.5 * ROOT.TMath.Log((1 + betaCM) / (1 - betaCM))  <span class="comment"># https://arxiv.org/pdf/1604.02651.pdf</span></div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>timer.Start()</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a4147fbd806b90468dee39fd9e8b57c9a">  111</a></span>ntagged = {<span class="stringliteral">&quot;p&quot;</span>: 0, <span class="stringliteral">&quot;n&quot;</span>: 0}</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a">  112</a></span>ybeam = <a class="code hl_function" href="namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c">yBeam</a>(pbeam=options.fMom)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a5b3558b48027106d182fd3d46514884a">  112</a></span>ybeam = <a class="code hl_function" href="namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0">yBeam</a>(pbeam=options.fMom)</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(<a class="code hl_variable" href="namespacerunPythia8.html#a1135a48d19eb061057b3c6ae189948d8">int</a>(options.NPoT)):</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">for</span> g <span class="keywordflow">in</span> generators:</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">  115</a></span>        py = generators[g]</div>
@@ -291,7 +291,7 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="foldopen" id="foldopen00192" data-start="" data-end="">
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#ad3343bde85b5ee6fa2d1bccf80b3c16f">  192</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#ad3343bde85b5ee6fa2d1bccf80b3c16f">na50</a>(online=True):</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518">  192</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518">na50</a>(online: bool = <span class="keyword">True</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">for</span> g <span class="keywordflow">in</span> generators:</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="keywordflow">if</span> online:</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            processes = generators[g].info.codesHard()</div>
@@ -359,7 +359,7 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
 </div>
 <div class="foldopen" id="foldopen00258" data-start="" data-end="">
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a5f965e436da25a417a7fa219d245bb87">  258</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#a5f965e436da25a417a7fa219d245bb87">muflux</a>():</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a7e4ed622839ca085a33ce945da6312b8">  258</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#a7e4ed622839ca085a33ce945da6312b8">muflux</a>() -&gt; None:</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    Z_Mo = 96.0</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    P_Mo = 42</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    fraction = {}</div>
@@ -390,17 +390,17 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
 </div>
 <div class="foldopen" id="foldopen00287" data-start="" data-end="">
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#ae6a73a659d6a1897400a667a62fe20dc">  287</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#ae6a73a659d6a1897400a667a62fe20dc">debugging</a>(g):</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerunPythia8.html#a6790ed3261cc0c5b3db0280d05f32ac2">  287</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerunPythia8.html#a6790ed3261cc0c5b3db0280d05f32ac2">debugging</a>(g) -&gt; None:</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    generators[g].settings.listAll()</div>
 </div>
+<div class="ttc" id="anamespacerunPythia8_html_a0773b179ce66354584f56325e5da1bc0"><div class="ttname"><a href="namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0">runPythia8.yBeam</a></div><div class="ttdeci">yBeam(float Mproton=0.938272081, float pbeam=400.0)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00043">runPythia8.py:43</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a1135a48d19eb061057b3c6ae189948d8"><div class="ttname"><a href="namespacerunPythia8.html#a1135a48d19eb061057b3c6ae189948d8">runPythia8.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00023">runPythia8.py:23</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_a5f965e436da25a417a7fa219d245bb87"><div class="ttname"><a href="namespacerunPythia8.html#a5f965e436da25a417a7fa219d245bb87">runPythia8.muflux</a></div><div class="ttdeci">muflux()</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00258">runPythia8.py:258</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_a6790ed3261cc0c5b3db0280d05f32ac2"><div class="ttname"><a href="namespacerunPythia8.html#a6790ed3261cc0c5b3db0280d05f32ac2">runPythia8.debugging</a></div><div class="ttdeci">None debugging(g)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00287">runPythia8.py:287</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_a7e4ed622839ca085a33ce945da6312b8"><div class="ttname"><a href="namespacerunPythia8.html#a7e4ed622839ca085a33ce945da6312b8">runPythia8.muflux</a></div><div class="ttdeci">None muflux()</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00258">runPythia8.py:258</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ac637689a93f1fc521a1470e34d9ea6a3"><div class="ttname"><a href="namespacerunPythia8.html#ac637689a93f1fc521a1470e34d9ea6a3">runPythia8.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00026">runPythia8.py:26</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_acbae278a806f44f92e66a24ebb610794"><div class="ttname"><a href="namespacerunPythia8.html#acbae278a806f44f92e66a24ebb610794">runPythia8.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00032">runPythia8.py:32</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_ad3343bde85b5ee6fa2d1bccf80b3c16f"><div class="ttname"><a href="namespacerunPythia8.html#ad3343bde85b5ee6fa2d1bccf80b3c16f">runPythia8.na50</a></div><div class="ttdeci">na50(online=True)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00192">runPythia8.py:192</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ad6b7ec130f84165691f3d15beb4ac6ea"><div class="ttname"><a href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">runPythia8.py</a></div><div class="ttdeci">dict py</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00115">runPythia8.py:115</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_ae6a73a659d6a1897400a667a62fe20dc"><div class="ttname"><a href="namespacerunPythia8.html#ae6a73a659d6a1897400a667a62fe20dc">runPythia8.debugging</a></div><div class="ttdeci">debugging(g)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00287">runPythia8.py:287</a></div></div>
-<div class="ttc" id="anamespacerunPythia8_html_afaeb74208f80b0b2797ac51b2943a90c"><div class="ttname"><a href="namespacerunPythia8.html#afaeb74208f80b0b2797ac51b2943a90c">runPythia8.yBeam</a></div><div class="ttdeci">yBeam(Mproton=0.938272081, pbeam=400.0)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00043">runPythia8.py:43</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_aee8ad9ec7b436a89728d499ec2bfe518"><div class="ttname"><a href="namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518">runPythia8.na50</a></div><div class="ttdeci">None na50(bool online=True)</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00192">runPythia8.py:192</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

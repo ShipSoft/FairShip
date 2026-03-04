@@ -1,7 +1,7 @@
 var run__simScript_8py =
 [
-    [ "checkOverlapsWithGeant4", "run__simScript_8py.html#ac6390391d3c0b2c299be2757e56f72a4", null ],
-    [ "visualizeMagFields", "run__simScript_8py.html#a389396898b5b5a2fdae48a4fa4ab4b14", null ],
+    [ "checkOverlapsWithGeant4", "run__simScript_8py.html#a0ba5fb603df27a98103959b42c5cdd8f", null ],
+    [ "visualizeMagFields", "run__simScript_8py.html#a0d8a3c689350819a350b633286a36197", null ],
     [ "action", "run__simScript_8py.html#a6056f7d17a9444f227c9edf13d243928", null ],
     [ "available_snd_designs", "run__simScript_8py.html#a09a47a1444f396ea256094d6dce75404", null ],
     [ "branches", "run__simScript_8py.html#aab4426f598376be65d04e68a577d8ae8", null ],

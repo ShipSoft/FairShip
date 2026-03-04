@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('evd__fillEnergy_8py_source.html',''); 
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 </div>
 <div class="foldopen" id="foldopen00046" data-start="" data-end="">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespaceevd__fillEnergy.html#a394eaa81a82fd73f3c535578ad06a768">   46</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__fillEnergy.html#a394eaa81a82fd73f3c535578ad06a768">trajectory_init</a>(lsOfGlobals, name=&quot;SHiP MuonTraj&quot;):</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespaceevd__fillEnergy.html#a834aa4524b6fa47ff20eddba685596de">   46</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__fillEnergy.html#a834aa4524b6fa47ff20eddba685596de">trajectory_init</a>(lsOfGlobals, name: str = <span class="stringliteral">&quot;SHiP MuonTraj&quot;</span>):</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    traj = lsOfGlobals.FindObject(name)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> traj:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        traj = ROOT.TGraph()</div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('evd__fillEnergy_8py_source.html',''); 
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 </div>
 <div class="foldopen" id="foldopen00057" data-start="" data-end="">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">   57</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">execute</a>():</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespaceevd__fillEnergy.html#a76e187bfc04bd532ddb588c27565a819">   57</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceevd__fillEnergy.html#a76e187bfc04bd532ddb588c27565a819">execute</a>() -&gt; None:</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    N_MUONS = 2</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    canvas = ROOT.gROOT.FindObject(<span class="stringliteral">&quot;Root Canvas EnergyLoss&quot;</span>)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> canvas:</div>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('evd__fillEnergy_8py_source.html',''); 
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    all_muons_hitlist = [<a class="code hl_function" href="namespaceevd__fillEnergy.html#ade878b622c0fe110d4ef453bea001a2c">collect_hits</a>(lsOfGlobals, checked_muons) <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(N_MUONS)]</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    all_muons_hitlist = list(filter(<span class="keyword">lambda</span> x: x, all_muons_hitlist))</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    trajectories = [</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <a class="code hl_function" href="namespaceevd__fillEnergy.html#a394eaa81a82fd73f3c535578ad06a768">trajectory_init</a>(lsOfGlobals, <span class="stringliteral">&quot;SHiP MuonTraj_&quot;</span> + str(index)) <span class="keywordflow">for</span> index <span class="keywordflow">in</span> range(len(all_muons_hitlist))</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <a class="code hl_function" href="namespaceevd__fillEnergy.html#a834aa4524b6fa47ff20eddba685596de">trajectory_init</a>(lsOfGlobals, <span class="stringliteral">&quot;SHiP MuonTraj_&quot;</span> + str(index)) <span class="keywordflow">for</span> index <span class="keywordflow">in</span> range(len(all_muons_hitlist))</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    ]</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    emin, emax = 1e9, -1e9</div>
@@ -215,9 +215,9 @@ $(document).ready(function(){initNavTree('evd__fillEnergy_8py_source.html',''); 
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_function" href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">execute</a>()</div>
-<div class="ttc" id="anamespaceevd__fillEnergy_html_a394eaa81a82fd73f3c535578ad06a768"><div class="ttname"><a href="namespaceevd__fillEnergy.html#a394eaa81a82fd73f3c535578ad06a768">evd_fillEnergy.trajectory_init</a></div><div class="ttdeci">trajectory_init(lsOfGlobals, name=&quot;SHiP MuonTraj&quot;)</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00046">evd_fillEnergy.py:46</a></div></div>
-<div class="ttc" id="anamespaceevd__fillEnergy_html_ad52729d6ce0c884ae566786a297327cd"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ad52729d6ce0c884ae566786a297327cd">evd_fillEnergy.execute</a></div><div class="ttdeci">execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00057">evd_fillEnergy.py:57</a></div></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_function" href="namespaceevd__fillEnergy.html#a76e187bfc04bd532ddb588c27565a819">execute</a>()</div>
+<div class="ttc" id="anamespaceevd__fillEnergy_html_a76e187bfc04bd532ddb588c27565a819"><div class="ttname"><a href="namespaceevd__fillEnergy.html#a76e187bfc04bd532ddb588c27565a819">evd_fillEnergy.execute</a></div><div class="ttdeci">None execute()</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00057">evd_fillEnergy.py:57</a></div></div>
+<div class="ttc" id="anamespaceevd__fillEnergy_html_a834aa4524b6fa47ff20eddba685596de"><div class="ttname"><a href="namespaceevd__fillEnergy.html#a834aa4524b6fa47ff20eddba685596de">evd_fillEnergy.trajectory_init</a></div><div class="ttdeci">trajectory_init(lsOfGlobals, str name=&quot;SHiP MuonTraj&quot;)</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00046">evd_fillEnergy.py:46</a></div></div>
 <div class="ttc" id="anamespaceevd__fillEnergy_html_ade878b622c0fe110d4ef453bea001a2c"><div class="ttname"><a href="namespaceevd__fillEnergy.html#ade878b622c0fe110d4ef453bea001a2c">evd_fillEnergy.collect_hits</a></div><div class="ttdeci">collect_hits(lsOfGlobals, checked_muons)</div><div class="ttdef"><b>Definition</b> <a href="evd__fillEnergy_8py_source.html#l00008">evd_fillEnergy.py:8</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

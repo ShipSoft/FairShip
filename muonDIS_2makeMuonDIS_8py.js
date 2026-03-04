@@ -1,9 +1,9 @@
 var muonDIS_2makeMuonDIS_8py =
 [
-    [ "inspect_file", "muonDIS_2makeMuonDIS_8py.html#a1c41d98df6b2366cfb6b40d8604986d2", null ],
-    [ "makeMuonDIS", "muonDIS_2makeMuonDIS_8py.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9", null ],
+    [ "inspect_file", "muonDIS_2makeMuonDIS_8py.html#ae1d6f2611a2fe1f9173d83ad133a0be6", null ],
+    [ "makeMuonDIS", "muonDIS_2makeMuonDIS_8py.html#a29557c520b9f73e475e2bd0c9ae79e23", null ],
     [ "rotate", "muonDIS_2makeMuonDIS_8py.html#afff35847652b9d299b9b6d8eb9b35eab", null ],
-    [ "update_file", "muonDIS_2makeMuonDIS_8py.html#a84676e223701a5ed8112e7b52734b6ac", null ],
+    [ "update_file", "muonDIS_2makeMuonDIS_8py.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5", null ],
     [ "args", "muonDIS_2makeMuonDIS_8py.html#a83a6c50cd675445a633965c37ea8cfcd", null ],
     [ "default", "muonDIS_2makeMuonDIS_8py.html#a71037eb86a4ab119462d7a1e41085c07", null ],
     [ "dest", "muonDIS_2makeMuonDIS_8py.html#a98092df5b9d4572244d671370a610393", null ],

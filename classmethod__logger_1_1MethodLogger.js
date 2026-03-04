@@ -1,6 +1,6 @@
 var classmethod__logger_1_1MethodLogger =
 [
-    [ "__init__", "classmethod__logger_1_1MethodLogger.html#a42c356ecd13cc3e31856bea377a190ef", null ],
+    [ "__init__", "classmethod__logger_1_1MethodLogger.html#abb5afd8a980e8e66de6dfd145a8fe5ab", null ],
     [ "__getattr__", "classmethod__logger_1_1MethodLogger.html#ac0f0a477668d5ccc047f73620e0cb931", null ],
     [ "method_logger", "classmethod__logger_1_1MethodLogger.html#a6b92c982c9a4b158af9d90cb43093eda", null ],
     [ "_class", "classmethod__logger_1_1MethodLogger.html#a2c1dd9294b1059555813cb06da8b94cd", null ],

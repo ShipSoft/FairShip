@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('muonDIS_2makeMuonDIS_8py_source.html',
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 </div>
 <div class="foldopen" id="foldopen00069" data-start="" data-end="">
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a84676e223701a5ed8112e7b52734b6ac">   69</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#a84676e223701a5ed8112e7b52734b6ac">update_file</a>(filename, final_xsec):</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">   69</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">update_file</a>(filename: str, final_xsec) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="stringliteral">&quot;&quot;&quot;Update the DIS cross section of the muon to the converged value from Pythia.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    file = r.TFile.Open(filename, <span class="stringliteral">&quot;read&quot;</span>)</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('muonDIS_2makeMuonDIS_8py_source.html',
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="foldopen" id="foldopen00106" data-start="" data-end="">
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2">  106</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2">inspect_file</a>(filename):</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">  106</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">inspect_file</a>(filename: str) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="stringliteral">&quot;&quot;&quot;Inspect the contents of muonDis file.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    file = r.TFile.Open(filename, <span class="stringliteral">&quot;READ&quot;</span>)</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    tree = file.DIS</div>
@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('muonDIS_2makeMuonDIS_8py_source.html',
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
 </div>
 <div class="foldopen" id="foldopen00130" data-start="" data-end="">
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9">  130</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9">makeMuonDIS</a>():</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a29557c520b9f73e475e2bd0c9ae79e23">  130</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#a29557c520b9f73e475e2bd0c9ae79e23">makeMuonDIS</a>() -&gt; None:</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="stringliteral">&quot;&quot;&quot;Generate DIS events.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    final_xsec = {}</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
@@ -453,17 +453,17 @@ $(document).ready(function(){initNavTree('muonDIS_2makeMuonDIS_8py_source.html',
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    outputFile.Close()</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    muonFile.Close()</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#a84676e223701a5ed8112e7b52734b6ac">update_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>, final_xsec)</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">update_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>, final_xsec)</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
 </div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <a class="code hl_namespace" href="namespacemakeMuonDIS.html">makeMuonDIS</a>()</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2">inspect_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>)</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">inspect_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>)</div>
 <div class="ttc" id="anamespacemakeMuonDIS_html"><div class="ttname"><a href="namespacemakeMuonDIS.html">makeMuonDIS</a></div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00001">makeMuonDIS.py:1</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a1c41d98df6b2366cfb6b40d8604986d2"><div class="ttname"><a href="namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2">makeMuonDIS.inspect_file</a></div><div class="ttdeci">inspect_file(filename)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00106">makeMuonDIS.py:106</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a1dcc69cdd8ec4d0fe3ab4184e237b4d9"><div class="ttname"><a href="namespacemakeMuonDIS.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9">makeMuonDIS.makeMuonDIS</a></div><div class="ttdeci">makeMuonDIS()</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00130">makeMuonDIS.py:130</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a84676e223701a5ed8112e7b52734b6ac"><div class="ttname"><a href="namespacemakeMuonDIS.html#a84676e223701a5ed8112e7b52734b6ac">makeMuonDIS.update_file</a></div><div class="ttdeci">update_file(filename, final_xsec)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00069">makeMuonDIS.py:69</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_a29557c520b9f73e475e2bd0c9ae79e23"><div class="ttname"><a href="namespacemakeMuonDIS.html#a29557c520b9f73e475e2bd0c9ae79e23">makeMuonDIS.makeMuonDIS</a></div><div class="ttdeci">None makeMuonDIS()</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00130">makeMuonDIS.py:130</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_acda8ed87a2a7dae5198cd1b5d0f1f1b5"><div class="ttname"><a href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">makeMuonDIS.update_file</a></div><div class="ttdeci">None update_file(str filename, final_xsec)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00069">makeMuonDIS.py:69</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_ae1d6f2611a2fe1f9173d83ad133a0be6"><div class="ttname"><a href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">makeMuonDIS.inspect_file</a></div><div class="ttdeci">None inspect_file(str filename)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00106">makeMuonDIS.py:106</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_afff35847652b9d299b9b6d8eb9b35eab"><div class="ttname"><a href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">makeMuonDIS.rotate</a></div><div class="ttdeci">rotate(px, py, pz, theta, phi)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00055">makeMuonDIS.py:55</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

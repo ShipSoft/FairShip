@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('convertTreeToRNTuple_8py_source.html',
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="foldopen" id="foldopen00027" data-start="" data-end="">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespaceconvertTreeToRNTuple.html#ac6283410d3883844133d0c7d0a270661">   27</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#ac6283410d3883844133d0c7d0a270661">convert_tree_to_rntuple</a>(input_file, tree_name, output_file, ntuple_name):</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespaceconvertTreeToRNTuple.html#a09a4ea912ab6ed66a66c0229e171ae17">   27</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#a09a4ea912ab6ed66a66c0229e171ae17">convert_tree_to_rntuple</a>(input_file, tree_name, output_file, ntuple_name) -&gt; bool:</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="stringliteral">    Convert a TTree to RNTuple format.</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral"></span> </div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('convertTreeToRNTuple_8py_source.html',
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
 </div>
 <div class="foldopen" id="foldopen00102" data-start="" data-end="">
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespaceconvertTreeToRNTuple.html#ab49ef6987e3cdf5ff7ad4a7d947b00b7">  102</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#ab49ef6987e3cdf5ff7ad4a7d947b00b7">main</a>():</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespaceconvertTreeToRNTuple.html#a0f88f8d90a5b0758dd333e9789b5d0be">  102</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#a0f88f8d90a5b0758dd333e9789b5d0be">main</a>() -&gt; int:</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="stringliteral">&quot;&quot;&quot;Parse arguments and run the TTree to RNTuple conversion.&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    parser = argparse.ArgumentParser(</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        description=<span class="stringliteral">&quot;Convert TTree to RNTuple using ROOT&#39;s RNTupleImporter&quot;</span>,</div>
@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('convertTreeToRNTuple_8py_source.html',
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            args.output_file = args.input_file + <span class="stringliteral">&quot;_rntuple.root&quot;</span></div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    success = <a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#ac6283410d3883844133d0c7d0a270661">convert_tree_to_rntuple</a>(args.input_file, args.tree_name, args.output_file, args.ntuple_name)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    success = <a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#a09a4ea912ab6ed66a66c0229e171ae17">convert_tree_to_rntuple</a>(args.input_file, args.tree_name, args.output_file, args.ntuple_name)</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">if</span> success:</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        print()</div>
@@ -262,9 +262,9 @@ $(document).ready(function(){initNavTree('convertTreeToRNTuple_8py_source.html',
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    sys.exit(<a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#ab49ef6987e3cdf5ff7ad4a7d947b00b7">main</a>())</div>
-<div class="ttc" id="anamespaceconvertTreeToRNTuple_html_ab49ef6987e3cdf5ff7ad4a7d947b00b7"><div class="ttname"><a href="namespaceconvertTreeToRNTuple.html#ab49ef6987e3cdf5ff7ad4a7d947b00b7">convertTreeToRNTuple.main</a></div><div class="ttdeci">main()</div><div class="ttdef"><b>Definition</b> <a href="convertTreeToRNTuple_8py_source.html#l00102">convertTreeToRNTuple.py:102</a></div></div>
-<div class="ttc" id="anamespaceconvertTreeToRNTuple_html_ac6283410d3883844133d0c7d0a270661"><div class="ttname"><a href="namespaceconvertTreeToRNTuple.html#ac6283410d3883844133d0c7d0a270661">convertTreeToRNTuple.convert_tree_to_rntuple</a></div><div class="ttdeci">convert_tree_to_rntuple(input_file, tree_name, output_file, ntuple_name)</div><div class="ttdef"><b>Definition</b> <a href="convertTreeToRNTuple_8py_source.html#l00027">convertTreeToRNTuple.py:27</a></div></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    sys.exit(<a class="code hl_function" href="namespaceconvertTreeToRNTuple.html#a0f88f8d90a5b0758dd333e9789b5d0be">main</a>())</div>
+<div class="ttc" id="anamespaceconvertTreeToRNTuple_html_a09a4ea912ab6ed66a66c0229e171ae17"><div class="ttname"><a href="namespaceconvertTreeToRNTuple.html#a09a4ea912ab6ed66a66c0229e171ae17">convertTreeToRNTuple.convert_tree_to_rntuple</a></div><div class="ttdeci">bool convert_tree_to_rntuple(input_file, tree_name, output_file, ntuple_name)</div><div class="ttdef"><b>Definition</b> <a href="convertTreeToRNTuple_8py_source.html#l00027">convertTreeToRNTuple.py:27</a></div></div>
+<div class="ttc" id="anamespaceconvertTreeToRNTuple_html_a0f88f8d90a5b0758dd333e9789b5d0be"><div class="ttname"><a href="namespaceconvertTreeToRNTuple.html#a0f88f8d90a5b0758dd333e9789b5d0be">convertTreeToRNTuple.main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="convertTreeToRNTuple_8py_source.html#l00102">convertTreeToRNTuple.py:102</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

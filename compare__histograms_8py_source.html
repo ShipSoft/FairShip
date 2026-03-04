@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('compare__histograms_8py_source.html','
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceexperimental_1_1compare__histograms.html#a3b917802d991eb03dd0e4b41fda9b16d">   12</a></span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceexperimental_1_1compare__histograms.html#a50304cf9e3f3b546d1322dad208b569c">   12</a></span><span class="keyword">def </span>compare_histograms(hist1, hist2, use_ks_test: bool = <span class="keyword">False</span>, significance_threshold: float = 0.05) -&gt; bool:</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">    Compare two histograms for equality or statistical compatibility.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral"></span> </div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('compare__histograms_8py_source.html','
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 </div>
 <div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceexperimental_1_1compare__histograms.html#a144d3fb2ba95b485e443d7b3ce52ab99">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold):</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceexperimental_1_1compare__histograms.html#a9880fe51ce56747e6d4362a16ce5d416">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(file1_path, file2_path, use_ks_test, significance_threshold) -&gt; None:</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="stringliteral">    Compare histograms in two ROOT files.</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="stringliteral"></span> </div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('compare__histograms_8py_source.html','
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment"># Get the list of histogram names from the first file</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">def </span>isuproothist(inkey, fileno):</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">def </span>isuproothist(inkey, fileno: int) -&gt; bool:</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        isHist = <span class="keyword">False</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)</div>

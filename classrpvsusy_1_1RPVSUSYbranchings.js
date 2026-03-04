@@ -1,11 +1,11 @@
 var classrpvsusy_1_1RPVSUSYbranchings =
 [
-    [ "__init__", "classrpvsusy_1_1RPVSUSYbranchings.html#a187342e4a9b5941dfde4cd9e2cf1a1c8", null ],
-    [ "AddChannelsToPythia", "classrpvsusy_1_1RPVSUSYbranchings.html#a625437facce3e15c2551ae80593adf66", null ],
-    [ "findDecayBranchingRatio", "classrpvsusy_1_1RPVSUSYbranchings.html#aa1bb31a843a9dc498088eed0dd2fc442", null ],
+    [ "__init__", "classrpvsusy_1_1RPVSUSYbranchings.html#a7ff2c772d9912a5ae80eec113602dcac", null ],
+    [ "AddChannelsToPythia", "classrpvsusy_1_1RPVSUSYbranchings.html#ae1cf72bb29013ab33a1757406f27034f", null ],
+    [ "findDecayBranchingRatio", "classrpvsusy_1_1RPVSUSYbranchings.html#aa311d1cfa3a05fd7bd40bb71cd751b39", null ],
     [ "findProdBranchingRatio", "classrpvsusy_1_1RPVSUSYbranchings.html#ab872d9101e612cffe21211b4f865970d", null ],
-    [ "Get_Dec_Modes", "classrpvsusy_1_1RPVSUSYbranchings.html#a0281d9c69b57379f6599ef24863cf7d0", null ],
-    [ "Get_Prod_Modes", "classrpvsusy_1_1RPVSUSYbranchings.html#aa40ac792d4c5765a334589da2a34b6a0", null ],
+    [ "Get_Dec_Modes", "classrpvsusy_1_1RPVSUSYbranchings.html#a0bd44ad170549a7182b220a73615987c", null ],
+    [ "Get_Prod_Modes", "classrpvsusy_1_1RPVSUSYbranchings.html#a24bd1a1e9753f4200773d00613160a9e", null ],
     [ "NdecayWidth", "classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15", null ],
     [ "NprodWidth", "classrpvsusy_1_1RPVSUSYbranchings.html#aa6d52e87bff518be795828cf4b4d0b35", null ],
     [ "Width_H_L", "classrpvsusy_1_1RPVSUSYbranchings.html#a74cff71935c1fbc7c02190ba0501cf31", null ],

@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('dumpEvent_8py_source.html',''); initRe
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="foldopen" id="foldopen00014" data-start="" data-end="">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#ad71b02eaa8d859f755182513a7527183">   14</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#ad71b02eaa8d859f755182513a7527183">printMCTrack</a>(n, MCTrack):</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e">   14</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e">printMCTrack</a>(n: int, MCTrack) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    mcp = MCTrack[n]</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    print(</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="stringliteral">&quot; %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i &quot;</span></div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('dumpEvent_8py_source.html',''); initRe
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 </div>
 <div class="foldopen" id="foldopen00032" data-start="" data-end="">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#a31b8c3b7fefd11c54bbbc73cd8a0a8ed">   32</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#a31b8c3b7fefd11c54bbbc73cd8a0a8ed">dump</a>(i, pcut):</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#acd584ee7f29e1ee78fbdfcdf39f7bda8">   32</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#acd584ee7f29e1ee78fbdfcdf39f7bda8">dump</a>(i, pcut) -&gt; None:</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    tree.GetEntry(i)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    print(<span class="stringliteral">&quot;   #         pid   px    py      pz     vx      vy       vz      mid&quot;</span>)</div>
@@ -140,23 +140,23 @@ $(document).ready(function(){initNavTree('dumpEvent_8py_source.html',''); initRe
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        n += 1</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">if</span> mcp.GetP() / u.GeV &lt; pcut:</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_function" href="namespacedumpEvent.html#ad71b02eaa8d859f755182513a7527183">printMCTrack</a>(n, tree.MCTrack)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_function" href="namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e">printMCTrack</a>(n, tree.MCTrack)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 </div>
 <div class="foldopen" id="foldopen00044" data-start="" data-end="">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#a686461f378476c327b6b977dd9bd5ac0">   44</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#a686461f378476c327b6b977dd9bd5ac0">dumpStraw</a>(i):</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacedumpEvent.html#a6a638bb1473130ac43ddae2ee5efae47">   44</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedumpEvent.html#a6a638bb1473130ac43ddae2ee5efae47">dumpStraw</a>(i) -&gt; None:</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    tree.GetEntry(i)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> aStraw <span class="keywordflow">in</span> tree.strawtubesPoint:</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        trID = aStraw.GetTrackID()</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> trID &lt; 0:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <a class="code hl_function" href="namespacedumpEvent.html#ad71b02eaa8d859f755182513a7527183">printMCTrack</a>(trID, tree.MCTrack)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <a class="code hl_function" href="namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e">printMCTrack</a>(trID, tree.MCTrack)</div>
 </div>
-<div class="ttc" id="aclassShipGeoConfig_1_1Config_html"><div class="ttname"><a href="classShipGeoConfig_1_1Config.html">ShipGeoConfig.Config</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00030">ShipGeoConfig.py:30</a></div></div>
-<div class="ttc" id="anamespacedumpEvent_html_a31b8c3b7fefd11c54bbbc73cd8a0a8ed"><div class="ttname"><a href="namespacedumpEvent.html#a31b8c3b7fefd11c54bbbc73cd8a0a8ed">dumpEvent.dump</a></div><div class="ttdeci">dump(i, pcut)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00032">dumpEvent.py:32</a></div></div>
-<div class="ttc" id="anamespacedumpEvent_html_a686461f378476c327b6b977dd9bd5ac0"><div class="ttname"><a href="namespacedumpEvent.html#a686461f378476c327b6b977dd9bd5ac0">dumpEvent.dumpStraw</a></div><div class="ttdeci">dumpStraw(i)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00044">dumpEvent.py:44</a></div></div>
-<div class="ttc" id="anamespacedumpEvent_html_ad71b02eaa8d859f755182513a7527183"><div class="ttname"><a href="namespacedumpEvent.html#ad71b02eaa8d859f755182513a7527183">dumpEvent.printMCTrack</a></div><div class="ttdeci">printMCTrack(n, MCTrack)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00014">dumpEvent.py:14</a></div></div>
+<div class="ttc" id="aclassShipGeoConfig_1_1Config_html"><div class="ttname"><a href="classShipGeoConfig_1_1Config.html">ShipGeoConfig.Config</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00032">ShipGeoConfig.py:32</a></div></div>
+<div class="ttc" id="anamespacedumpEvent_html_a6a638bb1473130ac43ddae2ee5efae47"><div class="ttname"><a href="namespacedumpEvent.html#a6a638bb1473130ac43ddae2ee5efae47">dumpEvent.dumpStraw</a></div><div class="ttdeci">None dumpStraw(i)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00044">dumpEvent.py:44</a></div></div>
+<div class="ttc" id="anamespacedumpEvent_html_a7b461e6738e67b2d3cc278033262dc9e"><div class="ttname"><a href="namespacedumpEvent.html#a7b461e6738e67b2d3cc278033262dc9e">dumpEvent.printMCTrack</a></div><div class="ttdeci">None printMCTrack(int n, MCTrack)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00014">dumpEvent.py:14</a></div></div>
+<div class="ttc" id="anamespacedumpEvent_html_acd584ee7f29e1ee78fbdfcdf39f7bda8"><div class="ttname"><a href="namespacedumpEvent.html#acd584ee7f29e1ee78fbdfcdf39f7bda8">dumpEvent.dump</a></div><div class="ttdeci">None dump(i, pcut)</div><div class="ttdef"><b>Definition</b> <a href="dumpEvent_8py_source.html#l00032">dumpEvent.py:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

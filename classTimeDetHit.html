@@ -436,7 +436,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>}</div>
 <div class="ttc" id="aclassTimeDetHit_html_a30d3e41b9c900ce12ee69b55e8a92b16"><div class="ttname"><a href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">TimeDetHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00098">TimeDetHit.cxx:98</a></div></div>
 <div class="ttc" id="aclassTimeDetHit_html_a6e69747362b4aa62398f5ac7b046891a"><div class="ttname"><a href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">TimeDetHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00125">TimeDetHit.cxx:125</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00582">ana_ShipMuon.py:582</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00583">ana_ShipMuon.py:583</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,8 +524,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   74</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(dt);</div>
 <div class="line"><span class="lineno">   75</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">   76</span>}</div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a9659d4d32a1cb6cfd4a31d22e63b3a06"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">ana_ShipMuon.r2</a></div><div class="ttdeci">r2</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00429">ana_ShipMuon.py:429</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_aaebf25eb0ed22ac1e88c3566b5f95945"><div class="ttname"><a href="namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945">ana_ShipMuon.r1</a></div><div class="ttdeci">r1</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00428">ana_ShipMuon.py:428</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a9659d4d32a1cb6cfd4a31d22e63b3a06"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">ana_ShipMuon.r2</a></div><div class="ttdeci">r2</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00430">ana_ShipMuon.py:430</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_aaebf25eb0ed22ac1e88c3566b5f95945"><div class="ttname"><a href="namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945">ana_ShipMuon.r1</a></div><div class="ttdeci">r1</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00429">ana_ShipMuon.py:429</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -610,14 +610,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   99</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
 <div class="line"><span class="lineno">  100</span>  TGeoNode* node = <a class="code hl_function" href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">GetNode</a>();</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  102</span>  Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">origin</a>[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1],</div>
+<div class="line"><span class="lineno">  102</span>  Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98">origin</a>[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1],</div>
 <div class="line"><span class="lineno">  103</span>                        shape-&gt;GetOrigin()[2]};</div>
 <div class="line"><span class="lineno">  104</span>  Double_t master[3] = {0, 0, 0};</div>
 <div class="line"><span class="lineno">  105</span>  nav-&gt;LocalToMaster(origin, master);</div>
 <div class="line"><span class="lineno">  106</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = TVector3(master[0], master[1], master[2]);</div>
 <div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
 <div class="line"><span class="lineno">  108</span>}</div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00389">ana_ShipMuon.py:389</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a28d7d8b8350de8fec28cb9f07ffd7a98"><div class="ttname"><a href="namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98">ana_ShipMuon.origin</a></div><div class="ttdeci">None origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00390">ana_ShipMuon.py:390</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

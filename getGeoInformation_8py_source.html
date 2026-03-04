@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('getGeoInformation_8py_source.html','')
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 </div>
 <div class="foldopen" id="foldopen00063" data-start="" data-end="">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">   63</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a>(path, node, level, currentlevel, print_sub_det_info=False):</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">   63</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">print_info</a>(path: str, node, level: int, currentlevel: int, print_sub_det_info=<span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    sub_nodes = {}</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    fullInfo = {}</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">for</span> subnode <span class="keywordflow">in</span> node.GetNodes():</div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('getGeoInformation_8py_source.html','')
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            print_sub_det_info = <span class="keyword">True</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">if</span> print_sub_det_info <span class="keywordflow">and</span> currentlevel &lt; level <span class="keywordflow">and</span> fullInfo[name][<span class="stringliteral">&quot;node&quot;</span>].GetNodes():</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <a class="code hl_function" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a>(fullInfo[name][<span class="stringliteral">&quot;path&quot;</span>], fullInfo[name][<span class="stringliteral">&quot;node&quot;</span>], level, currentlevel + 1, print_sub_det_info)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <a class="code hl_function" href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">print_info</a>(fullInfo[name][<span class="stringliteral">&quot;path&quot;</span>], fullInfo[name][<span class="stringliteral">&quot;node&quot;</span>], level, currentlevel + 1, print_sub_det_info)</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">if</span> currentlevel == 0:</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            print_sub_det_info = <span class="keyword">False</span></div>
@@ -237,9 +237,9 @@ $(document).ready(function(){initNavTree('getGeoInformation_8py_source.html','')
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    )</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b">  136</a></span>currentlevel = 0</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><a class="code hl_function" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a>(<span class="stringliteral">&quot;&quot;</span>, top, int(options.level), currentlevel)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><a class="code hl_function" href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">print_info</a>(<span class="stringliteral">&quot;&quot;</span>, top, int(options.level), currentlevel)</div>
 <div class="ttc" id="anamespacegetGeoInformation_html_a448cb3b3e4a85101cc5feed35c977556"><div class="ttname"><a href="namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556">getGeoInformation.local2Global</a></div><div class="ttdeci">local2Global(n)</div><div class="ttdef"><b>Definition</b> <a href="getGeoInformation_8py_source.html#l00016">getGeoInformation.py:16</a></div></div>
-<div class="ttc" id="anamespacegetGeoInformation_html_a94f229a9cbc9abdb99a3df488b8554d4"><div class="ttname"><a href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">getGeoInformation.print_info</a></div><div class="ttdeci">print_info(path, node, level, currentlevel, print_sub_det_info=False)</div><div class="ttdef"><b>Definition</b> <a href="getGeoInformation_8py_source.html#l00063">getGeoInformation.py:63</a></div></div>
+<div class="ttc" id="anamespacegetGeoInformation_html_aeda049f9fca5e1dddccbd42143bf9071"><div class="ttname"><a href="namespacegetGeoInformation.html#aeda049f9fca5e1dddccbd42143bf9071">getGeoInformation.print_info</a></div><div class="ttdeci">None print_info(str path, node, int level, int currentlevel, print_sub_det_info=False)</div><div class="ttdef"><b>Definition</b> <a href="getGeoInformation_8py_source.html#l00063">getGeoInformation.py:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

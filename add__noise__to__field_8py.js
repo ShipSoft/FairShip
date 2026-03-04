@@ -1,7 +1,7 @@
 var add__noise__to__field_8py =
 [
-    [ "generate_file", "add__noise__to__field_8py.html#ad9efc3056172174fd51491e6695173bc", null ],
-    [ "plot_my_hist", "add__noise__to__field_8py.html#ada38192948951a9c388875eaac66cb7e", null ],
+    [ "generate_file", "add__noise__to__field_8py.html#a3356885f502d87d3993647f6dd50b10b", null ],
+    [ "plot_my_hist", "add__noise__to__field_8py.html#a4a1ca5a3f64e4f2870b0367c97a78416", null ],
     [ "action", "add__noise__to__field_8py.html#ab9f26e8d25a833305a6398ce27105747", null ],
     [ "args", "add__noise__to__field_8py.html#a0c9f7358e4b40f6222907cf9737b120d", null ],
     [ "default", "add__noise__to__field_8py.html#ad3bdeebe3d0279aca028937b765abdb3", null ],

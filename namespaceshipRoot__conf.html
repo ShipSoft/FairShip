@@ -97,22 +97,22 @@ $(document).ready(function(){initNavTree('namespaceshipRoot__conf.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4c1ff8996fc0955c3bd4c4832c644793" id="r_a4c1ff8996fc0955c3bd4c4832c644793"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#a4c1ff8996fc0955c3bd4c4832c644793">forReadingOldFile</a> ()</td></tr>
-<tr class="separator:a4c1ff8996fc0955c3bd4c4832c644793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43f3431c7cd718507ed9f1e039c66c14" id="r_a43f3431c7cd718507ed9f1e039c66c14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#a43f3431c7cd718507ed9f1e039c66c14">pyExit</a> ()</td></tr>
-<tr class="separator:a43f3431c7cd718507ed9f1e039c66c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bb207e902847385c1369c120d9063ec" id="r_a4bb207e902847385c1369c120d9063ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">configure</a> (darkphoton=None)</td></tr>
-<tr class="separator:a4bb207e902847385c1369c120d9063ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe7a5abdf5ac74baa52b7d271a6b18ad" id="r_afe7a5abdf5ac74baa52b7d271a6b18ad"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad">forReadingOldFile</a> ()</td></tr>
+<tr class="separator:afe7a5abdf5ac74baa52b7d271a6b18ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e5d2200a27772b5ef5cba873d91fee1" id="r_a5e5d2200a27772b5ef5cba873d91fee1"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#a5e5d2200a27772b5ef5cba873d91fee1">pyExit</a> ()</td></tr>
+<tr class="separator:a5e5d2200a27772b5ef5cba873d91fee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59bfc0b1b7bf8bc3e1a1270881622da6" id="r_a59bfc0b1b7bf8bc3e1a1270881622da6"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6">configure</a> (darkphoton=None)</td></tr>
+<tr class="separator:a59bfc0b1b7bf8bc3e1a1270881622da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a4bb207e902847385c1369c120d9063ec" name="a4bb207e902847385c1369c120d9063ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bb207e902847385c1369c120d9063ec">&#9670;&#160;</a></span>configure()</h2>
+<a id="a59bfc0b1b7bf8bc3e1a1270881622da6" name="a59bfc0b1b7bf8bc3e1a1270881622da6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59bfc0b1b7bf8bc3e1a1270881622da6">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">shipRoot_conf.configure </td>
+          <td class="memname"> None shipRoot_conf.configure </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>darkphoton</em> = <code>None</code></td><td>)</td>
@@ -122,7 +122,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00047">47</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span><span class="keyword">def </span>configure(darkphoton=None):</div>
+<div class="fragment"><div class="line"><span class="lineno">   47</span><span class="keyword">def </span>configure(darkphoton=None) -&gt; None:</div>
 <div class="line"><span class="lineno">   48</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;&#39;</span> + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&#39;/shipdata/ShipGlobals.h&quot;&#39;</span>)</div>
 <div class="line"><span class="lineno">   49</span>    pdg = ROOT.TDatabasePDG.Instance()</div>
 <div class="line"><span class="lineno">   50</span>    <span class="comment"># pythia stuff not known to ROOT</span></div>
@@ -156,14 +156,14 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a4c1ff8996fc0955c3bd4c4832c644793" name="a4c1ff8996fc0955c3bd4c4832c644793"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c1ff8996fc0955c3bd4c4832c644793">&#9670;&#160;</a></span>forReadingOldFile()</h2>
+<a id="afe7a5abdf5ac74baa52b7d271a6b18ad" name="afe7a5abdf5ac74baa52b7d271a6b18ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7a5abdf5ac74baa52b7d271a6b18ad">&#9670;&#160;</a></span>forReadingOldFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">shipRoot_conf.forReadingOldFile </td>
+          <td class="memname"> None shipRoot_conf.forReadingOldFile </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -172,7 +172,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00021">21</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span><span class="keyword">def </span>forReadingOldFile():</div>
+<div class="fragment"><div class="line"><span class="lineno">   21</span><span class="keyword">def </span>forReadingOldFile() -&gt; None:</div>
 <div class="line"><span class="lineno">   22</span>    ROOT.gInterpreter.ProcessLine(<span class="stringliteral">&quot;typedef double Double32_t&quot;</span>)</div>
 <div class="line"><span class="lineno">   23</span> </div>
 <div class="line"><span class="lineno">   24</span> </div>
@@ -182,14 +182,14 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a43f3431c7cd718507ed9f1e039c66c14" name="a43f3431c7cd718507ed9f1e039c66c14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43f3431c7cd718507ed9f1e039c66c14">&#9670;&#160;</a></span>pyExit()</h2>
+<a id="a5e5d2200a27772b5ef5cba873d91fee1" name="a5e5d2200a27772b5ef5cba873d91fee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e5d2200a27772b5ef5cba873d91fee1">&#9670;&#160;</a></span>pyExit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">shipRoot_conf.pyExit </td>
+          <td class="memname"> None shipRoot_conf.pyExit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -198,7 +198,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00028">28</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>pyExit():</div>
+<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>pyExit() -&gt; None:</div>
 <div class="line"><span class="lineno">   29</span>    <span class="keywordflow">for</span> module <span class="keywordflow">in</span> sys.modules:</div>
 <div class="line"><span class="lineno">   30</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;ROOT.genfit&quot;</span> <span class="keywordflow">in</span> module:</div>
 <div class="line"><span class="lineno">   31</span>            x = sys.modules[<span class="stringliteral">&quot;__main__&quot;</span>]</div>

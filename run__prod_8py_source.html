@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('run__prod_8py_source.html',''); initRe
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="foldopen" id="foldopen00010" data-start="" data-end="">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#a6c000f747a21da2c39df0901296bb770">   10</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#a6c000f747a21da2c39df0901296bb770">makeProd</a>(prefix, DY, y=False, phiRandom=False, X=None):</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#a6bce3580c3094f821b27822a0625baaf">   10</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#a6bce3580c3094f821b27822a0625baaf">makeProd</a>(prefix, DY, y: bool = <span class="keyword">False</span>, phiRandom: bool = <span class="keyword">False</span>, X=<span class="keywordtype">None</span>) -&gt; <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    ncpu = 9</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    shipsoft = os.environ[<span class="stringliteral">&quot;SHIPSOFT&quot;</span>].replace(<span class="stringliteral">&quot;/dev&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> y:</div>
@@ -321,7 +321,7 @@ $(document).ready(function(){initNavTree('run__prod_8py_source.html',''); initRe
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
 <div class="foldopen" id="foldopen00228" data-start="" data-end="">
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#aea31277f205a82a4bc16ed43f8479b2c">  228</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#aea31277f205a82a4bc16ed43f8479b2c">copy2EOS</a>():</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#ae16e18cc884309b7de0271ef39a944d0">  228</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#ae16e18cc884309b7de0271ef39a944d0">copy2EOS</a>() -&gt; None:</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keyword">import</span> os</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
@@ -350,7 +350,7 @@ $(document).ready(function(){initNavTree('run__prod_8py_source.html',''); initRe
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
 </div>
 <div class="foldopen" id="foldopen00255" data-start="" data-end="">
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#a867181640c31be32e54ce2deab3f398b">  255</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#a867181640c31be32e54ce2deab3f398b">copyFromEOS</a>():</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="namespacerun__prod.html#aba98b8c21b6c0af4fb3d3c20cc3f39d5">  255</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__prod.html#aba98b8c21b6c0af4fb3d3c20cc3f39d5">copyFromEOS</a>() -&gt; None:</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keyword">import</span> os</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    eos = <span class="stringliteral">&quot;/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select&quot;</span></div>
@@ -376,9 +376,9 @@ $(document).ready(function(){initNavTree('run__prod_8py_source.html',''); initRe
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                print(cmd)</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                os.system(cmd)</div>
 </div>
-<div class="ttc" id="anamespacerun__prod_html_a6c000f747a21da2c39df0901296bb770"><div class="ttname"><a href="namespacerun__prod.html#a6c000f747a21da2c39df0901296bb770">run_prod.makeProd</a></div><div class="ttdeci">makeProd(prefix, DY, y=False, phiRandom=False, X=None)</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00010">run_prod.py:10</a></div></div>
-<div class="ttc" id="anamespacerun__prod_html_a867181640c31be32e54ce2deab3f398b"><div class="ttname"><a href="namespacerun__prod.html#a867181640c31be32e54ce2deab3f398b">run_prod.copyFromEOS</a></div><div class="ttdeci">copyFromEOS()</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00255">run_prod.py:255</a></div></div>
-<div class="ttc" id="anamespacerun__prod_html_aea31277f205a82a4bc16ed43f8479b2c"><div class="ttname"><a href="namespacerun__prod.html#aea31277f205a82a4bc16ed43f8479b2c">run_prod.copy2EOS</a></div><div class="ttdeci">copy2EOS()</div><div class="ttdoc">makeProd(&quot;muon812&quot;,10,False,True) # –&lt; 831 copied back, done 16.3.2015 makeProd(&quot;muon822&quot;,...</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00228">run_prod.py:228</a></div></div>
+<div class="ttc" id="anamespacerun__prod_html_a6bce3580c3094f821b27822a0625baaf"><div class="ttname"><a href="namespacerun__prod.html#a6bce3580c3094f821b27822a0625baaf">run_prod.makeProd</a></div><div class="ttdeci">None makeProd(prefix, DY, bool y=False, bool phiRandom=False, X=None)</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00010">run_prod.py:10</a></div></div>
+<div class="ttc" id="anamespacerun__prod_html_aba98b8c21b6c0af4fb3d3c20cc3f39d5"><div class="ttname"><a href="namespacerun__prod.html#aba98b8c21b6c0af4fb3d3c20cc3f39d5">run_prod.copyFromEOS</a></div><div class="ttdeci">None copyFromEOS()</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00255">run_prod.py:255</a></div></div>
+<div class="ttc" id="anamespacerun__prod_html_ae16e18cc884309b7de0271ef39a944d0"><div class="ttname"><a href="namespacerun__prod.html#ae16e18cc884309b7de0271ef39a944d0">run_prod.copy2EOS</a></div><div class="ttdeci">None copy2EOS()</div><div class="ttdoc">makeProd(&quot;muon812&quot;,10,False,True) # –&lt; 831 copied back, done 16.3.2015 makeProd(&quot;muon822&quot;,...</div><div class="ttdef"><b>Definition</b> <a href="run__prod_8py_source.html#l00228">run_prod.py:228</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
