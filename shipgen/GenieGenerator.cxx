@@ -382,7 +382,6 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t x = 0.;
   Double_t y = 0.;
   Double_t z = 0.;
-  Int_t count = 0;
   while (prob2int < gRandom->Uniform(0., 1.)) {
     // place x,y,z uniform along path
     z = gRandom->Uniform(start[2], end[2]);
@@ -407,7 +406,6 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           cout << "***WARNING*** GenieGenerator: prob2int > Maximum density????"
                << prob2int << " maxrho:" << mparam[7]
                << " material: " << mat->GetName() << endl;
-        count += 1;
       } else {
         prob2int = 0.;
       }

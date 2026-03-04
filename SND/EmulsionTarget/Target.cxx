@@ -433,7 +433,7 @@ Bool_t Target::ProcessHits(FairVolume* vol) {
 
     Int_t NWall = 0, NColumn = 0, NRow = 0;
 
-    for (Int_t i = 0; i < MaxL; i++) {
+    for (Int_t i = 0; i < MaxLevel; i++) {
       motherV[i] = gGeoManager->GetMother(i)->GetNumber();
       const char* mumname = gMC->CurrentVolOffName(i);
       if (motherV[0] == 1 && motherV[0] != detID) {

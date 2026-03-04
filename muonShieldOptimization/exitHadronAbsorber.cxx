@@ -90,7 +90,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     fUniqueID = p->GetUniqueID();
     Int_t pdgCode = p->GetPdgCode();
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode) != 13)) {
+    if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
       fTime = gMC->TrackTime() * 1.0e09;
       fLength = gMC->TrackLength();
       gMC->TrackPosition(fPos);

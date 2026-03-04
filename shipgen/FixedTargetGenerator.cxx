@@ -373,7 +373,6 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t prob2int = -1.;
     Double_t rndm = 0.;
     Double_t sigma;
-    Int_t count = 0;
     Double_t zinterStart = start[2];
     if (Option == "charm" || Option == "beauty") {
       // simulate more downstream interaction points for interactions down in
@@ -403,7 +402,6 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
-        count += 1;
       }
       zinterStart = zinter;
       ck -= 1;

@@ -12,8 +12,6 @@ using std::cerr;
 using std::cout;
 using std::endl;
 
-const int kMaxLen = 2048;
-
 // ------   Constructor   --------------------------------------------------
 ShipFieldPar::ShipFieldPar(const char* name, const char* title,
                            const char* context)

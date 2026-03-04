@@ -60,17 +60,14 @@ Bool_t CosmicsGenerator::DetectorBox() {
   // check, if a given staring setup x,y,z,px,py,pz will lead to a
   // close enough to the detector
 
-  if ((TMath::Abs(x - (y + yBox) * px / py) < xBox &&
-       TMath::Abs(z - z0 - (y + yBox) * pz / py) < zBox) ||
-      (TMath::Abs(x - (y - yBox) * px / py) < xBox &&
-       TMath::Abs(z - z0 - (y - yBox) * pz / py) < zBox) ||
-      (TMath::Abs(y - (x + xBox) * py / px) < yBox &&
-       TMath::Abs(z - z0 - (x + xBox) * pz / px) < zBox) ||
-      (TMath::Abs(y - (x - xBox) * py / px) < yBox &&
-       TMath::Abs(z - z0 - (x - xBox) * pz / px) < zBox)) {
-    return true;
-  }
-  return false;
+  return (TMath::Abs(x - (y + yBox) * px / py) < xBox &&
+          TMath::Abs(z - z0 - (y + yBox) * pz / py) < zBox) ||
+         (TMath::Abs(x - (y - yBox) * px / py) < xBox &&
+          TMath::Abs(z - z0 - (y - yBox) * pz / py) < zBox) ||
+         (TMath::Abs(y - (x + xBox) * py / px) < yBox &&
+          TMath::Abs(z - z0 - (x + xBox) * pz / px) < zBox) ||
+         (TMath::Abs(y - (x - xBox) * py / px) < yBox &&
+          TMath::Abs(z - z0 - (x - xBox) * pz / px) < zBox);
 }
 
 void CosmicsGenerator::GenerateDynamics() {
