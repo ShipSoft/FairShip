@@ -177,9 +177,9 @@ class Task:
                     / PosDirCharge[t2]["direction"][2]
                     / PosDirCharge[t2]["momentum"].Mag()
                 )
-                HNLPos, covX, dist = self.VertexError(
+                HNLPos, covX, dist = self.VertexError(  # pyrefly: ignore[bad-unpacking]
                     t1, t2, self.newPosDir, CovMat, scalFac
-                )  # pyrefly: ignore[bad-unpacking]
+                )
                 # monitor Vx resolution and pulls
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
