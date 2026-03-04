@@ -216,7 +216,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       // if (!subprocCodes[nI]<90){continue;}  //if process is not inelastic, go
       // to next. Changed by taking now collision length
       prob2int = -1.;
-      Int_t intLengthFactor = 1;  // for nucleons
+      Double_t intLengthFactor = 1;  // for nucleons
       if (TMath::Abs(ancestors[nI]) < 1000) {
         intLengthFactor = 1.16;
       }  // for mesons

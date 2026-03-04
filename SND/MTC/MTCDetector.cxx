@@ -113,10 +113,10 @@ Double_t area(Double_t a, Double_t R, Double_t xL, Double_t xR) {
   }
 
   if (!(rightC < 0)) {
-    fracR = fraction(R, abs(xR - a), rightC);
+    fracR = fraction(R, TMath::Abs(xR - a), rightC);
   }
   if (!(leftC < 0)) {
-    fracL = fraction(R, abs(xL - a), leftC);
+    fracL = fraction(R, TMath::Abs(xL - a), leftC);
   }
 
   Double_t theAnswer = 0;

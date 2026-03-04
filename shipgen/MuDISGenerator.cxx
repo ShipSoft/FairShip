@@ -83,28 +83,28 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
   // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
   TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
-  LOG(debug) << "muon DIS Generator in muon " << int(mu[0][0]);
-  Double_t x = mu[0][5] * 100.;  // come in m -> cm
-  Double_t y = mu[0][6] * 100.;  // come in m -> cm
-  Double_t z = mu[0][7] * 100.;  // come in m -> cm
+  LOG(debug) << "muon DIS Generator in muon " << int((*mu)[0]);
+  Double_t x = (*mu)[5] * 100.;  // come in m -> cm
+  Double_t y = (*mu)[6] * 100.;  // come in m -> cm
+  Double_t z = (*mu)[7] * 100.;  // come in m -> cm
   Double_t w =
-      mu[0][8];  // weight of the original muon ( normalised to a spill)
-  Double_t cross_sec = mu[0][10];             // in mbarns
-  Double_t t_muon = mu[0][11];                // in ns
-  Double_t DIS_multiplicity = 1 / mu[0][12];  // 1/nDIS
+      (*mu)[8];  // weight of the original muon ( normalised to a spill)
+  Double_t cross_sec = (*mu)[10];             // in mbarns
+  Double_t t_muon = (*mu)[11];                // in ns
+  Double_t DIS_multiplicity = 1 / (*mu)[12];  // 1/nDIS
 
   // calculate start/end positions along this muon, and amount of material in
   // between
 
-  Double_t txmu = mu[0][1] / mu[0][3];
-  Double_t tymu = mu[0][2] / mu[0][3];
+  Double_t txmu = (*mu)[1] / (*mu)[3];
+  Double_t tymu = (*mu)[2] / (*mu)[3];
   start[0] = x - (z - start[2]) * txmu;
   start[1] = y - (z - start[2]) * tymu;
   end[0] = x - (z - end[2]) * txmu;
   end[1] = y - (z - end[2]) * tymu;
   LOG(debug) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
-  LOG(debug) << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2]
-             << ", " << mu[0][3];
+  LOG(debug) << "MuDIS: mu pxyz position " << (*mu)[1] << ", " << (*mu)[2]
+             << ", " << (*mu)[3];
   LOG(debug) << "MuDIS: mu weight*DISmultiplicity  " << w;
   LOG(debug) << "MuDIS: mu DIS cross section " << cross_sec;
   LOG(debug) << "MuDIS: start position " << start[0] << ", " << start[1] << ", "
@@ -153,8 +153,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   LOG(debug) << "MuDIS: put position " << xmu << ", " << ymu << ", " << zmu;
 
   Double_t total_mom =
-      TMath::Sqrt(TMath::Power(mu[0][1], 2) + TMath::Power(mu[0][2], 2) +
-                  TMath::Power(mu[0][3], 2));  // in GeV
+      TMath::Sqrt(TMath::Power((*mu)[1], 2) + TMath::Power((*mu)[2], 2) +
+                  TMath::Power((*mu)[3], 2));  // in GeV
 
   Double_t distance =
       TMath::Sqrt(TMath::Power(x - xmu, 2) + TMath::Power(y - ymu, 2) +
@@ -173,10 +173,10 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t t_DIS =
       (t_muon + t_rmu) / 1e9;  // time taken in seconds to reach [xmu,ymu,zmu]
 
-  cpg->AddTrack(static_cast<int>(mu[0][0]),  // incoming muon track ()
-                mu[0][1], mu[0][2], mu[0][3], xmu, ymu, zmu, -1,
+  cpg->AddTrack(static_cast<int>((*mu)[0]),  // incoming muon track ()
+                (*mu)[1], (*mu)[2], (*mu)[3], xmu, ymu, zmu, -1,
                 false,  // tracking disabled
-                mu[0][4],
+                (*mu)[4],
                 t_DIS,  // shift time of the incoming muon track wrt t_muon from
                         // the input file.
                 w * DIS_multiplicity);  // muon weight associated with a spill*
