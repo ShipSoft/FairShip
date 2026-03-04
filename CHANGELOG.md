@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Removed
+
+* Remove dead `charmonly` code path from `run_simScript.py` (depended on removed charmdet module)
+
 ### Fixed
 
 * Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
