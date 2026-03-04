@@ -220,11 +220,19 @@ def findRanges(inFileName, cmScale):
         xMax = xArray[Nx1]
         dx = (xMax - xMin) / (Nx1 * 1.0)
 
+    yMin = 0.0
+    yMax = 0.0
+    dy = 0.0
+
     if Ny > 0:
         yMin = yArray[0]
         Ny1 = Ny - 1
         yMax = yArray[Ny1]
         dy = (yMax - yMin) / (Ny1 * 1.0)
+
+    zMin = 0.0
+    zMax = 0.0
+    dz = 0.0
 
     if Nz > 0:
         zMin = zArray[0]
