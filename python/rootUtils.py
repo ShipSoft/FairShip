@@ -59,14 +59,14 @@ def bookHist(
     key=None,
     title: str = "",
     nbinsx: int = 100,
-    xmin: int = 0,
-    xmax: int = 1,
+    xmin: float = 0,
+    xmax: float = 1,
     nbinsy: int = 0,
-    ymin: int = 0,
-    ymax: int = 1,
+    ymin: float = 0,
+    ymax: float = 1,
     nbinsz: int = 0,
-    zmin: int = 0,
-    zmax: int = 1,
+    zmin: float = 0,
+    zmax: float = 1,
 ) -> None:
     if key is None:
         print("missing key")
@@ -88,10 +88,10 @@ def bookProf(
     key=None,
     title: str = "",
     nbinsx: int = 100,
-    xmin: int = 0,
-    xmax: int = 1,
-    ymin=None,
-    ymax=None,
+    xmin: float = 0,
+    xmax: float = 1,
+    ymin: float | None = None,
+    ymax: float | None = None,
     option: str = "",
 ) -> None:
     if key is None:

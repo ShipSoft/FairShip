@@ -195,7 +195,7 @@ class selection_check:
 
         return np.array(chi2ndf)
 
-    def preselection_cut(self, candidate, IP_cut: int = 250, show_table: bool = False) -> bool:
+    def preselection_cut(self, candidate, IP_cut: float = 250, show_table: bool = False) -> bool:
         """
         Umbrella method to apply the pre-selection cuts on the candidate.
 
@@ -316,7 +316,7 @@ class event_inspector:
         self.pdg = ROOT.TDatabasePDG.Instance()
         pythia8_conf.addHNLtoROOT()
 
-    def dump_event(self, event, mom_threshold: int = 0) -> None:
+    def dump_event(self, event, mom_threshold: float = 0) -> None:
         """Dump the MCtruth of the event."""
         headers = [
             "#",

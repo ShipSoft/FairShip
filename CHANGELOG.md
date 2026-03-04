@@ -42,6 +42,7 @@ it in future.
 * Add type annotations across the Python codebase using pyrefly infer
 * Add mypy pre-commit hook for gradual type checking
 * Fix pickle serialisation file modes in ShipGeoConfig (text → binary)
+* Fix type annotations for physics quantities (axis limits, momentum/IP cuts) from int to float
 
 
 
