@@ -8,7 +8,7 @@ from BaseDetector import BaseDetector
 
 
 class MTCDetector(BaseDetector):
-    def __init__(self, name, intree, branchName=None, outtree=None):
+    def __init__(self, name, intree, branchName=None, outtree=None) -> None:
         super().__init__(name, intree, branchName, outtree=outtree)
         # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
         # make SiPM to fibre mapping
@@ -20,7 +20,7 @@ class MTCDetector(BaseDetector):
             mapping.make_mapping()
             self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 
-    def digitize(self):
+    def digitize(self) -> None:
         """Digitize SND/MTC MC hits.
 
         Example of fiberID: 123051820, where:

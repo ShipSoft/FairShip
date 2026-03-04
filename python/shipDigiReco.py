@@ -20,7 +20,7 @@ from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
 
-    def __init__(self, finput, fout, fgeo):
+    def __init__(self, finput, fout, fgeo) -> None:
         # Open input file (read-only) and get the MC tree
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
@@ -98,7 +98,7 @@ class ShipDigiReco:
         # for 'real' PatRec
         shipPatRec.initialize(fgeo)
 
-    def reconstruct(self):
+    def reconstruct(self) -> None:
         self.findTracks()
         self.findGoodTracks()
         self.linkVetoOnTracks()
@@ -106,7 +106,7 @@ class ShipDigiReco:
             # now go for 2-track combinations
             self.Vertexing.execute()
 
-    def digitize(self):
+    def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
         self.header.SetEventTime(self.sTree.t0)
         self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())
@@ -121,7 +121,7 @@ class ShipDigiReco:
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
 
-    def findTracks(self):
+    def findTracks(self) -> int:
         hitPosLists = {}
         hit_detector_ids = {}
         stationCrossed = {}
@@ -329,7 +329,7 @@ class ShipDigiReco:
                 print(x.getType(), len(x.getList()))
         return len(self.fGenFitArray)
 
-    def findGoodTracks(self):
+    def findGoodTracks(self) -> int:
         self.goodTracksVect.clear()
         nGoodTracks = 0
         for i, track in enumerate(self.fGenFitArray):
@@ -366,7 +366,7 @@ class ShipDigiReco:
                 hitID = i
         return ROOT.vetoHitOnTrack(hitID, distMin)
 
-    def linkVetoOnTracks(self):
+    def linkVetoOnTracks(self) -> None:
         self.vetoHitOnTrackArray.clear()
         for good_track in self.goodTracksVect:
             track = self.fGenFitArray[good_track]
@@ -390,7 +390,7 @@ class ShipDigiReco:
             frac = float(track[tmax]) / float(nh)
         return frac, tmax
 
-    def finish(self):
+    def finish(self) -> None:
         del self.fitter
         print("finished writing tree")
         self.outputFile.cd()

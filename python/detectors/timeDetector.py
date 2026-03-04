@@ -6,10 +6,10 @@ from BaseDetector import BaseDetector
 
 
 class timeDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
+    def __init__(self, name, intree, outtree=None) -> None:
         super().__init__(name, intree, outtree=outtree)
 
-    def digitize(self):
+    def digitize(self) -> None:
         """Digitize timing detector MC hits.
 
         The earliest hit per straw will be marked valid, all later ones invalid.
