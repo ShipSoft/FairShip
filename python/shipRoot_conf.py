@@ -18,14 +18,14 @@ ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libG4clhep")
 
 
-def forReadingOldFile():
+def forReadingOldFile() -> None:
     ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
 
 
 # -----prepare python exit-----------------------------------------------
 
 
-def pyExit():
+def pyExit() -> None:
     for module in sys.modules:
         if "ROOT.genfit" in module:
             x = sys.modules["__main__"]
@@ -44,7 +44,7 @@ def pyExit():
     print("Exit normally")
 
 
-def configure(darkphoton=None):
+def configure(darkphoton=None) -> None:
     ROOT.gROOT.ProcessLine('#include "' + os.environ["FAIRSHIP"] + '/shipdata/ShipGlobals.h"')
     pdg = ROOT.TDatabasePDG.Instance()
     # pythia stuff not known to ROOT

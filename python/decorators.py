@@ -64,7 +64,7 @@ def FitTrackPrintOut(x):
     return txt
 
 
-def TParticlePrintOut(x):
+def TParticlePrintOut(x) -> str:
     txt = f'("TParticle") {x.GetName()}  P:{x.P():5.2F}GeV/c VxZ:{x.Vz() / u.m:5.2F}m'
     return txt
 
@@ -76,24 +76,24 @@ def ShipParticlePrintOut(x):
     return txt
 
 
-def Dump(x):
+def Dump(x) -> None:
     k = 0
     for obj in x:
         print(k, obj.__repr__())
         k += 1
 
 
-def TVector3PrintOut(x):
+def TVector3PrintOut(x) -> str:
     txt = f"{x.X():9.5F},{x.Y():9.5F},{x.Z():9.5F}"
     return txt
 
 
-def TLorentzVectorPrintOut(x):
+def TLorentzVectorPrintOut(x) -> str:
     txt = f"{x.Px():9.5F},{x.Py():9.5F},{x.Pz():9.5F},{x.E():9.5F},{x.Mag():9.5F}"
     return txt
 
 
-def TEvePointSetPrintOut(P):
+def TEvePointSetPrintOut(P) -> str:
     x, y, z = c_double(), c_double(), c_double()
     txt = ""
     if P.GetN() == 0:
@@ -105,7 +105,7 @@ def TEvePointSetPrintOut(P):
     return txt
 
 
-def apply_decorators():
+def apply_decorators() -> None:
     """Apply custom __repr__ methods to ROOT classes.
 
     Call this function after ROOT libraries are fully loaded to enable

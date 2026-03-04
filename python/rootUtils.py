@@ -9,7 +9,7 @@ from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
 _error_log = Counter()
 
 
-def readHists(h, fname, wanted=[]):
+def readHists(h, fname, wanted=[]) -> None:
     if fname[0:4] == "/eos":
         eospath = gSystem.Getenv("EOSSHIP") + fname
         f = TFile.Open(eospath)
@@ -54,7 +54,20 @@ def readHists(h, fname, wanted=[]):
     return
 
 
-def bookHist(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, nbinsy=0, ymin=0, ymax=1, nbinsz=0, zmin=0, zmax=1):
+def bookHist(
+    h,
+    key=None,
+    title: str = "",
+    nbinsx: int = 100,
+    xmin: int = 0,
+    xmax: int = 1,
+    nbinsy: int = 0,
+    ymin: int = 0,
+    ymax: int = 1,
+    nbinsz: int = 0,
+    zmin: int = 0,
+    zmax: int = 1,
+) -> None:
     if key is None:
         print("missing key")
         return
@@ -70,7 +83,17 @@ def bookHist(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, nbinsy=0, ymin=0
     h[key].SetDirectory(gROOT)
 
 
-def bookProf(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, ymin=None, ymax=None, option=""):
+def bookProf(
+    h,
+    key=None,
+    title: str = "",
+    nbinsx: int = 100,
+    xmin: int = 0,
+    xmax: int = 1,
+    ymin=None,
+    ymax=None,
+    option: str = "",
+) -> None:
     if key is None:
         print("missing key")
         return
@@ -84,7 +107,7 @@ def bookProf(h, key=None, title="", nbinsx=100, xmin=0, xmax=1, ymin=None, ymax=
     h[key].SetDirectory(gROOT)
 
 
-def writeHists(h, fname, plusCanvas=False):
+def writeHists(h, fname, plusCanvas: bool = False) -> None:
     f = TFile(fname, "RECREATE")
     for akey in h:
         if not hasattr(h[akey], "Class"):
@@ -97,7 +120,7 @@ def writeHists(h, fname, plusCanvas=False):
     f.Close()
 
 
-def bookCanvas(h, key=None, title="", nx=900, ny=600, cx=1, cy=1):
+def bookCanvas(h, key=None, title: str = "", nx: int = 900, ny: int = 600, cx: int = 1, cy: int = 1) -> None:
     if key is None:
         print("missing key")
         return
@@ -106,18 +129,18 @@ def bookCanvas(h, key=None, title="", nx=900, ny=600, cx=1, cy=1):
         h[key].Divide(cx, cy)
 
 
-def reportError(s):
+def reportError(s) -> None:
     _error_log[s] += 1
 
 
-def errorSummary():
+def errorSummary() -> None:
     if _error_log:
         print("Summary of recorded incidents:")
     for e in _error_log:
         print(e, ":", _error_log[e])
 
 
-def checkFileExists(x):
+def checkFileExists(x) -> str:
     if isinstance(x, str):
         tx = [x]
     else:

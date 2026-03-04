@@ -12,7 +12,7 @@ from ShipGeoConfig import AttrDict
 detectorList = []
 
 
-def configure_snd_old(yaml_file, emulsion_target_z_end, cave_floorHeightMuonShield):
+def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuonShield) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
     nuTarget_geo = AttrDict(config["nuTarget"])
@@ -117,7 +117,7 @@ def configure_snd_old(yaml_file, emulsion_target_z_end, cave_floorHeightMuonShie
     detectorList.append(NuTauTT)
 
 
-def configure_snd_mtc(yaml_file, ship_geo):
+def configure_snd_mtc(yaml_file: str, ship_geo) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -145,7 +145,7 @@ def configure_snd_mtc(yaml_file, ship_geo):
     detectorList.append(mtc)
 
 
-def configure_snd_siliconTarget(yaml_file, ship_geo):
+def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -175,7 +175,7 @@ def configure_snd_siliconTarget(yaml_file, ship_geo):
     detectorList.append(SiliconTarget)
 
 
-def configure_veto(yaml_file, z0):
+def configure_veto(yaml_file: str, z0) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -207,7 +207,7 @@ def configure_veto(yaml_file, z0):
     detectorList.append(Veto)
 
 
-def configure_strawtubes(yaml_file, ship_geo):
+def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
