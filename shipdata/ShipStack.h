@@ -202,7 +202,7 @@ class ShipStack : public FairGenericStack {
   /** Variables defining the criteria for output selection **/
   Bool_t fStoreSecondaries;
   Int_t fMinPoints;
-  Double_t fEnergyCut;
+  Double32_t fEnergyCut;
   Bool_t fStoreMothers;
   int32_t fNsplits;
 
