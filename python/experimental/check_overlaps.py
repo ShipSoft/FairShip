@@ -9,7 +9,7 @@ import argparse
 import ROOT
 
 
-def main():
+def main() -> None:
     """Check for overlaps quickly."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
