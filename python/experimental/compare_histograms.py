@@ -9,7 +9,7 @@ import uproot
 from scipy import stats
 
 
-def compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):
+def compare_histograms(hist1, hist2, use_ks_test: bool = False, significance_threshold: float = 0.05) -> bool:
     """
     Compare two histograms for equality or statistical compatibility.
 
@@ -40,7 +40,7 @@ def compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0
     return True
 
 
-def main(file1_path, file2_path, use_ks_test, significance_threshold):
+def main(file1_path, file2_path, use_ks_test, significance_threshold) -> None:
     """
     Compare histograms in two ROOT files.
 
@@ -54,7 +54,7 @@ def main(file1_path, file2_path, use_ks_test, significance_threshold):
 
     # Get the list of histogram names from the first file
 
-    def isuproothist(inkey, fileno):
+    def isuproothist(inkey, fileno: int) -> bool:
         isHist = False
         try:
             isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)

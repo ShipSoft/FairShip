@@ -16,7 +16,7 @@ from tabulate import tabulate
 class selection_check:
     """Class to perform various selection checks on the candidate."""
 
-    def __init__(self, geo_file):
+    def __init__(self, geo_file) -> None:
         """Initialize the selection_check class with geometry and configuration."""
         self.geometry_manager = geo_file.Get("FAIRGeom")
         self.ship_geo = load_from_root_file(geo_file, "ShipGeo")
@@ -33,7 +33,7 @@ class selection_check:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
 
-    def access_event(self, tree):
+    def access_event(self, tree) -> None:
         """Access event data."""
         self.tree = tree
 
@@ -99,7 +99,7 @@ class selection_check:
 
         return dist  # in cm
 
-    def dist_to_innerwall(self, candidate):
+    def dist_to_innerwall(self, candidate) -> float | int:
         """Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, or if distance > 100cm,Return 0."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
@@ -166,7 +166,7 @@ class selection_check:
         """Distance of Closest Approach."""
         return candidate.GetDoca()
 
-    def is_in_fiducial(self, candidate):
+    def is_in_fiducial(self, candidate) -> bool:
         """Check if the candidate decay vertex is within the Fiducial Volume."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
@@ -195,7 +195,7 @@ class selection_check:
 
         return np.array(chi2ndf)
 
-    def preselection_cut(self, candidate, IP_cut=250, show_table=False):
+    def preselection_cut(self, candidate, IP_cut: int = 250, show_table: bool = False) -> bool:
         """
         Umbrella method to apply the pre-selection cuts on the candidate.
 
@@ -311,12 +311,12 @@ class selection_check:
 class event_inspector:
     """Class to inspect MCtruth of an Event."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ROOT PDG database."""
         self.pdg = ROOT.TDatabasePDG.Instance()
         pythia8_conf.addHNLtoROOT()
 
-    def dump_event(self, event, mom_threshold=0):
+    def dump_event(self, event, mom_threshold: int = 0) -> None:
         """Dump the MCtruth of the event."""
         headers = [
             "#",
