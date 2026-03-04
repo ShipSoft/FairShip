@@ -108,6 +108,7 @@ def killAll() -> None:
 
 def executeSimple(prefixes: list[str], reset=False) -> None:
     proc = {}
+    inputfile: str = ""
     for prefix in prefixes:
         jobs = getJobs(prefix)
         for x in jobs:
@@ -206,12 +207,11 @@ h = {}
 
 def mergeHistosMakePlots(p: list[str]) -> None:
     if not isinstance(p, list):
-        pl = [p]
+        pl: list[str] = [p]
     else:
         pl = p
     hlist = ""
-    for p in pl:
-        prefix = str(p)
+    for prefix in pl:
         for x in os.listdir("."):
             if not x.find(prefix) < 0:
                 if os.path.isdir(x):
@@ -267,6 +267,7 @@ def mergeNtuples(prefixes: list[str]) -> None:
     for prefix in prefixes:
         jobs = getJobs(prefix)
         haddCommand = ""
+        inputfile: str = ""
         for x in jobs:
             for f in os.listdir(x):
                 if not f.find("geofile_full") < 0:

@@ -5,6 +5,7 @@
 import multiprocessing as mp
 import os
 from io import TextIOWrapper
+from typing import Any
 
 import ROOT
 from ROOT import TF1
@@ -342,6 +343,9 @@ path = ""
 if prefixes[0] != "":
     testdir = path + prefixes[0] + "1"
 # figure out which setup
+fgeo: Any = None
+sGeo: Any = None
+inputFile: str = ""
 for f in os.listdir(testdir):
     if not f.find("geofile_full") < 0:
         fgeo = ROOT.TFile(testdir + "/" + f)
@@ -740,6 +744,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 trackID = ahit.GetTrackID()
                 phit = -100.0
                 mom = ROOT.TVector3()
+                aTrack: Any = None
                 if not trackID < 0:
                     aTrack = sTree.MCTrack[trackID]
                     pdgID = aTrack.GetPdgCode()
@@ -1408,7 +1413,7 @@ def makeNicePrintout(x: list[str] = ["rareEvents_61-62.txt", "rareEvents_71-72.t
     cor = 1.0
     for fn in x:
         f = open(fn)
-        recTrack = None
+        recTrack: dict[str, Any] = {}
         if fn == "rareEvents_81-102.txt":
             cor = 30.0
         for lx in f.readlines():
@@ -1444,9 +1449,9 @@ def makeNicePrintout(x: list[str] = ["rareEvents_61-62.txt", "rareEvents_71-72.t
     )
     # sort according to p_hit
     tmp = sorted(result, key=itemgetter("fp_hit"))
-    muonrate1 = 0
-    muonrate2 = 0
-    muonrate3 = 0
+    muonrate1: float = 0.0
+    muonrate2: float = 0.0
+    muonrate3: float = 0.0
     for i in range(len(tmp)):
         tr = tmp[i]
         corw = float(tr["w"]) / cor

@@ -22,6 +22,8 @@ weightCharm = 489.24 * 2.0 / 3.0
 # for 10GeV charm Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+weight: float = 0.0
+
 
 def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) -> int:
     nMu = 0
@@ -48,8 +50,8 @@ def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) ->
     return nMu
 
 
-def PoT(f) -> tuple[float | int, float, float]:
-    nTot = 0
+def PoT(f) -> tuple[float, float, float]:
+    nTot: float = 0.0
     # POT = 1000000000 with ecut=10.0 diMu100.0 X100.0
     diMuboost = 0.0
     xSecboost = 0.0
@@ -91,7 +93,7 @@ def PoT(f) -> tuple[float | int, float, float]:
 
 def TotStat() -> None:
     lfiles = os.listdir(path)
-    ntot = 0
+    ntot: float = 0.0
     for fn in lfiles:
         f = ROOT.TFile(path + fn)
         nPot, diMuboost, xSecboost = PoT(f)
@@ -179,7 +181,7 @@ def run4beauty() -> None:
 def mergeCharm() -> None:
     tmp = "pythia8_Geant4_charm_XX-YY_10.0.root"
     mergedFile = "pythia8_Geant4_charm_102.2B_10.0_mu.root"
-    cmd = "hadd " + mergedFile
+    cmd: str = "hadd " + mergedFile
     for cycle in [0, 1]:
         for run in range(0, 100, 20):
             crun = run + cycle * 1000

@@ -28,6 +28,7 @@ weightCharm1GeV = 4895.24
 # for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+weight: float = 0.0
 
 h = {}
 PDG = ROOT.TDatabasePDG.Instance()
