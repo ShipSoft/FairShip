@@ -122,9 +122,9 @@ class Task:
                 # ignore this for background studies
                 if PosDirCharge[t2]["charge"] == c1:
                     continue
-                newPos, doca = self.VertexError(t1, t2, PosDirCharge)
+                newPos, doca = self.VertexError(t1, t2, PosDirCharge)  # pyrefly: ignore[bad-unpacking]
                 # as we have learned, need iterative procedure
-                dz = 99999.0
+                dz: float = 99999.0
                 rc = True
                 step = 0
                 while dz > 0.01:
@@ -144,8 +144,8 @@ class Task:
                         }
                     if not rc:
                         break
-                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)
-                    dz = abs(zBefore - newPos[2])
+                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)  # pyrefly: ignore[bad-unpacking]
+                    dz = float(abs(zBefore - newPos[2]))
                     step += 1
                     if step > 10:
                         ut.reportError("shipVertex: abort iteration, too many steps")
@@ -177,7 +177,7 @@ class Task:
                     / PosDirCharge[t2]["direction"][2]
                     / PosDirCharge[t2]["momentum"].Mag()
                 )
-                HNLPos, covX, dist = self.VertexError(t1, t2, self.newPosDir, CovMat, scalFac)
+                HNLPos, covX, dist = self.VertexError(t1, t2, self.newPosDir, CovMat, scalFac)  # pyrefly: ignore[bad-unpacking]
                 # monitor Vx resolution and pulls
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
@@ -504,6 +504,7 @@ class Task:
         transT = ROOT.TMatrixD(12, 3)
         transT.Transpose(T)
         CovTracks = ROOT.TMatrixD(12, 12)
+        assert scalFac is not None
         tlist = [t1, t2]
         for k in range(2):
             for i in range(6):

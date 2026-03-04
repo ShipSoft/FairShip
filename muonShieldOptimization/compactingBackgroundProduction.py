@@ -5,6 +5,7 @@ import datetime
 import os
 import pickle
 import sys
+from typing import Any
 
 import ROOT
 import rootUtils as ut
@@ -148,13 +149,13 @@ def YandexProd(startDate, endDate) -> None:
         + endDate.__str__().split(" ")[0]
         + ".pkl"
     )
-    fpi = open(pName, "w")
-    database = {}
+    fpi = open(pName, "wb")
+    database: dict[str, Any] = {}
     database["goodruns"] = goodRuns
     database["badRuns"] = badRuns
     pickle.dump(database, fpi)
     fpi.close()
-    fpi = open(pName)
+    fpi = open(pName, "rb")
     database = pickle.load(fpi)
     addRuns(database["goodruns"], 20000)  # next cycle
 
@@ -215,7 +216,7 @@ def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
     ecut = "10.0"
     if charm:
         allDirs = os.listdir(globalPath + "/charm")
-        allFiles = []
+        allFiles: str = ""
         for r in range(int(runMin), int(runMax) + 1):
             # collect the 20 subdirectories connected to a run
             nr = "9000" + str(r)
@@ -287,7 +288,7 @@ def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
 def makeHistos(rfile: str) -> None:
     f = ROOT.TFile.Open(rfile)
     sTree = f.Get("cbmsim")
-    nTot = 0
+    nTot: float = 0
     for k in f.GetListOfKeys():
         if k.GetName() == "FileHeader":
             tmp = k.GetTitle().split("=")[1]
@@ -424,16 +425,16 @@ def check4DoubleRuns() -> None:
     ]
     Nruns = 0
     for x in allRuns:
-        fn = open(x)
+        fn = open(x, "rb")
         dn = pickle.load(fn)
         Nruns += len(dn["goodruns"])
     print("Total number of runs:", Nruns)
 
     for n in range(len(allRuns) - 1):
-        fn = open(allRuns[n])
+        fn = open(allRuns[n], "rb")
         dn = pickle.load(fn)
         for m in range(n + 1, len(allRuns)):
-            fm = open(allRuns[m])
+            fm = open(allRuns[m], "rb")
             dm = pickle.load(fm)
             for rn in dn["goodruns"]:
                 for rm in dm["goodruns"]:

@@ -28,9 +28,9 @@ setup["200"] = {"thickness": 2 * u.cm, "material": "aluminium", "momentum": 200 
 
 
 s = sys.argv[1]
-thickness = setup[s]["thickness"]
+thickness = float(setup[s]["thickness"])
 material = setup[s]["material"]
-momentum = setup[s]["momentum"]
+momentum = float(setup[s]["momentum"])
 
 checkOverlap = True
 

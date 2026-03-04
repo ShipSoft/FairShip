@@ -305,6 +305,7 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     rc, pos, mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.Bfield.z)
     if not rc:
         return False
+    assert pos is not None
     if not dist2InnerWall(pos.X(), pos.Y(), pos.Z()) > 0:
         return False
     return inside
@@ -385,7 +386,7 @@ def RedoVertexing(t1, t2):
         if not rc:
             break
         xv, yv, zv, doca = myVertex(t1, t2, newPosDir)
-        dz = abs(zBefore - zv)
+        dz = float(abs(zBefore - zv))
         step += 1
         if step > 10:
             print("abort iteration, too many steps, pos=", xv, yv, zv, " doca=", doca, "z before and dz", zBefore, dz)
@@ -745,6 +746,7 @@ def myEventLoop(n: int) -> None:
         for fT in sTree.FitTracks:
             rc, pos, mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
             if rc:
+                assert pos is not None
                 for aPoint in sTree.TimeDetPoint:
                     h["extrapTimeDetX"].Fill(pos.X() - aPoint.GetX())
                     h["extrapTimeDetY"].Fill(pos.Y() - aPoint.GetY())

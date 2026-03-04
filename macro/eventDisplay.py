@@ -36,7 +36,6 @@ atexit.register(evExit)
 fMan = None
 
 fMan = ROOT.FairEventManager()
-fRun = None
 
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
@@ -495,6 +494,7 @@ class DrawTracks(ROOT.FairTask):
             for i in range(self.niter):
                 rc, newpos, newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
                 if rc:
+                    assert newpos is not None
                     DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())
                 else:
                     print("error with extrapolation: z=", zs)
@@ -579,7 +579,7 @@ class IO:
         else:
             a.set(0)
         self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
-        self.lbut[x].var = a
+        self.lbut[x].var = a  # pyrefly: ignore[missing-attribute]
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
@@ -592,7 +592,7 @@ class IO:
             else:
                 a.set(0)
             self.lbut[x] = tkinter.Checkbutton(self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a)
-            self.lbut[x].var = a
+            self.lbut[x].var = a  # pyrefly: ignore[missing-attribute]
             self.lbut[x]["command"] = lambda: self.toggle(x)
             self.lbut[x].pack(side=tkinter.BOTTOM)
         self.fram1.pack()

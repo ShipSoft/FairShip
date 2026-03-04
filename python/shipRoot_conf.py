@@ -30,16 +30,16 @@ def pyExit() -> None:
         if "ROOT.genfit" in module:
             x = sys.modules["__main__"]
             if hasattr(x, "run"):
-                del x.run
+                del x.run  # pyrefly: ignore[missing-attribute]
                 print("make suicid, until better solution found to ROOT/genfit interference")
                 for f in ROOT.gROOT.GetListOfFiles():
                     if f.IsWritable() and f.IsOpen():
                         f.Close()
                 os.system("kill " + str(os.getpid()))
             if hasattr(x, "fMan"):
-                del x.fMan
+                del x.fMan  # pyrefly: ignore[missing-attribute]
             if hasattr(x, "fRun"):
-                del x.fRun
+                del x.fRun  # pyrefly: ignore[missing-attribute]
             return
     print("Exit normally")
 

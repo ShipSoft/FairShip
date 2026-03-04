@@ -381,7 +381,7 @@ class ShipDigiReco:
             else:
                 track[tid] = 1
         if track != {}:
-            tmax = max(track, key=track.get)
+            tmax = max(track, key=track.get)  # pyrefly: ignore[no-matching-overload]
         else:
             track = {-999: 0}
             tmax = -999

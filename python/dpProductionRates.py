@@ -102,7 +102,7 @@ def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
     return br
 
 
-def brMesonToDP(mass, epsilon, mumPdg, doprint=False):
+def brMesonToDP(mass, epsilon, mumPdg, doprint=False) -> float | tuple[float, float]:
     if mumPdg == 223:
         return brMesonToMesonDP(mass, epsilon, mumPdg, 111, doprint)
     elif mumPdg == 111 or mumPdg == 221:
@@ -117,11 +117,13 @@ def brMesonToDP(mass, epsilon, mumPdg, doprint=False):
 def mesonProdRate(mass, epsilon, mumPdg, doprint=False):
     brM2DP = brMesonToDP(mass, epsilon, mumPdg, doprint)
     if mumPdg == 331:
+        assert isinstance(brM2DP, tuple)
         avgMeson = getAverageMesonRate(mumPdg) * brM2DP[0]
         avgMeson1 = getAverageMesonRate(mumPdg) * brM2DP[1]
         return avgMeson * 0.6, avgMeson1 * 0.6
         # return avgMeson + avgMeson1
     if not mumPdg == 331:
+        assert isinstance(brM2DP, float)
         avgMeson = getAverageMesonRate(mumPdg) * brM2DP
         return avgMeson * 0.6
 
