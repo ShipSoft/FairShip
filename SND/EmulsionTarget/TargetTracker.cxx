@@ -59,8 +59,6 @@
 using std::cout;
 using std::endl;
 
-using namespace ShipUnit;
-
 TargetTracker::TargetTracker()
     : FairDetector("TargetTracker", "", kTRUE),
       fTrackID(-1),

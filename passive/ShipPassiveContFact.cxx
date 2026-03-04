@@ -22,8 +22,6 @@
 
 class FairParSet;
 
-using namespace std;
-
 // static ShipPassiveContFact gShipPassiveContFact;
 
 ShipPassiveContFact::ShipPassiveContFact() : FairContFact() {

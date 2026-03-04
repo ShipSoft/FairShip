@@ -15,7 +15,8 @@
 #include "TMath.h"
 #include "TROOT.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 // -----  necessary functions  -----------------------------------------
 double Co3Rng::fSpectrumL(double theta, double minE, Bool_t generateP = 1) {

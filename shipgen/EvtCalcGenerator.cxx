@@ -13,8 +13,6 @@
 #include "TFile.h"
 #include "TMath.h"
 
-using namespace ShipUnit;
-
 // -----   Default constructor   -------------------------------------------
 EvtCalcGenerator::EvtCalcGenerator() {}
 // -------------------------------------------------------------------------
