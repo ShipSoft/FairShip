@@ -129,13 +129,13 @@ shield_db = {
 
 
 def create_config(
-    DecayVolumeMedium="helium",
-    Yheight=6.0,
-    strawDesign=10,
+    DecayVolumeMedium: str = "helium",
+    Yheight: float = 6.0,
+    strawDesign: int = 10,
     muShieldGeo=None,
-    shieldName="New_HA_Design",
-    nuTargetPassive=1,
-    SND=True,
+    shieldName: str = "New_HA_Design",
+    nuTargetPassive: int = 1,
+    SND: bool = True,
     SND_design=None,
     TARGET_YAML=None,
 ):

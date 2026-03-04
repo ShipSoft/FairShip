@@ -15,7 +15,7 @@ ROOT.gROOT.ProcessLine('#include "TG4GeometryServices.h"')
 ROOT.gROOT.ProcessLine('#include "TG4GeometryManager.h"')
 
 
-def _collectVolumeNames(volume, listOfVolumes):
+def _collectVolumeNames(volume, listOfVolumes) -> None:
     """Recursively walk the geometry tree collecting volume names from nodes."""
     nodes = volume.GetNodes()
     if not nodes:
@@ -28,7 +28,7 @@ def _collectVolumeNames(volume, listOfVolumes):
         _collectVolumeNames(node.GetVolume(), listOfVolumes)
 
 
-def check4OrphanVolumes(fGeo):
+def check4OrphanVolumes(fGeo) -> None:
     # fill list with volumes from nodes and compare with list of volumes
     top = fGeo.GetTopVolume()
     listOfVolumes = [top.GetName()]
@@ -50,7 +50,7 @@ def check4OrphanVolumes(fGeo):
     print("list of volumes with same name", vSame)
 
 
-def setMagnetField(flag=None):
+def setMagnetField(flag=None) -> None:
     print("setMagnetField() called. Out of date, does not set field for tau neutrino detector!")
     fGeo = ROOT.gGeoManager
     vols = fGeo.GetListOfVolumes()
@@ -101,7 +101,7 @@ def setMagnetField(flag=None):
         g4Run.GeometryHasBeenModified(True)
 
 
-def printWF(vl, alreadyPrinted, onlyWithField=True):
+def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
     magnetMass = 0
     vname = vl.GetName().data()
     if vname in alreadyPrinted:
@@ -143,7 +143,7 @@ def printWF(vl, alreadyPrinted, onlyWithField=True):
     return magnetMass
 
 
-def nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):
+def nextLevel(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):
     tmp = 0
     for da in range(lv.GetNoDaughters()):
         lvn = lv.GetDaughter(da)
@@ -159,7 +159,7 @@ def nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):
     return tmp, magnetMass
 
 
-def printWeightsandFields(onlyWithField=True, exclude=[]):
+def printWeightsandFields(onlyWithField: bool = True, exclude=[]) -> None:
     if len(exclude) != 0:
         print("will not search in ", exclude)
     gt = ROOT.G4TransportationManager.GetTransportationManager()
@@ -172,7 +172,7 @@ def printWeightsandFields(onlyWithField=True, exclude=[]):
     return
 
 
-def addVMCFields(shipGeo, controlFile="", verbose=False, withVirtualMC=True):
+def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirtualMC: bool = True):
     """
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     """
@@ -228,7 +228,7 @@ def addVMCFields(shipGeo, controlFile="", verbose=False, withVirtualMC=True):
     return fieldMaker
 
 
-def printVMCFields():
+def printVMCFields() -> None:
     """
     Method to print out information about VMC fields
     """
@@ -257,12 +257,12 @@ def getRunManager():
     return ROOT.G4RunManager.GetRunManager()
 
 
-def startUI():
+def startUI() -> None:
     session = ROOT.G4UIterminal()
     session.SessionStart()
 
 
-def debug():
+def debug() -> None:
     gt = ROOT.G4TransportationManager.GetTransportationManager()
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
