@@ -51,7 +51,7 @@ def PDGname(particle):
     return particle
 
 
-def mass(particle):
+def mass(particle: str | None):
     """
     Read particle mass from PDG database
     """
@@ -74,7 +74,7 @@ class CKMmatrix:
     CKM matrix, from http://pdg.lbl.gov/2017/reviews/rpp2016-rev-ckm-matrix.pdf
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.Vud = 0.9743
         self.Vus = 0.2251
         self.Vub = 3.6e-03
@@ -91,7 +91,7 @@ class constants:
     Store some constants useful for HNL physics
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.decayConstant = {
             "pi+": 0.130 * u.GeV,
             "pi0": 0.130 * u.GeV,
@@ -120,7 +120,7 @@ class HNLbranchings:
     Lifetime and total and partial decay widths of an HNL
     """
 
-    def __init__(self, mass, couplings, debug=False):
+    def __init__(self, mass, couplings, debug: bool = False) -> None:
         """
         Initialize with mass and couplings of the HNL
 
@@ -206,7 +206,7 @@ class HNLbranchings:
             print("and mass:")
             print("\tm = %s GeV" % (self.MN))
 
-    def sqrt_lambda(self, a, b, c):
+    def sqrt_lambda(self, a: float, b, c) -> float | int:
         """
         Useful function for decay kinematics. Returns 0 for kinematically forbidden region.
         This is the Källén (triangle) function λ(a,b,c).
@@ -236,7 +236,7 @@ class HNLbranchings:
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
-    def Width_nu_f_fbar(self, alpha, beta):
+    def Width_nu_f_fbar(self, alpha: int, beta: int):
         """
         Returns the HNL tree level decay width into the fermion-antifermion pair and a neutrino (decay through Z boson or Z and W)
 
@@ -315,7 +315,7 @@ class HNLbranchings:
         res *= self.sqrt_lambda(1.0, x, xu2)
         return res
 
-    def integral(self, x1, x2, x3):
+    def integral(self, x1, x2, x3: int):
         """
         Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN
@@ -332,7 +332,7 @@ class HNLbranchings:
         res = 12.0 * ig.Integral(xmin, xmax)
         return res
 
-    def Width_l1_l2_nu2(self, alpha, beta):
+    def Width_l1_l2_nu2(self, alpha: int, beta: int):
         """
         Returns the HNL decay width into two different flavour leptons and a neutrino (decay through W boson)
 
@@ -357,7 +357,7 @@ class HNLbranchings:
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
-    def Width_l_u_d(self, alpha, beta, gamma):
+    def Width_l_u_d(self, alpha: int, beta: int, gamma: int):
         """
         Returns the HNL tree level decay width into a charged lepton, up quark and down quark (decay through W boson)
 
@@ -383,7 +383,7 @@ class HNLbranchings:
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
-    def Width_H0_nu(self, H, alpha):
+    def Width_H0_nu(self, H: str, alpha: int):
         """
         Returns the HNL decay width into neutral meson and neutrino
 
@@ -411,7 +411,7 @@ class HNLbranchings:
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
-    def Width_H_l(self, H, alpha):
+    def Width_H_l(self, H: str, alpha: int):
         """
         Returns the HNL decay width into charged meson and lepton
 
@@ -443,7 +443,7 @@ class HNLbranchings:
         width = 2.0 * width  # Majorana case (charge conjugate channels)
         return width
 
-    def Width_charged_leptons(self):
+    def Width_charged_leptons(self) -> float:
         """
         Returns the total HNL leptonic decay width with charged leptons in final state
         """
@@ -454,7 +454,7 @@ class HNLbranchings:
                 width += self.Width_l1_l2_nu2(l1, l2)
         return width
 
-    def Width_neutral_mesons(self):
+    def Width_neutral_mesons(self) -> float:
         """
         Returns the total HNL decay width into a neutral meson and a neutrino
         """
@@ -465,7 +465,7 @@ class HNLbranchings:
                 width += self.Width_H0_nu(m, lepton)
         return width
 
-    def Width_charged_mesons(self):
+    def Width_charged_mesons(self) -> float:
         """
         Returns the total HNL decay width into a charged meson and a charged lepton
         """
@@ -476,7 +476,7 @@ class HNLbranchings:
                 width += self.Width_H_l(m, lepton)
         return width
 
-    def Width_quarks_neutrino(self):
+    def Width_quarks_neutrino(self) -> float | int:
         """
         Returns the total HNL decay width with quarks and neutrino in final state. Uses 3-loops alpha_s correction
         """
@@ -489,7 +489,7 @@ class HNLbranchings:
         width *= 1.0 + self.QCD_corr
         return width
 
-    def Width_quarks_lepton(self):
+    def Width_quarks_lepton(self) -> float | int:
         """
         Returns the total HNL decay width with quarks and charged lepton in final state. Uses 3-loops alpha_s correction
         """
@@ -620,7 +620,7 @@ class HNLbranchings:
             br = max([self.Width_charged_mesons(), self.Width_quarks_lepton()]) / totalWidth
         return br
 
-    def allowedChannels(self):
+    def allowedChannels(self) -> dict[str, str]:
         """
         Returns a dictionary of kinematically allowed decay channels
 
@@ -702,7 +702,7 @@ class HNL(HNLbranchings):
     HNL physics according to the nuMSM
     """
 
-    def __init__(self, mass, couplings, debug=False):
+    def __init__(self, mass, couplings, debug: bool = False) -> None:
         """
         Initialize with mass and couplings of the HNL
 
@@ -712,7 +712,7 @@ class HNL(HNLbranchings):
         """
         HNLbranchings.__init__(self, mass, couplings, debug)
 
-    def computeNLifetime(self, system="SI"):
+    def computeNLifetime(self, system: str = "SI"):
         """
         Compute the HNL lifetime
 
