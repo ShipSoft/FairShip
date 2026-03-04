@@ -3,6 +3,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os
+from typing import Any
 
 import ROOT
 import shipunit as u
@@ -19,10 +20,11 @@ detectorList = []
 
 
 def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuonShield) -> None:
+    # TODO: replace with typed config
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
-    nuTarget_geo = AttrDict(config["nuTarget"])
-    nuTauTT_geo = AttrDict(config["nuTauTT"])
+    nuTarget_geo: Any = AttrDict(config["nuTarget"])
+    nuTauTT_geo: Any = AttrDict(config["nuTauTT"])
 
     # specific parameters
     # nu Target Tracker
@@ -182,10 +184,11 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo: ShipGeoConfig) -> None
 
 
 def configure_veto(yaml_file: str, z0) -> None:
+    # TODO: replace with typed config
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    veto_geo = AttrDict(config)
+    veto_geo: Any = AttrDict(config)
 
     Veto = ROOT.veto()
     Veto.SetVesselDimensions(
@@ -326,6 +329,7 @@ def configure(run, ship_geo: ShipGeoConfig):
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
         if 2 in ship_geo.SND_design:
+            assert ship_geo.mtc_geo is not None
             MuonShield.SetSNDSpace(
                 hole=True,
                 hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,
