@@ -110,6 +110,7 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   Bool_t withNtuple;         //! special option for Dark Photon physics studies
   TNtuple* fNtuple;          //!
   Float_t EMax;              //! max energy to transport
+  int32_t fNsplits;
   Bool_t fCylindricalPlane;  //! flag if the sensPlane to be created should be
                              //! cylindrical (by default it is not)
   Bool_t fUseCaveCoordinates;  //! set position from cave rather than from muon
@@ -120,6 +121,7 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   Int_t index;
   /** container for data points */
   std::vector<vetoPoint>* fexitHadronAbsorberPointCollection;
+
   ClassDef(exitHadronAbsorber, 0)
 };
 

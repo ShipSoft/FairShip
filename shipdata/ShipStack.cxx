@@ -7,8 +7,8 @@
 // -------------------------------------------------------------------------
 #include "ShipStack.h"
 
-#include <math.h>
 #include <stddef.h>  // for NULL
+#include <math.h>
 
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, etc
@@ -33,7 +33,7 @@ using std::endl;
 using std::pair;
 
 // -----   Default constructor   -------------------------------------------
-ShipStack::ShipStack(int32_t size)
+ShipStack::ShipStack(Int_t size)
     : FairGenericStack(),
       fStack(),
       fParticles(new TClonesArray("TParticle", size)),
@@ -53,11 +53,13 @@ ShipStack::ShipStack(int32_t size)
       fEnergyCut(0.),
       fStoreMothers(kTRUE),
       fNsplits(0) {
-  fTracks = new std::vector<ShipMCTrack>();
-  fTracks->reserve(size);
-  fNsplits = std::getenv("KAON_PION_SPLITS")
-                 ? std::atoi(std::getenv("KAON_PION_SPLITS"))
-                 : 0;
+    fTracks = new std::vector<ShipMCTrack>();
+    fTracks->reserve(size);
+    fNsplits = 0;
+    const char* env = std::getenv("KAON_PION_SPLITS");
+    if (env) {
+        fNsplits = std::atoi(env);
+    }
 }
 
 // -------------------------------------------------------------------------
@@ -74,47 +76,68 @@ ShipStack::~ShipStack() {
 }
 // -------------------------------------------------------------------------
 
-void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
-                          double px, double py, double pz, double e, double vx,
-                          double vy, double vz, double time, double polx,
-                          double poly, double polz, TMCProcess proc,
-                          int32_t& ntr, double weight, int32_t is) {
+void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
+                          Double_t px, Double_t py, Double_t pz, Double_t e,
+                          Double_t vx, Double_t vy, Double_t vz, Double_t time,
+                          Double_t polx, Double_t poly, Double_t polz,
+                          TMCProcess proc, Int_t& ntr, Double_t weight,
+                          Int_t is) {
   PushTrack(toBeDone, parentId, pdgCode, px, py, pz, e, vx, vy, vz, time, polx,
             poly, polz, proc, ntr, weight, is, -1);
 }
 
 // -----   Virtual public method PushTrack   -------------------------------
-void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
-                          double px, double py, double pz, double e, double vx,
-                          double vy, double vz, double time, double polx,
-                          double poly, double polz, TMCProcess proc,
-                          int32_t& ntr, double weight, int32_t is,
-                          int32_t secondparentID) {
+void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
+                          Double_t px, Double_t py, Double_t pz, Double_t e,
+                          Double_t vx, Double_t vy, Double_t vz, Double_t time,
+                          Double_t polx, Double_t poly, Double_t polz,
+                          TMCProcess proc, Int_t& ntr, Double_t weight,
+                          Int_t is, Int_t secondparentID) {
   // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
   // <<    " " << secondparentID<<" "<<proc<< endl;
 
+  // --> Create new TParticle and add it to the TParticle array
+  Int_t trackId = fNParticles;
+
+  bool pion_or_kaon_id_bool = (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
+  bool pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) && (is < 999) && (fNsplits > 0);
+
+  // --> Set argument variable
+  ntr = trackId;
+
+  // Split kaons and pions if splitting is required
+  if (pion_or_kaon_bool) {
+      double scaled_weight = weight / fNsplits;
+      for (int32_t i = 0; i < fNsplits; ++i) {
+          // cout << "in loop" << ntr << endl;
+          gMC->GetStack()->PushTrack(1,
+                                     parentId,
+                                     pdgCode,
+                                     px, py, pz, e,
+                                     vx, vy, vz, time,
+                                     polx, poly, polz,
+                                     kPNoProcess,
+                                     ntr,
+                                     scaled_weight,
+                                     is + 1  + i
+                                     );
+        }
+      return;
+  }
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
 
-  // --> Create new TParticle and add it to the TParticle array
-  int32_t trackId = fNParticles;
-
-  bool pion_or_kaon_id_bool =
-      (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
-  bool pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) &&
-                           (is < 999) && (fNsplits > 0);  // && (time < 1e-7);
-
-  int32_t nPoints = 0;
-  int32_t daughter1Id = -1;
-  int32_t daughter2Id = -1;
+  Int_t nPoints = 0;
+  Int_t daughter1Id = -1;
+  Int_t daughter2Id = -1;
   TParticle* particle = new (partArray[fNParticles++])
       TParticle(pdgCode, trackId, parentId, nPoints, daughter1Id, daughter2Id,
                 px, py, pz, e, vx, vy, vz, time);
   // from root, how does this fit ? misuse of status and mother2 ??? status is
-  // used for trackID definitely TParticle(int32_t pdg, int32_t status, int32_t
-  // mother1, int32_t mother2,
-  //   int32_t daughter1, int32_t daughter2, double px, double py, double pz,
-  //   double etot, double vx, double vy, double vz, double time)
+  // used for trackID definitely TParticle(Int_t pdg, Int_t status, Int_t
+  // mother1, Int_t mother2,
+  //   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz,
+  //   Double_t etot, Double_t vx, Double_t vy, Double_t vz, Double_t time)
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
@@ -131,30 +154,19 @@ void ShipStack::PushTrack(int32_t toBeDone, int32_t parentId, int32_t pdgCode,
   if (parentId < 0) {
     fNPrimaries++;
   }
+  if (toBeDone == 1) {
+      // cout << "not in loop" << ntr << endl;
 
-  // --> Set argument variable
-  ntr = trackId;
-
-  // Split kaons and pions if splitting is required
-  if (pion_or_kaon_bool) {
-    double scaled_weight = weight / fNsplits;
-    double expiredTime = time + 1.0;
-    for (int32_t i = 0; i < fNsplits; ++i) {
-      gMC->GetStack()->PushTrack(1, parentId, pdgCode, px, py, pz, e, vx, vy,
-                                 vz, expiredTime, polx, poly, polz, kPDecay,
-                                 ntr, scaled_weight, 999 + i);
-    }
-    particle->SetBit(kDoneBit);
-  } else if (toBeDone == 1) {
-    // --> Push particle on the stack if toBeDone is set
-    particle->SetBit(kDoneBit);
-    fStack.push(particle);
+      // --> Push particle on the stack if toBeDone is set
+      particle->SetBit(kDoneBit);
+      fStack.push(particle);
   }
+
 }
 // -------------------------------------------------------------------------
 
 // -----   Virtual method PopNextTrack   -----------------------------------
-TParticle* ShipStack::PopNextTrack(int32_t& iTrack) {
+TParticle* ShipStack::PopNextTrack(Int_t& iTrack) {
   // If end of stack: Return empty pointer
   if (fStack.empty()) {
     iTrack = -1;
@@ -178,7 +190,7 @@ TParticle* ShipStack::PopNextTrack(int32_t& iTrack) {
 // -------------------------------------------------------------------------
 
 // -----   Virtual method PopPrimaryForTracking   --------------------------
-TParticle* ShipStack::PopPrimaryForTracking(int32_t iPrim) {
+TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim) {
   // Get the iPrimth particle from the fStack TClonesArray. This
   // should be a primary (if the index is correct).
 
@@ -230,7 +242,7 @@ void ShipStack::FillTrackArray() {
   if (!gMC) return;
   if (gMC->GetStack() == nullptr) return;
 
-  int32_t evtNo = -1;
+  Int_t evtNo = -1;
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -242,20 +254,20 @@ void ShipStack::FillTrackArray() {
   if (fNParticles > 0) evtNo = gMC->CurrentEvent();
 
   // --> Loop over fParticles array and copy selected tracks
-  for (int32_t iPart = 0; iPart < fNParticles; iPart++) {
+  for (Int_t iPart = 0; iPart < fNParticles; iPart++) {
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end()) {
       LOGF(fatal, "ShipStack: Particle %i not found in storage map! ", iPart);
     }
-    bool store = (*fStoreIter).second;
+    Bool_t store = (*fStoreIter).second;
 
     if (store) {
       fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
       ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
-      for (int32_t iDet = kVETO; iDet < kEndOfList; iDet++) {
-        pair<int32_t, int32_t> a(iPart, iDet);
+      for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
+        pair<Int_t, Int_t> a(iPart, iDet);
         track.SetNPoints(iDet, fPointsMap[a]);
       }
       track.SetTrackID(fNTracks);
@@ -277,12 +289,12 @@ void ShipStack::FillTrackArray() {
 // -----   Public method UpdateTrackIndex   --------------------------------
 void ShipStack::UpdateTrackIndex(TRefArray* detList) {
   LOG(debug) << "ShipStack: Updating track indizes...";
-  int32_t nColl = 0;
+  Int_t nColl = 0;
 
   // First update mother ID in MCTracks
-  for (int32_t i = 0; i < fNTracks; i++) {
+  for (Int_t i = 0; i < fNTracks; i++) {
     ShipMCTrack& track = (*fTracks)[i];
-    int32_t iMotherOld = track.GetMotherId();
+    Int_t iMotherOld = track.GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
       LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ",
@@ -308,16 +320,16 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
       nColl++;
     } else {
       // --> Get hit collections from detector (legacy TClonesArray approach)
-      int32_t iColl = 0;
+      Int_t iColl = 0;
       TClonesArray* hitArray;
       while ((hitArray = det->GetCollection(iColl++))) {
         nColl++;
-        int32_t nPoints = hitArray->GetEntriesFast();
+        Int_t nPoints = hitArray->GetEntriesFast();
 
         // --> Update track index for all MCPoints in the collection
-        for (int32_t iPoint = 0; iPoint < nPoints; iPoint++) {
+        for (Int_t iPoint = 0; iPoint < nPoints; iPoint++) {
           FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
-          int32_t iTrack = point->GetTrackID();
+          Int_t iTrack = point->GetTrackID();
 
           fIndexIter = fIndexMap.find(iTrack);
           if (fIndexIter == fIndexMap.end()) {
@@ -356,12 +368,12 @@ void ShipStack::Register() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Print  --------------------------------------------
-void ShipStack::Print(int32_t iVerbose) const {
+void ShipStack::Print(Int_t iVerbose) const {
   cout << "-I- ShipStack: Number of primaries        = " << fNPrimaries << endl;
   cout << "              Total number of particles  = " << fNParticles << endl;
   cout << "              Number of tracks in output = " << fNTracks << endl;
   if (iVerbose) {
-    for (int32_t iTrack = 0; iTrack < fNTracks; iTrack++) {
+    for (Int_t iTrack = 0; iTrack < fNTracks; iTrack++) {
       (*fTracks)[iTrack].Print(iTrack);
     }
   }
@@ -370,9 +382,9 @@ void ShipStack::Print(int32_t iVerbose) const {
 
 // -----   Public method AddPoint (for current track)   --------------------
 void ShipStack::AddPoint(DetectorId detId) {
-  int32_t iDet = detId;
+  Int_t iDet = detId;
   // cout << "Add point for Detektor" << iDet << endl;
-  pair<int32_t, int32_t> a(fCurrentTrack, iDet);
+  pair<Int_t, Int_t> a(fCurrentTrack, iDet);
   if (fPointsMap.find(a) == fPointsMap.end()) {
     fPointsMap[a] = 1;
   } else {
@@ -382,12 +394,12 @@ void ShipStack::AddPoint(DetectorId detId) {
 // -------------------------------------------------------------------------
 
 // -----   Public method AddPoint (for arbitrary track)  -------------------
-void ShipStack::AddPoint(DetectorId detId, int32_t iTrack) {
+void ShipStack::AddPoint(DetectorId detId, Int_t iTrack) {
   if (iTrack < 0) {
     return;
   }
-  int32_t iDet = detId;
-  pair<int32_t, int32_t> a(iTrack, iDet);
+  Int_t iDet = detId;
+  pair<Int_t, Int_t> a(iTrack, iDet);
   if (fPointsMap.find(a) == fPointsMap.end()) {
     fPointsMap[a] = 1;
   } else {
@@ -397,7 +409,7 @@ void ShipStack::AddPoint(DetectorId detId, int32_t iTrack) {
 // -------------------------------------------------------------------------
 
 // -----   Virtual method GetCurrentParentTrackNumber   --------------------
-int32_t ShipStack::GetCurrentParentTrackNumber() const {
+Int_t ShipStack::GetCurrentParentTrackNumber() const {
   TParticle* currentPart = GetCurrentTrack();
   if (currentPart) {
     return currentPart->GetFirstMother();
@@ -408,7 +420,7 @@ int32_t ShipStack::GetCurrentParentTrackNumber() const {
 // -------------------------------------------------------------------------
 
 // -----   Public method GetParticle   -------------------------------------
-TParticle* ShipStack::GetParticle(int32_t trackID) const {
+TParticle* ShipStack::GetParticle(Int_t trackID) const {
   if (trackID < 0 || trackID >= fNParticles) {
     LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID,
          fNParticles);
@@ -423,23 +435,23 @@ void ShipStack::SelectTracks() {
   fStoreMap.clear();
 
   // --> Check particles in the fParticle array
-  for (int32_t i = 0; i < fNParticles; i++) {
+  for (Int_t i = 0; i < fNParticles; i++) {
     TParticle* thisPart = GetParticle(i);
-    bool store = kTRUE;
+    Bool_t store = kTRUE;
 
     // --> Get track parameters
-    int32_t iMother = thisPart->GetMother(0);
+    Int_t iMother = thisPart->GetMother(0);
     TLorentzVector p;
     thisPart->Momentum(p);
-    double energy = p.E();
-    double mass = p.M();
-    //    double mass   = thisPart->GetMass();
-    double eKin = energy - mass;
+    Double_t energy = p.E();
+    Double_t mass = p.M();
+    //    Double_t mass   = thisPart->GetMass();
+    Double_t eKin = energy - mass;
 
     // --> Calculate number of points
-    int32_t nPoints = 0;
-    for (int32_t iDet = kVETO; iDet < kEndOfList; iDet++) {
-      pair<int32_t, int32_t> a(i, iDet);
+    Int_t nPoints = 0;
+    for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
+      pair<Int_t, Int_t> a(i, iDet);
       if (fPointsMap.find(a) != fPointsMap.end()) {
         nPoints += fPointsMap[a];
       }
@@ -468,15 +480,15 @@ void ShipStack::SelectTracks() {
     // special case for Ship generators, want to keep all original particles
     // with their mother daughter relationship independent if tracked or not.
     // apply a dirty trick and use second mother to identify original generator
-    // particles. doesn't work, always true: int32_t iMother2 =
+    // particles. doesn't work, always true: Int_t iMother2 =
     // GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the
     // generator if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
-    for (int32_t i = 0; i < fNParticles; i++) {
+    for (Int_t i = 0; i < fNParticles; i++) {
       if (fStoreMap[i]) {
-        int32_t iMother = GetParticle(i)->GetMother(0);
+        Int_t iMother = GetParticle(i)->GetMother(0);
         {
           while (iMother >= 0) {
             fStoreMap[iMother] = kTRUE;

@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+#include "TMCProcess.h"
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -33,6 +34,7 @@
 #include "TROOT.h"
 #include "TVirtualMC.h"
 #include "vetoPoint.h"
+
 using std::cout;
 using std::endl;
 
@@ -54,7 +56,14 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fzPos(3E8),
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
-      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()) {}
+      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()),
+      fNsplits(0) {
+    fNsplits = 0;
+    const char* env = std::getenv("KAON_PION_SPLITS");
+    if (env) {
+        fNsplits = std::atoi(env);
+    }
+}
 
 exitHadronAbsorber::exitHadronAbsorber()
     : FairDetector("exitHadronAbsorber", kTRUE, kVETO),
@@ -73,7 +82,14 @@ exitHadronAbsorber::exitHadronAbsorber()
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
-      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()) {}
+      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()),
+      fNsplits(0) {
+    fNsplits = 0;
+    const char* env = std::getenv("KAON_PION_SPLITS");
+    if (env) {
+        fNsplits = std::atoi(env);
+    }
+}
 
 exitHadronAbsorber::~exitHadronAbsorber() {
   if (fexitHadronAbsorberPointCollection) {
@@ -190,7 +206,13 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
+  if ((fNsplits > 0) && (p->GetUniqueID() == kPNoProcess)) {
+      // Force the decay time to 0
+      gMC->ForceDecayTime(0.0);
+    }
+
   Int_t pdgCode = p->GetPdgCode();
+
   // record statistics for neutrinos, electrons and photons
   // add pi0 111 eta 221 eta' 331  omega 223
   Int_t idabs = TMath::Abs(pdgCode);
