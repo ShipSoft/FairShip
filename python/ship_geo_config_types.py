@@ -46,7 +46,7 @@ class ConfigMixin:
         return [(f.name, getattr(self, f.name)) for f in dataclasses.fields(self)]  # type: ignore[arg-type]
 
     def to_dict(self) -> dict[str, Any]:
-        return dataclasses.asdict(self)  # type: ignore[arg-type]
+        return dataclasses.asdict(self)  # type: ignore[call-overload]
 
     def dumps_json(self) -> str:
         return json.dumps(self.to_dict(), indent=2, default=str)
