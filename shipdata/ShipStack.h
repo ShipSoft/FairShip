@@ -33,7 +33,6 @@
 #include <vector>   // for vector
 
 #include "FairGenericStack.h"  // for FairGenericStack
-#include "Rtypes.h"            // for Int_t, Double_t, Bool_t, etc
 #include "ShipDetectorList.h"  // for DetectorId
 #include "TMCProcess.h"        // for TMCProcess
 
@@ -50,7 +49,7 @@ class ShipStack : public FairGenericStack {
   /** Default constructor
    *param size  Estimated track number
    **/
-  explicit ShipStack(Int_t size = 100);
+  explicit ShipStack(int32_t size = 100);
 
   /** Destructor  **/
   virtual ~ShipStack();
@@ -70,49 +69,48 @@ class ShipStack : public FairGenericStack {
    *@param weight    Particle weight
    *@param is        Generation status code (whatever that means)
    **/
-  virtual void PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                         Double_t px, Double_t py, Double_t pz, Double_t e,
-                         Double_t vx, Double_t vy, Double_t vz, Double_t time,
-                         Double_t polx, Double_t poly, Double_t polz,
-                         TMCProcess proc, Int_t& ntr, Double_t weight,
-                         Int_t is);
+  virtual void PushTrack(int32_t toBeDone, int32_t parentID, int32_t pdgCode,
+                         double px, double py, double pz, double e, double vx,
+                         double vy, double vz, double time, double polx,
+                         double poly, double polz, TMCProcess proc,
+                         int32_t& ntr, double weight, int32_t is);
 
-  virtual void PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                         Double_t px, Double_t py, Double_t pz, Double_t e,
-                         Double_t vx, Double_t vy, Double_t vz, Double_t time,
-                         Double_t polx, Double_t poly, Double_t polz,
-                         TMCProcess proc, Int_t& ntr, Double_t weight, Int_t is,
-                         Int_t secondParentId);
+  virtual void PushTrack(int32_t toBeDone, int32_t parentID, int32_t pdgCode,
+                         double px, double py, double pz, double e, double vx,
+                         double vy, double vz, double time, double polx,
+                         double poly, double polz, TMCProcess proc,
+                         int32_t& ntr, double weight, int32_t is,
+                         int32_t secondParentId);
 
   /** Get next particle for tracking from the stack.
    ** Declared in TVirtualMCStack
    *@param  iTrack  index of popped track (return)
    *@return Pointer to the TParticle of the track
    **/
-  virtual TParticle* PopNextTrack(Int_t& iTrack);
+  virtual TParticle* PopNextTrack(int32_t& iTrack);
 
   /** Get primary particle by index for tracking from stack
    ** Declared in TVirtualMCStack
    *@param  iPrim   index of primary particle
    *@return Pointer to the TParticle of the track
    **/
-  virtual TParticle* PopPrimaryForTracking(Int_t iPrim);
+  virtual TParticle* PopPrimaryForTracking(int32_t iPrim);
 
   /** Set the current track number
    ** Declared in TVirtualMCStack
    *@param iTrack  track number
    **/
-  virtual void SetCurrentTrack(Int_t iTrack) { fCurrentTrack = iTrack; }
+  virtual void SetCurrentTrack(int32_t iTrack) { fCurrentTrack = iTrack; }
 
   /** Get total number of tracks
    ** Declared in TVirtualMCStack
    **/
-  virtual Int_t GetNtrack() const { return fNParticles; }
+  virtual int32_t GetNtrack() const { return fNParticles; }
 
   /** Get number of primary tracks
    ** Declared in TVirtualMCStack
    **/
-  virtual Int_t GetNprimary() const { return fNPrimaries; }
+  virtual int32_t GetNprimary() const { return fNPrimaries; }
 
   /** Get the current track's particle
    ** Declared in TVirtualMCStack
@@ -122,12 +120,12 @@ class ShipStack : public FairGenericStack {
   /** Get the number of the current track
    ** Declared in TVirtualMCStack
    **/
-  virtual Int_t GetCurrentTrackNumber() const { return fCurrentTrack; }
+  virtual int32_t GetCurrentTrackNumber() const { return fCurrentTrack; }
 
   /** Get the track number of the parent of the current track
    ** Declared in TVirtualMCStack
    **/
-  virtual Int_t GetCurrentParentTrackNumber() const;
+  virtual int32_t GetCurrentParentTrackNumber() const;
 
   /** Add a TParticle to the fParticles array **/
   virtual void AddParticle(TParticle* part);
@@ -147,13 +145,13 @@ class ShipStack : public FairGenericStack {
   /** Output to screen
    **@param iVerbose: 0=events summary, 1=track info
    **/
-  virtual void Print(Int_t iVerbose = 0) const;
+  virtual void Print(int32_t iVerbose = 0) const;
 
   /** Modifiers  **/
-  void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
-  void SetMinPoints(Int_t min) { fMinPoints = min; }
-  void SetEnergyCut(Double_t eMin) { fEnergyCut = eMin; }
-  void StoreMothers(Bool_t choice = kTRUE) { fStoreMothers = choice; }
+  void StoreSecondaries(bool choice = kTRUE) { fStoreSecondaries = choice; }
+  void SetMinPoints(int32_t min) { fMinPoints = min; }
+  void SetEnergyCut(double eMin) { fEnergyCut = eMin; }
+  void StoreMothers(bool choice = kTRUE) { fStoreMothers = choice; }
 
   /** Increment number of points for the current track in a given detector
    *@param iDet  Detector unique identifier
@@ -164,10 +162,10 @@ class ShipStack : public FairGenericStack {
    *@param iDet    Detector unique identifier
    *@param iTrack  Track number
    **/
-  void AddPoint(DetectorId iDet, Int_t iTrack);
+  void AddPoint(DetectorId iDet, int32_t iTrack);
 
   /** Accessors **/
-  TParticle* GetParticle(Int_t trackId) const;
+  TParticle* GetParticle(int32_t trackId) const;
   TClonesArray* GetListOfParticles() { return fParticles; }
 
  private:
@@ -183,28 +181,29 @@ class ShipStack : public FairGenericStack {
   std::vector<ShipMCTrack>* fTracks;
 
   /** STL map from particle index to storage flag  **/
-  std::map<Int_t, Bool_t> fStoreMap;             //!
-  std::map<Int_t, Bool_t>::iterator fStoreIter;  //!
+  std::map<int32_t, bool> fStoreMap;             //!
+  std::map<int32_t, bool>::iterator fStoreIter;  //!
 
   /** STL map from particle index to track index  **/
-  std::map<Int_t, Int_t> fIndexMap;             //!
-  std::map<Int_t, Int_t>::iterator fIndexIter;  //!
+  std::map<int32_t, int32_t> fIndexMap;             //!
+  std::map<int32_t, int32_t>::iterator fIndexIter;  //!
 
   /** STL map from track index and detector ID to number of MCPoints **/
-  std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;  //!
+  std::map<std::pair<int32_t, int32_t>, int32_t> fPointsMap;  //!
 
   /** Some indizes and counters **/
-  Int_t fCurrentTrack;  //! Index of current track
-  Int_t fNPrimaries;    //! Number of primary particles
-  Int_t fNParticles;    //! Number of entries in fParticles
-  Int_t fNTracks;       //! Number of entries in fTracks
-  Int_t fIndex;         //! Used for merging
+  int32_t fCurrentTrack;  //! Index of current track
+  int32_t fNPrimaries;    //! Number of primary particles
+  int32_t fNParticles;    //! Number of entries in fParticles
+  int32_t fNTracks;       //! Number of entries in fTracks
+  int32_t fIndex;         //! Used for merging
 
   /** Variables defining the criteria for output selection **/
-  Bool_t fStoreSecondaries;
-  Int_t fMinPoints;
+  bool fStoreSecondaries;
+  int32_t fMinPoints;
   Double32_t fEnergyCut;
-  Bool_t fStoreMothers;
+  bool fStoreMothers;
+  int32_t fNsplits;
 
   /** Mark tracks for output using selection criteria  **/
   void SelectTracks();

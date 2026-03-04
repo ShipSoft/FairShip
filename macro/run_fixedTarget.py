@@ -72,6 +72,14 @@ ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest=
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
+ap.add_argument(
+    "-kpi",
+    "--kaon-pion-splits",
+    type=int,
+    default=0,
+    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+)
+
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
 ap.add_argument(
@@ -260,6 +268,8 @@ run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
+if args.kaon_pion_splits > 0:
+    os.environ["KAON_PION_SPLITS"] = str(args.kaon_pion_splits)
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
