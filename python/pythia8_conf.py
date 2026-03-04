@@ -28,7 +28,9 @@ from pythia8_conf_utils import (
 )
 
 
-def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):
+def configurerpvsusy(
+    P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy: bool = False, debug: bool = True
+) -> None:
     # configure pythia8 for Ship usage
     if debug:
         pythia_log = open("pythia8_conf.txt", "w")
@@ -162,7 +164,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         pythia_log.close()
 
 
-def configure(P8gen, mass, production_couplings, decay_couplings, process_selection, deepCopy=False, debug=True):
+def configure(
+    P8gen, mass, production_couplings, decay_couplings, process_selection, deepCopy: bool = False, debug: bool = True
+) -> None:
     """
     This function configures a HNLPythia8Generator instance for SHiP usage.
     """
@@ -304,7 +308,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         pythia_log.close()
 
 
-def add_hnl(P8gen, mass, decay_couplings):
+def add_hnl(P8gen, mass, decay_couplings) -> None:
     "Adds the HNL to Pythia and ROOT"
     hnl_instance = hnl.HNL(mass, decay_couplings, debug=True)
     ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
@@ -323,7 +327,7 @@ def add_hnl(P8gen, mass, decay_couplings):
     addHNLtoROOT(pid=9900015, m=mass, g=gamma)
 
 
-def setup_pythia_inclusive(P8gen):
+def setup_pythia_inclusive(P8gen) -> None:
     P8gen.SetParameters("SoftQCD:inelastic = on")
     P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
     P8gen.SetParameters("PromptPhoton:all = on")

@@ -19,11 +19,11 @@ from ShipGeoConfig import load_from_root_file
 # For track pattern recognition
 
 
-def get_n_hits(hits):
+def get_n_hits(hits) -> int:
     return len(hits)
 
 
-def cmp(a, b):
+def cmp(a, b: int):
     return (a > b) - (a < b)
 
 
@@ -589,7 +589,7 @@ def fracMCsame(trackids):
 ########################################################################################################################
 
 
-def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
+def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     """
     Estimates reconstructible tracks of an event.
     Parameters
@@ -808,7 +808,7 @@ import rootUtils as ut
 ########################################## Main functions ##############################################################
 
 
-def save_hists(h, path):
+def save_hists(h, path) -> None:
     """
     Save book of plots.
     Parameters
