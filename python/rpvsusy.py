@@ -398,7 +398,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino decay width
         """
         declist = self.decays[self.bench]
-        hadlist = [re.search(r"->\ (.+?)\ ", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist for m in [re.search(r"->\ (.+?)\ ", dec)] if m is not None]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         print(leplist, hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
@@ -409,7 +409,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino production width
         """
         declist = self.prods[self.bench]
-        hadlist = [re.search(r"(.+?)\ ->", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist for m in [re.search(r"(.+?)\ ->", dec)] if m is not None]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
         return totalwidth
@@ -421,8 +421,11 @@ class RPVSUSYbranchings:
         Inputs:
         - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
         """
-        had = re.search(r"->\ (.+?)\ ", decayString).group(1)
+        _m_decay = re.search(r"->\ (.+?)\ ", decayString)
+        assert _m_decay is not None
+        had = _m_decay.group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split
@@ -460,8 +463,11 @@ class RPVSUSYbranchings:
         Inputs:
         - decayString is a string describing the decay, in the form 'H -> N ... stuffN'
         """
-        had = re.search(r"(.+?)\ ->", decayString).group(1)
+        _m_prod = re.search(r"(.+?)\ ->", decayString)
+        assert _m_prod is not None
+        had = _m_prod.group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split

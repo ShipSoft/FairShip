@@ -29,6 +29,7 @@ def readFromAscii():
     with open(FairShip + "/shipgen/branchingratios.dat") as ascii:
         content = ascii.readlines()
     h = {}
+    hname = ""
     n = 0
     while n < len(content):
         line = content[n]
