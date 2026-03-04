@@ -15,12 +15,14 @@ def plot_my_hist(datum) -> None:
     plotData = datum[datum["y"] == 0]
     H, xedges, yedges = np.histogram2d(plotData["x"], plotData["z"], bins=[50, 500], weights=plotData["by"])
     plt.figure(figsize=[20, 10])
-    plt.imshow(H, interpolation="nearest", origin="low")
+    plt.imshow(H, interpolation="nearest", origin="lower")
     # plt.colorbar()
     plt.show()
 
 
-def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None) -> None:
+def generate_file(
+    input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args: argparse.Namespace | None = None
+) -> None:
     # (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)
     field = pd.read_csv(input_fileName, skiprows=1, sep=r"\s+", names=["x", "y", "z", "bx", "by", "bz"])
 
@@ -29,6 +31,7 @@ def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, st
 
     field_new = field.copy()
 
+    assert args is not None
     if args.sidesOnly:
         temp_by = np.array(field_new["by"]).reshape([xSpace, ySpace, zSpace])
         temp_by = gaussian_filter(temp_by, sigma=args.sigma)
