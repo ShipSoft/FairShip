@@ -136,7 +136,7 @@ PDG.GetParticle(310).SetName("KS0")
 myPythia.SetPARP(2, 2.0)
 
 
-def PoorE791_tune(P6):
+def PoorE791_tune(P6) -> None:
     # settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-
     # same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf
     print(" ")
@@ -160,7 +160,7 @@ def PoorE791_tune(P6):
     print(" ")
 
 
-def LHCb_tune(P6):
+def LHCb_tune(P6) -> None:
     # settings by LHCb for Pythia 6.427
     # https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08
     print(" ")
@@ -196,7 +196,7 @@ def LHCb_tune(P6):
     print(" ")
 
 
-def fillp1(hist):
+def fillp1(hist) -> None:
     # scan filled bins in hist, and fill intermediate bins with linear interpolation
     nb = hist.GetNbinsX()
     i1 = hist.FindBin(pbeaml, 0.0, 0.0)

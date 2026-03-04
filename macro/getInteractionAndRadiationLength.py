@@ -9,7 +9,7 @@ from array import array
 # python -i $FAIRSHIP/macro/run_simScript.py --Genie -f /eos/experiment/ship/data/GenieEvents/genie-nu_mu.root
 
 
-def compute_material_budget(Geniegen):
+def compute_material_budget(Geniegen) -> None:
     start = array("d", [0, 0, 3666.5])
     end = array("d", [0, 0, 3898.700])
     mparam = array("d", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])

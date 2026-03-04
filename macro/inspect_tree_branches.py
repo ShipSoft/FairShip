@@ -13,7 +13,7 @@ import sys
 import ROOT
 
 
-def inspect_tree_branches(input_file, tree_name):
+def inspect_tree_branches(input_file, tree_name) -> bool:
     """
     Inspect all branches in a TTree and report their types.
 
@@ -80,7 +80,7 @@ def inspect_tree_branches(input_file, tree_name):
             return True
 
 
-def main():
+def main() -> int:
     """Parse arguments and run the TTree branch inspection."""
     parser = argparse.ArgumentParser(description="Inspect TTree branches for RNTuple compatibility")
     parser.add_argument("-f", "--input-file", required=True, help="Input ROOT file")

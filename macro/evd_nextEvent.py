@@ -6,7 +6,7 @@ import eveGlobal
 import ROOT
 
 
-def execute():
+def execute() -> None:
     ROOT.gROOT.GetListOfGlobals()
     SHiPDisplay = eveGlobal.SHiPDisplay
     SHiPDisplay.NextEvent()

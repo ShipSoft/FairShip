@@ -240,7 +240,7 @@ def dist2InnerWall(X, Y, Z):
     return minDistance
 
 
-def isInFiducial(X, Y, Z):
+def isInFiducial(X, Y, Z) -> bool:
     if not fiducialCut:
         return True
     if Z > ShipGeo.TrackStation1.z:
@@ -268,7 +268,7 @@ def ImpactParameter(point, tPos, tMom):
 
 
 #
-def checkHNLorigin(sTree):
+def checkHNLorigin(sTree) -> bool:
     flag = True
     if not fiducialCut:
         return flag
@@ -295,7 +295,7 @@ def checkHNLorigin(sTree):
     return flag
 
 
-def checkFiducialVolume(sTree, tkey, dy):
+def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     # extrapolate track to middle of magnet and check if in decay volume
     inside = True
     if not fiducialCut:
@@ -319,7 +319,7 @@ def getPtruthFirst(sTree, mcPartKey):
     return Ptruth, Ptruthx, Ptruthy, Ptruthz
 
 
-def access2SmearedHits(ev, TrackingHits, MCTracks):
+def access2SmearedHits(ev, TrackingHits, MCTracks) -> None:
     key = 0
     for ahit in ev.SmearedHits.GetObject():
         print(ahit[0], ahit[1], ahit[2], ahit[3], ahit[4], ahit[5], ahit[6])
@@ -406,7 +406,7 @@ def RedoVertexing(t1, t2):
     return xv, yv, zv, doca, HNLMom
 
 
-def fitSingleGauss(x, ba=None, be=None):
+def fitSingleGauss(x: str, ba: float | None = None, be: float | None = None) -> None:
     name = "myGauss_" + x
     myGauss = h[x].GetListOfFunctions().FindObject(name)
     if not myGauss:
@@ -430,7 +430,7 @@ def fitSingleGauss(x, ba=None, be=None):
     h[x].Fit(myGauss, "", "", ba, be)
 
 
-def match2HNL(p):
+def match2HNL(p) -> bool:
     matched = False
     hnlKey = []
     for t in [p.GetDaughter(0), p.GetDaughter(1)]:
@@ -449,7 +449,7 @@ def match2HNL(p):
     return matched
 
 
-def makePlots():
+def makePlots() -> None:
     ut.bookCanvas(h, key="strawanalysis", title="Distance to wire and mean nr of hits", nx=1200, ny=600, cx=3, cy=1)
     cv = h["strawanalysis"].cd(1)
     h["disty"].Draw()
@@ -536,7 +536,7 @@ def makePlots():
 
 
 # start event loop
-def myEventLoop(n):
+def myEventLoop(n: int) -> None:
     rc = sTree.GetEntry(n)
     # check if tracks are made from real pattern recognition
     measCut = measCutFK
@@ -750,7 +750,7 @@ def myEventLoop(n):
 
 
 #
-def HNLKinematics():
+def HNLKinematics() -> None:
     HNLorigin = {}
     ut.bookHist(h, "HNLmomNoW", "momentum unweighted", 100, 0.0, 300.0)
     ut.bookHist(h, "HNLmom", "momentum", 100, 0.0, 300.0)

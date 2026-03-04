@@ -10,7 +10,7 @@ pidProton = False  # if true, take truth, if False fake with pion mass
 import resource
 
 
-def mem_monitor():
+def mem_monitor() -> None:
     # Getting virtual memory size
     pid = os.getpid()
     with open(os.path.join("/proc", str(pid), "status")) as f:

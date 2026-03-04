@@ -40,7 +40,7 @@ X = ROOT.FixedTargetGenerator()
 print("end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 
 
-def yBeam(Mproton=0.938272081, pbeam=400.0):
+def yBeam(Mproton: float = 0.938272081, pbeam: float = 400.0):
     Ebeam = ROOT.TMath.Sqrt(pbeam**2 + Mproton**2)
     betaCM = pbeam / (Ebeam + Mproton)
     y_beam = 0.5 * ROOT.TMath.Log((1 + betaCM) / (1 - betaCM))  # https://arxiv.org/pdf/1604.02651.pdf
@@ -189,7 +189,7 @@ for g in generators:
 ut.writeHists(h, hname + ".root")
 
 
-def na50(online=True):
+def na50(online: bool = True) -> None:
     for g in generators:
         if online:
             processes = generators[g].info.codesHard()
@@ -255,7 +255,7 @@ def na50(online=True):
         print("cross section a la NA50, -0.5<cosCS<0.5: %5.2F pb" % (fraction * sigma * 1e9))
 
 
-def muflux():
+def muflux() -> None:
     Z_Mo = 96.0
     P_Mo = 42
     fraction = {}
@@ -284,5 +284,5 @@ def muflux():
     print("cross section a la muflux: %5.2F pb" % (0.5 * meanFraction * 1e9))
 
 
-def debugging(g):
+def debugging(g) -> None:
     generators[g].settings.listAll()

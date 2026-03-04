@@ -32,7 +32,7 @@ logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0]
 logger.setLevel(logging.INFO)
 
 
-def get_work_dir(run_number, tag=None):
+def get_work_dir(run_number, tag: str | None = None) -> str:
     import socket
 
     host = socket.gethostname()
