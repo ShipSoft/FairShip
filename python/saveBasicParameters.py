@@ -21,19 +21,19 @@ def retrieveGitTags(o: ShipGeoConfig) -> ShipGeoConfig:
     else:
         tmp = os.environ["FAIRSHIP"] + "/.git/refs/remotes/origin/master"
         if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            x = subprocess.check_output(["more", tmp]).decode().replace("\n", "")
             o.FairShip = {"origin": x}
             tmp = os.environ["FAIRSHIP"] + "/.git/refs/heads/master"
         if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            x = subprocess.check_output(["more", tmp]).decode().replace("\n", "")
             o.FairShip = {"local": x}
             tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/dev"
         if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            x = subprocess.check_output(["more", tmp]).decode().replace("\n", "")
             o.FairRoot = {"dev": x}
             tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/master"
         if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
+            x = subprocess.check_output(["more", tmp]).decode().replace("\n", "")
             o.FairRoot = {"master": x}
     return o
 
