@@ -16,6 +16,7 @@
 
 #include "ShipFieldMaker.h"
 
+#include <cmath>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -1157,7 +1158,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
   Double_t dx = xAxis(2);
   Int_t Nx(0);
   if (dx > 0.0) {
-    Nx = static_cast<Int_t>(((xMax - xMin) / dx) + 0.5);
+    Nx = std::lround((xMax - xMin) / dx);
   }
 
   Double_t yMin = yAxis(0);
@@ -1165,7 +1166,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
   Double_t dy = yAxis(2);
   Int_t Ny(0);
   if (dy > 0.0) {
-    Ny = static_cast<Int_t>(((yMax - yMin) / dy) + 0.5);
+    Ny = std::lround((yMax - yMin) / dy);
   }
 
   // Create a 2d histogram

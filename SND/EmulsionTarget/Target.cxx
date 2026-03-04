@@ -18,6 +18,7 @@
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, basic_ostream,etc
 #include <tuple>
+#include <vector>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -410,11 +411,10 @@ Bool_t Target::ProcessHits(FairVolume* vol) {
 
     // cout<< "detID = " << detID << endl;
     Int_t MaxLevel = gGeoManager->GetLevel();
-    const Int_t MaxL = MaxLevel;
-    // cout << "MaxLevel = " << MaxL << endl;
+    // cout << "MaxLevel = " << MaxLevel << endl;
     // cout << gMC->CurrentVolPath()<< endl;
 
-    Int_t motherV[MaxL];
+    std::vector<Int_t> motherV(MaxLevel);
     Bool_t EmTop = false;
     Int_t NPlate = 0;
     const char* name;
