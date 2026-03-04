@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import os
 import pickle
+import warnings
 
 from ship_geo_config_types import ShipGeoConfig  # noqa: F401 — re-export
 
@@ -15,9 +16,17 @@ class AttrDict(dict):
     dict class that can address its keys as fields, e.g.
     d['key'] = 1
     assert d.key == 1
+
+    .. deprecated::
+        Use typed configs from :mod:`ship_geo_config_types` instead.
     """
 
     def __init__(self, *args, **kwargs) -> None:
+        warnings.warn(
+            "AttrDict is deprecated, use typed configs from ship_geo_config_types",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         super().__init__(*args, **kwargs)
         self.__dict__ = self
 
