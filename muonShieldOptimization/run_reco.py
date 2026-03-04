@@ -17,7 +17,7 @@ user = getpass.getuser()
 h = {}
 
 
-def fitSingleGauss(x, ba=None, be=None):
+def fitSingleGauss(x: str, ba: float | None = None, be: float | None = None) -> None:
     name = "myGauss_" + x
     myGauss = h[x].GetListOfFunctions().FindObject(name)
     if not myGauss:
@@ -45,7 +45,7 @@ cmd = os.environ["FAIRSHIP"] + "/macro/ShipReco.py"
 cmdAna = os.environ["FAIRSHIP"] + "/macro/ShipAna.py"
 
 
-def execute_parallel(prefix, ncpu=4):
+def execute_parallel(prefix, ncpu: int = 4):
     cpus = {}
     log = {}
     for i in range(ncpu):
@@ -79,7 +79,7 @@ def execute_parallel(prefix, ncpu=4):
     return cpus, log
 
 
-def getJobs(prefix):
+def getJobs(prefix) -> list[str]:
     jobs = []
     for x in os.listdir("."):
         if not x.find(prefix) < 0:
@@ -88,7 +88,7 @@ def getJobs(prefix):
     return jobs
 
 
-def checkRunningProcesses():
+def checkRunningProcesses() -> int:
     processoutput = os.popen("ps -u " + user).read()
     nproc = 0
     for x in processoutput.split("\n"):
@@ -97,7 +97,7 @@ def checkRunningProcesses():
     return nproc
 
 
-def killAll():
+def killAll() -> None:
     processoutput = os.popen("ps -u " + user).read()
     for x in processoutput.split("\n"):
         if not x.find("python") < 0:
@@ -106,7 +106,7 @@ def killAll():
             os.system("kill " + str(pid))
 
 
-def executeSimple(prefixes, reset=False):
+def executeSimple(prefixes: list[str], reset=False) -> None:
     proc = {}
     for prefix in prefixes:
         jobs = getJobs(prefix)
@@ -180,7 +180,7 @@ def executeSimple(prefixes, reset=False):
             os.chdir("../")
 
 
-def executeAna(prefixes):
+def executeAna(prefixes) -> None:
     log = {}
     for prefix in prefixes:
         jobs = getJobs(prefix)
@@ -204,7 +204,7 @@ def executeAna(prefixes):
 h = {}
 
 
-def mergeHistosMakePlots(p):
+def mergeHistosMakePlots(p: list[str]) -> None:
     if not isinstance(p, list):
         pl = [p]
     else:
@@ -263,7 +263,7 @@ def mergeHistosMakePlots(p):
         print("finished making plots")
 
 
-def mergeNtuples(prefixes):
+def mergeNtuples(prefixes: list[str]) -> None:
     for prefix in prefixes:
         jobs = getJobs(prefix)
         haddCommand = ""
@@ -344,7 +344,7 @@ def checkProd(prefixes, quiet=False):
     return summary
 
 
-def printFailedJobs(pl):
+def printFailedJobs(pl) -> None:
     result = checkProd(pl, quiet=True)
     for p in result:
         for x in result[p]:
@@ -352,13 +352,13 @@ def printFailedJobs(pl):
                 print(p, x, result[p][x])
 
 
-def execute():
+def execute() -> None:
     executeSimple(pl, reset=True)
     mergeHistosMakePlots(pl)
     mergeNtuples(pl)
 
 
-def removeIntermediateFiles(prefixes):
+def removeIntermediateFiles(prefixes) -> None:
     for prefix in prefixes:
         jobs = getJobs(prefix)
         for x in jobs:
@@ -368,7 +368,7 @@ def removeIntermediateFiles(prefixes):
                     os.system("rm " + x + "/" + inputfile)
 
 
-def copyRecoToEos(pl):
+def copyRecoToEos(pl) -> None:
     result = checkProd(pl, quiet=True)
     eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
     for x in result["Rec"]:

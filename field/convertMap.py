@@ -47,11 +47,16 @@ ROOT.gROOT.ProcessLine(
 )
 
 
-def run(inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale=1.0, storeCoords=False):
+def run(
+    inFileName: str = "FieldTest.txt",
+    rootFileName: str = "BFieldTest.root",
+    cmScale: float = 1.0,
+    storeCoords: bool = False,
+) -> None:
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
 
 
-def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
+def createRootMap(inFileName, rootFileName, cmScale, storeCoords) -> None:
     print(f"Create map {rootFileName} from {inFileName} using cmScale = {cmScale}")
     if storeCoords is True:
         print(f"We will also store the x,y,z field coordinates in {rootFileName}")

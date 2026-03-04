@@ -11,7 +11,7 @@ import rootUtils as ut
 from experimental import analysis_toolkit
 
 
-def main():
+def main() -> None:
     """Sample function to analyse the pre-selection parameters."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("-f", "--simfile", help="MC simulation file", default="ship.conical.Pythia8-TGeant4.root")

@@ -40,7 +40,7 @@ headers = [
 ]
 
 
-def inspect_file(inputfile, muonfile, print_table=False):
+def inspect_file(inputfile, muonfile, print_table=False) -> bool:
     """Inspecting the produced file for successfully added muon veto points."""
     input_file = r.TFile.Open(inputfile, "read")
     input_tree = input_file.cbmsim
@@ -91,7 +91,7 @@ def inspect_file(inputfile, muonfile, print_table=False):
     return muons_found
 
 
-def modify_file(inputfile, muonfile):
+def modify_file(inputfile, muonfile) -> None:
     """Add information from original muon to input simulation file."""
     logging.warning(
         f"vetoPoints & UpstreamTaggerPoints from the incoming muon (saved in {muonfile}) will be added to {inputfile}."

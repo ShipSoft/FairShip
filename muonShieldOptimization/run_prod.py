@@ -7,7 +7,7 @@ import time
 import ROOT
 
 
-def makeProd(prefix, DY, y=False, phiRandom=False, X=None):
+def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> None:
     ncpu = 9
     shipsoft = os.environ["SHIPSOFT"].replace("/dev", "")
     if not y:
@@ -225,7 +225,7 @@ def makeProd(prefix, DY, y=False, phiRandom=False, X=None):
 # makeProd("muon1022",10,True,True)
 
 
-def copy2EOS():
+def copy2EOS() -> None:
     import os
 
     eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
@@ -252,7 +252,7 @@ def copy2EOS():
                 os.system(cmd)
 
 
-def copyFromEOS():
+def copyFromEOS() -> None:
     import os
 
     eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"

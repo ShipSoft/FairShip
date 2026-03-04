@@ -51,7 +51,7 @@ for idnu in range(12, 17, 2):
         ut.bookHist(h, key, title, 25, -0.3, 1.7, 100, -2.0, 0.5)
 
 
-def processFile(fin, noCharm=True):
+def processFile(fin: str, noCharm: bool = True) -> None:
     f = ROOT.TFile.Open(os.environ["EOSSHIP"] + path + fin)
     print("opened file ", fin)
     sTree = f.Get("cbmsim")
@@ -79,7 +79,7 @@ def processFile(fin, noCharm=True):
             h[key].Fill(l10ptot, l10pt, weight)
 
 
-def run():
+def run() -> None:
     tmp = "pythia8_Geant4_10.0_cXX.root"
     global weight
     weight = weightMbias
@@ -88,7 +88,7 @@ def run():
     ut.writeHists(h, "pythia8_Geant4_10.0_c0-67000_nu.root")
 
 
-def run1GeV():
+def run1GeV() -> None:
     tmp = "pythia8_Geant4_1.0_cXX.root"
     global weight
     weight = weightMbias1GeV
@@ -97,7 +97,7 @@ def run1GeV():
     ut.writeHists(h, "pythia8_Geant4_1.0_c0-19000_nu.root")
 
 
-def run4Charm():
+def run4Charm() -> None:
     tmp = "pythia8_Geant4_charm_XX-YY_10.0.root"
     global weight
     weight = weightCharm
@@ -109,7 +109,7 @@ def run4Charm():
     ut.writeHists(h, "pythia8_Geant4_charm_10.0_nu.root")
 
 
-def run4Charm1GeV():
+def run4Charm1GeV() -> None:
     fname = "pythia8_Geant4_charm_0-19_1.0.root"  # renamed pythia8_Geant4_charm_XX-YY_10.0.root
     global weight
     weight = weightCharm1GeV
@@ -117,7 +117,7 @@ def run4Charm1GeV():
     ut.writeHists(h, "pythia8_Geant4_charm_1.0_nu.root")
 
 
-def run4beauty():
+def run4beauty() -> None:
     global weight
     weight = weightBeauty
     fname = "pythia8_Geant4_beauty_5336B_10.0.root"
@@ -131,7 +131,7 @@ def run4beauty():
             rc = os.system("rm " + fmu)
 
 
-def finalResult():
+def finalResult() -> None:
     h10 = {}
     ut.readHists(h10, "pythia8_Geant4_10.0_c0-67000_nu.root")
     h1 = {}
