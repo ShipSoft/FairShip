@@ -85,7 +85,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     import geomGeant4
 
-    if hasattr(ShipGeo.Bfield, "fieldMap"):
+    if ShipGeo.Bfield.fieldMap:
         fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
     else:
         print("no fieldmap given, geofile too old, not anymore support")
