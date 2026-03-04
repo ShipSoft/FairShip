@@ -144,7 +144,7 @@ modules = shipDet_conf.configure(run, ShipGeo)
 fgeo["FAIRGeom"]
 import geomGeant4
 
-if hasattr(ShipGeo.Bfield, "fieldMap"):
+if ShipGeo.Bfield.fieldMap:
     fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
 
 # make global variables

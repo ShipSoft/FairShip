@@ -13,8 +13,10 @@ ShipGeoOld = load_from_root_file(fgeoOld, "ShipGeo")
 fgeoNew = ROOT.TFile(f2)
 ShipGeoNew = load_from_root_file(fgeoNew, "ShipGeo")
 for x in ShipGeoNew:
-    if hasattr(eval("ShipGeoNew." + x), "z"):
-        zold, znew = eval("ShipGeoOld." + x + ".z"), eval("ShipGeoNew." + x + ".z")
+    val = getattr(ShipGeoNew, x)
+    if hasattr(val, "z"):
+        zold = getattr(getattr(ShipGeoOld, x), "z")
+        znew = val.z
         print(x, "z=", znew, " old:", zold)
         if zold != znew:
             badBoys[x] = [znew, zold]
