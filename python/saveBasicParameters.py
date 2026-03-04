@@ -1,14 +1,19 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from __future__ import annotations
+
 import os
 import subprocess
+from typing import TYPE_CHECKING
 
 import ROOT
-from ShipGeoConfig import AttrDict
+
+if TYPE_CHECKING:
+    from ship_geo_config_types import ShipGeoConfig
 
 
-def retrieveGitTags(o):
+def retrieveGitTags(o: ShipGeoConfig) -> ShipGeoConfig:
     # record some basic information about version of software:
     if "FAIRSHIP_HASH" in os.environ:
         o.FairShip = os.environ["FAIRSHIP_HASH"]
@@ -17,26 +22,28 @@ def retrieveGitTags(o):
         tmp = os.environ["FAIRSHIP"] + "/.git/refs/remotes/origin/master"
         if os.path.isfile(tmp):
             x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairShip = AttrDict(origin=x)
+            o.FairShip = {"origin": x}
             tmp = os.environ["FAIRSHIP"] + "/.git/refs/heads/master"
         if os.path.isfile(tmp):
             x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairShip = AttrDict(local=x)
+            o.FairShip = {"local": x}
             tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/dev"
         if os.path.isfile(tmp):
             x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairRoot = AttrDict(dev=x)
+            o.FairRoot = {"dev": x}
             tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/master"
         if os.path.isfile(tmp):
             x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairRoot = AttrDict(master=x)
+            o.FairRoot = {"master": x}
     return o
 
 
-def execute(f, ox, name="ShipGeo"):
+def execute(f, ox: ShipGeoConfig | str, name="ShipGeo"):
     """Save geometry configuration to ROOT file as JSON string"""
     if isinstance(ox, str):
-        ox = AttrDict()
+        from ship_geo_config_types import ShipGeoConfig as SGC
+
+        ox = SGC()
     o = retrieveGitTags(ox)
 
     if isinstance(f, str):
