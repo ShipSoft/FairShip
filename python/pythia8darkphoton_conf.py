@@ -27,6 +27,7 @@ def readFromAscii():
     FairShip = os.environ["FAIRSHIP"]
     ascii = open(FairShip + "/shipgen/branchingratios.dat")
     h = {}
+    hname = ""
     content = ascii.readlines()
     n = 0
     while n < len(content):
@@ -92,6 +93,7 @@ def manipulatePhysics(motherMode, mass, P8gen):
 
 def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True):
     # configure pythia8 for Ship usage
+    pythia_log = None
     if debug:
         pythia_log = open("pythia8_conf.txt", "w")
         P8gen = MethodLogger(P8gen, sink=pythia_log)
@@ -209,7 +211,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
 
     # P8gen.SetParameters("Check:particleData = on")
 
-    if debug:
+    if debug and pythia_log is not None:
         pythia_log.close()
 
     return 1

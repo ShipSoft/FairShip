@@ -32,6 +32,7 @@ def configurerpvsusy(
     P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy: bool = False, debug: bool = True
 ) -> None:
     # configure pythia8 for Ship usage
+    pythia_log = None
     if debug:
         pythia_log = open("pythia8_conf.txt", "w")
         P8gen = MethodLogger(P8gen, sink=pythia_log)
@@ -160,7 +161,7 @@ def configurerpvsusy(
 
         P8gen.List(9900015)
 
-    if debug:
+    if debug and pythia_log is not None:
         pythia_log.close()
 
 
@@ -175,6 +176,7 @@ def configure(
         process_selection = "inclusive"
 
     # Wrap the Pythia8 object into a class logging all of its method calls
+    pythia_log = None
     if debug:
         pythia_log = open("pythia8_conf.txt", "w")
         P8gen = MethodLogger(P8gen, sink=pythia_log)
@@ -304,7 +306,7 @@ def configure(
 
         P8gen.List(9900015)
 
-    if debug:
+    if debug and pythia_log is not None:
         pythia_log.close()
 
 

@@ -34,6 +34,11 @@ def runTracking():
     customLogLevel = acts.examples.defaultLogging(logLevel=acts.logging.VERBOSE)
     u = acts.UnitConstants
 
+    detector = None
+    simHitTree = None
+    field = None
+    digiConfigFile = None
+
     if global_variables.detector == "SiliconTarget":
         field = acts.ConstantBField(acts.Vector3(0.0, 0.0, 0.0 * u.T))
         simHitTree = "siHits"
@@ -77,6 +82,10 @@ def runTracking():
             volumeLogLevel=customLogLevel(),
         )
 
+    assert detector is not None
+    assert simHitTree is not None
+    assert field is not None
+    assert digiConfigFile is not None
     trackingGeometry = detector.trackingGeometry()
 
     s = acts.examples.Sequencer(events=global_variables.nEvents, numThreads=-1, trackFpes=False)

@@ -261,6 +261,7 @@ class HNLbranchings:
             logContent = x**4 + 4.0 * x**6 + 14.0 * x**8
         if logContent > 0:
             L = math.log(logContent)
+        C1 = C2 = 0.0
         if beta < 4:  # lepton decay
             NZ = 1
             if alpha == beta:  # interference case
