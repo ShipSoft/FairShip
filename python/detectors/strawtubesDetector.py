@@ -5,10 +5,10 @@ from BaseDetector import BaseDetector
 
 
 class strawtubesDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
+    def __init__(self, name, intree, outtree=None) -> None:
         super().__init__(name, intree, outtree=outtree)
 
-    def digitize(self):
+    def digitize(self) -> None:
         """Digitize strawtube MC hits.
 
         The earliest hit per straw will be marked valid, all later ones invalid.
@@ -30,7 +30,7 @@ class strawtubesDetector(BaseDetector):
                 else:
                     earliest_per_det_id[detector_id] = index
 
-    def withT0Estimate(self):
+    def withT0Estimate(self) -> list[dict[str, int]]:
         # loop over all straw tdcs and make average, correct for ToF
         n = 0
         t0 = 0.0
@@ -69,7 +69,7 @@ class strawtubesDetector(BaseDetector):
             s["dist"] = (s["dist"] - delt1 - t0) * v_drift
         return SmearedHits
 
-    def smearHits(self, no_amb=None):
+    def smearHits(self, no_amb=None) -> list[dict[str, int]]:
         # smear strawtube points
         SmearedHits = []
         key = -1

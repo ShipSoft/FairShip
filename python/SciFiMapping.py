@@ -17,7 +17,7 @@ from ShipGeoConfig import load_from_root_file
 class SciFiMapping:
     """Mapping between detector modules and SciFi channels."""
 
-    def __init__(self, modules):
+    def __init__(self, modules) -> None:
         """Initialize the SciFiMapping instance with geometry modules.
 
         Parameters
@@ -29,7 +29,7 @@ class SciFiMapping:
         self.modules = modules
         self.scifi = modules["MTC"]
 
-    def create_fibre_to_simp_map(self):
+    def create_fibre_to_simp_map(self) -> None:
         """Build mappings from optical fibres to SiPM channels for U and V planes.
 
         Retrieves the U and V SiPM maps from the SciFi module and constructs
@@ -58,7 +58,7 @@ class SciFiMapping:
                     "xpos": z.second[1],
                 }
 
-    def create_sipm_to_fibre_map(self):
+    def create_sipm_to_fibre_map(self) -> None:
         """Build mappings from SiPM channels to optical fibres for U and V planes.
 
         Retrieves the U and V fibre maps from the SciFi module and constructs
@@ -87,7 +87,7 @@ class SciFiMapping:
                     "xpos": z.second[1],
                 }
 
-    def create_sipm_to_position_map(self):
+    def create_sipm_to_position_map(self) -> None:
         """Create a mapping from SiPM channels to their positions in the SciFi detector.
 
         This method retrieves the SiPM positions for both U and V planes and constructs
@@ -106,7 +106,7 @@ class SciFiMapping:
         for pair in sipm_pos_V_raw:
             self.sipm_pos_V[pair.first] = pair.second
 
-    def make_mapping(self):
+    def make_mapping(self) -> None:
         """Execute the full mapping sequence for the SciFi detector.
 
         Calls internal methods to calculate SiPM overlap, perform the mapping
@@ -142,7 +142,7 @@ class SciFiMapping:
         """
         return self.fibre_to_simp_map_U, self.fibre_to_simp_map_V
 
-    def draw_channel(self, sGeo, channel):
+    def draw_channel(self, sGeo, channel: int) -> None:
         """Draw a single channel mapping showing fibre positions and the SiPM sensor.
 
         Parameters
@@ -228,7 +228,7 @@ class SciFiMapping:
         dpi=300,
         cmap_name="tab20",
         alpha_fibre=0.4,
-    ):
+    ) -> None:
         """Draw overlay plot of multiple channel mappings on a single figure.
 
         Parameters
@@ -413,13 +413,13 @@ class SciFiMapping:
 
     def draw_channel_XY(
         self,
-        number_of_channels=20,
-        real_event=False,
+        number_of_channels: int = 20,
+        real_event: bool = False,
         x_coords=None,
-        output_file="scifi_channel_ribbons_XY.pdf",
-        figsize=(16, 16),
-        dpi=300,
-    ):
+        output_file: str = "scifi_channel_ribbons_XY.pdf",
+        figsize: tuple[int, int] = (16, 16),
+        dpi: int = 300,
+    ) -> None:
         """Plot SciFi channel ribbons and SiPM boxes in X–Y view.
 
         Simplified X–Y view: one ribbon per channel (no per-fiber loops).
@@ -627,7 +627,7 @@ class SciFiMapping:
         figsize=(18, 8),
         dpi=300,
         alpha_fibre=0.4,
-    ):
+    ) -> None:
         """Draw combined Z–X and X–Y views of SciFi channel mappings side by side.
 
         Parameters
@@ -781,7 +781,7 @@ class SciFiMapping:
         plt.savefig(output_file)
         plt.close(fig)
 
-    def mapping_validation(self):
+    def mapping_validation(self) -> None:
         """Validate and print the SiPM-to-fibre and fibre-to-SiPM mappings.
 
         Prints out the mappings for the U plane, showing fibre indices,

@@ -7,10 +7,10 @@ from BaseDetector import BaseDetector
 
 
 class UpstreamTaggerDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
+    def __init__(self, name, intree, outtree=None) -> None:
         super().__init__(name, intree, outtree=outtree)
 
-    def digitize(self):
+    def digitize(self) -> None:
         ship_geo = global_variables.ShipGeo
         pos_res = ship_geo.UpstreamTagger.PositionResolution
         time_res = ship_geo.UpstreamTagger.TimeResolution

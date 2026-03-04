@@ -5,7 +5,7 @@ from BaseDetector import BaseDetector
 
 
 class splitcalDetector(BaseDetector):
-    def __init__(self, name, intree, outtree=None):
+    def __init__(self, name, intree, outtree=None) -> None:
         # Initialize base class for digitized hits
         super().__init__(name, intree, "Splitcal", outtree=outtree)
 
@@ -15,12 +15,12 @@ class splitcalDetector(BaseDetector):
         tree_for_output = self.outtree if outtree is not None else intree
         self.recoBranch = tree_for_output.Branch("Reco_SplitcalClusters", self.reco)
 
-    def delete(self):
+    def delete(self) -> None:
         # Override to also clear reconstruction branch
         super().delete()
         self.reco.clear()
 
-    def fill(self):
+    def fill(self) -> None:
         """Fill detector hit branches.
 
         Note: This method is now a no-op to prevent double-filling.
@@ -28,7 +28,7 @@ class splitcalDetector(BaseDetector):
         """
         pass
 
-    def digitize(self):
+    def digitize(self) -> None:
         """Digitize splitcal hits and perform cluster reconstruction."""
         # Digitization: group MC points by detector cell, then create one hit per cell
         points_by_detID = {}
@@ -51,7 +51,7 @@ class splitcalDetector(BaseDetector):
         # Cluster reconstruction
         self._reconstruct_clusters()
 
-    def _reconstruct_clusters(self):
+    def _reconstruct_clusters(self) -> None:
         """Perform cluster reconstruction from digitized hits."""
         # Hit selection: select hits above noise threshold
         noise_energy_threshold = 0.002  # GeV
@@ -189,7 +189,7 @@ class splitcalDetector(BaseDetector):
 
         return list_subclusters_excluding_fragments
 
-    def _get_cluster_energy(self, list_hits):
+    def _get_cluster_energy(self, list_hits) -> int:
         """Calculate total energy of hits in a cluster."""
         energy = 0
         for hit in list_hits:

@@ -12,9 +12,9 @@ class SBTDetector(BaseDetector):
         intree,
         branchName=None,
         mcBranchType=None,
-        mcBranchName="digiSBT2MC",
+        mcBranchName: str = "digiSBT2MC",
         outtree=None,
-    ):
+    ) -> None:
         super().__init__(
             name,
             intree,
@@ -24,7 +24,7 @@ class SBTDetector(BaseDetector):
             outtree=outtree,
         )
 
-    def digitize(self):
+    def digitize(self) -> None:
         """Digitize Surrounding Background Tagger MC hits.
 
         TDC defined as the time of the first MC hit in the cell.
