@@ -27,10 +27,10 @@ setup["Fig6"] = {"thickness": 1.44 * u.cm, "material": "copper", "momentum": 11.
 setup["Fig7"] = {"thickness": 1.44 * u.cm, "material": "copper", "momentum": 7.3 * u.GeV, "maxTheta": 0.045}
 
 s = sys.argv[1]
-thickness = setup[s]["thickness"]
+thickness = float(setup[s]["thickness"])
 material = setup[s]["material"]
-momentum = setup[s]["momentum"]
-maxTheta = setup[s]["maxTheta"]
+momentum = float(setup[s]["momentum"])
+maxTheta = float(setup[s]["maxTheta"])
 
 checkOverlap = True
 storeOnlyMuons = True

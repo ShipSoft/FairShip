@@ -55,4 +55,5 @@ class SBTDetector(BaseDetector):
             v = ROOT.std.vector("int")()
             for x in listOfVetoPoints[seg]:
                 v.push_back(x)
+            assert self.MCdet is not None
             self.MCdet.push_back(v)

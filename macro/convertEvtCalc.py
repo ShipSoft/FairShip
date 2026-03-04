@@ -42,14 +42,14 @@ def parse_file(infile: str):
                     # print(f'Process type: {process_type}')
                     sampled_points = int(header.split(";")[1].split("=")[1][:-1])
                     # print(f'Sampled points: {sampled_points}')
-                    parsed_data.append((process_type, sampled_points, variables))
+                    parsed_data.append((process_type, sampled_points, variables))  # pyrefly: ignore[bad-argument-type]
             else:
                 current_block.append(line.strip())
 
         if current_block:
             data = np.loadtxt(current_block)
             variables = [data[:, i] for i in range(data.shape[1])]
-            parsed_data.append((process_type, sampled_points, variables))
+            parsed_data.append((process_type, sampled_points, variables))  # pyrefly: ignore[bad-argument-type]
 
         return parsed_data
 
@@ -113,8 +113,9 @@ def convert_file(infile, outdir) -> str | None:
 
     infile = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
+    assert parsed_data is not None
     outfile = infile.split(".dat")[0] + ".root"
-    ncols = len(parsed_data[0][2])
+    ncols = len(parsed_data[0][2])  # pyrefly: ignore[unsupported-operation]
     nvardau = 6  # qualifiers for each daughter
     remaining_vars = ncols - len(vars_names)
 
@@ -140,10 +141,10 @@ def convert_file(infile, outdir) -> str | None:
 
         branch_f = {}
         for var in vars_names:
-            branch_f[var] = np.zeros(1, dtype=float)
+            branch_f[var] = np.zeros(1, dtype=float)  # pyrefly: ignore[unsupported-operation]
             tree.Branch(var, branch_f[var], f"{var}/D")
 
-        for pt, sp, vars in parsed_data:
+        for pt, sp, vars in parsed_data:  # pyrefly: ignore[not-iterable]
             for row in zip(*vars):
                 for i, value in enumerate(row):
                     if i < len(vars_names) - 1:
