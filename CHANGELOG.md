@@ -39,6 +39,7 @@ it in future.
 
 ### Changed
 
+* Replace AttrDict/Config with typed dataclasses for geometry configuration. `geometry_config.create_config()` now returns `ShipGeoConfig` (typed) and `load_from_root_file()` deserialises to it. `AttrDict` is deprecated.
 * Add type annotations across the Python codebase using pyrefly infer
 * Add mypy pre-commit hook for gradual type checking
 * Fix pickle serialisation file modes in ShipGeoConfig (text → binary)
