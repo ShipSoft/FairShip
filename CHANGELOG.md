@@ -54,6 +54,7 @@ it in future.
 
 ### Fixed
 
+* Fix clang-tidy findings: null-check getenv, incorrect rounding, pointer arithmetic on polymorphic type, integer abs on floats, VLA, literal truncation, unused variables, and using-namespace directives
 * Fix `errorSummary` not printing its header (bare string expression instead of `print`)
 * Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
 * Fix file-filtering logic to support STL branches
