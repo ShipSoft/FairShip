@@ -106,6 +106,7 @@ pot = 0.0
 # Determine fDs on this file for primaries
 nDsprim = 0
 ntotprim = 0
+wspill = 0.0
 
 for n in range(nEvents):
     rc = sTree.GetEvent(n)

@@ -58,6 +58,7 @@ else:
     # Add reconstruction data as friend tree
     sTree.AddFriend("ship_reco_sim", options.recoFile)
 
+fgeo = None
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
 else:
@@ -85,7 +86,7 @@ if ShipGeo.Bfield.fieldMap:
 else:
     print("no fieldmap given, geofile too old, not anymore support")
     exit(-1)
-sGeo = fgeo["FAIRGeom"]
+sGeo = fgeo["FAIRGeom"]  # pyrefly: ignore[unsupported-operation]
 geoMat = ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 bfield = ROOT.genfit.FairShipFields()
