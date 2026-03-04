@@ -11,7 +11,7 @@ import numpy as np
 import ROOT as r
 
 
-def parse_file(infile):
+def parse_file(infile: str):
     """
     Parse the given text file and extracts process type, sample points, and variables.
 
@@ -61,7 +61,7 @@ def parse_file(infile):
         return None, None, None
 
 
-def check_consistency_infile(nvars, ncols):
+def check_consistency_infile(nvars, ncols) -> None:
     """
     Check the consistency between number of columns in the input file (ncols) and variables (nvars).
 
@@ -74,7 +74,7 @@ def check_consistency_infile(nvars, ncols):
     return
 
 
-def convert_file(infile, outdir):
+def convert_file(infile, outdir) -> str | None:
     """
     Create a ROOT file with a TTree containing the variables from the parsed input text file.
 
@@ -157,7 +157,7 @@ def convert_file(infile, outdir):
         return outfile
 
 
-def main():
+def main() -> None:
     """Convert files from EventCalc to ROOT format."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(

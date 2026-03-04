@@ -23,7 +23,7 @@ shipRoot_conf.configure()
 decorators.apply_decorators()
 
 
-def evExit():
+def evExit() -> None:
     """Prevent double delete due to a FairRoot bug."""
     # Check whether the Eve window was closed/destructed
     if ROOT.addressof(ROOT.gEve) == 0:
@@ -121,7 +121,7 @@ if not options.recoFile:
         options.recoFile = options.InputFile.replace(".root", "_rec.root")
 
 
-def printMCTrack(n, MCTrack):
+def printMCTrack(n: int, MCTrack) -> None:
     mcp = MCTrack[n]
     print(
         " %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i "
@@ -139,7 +139,7 @@ def printMCTrack(n, MCTrack):
     )
 
 
-def dump(pcut=0):
+def dump(pcut: int = 0) -> None:
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
     n = -1
     for mcp in sTree.MCTrack:
@@ -149,7 +149,7 @@ def dump(pcut=0):
         printMCTrack(n, sTree.MCTrack)
 
 
-def printFittedTracks():
+def printFittedTracks() -> None:
     print("  # converged Ndf chi2/Ndf    P      Pt      MCid")
     n = -1
     for ft in sTree.FitTracks:
@@ -171,7 +171,7 @@ def printFittedTracks():
         )
 
 
-def printParticles():
+def printParticles() -> None:
     print("  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    d1    d2")
     n = -1
     for aP in sTree.Particles:
@@ -198,16 +198,16 @@ def printParticles():
 class DrawVetoDigi(ROOT.FairTask):
     "My Fair Task"
 
-    def InitTask(self):
+    def InitTask(self) -> None:
         self.comp = ROOT.TEveCompound("Veto Digis")
         gEve.AddElement(self.comp)
         sc = gEve.GetScenes()
         self.evscene = sc.FindChild("Event scene")
 
-    def FinishEvent(self):
+    def FinishEvent(self) -> None:
         pass
 
-    def ExecuteTask(self, option=""):
+    def ExecuteTask(self, option: str = "") -> None:
         self.comp.DestroyElements()
         self.comp.OpenCompound()
         nav = ROOT.gGeoManager.GetCurrentNavigator()
@@ -242,7 +242,7 @@ class DrawVetoDigi(ROOT.FairTask):
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
-    def DrawParticle(self, n):
+    def DrawParticle(self, n) -> None:
         self.comp.OpenCompound()
         DTrack = ROOT.TEveLine()
         DTrack.SetPickable(ROOT.kTRUE)
@@ -263,7 +263,7 @@ class DrawVetoDigi(ROOT.FairTask):
 class DrawTracks(ROOT.FairTask):
     "My Fair Task"
 
-    def InitTask(self):
+    def InitTask(self) -> None:
         # prepare container for fitted tracks
         self.comp = ROOT.TEveCompound("Tracks")
         gEve.AddElement(self.comp)
@@ -312,10 +312,10 @@ class DrawTracks(ROOT.FairTask):
         else:
             self.Targetz = 0
 
-    def FinishEvent(self):
+    def FinishEvent(self) -> None:
         pass
 
-    def ExecuteTask(self, option=""):
+    def ExecuteTask(self, option: str = "") -> None:
         self.comp.DestroyElements()
         self.comp.OpenCompound()
         if sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR"):
@@ -330,7 +330,7 @@ class DrawTracks(ROOT.FairTask):
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
-    def DrawParticle(self, n):
+    def DrawParticle(self, n) -> None:
         self.comp.OpenCompound()
         DTrack = ROOT.TEveLine()
         DTrack.SetPickable(ROOT.kTRUE)
@@ -344,7 +344,7 @@ class DrawTracks(ROOT.FairTask):
         DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)
         self.comp.AddElement(DTrack)
 
-    def DrawMCTrack(self, n):
+    def DrawMCTrack(self, n: int) -> None:
         self.comp.OpenCompound()
         fT = sTree.MCTrack[n]
         DTrack = ROOT.TEveLine()
@@ -382,7 +382,7 @@ class DrawTracks(ROOT.FairTask):
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
-    def DrawMCTracks(self, option=""):
+    def DrawMCTracks(self, option: str = "") -> None:
         n = -1
         ntot = 0
         fPos = ROOT.TVector3()
@@ -473,7 +473,7 @@ class DrawTracks(ROOT.FairTask):
                 ntot += 1
         print("draw ", ntot, " MC tracks")
 
-    def DrawFittedTracks(self, option=""):
+    def DrawFittedTracks(self, option: str = "") -> None:
         n, ntot = -1, 0
         for fT in sTree.FitTracks:
             n += 1
@@ -548,7 +548,7 @@ import evd_fillEnergy
 
 
 class IO:
-    def __init__(self):
+    def __init__(self) -> None:
         self.master = tkinter.Tk()
         self.master.title("SHiP Event Display GUI")
         self.master.geometry("320x580+165+820")
@@ -641,7 +641,7 @@ class IO:
         cf.Layout()
         cf.MapWindow()
 
-    def nextEvent(self, event=None):
+    def nextEvent(self, event=None) -> None:
         i = int(self.contents.get())
         if i == self.n:
             self.n += 1
@@ -650,7 +650,7 @@ class IO:
         self.contents.set(self.n)
         SHiPDisplay.NextEvent(self.n)
 
-    def toggleMCTracks(self):
+    def toggleMCTracks(self) -> None:
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
@@ -664,7 +664,7 @@ class IO:
             if geoTask:
                 geoTask.SetActive(1)
 
-    def toggle(self, x):
+    def toggle(self, x) -> None:
         v = top.GetNode(x)
         assembly = "Assembly" in v.GetVolume().__str__()
         if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
@@ -694,7 +694,7 @@ class IO:
 class EventLoop(ROOT.FairTask):
     "My Fair Task"
 
-    def InitTask(self):
+    def InitTask(self) -> None:
         self.n = 0
         self.first = True
         if sGeo.GetVolume("volTarget"):
@@ -712,7 +712,7 @@ class EventLoop(ROOT.FairTask):
         t0 = tr.GetTabTab(0)
         t0.SetText(ROOT.TGString("3D"))
 
-    def NextEvent(self, i=-1):
+    def NextEvent(self, i: int = -1) -> None:
         if i < 0:
             self.n += 1
         else:
@@ -739,7 +739,7 @@ class EventLoop(ROOT.FairTask):
                 p.SetPickable(ROOT.kTRUE)
                 p.SetTitle(p.__repr__())
 
-    def rotateView(self, hor=0, ver=0):
+    def rotateView(self, hor: float | int = 0, ver: float | int = 0) -> None:
         v = ROOT.gEve.GetDefaultGLViewer()
         cam = v.CurrentCamera()
         cam.Reset()
@@ -747,25 +747,25 @@ class EventLoop(ROOT.FairTask):
             cam.RotateRad(hor, ver)
         v.DoDraw()
 
-    def topView(self):
+    def topView(self) -> None:
         self.rotateView(ROOT.TMath.Pi() / 2.0, 0.0)  # rotation around z axis
 
-    def bottomView(self):
+    def bottomView(self) -> None:
         self.rotateView(-ROOT.TMath.Pi() / 2.0, 0.0)  # rotation around z axis
 
-    def frontView(self):
+    def frontView(self) -> None:
         self.rotateView(0.0, ROOT.TMath.Pi() / 2.0)  # rotation around y or x axis
 
-    def backView(self):
+    def backView(self) -> None:
         self.rotateView(0.0, -ROOT.TMath.Pi() / 2.0)  # rotation around y or x axis
 
-    def leftView(self):
+    def leftView(self) -> None:
         self.rotateView(0.0, ROOT.TMath.Pi())  # rotation around y or x axis
 
-    def rightView(self):
+    def rightView(self) -> None:
         self.rotateView(0.0, ROOT.TMath.Pi())  # rotation around y or x axis
 
-    def transparentMode(self, mode="on"):
+    def transparentMode(self, mode: str = "on") -> None:
         for m in transparentMaterials:
             mat = ROOT.gGeoManager.GetMaterial(m)
             if not mat:
@@ -783,7 +783,7 @@ class EventLoop(ROOT.FairTask):
 
 
 # add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016
-def projection():
+def projection() -> None:
     # if 1>0:
     # camera
     s = ROOT.gEve.SpawnNewScene("Projected Event")
@@ -802,7 +802,7 @@ def projection():
     ROOT.gEve.AddToListTree(mng, ROOT.kTRUE)
 
 
-def projection_prescale():
+def projection_prescale() -> None:
     # if 1>0:
     v = gEve.GetViewers()
     vw = v.FindChild("Viewer 1")
@@ -827,14 +827,14 @@ def projection_prescale():
     ROOT.gEve.FullRedraw3D(ROOT.kTRUE)
 
 
-def storeCameraSetting(fname="camSetting.root"):
+def storeCameraSetting(fname: str = "camSetting.root") -> None:
     f = ROOT.TFile.Open(fname, "RECREATE")
     cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()
     cam.Write()
     f.Close()
 
 
-def readCameraSetting(fname="camSetting.root"):
+def readCameraSetting(fname: str = "camSetting.root") -> None:
     f = ROOT.TFile.Open(fname)
     cam = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()
     f.GetKey(cam.ClassName()).Read(cam)
@@ -843,7 +843,7 @@ def readCameraSetting(fname="camSetting.root"):
     f.Close()
 
 
-def speedUp():
+def speedUp() -> None:
     for x in ["wire", "gas", "rockD", "rockS", "rockSFe"]:
         xvol = sGeo.GetVolume(x)
         if xvol:
@@ -864,7 +864,7 @@ def speedUp():
 
 
 # set display properties for tau nu target
-def DisplayNuDetector():
+def DisplayNuDetector() -> None:
     for x in ["Wall"]:
         xvol = sGeo.GetVolume(x)
         if not xvol:
@@ -876,7 +876,7 @@ def DisplayNuDetector():
     gEve.ElementChanged(geoscene, True, True)
 
 
-def switchOff(tag):
+def switchOff(tag) -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     for v in top.GetNodes():
@@ -887,7 +887,7 @@ def switchOff(tag):
     gEve.ElementChanged(geoscene, True, True)
 
 
-def switchOn(tag):
+def switchOn(tag) -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     for v in top.GetNodes():
@@ -899,7 +899,7 @@ def switchOn(tag):
     gEve.ElementChanged(geoscene, True, True)
 
 
-def hidePlasticScintillator():
+def hidePlasticScintillator() -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     v = sGeo.FindVolumeFast("vleft")
@@ -913,7 +913,7 @@ def hidePlasticScintillator():
 
 
 # switch off drawing of rock
-def switchOffRock():
+def switchOffRock() -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     for x in ["rockD", "rockS"]:
@@ -922,7 +922,7 @@ def switchOffRock():
     gEve.ElementChanged(geoscene, True, True)
 
 
-def switchOffAll(exc):
+def switchOffAll(exc) -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     for v in top.GetNodes():
@@ -939,7 +939,7 @@ def switchOffAll(exc):
     gEve.ElementChanged(geoscene, True, True)
 
 
-def switchOnAll(exc):
+def switchOnAll(exc) -> None:
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     for v in top.GetNodes():
@@ -965,13 +965,13 @@ def select(pattern):
     return exc
 
 
-def search(lvdict, tag):
+def search(lvdict, tag) -> None:
     for x in lvdict:
         if not x.find(tag) < 0:
             print(x)
 
 
-def rename(name="ship.TGeant4.root"):
+def rename(name: str = "ship.TGeant4.root") -> None:
     f = ROOT.TFile(name, "UPDATE")
     t = f.Get("cbmsim")
     for x in t.GetListOfBranches():
@@ -984,11 +984,11 @@ def rename(name="ship.TGeant4.root"):
 class Rulers(ROOT.FairTask):
     "add Ruler"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.ruler = ROOT.TEveCompound("Rulers")
         gEve.AddElement(self.ruler)
 
-    def show(self, xy=0, ticks=5):
+    def show(self, xy: int = 0, ticks: int = 5) -> None:
         self.ruler.DestroyElements()
         self.ruler.OpenCompound()
         xpos, ypos = -500.0, -1500.0
@@ -1087,11 +1087,11 @@ class Rulers(ROOT.FairTask):
         geoscene = sc.FindChild("Geometry scene")
         ROOT.gEve.ElementChanged(geoscene, True, True)
 
-    def remove(self):
+    def remove(self) -> None:
         self.ruler.DestroyElements()
 
 
-def mydebug():
+def mydebug() -> None:
     t = g.FindObjectAny("cbmsim")
     nev = t.GetEntriesFast()
     t.GetEntry(0)
@@ -1140,7 +1140,7 @@ def mydebug():
     gEve.ElementChanged(geoscene, True, True)
 
 
-def debugStraw(n):
+def debugStraw(n) -> None:
     sGeo = ROOT.gGeoManager
     vols = sGeo.GetListOfVolumes()
     sTree = g.FindObjectAny("cbmsim")
@@ -1276,7 +1276,7 @@ print("With the camera button, you can switch to different views.")
 
 
 # fGeo.SetNsegments(10) # can help a bit in case of performance problems
-def DrawCharmTracks():
+def DrawCharmTracks() -> None:
     i = -1
     for aTrack in sTree.MCTrack:
         i += 1
@@ -1289,7 +1289,7 @@ def DrawCharmTracks():
                 SHiPDisplay.tracks.DrawMCTrack(i)
 
 
-def DrawSimpleMCTracks():
+def DrawSimpleMCTracks() -> None:
     comp = SHiPDisplay.tracks.comp
     comp.OpenCompound()
     n = -1
@@ -1328,16 +1328,16 @@ def DrawSimpleMCTracks():
 
 def positionText(
     r,
-    x,
-    y,
+    x: float,
+    y: float,
     z,
     angle,
-    txt,
-    size=200,
+    txt: str,
+    size: int = 200,
     color=ROOT.kBlue,
     mode=ROOT.TGLFont.kExtrude,
     light=ROOT.kTRUE,
-):
+) -> None:
     tt = ROOT.TEveText(txt)
     tt.SetFontSize(size)
     tt.RefMainTrans().SetPos(x, y, z)
@@ -1348,7 +1348,7 @@ def positionText(
     r.AddElement(tt)
 
 
-def PRVersion():
+def PRVersion() -> None:
     readCameraSetting()
     for x in [
         "moreShieldingSide",

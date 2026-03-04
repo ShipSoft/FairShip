@@ -43,7 +43,7 @@ def collect_hits(lsOfGlobals, checked_muons):
     return hitlist
 
 
-def trajectory_init(lsOfGlobals, name="SHiP MuonTraj"):
+def trajectory_init(lsOfGlobals, name: str = "SHiP MuonTraj"):
     traj = lsOfGlobals.FindObject(name)
     if not traj:
         traj = ROOT.TGraph()
@@ -54,7 +54,7 @@ def trajectory_init(lsOfGlobals, name="SHiP MuonTraj"):
     return traj
 
 
-def execute():
+def execute() -> None:
     N_MUONS = 2
     canvas = ROOT.gROOT.FindObject("Root Canvas EnergyLoss")
     if not canvas:

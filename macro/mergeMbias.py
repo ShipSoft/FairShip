@@ -47,7 +47,7 @@ def fillWeights():
     return weights
 
 
-def TplotP(sTree):
+def TplotP(sTree) -> None:
     ut.bookCanvas(h, key="P", title="momentum", nx=1800, ny=1200, cx=3, cy=2)
     ut.bookCanvas(h, key=">P", title="N >P", nx=1800, ny=1200, cx=3, cy=2)
     ut.bookCanvas(h, key="PT", title="Pt", nx=1800, ny=1200, cx=3, cy=2)
@@ -169,7 +169,7 @@ cuts = {"": "abs(id)>0", "_onlyMuons": "abs(id)==13", "_onlyNeutrinos": "abs(id)
 h = {}
 
 
-def mergeMinBias(pot, norm=5.0e13, opt=""):
+def mergeMinBias(pot, norm=5.0e13, opt="") -> None:
     storeCharm = False
     if opt != "":
         storeCharm = True
@@ -266,7 +266,7 @@ def mergeMinBias(pot, norm=5.0e13, opt=""):
     h["N"].Close()
 
 
-def runProduction(opts=""):
+def runProduction(opts: str = "") -> None:
     we = fillWeights()
     pot = {}
     for p in we:
@@ -278,7 +278,7 @@ def runProduction(opts=""):
     mergeMinBias(pot, norm=5.0e13, opt=opts)
 
 
-def removeCharm(p):
+def removeCharm(p) -> None:
     f = ROOT.TFile.Open(eospath + productions[p]["file"])
     t = f.FindObjectAny("pythia8-Geant4")
     first = True
@@ -312,7 +312,7 @@ def removeCharm(p):
     h["N"].Close()
 
 
-def mergeWithCharm(splitOnly=False, ramOnly=False):
+def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
     # Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)
     # i.e. the par. is for the neutrino, and the sTree. is for its mother.
     # wspill is the weight for this file normalised/5e13.
@@ -465,13 +465,13 @@ def mergeWithCharm(splitOnly=False, ramOnly=False):
             print(" progress: split " + opt)
 
 
-def test(fname):
+def test(fname) -> None:
     h["f"] = ROOT.TFile.Open(fname)
     sTree = h["f"].FindObjectAny("pythia8-Geant4")
     TplotP(sTree)
 
 
-def compare():
+def compare() -> None:
     test(eospath + "pythia8_Geant4_onlyMuons.root")
     for x in ["", "_>E"]:
         for z in ["p", "pt"]:

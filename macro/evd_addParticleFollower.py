@@ -10,7 +10,7 @@ gEve = ROOT.gEve
 import eveGlobal
 
 
-def execute():
+def execute() -> None:
     if not gEve.GetViewers().FindChild("Bar Embedded Viewer side"):
         slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())
         pack1 = slot.MakePack()

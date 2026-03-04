@@ -891,11 +891,11 @@ if options.command == "Genie":
 import checkMagFields
 
 
-def visualizeMagFields():
+def visualizeMagFields() -> None:
     checkMagFields.run()
 
 
-def checkOverlapsWithGeant4():
+def checkOverlapsWithGeant4() -> None:
     # after /run/initialize, but prints warning messages, problems with TGeo volume
     mygMC = ROOT.TGeant4.GetMC()
     mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")

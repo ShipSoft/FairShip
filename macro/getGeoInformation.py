@@ -60,7 +60,7 @@ def local2Global(n):
     return Info
 
 
-def print_info(path, node, level, currentlevel, print_sub_det_info=False):
+def print_info(path: str, node, level: int, currentlevel: int, print_sub_det_info=False) -> None:
     sub_nodes = {}
     fullInfo = {}
     for subnode in node.GetNodes():

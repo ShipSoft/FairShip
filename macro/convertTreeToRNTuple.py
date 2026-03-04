@@ -24,7 +24,7 @@ import sys
 import ROOT
 
 
-def convert_tree_to_rntuple(input_file, tree_name, output_file, ntuple_name):
+def convert_tree_to_rntuple(input_file, tree_name, output_file, ntuple_name) -> bool:
     """
     Convert a TTree to RNTuple format.
 
@@ -99,7 +99,7 @@ def convert_tree_to_rntuple(input_file, tree_name, output_file, ntuple_name):
         return False
 
 
-def main():
+def main() -> int:
     """Parse arguments and run the TTree to RNTuple conversion."""
     parser = argparse.ArgumentParser(
         description="Convert TTree to RNTuple using ROOT's RNTupleImporter",

@@ -11,7 +11,7 @@ ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py"
 PDG = ROOT.TDatabasePDG.Instance()
 
 
-def printMCTrack(n, MCTrack):
+def printMCTrack(n: int, MCTrack) -> None:
     mcp = MCTrack[n]
     print(
         " %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i "
@@ -29,7 +29,7 @@ def printMCTrack(n, MCTrack):
     )
 
 
-def dump(i, pcut):
+def dump(i, pcut) -> None:
     tree = ROOT.gROOT.FindObjectAny("cbmsim")
     tree.GetEntry(i)
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
@@ -41,7 +41,7 @@ def dump(i, pcut):
         printMCTrack(n, tree.MCTrack)
 
 
-def dumpStraw(i):
+def dumpStraw(i) -> None:
     tree = ROOT.gROOT.FindObjectAny("cbmsim")
     tree.GetEntry(i)
     for aStraw in tree.strawtubesPoint:
