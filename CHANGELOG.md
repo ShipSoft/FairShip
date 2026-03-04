@@ -39,7 +39,11 @@ it in future.
 
 ### Changed
 
-* Replace mypy with pyrefly for Python type checking
+* Add type annotations across the Python codebase using pyrefly infer
+* Add mypy pre-commit hook for gradual type checking
+* Fix pickle serialisation file modes in ShipGeoConfig (text → binary)
+
+
 
 * Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
 * Change a const char* in SHiP::Generator to optional<string>. #1053
