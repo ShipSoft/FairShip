@@ -1230,26 +1230,23 @@ top = sGeo.GetTopVolume()
 speedUp()
 gEve = ROOT.gEve
 
-if hasattr(ShipGeo, "Bfield"):
-    if hasattr(ShipGeo.Bfield, "fieldMap"):
-        ROOT.gSystem.Load("libG4clhep.so")
-        ROOT.gSystem.Load("libgeant4vmc.so")
-        import geomGeant4
+if ShipGeo.Bfield.fieldMap:
+    ROOT.gSystem.Load("libG4clhep.so")
+    ROOT.gSystem.Load("libgeant4vmc.so")
+    import geomGeant4
 
-        fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
-        bfield = ROOT.genfit.FairShipFields()
-        bfield.setField(fieldMaker.getGlobalField())
-    else:
-        bellField = ROOT.ShipBellField(
-            "bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m
-        )
-        compField = ROOT.ShipCompField("compfield", bellField)
-        bfield = ROOT.genfit.FairShipFields()
-        bfield.setField(compField)
-    geoMat = ROOT.genfit.TGeoMaterialInterface()
-    ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
-    fM = ROOT.genfit.FieldManager.getInstance()
-    fM.init(bfield)
+    fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
+    bfield = ROOT.genfit.FairShipFields()
+    bfield.setField(fieldMaker.getGlobalField())
+else:
+    bellField = ROOT.ShipBellField("bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m)
+    compField = ROOT.ShipCompField("compfield", bellField)
+    bfield = ROOT.genfit.FairShipFields()
+    bfield.setField(compField)
+geoMat = ROOT.genfit.TGeoMaterialInterface()
+ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+fM = ROOT.genfit.FieldManager.getInstance()
+fM.init(bfield)
 
 import TrackExtrapolateTool
 
