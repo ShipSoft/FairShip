@@ -33,6 +33,10 @@ it in future.
 * Make the MTC scintillating tile size configurable (#1091)
 * Change the default magnetic field of MTC (-1.2 T -> -1.7 T) and the size of the scintillating tile (1 cm -> 5 cm) (#1091)
 
+### Removed
+
+* Remove dead `charmonly` code path from `run_simScript.py` (depended on removed charmdet module)
+
 ### Fixed
 
 * Fix `StrawDecode` Python indexing: change return type from `std::tuple` to `std::array` so cppyy maps `operator[]` to `__getitem__`, unblocking `shipPatRec.py` and `shipStrawTracking.py`
