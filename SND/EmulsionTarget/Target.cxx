@@ -61,8 +61,6 @@
 using std::cout;
 using std::endl;
 
-using namespace ShipUnit;
-
 Target::Target()
     : FairDetector("Target", "", kTRUE),
       fTrackID(-1),

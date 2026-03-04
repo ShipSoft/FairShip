@@ -26,7 +26,8 @@
 #include "TObjArray.h"  // for TObjArray
 #include "TString.h"    // for TString
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 ShipTAUMagneticSpectrometer::~ShipTAUMagneticSpectrometer() {}
 

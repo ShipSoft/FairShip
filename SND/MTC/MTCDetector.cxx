@@ -45,8 +45,6 @@
 #include "TString.h"    // for TString
 #include "TVirtualMC.h"
 
-using namespace ShipUnit;
-
 namespace {
 Double_t ycross(Double_t a, Double_t R, Double_t x) {
   /*
