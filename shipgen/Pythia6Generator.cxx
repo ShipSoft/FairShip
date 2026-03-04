@@ -66,9 +66,9 @@ Bool_t Pythia6Generator::ReadEvent(FairPrimaryGenerator* primGen) {
       cout << "Event number: " << eventID << "\tNtracks: " << ntracks << endl;
 
     for (Int_t ll = 0; ll < ntracks; ll++) {
-      ncols = fscanf(fInputFile, "%d %d %d %d %d %d %f %f %f %f %f %f %f %f %f",
-                     &nLev, &pdgID, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz,
-                     &fE, &fM, &fVx, &fVy, &fVz, &fT);
+      (void)fscanf(fInputFile, "%d %d %d %d %d %d %f %f %f %f %f %f %f %f %f",
+                   &nLev, &pdgID, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE,
+                   &fM, &fVx, &fVy, &fVz, &fT);
       if (fVerbose > 0)
         cout << nLev << "\t" << pdgID << "\t" << nM1 << "\t" << nM2 << "\t"
              << nDF << "\t" << nDL << "\t" << fPx << "\t" << fPy << "\t" << fPz
