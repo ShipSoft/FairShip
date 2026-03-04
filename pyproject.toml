@@ -16,6 +16,24 @@ ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'
 
 [tool.pyrefly]
 python-version = "3.12"
+search-path = ["python"]
+
+replace-imports-with-any = [
+    "ROOT", "ROOT.*",
+    "rootUtils", "rootUtils.*",
+    "genfit", "genfit.*",
+    "cppyy", "cppyy.*",
+    "ShipGeoConfig", "ShipGeoConfig.*",
+    "shipRoot_conf", "shipRoot_conf.*",
+]
+
+ignore-missing-imports = [
+    "uproot", "uproot.*",
+    "scipy", "scipy.*",
+    "tabulate",
+    "numpy", "numpy.*",
+    "yaml", "yaml.*",
+]
 
 [tool.pyrefly.errors]
-import-error = false
+missing-import = false
