@@ -107,6 +107,7 @@ Fixed</h2>
 <li>Fix uninitialised members in <a class="el" href="classvetoHit.html">vetoHit</a>, <a class="el" href="classstrawtubesHit.html">strawtubesHit</a>, and <a class="el" href="classShipMuonShield.html">ShipMuonShield</a></li>
 <li>Change <a class="el" href="classvetoHit.html">vetoHit</a> and <a class="el" href="classstrawtubesHit.html">strawtubesHit</a> flag member from Float_t to Bool_t to match actual usage</li>
 <li>Fix NaN mass/energy for photons in <a class="el" href="classShipMCTrack.html">ShipMCTrack</a> due to floating-point rounding (#384)</li>
+<li>Move <a class="el" href="classTimeDetHit.html">TimeDetHit</a> v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"ana__ShipMuon_8py.html#a5eb3b72a70982a8b551f0ad18738f02e":[7,0,9,0,66],
 "ana__ShipMuon_8py.html#a6a6d6d03ca5487761b3e7f514aa16c73":[7,0,9,0,74],
 "ana__ShipMuon_8py.html#a6cb7def847a664ce781b48ba74a3e8a6":[7,0,9,0,25],
 "ana__ShipMuon_8py.html#a6dfe07d26e0a92ea58638a96baf6994e":[7,0,9,0,51],
@@ -82,8 +81,8 @@ var NAVTREEINDEX2 =
 "classBaseDetector_1_1BaseDetector.html":[6,0,0,0],
 "classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71":[5,0,6,0,2],
 "classBaseDetector_1_1BaseDetector.html#a0386332312b99247b8a098b60e5bce71":[6,0,0,0,2],
-"classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492":[6,0,0,0,6],
 "classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492":[5,0,6,0,6],
+"classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492":[6,0,0,0,6],
 "classBaseDetector_1_1BaseDetector.html#a3935ad43ce8135e442a77356ce42a77e":[5,0,6,0,11],
 "classBaseDetector_1_1BaseDetector.html#a3935ad43ce8135e442a77356ce42a77e":[6,0,0,0,11],
 "classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9":[5,0,6,0,8],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classEvtCalcGenerator.html#a975c5c1c8796d05ce19a250a05032572":[6,0,26,21],
 "classEvtCalcGenerator.html#a98cafdb0ef782dabf8ab3f5b8ef83bef":[6,0,26,24],
 "classEvtCalcGenerator.html#aa79da6c1d29ee3e8ea5129e8acdbf73c":[6,0,26,20],
-"classEvtCalcGenerator.html#aa8a7cfddbab6aa406d008cf5f681e1b2":[6,0,26,3]
+"classEvtCalcGenerator.html#aa8a7cfddbab6aa406d008cf5f681e1b2":[6,0,26,3],
+"classEvtCalcGenerator.html#abef70b2166267ba4e350f9456faabd2f":[6,0,26,9]
 };

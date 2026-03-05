@@ -1491,7 +1491,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1638,6 +1637,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],

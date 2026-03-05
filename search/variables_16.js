@@ -1,7 +1,7 @@
 var searchData=
 [
   ['v_0',['v',['../namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457',1,'evd_addParticleFollower']]],
-  ['v_5fdrift_1',['v_drift',['../classstrawtubes.html#ab683c19901a645b1f78a524a8f202384',1,'strawtubes::v_drift'],['../classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab',1,'shipDigiReco.ShipDigiReco.v_drift'],['../classTimeDetHit.html#a4ca1b7b8fb70a6a2bda1f0053283f827',1,'TimeDetHit::v_drift']]],
+  ['v_5fdrift_1',['v_drift',['../classstrawtubes.html#ab683c19901a645b1f78a524a8f202384',1,'strawtubes::v_drift'],['../classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab',1,'shipDigiReco.ShipDigiReco.v_drift'],['../classTimeDetHit.html#a385c185f1350cef189a913d69792c99b',1,'TimeDetHit::v_drift']]],
   ['vcb_2',['Vcb',['../classhnl_1_1CKMmatrix.html#a1a6b5b54eb6d777b56b7faffefac12d7',1,'hnl::CKMmatrix']]],
   ['vcd_3',['Vcd',['../classhnl_1_1CKMmatrix.html#ad4f2b26039563785f6ffd8198ad7caa1',1,'hnl::CKMmatrix']]],
   ['vcs_4',['Vcs',['../classhnl_1_1CKMmatrix.html#a924eb72749fd0270983c39f15b5bf1d0',1,'hnl::CKMmatrix']]],

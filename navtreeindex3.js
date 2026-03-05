@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classEvtCalcGenerator.html#abef70b2166267ba4e350f9456faabd2f":[6,0,26,9],
 "classEvtCalcGenerator.html#ac33228cc03084fde6dc7b4f9605faf28":[6,0,26,18],
 "classEvtCalcGenerator.html#ac3c5044abd7b89900b45a03ab3eb6199":[6,0,26,17],
 "classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78":[6,0,26,32],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classMTCDetHit.html#a8f74f01f8d5e85cc07c1c7754729c750":[6,0,33,27],
 "classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e":[6,0,33,7],
 "classMTCDetHit.html#a9e3052c20946b9585ede85f89f4012fa":[6,0,33,0],
-"classMTCDetHit.html#aa44b6ab6ff5420be8a73853b53c1c672":[6,0,33,20]
+"classMTCDetHit.html#aa44b6ab6ff5420be8a73853b53c1c672":[6,0,33,20],
+"classMTCDetHit.html#aa80b19051c5eef695800f7db0d430a45":[6,0,33,9]
 };
