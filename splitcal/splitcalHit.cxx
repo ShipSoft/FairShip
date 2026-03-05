@@ -60,8 +60,7 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
     pointE += point.GetEnergyLoss();
   }
 
-  // fdigi = t0 + t;
-  fdigi = t0;
+  fdigi = t0 + firstPoint.GetTime();
   // SetDigi(SetTimeRes(fdigi));
   SetDetectorID(detID);
 
