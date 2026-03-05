@@ -50,13 +50,16 @@ class ShipDigiReco:
         #
         self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
 
-        self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
-        self.digiSBT = SBTDetector("veto", self.sTree, "SBT", mcBranchName="digiSBT2MC", outtree=self.recoTree)
-        self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
-        self.vetoHitOnTrackBranch = self.recoTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
-
-        self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
-        self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
+        if self.sTree.GetBranch("MTCDetPoint"):
+            self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
+        if self.sTree.GetBranch("vetoPoint"):
+            self.digiSBT = SBTDetector("veto", self.sTree, "SBT", mcBranchName="digiSBT2MC", outtree=self.recoTree)
+            self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
+            self.vetoHitOnTrackBranch = self.recoTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
+        if self.sTree.GetBranch("TimeDetPoint"):
+            self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
+        if self.sTree.GetBranch("UpstreamTaggerPoint"):
+            self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
         # for the digitizing step
         self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
@@ -101,7 +104,8 @@ class ShipDigiReco:
     def reconstruct(self) -> None:
         self.findTracks()
         self.findGoodTracks()
-        self.linkVetoOnTracks()
+        if hasattr(self, "digiSBT"):
+            self.linkVetoOnTracks()
         if global_variables.vertexing:
             # now go for 2-track combinations
             self.Vertexing.execute()
@@ -111,12 +115,14 @@ class ShipDigiReco:
         self.header.SetEventTime(self.sTree.t0)
         self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())
         self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
-        self.digiSBT.process()
+        if hasattr(self, "digiSBT"):
+            self.digiSBT.process()
         self.strawtubes.process()
-        self.timeDetector.process()
-        self.upstreamTaggerDetector.process()
-        # adding digitization of SND/MTC
-        if self.sTree.GetBranch("MTCDetPoint"):
+        if hasattr(self, "timeDetector"):
+            self.timeDetector.process()
+        if hasattr(self, "upstreamTaggerDetector"):
+            self.upstreamTaggerDetector.process()
+        if hasattr(self, "digiMTC"):
             self.digiMTC.process()
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
