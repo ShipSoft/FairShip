@@ -24,6 +24,7 @@ it in future.
 * Move TimeDetHit v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)
 * Fix event display errors for nonexistent MC point branches (#900)
 * Fix digitisation crash when optional detector branches are missing (#738)
+* Fix splitcalHit dropping MC point arrival time in digitisation (#925)
 
 ### Changed
 
