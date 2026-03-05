@@ -20,6 +20,7 @@ it in future.
 * Fix off-by-one in FixedTargetGenerator target node access
 * Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
 * Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
+* Fix NaN mass/energy for photons in ShipMCTrack due to floating-point rounding (#384)
 
 ### Changed
 

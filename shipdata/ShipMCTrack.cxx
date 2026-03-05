@@ -83,7 +83,16 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
       fPx(part->Px()),
       fPy(part->Py()),
       fPz(part->Pz()),
-      fM(TMath::Sqrt(part->Energy() * part->Energy() - part->P() * part->P())),
+      fM([](const TParticle* p) {
+        Double_t m2 = p->Energy() * p->Energy() - p->P() * p->P();
+        if (m2 >= 0.) return TMath::Sqrt(m2);
+        // Tiny negative: numerical noise for on-shell massless particle
+        Double_t e2 = p->Energy() * p->Energy();
+        if (-m2 < 1e-10 * e2) return 0.;
+        // Genuinely spacelike (virtual photon): store negative mass (ROOT
+        // convention)
+        return -TMath::Sqrt(-m2);
+      }(part)),
       fStartX(part->Vx()),
       fStartY(part->Vy()),
       fStartZ(part->Vz()),
