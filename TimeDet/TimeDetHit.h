@@ -56,13 +56,13 @@ class TimeDetHit : public ShipHit {
   bool isValid() const { return flag; }
 
  private:
-  Double_t v_drift = 15.;  // cm/ns
-  Double_t par[4] = {0.0272814, 109.303, 0, 0.0539487};
+  static constexpr Double_t v_drift = 15.;  // cm/ns
+  static constexpr Double_t par[4] = {0.0272814, 109.303, 0, 0.0539487};
 
   Float_t flag;      ///< flag
   Float_t t_1, t_2;  ///< TDC on both sides
 
-  ClassDef(TimeDetHit, 2);
+  ClassDef(TimeDetHit, 3);
 };
 
 #endif  // TIMEDET_TIMEDETHIT_H_

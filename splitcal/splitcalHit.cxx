@@ -26,8 +26,9 @@
 using std::cout;
 using std::endl;
 
-Double_t speedOfLight =
-    TMath::C() * 100. / 1000000000.0;  // from m/sec to cm/ns
+namespace {
+constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
+}  // namespace
 // -----   Default constructor   -------------------------------------------
 splitcalHit::splitcalHit() : ShipHit() { flag = true; }
 // -----   Standard constructor   ------------------------------------------
