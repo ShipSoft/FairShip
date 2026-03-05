@@ -1192,15 +1192,26 @@ if withGeo:
 # Load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fRun.GetGeoFile(), "ShipGeo")
 
-mcHits = {}
-mcHits["VetoPoints"] = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
-mcHits["StrawPoints"] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-mcHits["RpcPoints"] = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-mcHits["TargetPoints"] = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
-mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare)
-mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare)
+# Check which MC point branches exist in the input file
+_tmpFile = ROOT.TFile.Open(options.InputFile)
+_tmpTree = _tmpFile.Get("cbmsim") if _tmpFile else None
 
+mcHits = {}
+_candidates = {
+    "VetoPoints": ("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond),
+    "TimeDetPoints": ("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond),
+    "StrawPoints": ("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle),
+    "RpcPoints": ("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare),
+    "TargetPoints": ("TargetPoint", ROOT.kRed, ROOT.kFullSquare),
+    "MTCDetPoint": ("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare),
+    "SiliconTargetPoint": ("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare),
+}
+for key, (branch, colour, marker) in _candidates.items():
+    if _tmpTree and _tmpTree.GetBranch(branch):
+        mcHits[key] = ROOT.FairMCPointDraw(branch, colour, marker)
+
+if _tmpFile:
+    _tmpFile.Close()
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])

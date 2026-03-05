@@ -22,6 +22,7 @@ it in future.
 * Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
 * Fix NaN mass/energy for photons in ShipMCTrack due to floating-point rounding (#384)
 * Move TimeDetHit v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)
+* Fix event display errors for nonexistent MC point branches (#900)
 
 ### Changed
 
