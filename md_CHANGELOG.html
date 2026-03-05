@@ -108,6 +108,7 @@ Fixed</h2>
 <li>Change <a class="el" href="classvetoHit.html">vetoHit</a> and <a class="el" href="classstrawtubesHit.html">strawtubesHit</a> flag member from Float_t to Bool_t to match actual usage</li>
 <li>Fix NaN mass/energy for photons in <a class="el" href="classShipMCTrack.html">ShipMCTrack</a> due to floating-point rounding (#384)</li>
 <li>Move <a class="el" href="classTimeDetHit.html">TimeDetHit</a> v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)</li>
+<li>Fix event display errors for nonexistent MC point branches (#900)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
@@ -115,6 +116,7 @@ Changed</h2>
 <li>Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors</li>
 <li>Take vectors by const ref in <a class="el" href="classShipTargetStation.html#a3f10bb33c08c56c4a4fbe94b044a6eaf">ShipTargetStation::SetLayerPosMat</a>; fix assert logic bug</li>
 <li>Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param</li>
+<li>Remove dead SND@LHC code from event display (#900)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Added</h2>
