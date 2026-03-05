@@ -1193,18 +1193,13 @@ if withGeo:
 ShipGeo = load_from_root_file(fRun.GetGeoFile(), "ShipGeo")
 
 mcHits = {}
-if hasattr(ShipGeo, "MuFilter"):
-    mcHits["ScifiPoints"] = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kRed, ROOT.kFullDiamond)
-    mcHits["MuFilterPoints"] = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kGreen, ROOT.kFullCircle)
-    mcHits["EmulsionDetPoints"] = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kCircle)
-else:
-    mcHits["VetoPoints"] = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-    mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
-    mcHits["StrawPoints"] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-    mcHits["RpcPoints"] = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-    mcHits["TargetPoints"] = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
-    mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare)
-    mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare)
+mcHits["VetoPoints"] = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
+mcHits["StrawPoints"] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
+mcHits["RpcPoints"] = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+mcHits["TargetPoints"] = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare)
+mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare)
 
 
 for x in mcHits:
