@@ -25,6 +25,7 @@ it in future.
 * Fix event display errors for nonexistent MC point branches (#900)
 * Fix digitisation crash when optional detector branches are missing (#738)
 * Fix splitcalHit dropping MC point arrival time in digitisation (#925)
+* Fix argparse -f/subparser conflict in run_simScript.py by using action="append" (#1044)
 
 ### Changed
 
