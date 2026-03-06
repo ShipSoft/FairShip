@@ -204,7 +204,6 @@ class ShipStack : public FairGenericStack {
   Int_t fMinPoints;
   Double32_t fEnergyCut;
   Bool_t fStoreMothers;
-  int32_t fNsplits;
 
   /** Mark tracks for output using selection criteria  **/
   void SelectTracks();

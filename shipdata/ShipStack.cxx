@@ -8,7 +8,6 @@
 #include "ShipStack.h"
 
 #include <stddef.h>  // for NULL
-#include <math.h>
 
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, etc
@@ -51,15 +50,9 @@ ShipStack::ShipStack(Int_t size)
       fStoreSecondaries(kTRUE),
       fMinPoints(1),
       fEnergyCut(0.),
-      fStoreMothers(kTRUE),
-      fNsplits(0) {
+      fStoreMothers(kTRUE) {
     fTracks = new std::vector<ShipMCTrack>();
     fTracks->reserve(size);
-    fNsplits = 0;
-    const char* env = std::getenv("KAON_PION_SPLITS");
-    if (env) {
-        fNsplits = std::atoi(env);
-    }
 }
 
 // -------------------------------------------------------------------------
@@ -96,40 +89,19 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
   // <<    " " << secondparentID<<" "<<proc<< endl;
 
-  // --> Create new TParticle and add it to the TParticle array
   Int_t trackId = fNParticles;
 
-  bool pion_or_kaon_id_bool = (TMath::Abs(pdgCode) == 211) || (TMath::Abs(pdgCode) == 321);
-  bool pion_or_kaon_bool = (pion_or_kaon_id_bool) && (proc == kPDecay) && (is < 999) && (fNsplits > 0);
+  // --> Get TParticle array
+  TClonesArray& partArray = *fParticles;
 
   // --> Set argument variable
   ntr = trackId;
 
-  // Split kaons and pions if splitting is required
-  if (pion_or_kaon_bool) {
-      double scaled_weight = weight / fNsplits;
-      for (int32_t i = 0; i < fNsplits; ++i) {
-          // cout << "in loop" << ntr << endl;
-          gMC->GetStack()->PushTrack(1,
-                                     parentId,
-                                     pdgCode,
-                                     px, py, pz, e,
-                                     vx, vy, vz, time,
-                                     polx, poly, polz,
-                                     kPNoProcess,
-                                     ntr,
-                                     scaled_weight,
-                                     is + 1  + i
-                                     );
-        }
-      return;
-  }
-  // --> Get TParticle array
-  TClonesArray& partArray = *fParticles;
-
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
+
+  // --> Create new TParticle and add it to the TParticle array
   TParticle* particle = new (partArray[fNParticles++])
       TParticle(pdgCode, trackId, parentId, nPoints, daughter1Id, daughter2Id,
                 px, py, pz, e, vx, vy, vz, time);
@@ -155,13 +127,10 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
     fNPrimaries++;
   }
   if (toBeDone == 1) {
-      // cout << "not in loop" << ntr << endl;
-
       // --> Push particle on the stack if toBeDone is set
       particle->SetBit(kDoneBit);
       fStack.push(particle);
   }
-
 }
 // -------------------------------------------------------------------------
 
