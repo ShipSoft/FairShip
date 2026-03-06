@@ -21,7 +21,7 @@ class TimeDetPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~TimeDetPoint();
 
-  virtual const char* DetectorName() const { return "timeDetector"; }
+  const char* DetectorName() const override { return "timeDetector"; }
   void extraPrintInfo() const override;
 
  private:
