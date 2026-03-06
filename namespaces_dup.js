@@ -1179,7 +1179,6 @@ var namespaces_dup =
       [ "Geniegen", "namespacerun__simScript.html#a398412a7d37ba1709a08e7da785209eb", null ],
       [ "geofile_name", "namespacerun__simScript.html#a71febbcacc1bfb3c737de2f3599e1817", null ],
       [ "gMC", "namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051", null ],
-      [ "group", "namespacerun__simScript.html#aea191c4bd8a36c3aaaf14b484e60da0e", null ],
       [ "gst", "namespacerun__simScript.html#aa3e34199d5fbf0a1ded3a5a739c356da", null ],
       [ "gst_copy", "namespacerun__simScript.html#a7d8ddabaf399fe627d86b2c91119fb14", null ],
       [ "help", "namespacerun__simScript.html#ab658890547af5e0465901c28dbaf5199", null ],

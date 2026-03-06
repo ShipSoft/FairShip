@@ -39,7 +39,6 @@ var run__simScript_8py =
     [ "Geniegen", "run__simScript_8py.html#a398412a7d37ba1709a08e7da785209eb", null ],
     [ "geofile_name", "run__simScript_8py.html#a71febbcacc1bfb3c737de2f3599e1817", null ],
     [ "gMC", "run__simScript_8py.html#a671e51e119017a06d69c162c6e24b051", null ],
-    [ "group", "run__simScript_8py.html#aea191c4bd8a36c3aaaf14b484e60da0e", null ],
     [ "gst", "run__simScript_8py.html#aa3e34199d5fbf0a1ded3a5a739c356da", null ],
     [ "gst_copy", "run__simScript_8py.html#a7d8ddabaf399fe627d86b2c91119fb14", null ],
     [ "help", "run__simScript_8py.html#ab658890547af5e0465901c28dbaf5199", null ],
