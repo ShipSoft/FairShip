@@ -19,6 +19,15 @@
 
 class FairVolume;
 
+struct TrackBuffer {
+    Int_t pdg;
+    Double_t px, py, pz, e;
+    Double_t x, y, z, t;
+    Double_t polx, poly, polz;
+    Double_t weight;
+    Int_t parentID;
+};
+
 class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
  public:
   /**      Name :  Detector Name
@@ -68,9 +77,10 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   virtual void FinishPrimary() { ; }
   virtual void FinishRun();
   virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
   virtual void PreTrack();
-  virtual void BeginEvent() { ; }
+  virtual void PostTrack();
+  // virtual void Stepping();
+  virtual void BeginEvent();  //  { ; }
 
   vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
                     TVector3 mom, Double_t time, Double_t length,
@@ -111,6 +121,9 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   TNtuple* fNtuple;          //!
   Float_t EMax;              //! max energy to transport
   int32_t fNsplits;
+  std::vector<TrackBuffer> fSecondaryBuffer;
+  bool fIsSplitting;
+
   Bool_t fCylindricalPlane;  //! flag if the sensPlane to be created should be
                              //! cylindrical (by default it is not)
   Bool_t fUseCaveCoordinates;  //! set position from cave rather than from muon

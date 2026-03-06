@@ -34,6 +34,9 @@
 #include "TROOT.h"
 #include "TVirtualMC.h"
 #include "vetoPoint.h"
+#include "TLorentzVector.h"
+#include "TArrayI.h"
+
 
 using std::cout;
 using std::endl;
@@ -199,16 +202,92 @@ void exitHadronAbsorber::EndOfEvent() {
   fexitHadronAbsorberPointCollection->clear();
 }
 
+void exitHadronAbsorber::BeginEvent() {
+  fIsSplitting = false;
+  // fexitHadronAbsorberPointCollection->clear();
+}
+
+
+
+void exitHadronAbsorber::PostTrack() {
+  if ((fNsplits > 0) && !(fIsSplitting)) {
+    TArrayI processes;
+    gMC->StepProcesses(processes);
+
+    bool isDecay = false;
+    bool isKaonOrMuon = false;
+    for (int i = 0; i < processes.GetSize(); i++) {
+       if (processes[i] == kPDecay) {
+          isDecay = true;
+          break;
+      }
+    }
+    Int_t track_pid = gMC->TrackPid();
+
+    bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321);
+
+    if ((isDecay) & (kaon_or_pion)) {
+        TParticle* part = gMC->GetStack()->GetCurrentTrack();
+        double polX = 0, polY = 0, polZ = 0;
+        TVector3 polVector;
+        part->GetPolarisation(polVector);
+        polX = polVector.X();
+        polY = polVector.Y();
+        polZ = polVector.Z();
+
+        TLorentzVector pos, mom, pol;
+        gMC->TrackPosition(pos);
+        gMC->TrackMomentum(mom);
+        Int_t trueParentId = part->GetFirstMother();
+        Double_t weight = gMC->TrackWeight() / fNsplits;
+        // printf("DEBUG: Splitting PID %d | Old W: %f | New W: %f\n", track_pid, gMC->TrackWeight(), weight);
+        Int_t ntr;
+        for (int i = 0; i < fNsplits; ++i) {
+            TrackBuffer clone;
+            clone.pdg      = track_pid;
+            clone.px       = mom.Px(); clone.py = mom.Py(); clone.pz = mom.Pz(); clone.e = mom.E();
+            clone.x        = pos.X();  clone.y  = pos.Y();  clone.z  = pos.Z();  clone.t = pos.T();
+            clone.polx     = polX;
+            clone.poly = polY;
+            clone.polz = polZ;
+            clone.weight   = weight;
+            clone.parentID = trueParentId;
+            fSecondaryBuffer.push_back(clone);
+        }
+        gMC->StopTrack();
+        fIsSplitting = true;
+
+    }
+  }
+}
+
+
 void exitHadronAbsorber::PreTrack() {
+  bool stackbufferisnotempty = !fSecondaryBuffer.empty();
+  if (stackbufferisnotempty) {
+        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+        Int_t ntr;
+        for (const auto& trk : fSecondaryBuffer) {
+            stack->PushTrack(
+                1, trk.parentID, trk.pdg,
+                trk.px, trk.py, trk.pz, trk.e,
+                trk.x, trk.y, trk.z, trk.t,
+                trk.polx, trk.poly, trk.polz,
+                kPNoProcess, ntr, trk.weight, 999
+            );
+        }
+        // Important: Clear the buffer so we don't duplicate them for the next track
+        fSecondaryBuffer.clear();
+  }
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
     gMC->StopTrack();
     return;
   }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
-  if ((fNsplits > 0) && (p->GetUniqueID() == kPNoProcess)) {
+  if ((fNsplits > 0) && (p->GetUniqueID() == kPNoProcess) && !(stackbufferisnotempty)) {
       // Force the decay time to 0
-      gMC->ForceDecayTime(0.0);
+      gMC->ForceDecayTime(0);
     }
 
   Int_t pdgCode = p->GetPdgCode();
