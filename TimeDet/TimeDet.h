@@ -8,8 +8,7 @@
 #include <map>
 #include <vector>
 
-#include "FairDetector.h"
-#include "ISTLPointContainer.h"
+#include "Detector.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
@@ -17,7 +16,7 @@ class TimeDetPoint;
 class FairVolume;
 class TClonesArray;
 
-class TimeDet : public FairDetector, public ISTLPointContainer {
+class TimeDet : public SHiP::Detector {
  public:
   /**      Name :  Detector Name
    *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -86,15 +85,6 @@ class TimeDet : public FairDetector, public ISTLPointContainer {
   virtual void BeginEvent() { ; }
 
  private:
-  /** Track information to be stored until the track leaves the active volume.*/
-  Int_t fEventID;       //!  event index
-  Int_t fTrackID;       //!  track index
-  Int_t fVolumeID;      //!  volume id
-  TLorentzVector fPos;  //!  position at entrance
-  TLorentzVector fMom;  //!  momentum at entrance
-  Double_t fTime;       //!  time
-  Double_t fLength;     //!  length
-  Double_t fELoss;      //!  energy loss
 
   /** Detector parameters.*/
   Double_t fzPos;  //!  z-position of veto station
@@ -118,11 +108,6 @@ class TimeDet : public FairDetector, public ISTLPointContainer {
   Int_t fNBars;   //! Number of bars
   Double_t fxOv;  //! Overlap along x
   Double_t fyOv;  //! Overlap along y
-
-  TGeoVolume* fDetector;  // Timing detector object
-
-  /** container for data points */
-  std::vector<TimeDetPoint>* fTimeDetPoints;
 
   TimeDet(const TimeDet&);
   TimeDet& operator=(const TimeDet&);
