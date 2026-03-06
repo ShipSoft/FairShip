@@ -22,11 +22,12 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~UpstreamTaggerPoint();
 
-  void setDetectorName() override;
+  virtual const char* DetectorName() const { return "UpstreamTagger"; }
+
   void extraPrintInfo() const override;
 
  private:
-  ClassDefOverride(UpstreamTaggerPoint, 4)
+  ClassDefOverride(UpstreamTaggerPoint, 5)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_

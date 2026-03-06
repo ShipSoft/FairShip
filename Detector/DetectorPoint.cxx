@@ -15,7 +15,6 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
       fPdgCode(pdgcode),
       fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()},
       fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()} {
-  setDetectorName();
 }
 
 // -----   Standard constructor  ----------------
@@ -27,12 +26,11 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
       fPdgCode(pdgcode),
       fLpos{pos.X(), pos.Y(), pos.Z()},
       fLmom{mom.X(), mom.Y(), mom.Z()} {
-  setDetectorName();
 }
 
 // -----   Public method Print   -------------------------------------------
 void SHiP::DetectorPoint::Print() const {
-  LOG(info) << "-I- " << fDetectorName << " point for track " << fTrackID
+  LOG(info) << "-I- " << DetectorName() << " point for track " << fTrackID
             << " in detector " << fDetectorID;
   LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm";
   LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV";
@@ -42,9 +40,6 @@ void SHiP::DetectorPoint::Print() const {
 }
 // -------------------------------------------------------------------------
 
-void SHiP::DetectorPoint::setDetectorName() {
-  fDetectorName = "GenericDetector";
-}
 
 void SHiP::DetectorPoint::extraPrintInfo() const {
   LOG(info) << "Nothing to see here";

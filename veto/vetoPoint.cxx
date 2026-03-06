@@ -18,8 +18,6 @@ vetoPoint::~vetoPoint() {}
 
 // -----   Public method Print   -------------------------------------------
 
-void vetoPoint::setDetectorName() { fDetectorName = "vetoPoint"; }
-
 void vetoPoint::extraPrintInfo() const {
   LOG(info) << "This is the veto detector";
 }

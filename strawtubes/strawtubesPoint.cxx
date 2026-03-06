@@ -28,8 +28,6 @@ strawtubesPoint::strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID,
 strawtubesPoint::~strawtubesPoint() {}
 // -------------------------------------------------------------------------
 
-void strawtubesPoint::setDetectorName() { fDetectorName = "UpstreamTagger"; }
-
 void strawtubesPoint::extraPrintInfo() const {
   LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ", "
             << fdist2Wire << ") cm";

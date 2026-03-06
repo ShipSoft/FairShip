@@ -37,7 +37,7 @@ class strawtubesPoint : public SHiP::DetectorPoint {
 
   Double_t dist2Wire() const { return fdist2Wire; }
 
-  void setDetectorName() override;
+  virtual const char* DetectorName() const { return "strawtubesDetector"; }
   void extraPrintInfo() const override;
 
  private:
