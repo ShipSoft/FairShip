@@ -16,8 +16,6 @@ splitcalPoint::splitcalPoint() : DetectorPoint() {}
 splitcalPoint::~splitcalPoint() {}
 // -------------------------------------------------------------------------
 
-void splitcalPoint::setDetectorName() { fDetectorName = "splitCal"; }
-
 void splitcalPoint::extraPrintInfo() const {
   LOG(info) << "This is the splitcal";
 }

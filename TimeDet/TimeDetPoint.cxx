@@ -16,8 +16,6 @@ TimeDetPoint::TimeDetPoint() : SHiP::DetectorPoint() {}
 TimeDetPoint::~TimeDetPoint() {}
 // -------------------------------------------------------------------------
 
-void TimeDetPoint::setDetectorName() { fDetectorName = "TimeDetector"; }
-
 void TimeDetPoint::extraPrintInfo() const {
   LOG(info) << "This is the time detector";
 }

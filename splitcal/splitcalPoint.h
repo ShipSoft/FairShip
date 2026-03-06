@@ -19,7 +19,7 @@ class splitcalPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~splitcalPoint();
 
-  void setDetectorName() override;
+  const char* DetectorName() const override { return "splitcalDetector"; }
   void extraPrintInfo() const override;
 
  private:
