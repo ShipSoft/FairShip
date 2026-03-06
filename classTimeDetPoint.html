@@ -128,8 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aafe2379e48cac8fa6104047ad5d437d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1b5e3c56cc71d776be49fd677bdde02" id="r_ab1b5e3c56cc71d776be49fd677bdde02"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDetPoint.html#ab1b5e3c56cc71d776be49fd677bdde02">~TimeDetPoint</a> ()</td></tr>
 <tr class="separator:ab1b5e3c56cc71d776be49fd677bdde02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa75c53bbab17d03e54ac9dca5846846" id="r_afa75c53bbab17d03e54ac9dca5846846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDetPoint.html#afa75c53bbab17d03e54ac9dca5846846">setDetectorName</a> () override</td></tr>
-<tr class="separator:afa75c53bbab17d03e54ac9dca5846846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6231affd38f3d2d8b4de19881f404b3" id="r_af6231affd38f3d2d8b4de19881f404b3"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDetPoint.html#af6231affd38f3d2d8b4de19881f404b3">DetectorName</a> () const override</td></tr>
+<tr class="separator:af6231affd38f3d2d8b4de19881f404b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c03e35eff7452e5fc63eabf09792308" id="r_a2c03e35eff7452e5fc63eabf09792308"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDetPoint.html#a2c03e35eff7452e5fc63eabf09792308">extraPrintInfo</a> () const override</td></tr>
 <tr class="separator:a2c03e35eff7452e5fc63eabf09792308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSHiP_1_1DetectorPoint"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSHiP_1_1DetectorPoint')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSHiP_1_1DetectorPoint.html">SHiP::DetectorPoint</a></td></tr>
@@ -163,8 +163,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aecefa704161c2cd52e6a2f7aa3aa7f3a inherit pro_attribs_classSHiP_1_1DetectorPoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf089c8ce88057c7e525006f32dbf838 inherit pro_attribs_classSHiP_1_1DetectorPoint" id="r_acf089c8ce88057c7e525006f32dbf838"><td class="memItemLeft" align="right" valign="top">std::array&lt; Double_t, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1DetectorPoint.html#acf089c8ce88057c7e525006f32dbf838">fLmom</a></td></tr>
 <tr class="separator:acf089c8ce88057c7e525006f32dbf838 inherit pro_attribs_classSHiP_1_1DetectorPoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a733364e7ffd3c6eef5a637f14437494b inherit pro_attribs_classSHiP_1_1DetectorPoint" id="r_a733364e7ffd3c6eef5a637f14437494b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1DetectorPoint.html#a733364e7ffd3c6eef5a637f14437494b">fDetectorName</a> = &quot;detector&quot;</td></tr>
-<tr class="separator:a733364e7ffd3c6eef5a637f14437494b inherit pro_attribs_classSHiP_1_1DetectorPoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -222,6 +220,36 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af6231affd38f3d2d8b4de19881f404b3" name="af6231affd38f3d2d8b4de19881f404b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6231affd38f3d2d8b4de19881f404b3">&#9670;&#160;</a></span>DetectorName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * TimeDetPoint::DetectorName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classSHiP_1_1DetectorPoint.html#aa11422f05a1cc59b5060f1b079c8e644">SHiP::DetectorPoint</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="TimeDetPoint_8h_source.html#l00024">24</a> of file <a class="el" href="TimeDetPoint_8h_source.html">TimeDetPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;timeDetector&quot;</span>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a2c03e35eff7452e5fc63eabf09792308" name="a2c03e35eff7452e5fc63eabf09792308"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c03e35eff7452e5fc63eabf09792308">&#9670;&#160;</a></span>extraPrintInfo()</h2>
 
@@ -247,41 +275,10 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classSHiP_1_1DetectorPoint.html#aec89c4ada51119e9813ae739b175098d">SHiP::DetectorPoint</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDetPoint_8cxx_source.html#l00021">21</a> of file <a class="el" href="TimeDetPoint_8cxx_source.html">TimeDetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>                                        {</div>
-<div class="line"><span class="lineno">   22</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;This is the time detector&quot;</span>;</div>
-<div class="line"><span class="lineno">   23</span>}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="afa75c53bbab17d03e54ac9dca5846846" name="afa75c53bbab17d03e54ac9dca5846846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa75c53bbab17d03e54ac9dca5846846">&#9670;&#160;</a></span>setDetectorName()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TimeDetPoint::setDetectorName </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classSHiP_1_1DetectorPoint.html#ad88fd06b18bb14d099998f72046ad0a0">SHiP::DetectorPoint</a>.</p>
-
 <p class="definition">Definition at line <a class="el" href="TimeDetPoint_8cxx_source.html#l00019">19</a> of file <a class="el" href="TimeDetPoint_8cxx_source.html">TimeDetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span>{ <a class="code hl_variable" href="classSHiP_1_1DetectorPoint.html#a733364e7ffd3c6eef5a637f14437494b">fDetectorName</a> = <span class="stringliteral">&quot;TimeDetector&quot;</span>; }</div>
-<div class="ttc" id="aclassSHiP_1_1DetectorPoint_html_a733364e7ffd3c6eef5a637f14437494b"><div class="ttname"><a href="classSHiP_1_1DetectorPoint.html#a733364e7ffd3c6eef5a637f14437494b">SHiP::DetectorPoint::fDetectorName</a></div><div class="ttdeci">std::string fDetectorName</div><div class="ttdef"><b>Definition</b> <a href="DetectorPoint_8h_source.html#l00045">DetectorPoint.h:45</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   19</span>                                        {</div>
+<div class="line"><span class="lineno">   20</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;This is the time detector&quot;</span>;</div>
+<div class="line"><span class="lineno">   21</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

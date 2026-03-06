@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"namespaceproton__bremsstrahlung.html#a6d26ae53f2d9569530430a1b66b1a085":[5,0,55,17],
-"namespaceproton__bremsstrahlung.html#a6e9b9b7b5a56d5acd10c07c2436299bb":[5,0,55,16],
 "namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28":[5,0,55,1],
 "namespaceproton__bremsstrahlung.html#a8317f12f6cfbdda00f7c16e7f1bef570":[5,0,55,2],
 "namespaceproton__bremsstrahlung.html#a97876c92837019c17bb67ac9ac1ad120":[5,0,55,21],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79":[5,0,65,76],
 "namespacerun__fixedTarget.html#ae509765a529dfe63f10403bfbb4e6c23":[5,0,65,41],
 "namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023":[5,0,65,53],
-"namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4":[5,0,65,24]
+"namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4":[5,0,65,24],
+"namespacerun__fixedTarget.html#af4484db9a4134bdc526b56578692372a":[5,0,65,30],
+"namespacerun__fixedTarget.html#af456af4c4bac33f8b8ba95ab99319708":[5,0,65,5]
 };

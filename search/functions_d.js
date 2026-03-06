@@ -4,7 +4,7 @@ var searchData=
   ['n_5fpixels_5fto_5fqdc_1',['n_pixels_to_qdc',['../classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8',1,'MTCDetHit']]],
   ['na50_2',['na50',['../namespacerunPythia8.html#aee8ad9ec7b436a89728d499ec2bfe518',1,'runPythia8']]],
   ['ncomposite_3',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],
-  ['ndecaywidth_4',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
+  ['ndecaywidth_4',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
   ['ndof_5',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['nextevent_6',['nextevent',['../classeventDisplay_1_1EventLoop.html#ab1c1a1e533af16e919be135aee02c9fe',1,'eventDisplay.EventLoop.NextEvent()'],['../classeventDisplay_1_1IO.html#a574e7c1a11236a388f75e7fab7818dd2',1,'eventDisplay.IO.nextEvent()']]],
   ['nextlevel_7',['nextLevel',['../namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0',1,'geomGeant4']]],

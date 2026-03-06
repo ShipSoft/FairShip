@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemakeMuonEM.html#a8ec85f23b43031db348adadd29fc3169":[5,0,50,1],
-"namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4":[5,0,50,3],
 "namespacemakeMuonEM.html#a99c96dfb8a40c5507c7a62921d306e5e":[5,0,50,7],
 "namespacemakeMuonEM.html#aa5ad61c03c3524787a582bfe545ca6cc":[5,0,50,5],
 "namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003":[5,0,50,30],
@@ -249,5 +247,7 @@ var NAVTREEINDEX22 =
 "namespaceproton__bremsstrahlung.html#a3779ff27265babd92dc0a1c43321ba08":[5,0,55,11],
 "namespaceproton__bremsstrahlung.html#a47e461cd92265e129840b8b3f5e64edb":[5,0,55,22],
 "namespaceproton__bremsstrahlung.html#a4a7ab8940c1a8fe1f2e16c15c5d57e40":[5,0,55,14],
-"namespaceproton__bremsstrahlung.html#a695ec6be4f232306b1c304ab8bfc2eef":[5,0,55,18]
+"namespaceproton__bremsstrahlung.html#a695ec6be4f232306b1c304ab8bfc2eef":[5,0,55,18],
+"namespaceproton__bremsstrahlung.html#a6d26ae53f2d9569530430a1b66b1a085":[5,0,55,17],
+"namespaceproton__bremsstrahlung.html#a6e9b9b7b5a56d5acd10c07c2436299bb":[5,0,55,16]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"classShipMCTrack.html#ac757e335b5354ea991400025ad585f60":[6,0,55,11],
-"classShipMCTrack.html#ac88f3d7ee5c2ed6005a5d9c13ab33ab3":[6,0,55,15],
 "classShipMCTrack.html#acfdca546845a38705c296bec9103844c":[6,0,55,13],
 "classShipMCTrack.html#ad21a9a027a6e96f21ee32758587392be":[6,0,55,6],
 "classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96":[6,0,55,31],
@@ -249,5 +247,7 @@ var NAVTREEINDEX7 =
 "classSiliconTargetHit.html#a90dff85bf1518d5827dc47973d73ea70":[6,0,63,16],
 "classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073":[6,0,63,7],
 "classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78":[6,0,63,6],
-"classSiliconTargetHit.html#ab1b319ee23301029aa2dd8cb34ce661f":[6,0,63,12]
+"classSiliconTargetHit.html#ab1b319ee23301029aa2dd8cb34ce661f":[6,0,63,12],
+"classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8":[6,0,63,19],
+"classSiliconTargetHit.html#ab6e1f3816b414e583a5fbec57e09b161":[6,0,63,10]
 };
