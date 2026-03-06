@@ -14,8 +14,7 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID),
       fPdgCode(pdgcode),
       fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()},
-      fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()} {
-}
+      fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()} {}
 
 // -----   Standard constructor  ----------------
 SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
@@ -25,8 +24,7 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID),
       fPdgCode(pdgcode),
       fLpos{pos.X(), pos.Y(), pos.Z()},
-      fLmom{mom.X(), mom.Y(), mom.Z()} {
-}
+      fLmom{mom.X(), mom.Y(), mom.Z()} {}
 
 // -----   Public method Print   -------------------------------------------
 void SHiP::DetectorPoint::Print() const {
@@ -39,7 +37,6 @@ void SHiP::DetectorPoint::Print() const {
   extraPrintInfo();
 }
 // -------------------------------------------------------------------------
-
 
 void SHiP::DetectorPoint::extraPrintInfo() const {
   LOG(info) << "Nothing to see here";
