@@ -138,7 +138,7 @@ TParticle* ShipStack::PopNextTrack(Int_t& iTrack) {
   // If end of stack: Return empty pointer
   if (fStack.empty()) {
     iTrack = -1;
-    return NULL;
+    return nullptr;
   }
 
   // If not, get next particle from stack
@@ -147,7 +147,7 @@ TParticle* ShipStack::PopNextTrack(Int_t& iTrack) {
 
   if (!thisParticle) {
     iTrack = 0;
-    return NULL;
+    return nullptr;
   }
 
   fCurrentTrack = thisParticle->GetStatusCode();
@@ -176,7 +176,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim) {
   ",iPrim); Fatal("ShipStack::PopPrimaryForTracking", "Not a primary track");
   }*/
   if (!part->TestBit(kDoneBit))
-    return NULL;
+    return nullptr;
   else
     return part;
 }
@@ -279,7 +279,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
     fDetIter->Reset();
   }
 
-  FairDetector* det = NULL;
+  FairDetector* det = nullptr;
   while ((det = dynamic_cast<FairDetector*>(fDetIter->Next()))) {
     // --> Check if detector uses STL containers (std::vector)
     if (auto* stlDet = dynamic_cast<ISTLPointContainer*>(det)) {

@@ -27,7 +27,7 @@ Pythia6Generator::Pythia6Generator(const char* fileName) {
   fVerbose = 0;
   cout << "-I Pythia6Generator: Opening input file " << fileName << endl;
   fInputFile = fopen(fFileName, "r");
-  if (fInputFile == NULL)
+  if (fInputFile == nullptr)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() )
     Fatal("Pythia6Generator", "Cannot open input file.");
@@ -110,7 +110,7 @@ void Pythia6Generator::CloseInput() {
       fclose(fInputFile);
     }
     delete fInputFile;
-    fInputFile = NULL;
+    fInputFile = nullptr;
   }
 }
 // ------------------------------------------------------------------------
