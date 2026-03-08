@@ -903,4 +903,3 @@ void veto::ConstructGeometry() {
     }
   }
 }
-

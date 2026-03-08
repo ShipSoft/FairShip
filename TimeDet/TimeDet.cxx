@@ -52,8 +52,7 @@ TimeDet::TimeDet()
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0)
-       {
+      fyCenter(0) {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -79,8 +78,7 @@ TimeDet::TimeDet(const char* name, Bool_t active)
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0)
- {
+      fyCenter(0) {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -170,7 +168,6 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-
 TClonesArray* TimeDet::GetCollection(Int_t iColl) const { return nullptr; }
 
 void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
@@ -220,7 +217,6 @@ void TimeDet::ConstructGeometry() {
 
   return;
 }
-
 
 void TimeDet::GetBarRowCol(int ib, int& irow, int& icol) const {
   irow = ib / fNCol;
