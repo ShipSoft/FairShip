@@ -15,8 +15,8 @@ void call_python_method(PyObject* self, const char* method);
 class pyFairModule : public FairModule {
  public:
   explicit pyFairModule(PyObject* self) : fSelf(self) {}
-  virtual ~pyFairModule() {}
-  virtual void ConstructGeometry() {
+  ~pyFairModule() override = default;
+  void ConstructGeometry() override {
     call_python_method(fSelf, "ConstructGeometry");
   }
 

@@ -32,7 +32,7 @@ class ShipHit : public TObject {
   void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   Float_t fdigi;      ///< digitized detector hit
