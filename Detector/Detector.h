@@ -88,7 +88,6 @@ class Detector : public FairDetector, public ISTLPointContainer {
   std::vector<PointType>* fDetPoints = nullptr;
 
   TGeoVolume* fDetector = nullptr;  // Detector object
-
 };
 }  // namespace SHiP
 
