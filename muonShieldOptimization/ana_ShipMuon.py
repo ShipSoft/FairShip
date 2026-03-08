@@ -352,7 +352,7 @@ for f in os.listdir(testdir):
 tmp = inputFile.split(".")
 try:
     dy = float(tmp[1] + "." + tmp[2])
-except:
+except Exception:
     dy = 10.0
 
 if not inputFile.find("_D.") < 0:
@@ -590,8 +590,7 @@ def BigEventLoop() -> None:
             rfn = os.path.realpath(fn).split("eos")[1]
             fn = ROOT.gSystem.Getenv("EOSSHIP") + "/eos/" + rfn
         elif not os.path.isfile(fn):
-            print("Don't know what to do with", fn)
-            1 / 0
+            raise RuntimeError("Don't know what to do with " + fn)
         if parallel:
             # process files parallel instead of sequential
             processes.append(mp.Process(target=executeOneFile, args=(fn, output, pid)))
@@ -933,7 +932,7 @@ def makePlots(nstations: int) -> None:
 
 #
 def AnaEventLoop() -> None:
-    fout = open("rareEvents.txt", "w")
+    fout = open("rareEvents.txt", "w")  # noqa: SIM115
     for fn in fchainRec:
         f = ROOT.TFile(fn)
         if not f.FindObjectAny("cbmsim"):
@@ -1005,7 +1004,7 @@ def muDISntuple(fn) -> None:
             if abs(pid) != 13:
                 continue
             P = ROOT.TMath.Sqrt(ahit.GetPx() ** 2 + ahit.GetPy() ** 2 + ahit.GetPz() ** 2)
-            if P > 3 / u.GeV:
+            if 3 / u.GeV < P:
                 h["ntuple"].Fill(
                     float(pid),
                     float(ahit.GetPx() / u.GeV),
@@ -1056,7 +1055,7 @@ def analyzeConcrete() -> None:
                 if abs(pid) == 13:
                     m = "mu"
                 P = ROOT.TMath.Sqrt(ahit.GetPx() ** 2 + ahit.GetPy() ** 2 + ahit.GetPz() ** 2)
-                if abs(pid) == 13 and P > 3 / u.GeV:
+                if abs(pid) == 13 and 3 / u.GeV < P:
                     m = "V0"
                     h["ntuple"].Fill(
                         float(pid),
@@ -1099,7 +1098,7 @@ def analyzeConcrete() -> None:
 
 
 def rareEventEmulsion(fname: str = "rareEmulsion.txt") -> None:
-    fout = open(fname, "w")
+    fout = open(fname, "w")  # noqa: SIM115
     for fn in fchainRec:
         f = ROOT.TFile(fn)
         if not f.FindObjectAny("cbmsim"):
@@ -1241,7 +1240,9 @@ def extractMuCloseByEvents(single=None) -> None:
 
 
 #
-def MergeRareEvents(runs: list[str] = ["61", "62"]) -> None:
+def MergeRareEvents(runs: list[str] | None = None) -> None:
+    if runs is None:
+        runs = ["61", "62"]
     for prefix in runs:
         cmd = "$ROOTSYS/bin/hadd rareEvents_" + prefix + ".root -f "
         for fn in fchainRec:
@@ -1403,40 +1404,42 @@ def pers() -> None:
 from operator import itemgetter
 
 
-def makeNicePrintout(x: list[str] = ["rareEvents_61-62.txt", "rareEvents_71-72.txt"]):
+def makeNicePrintout(x: list[str] | None = None):
+    if x is None:
+        x = ["rareEvents_61-62.txt", "rareEvents_71-72.txt"]
     result = []
     cor = 1.0
     for fn in x:
-        f = open(fn)
-        recTrack = None
-        if fn == "rareEvents_81-102.txt":
-            cor = 30.0
-        for lx in f.readlines():
-            line = lx.replace("\n", "")
-            if not line.find("rare event") < 0:
-                if recTrack:
-                    result.append(recTrack)
-                tmp = line.split(",")
-                w = tmp[2].replace(" ", "")
-                ff = tmp[1].split("/")[0].replace(" ", "")
-                recTrack = {"w": w, "file": ff}
-            elif not line.find("original") < 0:
-                tmp = line.split(",")
-                recTrack["origin"] = tmp[0].split(" ")[2]
-                recTrack["pytiaid"] = tmp[1].replace(" ", "")
-                recTrack["o-mom"] = tmp[2].replace(" ", "")
-            elif not line.find("reco ") < 0:
-                tmp = line.split(",")
-                recTrack["nmeas"] = tmp[0].split(" ")[1]
-                recTrack["chi2"] = tmp[1]
-                recTrack["p_rec"] = tmp[2].replace(" ", "")
-            elif not line.find("making") < 0:
-                tmp = line.split(",")
-                recTrack["p_hit"] = tmp[1].replace(" ", "")
-                recTrack["fp_hit"] = float(tmp[1].replace(" ", ""))
-            elif not line.find("Ptruth") < 0:
-                tmp = line.split(" ")
-                recTrack["id_hit"] = tmp[1].replace(" ", "")
+        with open(fn) as f:
+            recTrack = None
+            if fn == "rareEvents_81-102.txt":
+                cor = 30.0
+            for lx in f.readlines():
+                line = lx.replace("\n", "")
+                if not line.find("rare event") < 0:
+                    if recTrack:
+                        result.append(recTrack)
+                    tmp = line.split(",")
+                    w = tmp[2].replace(" ", "")
+                    ff = tmp[1].split("/")[0].replace(" ", "")
+                    recTrack = {"w": w, "file": ff}
+                elif not line.find("original") < 0:
+                    tmp = line.split(",")
+                    recTrack["origin"] = tmp[0].split(" ")[2]
+                    recTrack["pytiaid"] = tmp[1].replace(" ", "")
+                    recTrack["o-mom"] = tmp[2].replace(" ", "")
+                elif not line.find("reco ") < 0:
+                    tmp = line.split(",")
+                    recTrack["nmeas"] = tmp[0].split(" ")[1]
+                    recTrack["chi2"] = tmp[1]
+                    recTrack["p_rec"] = tmp[2].replace(" ", "")
+                elif not line.find("making") < 0:
+                    tmp = line.split(",")
+                    recTrack["p_hit"] = tmp[1].replace(" ", "")
+                    recTrack["fp_hit"] = float(tmp[1].replace(" ", ""))
+                elif not line.find("Ptruth") < 0:
+                    tmp = line.split(" ")
+                    recTrack["id_hit"] = tmp[1].replace(" ", "")
     # print a table
     print(
         "%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s "

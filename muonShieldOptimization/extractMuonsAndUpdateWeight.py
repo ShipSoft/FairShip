@@ -38,9 +38,7 @@ def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) ->
         t.SetWeight(weight)
         if not pName.find("Hadronic inelastic") < 0:
             t.MultiplyWeight(1.0 / diMuboost)
-        elif not pName.find("Lepton pair") < 0:
-            t.MultiplyWeight(1.0 / xSecboost)
-        elif not pName.find("Positron annihilation") < 0:
+        elif not pName.find("Lepton pair") < 0 or not pName.find("Positron annihilation") < 0:
             t.MultiplyWeight(1.0 / xSecboost)
         elif not pName.find("Primary particle") < 0 or not pName.find("Decay") < 0:
             if moID in muSources.values():
@@ -94,7 +92,7 @@ def TotStat() -> None:
     ntot = 0
     for fn in lfiles:
         f = ROOT.TFile(path + fn)
-        nPot, diMuboost, xSecboost = PoT(f)
+        nPot, _diMuboost, _xSecboost = PoT(f)
         ntot += nPot
     print("Total statistics so far", ntot / 1.0e9, " billion")
 

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import contextlib
 import getpass
 import multiprocessing
 import os
@@ -68,7 +69,7 @@ def execute_parallel(prefix, ncpu: int = 4):
         for f in os.listdir("."):
             if not f.find("geofile_full") < 0:
                 inputfile = f.replace("geofile_full", "ship")
-                log[k] = open("logRec", "w")
+                log[k] = open("logRec", "w")  # noqa: SIM115
                 cpus[k] = subprocess.Popen(
                     ["python", cmd, "-n 9999999 -f " + inputfile],
                     stdout=log[k],
@@ -132,10 +133,8 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                         time.sleep(100)
                 print("launch reco", x)
                 proc[x] = 1
-                try:
+                with contextlib.suppress(Exception):
                     os.system("rm logRec")
-                except:
-                    pass
                 if reset:
                     os.system("python " + cmd + " -n 9999999 -f " + inputfile + " --saveDisk >> logRec &")
                 else:
@@ -154,18 +153,15 @@ def executeSimple(prefixes: list[str], reset=False) -> None:
                 if nproc > ncores:
                     print("wait a minute")
                     time.sleep(100)
-            log = open("logRec")
-            completed = False
-            rl = log.readlines()
-            log.close()
+            with open("logRec") as log:
+                completed = False
+                rl = log.readlines()
             if "finishing" in rl[len(rl) - 1]:
                 completed = True
             if completed:
                 print("analyze ", p, nproc)
-                try:
+                with contextlib.suppress(Exception):
                     os.system("rm logAna")
-                except:
-                    pass
                 os.system(
                     "python " + cmdAna + " -n 9999999 -f " + inputfile.replace(".root", "_rec.root") + " >> logAna &"
                 )
@@ -190,7 +186,7 @@ def executeAna(prefixes) -> None:
             for f in os.listdir("."):
                 if not f.find("geofile_full") < 0:
                     inputfile = f.replace("geofile_full", "ship")
-                    log[x] = open("logAna", "w")
+                    log[x] = open("logAna", "w")  # noqa: SIM115
                     process = subprocess.Popen(
                         ["python", cmdAna, "-n 9999999", "-f " + inputfile.replace(".root", "_rec.root")], stdout=log[x]
                     )
@@ -283,8 +279,8 @@ def checkProd(prefixes, quiet=False):
         jobs = getJobs(prefix)
         for x in jobs:
             try:
-                log = open(x + "/log")
-            except:
+                log = open(x + "/log")  # noqa: SIM115
+            except OSError:
                 if not quiet:
                     print("no log file for ", x)
                 summary["Sim"][x] = -1
@@ -306,8 +302,8 @@ def checkProd(prefixes, quiet=False):
                 summary["Sim"][x] = 0
                 continue
             try:
-                log = open(x + "/logRec")
-            except:
+                log = open(x + "/logRec")  # noqa: SIM115
+            except OSError:
                 if not quiet:
                     print("no logRec file for ", x)
                 summary["Rec"][x] = -1
@@ -324,8 +320,8 @@ def checkProd(prefixes, quiet=False):
                 summary["Rec"][x] = 0
                 continue
             try:
-                log = open(x + "/logAna")
-            except:
+                log = open(x + "/logAna")  # noqa: SIM115
+            except OSError:
                 if not quiet:
                     print("no logAna file for ", x)
                 summary["Ana"][x] = -1
