@@ -60,7 +60,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   }
 
   fdigi = t0 + firstPoint.GetTime();
-  // SetDigi(SetTimeRes(fdigi));
   SetDetectorID(detID);
 
   TGeoNavigator* navigator = gGeoManager->GetCurrentNavigator();
@@ -89,28 +88,6 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
 
   double zPassiveHalfLength = box->GetDZ();
 
-  // std::cout<< "----------------------"<<std::endl;
-  // std::cout<< "-- pointX = " << pointX << std::endl;
-  // std::cout<< "-- pointY = " << pointY << std::endl;
-  // std::cout<< "-- pointZ = " << pointZ << std::endl;
-  // std::cout<< "-- detID = " << detID << std::endl;
-  // std::cout<< "-- stripName = " << stripName << std::endl;
-  // std::cout<< "-- isPrec = " << isPrec << std::endl;
-  // std::cout<< "-- nL = " << nL << std::endl;
-  // std::cout<< "-- nMx = " << nMx << std::endl;
-  // std::cout<< "-- nMy = " << nMy << std::endl;
-  // std::cout<< "-- nS = " << nS << std::endl;
-  // std::cout<< "-- stripCoordinatesLocal[0] = " << stripCoordinatesLocal[0] <<
-  // std::endl; std::cout<< "-- stripCoordinatesLocal[1] = " <<
-  // stripCoordinatesLocal[1] << std::endl; std::cout<< "--
-  // stripCoordinatesLocal[2] = " << stripCoordinatesLocal[2] << std::endl;
-  // std::cout<< "-- stripCoordinatesMaster[0] = " << stripCoordinatesMaster[0]
-  // << std::endl; std::cout<< "-- stripCoordinatesMaster[1] = " <<
-  // stripCoordinatesMaster[1] << std::endl; std::cout<< "--
-  // stripCoordinatesMaster[2] = " << stripCoordinatesMaster[2] << std::endl;
-
-  // TGeoNode* check = navigator->FindNode(pointX,pointY,pointZ);
-
   SetEnergy(pointE);
   if (isPrec == 1)
     SetXYZ(pointX, pointY, stripCoordinatesMaster[2]);
@@ -133,7 +110,6 @@ std::string splitcalHit::GetPaddedString(int& id) {
 
 std::string splitcalHit::GetDetectorElementName(int& id) {
   std::string encodedID = GetPaddedString(id);
-  // std::cout << "-- encodedID = " << encodedID <<std::endl;
   int isPrec, nL, nMx, nMy, nS;
   Decoder(encodedID, isPrec, nL, nMx, nMy, nS);
 
@@ -152,7 +128,6 @@ std::string splitcalHit::GetDetectorElementName(int& id) {
     SetIsY(false);
   }
   name = name + std::to_string(id);
-  // std::cout << "--GetDetectorElementName - name  = " << name <<std::endl;
 
   return name;
 }
