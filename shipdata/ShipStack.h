@@ -128,7 +128,7 @@ class ShipStack : public FairGenericStack {
   Int_t GetCurrentParentTrackNumber() const override;
 
   /** Add a TParticle to the fParticles array **/
-  void AddParticle(TParticle* part) override;
+  void AddParticle(TParticle* part);
 
   /** Fill the MCTrack output array, applying filter criteria **/
   void FillTrackArray() override;
