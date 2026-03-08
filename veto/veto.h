@@ -182,8 +182,8 @@ class veto : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<vetoPoint>* fvetoPoints;
 
-  veto(const veto&);
-  veto& operator=(const veto&);
+  veto(const veto&) = delete;
+  veto& operator=(const veto&) = delete;
   Int_t InitMedium(const char* name);
   /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of

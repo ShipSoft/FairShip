@@ -69,9 +69,9 @@ class ShipCompField : public TVirtualMagField {
 
  protected:
  private:
-  //! Private copy and assignment operators.
-  ShipCompField(const ShipCompField&);
-  ShipCompField& operator=(const ShipCompField&);
+  //! Deleted copy and assignment operators.
+  ShipCompField(const ShipCompField&) = delete;
+  ShipCompField& operator=(const ShipCompField&) = delete;
 
   //! The vector of the various magnetic field pointers comprising the composite
   std::vector<TVirtualMagField*> theFields_;

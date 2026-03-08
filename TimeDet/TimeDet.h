@@ -124,8 +124,8 @@ class TimeDet : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<TimeDetPoint>* fTimeDetPoints;
 
-  TimeDet(const TimeDet&);
-  TimeDet& operator=(const TimeDet&);
+  TimeDet(const TimeDet&) = delete;
+  TimeDet& operator=(const TimeDet&) = delete;
   Int_t InitMedium(const char* name);
 
   ClassDefOverride(TimeDet, 4)

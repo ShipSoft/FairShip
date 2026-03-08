@@ -136,8 +136,8 @@ class Target : public FairDetector, public ISTLPointContainer {
   void PreTrack() override { ; }
   void BeginEvent() override { ; }
 
-  Target(const Target&);
-  Target& operator=(const Target&);
+  Target(const Target&) = delete;
+  Target& operator=(const Target&) = delete;
 
  ClassDefOverride(Target, 5)
 

@@ -131,8 +131,8 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
 
-  UpstreamTagger(const UpstreamTagger&);
-  UpstreamTagger& operator=(const UpstreamTagger&);
+  UpstreamTagger(const UpstreamTagger&) = delete;
+  UpstreamTagger& operator=(const UpstreamTagger&) = delete;
   Int_t InitMedium(const char* name);
 
   ClassDefOverride(UpstreamTagger, 2)

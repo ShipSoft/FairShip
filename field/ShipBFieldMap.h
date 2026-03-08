@@ -302,11 +302,8 @@ class ShipBFieldMap : public TVirtualMagField {
 
  protected:
  private:
-  //! Copy constructor not implemented
-  ShipBFieldMap(const ShipBFieldMap& rhs);
-
-  //! Copy assignment operator not implemented
-  ShipBFieldMap& operator=(const ShipBFieldMap& rhs);
+  ShipBFieldMap(const ShipBFieldMap& rhs) = delete;
+  ShipBFieldMap& operator=(const ShipBFieldMap& rhs) = delete;
 
   //! Enumeration to specify the coordinate type
   enum CoordAxis { xAxis = 0, yAxis, zAxis };

@@ -138,8 +138,8 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
 
   std::vector<strawtubesPoint>* fstrawtubesPoints;
 
-  strawtubes(const strawtubes&);
-  strawtubes& operator=(const strawtubes&);
+  strawtubes(const strawtubes&) = delete;
+  strawtubes& operator=(const strawtubes&) = delete;
   Int_t InitMedium(const char* name);
   ClassDefOverride(strawtubes, 7)
 };
