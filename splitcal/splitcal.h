@@ -63,7 +63,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   void SetYMax(Double_t yMax);
 
   /**      Create the detector geometry        */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
@@ -72,7 +72,6 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
-  virtual void SetSpecialPhysicsCuts() { ; }
 
  private:
   /** Track information to be stored until the track leaves the
@@ -101,7 +100,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   splitcal& operator=(const splitcal&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(splitcal, 3)
+  ClassDefOverride(splitcal, 3)
 };
 
 #endif  // SPLITCAL_SPLITCAL_H_

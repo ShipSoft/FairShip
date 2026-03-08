@@ -69,7 +69,7 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   }
 
   /**  Create the detector geometry */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
   Double_t module[11][3];  // x,y,z centre positions for each module
   // TODO Avoid 1-indexed array!

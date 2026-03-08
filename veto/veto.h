@@ -57,7 +57,7 @@ class veto : public SHiP::Detector<vetoPoint> {
   }
 
   /**      Create the detector geometry        */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
   void SetVesselStructure(Float_t a, Float_t b, Float_t c, TString d, Float_t l,
                           TString e, TString f, TString v, Float_t r) {
@@ -79,9 +79,8 @@ class veto : public SHiP::Detector<vetoPoint> {
   void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
-  virtual void SetSpecialPhysicsCuts() { ; }
 
-  virtual void PreTrack();
+  void PreTrack() override;
 
   inline void SetUseSupport(Int_t use = 1) { fUseSupport = use; }
   inline Int_t GetUseSupport() const { return fUseSupport; }
@@ -206,7 +205,7 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   TGeoVolume* MakeSegments();
 
-  ClassDef(veto, 4)
+  ClassDefOverride(veto, 3)
 };
 
 #endif  // VETO_VETO_H_

@@ -59,7 +59,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   Double_t StrawSigmaSpatial() { return sigma_spatial; }
 
   /**      Create the detector geometry        */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
@@ -68,7 +68,6 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
-  virtual void SetSpecialPhysicsCuts() { ; }
 
  private:
   /** Track information to be stored until the track leaves the
@@ -100,7 +99,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   strawtubes(const strawtubes&);
   strawtubes& operator=(const strawtubes&);
   Int_t InitMedium(const char* name);
-  ClassDef(strawtubes, 8)
+  ClassDefOverride(strawtubes, 8)
 };
 
 #endif  // STRAWTUBES_STRAWTUBES_H_

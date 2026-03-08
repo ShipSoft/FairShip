@@ -30,9 +30,6 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   /** destructor */
   virtual ~TimeDet() = default;
 
-  /** Initialization of the detector is done here */
-  //  virtual void Initialize();
-
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
@@ -54,7 +51,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   double GetZBar(int ir, int ic) const;
 
   /**  Create the detector geometry */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
  private:
   /** Detector parameters.*/
@@ -84,7 +81,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   TimeDet& operator=(const TimeDet&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(TimeDet, 5)
+  ClassDefOverride(TimeDet, 5)
 };
 
 #endif  // TIMEDET_TIMEDET_H_
