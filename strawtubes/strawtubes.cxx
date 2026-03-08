@@ -375,34 +375,30 @@ void strawtubes::ConstructGeometry() {
 
     for (Int_t vnb = 0; vnb < 4; vnb++) {
       // View loop
-      TString nmview;
-      Double_t angle;
-      Double_t stereo_growth;
-      Double_t stereo_pitch;
-      Double_t offset_layer;
-      Int_t straws_per_layer;
-
-      switch (vnb) {
-        case 0:
-          angle = 0.;
-          nmview = nmstation + "_y1";
-          break;
-        case 1:
-          angle = f_view_angle;
-          nmview = nmstation + "_u";
-          break;
-        case 2:
-          angle = -f_view_angle;
-          nmview = nmstation + "_v";
-          break;
-        case 3:
-          angle = 0.;
-          nmview = nmstation + "_y2";
-          break;
-        default:
-          angle = 0.;
-          nmview = nmstation + "_y1";
-      }
+      const Double_t angle = [&] {
+        switch (vnb) {
+          case 1:
+            return f_view_angle;
+          case 2:
+            return -f_view_angle;
+          default:
+            return 0.;
+        }
+      }();
+      const TString nmview = [&] {
+        switch (vnb) {
+          case 0:
+            return nmstation + "_y1";
+          case 1:
+            return nmstation + "_u";
+          case 2:
+            return nmstation + "_v";
+          case 3:
+            return nmstation + "_y2";
+          default:
+            return nmstation + "_y1";
+        }
+      }();
 
       // Adjustments in the stereo views
       // stereo_growth: extension of stereo views beyond aperture
@@ -410,13 +406,13 @@ void strawtubes::ConstructGeometry() {
       // offset_layer: layer offset in stereo views
       // straws_per_layer: number of straws in one layer with stereo extension
       // If angle == 0., all numbers return the case of non-stereo views.
-      stereo_growth =
+      const Double_t stereo_growth =
           TMath::Tan(TMath::Abs(angle) * TMath::Pi() / 180.0) * straw_length;
-      stereo_pitch =
+      const Double_t stereo_pitch =
           f_straw_pitch / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
-      offset_layer =
+      const Double_t offset_layer =
           f_offset_layer / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
-      straws_per_layer =
+      const Int_t straws_per_layer =
           std::ceil(2 * (f_aperture_height + stereo_growth) / stereo_pitch);
 
       for (Int_t lnb = 0; lnb < 2; lnb++) {
@@ -525,23 +521,18 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   stat += statnb;
   stat += "_";
   stat += statnb;
-  TString view;
-  switch (vnb) {
-    case 0:
-      view = "_y1";
-      break;
-    case 1:
-      view = "_u";
-      break;
-    case 2:
-      view = "_v";
-      break;
-    case 3:
-      view = "_y2";
-      break;
-    default:
-      view = "_y1";
-  }
+  const TString view = [&] {
+    switch (vnb) {
+      case 1:
+        return TString("_u");
+      case 2:
+        return TString("_v");
+      case 3:
+        return TString("_y2");
+      default:
+        return TString("_y1");
+    }
+  }();
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
   TString prefix = "Tr";
   prefix += statnb;

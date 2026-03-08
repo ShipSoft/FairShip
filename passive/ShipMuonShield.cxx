@@ -441,11 +441,13 @@ void ShipMuonShield::ConstructGeometry() {
       "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
       "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
   };
-  TString absorber_magnet_components;
-  for (auto&& magnet_component : magnet_components) {
-    absorber_magnet_components +=
-        ("-" + absorber_magnets[0] + magnet_component);
-  }
+  const TString absorber_magnet_components = [&] {
+    TString result;
+    for (auto&& magnet_component : magnet_components) {
+      result += ("-" + absorber_magnets[0] + magnet_component);
+    }
+    return result;
+  }();
 
   TGeoCompositeShape* absorberShape = new TGeoCompositeShape(
       "Absorber", "absorber:absorber_shift" + absorber_magnet_components);

@@ -319,11 +319,7 @@ void ShipBFieldMap::readRootFile() {
       Bz *= Tesla_;
 
       // Store the B field 3-vector
-      std::vector<Float_t> BVector(3);
-      BVector[0] = Bx;
-      BVector[1] = By;
-      BVector[2] = Bz;
-      fieldMap_->push_back(BVector);
+      fieldMap_->push_back({Bx, By, Bz});
     }
   }
 
@@ -369,11 +365,7 @@ void ShipBFieldMap::readTextFile() {
       Bz *= Tesla_;
 
       // Store the B field 3-vector
-      std::vector<Float_t> BVector(3);
-      BVector[0] = Bx;
-      BVector[1] = By;
-      BVector[2] = Bz;
-      fieldMap_->push_back(BVector);
+      fieldMap_->push_back({Bx, By, Bz});
     }
   }
 
