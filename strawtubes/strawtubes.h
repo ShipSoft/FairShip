@@ -100,7 +100,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   strawtubes(const strawtubes&);
   strawtubes& operator=(const strawtubes&);
   Int_t InitMedium(const char* name);
-  ClassDef(strawtubes, 7)
+  ClassDef(strawtubes, 8)
 };
 
 #endif  // STRAWTUBES_STRAWTUBES_H_

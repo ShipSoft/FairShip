@@ -85,7 +85,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   TimeDet& operator=(const TimeDet&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(TimeDet, 4)
+  ClassDef(TimeDet, 5)
 };
 
 #endif  // TIMEDET_TIMEDET_H_

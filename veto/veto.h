@@ -134,8 +134,6 @@ class veto : public SHiP::Detector<vetoPoint> {
   Int_t fUseSupport;
   //! Flag option for Liquid Scintillator (Default=True).
   Int_t fLiquidVeto;
-  /** container for data points */
-  std::vector<vetoPoint>* fvetoPoints;
 
   veto(const veto&);
   veto& operator=(const veto&);
@@ -208,7 +206,7 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   TGeoVolume* MakeSegments();
 
-  ClassDef(veto, 2)
+  ClassDef(veto, 3)
 };
 
 #endif  // VETO_VETO_H_

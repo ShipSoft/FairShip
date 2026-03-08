@@ -101,7 +101,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   splitcal& operator=(const splitcal&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(splitcal, 2)
+  ClassDef(splitcal, 3)
 };
 
 #endif  // SPLITCAL_SPLITCAL_H_
