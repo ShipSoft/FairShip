@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_MUDISGENERATOR_H_
-#define SHIPGEN_MUDISGENERATOR_H_ 1
+#define SHIPGEN_MUDISGENERATOR_H_
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"

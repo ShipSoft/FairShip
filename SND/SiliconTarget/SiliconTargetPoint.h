@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SND_SILICONTARGET_SILICONTARGETPOINT_H_
-#define SND_SILICONTARGET_SILICONTARGETPOINT_H_ 1
+#define SND_SILICONTARGET_SILICONTARGETPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"

@@ -16,7 +16,7 @@
  **/
 
 #ifndef FIELD_SHIPCONSTFIELD_H_
-#define FIELD_SHIPCONSTFIELD_H_ 1
+#define FIELD_SHIPCONSTFIELD_H_
 
 #include "FairField.h"
 

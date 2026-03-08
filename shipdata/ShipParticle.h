@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPDATA_SHIPPARTICLE_H_
-#define SHIPDATA_SHIPPARTICLE_H_ 1
+#define SHIPDATA_SHIPPARTICLE_H_
 
 #include <array>  // for std::array
 

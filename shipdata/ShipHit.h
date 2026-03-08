@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPDATA_SHIPHIT_H_
-#define SHIPDATA_SHIPHIT_H_ 1
+#define SHIPDATA_SHIPHIT_H_
 
 #include "Rtypes.h"    // for Double_t, Int_t, Double32_t, etc
 #include "TObject.h"   //

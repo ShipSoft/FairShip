@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef STRAWTUBES_STRAWTUBESHIT_H_
-#define STRAWTUBES_STRAWTUBESHIT_H_ 1
+#define STRAWTUBES_STRAWTUBESHIT_H_
 
 #include "ShipHit.h"
 #include "TObject.h"

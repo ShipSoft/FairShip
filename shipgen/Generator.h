@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_GENERATOR_H_
-#define SHIPGEN_GENERATOR_H_ 1
+#define SHIPGEN_GENERATOR_H_
 
 #include <optional>
 #include <string>

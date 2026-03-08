@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_GENIEGENERATOR_H_
-#define SHIPGEN_GENIEGENERATOR_H_ 1
+#define SHIPGEN_GENIEGENERATOR_H_
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"

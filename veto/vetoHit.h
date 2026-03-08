@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef VETO_VETOHIT_H_
-#define VETO_VETOHIT_H_ 1
+#define VETO_VETOHIT_H_
 #include "ShipHit.h"
 
 class vetoPoint;
