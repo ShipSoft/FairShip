@@ -2,7 +2,7 @@ var classveto =
 [
     [ "veto", "classveto.html#ad960d22c339cee9824364c451ee998bf", null ],
     [ "~veto", "classveto.html#a69d7a9789733b39e8b07e0ada9129b10", null ],
-    [ "veto", "classveto.html#ae53e8f94bd913c29260a9c73860176f8", null ],
+    [ "veto", "classveto.html#ab4c2260a2be2cf877b25b3f91ded2a07", null ],
     [ "AddBlock", "classveto.html#a8933d77df311eb11a42831beaf55be70", null ],
     [ "AddHit", "classveto.html#a7fcacec35e699ec496f744b8f7ad1ce6", null ],
     [ "BeginEvent", "classveto.html#ae2da58759c5320455d98abdef7c6bf9e", null ],
@@ -26,7 +26,7 @@ var classveto =
     [ "liscId", "classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d", null ],
     [ "makeId", "classveto.html#a3033d6c4b427718a1a072fe08b13a709", null ],
     [ "MakeSegments", "classveto.html#a5ff94ab044d1f2921698684d6072ca19", null ],
-    [ "operator=", "classveto.html#aae108cbe53746255872a1c7e83540e1a", null ],
+    [ "operator=", "classveto.html#a78e2b2b6f07c6849016ead5a75cf7d64", null ],
     [ "PostTrack", "classveto.html#a8eb8bddf6b6902f187250f0ec064ea7c", null ],
     [ "PreTrack", "classveto.html#a775bc0d5acd6b5988659144c8b2b19ca", null ],
     [ "ProcessHits", "classveto.html#a28f3b23dfc13954530ddca2d93571490", null ],

@@ -2,7 +2,7 @@ var classShipStack =
 [
     [ "ShipStack", "classShipStack.html#afedd004c79e0aeab913d4b279a3756e3", null ],
     [ "~ShipStack", "classShipStack.html#a56672a32bd10fec597f73b081d17721f", null ],
-    [ "ShipStack", "classShipStack.html#a6a6a6ad1627e5d3c50e46bf2321091b2", null ],
+    [ "ShipStack", "classShipStack.html#acb14dc912ecb572365e033ce6a2a2bab", null ],
     [ "AddParticle", "classShipStack.html#afeefa9f615a432b44382bfa42958d0f0", null ],
     [ "AddPoint", "classShipStack.html#a12a9581ffeac75755b6f68df13b98444", null ],
     [ "AddPoint", "classShipStack.html#a8828a89301861af172a070b8439176fd", null ],
@@ -14,7 +14,7 @@ var classShipStack =
     [ "GetNprimary", "classShipStack.html#aa7d08ef3b8d90c5dfc6e1c70b43b3949", null ],
     [ "GetNtrack", "classShipStack.html#a6343d5ac91960a21af0c5a3f8ae63829", null ],
     [ "GetParticle", "classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91", null ],
-    [ "operator=", "classShipStack.html#a3ac3e8a354894f71c1483f89cdfdc11e", null ],
+    [ "operator=", "classShipStack.html#afe55ef6299bde474a9c309a1cc261674", null ],
     [ "PopNextTrack", "classShipStack.html#abfbfc04ab9cd9c3380c99ed6f8662e35", null ],
     [ "PopPrimaryForTracking", "classShipStack.html#ab3a2c6db0fbf455d65310eea27d018bd", null ],
     [ "Print", "classShipStack.html#a983454e5afc95fa3d51bac3a19f9d7e3", null ],

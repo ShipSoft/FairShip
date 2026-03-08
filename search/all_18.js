@@ -16,7 +16,7 @@ var searchData=
   ['updates_13',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md24',1,'']]],
   ['updatetrackindex_14',['UpdateTrackIndex',['../classShipStack.html#a9b519e1e6040b80fcb18fe44ce71bc20',1,'ShipStack']]],
   ['upperironthick_15',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
-  ['upstreamtagger_16',['upstreamtagger',['../classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57',1,'UpstreamTagger::UpstreamTagger()'],['../classUpstreamTagger.html#aecf5c04bdbeeee53a25e1d6d3ff8ceac',1,'UpstreamTagger::UpstreamTagger(const UpstreamTagger &amp;)'],['../classUpstreamTagger.html',1,'UpstreamTagger'],['../classUpstreamTagger.html#a63dd607c0d6d84c20955d21d8dd72342',1,'UpstreamTagger::UpstreamTagger()']]],
+  ['upstreamtagger_16',['upstreamtagger',['../classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57',1,'UpstreamTagger::UpstreamTagger()'],['../classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3',1,'UpstreamTagger::UpstreamTagger(const UpstreamTagger &amp;)=delete'],['../classUpstreamTagger.html',1,'UpstreamTagger'],['../classUpstreamTagger.html#a63dd607c0d6d84c20955d21d8dd72342',1,'UpstreamTagger::UpstreamTagger()']]],
   ['upstreamtagger_2ecxx_17',['UpstreamTagger.cxx',['../UpstreamTagger_8cxx.html',1,'']]],
   ['upstreamtagger_2eh_18',['UpstreamTagger.h',['../UpstreamTagger_8h.html',1,'']]],
   ['upstreamtagger_5ffulldet_19',['UpstreamTagger_fulldet',['../classUpstreamTagger.html#ace5dfc966f197ffd412ca998dac78ec1',1,'UpstreamTagger']]],

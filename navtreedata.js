@@ -171,7 +171,7 @@ var NAVTREEINDEX =
 "classeventDisplay_1_1EventLoop.html#a0d1947bcfd77843a5006cd9b7a99def7",
 "classhnl_1_1HNLbranchings.html#af0fdb969ce768ee503660f06cdd3b973",
 "classshipVeto_1_1Task.html#a7560f9221a7fd3183d2de31904d0d9f3",
-"classstrawtubes.html#a3cee7281b4e38d871c085629ff73f1f9",
+"classstrawtubes.html#a3c4c6e033485f496b614f5253a2dc38c",
 "classvetoHitOnTrack.html#a03b6392aa730388480b7a0b04bfd5f55",
 "eventDisplay_8py.html#adc7da68718bf676633fa343550991e61",
 "hepunit_8py.html#a601d8d21f63cda02d44f1a1bc5660b8b",

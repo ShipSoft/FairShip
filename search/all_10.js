@@ -156,7 +156,7 @@ var searchData=
   ['msel_153',['msel',['../namespacerunCharmHadProd.html#a8ecfb19b19a9c961567df617be80b2a2',1,'runCharmHadProd']]],
   ['mtc_154',['SND and MTC',['../md_CHANGELOG.html#autotoc_md26',1,'']]],
   ['mtc_20and_20snd_155',['MTC and SND',['../md_CHANGELOG.html#autotoc_md35',1,'']]],
-  ['mtcdetector_156',['mtcdetector',['../classMTCDetector.html',1,'MTCDetector'],['../namespaceMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector'],['../classMTCDetector.html#ac499fb0b644efce3cd837442bbc0b2d0',1,'MTCDetector::MTCDetector(const MTCDetector &amp;)'],['../classMTCDetector.html#ae95d16080d7f14faa1866452e1271eb6',1,'MTCDetector::MTCDetector()'],['../classMTCDetector.html#aa2821a4e423359b82ce514d67eef0d92',1,'MTCDetector::MTCDetector(const char *name, Bool_t Active, const char *Title=&quot;&quot;, Int_t DetId=0)']]],
+  ['mtcdetector_156',['mtcdetector',['../classMTCDetector.html',1,'MTCDetector'],['../namespaceMTCDetector.html',1,'MTCDetector'],['../classMTCDetector_1_1MTCDetector.html',1,'MTCDetector.MTCDetector'],['../classMTCDetector.html#a870590d4849a4b069a76b2f52f2deffd',1,'MTCDetector::MTCDetector(const MTCDetector &amp;)=delete'],['../classMTCDetector.html#ae95d16080d7f14faa1866452e1271eb6',1,'MTCDetector::MTCDetector()'],['../classMTCDetector.html#aa2821a4e423359b82ce514d67eef0d92',1,'MTCDetector::MTCDetector(const char *name, Bool_t Active, const char *Title=&quot;&quot;, Int_t DetId=0)']]],
   ['mtcdetector_2ecxx_157',['MTCDetector.cxx',['../MTCDetector_8cxx.html',1,'']]],
   ['mtcdetector_2eh_158',['MTCDetector.h',['../MTCDetector_8h.html',1,'']]],
   ['mtcdetector_2epy_159',['MTCDetector.py',['../MTCDetector_8py.html',1,'']]],
