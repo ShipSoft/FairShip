@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef VETO_VETOPOINT_H_
-#define VETO_VETOPOINT_H_ 1
+#define VETO_VETOPOINT_H_
 
 #include <array>
 

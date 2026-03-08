@@ -23,7 +23,7 @@ class TrackInfo : public TObject {
   TrackInfo(const TrackInfo& ti);
 
   /** Destructor **/
-  virtual ~TrackInfo();
+  ~TrackInfo() override;
 
   /** Accessors **/
   unsigned int N() const { return fDetIDs.size(); }
@@ -32,13 +32,13 @@ class TrackInfo : public TObject {
   float wR(Int_t n) const { return fWR[n]; }
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   std::vector<unsigned int> fDetIDs;  ///< array of measurements
   std::vector<float> fWL;
   std::vector<float> fWR;
-  ClassDef(TrackInfo, 2);
+  ClassDefOverride(TrackInfo, 2);
 };
 
 #endif  // SHIPDATA_TRACKINFO_H_

@@ -13,7 +13,7 @@
  **/
 
 #ifndef SHIPDATA_SHIPMCTRACK_H_
-#define SHIPDATA_SHIPMCTRACK_H_ 1
+#define SHIPDATA_SHIPMCTRACK_H_
 
 #include "Rtypes.h"            // for Double_t, Int_t, Double32_t, etc
 #include "ShipDetectorList.h"  // for DetectorId

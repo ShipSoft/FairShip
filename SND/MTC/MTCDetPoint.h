@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SND_MTC_MTCDETPOINT_H_
-#define SND_MTC_MTCDETPOINT_H_ 1
+#define SND_MTC_MTCDETPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"

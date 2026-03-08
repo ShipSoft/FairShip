@@ -21,7 +21,7 @@ class SiliconTarget : public FairDetector, public ISTLPointContainer {
  public:
   SiliconTarget(const char* name, Bool_t Active, const char* Title = "");
   SiliconTarget();
-  virtual ~SiliconTarget();
+  ~SiliconTarget() override;
 
   void SetSiliconTargetParameters(Double_t targetWidth, Double_t targetHeight,
                                   Double_t sensorWidth, Double_t sensorLength,
@@ -34,27 +34,27 @@ class SiliconTarget : public FairDetector, public ISTLPointContainer {
                                   Double_t sensorLength, Double_t planeSpacing,
                                   TGeoMedium* material, Int_t layerId);
 
-  virtual void ConstructGeometry();
+  void ConstructGeometry() override;
   /** Initialization of the detector is done here */
-  virtual void Initialize();
+  void Initialize() override;
 
-  virtual Bool_t ProcessHits(FairVolume* vol = 0);
+  Bool_t ProcessHits(FairVolume* vol = 0) override;
 
   SiliconTargetPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos,
                              TVector3 mom, Double_t time, Double_t length,
                              Double_t eLoss, Int_t pdgCode);
 
   /** Registers the produced collections in FAIRRootManager */
-  virtual void Register();
-  virtual void EndOfEvent();
+  void Register() override;
+  void EndOfEvent() override;
   /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
+  TClonesArray* GetCollection(Int_t iColl) const override;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
   /** Has to be called after each event to reset the containers */
-  virtual void Reset();
+  void Reset() override;
 
  private:
   /** Track information to be stored until the track leaves the
@@ -81,10 +81,10 @@ class SiliconTarget : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<SiliconTargetPoint>* fSiliconTargetPoints;
 
-  SiliconTarget(const SiliconTarget&);
-  SiliconTarget& operator=(const SiliconTarget&);
+  SiliconTarget(const SiliconTarget&) = delete;
+  SiliconTarget& operator=(const SiliconTarget&) = delete;
   Int_t InitMedium(const char* name);
-  ClassDef(SiliconTarget, 1)
+  ClassDefOverride(SiliconTarget, 1)
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGET_H_

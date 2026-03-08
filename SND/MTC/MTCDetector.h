@@ -31,7 +31,7 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   MTCDetector(const char* name, Bool_t Active, const char* Title = "",
               Int_t DetId = 0);
   MTCDetector();
-  virtual ~MTCDetector();
+  ~MTCDetector() override;
 
   void SetMTCParameters(Double_t width, Double_t height, Double_t angle,
                         Double_t ironThick, Double_t sciFiThick,
@@ -48,8 +48,8 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
                                  TGeoVolumeAssembly* modMotherVol,
                                  Double_t width, Double_t height,
                                  Double_t thickness, Int_t LayerId);
-  virtual void ConstructGeometry();
-  virtual void Initialize();
+  void ConstructGeometry() override;
+  void Initialize() override;
   /** Get position of single fibre in global coordinate system**/
   void GetPosition(Int_t fDetectorID, TVector3& vLeft,
                    TVector3& vRight);  // or top and bottom
@@ -75,19 +75,19 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   Int_t Get_NSiPMChan() const { return fNSiPMChan; }
   Float_t Get_SciFiActiveX() const { return fSciFiActiveX; }
   virtual void SiPMOverlap();
-  virtual Bool_t ProcessHits(FairVolume* vol = 0);
+  Bool_t ProcessHits(FairVolume* vol = 0) override;
   MTCDetPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                       Double_t time, Double_t length, Double_t eLoss,
                       Int_t pdgCode);
 
-  virtual void Register();
-  virtual void EndOfEvent();
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
+  void Register() override;
+  void EndOfEvent() override;
+  TClonesArray* GetCollection(Int_t iColl) const override;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
-  virtual void Reset();
+  void Reset() override;
 
  private:
   /** Track information to be stored until the track leaves the
@@ -146,10 +146,10 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<MTCDetPoint>* fMTCDetectorPoints;
 
-  MTCDetector(const MTCDetector&);
-  MTCDetector& operator=(const MTCDetector&);
+  MTCDetector(const MTCDetector&) = delete;
+  MTCDetector& operator=(const MTCDetector&) = delete;
   Int_t InitMedium(const char* name);
-  ClassDef(MTCDetector, 3)
+  ClassDefOverride(MTCDetector, 3)
 };
 
 #endif  // SND_MTC_MTCDETECTOR_H_

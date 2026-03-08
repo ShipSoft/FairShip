@@ -58,7 +58,7 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
@@ -88,8 +88,8 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
 
-  UpstreamTagger(const UpstreamTagger&);
-  UpstreamTagger& operator=(const UpstreamTagger&);
+  UpstreamTagger(const UpstreamTagger&) = delete;
+  UpstreamTagger& operator=(const UpstreamTagger&) = delete;
   Int_t InitMedium(const char* name);
 
   ClassDefOverride(UpstreamTagger, 3)

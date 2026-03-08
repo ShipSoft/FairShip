@@ -41,7 +41,7 @@ class veto : public SHiP::Detector<vetoPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   void SetFastMuon() { fFastMuon = true; }  // kill all tracks except of muons
   void SetFollowMuon() {
@@ -76,7 +76,7 @@ class veto : public SHiP::Detector<vetoPoint> {
    *  any optional action in your detector during the transport.
    */
 
-  virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) {
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
   virtual void SetSpecialPhysicsCuts() { ; }
@@ -135,8 +135,8 @@ class veto : public SHiP::Detector<vetoPoint> {
   //! Flag option for Liquid Scintillator (Default=True).
   Int_t fLiquidVeto;
 
-  veto(const veto&);
-  veto& operator=(const veto&);
+  veto(const veto&) = delete;
+  veto& operator=(const veto&) = delete;
   Int_t InitMedium(const char* name);
   /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of

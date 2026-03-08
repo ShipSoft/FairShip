@@ -4,7 +4,7 @@
 
 #ifndef SHIPGEN_DPPYTHIA8GENERATOR_H_
 #define SHIPGEN_DPPYTHIA8GENERATOR_H_
-#define DPP8GENERATOR_H 1
+#define DPP8GENERATOR_H
 // Avoid the inclusion of dlfcn.h by Pyhtia.h that CINT is not able to process
 // #ifdef __CINT__
 // #define _DLFCN_H_

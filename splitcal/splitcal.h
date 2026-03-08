@@ -33,7 +33,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   void SetZStart(Double_t ZStart);
   void SetEmpty(Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap,
@@ -69,7 +69,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
    *  any optional action in your detector during the transport.
    */
 
-  virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) {
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
   virtual void SetSpecialPhysicsCuts() { ; }

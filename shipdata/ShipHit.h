@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPDATA_SHIPHIT_H_
-#define SHIPDATA_SHIPHIT_H_ 1
+#define SHIPDATA_SHIPHIT_H_
 
 #include "Rtypes.h"    // for Double_t, Int_t, Double32_t, etc
 #include "TObject.h"   //
@@ -32,13 +32,13 @@ class ShipHit : public TObject {
   void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   Float_t fdigi;      ///< digitized detector hit
   Int_t fDetectorID;  ///< Detector unique identifier
 
-  ClassDef(ShipHit, 2);
+  ClassDefOverride(ShipHit, 2);
 };
 
 #endif  // SHIPDATA_SHIPHIT_H_

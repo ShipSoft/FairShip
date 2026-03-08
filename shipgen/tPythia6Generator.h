@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_TPYTHIA6GENERATOR_H_
-#define SHIPGEN_TPYTHIA6GENERATOR_H_ 1
+#define SHIPGEN_TPYTHIA6GENERATOR_H_
 
 #include "Generator.h"
 #include "TPythia6.h"

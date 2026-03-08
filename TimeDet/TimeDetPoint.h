@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef TIMEDET_TIMEDETPOINT_H_
-#define TIMEDET_TIMEDETPOINT_H_ 1
+#define TIMEDET_TIMEDETPOINT_H_
 
 #include <array>
 
