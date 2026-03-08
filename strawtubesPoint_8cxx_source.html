@@ -103,42 +103,41 @@ $(document).ready(function(){initNavTree('strawtubesPoint_8cxx_source.html','');
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="strawtubesPoint_8h.html">strawtubesPoint.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;FairLogger.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">   14</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a>() : DetectorPoint() {}</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a6e95e8439f6072339ae557ca6c4a8482">   18</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a>(Int_t eventID, Int_t trackID, Int_t detID,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                 TVector3 pos, TVector3 mom, Double_t tof,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                 Double_t length, Double_t eLoss, Int_t pdgcode,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                 Double_t dist)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    : DetectorPoint(eventID, trackID, detID, pos, mom, tof, length, eLoss,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    pdgcode, pos, mom),</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      fdist2Wire(dist) {}</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;FairLogger.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">   13</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a>() : DetectorPoint() {}</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a6e95e8439f6072339ae557ca6c4a8482">   17</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a>(Int_t eventID, Int_t trackID, Int_t detID,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                                 TVector3 pos, TVector3 mom, Double_t tof,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                 Double_t length, Double_t eLoss, Int_t pdgcode,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                                 Double_t dist)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    : DetectorPoint(eventID, trackID, detID, pos, mom, tof, length, eLoss,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    pdgcode, pos, mom),</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      fdist2Wire(dist) {}</div>
 </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">   28</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">strawtubesPoint::~strawtubesPoint</a>() {}</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">   31</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">strawtubesPoint::extraPrintInfo</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            &lt;&lt; <a class="code hl_variable" href="classstrawtubesPoint.html#a8a849c42bfa6c982beb443738886ad9b">fdist2Wire</a> &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span>;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">   27</a></span><a class="code hl_function" href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">strawtubesPoint::~strawtubesPoint</a>() {}</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">   30</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">strawtubesPoint::extraPrintInfo</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            &lt;&lt; <a class="code hl_variable" href="classstrawtubesPoint.html#a8a849c42bfa6c982beb443738886ad9b">fdist2Wire</a> &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
 </div>
-<div class="ttc" id="aclassstrawtubesPoint_html_a1db026136d9a235b306df4eb725dd717"><div class="ttname"><a href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">strawtubesPoint::~strawtubesPoint</a></div><div class="ttdeci">virtual ~strawtubesPoint()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00028">strawtubesPoint.cxx:28</a></div></div>
-<div class="ttc" id="aclassstrawtubesPoint_html_a7362fcd59de86bebee7c311bd202ed67"><div class="ttname"><a href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a></div><div class="ttdeci">strawtubesPoint()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00014">strawtubesPoint.cxx:14</a></div></div>
+<div class="ttc" id="aclassstrawtubesPoint_html_a1db026136d9a235b306df4eb725dd717"><div class="ttname"><a href="classstrawtubesPoint.html#a1db026136d9a235b306df4eb725dd717">strawtubesPoint::~strawtubesPoint</a></div><div class="ttdeci">virtual ~strawtubesPoint()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00027">strawtubesPoint.cxx:27</a></div></div>
+<div class="ttc" id="aclassstrawtubesPoint_html_a7362fcd59de86bebee7c311bd202ed67"><div class="ttname"><a href="classstrawtubesPoint.html#a7362fcd59de86bebee7c311bd202ed67">strawtubesPoint::strawtubesPoint</a></div><div class="ttdeci">strawtubesPoint()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00013">strawtubesPoint.cxx:13</a></div></div>
 <div class="ttc" id="aclassstrawtubesPoint_html_a8a849c42bfa6c982beb443738886ad9b"><div class="ttname"><a href="classstrawtubesPoint.html#a8a849c42bfa6c982beb443738886ad9b">strawtubesPoint::fdist2Wire</a></div><div class="ttdeci">Double_t fdist2Wire</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8h_source.html#l00044">strawtubesPoint.h:44</a></div></div>
-<div class="ttc" id="aclassstrawtubesPoint_html_aac4bfc7587581594be57aa71682cfd12"><div class="ttname"><a href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">strawtubesPoint::extraPrintInfo</a></div><div class="ttdeci">void extraPrintInfo() const override</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00031">strawtubesPoint.cxx:31</a></div></div>
+<div class="ttc" id="aclassstrawtubesPoint_html_aac4bfc7587581594be57aa71682cfd12"><div class="ttname"><a href="classstrawtubesPoint.html#aac4bfc7587581594be57aa71682cfd12">strawtubesPoint::extraPrintInfo</a></div><div class="ttdeci">void extraPrintInfo() const override</div><div class="ttdef"><b>Definition</b> <a href="strawtubesPoint_8cxx_source.html#l00030">strawtubesPoint.cxx:30</a></div></div>
 <div class="ttc" id="astrawtubesPoint_8h_html"><div class="ttname"><a href="strawtubesPoint_8h.html">strawtubesPoint.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
