@@ -55,9 +55,12 @@ class Detector : public FairDetector, public ISTLPointContainer {
     FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
   }
 
-  virtual TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
+  virtual TClonesArray* GetCollection(Int_t iColl) const override {
+    return nullptr;
+  }
 
-  virtual void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) override {
+  virtual void UpdatePointTrackIndices(
+      const std::map<Int_t, Int_t>& indexMap) override {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
       auto iter = indexMap.find(oldTrackID);
