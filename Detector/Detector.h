@@ -6,7 +6,7 @@
 #define DETECTOR_DETECTOR_H_
 
 #include <vector>
-
+#include <utility>
 #include "DetectorPoint.h"
 #include "FairDetector.h"
 #include "FairRootManager.h"
@@ -34,12 +34,9 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
 
-  DetectorPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                        const TVector3& pos, const TVector3& mom, Double_t time,
-                        Double_t length, Double_t eLoss, Int_t pdgCode,
-                        const TVector3& Lpos, const TVector3& Lmom) {
-    fDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                             eLoss, pdgCode, Lpos, Lmom);
+  template<typename... Args>
+  PointType* AddHit(Args&&... args) {
+    fDetPoints->emplace_back(std::forward<Args>(args)...);
     return &(fDetPoints->back());
   };
 

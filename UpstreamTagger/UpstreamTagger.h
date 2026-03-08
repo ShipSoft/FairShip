@@ -8,8 +8,7 @@
 #include <map>
 #include <vector>
 
-#include "FairDetector.h"
-#include "ISTLPointContainer.h"
+#include "Detector.h"
 #include "ShipUnit.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
@@ -42,7 +41,7 @@ using ShipUnit::m;
  * - Configured via SetZposition() and SetBoxDimensions()
  */
 
-class UpstreamTagger : public FairDetector, public ISTLPointContainer {
+class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
  public:
   /**      Name :  Detector Name
    *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -54,27 +53,19 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   UpstreamTagger();
 
   /** destructor */
-  virtual ~UpstreamTagger();
+  virtual ~UpstreamTagger() = default;
 
-  /** Initialization of the detector is done here */
-  virtual void Initialize();
 
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-  /**       Registers the produced collections in FAIRRootManager. */
-  virtual void Register();
-
   /** Gets the produced collections */
   virtual TClonesArray* GetCollection(Int_t iColl) const;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
-  /** has to be called after each event to reset the containers */
-  virtual void Reset();
 
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
@@ -87,34 +78,9 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   /**  Create the detector geometry */
   void ConstructGeometry();
 
-  /**      This method is an example of how to add your own point
-   *       of type TimeRpcPoint to the clones array
-   */
-  UpstreamTaggerPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                              TVector3 pos, TVector3 mom, Double_t time,
-                              Double_t length, Double_t eLoss, Int_t pdgCode,
-                              TVector3 Lpos, TVector3 Lmom);
-
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun() { ; }
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack() { ; }
-  virtual void BeginEvent() { ; }
 
   Double_t module[11][3];  // x,y,z centre positions for each module
   // TODO Avoid 1-indexed array!
-
-  /** Track information to be stored until the track leaves the active volume.*/
-  Int_t fEventID;       //!  event index
-  Int_t fTrackID;       //!  track index
-  Int_t fVolumeID;      //!  volume id
-  TLorentzVector fPos;  //!  position at entrance
-  TLorentzVector fMom;  //!  momentum at entrance
-  Double_t fTime;       //!  time
-  Double_t fLength;     //!  length
-  Double_t fELoss;      //!  energy loss
 
   /** Detector parameters.*/
 
@@ -129,13 +95,12 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
   TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
-  std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
 
   UpstreamTagger(const UpstreamTagger&);
   UpstreamTagger& operator=(const UpstreamTagger&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(UpstreamTagger, 2)
+  ClassDefOverride(UpstreamTagger, 2)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

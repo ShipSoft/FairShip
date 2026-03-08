@@ -8,8 +8,7 @@
 #include <map>
 #include <vector>
 
-#include "FairDetector.h"
-#include "ISTLPointContainer.h"
+#include "Detector.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
@@ -17,7 +16,7 @@ class splitcalPoint;
 class FairVolume;
 class TClonesArray;
 
-class splitcal : public FairDetector, public ISTLPointContainer {
+class splitcal : public SHiP::Detector<splitcalPoint> {
  public:
   /**      Name :  Detector Name
    *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -29,27 +28,18 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   splitcal();
 
   /**       destructor     */
-  virtual ~splitcal();
-
-  /**      Initialization of the detector is done here    */
-  virtual void Initialize();
+  virtual ~splitcal()=default;
 
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-  /**       Registers the produced collections in FAIRRootManager.     */
-  virtual void Register();
-
   /** Gets the produced collections */
   virtual TClonesArray* GetCollection(Int_t iColl) const;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
-  /**      has to be called after each event to reset the containers      */
-  virtual void Reset();
 
   void SetZStart(Double_t ZStart);
   void SetEmpty(Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap,
@@ -81,13 +71,6 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   /**      Create the detector geometry        */
   void ConstructGeometry();
 
-  /**      This method is an example of how to add your own point
-   *       of type splitcalPoint to the clones array
-   */
-  splitcalPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                        TVector3 mom, Double_t time, Double_t length,
-                        Double_t eLoss, Int_t pdgcode);
-
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
    */
@@ -96,26 +79,11 @@ class splitcal : public FairDetector, public ISTLPointContainer {
     ;
   }
   virtual void SetSpecialPhysicsCuts() { ; }
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun() { ; }
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack() { ; }
-  virtual void BeginEvent() { ; }
 
  private:
   /** Track information to be stored until the track leaves the
   active volume.
   */
-  Int_t fEventID;       //!  event id;
-  Int_t fTrackID;       //!  track index
-  Int_t fVolumeID;      //!  volume id
-  TLorentzVector fPos;  //!  position at entrance
-  TLorentzVector fMom;  //!  momentum at entrance
-  Double_t fTime;       //!  time
-  Double_t fLength;     //!  length
-  Double_t fELoss;      //!  energy loss
   Double_t fActiveECALThickness, fActiveHCALThickness, fFilterECALThickness,
       xfFilterECALThickness, fFilterECALThickness_first, fFilterHCALThickness;
   Double_t fActiveECALMaterial, fActiveHCALMaterial, fFilterECALMaterial,
@@ -134,8 +102,6 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   Double_t fStripHalfWidth, fStripHalfLength;
 
   /** container for data points */
-
-  std::vector<splitcalPoint>* fsplitcalPoints;
 
   splitcal(const splitcal&);
   splitcal& operator=(const splitcal&);
