@@ -42,55 +42,13 @@ using std::cout;
 using std::endl;
 
 strawtubes::strawtubes()
-    : FairDetector("strawtubes", kTRUE, kStraw),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fMedium("air"),
-      fstrawtubesPoints(nullptr) {}
+    : Detector("strawtubes", kTRUE, kStraw), fMedium("air") {}
 
 strawtubes::strawtubes(std::string medium)
-    : FairDetector("strawtubes", kTRUE, kStraw),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fMedium(medium),
-      fstrawtubesPoints(nullptr) {}
+    : Detector("strawtubes", kTRUE, kStraw), fMedium(medium) {}
 
 strawtubes::strawtubes(const char* name, Bool_t active)
-    : FairDetector(name, active, kStraw),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fstrawtubesPoints(nullptr) {}
-
-strawtubes::~strawtubes() {
-  if (fstrawtubesPoints) {
-    fstrawtubesPoints->clear();
-    delete fstrawtubesPoints;
-  }
-}
-
-void strawtubes::Initialize() {
-  FairDetector::Initialize();
-  //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
-}
+    : Detector(name, active, kStraw) {}
 
 // -----   Private method InitMedium
 Int_t strawtubes::InitMedium(const char* name) {
@@ -191,35 +149,6 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-void strawtubes::EndOfEvent() { fstrawtubesPoints->clear(); }
-
-void strawtubes::Register() {
-  /** This will create a branch in the output tree called
-      strawtubesPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  fstrawtubesPoints = new std::vector<strawtubesPoint>();
-  FairRootManager::Instance()->RegisterAny("strawtubesPoint", fstrawtubesPoints,
-                                           kTRUE);
-}
-
-TClonesArray* strawtubes::GetCollection(Int_t iColl) const { return nullptr; }
-
-void strawtubes::UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fstrawtubesPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void strawtubes::Reset() { fstrawtubesPoints->clear(); }
 void strawtubes::SetzPositions(Double_t z1, Double_t z2, Double_t z3,
                                Double_t z4) {
   f_T1_z = z1;  //!  z-position of tracking station 1
@@ -594,12 +523,4 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   nav->LocalToMaster(bot, Gbot);
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
-}
-strawtubesPoint* strawtubes::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                                    TVector3 pos, TVector3 mom, Double_t time,
-                                    Double_t length, Double_t eLoss,
-                                    Int_t pdgCode, Double_t dist2Wire) {
-  fstrawtubesPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
-                                  length, eLoss, pdgCode, dist2Wire);
-  return &(fstrawtubesPoints->back());
 }

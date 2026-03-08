@@ -61,35 +61,12 @@ Double_t mm = 0.1 * cm;  //  mm
  *
  */
 veto::veto()
-    : FairDetector("Veto", kTRUE, kVETO),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
+    : SHiP::Detector<vetoPoint>("Veto", kTRUE, kVETO),
       fFastMuon(kFALSE),
-      fFollowMuon(kFALSE),
-      fvetoPoints(nullptr) {
+      fFollowMuon(kFALSE) {
   fUseSupport = 1;
   fLiquidVeto = 1;
 }
-
-/**
- * @brief Destructor for the Veto class.
- *
- * Cleans up any resources used by the Veto detector.
- */
-veto::~veto() {
-  if (fvetoPoints) {
-    fvetoPoints->clear();
-    delete fvetoPoints;
-  }
-}
-
-void veto::Initialize() { FairDetector::Initialize(); }
 
 TGeoVolume* veto::GeoTrapezoid(TString xname, Double_t z_thick,
                                Double_t x_thick_start, Double_t x_thick_end,
@@ -845,8 +822,6 @@ Bool_t veto::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-void veto::EndOfEvent() { fvetoPoints->clear(); }
-
 void veto::PreTrack() {
   if (!fFastMuon) {
     return;
@@ -855,29 +830,6 @@ void veto::PreTrack() {
     gMC->StopTrack();
   }
 }
-void veto::Register()  // create a branch in the output tree
-{
-  fvetoPoints = new std::vector<vetoPoint>();
-  FairRootManager::Instance()->RegisterAny(
-      "vetoPoint", fvetoPoints,
-      kTRUE);  // kFALSE -> this collection will not be written to the file,
-               // will exist only during simulation.
-}
-
-TClonesArray* veto::GetCollection(Int_t iColl) const { return nullptr; }
-
-void veto::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fvetoPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void veto::Reset() { fvetoPoints->clear(); }
 
 /**
  * @brief Constructs the detector geometry.
@@ -936,13 +888,4 @@ void veto::ConstructGeometry() {
       volumeiterator++;
     }
   }
-}
-
-vetoPoint* veto::AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                        TVector3 mom, Double_t time, Double_t length,
-                        Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
-                        TVector3 Lmom) {
-  fvetoPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                            eLoss, pdgCode, Lpos, Lmom);
-  return &(fvetoPoints->back());
 }

@@ -36,43 +36,11 @@
 using std::cout;
 using std::endl;
 
-splitcal::splitcal()
-    : FairDetector("splitcal", kTRUE, kSplitCal),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fsplitcalPoints(nullptr) {}
+splitcal::splitcal() : Detector("splitcal", kTRUE, kSplitCal) {}
 
 splitcal::splitcal(const char* name, Bool_t active)
-    : FairDetector(name, active, kSplitCal),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fsplitcalPoints(nullptr) {}
+    : Detector(name, active, kSplitCal) {}
 
-splitcal::~splitcal() {
-  if (fsplitcalPoints) {
-    fsplitcalPoints->clear();
-    delete fsplitcalPoints;
-  }
-}
-
-void splitcal::Initialize() {
-  FairDetector::Initialize();
-  //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  //  splitcalGeoPar*
-  //  par=(splitcalGeoPar*)(rtdb->getContainer("splitcalGeoPar"));
-}
 // -----   Private method InitMedium
 Int_t splitcal::InitMedium(const char* name) {
   static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
@@ -143,35 +111,6 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
 
   return kTRUE;
 }
-
-void splitcal::EndOfEvent() { fsplitcalPoints->clear(); }
-
-void splitcal::Register() {
-  /** This will create a branch in the output tree called
-      splitcalPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  fsplitcalPoints = new std::vector<splitcalPoint>();
-  FairRootManager::Instance()->RegisterAny("splitcalPoint", fsplitcalPoints,
-                                           kTRUE);
-}
-
-TClonesArray* splitcal::GetCollection(Int_t iColl) const { return nullptr; }
-
-void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fsplitcalPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void splitcal::Reset() { fsplitcalPoints->clear(); }
 
 void splitcal::SetZStart(Double_t ZStart) { fZStart = ZStart; }
 void splitcal::SetEmpty(Double_t Empty, Double_t BigGap,
@@ -449,13 +388,4 @@ void splitcal::ConstructGeometry() {
   //    tSplitCal->Draw("ogle");
   //    c1->SaveAs(TString("splitcal.eps"));
   //    c1->SaveAs(TString("splitcal.pdf"));
-}
-
-splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                                TVector3 pos, TVector3 mom, Double_t time,
-                                Double_t length, Double_t eLoss,
-                                Int_t pdgCode) {
-  fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                                eLoss, pdgCode);
-  return &(fsplitcalPoints->back());
 }
