@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_EVTCALCGENERATOR_H_
-#define SHIPGEN_EVTCALCGENERATOR_H_ 1
+#define SHIPGEN_EVTCALCGENERATOR_H_
 
 #include <memory>
 

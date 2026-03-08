@@ -9,7 +9,7 @@
 /** Defines unique identifier for all SHiP detector systems **/
 
 #ifndef SHIPDATA_SHIPDETECTORLIST_H_
-#define SHIPDATA_SHIPDETECTORLIST_H_ 1
+#define SHIPDATA_SHIPDETECTORLIST_H_
 
 // kSTOPHERE is needed for iteration over the enum. All detectors have to be put
 // before.

@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SND_MTC_MTCDETHIT_H_
-#define SND_MTC_MTCDETHIT_H_ 1
+#define SND_MTC_MTCDETHIT_H_
 
 #include "MTCDetPoint.h"
 #include "ShipHit.h"

@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SHIPGEN_MUONBACKGENERATOR_H_
-#define SHIPGEN_MUONBACKGENERATOR_H_ 1
+#define SHIPGEN_MUONBACKGENERATOR_H_
 
 #include <vector>
 

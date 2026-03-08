@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef VETO_VETOHITONTRACK_H_
-#define VETO_VETOHITONTRACK_H_ 1
+#define VETO_VETOHITONTRACK_H_
 
 #include "Rtypes.h"    // for Double_t, Int_t, Double32_t, etc
 #include "TObject.h"   //

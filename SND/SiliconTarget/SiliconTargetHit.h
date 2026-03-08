@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef SND_SILICONTARGET_SILICONTARGETHIT_H_
-#define SND_SILICONTARGET_SILICONTARGETHIT_H_ 1
+#define SND_SILICONTARGET_SILICONTARGETHIT_H_
 
 #include "ShipHit.h"
 #include "SiliconTargetPoint.h"
