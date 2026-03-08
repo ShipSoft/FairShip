@@ -12,14 +12,7 @@ def MCPointPrintOut(x):
     n = ""
     if p:
         n = p.GetName()
-    txt = '("{}") X:{:6.3F}cm Y:{:6.3F}cm Z:{:6.3F}cm dE/dx:{:6.2F}MeV {}'.format(
-        x.Class_Name(),
-        x.GetX(),
-        x.GetY(),
-        x.GetZ(),
-        x.GetEnergyLoss() / u.MeV,
-        n,
-    )
+    txt = f'("{x.Class_Name()}") X:{x.GetX():6.3F}cm Y:{x.GetY():6.3F}cm Z:{x.GetZ():6.3F}cm dE/dx:{x.GetEnergyLoss() / u.MeV:6.2F}MeV {n}'
     return txt
 
 
@@ -70,9 +63,7 @@ def TParticlePrintOut(x) -> str:
 
 
 def ShipParticlePrintOut(x):
-    txt = '("ShipParticle") {} M:{:5.2F}GeV/c2 P:{:5.2F}GeV/c VxZ:{:5.2F}m'.format(
-        x.GetName(), x.GetMass(), x.P(), x.Vz() / u.m
-    )
+    txt = f'("ShipParticle") {x.GetName()} M:{x.GetMass():5.2F}GeV/c2 P:{x.P():5.2F}GeV/c VxZ:{x.Vz() / u.m:5.2F}m'
     return txt
 
 

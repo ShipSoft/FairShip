@@ -14,6 +14,11 @@ it in future.
 
 ### Fixed
 
+* Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
+* Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`
+* Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`
+* Fix unclosed file handles in readDecayTable, pythia8_conf, and pythia8darkphoton_conf
+* Fix closure variable binding bug in event display toggle callbacks
 * Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
 * Fix uninitialised gField_ pointer in FairShipFields
 * Fix null dereference in FixedTargetGenerator on missing input file or histogram
@@ -29,6 +34,9 @@ it in future.
 
 ### Changed
 
+* Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues
+* Replace bare `except:` with specific exception types in core modules
+* Expand mypy pre-commit coverage to rootUtils, geomGeant4, readDecayTable, geometry_config, shipDigiReco
 * Modernise C++: replace NULL with nullptr, C headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes
 * Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
 * Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param

@@ -736,7 +736,7 @@ parOut.open(parFile)
 rtdb.setOutput(parOut)
 rtdb.saveOutput()
 rtdb.printParamContexts()
-getattr(rtdb, "print")()
+rtdb.print()
 # ------------------------------------------------------------------------
 geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
 run.CreateGeometryFile(geofile_name)

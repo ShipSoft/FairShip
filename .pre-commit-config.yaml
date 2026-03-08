@@ -50,7 +50,7 @@ repos:
     - id: mypy
       name: mypy (type-check)
       types_or: [python, pyi]
-      files: ^(\.github/scripts/annotate_build\.py|python/experimental/check_overlaps\.py|python/experimental/compare_histograms\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/BaseDetector\.py|python/detectors/UpstreamTaggerDetector\.py|python/ShipGeoConfig\.py|python/method_logger\.py|python/decorators\.py|python/pythia8_conf_utils\.py|python/shipRoot_conf\.py|python/shipVeto\.py)$
+      files: ^(\.github/scripts/annotate_build\.py|python/experimental/check_overlaps\.py|python/experimental/compare_histograms\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/BaseDetector\.py|python/detectors/UpstreamTaggerDetector\.py|python/ShipGeoConfig\.py|python/method_logger\.py|python/decorators\.py|python/pythia8_conf_utils\.py|python/shipRoot_conf\.py|python/shipVeto\.py|python/rootUtils\.py|python/geomGeant4\.py|python/readDecayTable\.py|python/shipDigiReco\.py)$
       args:
         - --python-version=3.12
         - --ignore-missing-imports

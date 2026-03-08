@@ -40,24 +40,23 @@ import os
 import shlex
 import subprocess
 from collections.abc import Mapping, Sequence
-from typing import Union
 
 import ROOT  # type: ignore
 
 __all__ = [
     "_run",
+    "add_hists",
+    "generate_genie_events",
     "get_1D_flux_name",
     "get_2D_flux_name",
-    "make_splines",
-    "generate_genie_events",
-    "make_ntuples",
-    "add_hists",
     "main",
+    "make_ntuples",
+    "make_splines",
 ]
 
 __version__ = "0.1.0"
 
-PathLike = Union[str, os.PathLike]
+PathLike = str | os.PathLike
 
 logger = logging.getLogger(__name__)
 

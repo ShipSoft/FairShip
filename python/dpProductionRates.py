@@ -11,9 +11,7 @@ protonFlux = 2e20
 
 
 def isDP(pdg):
-    if pdg == 9900015 or pdg == 4900023:
-        return True
-    return False
+    return bool(pdg == 9900015 or pdg == 4900023)
 
 
 def pbremProdRateVDM(mass, epsilon, doprint=True):
@@ -121,7 +119,7 @@ def mesonProdRate(mass, epsilon, mumPdg, doprint=False):
         avgMeson1 = getAverageMesonRate(mumPdg) * brM2DP[1]
         return avgMeson * 0.6, avgMeson1 * 0.6
         # return avgMeson + avgMeson1
-    if not mumPdg == 331:
+    if mumPdg != 331:
         avgMeson = getAverageMesonRate(mumPdg) * brM2DP
         return avgMeson * 0.6
 

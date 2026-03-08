@@ -260,37 +260,33 @@ class splitcalDetector(BaseDetector):
                     err_y_2 = err_y_2 * max_gap
 
                 if self.step == 1:
-                    if hit.IsX():
-                        if (
-                            Dx <= (err_x_1 + err_x_2)
-                            and Dz <= 2 * (err_z_1 + err_z_2)
-                            and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
-                        ):
-                            list_neighbours.append(hit2)
-                    if hit.IsY():
-                        if (
-                            Dy <= (err_y_1 + err_y_2)
-                            and Dz <= 2 * (err_z_1 + err_z_2)
-                            and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
-                        ):
-                            list_neighbours.append(hit2)
+                    if hit.IsX() and (
+                        Dx <= (err_x_1 + err_x_2)
+                        and Dz <= 2 * (err_z_1 + err_z_2)
+                        and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
+                    ):
+                        list_neighbours.append(hit2)
+                    if hit.IsY() and (
+                        Dy <= (err_y_1 + err_y_2)
+                        and Dz <= 2 * (err_z_1 + err_z_2)
+                        and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
+                    ):
+                        list_neighbours.append(hit2)
 
                 elif self.step == 2:
                     # Relax z condition for step 2
-                    if hit.IsX():
-                        if (
-                            Dx <= (err_x_1 + err_x_2)
-                            and Dz <= 6 * (err_z_1 + err_z_2)
-                            and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
-                        ):
-                            list_neighbours.append(hit2)
-                    if hit.IsY():
-                        if (
-                            Dy <= (err_y_1 + err_y_2)
-                            and Dz <= 6 * (err_z_1 + err_z_2)
-                            and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
-                        ):
-                            list_neighbours.append(hit2)
+                    if hit.IsX() and (
+                        Dx <= (err_x_1 + err_x_2)
+                        and Dz <= 6 * (err_z_1 + err_z_2)
+                        and ((Dy <= (err_y_1 + err_y_2) and Dz > 0.0) or (Dy == 0))
+                    ):
+                        list_neighbours.append(hit2)
+                    if hit.IsY() and (
+                        Dy <= (err_y_1 + err_y_2)
+                        and Dz <= 6 * (err_z_1 + err_z_2)
+                        and ((Dx <= (err_x_1 + err_x_2) and Dz > 0.0) or (Dx == 0))
+                    ):
+                        list_neighbours.append(hit2)
                 else:
                     print("-- _get_neighbours: ERROR: step not defined")
 

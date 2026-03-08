@@ -27,7 +27,7 @@ class selection_check:
             with open(fairship + "/geometry/veto_config_helium.yaml") as file:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
-                self.veto_geo.z0
+                _ = self.veto_geo.z0
         if self.ship_geo.DecayVolumeMedium == "vacuums":
             with open(fairship + "/geometry/veto_config_vacuums.yaml") as file:
                 config = yaml.safe_load(file)
@@ -143,7 +143,7 @@ class selection_check:
 
         for tr in [t1, t2]:
             fit_status = self.tree.FitTracks[tr].getFitStatus()
-            nmeas.append(int(round(fit_status.getNdf())))  # nmeas.append(fit_status.getNdf())
+            nmeas.append(round(fit_status.getNdf()))  # nmeas.append(fit_status.getNdf())
 
         return np.array(nmeas)
 
@@ -180,9 +180,7 @@ class selection_check:
 
         vertex_node = ROOT.gGeoManager.FindNode(candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())
         vertex_elem = vertex_node.GetVolume().GetName()
-        if not vertex_elem.startswith("DecayVacuum_"):
-            return False
-        return True
+        return vertex_elem.startswith("DecayVacuum_")
 
     def chi2nDOF(self, candidate):
         """Return the reduced chi^2 of the particle's daughter tracks."""

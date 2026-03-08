@@ -318,15 +318,13 @@ class DrawTracks(ROOT.FairTask):
     def ExecuteTask(self, option: str = "") -> None:
         self.comp.DestroyElements()
         self.comp.OpenCompound()
-        if sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR"):
-            if len(sTree.FitTracks) > 0:
-                self.DrawFittedTracks()
-        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0:
-            if globals()["withMCTracks"]:
-                if top.GetNode("Tunnel_1"):
-                    DrawSimpleMCTracks()  # for sndlhc, until more details are simulated
-                else:
-                    self.DrawMCTracks()
+        if (sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR")) and len(sTree.FitTracks) > 0:
+            self.DrawFittedTracks()
+        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0 and globals()["withMCTracks"]:
+            if top.GetNode("Tunnel_1"):
+                DrawSimpleMCTracks()  # for sndlhc, until more details are simulated
+            else:
+                self.DrawMCTracks()
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
@@ -493,7 +491,7 @@ class DrawTracks(ROOT.FairTask):
             pid = fstate.getPDG()
             zs = self.z_start
             for i in range(self.niter):
-                rc, newpos, newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
+                rc, newpos, _newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
                 if rc:
                     DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())
                 else:
@@ -593,7 +591,7 @@ class IO:
                 a.set(0)
             self.lbut[x] = tkinter.Checkbutton(self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a)
             self.lbut[x].var = a
-            self.lbut[x]["command"] = lambda: self.toggle(x)
+            self.lbut[x]["command"] = lambda x=x: self.toggle(x)
             self.lbut[x].pack(side=tkinter.BOTTOM)
         self.fram1.pack()
         # add ship actions to eve display
@@ -667,7 +665,7 @@ class IO:
     def toggle(self, x) -> None:
         v = top.GetNode(x)
         assembly = "Assembly" in v.GetVolume().__str__()
-        if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
+        if v.IsVisible() > 0 or (assembly and v.IsVisDaughters() > 0):
             print("switch off ", x)
             v.SetVisibility(0)
             v.SetVisDaughters(0)
@@ -684,7 +682,7 @@ class IO:
             x = v.GetName()
             if x in self.lbut:
                 assembly = "Assembly" in v.GetVolume().__str__()
-                if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
+                if v.IsVisible() > 0 or (assembly and v.IsVisDaughters() > 0):
                     self.lbut[x].var.set(1)
                 else:
                     self.lbut[x].var.set(0)
@@ -1315,7 +1313,7 @@ def DrawSimpleMCTracks() -> None:
         z = fPos.Z() + delZ
         slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()
         hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]
-        for z in hitlist.keys():
+        for z in hitlist:
             DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)
         p = pdg.GetParticle(fT.GetPdgCode())
         if p:

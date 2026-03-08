@@ -34,7 +34,7 @@ def check4OrphanVolumes(fGeo) -> None:
     listOfVolumes = [top.GetName()]
     _collectVolumeNames(top, listOfVolumes)
     orphan = []
-    gIndex = {}
+    gIndex: dict[str, list] = {}
     for v in fGeo.GetListOfVolumes():
         name = v.GetName()
         if name not in listOfVolumes:
@@ -152,22 +152,24 @@ def nextLevel(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):
             continue
         lvln = lvn.GetLogicalVolume()
         if lvln.GetNoDaughters() > 0:
-            xtmp, dummy = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)
+            xtmp, _dummy = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)
             magnetMass += xtmp
         else:
             tmp += printWF(lvn, alreadyPrinted, onlyWithField)
     return tmp, magnetMass
 
 
-def printWeightsandFields(onlyWithField: bool = True, exclude=[]) -> None:
+def printWeightsandFields(onlyWithField: bool = True, exclude=None) -> None:
+    if exclude is None:
+        exclude = []
     if len(exclude) != 0:
         print("will not search in ", exclude)
     gt = ROOT.G4TransportationManager.GetTransportationManager()
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
     magnetMass = 0
-    alreadyPrinted = {}
-    dummy, nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)
+    alreadyPrinted: dict[str, str] = {}
+    _dummy, nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)
     print("total magnet mass", nM / 1000.0, "t")
     return
 

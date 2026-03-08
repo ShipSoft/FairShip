@@ -68,7 +68,7 @@ def print_info(path: str, node, level: int, currentlevel: int, print_sub_det_inf
         fullInfo[name] = local2Global(path + "/" + name)
         sub_nodes[name] = fullInfo[name]["origin"][2]
 
-    for name, _ in sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):
+    for name, _ in sorted(sub_nodes.items(), key=operator.itemgetter(1)):
         boundingbox = fullInfo[name]["boundingbox"]
 
         format_string = (

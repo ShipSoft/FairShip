@@ -2,14 +2,17 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os
+import sys
 from collections import Counter
 
 from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
 
-_error_log = Counter()
+_error_log: Counter[str] = Counter()
 
 
-def readHists(h, fname, wanted=[]) -> None:
+def readHists(h, fname, wanted=None) -> None:
+    if wanted is None:
+        wanted = []
     if fname[0:4] == "/eos":
         eospath = gSystem.Getenv("EOSSHIP") + fname
         f = TFile.Open(eospath)
@@ -19,16 +22,15 @@ def readHists(h, fname, wanted=[]) -> None:
         name = akey.GetName()
         try:
             hname = int(name)
-        except:
+        except ValueError:
             hname = name
-        if len(wanted) > 0:
-            if hname not in wanted:
-                continue
+        if len(wanted) > 0 and hname not in wanted:
+            continue
         obj = akey.ReadObj()
         cln = obj.Class().GetName()
-        if not cln.find("TCanv") < 0:
+        if "TCanv" in cln:
             h[hname] = obj.Clone()
-        if cln.find("TH") < 0:
+        if "TH" not in cln:
             continue
         if hname in h:
             rc = h[hname].Add(obj)
@@ -39,13 +41,13 @@ def readHists(h, fname, wanted=[]) -> None:
             if h[hname].GetSumw2N() == 0:
                 h[hname].Sumw2()
         h[hname].SetDirectory(gROOT)
-        if cln == "TH2D" or cln == "TH2F":
+        if cln in {"TH2D", "TH2F"}:
             for p in ["_projx", "_projy"]:
                 if isinstance(hname, str):
                     projname = hname + p
                 else:
                     projname = str(hname) + p
-                if p.find("x") > -1:
+                if "x" in p:
                     h[projname] = h[hname].ProjectionX()
                 else:
                     h[projname] = h[hname].ProjectionY()
@@ -97,13 +99,13 @@ def bookProf(
     if key is None:
         print("missing key")
         return
-    str(key)  # in case somebody wants to use integers, or floats as keys
+    rkey = str(key)  # in case somebody wants to use integers, or floats as keys
     if key in h:
         h[key].Reset()
     if ymin is None or ymax is None:
-        h[key] = TProfile(key, title, nbinsx, xmin, xmax, option)
+        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, option)
     else:
-        h[key] = TProfile(key, title, nbinsx, xmin, xmax, ymin, ymax, option)
+        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)
     h[key].SetDirectory(gROOT)
 
 
@@ -113,9 +115,9 @@ def writeHists(h, fname, plusCanvas: bool = False) -> None:
         if not hasattr(h[akey], "Class"):
             continue
         cln = h[akey].Class().GetName()
-        if not cln.find("TH") < 0 or not cln.find("TP") < 0:
+        if "TH" in cln or "TP" in cln:
             h[akey].Write()
-        if plusCanvas and not cln.find("TC") < 0:
+        if plusCanvas and "TC" in cln:
             h[akey].Write()
     f.Close()
 
@@ -156,7 +158,7 @@ def checkFileExists(x) -> str:
             test = TFile.Open(f)
             if not test:
                 print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
-                os._exit(1)
+                sys.exit(1)
             if test.FindObjectAny("cbmsim") and fileType in ["tree", ""]:
                 fileType = "tree"
             elif fileType in ["ntuple", ""]:
