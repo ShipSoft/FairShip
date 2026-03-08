@@ -999,7 +999,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  137</span>    <span class="keywordflow">return</span> -1111;</div>
 <div class="line"><span class="lineno">  138</span>  }</div>
 <div class="line"><span class="lineno">  139</span>  TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (medium != NULL) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (medium != <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
 <div class="line"><span class="lineno">  141</span> </div>
 <div class="line"><span class="lineno">  142</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
 <div class="line"><span class="lineno">  143</span> </div>

@@ -243,7 +243,7 @@ $(document).ready(function(){initNavTree('TimeDet_8cxx_source.html',''); initRes
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">return</span> -1111;</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  }</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">if</span> (medium != NULL) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">if</span> (medium != <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>

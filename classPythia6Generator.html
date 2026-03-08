@@ -245,7 +245,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   27</span>  <a class="code hl_variable" href="classPythia6Generator.html#a086ec0f2325e990962c47739f4800728">fVerbose</a> = 0;</div>
 <div class="line"><span class="lineno">   28</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I Pythia6Generator: Opening input file &quot;</span> &lt;&lt; fileName &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">   29</span>  <a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a> = fopen(<a class="code hl_variable" href="classPythia6Generator.html#a66e68809b81680dfb99d129d3a46ff33">fFileName</a>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a> == NULL)</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   31</span>    <span class="comment">//  fInputFile = new ifstream(fFileName);</span></div>
 <div class="line"><span class="lineno">   32</span>    <span class="comment">//  if ( ! fInputFile-&gt;is_open() )</span></div>
 <div class="line"><span class="lineno">   33</span>    Fatal(<span class="stringliteral">&quot;Pythia6Generator&quot;</span>, <span class="stringliteral">&quot;Cannot open input file.&quot;</span>);</div>
@@ -363,7 +363,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  110</span>      fclose(<a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a>);</div>
 <div class="line"><span class="lineno">  111</span>    }</div>
 <div class="line"><span class="lineno">  112</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a>;</div>
-<div class="line"><span class="lineno">  113</span>    <a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a> = NULL;</div>
+<div class="line"><span class="lineno">  113</span>    <a class="code hl_variable" href="classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e">fInputFile</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  114</span>  }</div>
 <div class="line"><span class="lineno">  115</span>}</div>
 </div><!-- fragment -->
