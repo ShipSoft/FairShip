@@ -10,6 +10,7 @@
 #pragma link C++ namespace SHiP;
 #pragma link C++ class TimeDet+;
 #pragma link C++ class TimeDetPoint+;
+#pragma link C++ class std::vector<TimeDetPoint>+;
 #pragma link C++ class TimeDetHit+;
 
 #endif

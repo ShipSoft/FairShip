@@ -11,6 +11,7 @@
 
 #pragma link C++ class UpstreamTagger+;
 #pragma link C++ class UpstreamTaggerPoint+;
+#pragma link C++ class std::vector<UpstreamTaggerPoint>+;
 #pragma link C++ class UpstreamTaggerHit+;
 
 #endif

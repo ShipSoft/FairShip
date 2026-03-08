@@ -10,6 +10,7 @@
 #pragma link C++ class strawtubesContFact;
 #pragma link C++ class strawtubes+;
 #pragma link C++ class strawtubesPoint+;
+#pragma link C++ class std::vector<strawtubesPoint>+;
 #pragma link C++ class strawtubesHit+;
 #pragma link C++ class Tracklet+;
 

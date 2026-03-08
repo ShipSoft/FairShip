@@ -206,7 +206,7 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   TGeoVolume* MakeSegments();
 
-  ClassDef(veto, 3)
+  ClassDef(veto, 4)
 };
 
 #endif  // VETO_VETO_H_
