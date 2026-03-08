@@ -55,9 +55,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
     FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
   }
 
-  TClonesArray* GetCollection(Int_t iColl) const override {
-    return nullptr;
-  }
+  TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
 
   void UpdatePointTrackIndices(
       const std::map<Int_t, Int_t>& indexMap) override {
