@@ -36,7 +36,7 @@ class strawtubesPoint : public SHiP::DetectorPoint {
   /** Output to screen **/
 
   Double_t dist2Wire() const { return fdist2Wire; }
-  static constexpr const char* BranchName = "strawtubesDetector";
+  static constexpr const char* BranchName = "strawtubesPoint";
   const char* DetectorName() const override { return BranchName; }
   void extraPrintInfo() const override;
 
