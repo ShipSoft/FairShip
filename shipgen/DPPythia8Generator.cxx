@@ -30,7 +30,7 @@ DPPythia8Generator::DPPythia8Generator() {
   fpbremPDF = 0;
   fdy = kFALSE;
   fDPminM = 0.5;
-  fInputFile = NULL;
+  fInputFile = nullptr;
   fnRetries = 0;
   fnDPtot = 0;
   fShipEventNr = 0;
