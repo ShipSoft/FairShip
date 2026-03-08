@@ -30,9 +30,6 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   /**      default constructor    */
   strawtubes();
 
-  /**       destructor     */
-  virtual ~strawtubes() = default;
-
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
@@ -96,8 +93,8 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   std::string fMedium;              //! vacuum box medium
   /** container for data points */
 
-  strawtubes(const strawtubes&);
-  strawtubes& operator=(const strawtubes&);
+  strawtubes(const strawtubes&) = delete;
+  strawtubes& operator=(const strawtubes&) = delete;
   Int_t InitMedium(const char* name);
   ClassDefOverride(strawtubes, 8)
 };

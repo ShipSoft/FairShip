@@ -35,9 +35,6 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   veto();
 
-  /**       destructor     */
-  virtual ~veto() = default;
-
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */

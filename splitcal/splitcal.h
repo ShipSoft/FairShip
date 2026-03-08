@@ -27,9 +27,6 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   /**      default constructor    */
   splitcal();
 
-  /**       destructor     */
-  virtual ~splitcal() = default;
-
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
@@ -96,8 +93,8 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
 
   /** container for data points */
 
-  splitcal(const splitcal&);
-  splitcal& operator=(const splitcal&);
+  splitcal(const splitcal&) = delete;
+  splitcal& operator=(const splitcal&) = delete;
   Int_t InitMedium(const char* name);
 
   ClassDefOverride(splitcal, 3)

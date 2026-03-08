@@ -27,9 +27,6 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   /** default constructor */
   TimeDet();
 
-  /** destructor */
-  virtual ~TimeDet() = default;
-
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
@@ -77,8 +74,8 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   Double_t fxOv;  //! Overlap along x
   Double_t fyOv;  //! Overlap along y
 
-  TimeDet(const TimeDet&);
-  TimeDet& operator=(const TimeDet&);
+  TimeDet(const TimeDet&) = delete;
+  TimeDet& operator=(const TimeDet&) = delete;
   Int_t InitMedium(const char* name);
 
   ClassDefOverride(TimeDet, 5)

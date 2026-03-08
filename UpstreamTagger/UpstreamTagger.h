@@ -52,9 +52,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   /** default constructor */
   UpstreamTagger();
 
-  /** destructor */
-  virtual ~UpstreamTagger() = default;
-
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
