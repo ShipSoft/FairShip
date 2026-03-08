@@ -31,7 +31,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   virtual ~TimeDet() = default;
 
   /** Initialization of the detector is done here */
-//  virtual void Initialize();
+  //  virtual void Initialize();
 
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
@@ -43,7 +43,6 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
 
   /** Sets detector position along z */
   void SetZposition(Double_t z) { fzPos = z; }
@@ -63,9 +62,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   /**  Create the detector geometry */
   void ConstructGeometry();
 
-
  private:
-
   /** Detector parameters.*/
   Double_t fzPos;  //!  z-position of veto station
 

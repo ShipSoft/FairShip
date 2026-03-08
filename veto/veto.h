@@ -38,19 +38,16 @@ class veto : public SHiP::Detector<vetoPoint> {
   /**       destructor     */
   virtual ~veto() = default;
 
-
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
-
 
   /** Gets the produced collections */
   virtual TClonesArray* GetCollection(Int_t iColl) const;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
 
   void SetFastMuon() { fFastMuon = true; }  // kill all tracks except of muons
   void SetFollowMuon() {
@@ -80,7 +77,6 @@ class veto : public SHiP::Detector<vetoPoint> {
     decayVolumeMed_name = v;
     f_RibThickness = r;
   }
-
 
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.

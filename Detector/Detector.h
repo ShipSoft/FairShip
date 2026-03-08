@@ -5,83 +5,81 @@
 #ifndef DETECTOR_DETECTOR_H_
 #define DETECTOR_DETECTOR_H_
 
+#include <vector>
+
+#include "DetectorPoint.h"
 #include "FairDetector.h"
 #include "FairRootManager.h"
 #include "ISTLPointContainer.h"
-#include "TVector3.h"
 #include "TLorentzVector.h"
+#include "TVector3.h"
 
-#include "DetectorPoint.h"
-#include <vector>
+namespace SHiP {
+template <typename PointType>
+class Detector : public FairDetector, public ISTLPointContainer {
+ public:
+  Detector() = default;
+  virtual ~Detector() { delete fDetPoints; };
+  Detector(const char* Name, Bool_t Active, Int_t detID)
+      : FairDetector(Name, Active, detID),
+        fEventID(-1),
+        fTrackID(-1),
+        fVolumeID(-1),
+        fPos(),
+        fMom(),
+        fTime(-1.),
+        fLength(-1.),
+        fELoss(-1),
+        fDetPoints(NULL) {};
 
-namespace SHiP{
-template<typename PointType>
-class Detector: public FairDetector, public ISTLPointContainer {
-    public:
-        Detector() = default ;
-        virtual ~Detector(){delete fDetPoints;};
-        Detector(const char* Name, Bool_t Active, Int_t detID) : FairDetector(Name, Active, detID),
-          fEventID(-1),
-          fTrackID(-1),
-          fVolumeID(-1),
-          fPos(),
-          fMom(),
-          fTime(-1.),
-          fLength(-1.),
-          fELoss(-1),
-          fDetPoints(NULL)
-          {};
-          
-        Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0){};
+  Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
 
+  DetectorPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+                        const TVector3& pos, const TVector3& mom, Double_t time,
+                        Double_t length, Double_t eLoss, Int_t pdgCode,
+                        const TVector3& Lpos, const TVector3& Lmom) {
+    fDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
+                             eLoss, pdgCode, Lpos, Lmom);
+    return &(fDetPoints->back());
+  };
 
-        DetectorPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                              const TVector3& pos, const TVector3& mom, Double_t time,
-                              Double_t length, Double_t eLoss, Int_t pdgCode,
-                              const TVector3& Lpos, const TVector3& Lmom){
-                fDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
-                return &(fDetPoints->back());
-        };
+  /**  Create the detector geometry */
+  virtual void ConstructGeometry() = 0;
 
-        /**  Create the detector geometry */
-        virtual void ConstructGeometry() = 0;
+  virtual void Initialize() { FairDetector::Initialize(); };
 
-        virtual void Initialize(){FairDetector::Initialize();};
+  virtual void Reset() { fDetPoints->clear(); };
 
-        virtual void Reset() {fDetPoints->clear();};
+  virtual void EndOfEvent() { fDetPoints->clear(); };
 
-        virtual void EndOfEvent(){ fDetPoints->clear();};
+  virtual void Register() {
+    fDetPoints = new std::vector<PointType>();
+    static PointType t;
+    FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
+  };
 
-        virtual void Register(){
-            fDetPoints = new std::vector<PointType>();
-            static PointType t;
-            FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
-        };
+  virtual void FinishPrimary() { ; }
+  virtual void FinishRun() { ; }
+  virtual void BeginPrimary() { ; }
+  virtual void PostTrack() { ; }
+  virtual void PreTrack() { ; }
+  virtual void BeginEvent() { ; }
 
+ protected:
+  /** Track information to be stored until the track leaves the active volume.*/
+  Int_t fEventID;       //!  event index
+  Int_t fTrackID;       //!  track index
+  Int_t fVolumeID;      //!  volume id
+  TLorentzVector fPos;  //!  position at entrance
+  TLorentzVector fMom;  //!  momentum at entrance
+  Double_t fTime;       //!  time
+  Double_t fLength;     //!  length
+  Double_t fELoss;      //!  energy loss
+  std::vector<PointType>* fDetPoints = nullptr;
 
-        virtual void FinishPrimary() { ; }
-        virtual void FinishRun() { ; }
-        virtual void BeginPrimary() { ; }
-        virtual void PostTrack() { ; }
-        virtual void PreTrack() { ; }
-        virtual void BeginEvent() { ; }
-
-    protected:
-
-        /** Track information to be stored until the track leaves the active volume.*/
-        Int_t fEventID;       //!  event index
-        Int_t fTrackID;       //!  track index
-        Int_t fVolumeID;      //!  volume id
-        TLorentzVector fPos;  //!  position at entrance
-        TLorentzVector fMom;  //!  momentum at entrance
-        Double_t fTime;       //!  time
-        Double_t fLength;     //!  length
-        Double_t fELoss;      //!  energy loss
-        std::vector<PointType>* fDetPoints = nullptr;
-
-        TGeoVolume* fDetector = nullptr;  // Detector object
-    private:
+  TGeoVolume* fDetector = nullptr;  // Detector object
+ private:
 };
-} // namespace SHiP
+}  // namespace SHiP
 
-#endif // DETECTOR_DETECTOR_H_
+#endif  // DETECTOR_DETECTOR_H_
