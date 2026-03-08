@@ -133,7 +133,7 @@ class Task:
                     for tr in [t1, t2]:
                         try:
                             PosDirCharge[tr]["rep"].extrapolateToPoint(PosDirCharge[tr]["newstate"], newPos, False)
-                        except:
+                        except Exception:
                             ut.reportError("shipVertex: extrapolation did not work")
                             rc = False
                             break
@@ -177,7 +177,7 @@ class Task:
                     / PosDirCharge[t2]["direction"][2]
                     / PosDirCharge[t2]["momentum"].Mag()
                 )
-                HNLPos, covX, dist = self.VertexError(t1, t2, self.newPosDir, CovMat, scalFac)
+                HNLPos, _covX, _dist = self.VertexError(t1, t2, self.newPosDir, CovMat, scalFac)
                 # monitor Vx resolution and pulls
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
@@ -205,12 +205,12 @@ class Task:
                 st2 = fittedTracks[t2].getFittedState()
                 try:
                     st1.extrapolateToPlane(detPlanePtr)
-                except:
+                except Exception:
                     ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
                     continue
                 try:
                     st2.extrapolateToPlane(detPlanePtr)
-                except:
+                except Exception:
                     ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
                     continue
                 mom1 = st1.getMom()
@@ -259,7 +259,7 @@ class Task:
                     err = array("i", [0])
                     gMinuit.mnexcm("HESSE", tmp, -1, err)
                     # gMinuit.mnexcm( "MINOS", tmp, -1, err )
-                except:
+                except Exception:
                     ut.reportError("shipVertex::minos does not work")
                     continue
                 # get results from TMinuit:

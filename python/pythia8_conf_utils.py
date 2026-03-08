@@ -34,7 +34,7 @@ def getmaxsumbrrpvsusy(h, histograms, mass, couplings):
         coupling = couplings[1]
         try:
             sumbrs[meson] += getbr_rpvsusy(h, histoname, mass, coupling)
-        except:
+        except KeyError:
             sumbrs[meson] = getbr_rpvsusy(h, histoname, mass, coupling)
     print(list(sumbrs.values()))
     maxsumbr = max(sumbrs.values())

@@ -191,7 +191,7 @@ class SciFiMapping:
                 ymax = loc[2]
         D = ymax - ymin + 3 * R
         x0 = (xmax + xmin) / 2.0
-        fig, ax = plt.subplots(figsize=(8, 8))
+        _fig, ax = plt.subplots(figsize=(8, 8))
         ax.set_xlim(x0 - D / 2, x0 + D / 2)
         ax.set_ylim(ymin - 1.5 * R, ymax + 1.5 * R)
         for i, (x, y) in enumerate(fibre_positions):
@@ -301,7 +301,7 @@ class SciFiMapping:
             try:
                 idx = sorted_keys.index(target_key)
             except ValueError:
-                raise KeyError(f"Target key {target_key!r} not found in dictionary")
+                raise KeyError(f"Target key {target_key!r} not found in dictionary") from None
 
             half = N // 2
             # 3) slice out the neighbors

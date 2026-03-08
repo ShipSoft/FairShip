@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import contextlib
 import os
 
 import darkphoton
@@ -25,13 +26,13 @@ def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
 
 def readFromAscii():
     FairShip = os.environ["FAIRSHIP"]
-    ascii = open(FairShip + "/shipgen/branchingratios.dat")
+    with open(FairShip + "/shipgen/branchingratios.dat") as ascii:
+        content = ascii.readlines()
     h = {}
-    content = ascii.readlines()
     n = 0
     while n < len(content):
         line = content[n]
-        if not line.find("TH1F") < 0:
+        if "TH1F" in line:
             keys = line.split("|")
             n += 1
             limits = content[n].split(",")
@@ -92,8 +93,9 @@ def manipulatePhysics(motherMode, mass, P8gen):
 
 def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True):
     # configure pythia8 for Ship usage
+    _exit_stack = contextlib.ExitStack()
     if debug:
-        pythia_log = open("pythia8_conf.txt", "w")
+        pythia_log = _exit_stack.enter_context(open("pythia8_conf.txt", "w"))  # noqa: SIM115
         P8gen = MethodLogger(P8gen, sink=pythia_log)
     P8gen.UseRandom3()  # TRandom1 or TRandom3 ?
     P8gen.SetMom(400)  # beam momentum in GeV
@@ -209,7 +211,6 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
 
     # P8gen.SetParameters("Check:particleData = on")
 
-    if debug:
-        pythia_log.close()
+    _exit_stack.close()
 
     return 1
