@@ -5,8 +5,9 @@
 #ifndef DETECTOR_DETECTOR_H_
 #define DETECTOR_DETECTOR_H_
 
-#include <vector>
 #include <utility>
+#include <vector>
+
 #include "DetectorPoint.h"
 #include "FairDetector.h"
 #include "FairRootManager.h"
@@ -34,7 +35,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
 
-  template<typename... Args>
+  template <typename... Args>
   PointType* AddHit(Args&&... args) {
     fDetPoints->emplace_back(std::forward<Args>(args)...);
     return &(fDetPoints->back());

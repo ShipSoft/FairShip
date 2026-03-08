@@ -147,7 +147,6 @@ void UpstreamTagger::UpdatePointTrackIndices(
   }
 }
 
-
 void UpstreamTagger::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
@@ -179,4 +178,3 @@ void UpstreamTagger::ConstructGeometry() {
 
   return;
 }
-

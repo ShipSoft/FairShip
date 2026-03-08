@@ -36,8 +36,7 @@
 using std::cout;
 using std::endl;
 
-splitcal::splitcal()
-    : Detector("splitcal", kTRUE, kSplitCal) {}
+splitcal::splitcal() : Detector("splitcal", kTRUE, kSplitCal) {}
 
 splitcal::splitcal(const char* name, Bool_t active)
     : Detector(name, active, kSplitCal) {}

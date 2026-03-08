@@ -28,7 +28,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   splitcal();
 
   /**       destructor     */
-  virtual ~splitcal()=default;
+  virtual ~splitcal() = default;
 
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())

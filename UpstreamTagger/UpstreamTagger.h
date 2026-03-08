@@ -55,7 +55,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   /** destructor */
   virtual ~UpstreamTagger() = default;
 
-
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
@@ -77,7 +76,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
 
   /**  Create the detector geometry */
   void ConstructGeometry();
-
 
   Double_t module[11][3];  // x,y,z centre positions for each module
   // TODO Avoid 1-indexed array!

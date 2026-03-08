@@ -38,13 +38,11 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-
   /** Gets the produced collections */
   virtual TClonesArray* GetCollection(Int_t iColl) const;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
 
   void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
   void SetApertureArea(Double_t width, Double_t height);

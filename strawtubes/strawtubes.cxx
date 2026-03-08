@@ -42,16 +42,13 @@ using std::cout;
 using std::endl;
 
 strawtubes::strawtubes()
-    : Detector("strawtubes", kTRUE, kStraw),
-      fMedium("air"){}
+    : Detector("strawtubes", kTRUE, kStraw), fMedium("air") {}
 
 strawtubes::strawtubes(std::string medium)
-    : Detector("strawtubes", kTRUE, kStraw),
-      fMedium(medium) {}
+    : Detector("strawtubes", kTRUE, kStraw), fMedium(medium) {}
 
 strawtubes::strawtubes(const char* name, Bool_t active)
     : Detector(name, active, kStraw) {}
-
 
 // -----   Private method InitMedium
 Int_t strawtubes::InitMedium(const char* name) {
@@ -151,7 +148,6 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
   }
   return kTRUE;
 }
-
 
 TClonesArray* strawtubes::GetCollection(Int_t iColl) const { return nullptr; }
 
@@ -542,4 +538,3 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
 }
-
