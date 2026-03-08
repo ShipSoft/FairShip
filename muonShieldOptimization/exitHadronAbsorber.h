@@ -120,7 +120,7 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   Int_t index;
   /** container for data points */
   std::vector<vetoPoint>* fexitHadronAbsorberPointCollection;
-  ClassDef(exitHadronAbsorber, 0)
+  ClassDefOverride(exitHadronAbsorber, 0)
 };
 
 #endif  // MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_

@@ -95,7 +95,7 @@ class TargetTracker : public FairDetector, public ISTLPointContainer {
   TargetTracker(const TargetTracker&);
   TargetTracker& operator=(const TargetTracker&);
 
-  ClassDef(TargetTracker, 4);
+  ClassDefOverride(TargetTracker, 4);
 
  private:
   /** Track information to be stored until the track leaves the

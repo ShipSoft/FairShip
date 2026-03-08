@@ -128,7 +128,7 @@ class TimeDet : public FairDetector, public ISTLPointContainer {
   TimeDet& operator=(const TimeDet&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(TimeDet, 4)
+  ClassDefOverride(TimeDet, 4)
 };
 
 #endif  // TIMEDET_TIMEDET_H_

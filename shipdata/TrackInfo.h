@@ -38,7 +38,7 @@ class TrackInfo : public TObject {
   std::vector<unsigned int> fDetIDs;  ///< array of measurements
   std::vector<float> fWL;
   std::vector<float> fWR;
-  ClassDef(TrackInfo, 2);
+  ClassDefOverride(TrackInfo, 2);
 };
 
 #endif  // SHIPDATA_TRACKINFO_H_

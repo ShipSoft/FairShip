@@ -38,7 +38,7 @@ class ShipHit : public TObject {
   Float_t fdigi;      ///< digitized detector hit
   Int_t fDetectorID;  ///< Detector unique identifier
 
-  ClassDef(ShipHit, 2);
+  ClassDefOverride(ShipHit, 2);
 };
 
 #endif  // SHIPDATA_SHIPHIT_H_

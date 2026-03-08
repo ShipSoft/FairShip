@@ -141,7 +141,7 @@ class splitcal : public FairDetector, public ISTLPointContainer {
   splitcal& operator=(const splitcal&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(splitcal, 2)
+  ClassDefOverride(splitcal, 2)
 };
 
 #endif  // SPLITCAL_SPLITCAL_H_

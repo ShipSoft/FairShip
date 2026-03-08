@@ -139,7 +139,7 @@ class Target : public FairDetector, public ISTLPointContainer {
   Target(const Target&);
   Target& operator=(const Target&);
 
- ClassDef(Target, 5)
+ ClassDefOverride(Target, 5)
 
      private :
 

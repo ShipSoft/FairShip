@@ -210,7 +210,7 @@ class ShipStack : public FairGenericStack {
   ShipStack(const ShipStack&);
   ShipStack& operator=(const ShipStack&);
 
-  ClassDef(ShipStack, 1)
+  ClassDefOverride(ShipStack, 1)
 };
 
 #endif  // SHIPDATA_SHIPSTACK_H_

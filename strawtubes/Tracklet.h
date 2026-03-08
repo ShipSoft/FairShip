@@ -49,7 +49,7 @@ class Tracklet : public TObject {
  protected:
   std::vector<unsigned int> aTracklet;  ///< list of indices
   Int_t flag;  // reserved for type of tracklet  ///< type of tracklet
-  ClassDef(Tracklet, 2);
+  ClassDefOverride(Tracklet, 2);
 };
 
 #endif  // STRAWTUBES_TRACKLET_H_

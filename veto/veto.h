@@ -253,7 +253,7 @@ class veto : public FairDetector, public ISTLPointContainer {
 
   TGeoVolume* MakeSegments();
 
-  ClassDef(veto, 2)
+  ClassDefOverride(veto, 2)
 };
 
 #endif  // VETO_VETO_H_
