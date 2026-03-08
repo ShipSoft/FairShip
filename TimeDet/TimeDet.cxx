@@ -40,16 +40,7 @@ using std::cout;
 using std::endl;
 
 TimeDet::TimeDet()
-    : FairDetector("TimeDet", kTRUE, kTimeDet),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      //
+    : Detector("TimeDet", kTRUE, kTimeDet),
       fzPos(0),
       fxSize(450),
       fySize(650),
@@ -61,11 +52,8 @@ TimeDet::TimeDet()
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0),
-      //
-      fDetector(0),
-      //
-      fTimeDetPoints(nullptr) {
+      fyCenter(0)
+       {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -78,15 +66,7 @@ TimeDet::TimeDet()
 }
 
 TimeDet::TimeDet(const char* name, Bool_t active)
-    : FairDetector(name, active, kTimeDet),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
+    : Detector(name, active, kTimeDet),
       //
       fzPos(0),
       fxSize(450),
@@ -99,11 +79,8 @@ TimeDet::TimeDet(const char* name, Bool_t active)
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0),
-      //
-      fDetector(0),
-      //
-      fTimeDetPoints(nullptr) {
+      fyCenter(0)
+ {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -113,15 +90,6 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fyOv = (fyBar * fNRow - fySize) / static_cast<double>(fNRow - 1);
   else
     fyOv = 0;
-}
-
-void TimeDet::Initialize() { FairDetector::Initialize(); }
-
-TimeDet::~TimeDet() {
-  if (fTimeDetPoints) {
-    fTimeDetPoints->clear();
-    delete fTimeDetPoints;
-  }
 }
 
 Int_t TimeDet::InitMedium(const char* name) {
@@ -202,24 +170,11 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-void TimeDet::EndOfEvent() { fTimeDetPoints->clear(); }
-
-void TimeDet::Register() {
-  /** This will create a branch in the output tree called
-      TimeDetPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  fTimeDetPoints = new std::vector<TimeDetPoint>();
-  FairRootManager::Instance()->RegisterAny("TimeDetPoint", fTimeDetPoints,
-                                           kTRUE);
-}
 
 TClonesArray* TimeDet::GetCollection(Int_t iColl) const { return nullptr; }
 
 void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fTimeDetPoints) {
+  for (auto& point : *fDetPoints) {
     Int_t oldTrackID = point.GetTrackID();
     auto iter = indexMap.find(oldTrackID);
     if (iter != indexMap.end()) {
@@ -228,8 +183,6 @@ void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
     }
   }
 }
-
-void TimeDet::Reset() { fTimeDetPoints->clear(); }
 
 void TimeDet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();

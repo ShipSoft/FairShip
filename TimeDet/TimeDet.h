@@ -16,7 +16,7 @@ class TimeDetPoint;
 class FairVolume;
 class TClonesArray;
 
-class TimeDet : public SHiP::Detector {
+class TimeDet : public SHiP::Detector<TimeDetPoint> {
  public:
   /**      Name :  Detector Name
    *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -28,18 +28,15 @@ class TimeDet : public SHiP::Detector {
   TimeDet();
 
   /** destructor */
-  virtual ~TimeDet();
+  virtual ~TimeDet() = default;
 
   /** Initialization of the detector is done here */
-  virtual void Initialize();
+//  virtual void Initialize();
 
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
-
-  /**       Registers the produced collections in FAIRRootManager. */
-  virtual void Register();
 
   /** Gets the produced collections */
   virtual TClonesArray* GetCollection(Int_t iColl) const;
@@ -47,8 +44,6 @@ class TimeDet : public SHiP::Detector {
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
-  /** has to be called after each event to reset the containers */
-  virtual void Reset();
 
   /** Sets detector position along z */
   void SetZposition(Double_t z) { fzPos = z; }
@@ -68,21 +63,6 @@ class TimeDet : public SHiP::Detector {
   /**  Create the detector geometry */
   void ConstructGeometry();
 
-  /**      This method is an example of how to add your own point
-   *       of type TimeDetPoint to the clones array
-   */
-  TimeDetPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                       TVector3 mom, Double_t time, Double_t length,
-                       Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
-                       TVector3 Lmom);
-
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun() { ; }
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack() { ; }
-  virtual void BeginEvent() { ; }
 
  private:
 

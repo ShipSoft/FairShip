@@ -6,6 +6,7 @@
 #define DETECTOR_DETECTOR_H_
 
 #include "FairDetector.h"
+#include "FairRootManager.h"
 #include "ISTLPointContainer.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
@@ -14,19 +15,56 @@
 #include <vector>
 
 namespace SHiP{
+template<typename PointType>
 class Detector: public FairDetector, public ISTLPointContainer {
     public:
         Detector() = default ;
-        virtual ~Detector() = default;
-        Detector(const char* Name, Bool_t Active);
+        virtual ~Detector(){delete fDetPoints;};
+        Detector(const char* Name, Bool_t Active, Int_t detID) : FairDetector(Name, Active, detID),
+          fEventID(-1),
+          fTrackID(-1),
+          fVolumeID(-1),
+          fPos(),
+          fMom(),
+          fTime(-1.),
+          fLength(-1.),
+          fELoss(-1),
+          fDetPoints(NULL)
+          {};
+          
+        Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0){};
 
-        std::shared_ptr<DetectorPoint> AddHit(Int_t eventID, Int_t trackID, Int_t detID,
+
+        DetectorPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID,
                               const TVector3& pos, const TVector3& mom, Double_t time,
                               Double_t length, Double_t eLoss, Int_t pdgCode,
-                              const TVector3& Lpos, const TVector3& Lmom);
+                              const TVector3& Lpos, const TVector3& Lmom){
+                fDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
+                return &(fDetPoints->back());
+        };
 
         /**  Create the detector geometry */
-        virtual void ConstructGeometry();
+        virtual void ConstructGeometry() = 0;
+
+        virtual void Initialize(){FairDetector::Initialize();};
+
+        virtual void Reset() {fDetPoints->clear();};
+
+        virtual void EndOfEvent(){ fDetPoints->clear();};
+
+        virtual void Register(){
+            fDetPoints = new std::vector<PointType>();
+            static PointType t;
+            FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
+        };
+
+
+        virtual void FinishPrimary() { ; }
+        virtual void FinishRun() { ; }
+        virtual void BeginPrimary() { ; }
+        virtual void PostTrack() { ; }
+        virtual void PreTrack() { ; }
+        virtual void BeginEvent() { ; }
 
     protected:
 
@@ -39,9 +77,9 @@ class Detector: public FairDetector, public ISTLPointContainer {
         Double_t fTime;       //!  time
         Double_t fLength;     //!  length
         Double_t fELoss;      //!  energy loss
-        std::vector<std::shared_ptr<DetectorPoint>> fDetPoints;
+        std::vector<PointType>* fDetPoints = nullptr;
 
-        TGeoVolume* fDetector = nullptr;  // Timing detector object
+        TGeoVolume* fDetector = nullptr;  // Detector object
     private:
 };
 } // namespace SHiP
