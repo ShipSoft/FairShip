@@ -5,9 +5,9 @@
 #include "FixedTargetGenerator.h"
 
 #include <TGeoManager.h>
-#include <math.h>
 
 #include <array>
+#include <cmath>
 
 #include "BeamSmearingUtils.h"
 #include "EvtGenBase/EvtRandom.hh"

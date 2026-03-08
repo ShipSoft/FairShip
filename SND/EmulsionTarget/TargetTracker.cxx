@@ -12,9 +12,7 @@
 
 #include "TargetTracker.h"
 
-#include <stddef.h>  // for NULL
-#include <string.h>
-
+#include <cstring>
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, basic_ostream,etc
 

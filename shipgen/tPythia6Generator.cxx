@@ -4,7 +4,7 @@
 
 #include "tPythia6Generator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "TPythia6.h"

@@ -4,7 +4,7 @@
 
 #include "DPPythia8Generator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "Pythia8/Pythia.h"

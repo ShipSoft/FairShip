@@ -10,8 +10,6 @@
 // #include "FairGeoMedia.h"
 // #include "FairGeoBuilder.h"
 
-#include <stddef.h>  // for NULL
-
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, basic_ostream, etc
 

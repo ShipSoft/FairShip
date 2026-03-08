@@ -4,8 +4,7 @@
 
 #include "splitcalHit.h"
 
-#include <math.h>
-
+#include <cmath>
 #include <iostream>
 
 #include "FairLogger.h"

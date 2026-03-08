@@ -5,8 +5,7 @@
 #ifndef PASSIVE_SHIPTARGETSTATION_H_
 #define PASSIVE_SHIPTARGETSTATION_H_
 
-#include <stdlib.h>
-
+#include <cstdlib>
 #include <string>  // for string
 
 #include "FairModule.h"  // for FairModule
