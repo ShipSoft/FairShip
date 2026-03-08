@@ -237,8 +237,8 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#ae1d2a9ec233871d7bd585153cc7a1a28">  130</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#ae1d2a9ec233871d7bd585153cc7a1a28">findTracks</a>(self) -&gt; int:</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        hitPosLists = {}</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        hit_detector_ids = {}</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        stationCrossed = {}</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        listOfIndices = {}</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        stationCrossed: dict[int, dict[int, int]] = {}</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        listOfIndices: dict[int, list[int]] = {}</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>.clear()</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a1640b7d3c5c5fe765738a54c33ded1c1">fTrackletsArray</a>.clear()</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#abe80355808dfeae8a191128858dbf486">fitTrack2MC</a>.clear()</div>
@@ -256,7 +256,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="comment"># Do real PatRec</span></div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            track_hits = <a class="code hl_function" href="namespaceshipPatRec.html#a5b567bf51736f0546f9c4c2d3e80c875">shipPatRec.execute</a>(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7">SmearedHits</a>, global_variables.ShipGeo, global_variables.realPR)</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <span class="comment"># Create hitPosLists for track fit</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits.keys():</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits:</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                atrack = track_hits[i_track]</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                atrack_y12 = atrack[<span class="stringliteral">&quot;y12&quot;</span>]</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                atrack_stereo12 = atrack[<span class="stringliteral">&quot;stereo12&quot;</span>]</div>
@@ -380,7 +380,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="comment"># do the fit</span></div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#af2e6cba015ec5bae153f4663f04c14f3">fitter</a>.processTrack(theTrack)  <span class="comment"># processTrackWithRep(theTrack,rep,True)</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                    print(<span class="stringliteral">&quot;genfit failed to fit track&quot;</span>)</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                error = <span class="stringliteral">&quot;genfit failed to fit track&quot;</span></div>
@@ -398,7 +398,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                fittedState = theTrack.getFittedState()</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                fittedState.getMomMag()</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                error = <span class="stringliteral">&quot;Problem with fittedstate&quot;</span></div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                ut.reportError(error)</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                <span class="keywordflow">continue</span></div>
@@ -427,7 +427,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                ahit = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002">sTree</a>.strawtubesPoint[index]</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                track_ids += [ahit.GetTrackID()]</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>            frac, tmax = self.<a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">fracMCsame</a>(track_ids)</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>            _frac, tmax = self.<a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">fracMCsame</a>(track_ids)</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>            self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#abe80355808dfeae8a191128858dbf486">fitTrack2MC</a>.push_back(tmax)</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>            <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>            indices = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
@@ -471,7 +471,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>                ut.reportError(error)</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                <span class="keywordflow">if</span> global_variables.debug:</div>

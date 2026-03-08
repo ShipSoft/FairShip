@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('checkMagFields_8py_source.html',''); i
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                    h[<span class="stringliteral">&quot;By-&quot;</span>].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                <span class="keywordflow">if</span> f.GetBy(x, y, z) &gt; 0:</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    h[<span class="stringliteral">&quot;By+&quot;</span>].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        hi = h[x]</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">if</span> hi.ClassName() == <span class="stringliteral">&quot;TH3F&quot;</span>:</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            h[x + <span class="stringliteral">&quot;_xz&quot;</span>] = h[x].Project3D(<span class="stringliteral">&quot;xy&quot;</span>)</div>

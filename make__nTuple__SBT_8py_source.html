@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('make__nTuple__SBT_8py_source.html','')
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">   45</a></span>path = args.path</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>logging.info(f<span class="stringliteral">&quot;Path to MuonBackground : {path}&quot;</span>)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a0224726317440005a54b453bb49a7071">   48</a></span>fsel = open(selectedmuons, <span class="stringliteral">&quot;w&quot;</span>)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a0224726317440005a54b453bb49a7071">   48</a></span>fsel = open(selectedmuons, <span class="stringliteral">&quot;w&quot;</span>)  <span class="comment"># noqa: SIM115</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a8085b4408d7f1f99caaa19421309ce0a">   49</a></span>csvwriter = csv.writer(fsel)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#ab6bb5504f3453b22daf8f7f3572a1cc7">   51</a></span>output_file = r.TFile.Open(args.outputfile, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
@@ -348,7 +348,7 @@ $(document).ready(function(){initNavTree('make__nTuple__SBT_8py_source.html','')
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a92d987b66b625d497c33250f33e47755">  245</a></span>            track_id = hit.GetTrackID()</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#ab94108ec7dc822703c4e63fad2c6c371">  246</a></span>            P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keywordflow">if</span> 1000 &lt; detID &lt; 999999 <span class="keywordflow">and</span> abs(pid) == 13 <span class="keywordflow">and</span> P &gt; P_threshold / u.GeV:</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keywordflow">if</span> 1000 &lt; detID &lt; 999999 <span class="keywordflow">and</span> abs(pid) == 13 <span class="keywordflow">and</span> P_threshold / u.GeV &lt; P:</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#a24d7444a55c68cafe6380898cf90d711">  249</a></span>                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                <span class="keywordflow">if</span> track_id <span class="keywordflow">not</span> <span class="keywordflow">in</span> muon_ids:</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                    muon_ids.append(track_id)</div>
@@ -369,7 +369,7 @@ $(document).ready(function(){initNavTree('make__nTuple__SBT_8py_source.html','')
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            track_array.Clear()</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            <span class="keywordflow">for</span> track <span class="keywordflow">in</span> event.MCTrack:</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                <span class="keywordflow">if</span> track.GetMotherId() == muon_ <span class="keywordflow">and</span> (<span class="keywordflow">not</span> track.GetProcName().Data() == <span class="stringliteral">&quot;Muon nuclear interaction&quot;</span>):</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                <span class="keywordflow">if</span> track.GetMotherId() == muon_ <span class="keywordflow">and</span> track.GetProcName().Data() != <span class="stringliteral">&quot;Muon nuclear interaction&quot;</span>:</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                    track_array.Add(track)</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            <span class="comment"># saving the muon info</span></div>
@@ -381,7 +381,7 @@ $(document).ready(function(){initNavTree('make__nTuple__SBT_8py_source.html','')
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> event.UpstreamTaggerPoint:</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                track_id = hit.GetTrackID()</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> (track_id == muon_):</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                <span class="keywordflow">if</span> track_id != muon_:</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                <span class="keywordflow">if</span> muon_UpstreamTaggerPoints.GetSize() == ubt_index:</div>
@@ -402,7 +402,7 @@ $(document).ready(function(){initNavTree('make__nTuple__SBT_8py_source.html','')
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="namespacemake__nTuple__SBT.html#aa60ceb0bcdda362aa627e39197349c90">  300</a></span>                Pt = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                <span class="keywordflow">if</span> 1000 &lt; detID &lt; 999999 <span class="keywordflow">and</span> track_id == muon_ <span class="keywordflow">and</span> P &gt; P_threshold / u.GeV:</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                <span class="keywordflow">if</span> 1000 &lt; detID &lt; 999999 <span class="keywordflow">and</span> track_id == muon_ <span class="keywordflow">and</span> P_threshold / u.GeV &lt; P:</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                    <span class="keywordflow">if</span> global_event_nr <span class="keywordflow">not</span> <span class="keywordflow">in</span> processed_events:</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                        processed_events[global_event_nr] = []</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>

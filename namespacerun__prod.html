@@ -273,7 +273,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   36</span>        <span class="keywordflow">if</span> i == ncpu:</div>
 <div class="line"><span class="lineno">   37</span>            n3 = ntot - (i - 1) * n3</div>
 <div class="line"><span class="lineno">   38</span>        <span class="keywordflow">if</span> X:</div>
-<div class="line"><span class="lineno">   39</span>            <span class="keywordflow">if</span> X == i:</div>
+<div class="line"><span class="lineno">   39</span>            <span class="keywordflow">if</span> i == X:</div>
 <div class="line"><span class="lineno">   40</span>                os.system(<span class="stringliteral">&quot;cp $FAIRSHIP/macro/run_simScript.py .&quot;</span>)</div>
 <div class="line"><span class="lineno">   41</span>                os.system(cmd + <span class="stringliteral">&quot; -n &quot;</span> + str(n3) + <span class="stringliteral">&quot; -i &quot;</span> + str(ns) + <span class="stringliteral">&quot; &gt; log &amp;&quot;</span>)</div>
 <div class="line"><span class="lineno">   42</span>        <span class="keywordflow">else</span>:</div>

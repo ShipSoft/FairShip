@@ -862,7 +862,7 @@ channel at a given mass, taking into account the correct coupling.
 <div class="line"><span class="lineno">   34</span>        coupling = couplings[1]</div>
 <div class="line"><span class="lineno">   35</span>        <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">   36</span>            sumbrs[meson] += getbr_rpvsusy(h, histoname, mass, coupling)</div>
-<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">except</span> KeyError:</div>
 <div class="line"><span class="lineno">   38</span>            sumbrs[meson] = getbr_rpvsusy(h, histoname, mass, coupling)</div>
 <div class="line"><span class="lineno">   39</span>    print(list(sumbrs.values()))</div>
 <div class="line"><span class="lineno">   40</span>    maxsumbr = max(sumbrs.values())</div>

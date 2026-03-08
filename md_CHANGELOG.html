@@ -100,6 +100,11 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
+<li>Fix discarded <code>str(key)</code> result in <code>bookProf()</code> — TProfile name was not converted</li>
+<li>Fix <code>os._exit()</code> bypassing cleanup in <code><a class="el" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">rootUtils.checkFileExists()</a></code> — use <code>sys.exit()</code></li>
+<li>Fix mutable default arguments in <code><a class="el" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">rootUtils.readHists()</a></code> and <code><a class="el" href="namespacegeomGeant4.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29">geomGeant4.printWeightsandFields()</a></code></li>
+<li>Fix unclosed file handles in <a class="el" href="namespacereadDecayTable.html">readDecayTable</a>, <a class="el" href="namespacepythia8__conf.html">pythia8_conf</a>, and <a class="el" href="namespacepythia8darkphoton__conf.html">pythia8darkphoton_conf</a></li>
+<li>Fix closure variable binding bug in event display toggle callbacks</li>
 <li>Fix null dereference in <a class="el" href="classShipFieldMaker.html" title="Creates various magnetic fields and assigns them to geometry regions.">ShipFieldMaker</a> when VMCWORKDIR is unset</li>
 <li>Fix uninitialised gField_ pointer in FairShipFields</li>
 <li>Fix null dereference in <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> on missing input file or histogram</li>
@@ -116,6 +121,9 @@ Fixed</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues</li>
+<li>Replace bare <code>except:</code> with specific exception types in core modules</li>
+<li>Expand mypy pre-commit coverage to <a class="el" href="namespacerootUtils.html">rootUtils</a>, <a class="el" href="namespacegeomGeant4.html">geomGeant4</a>, <a class="el" href="namespacereadDecayTable.html">readDecayTable</a>, <a class="el" href="namespacegeometry__config.html">geometry_config</a>, <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a></li>
 <li>Modernise C++: replace NULL with nullptr, C headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes</li>
 <li>Take vectors by const ref in <a class="el" href="classShipTargetStation.html#a3f10bb33c08c56c4a4fbe94b044a6eaf">ShipTargetStation::SetLayerPosMat</a>; fix assert logic bug</li>
 <li>Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param</li>

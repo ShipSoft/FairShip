@@ -54,10 +54,10 @@ var namespaces_dup =
       [ "extractMuCloseByEvents", "namespaceana__ShipMuon.html#afdef13aeb78be77cb0567ddc93300556", null ],
       [ "extractRareEvents", "namespaceana__ShipMuon.html#a8c6da2deece5c2a993970f8b4781b466", null ],
       [ "fitSingleGauss", "namespaceana__ShipMuon.html#a3e768c35214212fdf6fc9d7213a5e5a0", null ],
-      [ "makeNicePrintout", "namespaceana__ShipMuon.html#a8f11c3864462a485d09b4b9ef9f9f839", null ],
+      [ "makeNicePrintout", "namespaceana__ShipMuon.html#aceb4435527f3eb61a1f396363700023f", null ],
       [ "makePlots", "namespaceana__ShipMuon.html#a3cd7ba816c370cc7e1155c8449d64d0b", null ],
       [ "makeProd", "namespaceana__ShipMuon.html#a96d3303f21edf513f3ae3d141d7a6fd3", null ],
-      [ "MergeRareEvents", "namespaceana__ShipMuon.html#a5e07ddf92790af16ab2d6a8ac84af46c", null ],
+      [ "MergeRareEvents", "namespaceana__ShipMuon.html#a3a447f71694142541532694fca732361", null ],
       [ "muDISntuple", "namespaceana__ShipMuon.html#afb4c16b8c54b5f5830f52012d9f0027f", null ],
       [ "origin", "namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98", null ],
       [ "originOfMuon", "namespaceana__ShipMuon.html#a334ba0573fc8a1b030943f9ed6718cc2", null ],
@@ -342,7 +342,7 @@ var namespaces_dup =
       [ "getRunManager", "namespacegeomGeant4.html#accd78301c3c7ff189d3039b2930167b1", null ],
       [ "nextLevel", "namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0", null ],
       [ "printVMCFields", "namespacegeomGeant4.html#aba553dcfd77eda82c10886fd0fec4e91", null ],
-      [ "printWeightsandFields", "namespacegeomGeant4.html#a7db0e00952696006ad5fe31d2c3c5654", null ],
+      [ "printWeightsandFields", "namespacegeomGeant4.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29", null ],
       [ "printWF", "namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a", null ],
       [ "setMagnetField", "namespacegeomGeant4.html#a6500b277d02453ad29b61dda2281a7d0", null ],
       [ "startUI", "namespacegeomGeant4.html#ab9e46efa9bc333e742210c0da93c42e5", null ]
@@ -993,10 +993,10 @@ var namespaces_dup =
       [ "bookProf", "namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018", null ],
       [ "checkFileExists", "namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d", null ],
       [ "errorSummary", "namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af", null ],
-      [ "readHists", "namespacerootUtils.html#ab576f97a68bb106d158455504b034ca8", null ],
+      [ "readHists", "namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
       [ "reportError", "namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
       [ "writeHists", "namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb", null ],
-      [ "_error_log", "namespacerootUtils.html#a628bb012f01de710e9155dc4579eba86", null ]
+      [ "_error_log", "namespacerootUtils.html#af04f8d0c34113948aacb4ce59163ce02", null ]
     ] ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
     [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [

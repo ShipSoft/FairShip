@@ -248,7 +248,7 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="add__noise__to__field_8py_source.html#l00014">14</a> of file <a class="el" href="add__noise__to__field_8py_source.html">add_noise_to_field.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span>plot_my_hist(datum) -&gt; None:</div>
 <div class="line"><span class="lineno">   15</span>    plotData = datum[datum[<span class="stringliteral">&quot;y&quot;</span>] == 0]</div>
-<div class="line"><span class="lineno">   16</span>    H, xedges, yedges = np.histogram2d(plotData[<span class="stringliteral">&quot;x&quot;</span>], plotData[<span class="stringliteral">&quot;z&quot;</span>], bins=[50, 500], weights=plotData[<span class="stringliteral">&quot;by&quot;</span>])</div>
+<div class="line"><span class="lineno">   16</span>    H, _xedges, _yedges = np.histogram2d(plotData[<span class="stringliteral">&quot;x&quot;</span>], plotData[<span class="stringliteral">&quot;z&quot;</span>], bins=[50, 500], weights=plotData[<span class="stringliteral">&quot;by&quot;</span>])</div>
 <div class="line"><span class="lineno">   17</span>    plt.figure(figsize=[20, 10])</div>
 <div class="line"><span class="lineno">   18</span>    plt.imshow(H, interpolation=<span class="stringliteral">&quot;nearest&quot;</span>, origin=<span class="stringliteral">&quot;low&quot;</span>)</div>
 <div class="line"><span class="lineno">   19</span>    <span class="comment"># plt.colorbar()</span></div>

@@ -377,41 +377,37 @@ $(document).ready(function(){initNavTree('splitcalDetector_8py_source.html','');
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    err_y_2 = err_y_2 * max_gap</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 1:</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                        ):</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                            <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                        ):</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                <span class="keywordflow">elif</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 2:</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    <span class="comment"># Relax z condition for step 2</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                    <span class="keywordflow">if</span> hit.IsX():</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                            Dx &lt;= (err_x_1 + err_x_2)</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                            <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                        ):</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                    <span class="keywordflow">if</span> hit.IsY():</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                        <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                            Dy &lt;= (err_y_1 + err_y_2)</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                            <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                            <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                        ):</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                            list_neighbours.append(hit2)</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keywordflow">return</span> list_neighbours</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    <span class="keywordflow">if</span> hit.IsX() <span class="keywordflow">and</span> (</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                        Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                        <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                        <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                    ):</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                        list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                    <span class="keywordflow">if</span> hit.IsY() <span class="keywordflow">and</span> (</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                        Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                        <span class="keywordflow">and</span> Dz &lt;= 2 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                        <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                    ):</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                        list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                <span class="keywordflow">elif</span> self.<a class="code hl_variable" href="classsplitcalDetector_1_1splitcalDetector.html#add129ec61db4b18b6d472397e7ef81f6">step</a> == 2:</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    <span class="comment"># Relax z condition for step 2</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                    <span class="keywordflow">if</span> hit.IsX() <span class="keywordflow">and</span> (</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                        Dx &lt;= (err_x_1 + err_x_2)</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                        <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                        <span class="keywordflow">and</span> ((Dy &lt;= (err_y_1 + err_y_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dy == 0))</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    ):</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                        list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    <span class="keywordflow">if</span> hit.IsY() <span class="keywordflow">and</span> (</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                        Dy &lt;= (err_y_1 + err_y_2)</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                        <span class="keywordflow">and</span> Dz &lt;= 6 * (err_z_1 + err_z_2)</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                        <span class="keywordflow">and</span> ((Dx &lt;= (err_x_1 + err_x_2) <span class="keywordflow">and</span> Dz &gt; 0.0) <span class="keywordflow">or</span> (Dx == 0))</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                    ):</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                        list_neighbours.append(hit2)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                    print(<span class="stringliteral">&quot;-- _get_neighbours: ERROR: step not defined&quot;</span>)</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <span class="keywordflow">return</span> list_neighbours</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>

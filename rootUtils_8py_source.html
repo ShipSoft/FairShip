@@ -101,195 +101,197 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"># SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> os</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">from</span> ROOT <span class="keyword">import</span> TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a628bb012f01de710e9155dc4579eba86">    9</a></span>_error_log = Counter()</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> sys</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">from</span> ROOT <span class="keyword">import</span> TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#af04f8d0c34113948aacb4ce59163ce02">   10</a></span>_error_log: Counter[str] = Counter()</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ab576f97a68bb106d158455504b034ca8">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ab576f97a68bb106d158455504b034ca8">readHists</a>(h, fname, wanted=[]) -&gt; None:</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        f = TFile.Open(eospath)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        f = TFile(fname)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        name = akey.GetName()</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            hname = int(name)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">except</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            hname = name</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordflow">if</span> len(wanted) &gt; 0:</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <span class="keywordflow">if</span> hname <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        obj = akey.ReadObj()</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        cln = obj.Class().GetName()</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TCanv&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            h[hname] = obj.Clone()</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">if</span> cln.find(<span class="stringliteral">&quot;TH&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">if</span> hname <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            rc = h[hname].Add(obj)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                print(<span class="stringliteral">&quot;Error when adding histogram &quot;</span>, hname)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            h[hname] = obj.Clone()</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordflow">if</span> h[hname].GetSumw2N() == 0:</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                h[hname].Sumw2()</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        h[hname].SetDirectory(gROOT)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">if</span> cln == <span class="stringliteral">&quot;TH2D&quot;</span> <span class="keywordflow">or</span> cln == <span class="stringliteral">&quot;TH2F&quot;</span>:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&quot;_projx&quot;</span>, <span class="stringliteral">&quot;_projy&quot;</span>]:</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                <span class="keywordflow">if</span> isinstance(hname, str):</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                    projname = hname + p</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                    projname = str(hname) + p</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                <span class="keywordflow">if</span> p.find(<span class="stringliteral">&quot;x&quot;</span>) &gt; -1:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                    h[projname] = h[hname].ProjectionX()</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                    h[projname] = h[hname].ProjectionY()</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                h[projname].SetName(name + p)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                h[projname].SetDirectory(gROOT)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="" data-end="">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">   13</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">readHists</a>(h, fname, wanted=None) -&gt; None:</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">if</span> wanted <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        wanted = []</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        f = TFile.Open(eospath)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        f = TFile(fname)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        name = akey.GetName()</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            hname = int(name)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            hname = name</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordflow">if</span> len(wanted) &gt; 0 <span class="keywordflow">and</span> hname <span class="keywordflow">not</span> <span class="keywordflow">in</span> wanted:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        obj = akey.ReadObj()</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        cln = obj.Class().GetName()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;TCanv&quot;</span> <span class="keywordflow">in</span> cln:</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            h[hname] = obj.Clone()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;TH&quot;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> cln:</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span> hname <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            rc = h[hname].Add(obj)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                print(<span class="stringliteral">&quot;Error when adding histogram &quot;</span>, hname)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            h[hname] = obj.Clone()</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">if</span> h[hname].GetSumw2N() == 0:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                h[hname].Sumw2()</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        h[hname].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">if</span> cln <span class="keywordflow">in</span> {<span class="stringliteral">&quot;TH2D&quot;</span>, <span class="stringliteral">&quot;TH2F&quot;</span>}:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&quot;_projx&quot;</span>, <span class="stringliteral">&quot;_projy&quot;</span>]:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">if</span> isinstance(hname, str):</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                    projname = hname + p</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                    projname = str(hname) + p</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="keywordflow">if</span> <span class="stringliteral">&quot;x&quot;</span> <span class="keywordflow">in</span> p:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                    h[projname] = h[hname].ProjectionX()</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                    h[projname] = h[hname].ProjectionY()</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                h[projname].SetName(name + p)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                h[projname].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 </div>
-<div class="foldopen" id="foldopen00057" data-start="" data-end="">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">   57</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">bookHist</a>(</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    h,</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    key=None,</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    title: str = <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    nbinsx: int = 100,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    xmin: float = 0,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    xmax: float = 1,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    nbinsy: int = 0,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    ymin: float = 0,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    ymax: float = 1,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    nbinsz: int = 0,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    zmin: float = 0,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    zmax: float = 1,</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    rkey = str(key)  <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        h[key].Reset()</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">elif</span> nbinsz &gt; 0:</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        h[key] = TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">elif</span> nbinsy &gt; 0:</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        h[key] = TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        h[key] = TH1D(rkey, title, nbinsx, xmin, xmax)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    h[key].SetDirectory(gROOT)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="" data-end="">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">   59</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">bookHist</a>(</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    h,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    key=None,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    title: str = <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    nbinsx: int = 100,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    xmin: float = 0,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    xmax: float = 1,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    nbinsy: int = 0,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    ymin: float = 0,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    ymax: float = 1,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    nbinsz: int = 0,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    zmin: float = 0,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    zmax: float = 1,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    rkey = str(key)  <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        h[key].Reset()</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">elif</span> nbinsz &gt; 0:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        h[key] = TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">elif</span> nbinsy &gt; 0:</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        h[key] = TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        h[key] = TH1D(rkey, title, nbinsx, xmin, xmax)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 </div>
-<div class="foldopen" id="foldopen00086" data-start="" data-end="">
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">   86</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">bookProf</a>(</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    h,</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    key=None,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    title: str = <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    nbinsx: int = 100,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    xmin: float = 0,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    xmax: float = 1,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    ymin: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    ymax: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>,</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    option: str = <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    str(key)  <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        h[key].Reset()</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">if</span> ymin <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        h[key] = TProfile(key, title, nbinsx, xmin, xmax, option)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        h[key] = TProfile(key, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    h[key].SetDirectory(gROOT)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00088" data-start="" data-end="">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">   88</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">bookProf</a>(</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    h,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    key=None,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    title: str = <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    nbinsx: int = 100,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    xmin: float = 0,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    xmax: float = 1,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    ymin: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    ymax: float | <span class="keywordtype">None</span> = <span class="keywordtype">None</span>,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    option: str = <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    rkey = str(key)  <span class="comment"># in case somebody wants to use integers, or floats as keys</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        h[key].Reset()</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">if</span> ymin <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, option)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 </div>
-<div class="foldopen" id="foldopen00110" data-start="" data-end="">
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">  110</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">writeHists</a>(h, fname, plusCanvas: bool = <span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    f = TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey], <span class="stringliteral">&quot;Class&quot;</span>):</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        cln = h[akey].Class().GetName()</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TH&quot;</span>) &lt; 0 <span class="keywordflow">or</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TP&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            h[akey].Write()</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">if</span> plusCanvas <span class="keywordflow">and</span> <span class="keywordflow">not</span> cln.find(<span class="stringliteral">&quot;TC&quot;</span>) &lt; 0:</div>
+<div class="foldopen" id="foldopen00112" data-start="" data-end="">
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">  112</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">writeHists</a>(h, fname, plusCanvas: bool = <span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    f = TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey], <span class="stringliteral">&quot;Class&quot;</span>):</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        cln = h[akey].Class().GetName()</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;TH&quot;</span> <span class="keywordflow">in</span> cln <span class="keywordflow">or</span> <span class="stringliteral">&quot;TP&quot;</span> <span class="keywordflow">in</span> cln:</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            h[akey].Write()</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    f.Close()</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">if</span> plusCanvas <span class="keywordflow">and</span> <span class="stringliteral">&quot;TC&quot;</span> <span class="keywordflow">in</span> cln:</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            h[akey].Write()</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    f.Close()</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 </div>
-<div class="foldopen" id="foldopen00123" data-start="" data-end="">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">  123</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">bookCanvas</a>(h, key=None, title: str = <span class="stringliteral">&quot;&quot;</span>, nx: int = 900, ny: int = 600, cx: int = 1, cy: int = 1) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        h[key] = TCanvas(key, title, nx, ny)</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        h[key].Divide(cx, cy)</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="foldopen" id="foldopen00125" data-start="" data-end="">
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">  125</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">bookCanvas</a>(h, key=None, title: str = <span class="stringliteral">&quot;&quot;</span>, nx: int = 900, ny: int = 600, cx: int = 1, cy: int = 1) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        h[key] = TCanvas(key, title, nx, ny)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        h[key].Divide(cx, cy)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 </div>
-<div class="foldopen" id="foldopen00132" data-start="" data-end="">
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">  132</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">reportError</a>(s) -&gt; None:</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    _error_log[s] += 1</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="foldopen" id="foldopen00134" data-start="" data-end="">
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">  134</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">reportError</a>(s) -&gt; None:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    _error_log[s] += 1</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
 </div>
-<div class="foldopen" id="foldopen00136" data-start="" data-end="">
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">  136</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">errorSummary</a>() -&gt; None:</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> _error_log:</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        print(<span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span>)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">for</span> e <span class="keywordflow">in</span> _error_log:</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        print(e, <span class="stringliteral">&quot;:&quot;</span>, _error_log[e])</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="" data-end="">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">  138</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">errorSummary</a>() -&gt; None:</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> _error_log:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        print(<span class="stringliteral">&quot;Summary of recorded incidents:&quot;</span>)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordflow">for</span> e <span class="keywordflow">in</span> _error_log:</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        print(e, <span class="stringliteral">&quot;:&quot;</span>, _error_log[e])</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
 </div>
-<div class="foldopen" id="foldopen00143" data-start="" data-end="">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">  143</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">checkFileExists</a>(x) -&gt; str:</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">if</span> isinstance(x, str):</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        tx = [x]</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        tx = x</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">if</span> isinstance(tx, (list, tuple)):</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <span class="comment"># See what we are looking at and make sure all the files are of the same type</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                f = _f</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            test = TFile.Open(f)</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                os._exit(1)</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;tree&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                fileType = <span class="stringliteral">&quot;tree&quot;</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            <span class="keywordflow">elif</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;ntuple&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                fileType = <span class="stringliteral">&quot;ntuple&quot;</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: Supplied list of files not all of tree or ntuple type&quot;</span>)</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keywordflow">return</span> fileType</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        os._exit(1)</div>
+<div class="foldopen" id="foldopen00145" data-start="" data-end="">
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">  145</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">checkFileExists</a>(x) -&gt; str:</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">if</span> isinstance(x, str):</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        tx = [x]</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        tx = x</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">if</span> isinstance(tx, (list, tuple)):</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="comment"># See what we are looking at and make sure all the files are of the same type</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                f = _f</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            test = TFile.Open(f)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                sys.exit(1)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            <span class="keywordflow">if</span> test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;tree&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                fileType = <span class="stringliteral">&quot;tree&quot;</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordflow">elif</span> fileType <span class="keywordflow">in</span> [<span class="stringliteral">&quot;ntuple&quot;</span>, <span class="stringliteral">&quot;&quot;</span>]:</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                fileType = <span class="stringliteral">&quot;ntuple&quot;</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: Supplied list of files not all of tree or ntuple type&quot;</span>)</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> fileType</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        os._exit(1)</div>
 </div>
-<div class="ttc" id="anamespacerootUtils_html_a4288202f324fd0dae890c6208e1b9deb"><div class="ttname"><a href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">rootUtils.writeHists</a></div><div class="ttdeci">None writeHists(h, fname, bool plusCanvas=False)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00110">rootUtils.py:110</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_a4e338bc5e188e11be1877ab8fd706a3d"><div class="ttname"><a href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">rootUtils.checkFileExists</a></div><div class="ttdeci">str checkFileExists(x)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00143">rootUtils.py:143</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_a6558e8446659e2fe282f24dff579b11d"><div class="ttname"><a href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">rootUtils.bookHist</a></div><div class="ttdeci">None bookHist(h, key=None, str title=&quot;&quot;, int nbinsx=100, float xmin=0, float xmax=1, int nbinsy=0, float ymin=0, float ymax=1, int nbinsz=0, float zmin=0, float zmax=1)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00057">rootUtils.py:70</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_a9fad8948a40e9aac00e89f938b0a03af"><div class="ttname"><a href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">rootUtils.errorSummary</a></div><div class="ttdeci">None errorSummary()</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00136">rootUtils.py:136</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_ab576f97a68bb106d158455504b034ca8"><div class="ttname"><a href="namespacerootUtils.html#ab576f97a68bb106d158455504b034ca8">rootUtils.readHists</a></div><div class="ttdeci">None readHists(h, fname, wanted=[])</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00012">rootUtils.py:12</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_ab807114738eb9dfb5fef001e2fa9bc54"><div class="ttname"><a href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">rootUtils.reportError</a></div><div class="ttdeci">None reportError(s)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00132">rootUtils.py:132</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_ae7d21aa6d2c4142e2b2c17659540b018"><div class="ttname"><a href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">rootUtils.bookProf</a></div><div class="ttdeci">None bookProf(h, key=None, str title=&quot;&quot;, int nbinsx=100, float xmin=0, float xmax=1, float|None ymin=None, float|None ymax=None, str option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00086">rootUtils.py:96</a></div></div>
-<div class="ttc" id="anamespacerootUtils_html_aea2713c1fd3249a6dd7ea82c6ccc8ef5"><div class="ttname"><a href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">rootUtils.bookCanvas</a></div><div class="ttdeci">None bookCanvas(h, key=None, str title=&quot;&quot;, int nx=900, int ny=600, int cx=1, int cy=1)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00123">rootUtils.py:123</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_a4288202f324fd0dae890c6208e1b9deb"><div class="ttname"><a href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">rootUtils.writeHists</a></div><div class="ttdeci">None writeHists(h, fname, bool plusCanvas=False)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00112">rootUtils.py:112</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_a4e338bc5e188e11be1877ab8fd706a3d"><div class="ttname"><a href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">rootUtils.checkFileExists</a></div><div class="ttdeci">str checkFileExists(x)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00145">rootUtils.py:145</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_a61db3e66b871a770b6bc264b9e3ac33e"><div class="ttname"><a href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">rootUtils.readHists</a></div><div class="ttdeci">None readHists(h, fname, wanted=None)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00013">rootUtils.py:13</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_a6558e8446659e2fe282f24dff579b11d"><div class="ttname"><a href="namespacerootUtils.html#a6558e8446659e2fe282f24dff579b11d">rootUtils.bookHist</a></div><div class="ttdeci">None bookHist(h, key=None, str title=&quot;&quot;, int nbinsx=100, float xmin=0, float xmax=1, int nbinsy=0, float ymin=0, float ymax=1, int nbinsz=0, float zmin=0, float zmax=1)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00059">rootUtils.py:72</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_a9fad8948a40e9aac00e89f938b0a03af"><div class="ttname"><a href="namespacerootUtils.html#a9fad8948a40e9aac00e89f938b0a03af">rootUtils.errorSummary</a></div><div class="ttdeci">None errorSummary()</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00138">rootUtils.py:138</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_ab807114738eb9dfb5fef001e2fa9bc54"><div class="ttname"><a href="namespacerootUtils.html#ab807114738eb9dfb5fef001e2fa9bc54">rootUtils.reportError</a></div><div class="ttdeci">None reportError(s)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00134">rootUtils.py:134</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_ae7d21aa6d2c4142e2b2c17659540b018"><div class="ttname"><a href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">rootUtils.bookProf</a></div><div class="ttdeci">None bookProf(h, key=None, str title=&quot;&quot;, int nbinsx=100, float xmin=0, float xmax=1, float|None ymin=None, float|None ymax=None, str option=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00088">rootUtils.py:98</a></div></div>
+<div class="ttc" id="anamespacerootUtils_html_aea2713c1fd3249a6dd7ea82c6ccc8ef5"><div class="ttname"><a href="namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5">rootUtils.bookCanvas</a></div><div class="ttdeci">None bookCanvas(h, key=None, str title=&quot;&quot;, int nx=900, int ny=600, int cx=1, int cy=1)</div><div class="ttdef"><b>Definition</b> <a href="rootUtils_8py_source.html#l00125">rootUtils.py:125</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

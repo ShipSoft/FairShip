@@ -534,22 +534,18 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  222</span>            hPDF.Fill(p, theta, w)</div>
 <div class="line"><span class="lineno">  223</span>            hPDFtheta.Fill(theta, w)</div>
 <div class="line"><span class="lineno">  224</span>            hPDFp.Fill(p, w)</div>
-<div class="line"><span class="lineno">  225</span>    hPdfFilename = sys.modules[<span class="stringliteral">&quot;__main__&quot;</span>].options.outputDir + <span class="stringliteral">&quot;/ParaPhoton_eps{}_m{}{}.root&quot;</span>.format(</div>
-<div class="line"><span class="lineno">  226</span>        epsilon,</div>
-<div class="line"><span class="lineno">  227</span>        mDarkPhoton,</div>
-<div class="line"><span class="lineno">  228</span>        suffix,</div>
-<div class="line"><span class="lineno">  229</span>    )</div>
-<div class="line"><span class="lineno">  230</span>    outfile = r.TFile(hPdfFilename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><span class="lineno">  231</span>    <span class="comment"># weight = hPDF.Integral(&quot;width&quot;)</span></div>
-<div class="line"><span class="lineno">  232</span>    <span class="comment"># print &quot;Weight = %3.3f&quot;%weight</span></div>
-<div class="line"><span class="lineno">  233</span>    <span class="comment"># hPDF.Scale(1./weight)</span></div>
-<div class="line"><span class="lineno">  234</span>    hPDF.Write()</div>
-<div class="line"><span class="lineno">  235</span>    hPDFp.Write()</div>
-<div class="line"><span class="lineno">  236</span>    hPDFtheta.Write()</div>
-<div class="line"><span class="lineno">  237</span>    outfile.Close()</div>
-<div class="line"><span class="lineno">  238</span>    del angles</div>
-<div class="line"><span class="lineno">  239</span>    del momenta</div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">return</span> hPDF</div>
+<div class="line"><span class="lineno">  225</span>    hPdfFilename = sys.modules[<span class="stringliteral">&quot;__main__&quot;</span>].options.outputDir + f<span class="stringliteral">&quot;/ParaPhoton_eps{epsilon}_m{mDarkPhoton}{suffix}.root&quot;</span></div>
+<div class="line"><span class="lineno">  226</span>    outfile = r.TFile(hPdfFilename, <span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><span class="lineno">  227</span>    <span class="comment"># weight = hPDF.Integral(&quot;width&quot;)</span></div>
+<div class="line"><span class="lineno">  228</span>    <span class="comment"># print &quot;Weight = %3.3f&quot;%weight</span></div>
+<div class="line"><span class="lineno">  229</span>    <span class="comment"># hPDF.Scale(1./weight)</span></div>
+<div class="line"><span class="lineno">  230</span>    hPDF.Write()</div>
+<div class="line"><span class="lineno">  231</span>    hPDFp.Write()</div>
+<div class="line"><span class="lineno">  232</span>    hPDFtheta.Write()</div>
+<div class="line"><span class="lineno">  233</span>    outfile.Close()</div>
+<div class="line"><span class="lineno">  234</span>    del angles</div>
+<div class="line"><span class="lineno">  235</span>    del momenta</div>
+<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">return</span> hPDF</div>
 </div><!-- fragment -->
 </div>
 </div>

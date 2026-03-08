@@ -218,7 +218,7 @@ Inputs:
 <div class="line"><span class="lineno">  130</span>                    P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:addChannel =  1 {0.1 * BR:.12} {meMode} 3 -3&quot;</span>)</div>
 <div class="line"><span class="lineno">  131</span>                    P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:addChannel =  1 {0.4 * BR:.12} {meMode} 4 -4&quot;</span>)</div>
 <div class="line"><span class="lineno">  132</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  133</span>                particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&quot;-&gt;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>).split()]</div>
+<div class="line"><span class="lineno">  133</span>                particles = list(dec.replace(<span class="stringliteral">&quot;-&gt;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>).split())</div>
 <div class="line"><span class="lineno">  134</span>                children = particles[1:]</div>
 <div class="line"><span class="lineno">  135</span>                childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
 <div class="line"><span class="lineno">  136</span>                codes = <span class="stringliteral">&quot; &quot;</span>.join(str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes)</div>
@@ -291,7 +291,7 @@ Inputs:
 <div class="line"><span class="lineno">   70</span>            print(<span class="stringliteral">&quot;addHNLdecayChannels ERROR: channel not configured!\t&quot;</span>, dec)</div>
 <div class="line"><span class="lineno">   71</span>            quit()</div>
 <div class="line"><span class="lineno">   72</span>        <span class="keywordflow">if</span> allowed[dec] == <span class="stringliteral">&quot;yes&quot;</span> <span class="keywordflow">and</span> wanted[dec] == <span class="stringliteral">&quot;yes&quot;</span>:</div>
-<div class="line"><span class="lineno">   73</span>            particles = [p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> dec.replace(<span class="stringliteral">&quot;-&gt;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>).split()]</div>
+<div class="line"><span class="lineno">   73</span>            particles = list(dec.replace(<span class="stringliteral">&quot;-&gt;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>).split())</div>
 <div class="line"><span class="lineno">   74</span>            children = particles[1:]</div>
 <div class="line"><span class="lineno">   75</span>            childrenCodes = [PDGcode(p) <span class="keywordflow">for</span> p <span class="keywordflow">in</span> children]</div>
 <div class="line"><span class="lineno">   76</span>            BR = hnl.findBranchingRatio(dec)</div>
@@ -338,20 +338,20 @@ Inputs:
 
 <p class="definition">Definition at line <a class="el" href="readDecayTable_8py_source.html#l00035">35</a> of file <a class="el" href="readDecayTable_8py_source.html">readDecayTable.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span><span class="keyword">def </span>load(conffile=os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/python/DecaySelection.conf&quot;</span>), verbose=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">   36</span>    f = open(conffile)</div>
-<div class="line"><span class="lineno">   37</span>    reader = csv.reader(f, delimiter=<span class="stringliteral">&quot;:&quot;</span>)</div>
-<div class="line"><span class="lineno">   38</span>    configuredDecays = {}</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> row <span class="keywordflow">in</span> reader:</div>
-<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> row:</div>
-<div class="line"><span class="lineno">   41</span>            <span class="keywordflow">continue</span>  <span class="comment"># skip empty lines</span></div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">if</span> str(row[0]).strip().startswith(<span class="stringliteral">&quot;#&quot;</span>):</div>
-<div class="line"><span class="lineno">   43</span>            <span class="keywordflow">continue</span>  <span class="comment"># skip comment / header lines</span></div>
-<div class="line"><span class="lineno">   44</span>        channel = str(row[0]).strip()</div>
-<div class="line"><span class="lineno">   45</span>        flag = str(row[-1]).partition(<span class="stringliteral">&quot;#&quot;</span>)[0].strip()  <span class="comment"># skip line comments</span></div>
-<div class="line"><span class="lineno">   46</span>        configuredDecays[channel] = flag</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">with</span> open(conffile) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   37</span>        reader = csv.reader(f, delimiter=<span class="stringliteral">&quot;:&quot;</span>)</div>
+<div class="line"><span class="lineno">   38</span>        configuredDecays = {}</div>
+<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">for</span> row <span class="keywordflow">in</span> reader:</div>
+<div class="line"><span class="lineno">   40</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> row:</div>
+<div class="line"><span class="lineno">   41</span>                <span class="keywordflow">continue</span>  <span class="comment"># skip empty lines</span></div>
+<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">if</span> str(row[0]).strip().startswith(<span class="stringliteral">&quot;#&quot;</span>):</div>
+<div class="line"><span class="lineno">   43</span>                <span class="keywordflow">continue</span>  <span class="comment"># skip comment / header lines</span></div>
+<div class="line"><span class="lineno">   44</span>            channel = str(row[0]).strip()</div>
+<div class="line"><span class="lineno">   45</span>            flag = str(row[-1]).partition(<span class="stringliteral">&quot;#&quot;</span>)[0].strip()  <span class="comment"># skip line comments</span></div>
+<div class="line"><span class="lineno">   46</span>            configuredDecays[channel] = flag</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> verbose:</div>
 <div class="line"><span class="lineno">   48</span>        print(<span class="stringliteral">&quot;Activated decay channels (plus charge conjugates): &quot;</span>)</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">for</span> channel <span class="keywordflow">in</span> configuredDecays.keys():</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">for</span> channel <span class="keywordflow">in</span> configuredDecays:</div>
 <div class="line"><span class="lineno">   50</span>            <span class="keywordflow">if</span> configuredDecays[channel] == <span class="stringliteral">&quot;yes&quot;</span>:</div>
 <div class="line"><span class="lineno">   51</span>                print(<span class="stringliteral">&quot;\t&quot;</span> + channel)</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> configuredDecays</div>

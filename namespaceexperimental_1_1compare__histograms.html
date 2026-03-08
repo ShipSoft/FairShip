@@ -183,7 +183,7 @@ bool: True if the histograms are equal or statistically compatible, False otherw
 <div class="line"><span class="lineno">   23</span><span class="stringliteral">    bool: True if the histograms are equal or statistically compatible, False otherwise.</span></div>
 <div class="line"><span class="lineno">   24</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   25</span>    <span class="comment"># Check if the histograms are equal</span></div>
-<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hist1 == hist2:</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> hist1 != hist2:</div>
 <div class="line"><span class="lineno">   27</span>        print(f<span class="stringliteral">&quot;Histograms &#39;{hist1.name}&#39; are different in terms of bin contents or errors.&quot;</span>)</div>
 <div class="line"><span class="lineno">   28</span> </div>
 <div class="line"><span class="lineno">   29</span>        <span class="keywordflow">if</span> use_ks_test:</div>
@@ -271,11 +271,11 @@ significance_threshold (float): The significance threshold for the KS test.
 <div class="line"><span class="lineno">   62</span>            isHist = <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">   63</span>        <span class="keywordflow">return</span> isHist</div>
 <div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    histograms1 = {key: files[1][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[1].keys() <span class="keywordflow">if</span> isuproothist(key, 1)}</div>
-<div class="line"><span class="lineno">   66</span>    histograms2 = {key: files[2][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[2].keys() <span class="keywordflow">if</span> isuproothist(key, 2)}</div>
+<div class="line"><span class="lineno">   65</span>    histograms1 = {key: files[1][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[1] <span class="keywordflow">if</span> isuproothist(key, 1)}</div>
+<div class="line"><span class="lineno">   66</span>    histograms2 = {key: files[2][key] <span class="keywordflow">for</span> key <span class="keywordflow">in</span> files[2] <span class="keywordflow">if</span> isuproothist(key, 2)}</div>
 <div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span>    <span class="comment"># Compare histograms with the same names</span></div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1.keys():</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1:</div>
 <div class="line"><span class="lineno">   70</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
 <div class="line"><span class="lineno">   71</span>            hist1 = histograms1[hist_name].to_hist()</div>
 <div class="line"><span class="lineno">   72</span>            hist2 = histograms2[hist_name].to_hist()</div>
@@ -284,7 +284,7 @@ significance_threshold (float): The significance threshold for the KS test.
 <div class="line"><span class="lineno">   75</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file2.&quot;</span>)</div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>    <span class="comment"># Check for histograms in file2 that are not in file1</span></div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2.keys():</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
 <div class="line"><span class="lineno">   79</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> histograms1:</div>
 <div class="line"><span class="lineno">   80</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file1.&quot;</span>)</div>
 <div class="line"><span class="lineno">   81</span> </div>

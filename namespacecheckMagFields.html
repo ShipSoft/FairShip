@@ -180,7 +180,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   71</span>                    h[<span class="stringliteral">&quot;By-&quot;</span>].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)</div>
 <div class="line"><span class="lineno">   72</span>                <span class="keywordflow">if</span> f.GetBy(x, y, z) &gt; 0:</div>
 <div class="line"><span class="lineno">   73</span>                    h[<span class="stringliteral">&quot;By+&quot;</span>].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h.keys():</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
 <div class="line"><span class="lineno">   75</span>        hi = h[x]</div>
 <div class="line"><span class="lineno">   76</span>        <span class="keywordflow">if</span> hi.ClassName() == <span class="stringliteral">&quot;TH3F&quot;</span>:</div>
 <div class="line"><span class="lineno">   77</span>            h[x + <span class="stringliteral">&quot;_xz&quot;</span>] = h[x].Project3D(<span class="stringliteral">&quot;xy&quot;</span>)</div>

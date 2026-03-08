@@ -249,7 +249,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   68</span>        fullInfo[name] = local2Global(path + <span class="stringliteral">&quot;/&quot;</span> + name)</div>
 <div class="line"><span class="lineno">   69</span>        sub_nodes[name] = fullInfo[name][<span class="stringliteral">&quot;origin&quot;</span>][2]</div>
 <div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">for</span> name, _ <span class="keywordflow">in</span> sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">for</span> name, _ <span class="keywordflow">in</span> sorted(sub_nodes.items(), key=operator.itemgetter(1)):</div>
 <div class="line"><span class="lineno">   72</span>        boundingbox = fullInfo[name][<span class="stringliteral">&quot;boundingbox&quot;</span>]</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>        format_string = (</div>

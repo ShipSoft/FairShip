@@ -455,7 +455,7 @@ Saves a PDF file named 'scifi_mapping_channel_1_{channel}.pdf' with the plot.</p
 <div class="line"><span class="lineno">  191</span>                ymax = loc[2]</div>
 <div class="line"><span class="lineno">  192</span>        D = ymax - ymin + 3 * R</div>
 <div class="line"><span class="lineno">  193</span>        x0 = (xmax + xmin) / 2.0</div>
-<div class="line"><span class="lineno">  194</span>        fig, ax = plt.subplots(figsize=(8, 8))</div>
+<div class="line"><span class="lineno">  194</span>        _fig, ax = plt.subplots(figsize=(8, 8))</div>
 <div class="line"><span class="lineno">  195</span>        ax.set_xlim(x0 - D / 2, x0 + D / 2)</div>
 <div class="line"><span class="lineno">  196</span>        ax.set_ylim(ymin - 1.5 * R, ymax + 1.5 * R)</div>
 <div class="line"><span class="lineno">  197</span>        <span class="keywordflow">for</span> i, (x, y) <span class="keywordflow">in</span> enumerate(fibre_positions):</div>
@@ -1168,7 +1168,7 @@ Saves an overlay PDF plot with the specified filename.</pre>
 <div class="line"><span class="lineno">  301</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  302</span>                idx = sorted_keys.index(target_key)</div>
 <div class="line"><span class="lineno">  303</span>            <span class="keywordflow">except</span> ValueError:</div>
-<div class="line"><span class="lineno">  304</span>                <span class="keywordflow">raise</span> KeyError(f<span class="stringliteral">&quot;Target key {target_key!r} not found in dictionary&quot;</span>)</div>
+<div class="line"><span class="lineno">  304</span>                <span class="keywordflow">raise</span> KeyError(f<span class="stringliteral">&quot;Target key {target_key!r} not found in dictionary&quot;</span>) <span class="keyword">from</span> <span class="keywordtype">None</span></div>
 <div class="line"><span class="lineno">  305</span> </div>
 <div class="line"><span class="lineno">  306</span>            half = N // 2</div>
 <div class="line"><span class="lineno">  307</span>            <span class="comment"># 3) slice out the neighbors</span></div>

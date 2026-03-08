@@ -416,8 +416,8 @@ Public Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  130</span>    <span class="keyword">def </span>findTracks(self) -&gt; int:</div>
 <div class="line"><span class="lineno">  131</span>        hitPosLists = {}</div>
 <div class="line"><span class="lineno">  132</span>        hit_detector_ids = {}</div>
-<div class="line"><span class="lineno">  133</span>        stationCrossed = {}</div>
-<div class="line"><span class="lineno">  134</span>        listOfIndices = {}</div>
+<div class="line"><span class="lineno">  133</span>        stationCrossed: dict[int, dict[int, int]] = {}</div>
+<div class="line"><span class="lineno">  134</span>        listOfIndices: dict[int, list[int]] = {}</div>
 <div class="line"><span class="lineno">  135</span>        self.fGenFitArray.clear()</div>
 <div class="line"><span class="lineno">  136</span>        self.fTrackletsArray.clear()</div>
 <div class="line"><span class="lineno">  137</span>        self.fitTrack2MC.clear()</div>
@@ -435,7 +435,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  149</span>            <span class="comment"># Do real PatRec</span></div>
 <div class="line"><span class="lineno">  150</span>            track_hits = <a class="code hl_function" href="namespaceshipPatRec.html#a5b567bf51736f0546f9c4c2d3e80c875">shipPatRec.execute</a>(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)</div>
 <div class="line"><span class="lineno">  151</span>            <span class="comment"># Create hitPosLists for track fit</span></div>
-<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits.keys():</div>
+<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> track_hits:</div>
 <div class="line"><span class="lineno">  153</span>                atrack = track_hits[i_track]</div>
 <div class="line"><span class="lineno">  154</span>                atrack_y12 = atrack[<span class="stringliteral">&quot;y12&quot;</span>]</div>
 <div class="line"><span class="lineno">  155</span>                atrack_stereo12 = atrack[<span class="stringliteral">&quot;stereo12&quot;</span>]</div>
@@ -559,7 +559,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  273</span>            <span class="comment"># do the fit</span></div>
 <div class="line"><span class="lineno">  274</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  275</span>                self.fitter.processTrack(theTrack)  <span class="comment"># processTrackWithRep(theTrack,rep,True)</span></div>
-<div class="line"><span class="lineno">  276</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  276</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><span class="lineno">  277</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><span class="lineno">  278</span>                    print(<span class="stringliteral">&quot;genfit failed to fit track&quot;</span>)</div>
 <div class="line"><span class="lineno">  279</span>                error = <span class="stringliteral">&quot;genfit failed to fit track&quot;</span></div>
@@ -577,7 +577,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  291</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  292</span>                fittedState = theTrack.getFittedState()</div>
 <div class="line"><span class="lineno">  293</span>                fittedState.getMomMag()</div>
-<div class="line"><span class="lineno">  294</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  294</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><span class="lineno">  295</span>                error = <span class="stringliteral">&quot;Problem with fittedstate&quot;</span></div>
 <div class="line"><span class="lineno">  296</span>                ut.reportError(error)</div>
 <div class="line"><span class="lineno">  297</span>                <span class="keywordflow">continue</span></div>
@@ -606,7 +606,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  320</span>            <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
 <div class="line"><span class="lineno">  321</span>                ahit = self.sTree.strawtubesPoint[index]</div>
 <div class="line"><span class="lineno">  322</span>                track_ids += [ahit.GetTrackID()]</div>
-<div class="line"><span class="lineno">  323</span>            frac, tmax = self.fracMCsame(track_ids)</div>
+<div class="line"><span class="lineno">  323</span>            _frac, tmax = self.fracMCsame(track_ids)</div>
 <div class="line"><span class="lineno">  324</span>            self.fitTrack2MC.push_back(tmax)</div>
 <div class="line"><span class="lineno">  325</span>            <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
 <div class="line"><span class="lineno">  326</span>            indices = ROOT.std.vector(<span class="stringliteral">&quot;unsigned int&quot;</span>)()</div>
@@ -663,7 +663,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  360</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
 <div class="line"><span class="lineno">  361</span>            <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  362</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  363</span>            <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  363</span>            <span class="keywordflow">except</span> Exception:</div>
 <div class="line"><span class="lineno">  364</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
 <div class="line"><span class="lineno">  365</span>                ut.reportError(error)</div>
 <div class="line"><span class="lineno">  366</span>                <span class="keywordflow">if</span> global_variables.debug:</div>

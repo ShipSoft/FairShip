@@ -491,7 +491,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  214</span>                vlist.append(leaves.At(x).GetValue())</div>
 <div class="line"><span class="lineno">  215</span>            <span class="keywordflow">if</span> len(vlist) != 11:</div>
 <div class="line"><span class="lineno">  216</span>                print(<span class="stringliteral">&quot;this should never happen, big error&quot;</span>, len(vlist), k, p, iev, nev)</div>
-<div class="line"><span class="lineno">  217</span>                1 / 0</div>
+<div class="line"><span class="lineno">  217</span>                <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;unexpected vlist length: {len(vlist)}&quot;</span>)</div>
 <div class="line"><span class="lineno">  218</span>            <span class="comment"># &quot;id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut&quot;</span></div>
 <div class="line"><span class="lineno">  219</span>            <span class="comment"># yandex productions have</span></div>
 <div class="line"><span class="lineno">  220</span>            <span class="comment"># &quot;id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:w:ecut&quot;</span></div>

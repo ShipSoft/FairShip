@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('pythia8__conf__utils_8py_source.html',
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        coupling = couplings[1]</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            sumbrs[meson] += getbr_rpvsusy(h, histoname, mass, coupling)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">except</span> KeyError:</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            sumbrs[meson] = getbr_rpvsusy(h, histoname, mass, coupling)</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    print(list(sumbrs.values()))</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    maxsumbr = max(sumbrs.values())</div>

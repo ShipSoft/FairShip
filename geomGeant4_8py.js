@@ -7,7 +7,7 @@ var geomGeant4_8py =
     [ "getRunManager", "geomGeant4_8py.html#accd78301c3c7ff189d3039b2930167b1", null ],
     [ "nextLevel", "geomGeant4_8py.html#a724303a4fd9998c82c60471393aa37a0", null ],
     [ "printVMCFields", "geomGeant4_8py.html#aba553dcfd77eda82c10886fd0fec4e91", null ],
-    [ "printWeightsandFields", "geomGeant4_8py.html#a7db0e00952696006ad5fe31d2c3c5654", null ],
+    [ "printWeightsandFields", "geomGeant4_8py.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29", null ],
     [ "printWF", "geomGeant4_8py.html#a8cfc0857eacf293ed0d9c8b83e9f226a", null ],
     [ "setMagnetField", "geomGeant4_8py.html#a6500b277d02453ad29b61dda2281a7d0", null ],
     [ "startUI", "geomGeant4_8py.html#ab9e46efa9bc333e742210c0da93c42e5", null ]
