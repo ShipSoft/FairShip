@@ -168,16 +168,15 @@ def compactifyCascade(run) -> None:
     NperJob = nev
     for i in range(run, +ncpus):
         fName = path + "run" + str(i) + "/Cascade-run" + str(i) + "-parp16-MSTP82-1-MSEL" + msel + ".root"
-        f = open(path + "run" + str(i) + "/log" + str(i))
-        success = False
-        for line in f.readlines():
-            if not line.find("Macro finished successfully") < 0:
-                success = True
+        with open(path + "run" + str(i) + "/log" + str(i)) as f:
+            success = False
+            for line in f.readlines():
+                if not line.find("Macro finished successfully") < 0:
+                    success = True
         if not success:
             print("job not finished properly", fName)
             continue
         cmd += fName + " "
-        f.close()
         Ntot += NperJob
     if cmd.find("root") < 0:
         print("no file found, exit")

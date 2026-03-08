@@ -54,9 +54,6 @@ def createTextMap(inFileName, outFileName) -> None:
 
     tmpFileName = "tmpFile.txt"
 
-    inFile = open(inFileName)
-    tmpFile = open(tmpFileName, "w")
-
     iLine = 0
     xMin = 0.0
     xMax = 0.0
@@ -87,94 +84,87 @@ def createTextMap(inFileName, outFileName) -> None:
 
     firstDataLine = 9
 
-    for inLine in inFile:
-        iLine += 1
-        # Skip the first few lines
-        if iLine >= firstDataLine:
-            words = inLine.split()
-            # print 'words = {0}'.format(words)
-            # Convert the x,y,z co-ords to centimetres
-            x = float(words[0]) * m2cm
-            y = float(words[1]) * m2cm
-            z = float(words[2]) * m2cm
-            Bx = float(words[3])
-            By = float(words[4])
-            Bz = float(words[5])
+    with open(inFileName) as inFile, open(tmpFileName, "w") as tmpFile:
+        for inLine in inFile:
+            iLine += 1
+            # Skip the first few lines
+            if iLine >= firstDataLine:
+                words = inLine.split()
+                # print 'words = {0}'.format(words)
+                # Convert the x,y,z co-ords to centimetres
+                x = float(words[0]) * m2cm
+                y = float(words[1]) * m2cm
+                z = float(words[2]) * m2cm
+                Bx = float(words[3])
+                By = float(words[4])
+                Bz = float(words[5])
 
-            BxWord = formatNumber(Bx)
-            ByWord = formatNumber(By)
-            BzWord = formatNumber(Bz)
+                BxWord = formatNumber(Bx)
+                ByWord = formatNumber(By)
+                BzWord = formatNumber(Bz)
 
-            # Write out the new line. Just print out the B field components, since we
-            # can infer x,y,z co-ords from the ordering
-            newLine = f"{BxWord} {ByWord} {BzWord}\n"
-            # newLine = '{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n'.format(x,y,z,Bx,By,Bz)
-            tmpFile.write(newLine)
+                # Write out the new line. Just print out the B field components, since we
+                # can infer x,y,z co-ords from the ordering
+                newLine = f"{BxWord} {ByWord} {BzWord}\n"
+                # newLine = '{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n'.format(x,y,z,Bx,By,Bz)
+                tmpFile.write(newLine)
 
-            # Keep track of the min/max values
-            if iLine == firstDataLine:
-                xMin = x
-                xMax = x
-                xOld = x
-                yMin = y
-                yMax = y
-                yOld = y
-                zMin = z
-                zMax = z
-                zOld = z
+                # Keep track of the min/max values
+                if iLine == firstDataLine:
+                    xMin = x
+                    xMax = x
+                    xOld = x
+                    yMin = y
+                    yMax = y
+                    yOld = y
+                    zMin = z
+                    zMax = z
+                    zOld = z
 
-            if x < xMin:
-                xMin = x
-            if x > xMax:
-                xMax = x
-            if y < yMin:
-                yMin = y
-            if y > yMax:
-                yMax = y
-            if z < zMin:
-                zMin = z
-            if z > zMax:
-                zMax = z
+                if x < xMin:
+                    xMin = x
+                if x > xMax:
+                    xMax = x
+                if y < yMin:
+                    yMin = y
+                if y > yMax:
+                    yMax = y
+                if z < zMin:
+                    zMin = z
+                if z > zMax:
+                    zMax = z
 
-            if gotdx == 0 and x != xOld:
-                dx = x - xOld
-                gotdx = 1
-            if gotdy == 0 and y != yOld:
-                dy = y - yOld
-                gotdy = 1
-            if gotdz == 0 and z != zOld:
-                dz = z - zOld
-                gotdz = 1
+                if gotdx == 0 and x != xOld:
+                    dx = x - xOld
+                    gotdx = 1
+                if gotdy == 0 and y != yOld:
+                    dy = y - yOld
+                    gotdy = 1
+                if gotdz == 0 and z != zOld:
+                    dz = z - zOld
+                    gotdz = 1
 
     print(f"dx = {dx}, dy = {dy}, dz = {dz}")
     print(f"x = {xMin} to {xMax}, y = {yMin} to {yMax}, z = {zMin} to {zMax}")
 
-    tmpFile.close()
-    inFile.close()
-
     # Write out the map containing the coordinate ranges and offsets etc
-    tmpFile2 = open(tmpFileName)
-    outFile = open(outFileName, "w")
+    with open(tmpFileName) as tmpFile2, open(outFileName, "w") as outFile:
+        outLine = (
+            f"CLimits {xMin:.0f} {xMax:.0f} {dx:.0f} {yMin:.0f} {yMax:.0f} {dy:.0f} {zMin:.0f} {zMax:.0f} {dz:.0f}\n"
+        )
+        outFile.write(outLine)
 
-    outLine = "CLimits {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f}\n".format(
-        xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz
-    )
-    outFile.write(outLine)
+        # outLine = 'Offsets {0:.0f} {1:.0f} {2:.0f}\n'.format(ox, oy, oz)
+        # outFile.write(outLine)
 
-    # outLine = 'Offsets {0:.0f} {1:.0f} {2:.0f}\n'.format(ox, oy, oz)
-    # outFile.write(outLine)
+        # Write a line showing the variable names (for file readability)
+        outLine = "Bx(T) By(T) Bz(T)\n"
+        # outLine = 'x(cm) y(cm) z(cm) Bx(T) By(T) Bz(T)\n'
+        outFile.write(outLine)
 
-    # Write a line showing the variable names (for file readability)
-    outLine = "Bx(T) By(T) Bz(T)\n"
-    # outLine = 'x(cm) y(cm) z(cm) Bx(T) By(T) Bz(T)\n'
-    outFile.write(outLine)
-
-    # Copy the tmp file data
-    for tLine in tmpFile2:
-        outFile.write(tLine)
-
-    outFile.close()
-    tmpFile2.close()
+        # Copy the tmp file data
+        for tLine in tmpFile2:
+            outFile.write(tLine)
 
 
 def formatNumber(x: float) -> str:

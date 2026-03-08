@@ -45,7 +45,7 @@ else:
 path = args.path
 logging.info(f"Path to MuonBackground : {path}")
 
-fsel = open(selectedmuons, "w")
+fsel = open(selectedmuons, "w")  # noqa: SIM115
 csvwriter = csv.writer(fsel)
 
 output_file = r.TFile.Open(args.outputfile, "recreate")
@@ -241,7 +241,7 @@ for inputFolder in os.listdir(path):
             trackingstation_id = hit.GetStationNumber()
             pid = hit.PdgCode()
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
-            if abs(pid) == 13 and trackingstation_id == 1 and P > P_threshold / u.GeV:
+            if abs(pid) == 13 and trackingstation_id == 1 and P_threshold / u.GeV < P:
                 track_id = hit.GetTrackID()
                 particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
                 if track_id not in muon_ids:
@@ -277,7 +277,7 @@ for inputFolder in os.listdir(path):
 
             track_array.Clear()
             for track in event.MCTrack:
-                if track.GetMotherId() == muon_ and (not track.GetProcName().Data() == "Muon nuclear interaction"):
+                if track.GetMotherId() == muon_ and track.GetProcName().Data() != "Muon nuclear interaction":
                     track_array.Add(track)
 
             muon_UpstreamTaggerPoints.Clear()
@@ -287,7 +287,7 @@ for inputFolder in os.listdir(path):
             for hit in event.UpstreamTaggerPoint:
                 track_id = hit.GetTrackID()
 
-                if not (track_id == muon_):
+                if track_id != muon_:
                     continue
 
                 if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
@@ -305,7 +305,7 @@ for inputFolder in os.listdir(path):
 
                 trackingstation_id = hit.GetStationNumber()
 
-                if abs(hit.PdgCode()) == 13 and trackingstation_id == 1 and P > P_threshold / u.GeV:
+                if abs(hit.PdgCode()) == 13 and trackingstation_id == 1 and P_threshold / u.GeV < P:
                     if global_event_nr not in events_["Tr_noSBT"]:
                         events_["Tr_noSBT"][global_event_nr] = set()
 

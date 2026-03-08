@@ -37,9 +37,8 @@ def GetGoodAndBadRuns(startDate, endDate) -> tuple[list[str], list[int]]:
     badRuns = []
     fileName = "pythia8_Geant4_1_" + ecut + ".root"
     os.system("ls -l --full-time " + globalPath + " >inventory.lst")
-    f = open("inventory.lst")
-    runs = f.readlines()
-    f.close()
+    with open("inventory.lst") as f:
+        runs = f.readlines()
     N = 0
     for r in runs:
         tmp = r.split(" ")
@@ -92,7 +91,7 @@ def GetGoodAndBadRuns(startDate, endDate) -> tuple[list[str], list[int]]:
                     if t.FindObjectAny("cbmsim"):
                         goodRuns.append(f)
                         t.Close()
-                except:
+                except Exception:
                     badRuns.append(theRun)
                     continue
     return goodRuns, badRuns
@@ -115,7 +114,7 @@ def addRuns(goodRuns, Nstart: int = 0) -> None:
         else:
             rc = os.system("rm " + tmpFile)
         N += 1000
-        if N > len(goodRuns):
+        if len(goodRuns) < N:
             break
 
 
@@ -148,14 +147,13 @@ def YandexProd(startDate, endDate) -> None:
         + endDate.__str__().split(" ")[0]
         + ".pkl"
     )
-    fpi = open(pName, "w")
-    database = {}
-    database["goodruns"] = goodRuns
-    database["badRuns"] = badRuns
-    pickle.dump(database, fpi)
-    fpi.close()
-    fpi = open(pName)
-    database = pickle.load(fpi)
+    with open(pName, "w") as fpi:
+        database = {}
+        database["goodruns"] = goodRuns
+        database["badRuns"] = badRuns
+        pickle.dump(database, fpi)
+    with open(pName) as fpi:
+        database = pickle.load(fpi)
     addRuns(database["goodruns"], 20000)  # next cycle
 
 
@@ -171,7 +169,7 @@ def addAllHistograms() -> None:
         ut.readHists(h, path + fname)
         if i == 0:
             h[1012].Draw()
-    for x in h.keys():
+    for x in h:
         if h[x].GetName().find("proj") > 0:
             h.pop(x)
     ut.writeHists(h, "pythia8_Geant4_" + ecut + "_c" + str(Nmax) + "-histos.root")
@@ -185,16 +183,15 @@ def compactifyCascade(cycle) -> None:
     NperJob = 2000000
     for i in range(cycle, cycle + ncpus):
         fName = path + "run" + str(i) + "/Cascade-run" + str(i) + "-parp16-MSTP82-1-MSEL4.root"
-        f = open(path + "run" + str(i) + "/log" + str(i))
-        success = False
-        for line in f.readlines():
-            if not line.find("Macro finished successfully") < 0:
-                success = True
+        with open(path + "run" + str(i) + "/log" + str(i)) as f:
+            success = False
+            for line in f.readlines():
+                if not line.find("Macro finished successfully") < 0:
+                    success = True
         if not success:
             print("job not finished properly", fName)
             continue
         cmd += fName + " "
-        f.close()
         Ntot += NperJob
     if cmd.find("root") < 0:
         print("no file found, exit")
@@ -240,7 +237,7 @@ def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
                                     continue
                                 if t.FindObjectAny("cbmsim"):
                                     subruns.append(file_path)
-                            except:
+                            except Exception:
                                 badFiles.append(file_path)
                                 continue
             ldir = " "
@@ -277,7 +274,7 @@ def compactify(charm: bool | str, runMin=0, runMax=0, checkOnly=False) -> None:
                             continue
                         if t.FindObjectAny("cbmsim"):
                             ldir += f
-                    except:
+                    except Exception:
                         badFiles.append(d)
                         continue
             os.system("hadd " + output + " " + ldir)
@@ -424,17 +421,17 @@ def check4DoubleRuns() -> None:
     ]
     Nruns = 0
     for x in allRuns:
-        fn = open(x)
-        dn = pickle.load(fn)
+        with open(x) as fn:
+            dn = pickle.load(fn)
         Nruns += len(dn["goodruns"])
     print("Total number of runs:", Nruns)
 
     for n in range(len(allRuns) - 1):
-        fn = open(allRuns[n])
-        dn = pickle.load(fn)
+        with open(allRuns[n]) as fn:
+            dn = pickle.load(fn)
         for m in range(n + 1, len(allRuns)):
-            fm = open(allRuns[m])
-            dm = pickle.load(fm)
+            with open(allRuns[m]) as fm:
+                dm = pickle.load(fm)
             for rn in dn["goodruns"]:
                 for rm in dm["goodruns"]:
                     if rn == rm:

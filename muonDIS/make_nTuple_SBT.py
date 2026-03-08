@@ -45,7 +45,7 @@ else:
 path = args.path
 logging.info(f"Path to MuonBackground : {path}")
 
-fsel = open(selectedmuons, "w")
+fsel = open(selectedmuons, "w")  # noqa: SIM115
 csvwriter = csv.writer(fsel)
 
 output_file = r.TFile.Open(args.outputfile, "recreate")
@@ -245,7 +245,7 @@ for inputFolder in os.listdir(path):
             track_id = hit.GetTrackID()
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
 
-            if 1000 < detID < 999999 and abs(pid) == 13 and P > P_threshold / u.GeV:
+            if 1000 < detID < 999999 and abs(pid) == 13 and P_threshold / u.GeV < P:
                 particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
                 if track_id not in muon_ids:
                     muon_ids.append(track_id)
@@ -266,7 +266,7 @@ for inputFolder in os.listdir(path):
             track_array.Clear()
 
             for track in event.MCTrack:
-                if track.GetMotherId() == muon_ and (not track.GetProcName().Data() == "Muon nuclear interaction"):
+                if track.GetMotherId() == muon_ and track.GetProcName().Data() != "Muon nuclear interaction":
                     track_array.Add(track)
 
             # saving the muon info
@@ -278,7 +278,7 @@ for inputFolder in os.listdir(path):
             for hit in event.UpstreamTaggerPoint:
                 track_id = hit.GetTrackID()
 
-                if not (track_id == muon_):
+                if track_id != muon_:
                     continue
 
                 if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
@@ -299,7 +299,7 @@ for inputFolder in os.listdir(path):
                 P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
                 Pt = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)
 
-                if 1000 < detID < 999999 and track_id == muon_ and P > P_threshold / u.GeV:
+                if 1000 < detID < 999999 and track_id == muon_ and P_threshold / u.GeV < P:
                     if global_event_nr not in processed_events:
                         processed_events[global_event_nr] = []
 

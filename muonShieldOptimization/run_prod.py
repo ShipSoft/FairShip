@@ -36,7 +36,7 @@ def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> No
         if i == ncpu:
             n3 = ntot - (i - 1) * n3
         if X:
-            if X == i:
+            if i == X:
                 os.system("cp $FAIRSHIP/macro/run_simScript.py .")
                 os.system(cmd + " -n " + str(n3) + " -i " + str(ns) + " > log &")
         else:
