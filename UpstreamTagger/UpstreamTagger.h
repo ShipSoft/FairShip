@@ -60,12 +60,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-  /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
-
-  /** Update track indices in point collection (for std::vector migration) */
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
   void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {

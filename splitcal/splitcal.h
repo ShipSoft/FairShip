@@ -28,18 +28,12 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   splitcal();
 
   /**       destructor     */
-  virtual ~splitcal() = default;
+  virtual ~splitcal()=default;
 
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
-
-  /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
-
-  /** Update track indices in point collection (for std::vector migration) */
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
   void SetZStart(Double_t ZStart);
   void SetEmpty(Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap,

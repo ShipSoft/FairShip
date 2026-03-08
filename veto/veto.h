@@ -43,12 +43,6 @@ class veto : public SHiP::Detector<vetoPoint> {
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-  /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
-
-  /** Update track indices in point collection (for std::vector migration) */
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
   void SetFastMuon() { fFastMuon = true; }  // kill all tracks except of muons
   void SetFollowMuon() {
     fFollowMuon = true;

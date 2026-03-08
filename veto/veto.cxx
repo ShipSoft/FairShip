@@ -831,19 +831,6 @@ void veto::PreTrack() {
   }
 }
 
-TClonesArray* veto::GetCollection(Int_t iColl) const { return nullptr; }
-
-void veto::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fvetoPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
 /**
  * @brief Constructs the detector geometry.
  *

@@ -168,18 +168,6 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-TClonesArray* TimeDet::GetCollection(Int_t iColl) const { return nullptr; }
-
-void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fDetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
 
 void TimeDet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();

@@ -149,20 +149,6 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-TClonesArray* strawtubes::GetCollection(Int_t iColl) const { return nullptr; }
-
-void strawtubes::UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fDetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
 void strawtubes::SetzPositions(Double_t z1, Double_t z2, Double_t z3,
                                Double_t z4) {
   f_T1_z = z1;  //!  z-position of tracking station 1

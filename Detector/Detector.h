@@ -30,8 +30,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
         fMom(),
         fTime(-1.),
         fLength(-1.),
-        fELoss(-1),
-        fDetPoints(NULL) {};
+        fELoss(-1) {};
 
   Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
 
@@ -56,6 +55,20 @@ class Detector : public FairDetector, public ISTLPointContainer {
     FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
   };
 
+  virtual TClonesArray* GetCollection(Int_t iColl) const { return nullptr; }
+
+  virtual void UpdatePointTrackIndices(
+    const std::map<Int_t, Int_t>& indexMap) {
+      for (auto& point : *fDetPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+          point.SetTrackID(iter->second);
+          point.SetLink(FairLink("MCTrack", iter->second));
+        }
+      }
+  }
+
   virtual void FinishPrimary() { ; }
   virtual void FinishRun() { ; }
   virtual void BeginPrimary() { ; }
@@ -76,7 +89,6 @@ class Detector : public FairDetector, public ISTLPointContainer {
   std::vector<PointType>* fDetPoints = nullptr;
 
   TGeoVolume* fDetector = nullptr;  // Detector object
- private:
 };
 }  // namespace SHiP
 

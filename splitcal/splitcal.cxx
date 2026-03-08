@@ -112,19 +112,6 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-TClonesArray* splitcal::GetCollection(Int_t iColl) const { return nullptr; }
-
-void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fDetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
 void splitcal::SetZStart(Double_t ZStart) { fZStart = ZStart; }
 void splitcal::SetEmpty(Double_t Empty, Double_t BigGap,
                         Double_t ActiveECAL_gas_gap,
