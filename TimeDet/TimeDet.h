@@ -38,7 +38,6 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
    */
   virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-
   /** Sets detector position along z */
   void SetZposition(Double_t z) { fzPos = z; }
   void SetBarZspacing(Double_t row, Double_t column) {
