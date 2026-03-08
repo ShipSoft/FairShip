@@ -24,6 +24,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoBBox.h"
@@ -89,26 +90,6 @@ UpstreamTagger::~UpstreamTagger() {
     fUpstreamTaggerPoints->clear();
     delete fUpstreamTaggerPoints;
   }
-}
-
-Int_t UpstreamTagger::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-
-  return 0;
 }
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
@@ -186,14 +167,7 @@ TClonesArray* UpstreamTagger::GetCollection(Int_t iColl) const {
 
 void UpstreamTagger::UpdatePointTrackIndices(
     const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fUpstreamTaggerPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fUpstreamTaggerPoints, indexMap);
 }
 
 void UpstreamTagger::Reset() { fUpstreamTaggerPoints->clear(); }
@@ -207,7 +181,7 @@ void UpstreamTagger::ConstructGeometry() {
 
   ///////////////////////////////////////////////////////
 
-  InitMedium("vacuum");
+  ShipGeo::InitMedium("vacuum");
   TGeoMedium* Vacuum_box = gGeoManager->GetMedium("vacuum");
   ///////////////////////////////////////////////////////////////////
 

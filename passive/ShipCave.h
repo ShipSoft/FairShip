@@ -19,7 +19,6 @@ class ShipCave : public FairModule {
  private:
   Double_t z_end_of_proximity_shielding;
   Double_t world[3];
-  Int_t InitMedium(TString name);
 
  public:
   ClassDef(ShipCave, 1)

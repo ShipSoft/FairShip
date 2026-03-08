@@ -148,7 +148,6 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
 
   MTCDetector(const MTCDetector&) = delete;
   MTCDetector& operator=(const MTCDetector&) = delete;
-  Int_t InitMedium(const char* name);
   ClassDefOverride(MTCDetector, 3)
 };
 

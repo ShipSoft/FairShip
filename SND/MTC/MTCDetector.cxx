@@ -8,6 +8,7 @@
 #include "FairLink.h"
 #include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
 
@@ -170,24 +171,6 @@ MTCDetector::~MTCDetector() {
     fMTCDetectorPoints->clear();
     delete fMTCDetectorPoints;
   }
-}
-
-// -----   Private method InitMedium
-Int_t MTCDetector::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
 }
 
 void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t angle,
@@ -357,15 +340,15 @@ void MTCDetector::CreateSciFiModule(const char* name,
 
 void MTCDetector::ConstructGeometry() {
   // Initialize media (using FairROOT's interface)
-  InitMedium("SciFiMat");
-  InitMedium("Epoxy");
-  InitMedium("air");
+  ShipGeo::InitMedium("SciFiMat");
+  ShipGeo::InitMedium("Epoxy");
+  ShipGeo::InitMedium("air");
   TGeoMedium* air = gGeoManager->GetMedium("air");
   TGeoMedium* ironMed = gGeoManager->GetMedium("iron");
   // For the scintillator, you may use the same medium as SciFiMat or another if
   // defined.
   TGeoMedium* scintMed = gGeoManager->GetMedium("SciFiMat");
-  InitMedium("silicon");
+  ShipGeo::InitMedium("silicon");
 
   // Define the module spacing based on three sublayers:
   //   fIronThick (outer iron), fSciFiThick (SciFi module/fiber module),
@@ -800,14 +783,7 @@ TClonesArray* MTCDetector::GetCollection(Int_t iColl) const { return nullptr; }
 
 void MTCDetector::UpdatePointTrackIndices(
     const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fMTCDetectorPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fMTCDetectorPoints, indexMap);
 }
 
 void MTCDetector::Reset() { fMTCDetectorPoints->clear(); }

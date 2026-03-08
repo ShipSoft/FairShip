@@ -392,12 +392,5 @@ void exitHadronAbsorber::Reset() {
 
 void exitHadronAbsorber::UpdatePointTrackIndices(
     const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fexitHadronAbsorberPointCollection) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fexitHadronAbsorberPointCollection, indexMap);
 }

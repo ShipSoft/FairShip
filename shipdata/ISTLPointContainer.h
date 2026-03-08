@@ -2,6 +2,9 @@
 #define SHIPDATA_ISTLPOINTCONTAINER_H_
 
 #include <map>
+#include <vector>
+
+#include "FairLink.h"
 
 /**
  * @brief Interface for detectors using STL containers (std::vector) for MC
@@ -23,5 +26,21 @@ class ISTLPointContainer {
 
   virtual ~ISTLPointContainer() = default;
 };
+
+/// Reusable implementation of UpdatePointTrackIndices for any point type that
+/// provides GetTrackID(), SetTrackID() and SetLink() (i.e. FairMCPoint
+/// subclasses).
+template <typename PointType>
+void UpdatePointTrackIndicesImpl(std::vector<PointType>& points,
+                                 const std::map<Int_t, Int_t>& indexMap) {
+  for (auto& point : points) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
+}
 
 #endif  // SHIPDATA_ISTLPOINTCONTAINER_H_

@@ -139,8 +139,6 @@ class splitcal : public FairDetector, public ISTLPointContainer {
 
   splitcal(const splitcal&) = delete;
   splitcal& operator=(const splitcal&) = delete;
-  Int_t InitMedium(const char* name);
-
   ClassDefOverride(splitcal, 2)
 };
 

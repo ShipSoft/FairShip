@@ -32,6 +32,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoArb8.h"
@@ -766,25 +767,6 @@ TGeoVolume* veto::MakeSegments() {
   return tTankVol;
 }
 
-// -----   Private method InitMedium
-Int_t veto::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-}
-
 // -------------------------------------------------------------------------
 /**
  * @brief Processes a hit in the veto detector.
@@ -867,14 +849,7 @@ void veto::Register()  // create a branch in the output tree
 TClonesArray* veto::GetCollection(Int_t iColl) const { return nullptr; }
 
 void veto::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fvetoPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fvetoPoints, indexMap);
 }
 
 void veto::Reset() { fvetoPoints->clear(); }
@@ -890,11 +865,11 @@ void veto::Reset() { fvetoPoints->clear(); }
 void veto::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
-  InitMedium("vacuums");
-  InitMedium("Aluminum");
-  InitMedium("helium");
-  InitMedium("Scintillator");
-  InitMedium("steel");
+  ShipGeo::InitMedium("vacuums");
+  ShipGeo::InitMedium("Aluminum");
+  ShipGeo::InitMedium("helium");
+  ShipGeo::InitMedium("Scintillator");
+  ShipGeo::InitMedium("steel");
 
   gGeoManager->SetNsegments(100);
 

@@ -18,6 +18,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TCanvas.h"
 #include "TClonesArray.h"
@@ -73,24 +74,7 @@ void splitcal::Initialize() {
   //  splitcalGeoPar*
   //  par=(splitcalGeoPar*)(rtdb->getContainer("splitcalGeoPar"));
 }
-// -----   Private method InitMedium
-Int_t splitcal::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
 
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-}
 Bool_t splitcal::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   // Set parameters at entrance of volume. Reset ELoss.
@@ -161,14 +145,7 @@ void splitcal::Register() {
 TClonesArray* splitcal::GetCollection(Int_t iColl) const { return nullptr; }
 
 void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fsplitcalPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fsplitcalPoints, indexMap);
 }
 
 void splitcal::Reset() { fsplitcalPoints->clear(); }
@@ -241,11 +218,11 @@ void splitcal::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tSplitCal = new TGeoVolumeAssembly("SplitCalDetector");
 
-  InitMedium("iron");
-  InitMedium("lead");
-  InitMedium("Scintillator");
-  InitMedium("argon");
-  InitMedium("GEMmixture");
+  ShipGeo::InitMedium("iron");
+  ShipGeo::InitMedium("lead");
+  ShipGeo::InitMedium("Scintillator");
+  ShipGeo::InitMedium("argon");
+  ShipGeo::InitMedium("GEMmixture");
 
   TGeoMedium* A2 = gGeoManager->GetMedium("iron");
   TGeoMedium* A3 = gGeoManager->GetMedium("lead");

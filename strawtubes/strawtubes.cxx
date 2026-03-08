@@ -25,6 +25,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoBBox.h"
@@ -90,25 +91,6 @@ void strawtubes::Initialize() {
   FairDetector::Initialize();
   //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
-}
-
-// -----   Private method InitMedium
-Int_t strawtubes::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
 }
 
 Bool_t strawtubes::ProcessHits(FairVolume* vol) {
@@ -209,14 +191,7 @@ TClonesArray* strawtubes::GetCollection(Int_t iColl) const { return nullptr; }
 
 void strawtubes::UpdatePointTrackIndices(
     const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fstrawtubesPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
+  UpdatePointTrackIndicesImpl(*fstrawtubesPoints, indexMap);
 }
 
 void strawtubes::Reset() { fstrawtubesPoints->clear(); }
@@ -277,15 +252,15 @@ void strawtubes::ConstructGeometry() {
       implement here you own way of constructing the geometry. */
 
   TGeoVolume* top = gGeoManager->GetTopVolume();
-  InitMedium("mylar");
+  ShipGeo::InitMedium("mylar");
   TGeoMedium* mylar = gGeoManager->GetMedium("mylar");
-  InitMedium("STTmix8020_1bar");
+  ShipGeo::InitMedium("STTmix8020_1bar");
   TGeoMedium* sttmix8020_1bar = gGeoManager->GetMedium("STTmix8020_1bar");
-  InitMedium("tungsten");
+  ShipGeo::InitMedium("tungsten");
   TGeoMedium* tungsten = gGeoManager->GetMedium("tungsten");
-  InitMedium(f_frame_material);
+  ShipGeo::InitMedium(f_frame_material);
   TGeoMedium* FrameMatPtr = gGeoManager->GetMedium(f_frame_material);
-  InitMedium(fMedium.c_str());
+  ShipGeo::InitMedium(fMedium.c_str());
   TGeoMedium* med = gGeoManager->GetMedium(fMedium.c_str());
 
   gGeoManager->SetVisLevel(4);

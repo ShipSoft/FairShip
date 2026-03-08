@@ -39,7 +39,6 @@ class ShipTargetStation : public FairModule {
   std::vector<float> fL;        // absorber width per layer
   std::vector<float> fG;        // gap after layer
   std::vector<std::string> fM;  // absorber material
-  Int_t InitMedium(const char* name);
   size_t fnS;
   Int_t fHeT;
 };
