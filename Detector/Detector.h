@@ -51,8 +51,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   void Register() override {
     fDetPoints = new std::vector<PointType>();
-    static PointType t;
-    FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
+    FairRootManager::Instance()->RegisterAny(PointType::BranchName, fDetPoints, kTRUE);
   }
 
   TClonesArray* GetCollection(Int_t iColl) const override {
