@@ -32,27 +32,27 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
   strawtubes();
 
   /**       destructor     */
-  virtual ~strawtubes();
+  ~strawtubes() override;
 
   /**      Initialization of the detector is done here    */
-  virtual void Initialize();
+  void Initialize() override;
 
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   /**       Registers the produced collections in FAIRRootManager.     */
-  virtual void Register();
+  void Register() override;
 
   /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
+  TClonesArray* GetCollection(Int_t iColl) const override;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
   /**      has to be called after each event to reset the containers      */
-  virtual void Reset();
+  void Reset() override;
 
   void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
   void SetApertureArea(Double_t width, Double_t height);
@@ -89,17 +89,17 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
    *  any optional action in your detector during the transport.
    */
 
-  virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) {
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
-  virtual void SetSpecialPhysicsCuts() { ; }
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun() { ; }
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack() { ; }
-  virtual void BeginEvent() { ; }
+  void SetSpecialPhysicsCuts() override { ; }
+  void EndOfEvent() override;
+  void FinishPrimary() override { ; }
+  void FinishRun() override { ; }
+  void BeginPrimary() override { ; }
+  void PostTrack() override { ; }
+  void PreTrack() override { ; }
+  void BeginEvent() override { ; }
 
  private:
   /** Track information to be stored until the track leaves the
@@ -141,7 +141,7 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
   strawtubes(const strawtubes&);
   strawtubes& operator=(const strawtubes&);
   Int_t InitMedium(const char* name);
-  ClassDef(strawtubes, 7)
+  ClassDefOverride(strawtubes, 7)
 };
 
 #endif  // STRAWTUBES_STRAWTUBES_H_
