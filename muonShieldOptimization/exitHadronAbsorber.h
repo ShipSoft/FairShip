@@ -31,24 +31,24 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   exitHadronAbsorber();
 
   /**       destructor     */
-  virtual ~exitHadronAbsorber();
+  ~exitHadronAbsorber() override;
 
   /**      Initialization of the detector is done here    */
-  virtual void Initialize();
+  void Initialize() override;
 
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   /**       Registers the produced collections in FAIRRootManager.     */
-  virtual void Register();
+  void Register() override;
 
   /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
+  TClonesArray* GetCollection(Int_t iColl) const override;
 
   /**      has to be called after each event to reset the containers      */
-  virtual void Reset();
+  void Reset() override;
 
   /**      Update track indices in points after track pruning      */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
@@ -60,17 +60,17 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
    *  any optional action in your detector during the transport.
    */
 
-  virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) {
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
-  virtual void SetSpecialPhysicsCuts() { ; }
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun();
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack();
-  virtual void BeginEvent() { ; }
+  void SetSpecialPhysicsCuts() override { ; }
+  void EndOfEvent() override;
+  void FinishPrimary() override { ; }
+  void FinishRun() override;
+  void BeginPrimary() override { ; }
+  void PostTrack() override { ; }
+  void PreTrack() override;
+  void BeginEvent() override { ; }
 
   vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
                     TVector3 mom, Double_t time, Double_t length,
@@ -120,7 +120,7 @@ class exitHadronAbsorber : public FairDetector, public ISTLPointContainer {
   Int_t index;
   /** container for data points */
   std::vector<vetoPoint>* fexitHadronAbsorberPointCollection;
-  ClassDef(exitHadronAbsorber, 0)
+  ClassDefOverride(exitHadronAbsorber, 0)
 };
 
 #endif  // MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
