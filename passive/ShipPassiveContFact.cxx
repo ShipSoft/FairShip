@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////
 #include "ShipPassiveContFact.h"
 
-#include <string.h>  // for strcmp, NULL
+#include <cstring>  // for strcmp
 
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
 #include "TList.h"          // for TList

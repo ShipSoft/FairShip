@@ -5,7 +5,8 @@
 #include "Pythia8Generator.h"
 
 #include <TGeoManager.h>
-#include <math.h>
+
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "HNLPythia8Generator.h"

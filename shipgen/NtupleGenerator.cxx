@@ -4,7 +4,7 @@
 
 #include "NtupleGenerator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "TDatabasePDG.h"  // for TDatabasePDG

@@ -29,7 +29,7 @@ it in future.
 
 ### Changed
 
-* Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
+* Modernise C++: replace NULL with nullptr, C headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes
 * Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
 * Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
 * Remove dead SND@LHC code from event display (#900)

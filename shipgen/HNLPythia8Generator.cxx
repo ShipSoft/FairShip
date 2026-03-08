@@ -4,7 +4,7 @@
 
 #include "HNLPythia8Generator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"

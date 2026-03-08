@@ -7,8 +7,6 @@
 // -------------------------------------------------------------------------
 #include "ShipStack.h"
 
-#include <stddef.h>  // for NULL
-
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, etc
 
