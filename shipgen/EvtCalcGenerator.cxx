@@ -4,7 +4,7 @@
 
 #include "EvtCalcGenerator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"

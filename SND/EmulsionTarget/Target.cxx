@@ -12,9 +12,7 @@
 
 #include "Target.h"
 
-#include <stddef.h>  // for NULL
-#include <string.h>
-
+#include <cstring>
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, basic_ostream,etc
 #include <tuple>
@@ -110,7 +108,7 @@ Int_t Target::InitMedium(const char* name) {
     return -1111;
   }
   TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != NULL) return ShipMedium->getMediumIndex();
+  if (medium != nullptr) return ShipMedium->getMediumIndex();
   return geoBuild->createMedium(ShipMedium);
 }
 

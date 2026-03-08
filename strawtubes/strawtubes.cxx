@@ -106,7 +106,7 @@ Int_t strawtubes::InitMedium(const char* name) {
     return -1111;
   }
   TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != NULL) return ShipMedium->getMediumIndex();
+  if (medium != nullptr) return ShipMedium->getMediumIndex();
 
   return geoBuild->createMedium(ShipMedium);
 }

@@ -5,7 +5,8 @@
 #include "Pythia8Generator.h"
 
 #include <TGeoManager.h>
-#include <math.h>
+
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "HNLPythia8Generator.h"
@@ -29,7 +30,7 @@ Pythia8Generator::Pythia8Generator() {
   fId = 2212;         // proton
   fMom = 400;         // proton
   fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
-  fInputFile = NULL;
+  fInputFile = nullptr;
   targetName = "";
   xOff = 0;
   yOff = 0;

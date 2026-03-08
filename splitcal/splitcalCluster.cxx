@@ -4,8 +4,7 @@
 
 #include "splitcalCluster.h"
 
-#include <math.h>
-
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <map>

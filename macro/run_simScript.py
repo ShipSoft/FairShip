@@ -42,7 +42,6 @@ inputFile = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSE
 defaultInputFile = True
 
 parser = ArgumentParser()
-group = parser.add_mutually_exclusive_group()
 
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
@@ -180,12 +179,12 @@ parser.add_argument(
     default=False,
     type=int,
 )
-group.add_argument(
+parser.add_argument(
     "-f",
     dest="inputFile",
-    nargs="*",
-    help="Input file or space separated list of files if not default file",
-    default=False,
+    action="append",
+    help="Input file (repeat -f for multiple files)",
+    default=None,
 )
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
@@ -292,7 +291,7 @@ if options.MM:
 if options.cosmics:
     Opt_high = int(options.cosmics)
 if options.inputFile:
-    if options.inputFile == "none":
+    if options.inputFile == ["none"]:
         options.inputFile = None
     inputFile = []
     for _f in options.inputFile:
@@ -610,7 +609,7 @@ if options.muonback:
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
     if DownScaleDiMuon:
-        testf = ROOT.TFile.Open(inputFile)
+        testf = ROOT.TFile.Open(inputFile[0])
         if not testf.FileHeader.GetTitle().find("diMu100.0") < 0:
             MuonBackgen.SetDownScaleDiMuon()  # avoid interference with boosted channels
             print("MuonBackgenerator: set downscale for dimuon on")
@@ -869,7 +868,7 @@ if options.mudis:
 if options.command == "Genie":
     # breakpoint()
     # Copy Genie (gst TTree) information to the output file
-    f_input = ROOT.TFile.Open(inputFile, "READ")
+    f_input = ROOT.TFile.Open(inputFile[0], "READ")
     print("check")
     gst = f_input.gst
 

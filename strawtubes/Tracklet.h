@@ -4,8 +4,6 @@
 
 #ifndef STRAWTUBES_TRACKLET_H_
 #define STRAWTUBES_TRACKLET_H_
-#include <stddef.h>
-
 #include <vector>
 
 #include "Rtypes.h"  // for Double_t, Int_t, Double32_t, etc

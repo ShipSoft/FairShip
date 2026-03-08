@@ -4,8 +4,6 @@
 
 #include "TrackInfo.h"
 
-#include <stdio.h>
-
 #include "AbsMeasurement.h"
 #include "KalmanFitterInfo.h"
 

@@ -4,8 +4,7 @@
 
 #include "vetoHit.h"
 
-#include <math.h>
-
+#include <cmath>
 #include <iostream>
 
 #include "FairLogger.h"  // for FairLogger, etc

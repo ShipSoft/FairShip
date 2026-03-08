@@ -4,7 +4,7 @@
 
 #include "GenieGenerator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "FairPrimaryGenerator.h"
 #include "MeanMaterialBudget.h"

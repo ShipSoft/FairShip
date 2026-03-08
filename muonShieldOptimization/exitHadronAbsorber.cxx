@@ -4,8 +4,7 @@
 
 #include "exitHadronAbsorber.h"
 
-#include <math.h>
-
+#include <cmath>
 #include <iostream>
 
 #include "FairGeoBuilder.h"
@@ -291,7 +290,7 @@ void exitHadronAbsorber::ConstructGeometry() {
 
   FairGeoMedium* ShipMedium = media->getMedium("vacuums");
   TGeoMedium* vac = gGeoManager->GetMedium("vacuums");
-  if (vac == NULL) geoBuild->createMedium(ShipMedium);
+  if (vac == nullptr) geoBuild->createMedium(ShipMedium);
   vac = gGeoManager->GetMedium("vacuums");
   gGeoManager->GetTopVolume();
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();

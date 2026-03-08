@@ -4,7 +4,7 @@
 
 #include "HNLPythia8Generator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
@@ -29,7 +29,7 @@ HNLPythia8Generator::HNLPythia8Generator() {
   fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
-  fInputFile = NULL;
+  fInputFile = nullptr;
   fnRetries = 0;
   fShipEventNr = 0;
   fPythia = new Pythia8::Pythia();

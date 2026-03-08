@@ -11,8 +11,7 @@
 
 #include "ShipGeoCave.h"
 
-#include <string.h>  // for strcmp
-
+#include <cstring>   // for strcmp
 #include <iostream>  // for cout
 
 #include "FairGeoBasicShape.h"  // for FairGeoBasicShape
