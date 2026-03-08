@@ -10,7 +10,6 @@
 #pragma link off all functions;
 
 #pragma link C++ namespace SHiP;
-#pragma link C++ class SHiP::Detector+;
 #pragma link C++ class SHiP::DetectorPoint+;
 
 #endif
