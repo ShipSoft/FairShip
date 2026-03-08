@@ -207,8 +207,8 @@ class ShipStack : public FairGenericStack {
   /** Mark tracks for output using selection criteria  **/
   void SelectTracks();
 
-  ShipStack(const ShipStack&);
-  ShipStack& operator=(const ShipStack&);
+  ShipStack(const ShipStack&) = delete;
+  ShipStack& operator=(const ShipStack&) = delete;
 
   ClassDefOverride(ShipStack, 1)
 };

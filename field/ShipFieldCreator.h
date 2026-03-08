@@ -28,7 +28,7 @@ class ShipFieldCreator : public FairFieldFactory {
   ShipFieldPar* fFieldPar;
 
  private:
-  ShipFieldCreator(const ShipFieldCreator&);
-  ShipFieldCreator& operator=(const ShipFieldCreator&);
+  ShipFieldCreator(const ShipFieldCreator&) = delete;
+  ShipFieldCreator& operator=(const ShipFieldCreator&) = delete;
 };
 #endif  // FIELD_SHIPFIELDCREATOR_H_

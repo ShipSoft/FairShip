@@ -81,8 +81,8 @@ class SiliconTarget : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<SiliconTargetPoint>* fSiliconTargetPoints;
 
-  SiliconTarget(const SiliconTarget&);
-  SiliconTarget& operator=(const SiliconTarget&);
+  SiliconTarget(const SiliconTarget&) = delete;
+  SiliconTarget& operator=(const SiliconTarget&) = delete;
   Int_t InitMedium(const char* name);
   ClassDefOverride(SiliconTarget, 1)
 };

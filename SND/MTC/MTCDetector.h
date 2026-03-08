@@ -146,8 +146,8 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   /** container for data points */
   std::vector<MTCDetPoint>* fMTCDetectorPoints;
 
-  MTCDetector(const MTCDetector&);
-  MTCDetector& operator=(const MTCDetector&);
+  MTCDetector(const MTCDetector&) = delete;
+  MTCDetector& operator=(const MTCDetector&) = delete;
   Int_t InitMedium(const char* name);
   ClassDefOverride(MTCDetector, 3)
 };

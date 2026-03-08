@@ -85,8 +85,8 @@ class ShipFieldPar : public FairParGenericSet {
   Double_t fMiddle;
   Double_t fBtube;
 
-  ShipFieldPar(const ShipFieldPar&);
-  ShipFieldPar& operator=(const ShipFieldPar&);
+  ShipFieldPar(const ShipFieldPar&) = delete;
+  ShipFieldPar& operator=(const ShipFieldPar&) = delete;
 
   ClassDef(ShipFieldPar, 1);
 };

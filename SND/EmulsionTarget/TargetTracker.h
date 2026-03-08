@@ -92,8 +92,8 @@ class TargetTracker : public FairDetector, public ISTLPointContainer {
   void PreTrack() override { ; }
   void BeginEvent() override { ; }
 
-  TargetTracker(const TargetTracker&);
-  TargetTracker& operator=(const TargetTracker&);
+  TargetTracker(const TargetTracker&) = delete;
+  TargetTracker& operator=(const TargetTracker&) = delete;
 
   ClassDefOverride(TargetTracker, 4);
 
