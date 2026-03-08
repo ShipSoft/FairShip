@@ -5,29 +5,18 @@
 #ifndef SPLITCAL_SPLITCALCLUSTER_H_
 #define SPLITCAL_SPLITCALCLUSTER_H_
 
+#include <TVector3.h>
+
 #include <array>
 #include <vector>
 
 #include "TObject.h"  //
 #include "splitcalHit.h"
-// #include <boost/python.hpp>
-
-// ROOT headers
-/* #include <TLorentzVector.h> */
-#include <TVector3.h>
-
-struct regression {
-  double slope;
-  double slopeError;
-  double intercept;
-  double interceptError;
-};
 
 class splitcalCluster : public TObject {
  public:
   /** Constructors **/
   splitcalCluster();
-  // splitcalCluster(boost::python::list& l);
 
   /** Destructor **/
   virtual ~splitcalCluster();
@@ -77,14 +66,7 @@ class splitcalCluster : public TObject {
   const std::vector<int>& GetHitIndices() const { return _hitIndices; }
   const std::vector<double>& GetHitWeights() const { return _hitWeights; }
 
-  regression LinearRegression(std::vector<double>& x, std::vector<double>& y);
   void ComputeEtaPhiE(const std::vector<splitcalHit>& hits);
-
-  // temporary for test
-  double GetSlopeZX() { return _mZX; }
-  double GetInterceptZX() { return _qZX; }
-  double GetSlopeZY() { return _mZY; }
-  double GetInterceptZY() { return _qZY; }
 
   /** Copy constructor **/
   splitcalCluster(const splitcalCluster& cluster) = default;
@@ -98,11 +80,7 @@ class splitcalCluster : public TObject {
   std::vector<int> _hitIndices;
   std::vector<double> _hitWeights;
 
-  // temporary for test
-  double _mZX, _qZX;
-  double _mZY, _qZY;
-
-  ClassDef(splitcalCluster, 3);
+  ClassDef(splitcalCluster, 4);
 };
 
 #endif  // SPLITCAL_SPLITCALCLUSTER_H_
