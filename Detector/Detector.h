@@ -57,16 +57,15 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   virtual TClonesArray* GetCollection(Int_t iColl) const { return nullptr; }
 
-  virtual void UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-      for (auto& point : *fDetPoints) {
-        Int_t oldTrackID = point.GetTrackID();
-        auto iter = indexMap.find(oldTrackID);
-        if (iter != indexMap.end()) {
-          point.SetTrackID(iter->second);
-          point.SetLink(FairLink("MCTrack", iter->second));
-        }
+  virtual void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
+    for (auto& point : *fDetPoints) {
+      Int_t oldTrackID = point.GetTrackID();
+      auto iter = indexMap.find(oldTrackID);
+      if (iter != indexMap.end()) {
+        point.SetTrackID(iter->second);
+        point.SetLink(FairLink("MCTrack", iter->second));
       }
+    }
   }
 
   virtual void FinishPrimary() { ; }

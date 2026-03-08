@@ -168,7 +168,6 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-
 void TimeDet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
