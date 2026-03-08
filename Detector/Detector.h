@@ -41,25 +41,25 @@ class Detector : public FairDetector, public ISTLPointContainer {
   };
 
   /**  Create the detector geometry */
-  virtual void ConstructGeometry() override = 0;
+  void ConstructGeometry() override = 0;
 
-  virtual void Initialize() override { FairDetector::Initialize(); }
+  void Initialize() override { FairDetector::Initialize(); }
 
-  virtual void Reset() override { fDetPoints->clear(); }
+  void Reset() override { fDetPoints->clear(); }
 
-  virtual void EndOfEvent() override { fDetPoints->clear(); }
+  void EndOfEvent() override { fDetPoints->clear(); }
 
-  virtual void Register() override {
+  void Register() override {
     fDetPoints = new std::vector<PointType>();
     static PointType t;
     FairRootManager::Instance()->RegisterAny(t.GetName(), fDetPoints, kTRUE);
   }
 
-  virtual TClonesArray* GetCollection(Int_t iColl) const override {
+  TClonesArray* GetCollection(Int_t iColl) const override {
     return nullptr;
   }
 
-  virtual void UpdatePointTrackIndices(
+  void UpdatePointTrackIndices(
       const std::map<Int_t, Int_t>& indexMap) override {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
@@ -71,13 +71,13 @@ class Detector : public FairDetector, public ISTLPointContainer {
     }
   }
 
-  virtual void SetSpecialPhysicsCuts() override { ; }
-  virtual void FinishPrimary() override { ; }
-  virtual void FinishRun() override { ; }
-  virtual void BeginPrimary() override { ; }
-  virtual void PostTrack() override { ; }
-  virtual void PreTrack() override { ; }
-  virtual void BeginEvent() override { ; }
+  void SetSpecialPhysicsCuts() override { ; }
+  void FinishPrimary() override { ; }
+  void FinishRun() override { ; }
+  void BeginPrimary() override { ; }
+  void PostTrack() override { ; }
+  void PreTrack() override { ; }
+  void BeginEvent() override { ; }
 
  protected:
   /** Track information to be stored until the track leaves the active volume.*/
