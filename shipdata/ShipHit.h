@@ -32,13 +32,13 @@ class ShipHit : public TObject {
   void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   Float_t fdigi;      ///< digitized detector hit
   Int_t fDetectorID;  ///< Detector unique identifier
 
-  ClassDef(ShipHit, 2);
+  ClassDefOverride(ShipHit, 2);
 };
 
 #endif  // SHIPDATA_SHIPHIT_H_

@@ -54,27 +54,27 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   UpstreamTagger();
 
   /** destructor */
-  virtual ~UpstreamTagger();
+  ~UpstreamTagger() override;
 
   /** Initialization of the detector is done here */
-  virtual void Initialize();
+  void Initialize() override;
 
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
-  virtual Bool_t ProcessHits(FairVolume* v = 0);
+  Bool_t ProcessHits(FairVolume* v = 0) override;
 
   /**       Registers the produced collections in FAIRRootManager. */
-  virtual void Register();
+  void Register() override;
 
   /** Gets the produced collections */
-  virtual TClonesArray* GetCollection(Int_t iColl) const;
+  TClonesArray* GetCollection(Int_t iColl) const override;
 
   /** Update track indices in point collection (for std::vector migration) */
   void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
   /** has to be called after each event to reset the containers */
-  virtual void Reset();
+  void Reset() override;
 
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
@@ -95,13 +95,13 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
                               Double_t length, Double_t eLoss, Int_t pdgCode,
                               TVector3 Lpos, TVector3 Lmom);
 
-  virtual void EndOfEvent();
-  virtual void FinishPrimary() { ; }
-  virtual void FinishRun() { ; }
-  virtual void BeginPrimary() { ; }
-  virtual void PostTrack() { ; }
-  virtual void PreTrack() { ; }
-  virtual void BeginEvent() { ; }
+  void EndOfEvent() override;
+  void FinishPrimary() override { ; }
+  void FinishRun() override { ; }
+  void BeginPrimary() override { ; }
+  void PostTrack() override { ; }
+  void PreTrack() override { ; }
+  void BeginEvent() override { ; }
 
   Double_t module[11][3];  // x,y,z centre positions for each module
   // TODO Avoid 1-indexed array!
@@ -135,7 +135,7 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
   UpstreamTagger& operator=(const UpstreamTagger&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(UpstreamTagger, 2)
+  ClassDefOverride(UpstreamTagger, 2)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

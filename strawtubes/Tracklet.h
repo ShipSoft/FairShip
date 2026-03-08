@@ -33,7 +33,7 @@ class Tracklet : public TObject {
            const std::vector<strawtubesHit>& container);
 
   /** Destructor **/
-  virtual ~Tracklet();
+  ~Tracklet() override;
 
   std::vector<unsigned int>* getList() { return &aTracklet; }
   const std::vector<unsigned int>& getIndices() const { return aTracklet; }
@@ -44,12 +44,12 @@ class Tracklet : public TObject {
       Float_t min);  // give back MCTrack ID with max matched strawtubesHits
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   std::vector<unsigned int> aTracklet;  ///< list of indices
   Int_t flag;  // reserved for type of tracklet  ///< type of tracklet
-  ClassDef(Tracklet, 2);
+  ClassDefOverride(Tracklet, 2);
 };
 
 #endif  // STRAWTUBES_TRACKLET_H_
