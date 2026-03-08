@@ -33,20 +33,20 @@ def PDGcode(particle):
 
 
 def load(conffile=os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), verbose=True):
-    f = open(conffile)
-    reader = csv.reader(f, delimiter=":")
-    configuredDecays = {}
-    for row in reader:
-        if not row:
-            continue  # skip empty lines
-        if str(row[0]).strip().startswith("#"):
-            continue  # skip comment / header lines
-        channel = str(row[0]).strip()
-        flag = str(row[-1]).partition("#")[0].strip()  # skip line comments
-        configuredDecays[channel] = flag
+    with open(conffile) as f:
+        reader = csv.reader(f, delimiter=":")
+        configuredDecays = {}
+        for row in reader:
+            if not row:
+                continue  # skip empty lines
+            if str(row[0]).strip().startswith("#"):
+                continue  # skip comment / header lines
+            channel = str(row[0]).strip()
+            flag = str(row[-1]).partition("#")[0].strip()  # skip line comments
+            configuredDecays[channel] = flag
     if verbose:
         print("Activated decay channels (plus charge conjugates): ")
-        for channel in configuredDecays.keys():
+        for channel in configuredDecays:
             if configuredDecays[channel] == "yes":
                 print("\t" + channel)
     return configuredDecays
@@ -70,7 +70,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/pytho
             print("addHNLdecayChannels ERROR: channel not configured!\t", dec)
             quit()
         if allowed[dec] == "yes" and wanted[dec] == "yes":
-            particles = [p for p in dec.replace("->", " ").split()]
+            particles = list(dec.replace("->", " ").split())
             children = particles[1:]
             childrenCodes = [PDGcode(p) for p in children]
             BR = hnl.findBranchingRatio(dec)
@@ -130,7 +130,7 @@ def addDarkPhotondecayChannels(
                     P8gen.SetParameters(f"{dpid}:addChannel =  1 {0.1 * BR:.12} {meMode} 3 -3")
                     P8gen.SetParameters(f"{dpid}:addChannel =  1 {0.4 * BR:.12} {meMode} 4 -4")
             else:
-                particles = [p for p in dec.replace("->", " ").split()]
+                particles = list(dec.replace("->", " ").split())
                 children = particles[1:]
                 childrenCodes = [PDGcode(p) for p in children]
                 codes = " ".join(str(code) for code in childrenCodes)
@@ -141,6 +141,6 @@ def addDarkPhotondecayChannels(
 if __name__ == "__main__":
     configuredDecays = load()
     print("Activated decay channels: ")
-    for channel in configuredDecays.keys():
+    for channel in configuredDecays:
         if configuredDecays[channel] == "yes":
             print(channel)

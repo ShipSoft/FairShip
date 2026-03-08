@@ -44,7 +44,7 @@ class BaseDetector(ABC):
         if self.MCdet:
             self.MCdet.clear()
 
-    def fill(self) -> None:
+    def fill(self) -> None:  # noqa: B027
         """Fill detector hit branches.
 
         Note: This method is now a no-op to prevent double-filling.

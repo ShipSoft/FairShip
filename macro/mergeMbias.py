@@ -214,7 +214,7 @@ def mergeMinBias(pot, norm=5.0e13, opt="") -> None:
                 vlist.append(leaves.At(x).GetValue())
             if len(vlist) != 11:
                 print("this should never happen, big error", len(vlist), k, p, iev, nev)
-                1 / 0
+                raise RuntimeError(f"unexpected vlist length: {len(vlist)}")
             # "id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut"
             # yandex productions have
             # "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:w:ecut"

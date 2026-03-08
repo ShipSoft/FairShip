@@ -47,7 +47,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     # Check geo file
     try:
         fgeo = ROOT.TFile(geo_file)
-    except:
+    except Exception:
         print("An error with opening the ship geo file.")
         raise
 
@@ -103,7 +103,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     # Check input file
     try:
         fn = ROOT.TFile(input_file, "update")
-    except:
+    except Exception:
         print("An error with opening the input data file.")
         raise
 
@@ -156,7 +156,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
         ########################################### Select one event ###################################################
 
-        rc = sTree.GetEvent(iEvent)
+        sTree.GetEvent(iEvent)
 
         ########################################### Reconstructible tracks #############################################
 
@@ -226,7 +226,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 hits["Pdg"] += [ahit.PdgCode()]
 
             # List to numpy arrays
-            for key in hits.keys():
+            for key in hits:
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
@@ -474,7 +474,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 X_fit = []
                 Y_fit = []
                 for az in Z_true:
-                    rc, pos, mom = extrapolateToPlane(thetrack, az)
+                    _rc, pos, _mom = extrapolateToPlane(thetrack, az)
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
@@ -490,7 +490,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 h["rmse_x"].Fill(rmse_x)
                 h["rmse_y"].Fill(rmse_y)
 
-            except:
+            except Exception:
                 print("Problem with fitted state.")
 
         h["Reco_tracks"].Fill("N total", n_tracks)
@@ -536,9 +536,8 @@ def extrapolateToPlane(fT, z):
                 rep.extrapolateToPlane(state, detPlanePtr)
                 pos, mom = state.getPos(), state.getMom()
                 rc = True
-            except:
+            except Exception:
                 print("error with extrapolation")
-                pass
             if not rc:
                 # use linear extrapolation
                 px, py, pz = mom.X(), mom.Y(), mom.Z()
@@ -639,9 +638,8 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
                 mothertrackZ = mothertrack.GetStartZ()
                 # this mother track is a HNL decay
                 # track starts inside the decay volume? (before 1 st tstation)
-                if mothertrackZ < TStation1StartZ:
-                    if motherId not in MCTrackIDs:
-                        MCTrackIDs.append(motherId)
+                if mothertrackZ < TStation1StartZ and motherId not in MCTrackIDs:
+                    MCTrackIDs.append(motherId)
 
     if len(MCTrackIDs) == 0:
         return MCTrackIDs
@@ -738,22 +736,22 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     # 6. Make list of tracks with hits in in station 1,2,3 & 4
     tracks_with_hits_in_all_stations = []
 
-    for key in hits1.keys():
+    for key in hits1:
         if (key in hits2 and key in hits3) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits2.keys():
+    for key in hits2:
         if (key in hits1 and key in hits3) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits3.keys():
+    for key in hits3:
         if (key in hits2 and key in hits1) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits4.keys():
+    for key in hits4:
         if (key in hits2 and key in hits3) and key in hits1:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)

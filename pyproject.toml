@@ -3,11 +3,23 @@ line-length = 120
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "W"]
+select = ["B", "C4", "E", "F", "I", "RUF", "SIM", "UP", "W"]
 ignore = [
-    "E402",  # Module import not at top - common in simulation scripts
-    "E501",  # Line too long - handled by formatter where possible
-    "E722",  # Bare except - common for edge case handling in physics code
+    "B007",   # Unused loop variable - common in physics iteration code
+    "B008",   # Function call in default argument - used for os.path.expandvars
+    "B905",   # zip() without strict= - lengths are known in physics code
+    "E402",   # Module import not at top - common in simulation scripts
+    "E501",   # Line too long - handled by formatter where possible
+    "RUF001", # Ambiguous unicode - Greek letters common in physics
+    "RUF002", # Ambiguous unicode in docstring - Greek letters common in physics
+    "RUF003", # Ambiguous unicode in comment - Greek letters common in physics
+    "RUF005", # Consider iterable unpacking - not always clearer
+    "RUF015", # Prefer next() over single element slice - existing pattern
+    "SIM102", # Combine nested ifs - often less readable with long conditions
+    "SIM108", # Use ternary operator - often less readable in physics code
+    "SIM112", # Use env var capitalization - external tools set the names
+    "SIM113", # Use enumerate - manual counters common in physics loops
+    "UP031",  # Use format specifiers - too many changes for %-formatting
 ]
 
 

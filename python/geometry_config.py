@@ -287,8 +287,7 @@ def create_config(
     magnetIncrease = 100.0 * u.cm
 
     if strawDesign != 4 and strawDesign != 10:
-        print("this design ", strawDesign, " is not supported, use strawDesign = 4 or 10")
-        1 / 0
+        raise ValueError(f"straw design {strawDesign} is not supported, use strawDesign = 4 or 10")
     else:
         c.chambers.Tub1length = 2.5 * u.m
         c.chambers.Tub2length = 17.68 * u.m + extraVesselLength / 2.0

@@ -276,7 +276,7 @@ class RPVSUSYbranchings:
         - H is a string (name of the meson)
         - L is a string (name of the lepton)
         """
-        if self.MN < (mass(H) + mass(L)):
+        if (mass(H) + mass(L)) > self.MN:
             return 0.0
 
         phsp = math.sqrt(

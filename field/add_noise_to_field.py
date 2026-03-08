@@ -13,7 +13,7 @@ from scipy.ndimage import gaussian_filter
 
 def plot_my_hist(datum) -> None:
     plotData = datum[datum["y"] == 0]
-    H, xedges, yedges = np.histogram2d(plotData["x"], plotData["z"], bins=[50, 500], weights=plotData["by"])
+    H, _xedges, _yedges = np.histogram2d(plotData["x"], plotData["z"], bins=[50, 500], weights=plotData["by"])
     plt.figure(figsize=[20, 10])
     plt.imshow(H, interpolation="nearest", origin="low")
     # plt.colorbar()

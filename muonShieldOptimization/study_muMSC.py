@@ -132,7 +132,7 @@ sTree = f.Get("cbmsim")
 for n in range(sTree.GetEntries()):
     rc = sTree.GetEvent(n)
     for aHit in sTree.vetoPoint:
-        if not aHit.GetTrackID() == 0:
+        if aHit.GetTrackID() != 0:
             continue
         pt = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2)
         scat = ROOT.TMath.ATan2(pt, aHit.GetPz())

@@ -243,12 +243,10 @@ def dist2InnerWall(X, Y, Z):
 def isInFiducial(X, Y, Z) -> bool:
     if not fiducialCut:
         return True
-    if Z > ShipGeo.TrackStation1.z:
+    if ShipGeo.TrackStation1.z < Z:
         return False
     # typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)
-    if dist2InnerWall(X, Y, Z) < 5 * u.cm:
-        return False
-    return True
+    return not dist2InnerWall(X, Y, Z) < 5 * u.cm
 
 
 #
@@ -301,7 +299,7 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     if not fiducialCut:
         return True
     fT = sTree.FitTracks[tkey]
-    rc, pos, mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.Bfield.z)
+    rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.Bfield.z)
     if not rc:
         return False
     if not dist2InnerWall(pos.X(), pos.Y(), pos.Z()) > 0:
@@ -443,9 +441,8 @@ def match2HNL(p) -> bool:
                 hnlKey.append(mcp)
                 break
             mcp = mo.GetMotherId()
-    if len(hnlKey) == 2:
-        if hnlKey[0] == hnlKey[1]:
-            matched = True
+    if len(hnlKey) == 2 and hnlKey[0] == hnlKey[1]:
+        matched = True
     return matched
 
 
@@ -742,7 +739,7 @@ def myEventLoop(n: int) -> None:
     # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo, "TimeDet"):
         for fT in sTree.FitTracks:
-            rc, pos, mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
+            rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
             if rc:
                 for aPoint in sTree.TimeDetPoint:
                     h["extrapTimeDetX"].Fill(pos.X() - aPoint.GetX())

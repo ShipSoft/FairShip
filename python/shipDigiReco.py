@@ -130,8 +130,8 @@ class ShipDigiReco:
     def findTracks(self) -> int:
         hitPosLists = {}
         hit_detector_ids = {}
-        stationCrossed = {}
-        listOfIndices = {}
+        stationCrossed: dict[int, dict[int, int]] = {}
+        listOfIndices: dict[int, list[int]] = {}
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
         self.fitTrack2MC.clear()
@@ -149,7 +149,7 @@ class ShipDigiReco:
             # Do real PatRec
             track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)
             # Create hitPosLists for track fit
-            for i_track in track_hits.keys():
+            for i_track in track_hits:
                 atrack = track_hits[i_track]
                 atrack_y12 = atrack["y12"]
                 atrack_stereo12 = atrack["stereo12"]
@@ -273,7 +273,7 @@ class ShipDigiReco:
             # do the fit
             try:
                 self.fitter.processTrack(theTrack)  # processTrackWithRep(theTrack,rep,True)
-            except:
+            except Exception:
                 if global_variables.debug:
                     print("genfit failed to fit track")
                 error = "genfit failed to fit track"
@@ -291,7 +291,7 @@ class ShipDigiReco:
             try:
                 fittedState = theTrack.getFittedState()
                 fittedState.getMomMag()
-            except:
+            except Exception:
                 error = "Problem with fittedstate"
                 ut.reportError(error)
                 continue
@@ -320,7 +320,7 @@ class ShipDigiReco:
             for index in listOfIndices[atrack]:
                 ahit = self.sTree.strawtubesPoint[index]
                 track_ids += [ahit.GetTrackID()]
-            frac, tmax = self.fracMCsame(track_ids)
+            _frac, tmax = self.fracMCsame(track_ids)
             self.fitTrack2MC.push_back(tmax)
             # Save hits indexes of the the fitted tracks
             indices = ROOT.std.vector("unsigned int")()
@@ -360,7 +360,7 @@ class ShipDigiReco:
             vetoHitPos = vetoHit.GetXYZ()
             try:
                 rep.extrapolateToPoint(state, vetoHitPos, False)
-            except:
+            except Exception:
                 error = "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
                 ut.reportError(error)
                 if global_variables.debug:

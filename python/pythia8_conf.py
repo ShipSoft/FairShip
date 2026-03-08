@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import contextlib
 import os
 
 import hnl
@@ -32,8 +33,9 @@ def configurerpvsusy(
     P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy: bool = False, debug: bool = True
 ) -> None:
     # configure pythia8 for Ship usage
+    _exit_stack = contextlib.ExitStack()
     if debug:
-        pythia_log = open("pythia8_conf.txt", "w")
+        pythia_log = _exit_stack.enter_context(open("pythia8_conf.txt", "w"))  # noqa: SIM115
         P8gen = MethodLogger(P8gen, sink=pythia_log)
     h = make_interpolators(os.path.expandvars(f"$FAIRSHIP/shipgen/branchingratiosrpvsusybench{benchmark}.dat"))
     P8gen.UseRandom3()
@@ -160,8 +162,7 @@ def configurerpvsusy(
 
         P8gen.List(9900015)
 
-    if debug:
-        pythia_log.close()
+    _exit_stack.close()
 
 
 def configure(
@@ -175,8 +176,9 @@ def configure(
         process_selection = "inclusive"
 
     # Wrap the Pythia8 object into a class logging all of its method calls
+    _exit_stack = contextlib.ExitStack()
     if debug:
-        pythia_log = open("pythia8_conf.txt", "w")
+        pythia_log = _exit_stack.enter_context(open("pythia8_conf.txt", "w"))  # noqa: SIM115
         P8gen = MethodLogger(P8gen, sink=pythia_log)
 
     fairship_root = os.environ["FAIRSHIP"]
@@ -304,8 +306,7 @@ def configure(
 
         P8gen.List(9900015)
 
-    if debug:
-        pythia_log.close()
+    _exit_stack.close()
 
 
 def add_hnl(P8gen, mass, decay_couplings) -> None:

@@ -71,7 +71,7 @@ def run():
                     h["By-"].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)
                 if f.GetBy(x, y, z) > 0:
                     h["By+"].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)
-    for x in h.keys():
+    for x in h:
         hi = h[x]
         if hi.ClassName() == "TH3F":
             h[x + "_xz"] = h[x].Project3D("xy")

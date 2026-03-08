@@ -51,7 +51,7 @@ class DarkPhoton:
                         ecm.push_back(numEcm)
                         ratio.push_back(numR)
                         # print numEcm,numR,strType
-                except:
+                except Exception:
                     continue
         return ecm, ratio
 
