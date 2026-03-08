@@ -6,6 +6,9 @@ from __future__ import annotations
 import json
 import os
 import pickle
+import warnings
+
+from ship_geo_config_types import ShipGeoConfig  # noqa: F401 — re-export
 
 
 class AttrDict(dict):
@@ -13,9 +16,17 @@ class AttrDict(dict):
     dict class that can address its keys as fields, e.g.
     d['key'] = 1
     assert d.key == 1
+
+    .. deprecated::
+        Use typed configs from :mod:`ship_geo_config_types` instead.
     """
 
     def __init__(self, *args, **kwargs) -> None:
+        warnings.warn(
+            "AttrDict is deprecated, use typed configs from ship_geo_config_types",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         super().__init__(*args, **kwargs)
         self.__dict__ = self
 
@@ -92,7 +103,18 @@ class Config(AttrDict):
         )
 
 
-def load_from_root_file(root_file, key: str = "ShipGeo") -> Config:
+def _config_to_dict(config: Config) -> dict:
+    """Convert a legacy Config/AttrDict to a plain dict (recursively)."""
+    result = {}
+    for k, v in config.items():
+        if isinstance(v, dict):
+            result[k] = _config_to_dict(v)  # type: ignore[arg-type]
+        else:
+            result[k] = v
+    return result
+
+
+def load_from_root_file(root_file, key: str = "ShipGeo") -> ShipGeoConfig:
     """
     Load configuration from ROOT file.
 
@@ -105,7 +127,7 @@ def load_from_root_file(root_file, key: str = "ShipGeo") -> Config:
         key: The key name for the stored config (default: 'ShipGeo')
 
     Returns:
-        Config object with the loaded configuration
+        ShipGeoConfig object with the loaded configuration
     """
     import ROOT
 
@@ -125,23 +147,21 @@ def load_from_root_file(root_file, key: str = "ShipGeo") -> Config:
 
         # Auto-detect format by checking first character
         if content_str.startswith("{"):
-            # JSON format - parse it
-            config = Config()
-            config.loads_json(content_str)
+            # JSON format — parse to typed config
+            d = json.loads(content_str)
+            return ShipGeoConfig.from_dict(d)
         else:
-            # Assume pickle format - unpickle it
-            # Convert to bytes for pickle (using latin-1 encoding)
+            # Pickle format (legacy) — unpickle, convert to typed config
             pickle_bytes = content_str.encode("latin-1")
-            config = pickle.loads(pickle_bytes)
+            legacy = pickle.loads(pickle_bytes)
 
-            # Ensure it's a Config object (might be if it was pickled as Config)
-            if not isinstance(config, Config):
-                # Wrap in Config if needed
+            if isinstance(legacy, dict):
+                return ShipGeoConfig.from_dict(_config_to_dict(legacy))  # type: ignore[arg-type]
+            else:
+                # Unexpected type, wrap as best we can
                 c = Config()
-                c.update(config)
-                config = c
-
-        return config
+                c.update(legacy)
+                return ShipGeoConfig.from_dict(_config_to_dict(c))
 
     finally:
         if own_file:

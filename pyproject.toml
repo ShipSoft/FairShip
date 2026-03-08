@@ -23,8 +23,8 @@ replace-imports-with-any = [
     "rootUtils", "rootUtils.*",
     "genfit", "genfit.*",
     "cppyy", "cppyy.*",
-    "ShipGeoConfig", "ShipGeoConfig.*",
     "shipRoot_conf", "shipRoot_conf.*",
+    "global_variables", "global_variables.*",
 ]
 
 ignore-missing-imports = [

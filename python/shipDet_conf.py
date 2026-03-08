@@ -7,6 +7,12 @@ import os
 import ROOT
 import shipunit as u
 import yaml
+from ship_geo_config_types import (
+    MTCConfig,
+    ShipGeoConfig,
+    SiliconTargetConfig,
+    StrawtubesGeoConfig,
+)
 from ShipGeoConfig import AttrDict
 
 detectorList = []
@@ -117,11 +123,11 @@ def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuo
     detectorList.append(NuTauTT)
 
 
-def configure_snd_mtc(yaml_file: str, ship_geo) -> None:
+def configure_snd_mtc(yaml_file: str, ship_geo: ShipGeoConfig) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.mtc_geo = AttrDict(config["MTC"])
+    ship_geo.mtc_geo = MTCConfig(**config["MTC"])
     # Initialize detector
     if ship_geo.mtc_geo.zPosition == "auto":
         # Get the the center of the *last* magnet
@@ -145,11 +151,11 @@ def configure_snd_mtc(yaml_file: str, ship_geo) -> None:
     detectorList.append(mtc)
 
 
-def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
+def configure_snd_siliconTarget(yaml_file: str, ship_geo: ShipGeoConfig) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
+    ship_geo.SiliconTarget_geo = SiliconTargetConfig(**config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
         # Get the the center of the next to last magnet (temporary placement)
@@ -207,11 +213,11 @@ def configure_veto(yaml_file: str, z0) -> None:
     detectorList.append(Veto)
 
 
-def configure_strawtubes(yaml_file: str, ship_geo) -> None:
+def configure_strawtubes(yaml_file: str, ship_geo: ShipGeoConfig) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.strawtubes_geo = AttrDict(config["SST"])
+    ship_geo.strawtubes_geo = StrawtubesGeoConfig(**config["SST"])
 
     # Straw tubes in decay vessel if vacuum, otherwise outside in air
     ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
@@ -261,21 +267,10 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
-def configure(run, ship_geo):
+def configure(run, ship_geo: ShipGeoConfig):
     # ---- for backward compatibility ----
-    if not hasattr(ship_geo, "DecayVolumeMedium"):
+    if not ship_geo.DecayVolumeMedium:
         raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
-    if not hasattr(ship_geo, "muShieldGeo"):
-        ship_geo.muShieldGeo = None
-    if not hasattr(ship_geo.Bfield, "x"):
-        ship_geo.Bfield.x = 3.0 * u.m
-    if not hasattr(ship_geo, "cave"):
-        ship_geo.cave = AttrDict(z=0 * u.cm)
-        ship_geo.cave.floorHeightMuonShield = 5 * u.m
-        ship_geo.cave.floorHeightTankA = 4.5 * u.m
-        ship_geo.cave.floorHeightTankB = 2.0 * u.m
-    if not hasattr(ship_geo, "SND"):
-        ship_geo.SND = True
 
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
@@ -330,7 +325,7 @@ def configure(run, ship_geo):
 
     if ship_geo.SND:
         # If any SND design is 2 (MTC), set SNDSpace for MuonShield
-        if 2 in getattr(ship_geo, "SND_design", []):
+        if 2 in ship_geo.SND_design:
             MuonShield.SetSNDSpace(
                 hole=True,
                 hole_dx=(ship_geo.mtc_geo.width + 5.0 * u.cm) / 2.0,
@@ -338,12 +333,6 @@ def configure(run, ship_geo):
             )
     detectorList.append(MuonShield)
 
-    if not hasattr(ship_geo, "magnetDesign"):
-        # backward compatibility
-        ship_geo.magnetDesign = 4
-        ship_geo.Bfield.YokeWidth = 200.0 * u.cm
-        ship_geo.Bfield.YokeDepth = 200.0 * u.cm
-        ship_geo.Bfield.CoilThick = 25.0 * u.cm
     if ship_geo.strawDesign > 1:
         if ship_geo.magnetDesign > 3:
             B = ship_geo.Bfield
@@ -437,7 +426,7 @@ def configure(run, ship_geo):
     detectorList.append(timeDet)
 
     # -----   Magnetic field   -------------------------------------------
-    if not hasattr(ship_geo.Bfield, "fieldMap"):
+    if not ship_geo.Bfield.fieldMap:
         if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10:
             fMagField = ROOT.ShipBellField(
                 "wilfried",
@@ -456,7 +445,7 @@ def configure(run, ship_geo):
             )
         run.SetField(fMagField)
 
-    exclusionList = []
+    exclusionList: list[str] = []
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
