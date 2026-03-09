@@ -12,6 +12,10 @@ it in future.
 
 ## Unreleased
 
+### Changed
+
+* Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
+
 ### Fixed
 
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
