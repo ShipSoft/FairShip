@@ -33,8 +33,6 @@ class vetoPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~vetoPoint();
 
-  static constexpr const char* BranchName = "vetoPoint";
-  const char* DetectorName() const override { return BranchName; }
   void extraPrintInfo() const override;
 
   /** Output to screen **/

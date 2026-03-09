@@ -22,9 +22,6 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~UpstreamTaggerPoint();
 
-  static constexpr const char* BranchName = "UpstreamTaggerPoint";
-  const char* DetectorName() const override { return BranchName; }
-
   void extraPrintInfo() const override;
 
  private:

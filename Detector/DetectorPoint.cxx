@@ -28,7 +28,7 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
 
 // -----   Public method Print   -------------------------------------------
 void SHiP::DetectorPoint::Print() const {
-  LOG(info) << "-I- " << DetectorName() << " point for track " << fTrackID
+  LOG(info) << "-I- " << ClassName() << " point for track " << fTrackID
             << " in detector " << fDetectorID;
   LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm";
   LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV";

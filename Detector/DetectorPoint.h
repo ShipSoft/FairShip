@@ -35,9 +35,6 @@ class DetectorPoint : public FairMCPoint {
   TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
   TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
 
-  static constexpr const char* BranchName = "GenericDetector";
-  virtual const char* DetectorName() const { return BranchName; }
-
   virtual void extraPrintInfo() const;
 
  protected:

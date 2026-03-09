@@ -19,7 +19,7 @@ template <typename PointType>
 class Detector : public FairDetector {
  public:
   Detector() = default;
-  virtual ~Detector() override { delete fDetPoints; };
+  ~Detector() override { delete fDetPoints; }
   Detector(const char* Name, Bool_t Active, Int_t detID)
       : FairDetector(Name, Active, detID),
         fEventID(-1),
@@ -31,13 +31,13 @@ class Detector : public FairDetector {
         fLength(-1.),
         fELoss(-1) {};
 
-  Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
+  Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {}
 
   template <typename... Args>
   PointType* AddHit(Args&&... args) {
     fDetPoints->emplace_back(std::forward<Args>(args)...);
     return &(fDetPoints->back());
-  };
+  }
 
   /**  Create the detector geometry */
   void ConstructGeometry() override = 0;
@@ -50,7 +50,7 @@ class Detector : public FairDetector {
 
   void Register() override {
     fDetPoints = new std::vector<PointType>();
-    FairRootManager::Instance()->RegisterAny(PointType::BranchName, fDetPoints,
+    FairRootManager::Instance()->RegisterAny(PointType::Class()->GetName(), fDetPoints,
                                              kTRUE);
   }
 
