@@ -16,7 +16,6 @@ var classTargetTracker =
     [ "FinishRun", "classTargetTracker.html#aa4aee484bdabe2c5fea01b02ecc446ae", null ],
     [ "GetCollection", "classTargetTracker.html#ad50d696b6d25f96f073667eceb45b8cb", null ],
     [ "Initialize", "classTargetTracker.html#a46a5d63a7304355cb9325d9c5891d0d3", null ],
-    [ "InitMedium", "classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c", null ],
     [ "operator=", "classTargetTracker.html#a4895025ea25e7376d32c6cecb9b2e91b", null ],
     [ "PostTrack", "classTargetTracker.html#a4401e1125de1fcfe7f87d0f81ebcf83f", null ],
     [ "PreTrack", "classTargetTracker.html#ab01fa44f55bb6fc9eb1a548fed1a9fdd", null ],

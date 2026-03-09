@@ -13,7 +13,6 @@ var classUpstreamTagger =
     [ "FinishRun", "classUpstreamTagger.html#adfe3bb113490db58214fb872f6ec6611", null ],
     [ "GetCollection", "classUpstreamTagger.html#aae5bb2731cfc5837687c12a4bd1ce003", null ],
     [ "Initialize", "classUpstreamTagger.html#a75ca82730e7105448454a5fea3abce16", null ],
-    [ "InitMedium", "classUpstreamTagger.html#a8f833edb777fb1fa26f063ced8ef999b", null ],
     [ "operator=", "classUpstreamTagger.html#ab857469173016e305f2cff460d3bb75e", null ],
     [ "PostTrack", "classUpstreamTagger.html#a9bd4265e09dd9d9298bb3935573899bc", null ],
     [ "PreTrack", "classUpstreamTagger.html#aacb8e28aeef51385935b02329a5be6bd", null ],

@@ -10,7 +10,6 @@ var classSiliconTarget =
     [ "EndOfEvent", "classSiliconTarget.html#acd903cf576f8ad7482156e27207476f6", null ],
     [ "GetCollection", "classSiliconTarget.html#a278fa8d21cc4ec0a0697f0796c43008f", null ],
     [ "Initialize", "classSiliconTarget.html#a8abf4bc015a4786b05eec8c9f84a62d9", null ],
-    [ "InitMedium", "classSiliconTarget.html#a39cafff3748585cbdb94ce5e793dfc95", null ],
     [ "operator=", "classSiliconTarget.html#a2d8d7d99adab79e0d32fc1b687fb7d4f", null ],
     [ "ProcessHits", "classSiliconTarget.html#a726b3cf6074fffd6f648eecc9ccc7262", null ],
     [ "Register", "classSiliconTarget.html#a1471b6281c2753cc73690b68b77f50fd", null ],

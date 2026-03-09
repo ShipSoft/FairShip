@@ -14,7 +14,6 @@ var classTarget =
     [ "FinishRun", "classTarget.html#a316543df53d5da1a77a16bd81f7a4c9f", null ],
     [ "GetCollection", "classTarget.html#a6c0dae5332b97514e22385acfaccab8c", null ],
     [ "Initialize", "classTarget.html#aa1070b1a45bb9f68d5324eff27e79a0c", null ],
-    [ "InitMedium", "classTarget.html#aae006f9a82fe35d763ae7a0b77e92158", null ],
     [ "MakeNuTargetPassive", "classTarget.html#af223e5af386b7b0f8fa52728c97025fa", null ],
     [ "MergeTopBot", "classTarget.html#a23231afd9a01a549f4c3a35bb2f5cb3d", null ],
     [ "operator=", "classTarget.html#a949617cac33de56dbd5c21cd28c078a5", null ],

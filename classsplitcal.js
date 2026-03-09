@@ -14,7 +14,6 @@ var classsplitcal =
     [ "FinishRun", "classsplitcal.html#a50388b8acb1ee2bb585c4fb761cc760d", null ],
     [ "GetCollection", "classsplitcal.html#abde13759e3323a15b4102ec88f7f0ebf", null ],
     [ "Initialize", "classsplitcal.html#aaf10a778737a81040bc7fef41970287d", null ],
-    [ "InitMedium", "classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07", null ],
     [ "operator=", "classsplitcal.html#a7feba62c6ea57e5557b1b69abd8b6874", null ],
     [ "PostTrack", "classsplitcal.html#aec718dccd781fbcc00616eba565bf57d", null ],
     [ "PreTrack", "classsplitcal.html#a02b1577a9e5dfd2fe2c98ac30359e5bf", null ],

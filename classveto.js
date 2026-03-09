@@ -22,7 +22,6 @@ var classveto =
     [ "GetLiquidVeto", "classveto.html#a79c0ae405dc46e6102dd3e1bb6b1e5a1", null ],
     [ "GetUseSupport", "classveto.html#af8a387bf000115714b4b1e4711da7d9c", null ],
     [ "Initialize", "classveto.html#aa5aefc00997856b9855dfe2a72b3de0b", null ],
-    [ "InitMedium", "classveto.html#add3b8c74d24769a2c810e1d7cff38150", null ],
     [ "liscId", "classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d", null ],
     [ "makeId", "classveto.html#a3033d6c4b427718a1a072fe08b13a709", null ],
     [ "MakeSegments", "classveto.html#a5ff94ab044d1f2921698684d6072ca19", null ],

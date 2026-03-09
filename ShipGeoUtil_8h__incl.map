@@ -1,0 +1,15 @@
+<map id="shipdata/ShipGeoUtil.h" name="shipdata/ShipGeoUtil.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="376,5,547,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,133,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="399,33,147,79,146,74,398,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="157,79,299,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="425,33,279,77,278,72,423,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="323,79,450,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="451,33,411,71,407,67,448,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="475,79,597,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="475,29,516,67,512,71,471,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="622,79,746,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="498,28,636,72,634,77,496,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="770,79,891,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="521,28,758,73,757,79,520,33"/>
+</map>

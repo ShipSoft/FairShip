@@ -1,13 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"proton__bremsstrahlung_8py.html#ae3b95b849d91a62e6d5819f662a86f2b":[7,0,11,19,20],
-"proton__bremsstrahlung_8py_source.html":[7,0,11,19],
-"pyFairModule_8cxx.html":[7,0,9,10],
-"pyFairModule_8cxx.html#a4890f669326884bda5880d3fd27e9a76":[7,0,9,10,0],
-"pyFairModule_8cxx_source.html":[7,0,9,10],
-"pyFairModule_8h.html":[7,0,9,11],
-"pyFairModule_8h.html#a4890f669326884bda5880d3fd27e9a76":[7,0,9,11,2],
-"pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013":[7,0,9,11,1],
 "pyFairModule_8h_source.html":[7,0,9,11],
 "pythia8__conf_8py.html":[7,0,11,20],
 "pythia8__conf_8py.html#a2c21f5a1d3a08c24f33d3684c22beb81":[7,0,11,20,0],
@@ -249,5 +241,13 @@ var NAVTREEINDEX26 =
 "run__fixedTarget_8py.html#ace8e54c5ffd9284df4a7dde24a57c645":[7,0,7,19,0],
 "run__fixedTarget_8py.html#ad5019a2bfcd85504e1ed4b193811c920":[7,0,7,19,47],
 "run__fixedTarget_8py.html#ad50662eb5b8a53f8ea74c76843ad04f6":[7,0,7,19,20],
-"run__fixedTarget_8py.html#ad598793694cecf28b7d4f3bdb1fb94df":[7,0,7,19,33]
+"run__fixedTarget_8py.html#ad598793694cecf28b7d4f3bdb1fb94df":[7,0,7,19,33],
+"run__fixedTarget_8py.html#ad5d197a44fb50031e902eba201329ecc":[7,0,7,19,43],
+"run__fixedTarget_8py.html#ad6ca6f36ed32945c8895a26fc6d8853b":[7,0,7,19,49],
+"run__fixedTarget_8py.html#ad83c31f0696cc6c2129af09325c7ef08":[7,0,7,19,44],
+"run__fixedTarget_8py.html#ae13a0ef257f9f8bc0985fd40a8b0bf79":[7,0,7,19,76],
+"run__fixedTarget_8py.html#ae509765a529dfe63f10403bfbb4e6c23":[7,0,7,19,41],
+"run__fixedTarget_8py.html#ae9b55f55d3e626839b0c77e3491c7023":[7,0,7,19,53],
+"run__fixedTarget_8py.html#af1277424a1c78c806b635aedae63a6c4":[7,0,7,19,24],
+"run__fixedTarget_8py.html#af4484db9a4134bdc526b56578692372a":[7,0,7,19,30]
 };

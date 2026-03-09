@@ -17,7 +17,6 @@ var classTimeDet =
     [ "GetYRow", "classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487", null ],
     [ "GetZBar", "classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0", null ],
     [ "Initialize", "classTimeDet.html#a2193b60691f18fa74a3a418bb221331e", null ],
-    [ "InitMedium", "classTimeDet.html#a5eba38e6dd2d949a4f7dcfdf402fc02c", null ],
     [ "operator=", "classTimeDet.html#a371668f9e1daff5adda9d8228f200202", null ],
     [ "PostTrack", "classTimeDet.html#ab70aa3ad61f880bb61bc4728962c3350", null ],
     [ "PreTrack", "classTimeDet.html#a9fcd8a6eb5d261f819037e7802edbfcc", null ],

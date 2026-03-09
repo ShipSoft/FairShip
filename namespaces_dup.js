@@ -1400,6 +1400,9 @@ var namespaces_dup =
     [ "shipgen", "namespaceshipgen.html", [
       [ "MeanMaterialBudget", "namespaceshipgen.html#abc8d24468b45babd8880fb0b38ef103a", null ]
     ] ],
+    [ "ShipGeo", "namespaceShipGeo.html", [
+      [ "InitMedium", "namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934", null ]
+    ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
     [ "shipPatRec", "namespaceshipPatRec.html", [
       [ "artificial_retina_pat_rec_stereo_views", "namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb", null ],
