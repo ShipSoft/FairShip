@@ -87,7 +87,6 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
 
   strawtubes(const strawtubes&) = delete;
   strawtubes& operator=(const strawtubes&) = delete;
-  Int_t InitMedium(const char* name);
   ClassDefOverride(strawtubes, 8)
 };
 

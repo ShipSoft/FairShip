@@ -91,26 +91,6 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fyOv = 0;
 }
 
-Int_t TimeDet::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-
-  return 0;
-}
-
 Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   // Set parameters at entrance of volume. Reset ELoss.

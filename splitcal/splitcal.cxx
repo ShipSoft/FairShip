@@ -42,22 +42,6 @@ splitcal::splitcal() : Detector("splitcal", kTRUE, kSplitCal) {}
 splitcal::splitcal(const char* name, Bool_t active)
     : Detector(name, active, kSplitCal) {}
 
-// -----   Private method InitMedium
-Int_t splitcal::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
   Bool_t splitcal::ProcessHits(FairVolume * vol) {
     /** This method is called from the MC stepping */
     // Set parameters at entrance of volume. Reset ELoss.

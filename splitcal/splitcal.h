@@ -87,7 +87,6 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
 
   splitcal(const splitcal&) = delete;
   splitcal& operator=(const splitcal&) = delete;
-  Int_t InitMedium(const char* name);
 
   ClassDefOverride(splitcal, 3)
 };
