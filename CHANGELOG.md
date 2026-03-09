@@ -16,6 +16,7 @@ it in future.
 
 * Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
 * Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
+* Use `std::span` for `MeanMaterialBudget` parameters (compile-time size checking) and `ShipCompField::getCompFields` return type (avoids unnecessary copy)
 
 ### Fixed
 

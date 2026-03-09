@@ -10,6 +10,7 @@
 #ifndef FIELD_SHIPCOMPFIELD_H_
 #define FIELD_SHIPCOMPFIELD_H_
 
+#include <span>
 #include <string>
 #include <vector>
 
@@ -60,9 +61,11 @@ class ShipCompField : public TVirtualMagField {
 
   //! Get the vector of fields
   /*!
-    \returns the vector of fields
+    \returns a non-owning view of the fields
   */
-  std::vector<TVirtualMagField*> getCompFields() const { return theFields_; }
+  std::span<TVirtualMagField* const> getCompFields() const {
+    return theFields_;
+  }
 
   //! ClassDef for ROOT
   ClassDef(ShipCompField, 1);
