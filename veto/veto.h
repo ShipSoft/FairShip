@@ -73,10 +73,6 @@ class veto : public SHiP::Detector<vetoPoint> {
    *  any optional action in your detector during the transport.
    */
 
-  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
-    ;
-  }
-
   void PreTrack() override;
 
   inline void SetUseSupport(Int_t use = 1) { fUseSupport = use; }

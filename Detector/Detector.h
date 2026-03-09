@@ -11,16 +11,15 @@
 #include "DetectorPoint.h"
 #include "FairDetector.h"
 #include "FairRootManager.h"
-#include "ISTLPointContainer.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
 namespace SHiP {
 template <typename PointType>
-class Detector : public FairDetector, public ISTLPointContainer {
+class Detector : public FairDetector {
  public:
   Detector() = default;
-  virtual ~Detector() { delete fDetPoints; };
+  virtual ~Detector() override { delete fDetPoints; };
   Detector(const char* Name, Bool_t Active, Int_t detID)
       : FairDetector(Name, Active, detID),
         fEventID(-1),
@@ -57,8 +56,8 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
 
-  void UpdatePointTrackIndices(
-      const std::map<Int_t, Int_t>& indexMap) override {
+  virtual void UpdatePointTrackIndices(
+      const std::map<Int_t, Int_t>& indexMap) {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
       auto iter = indexMap.find(oldTrackID);
@@ -76,7 +75,9 @@ class Detector : public FairDetector, public ISTLPointContainer {
   void PostTrack() override { ; }
   void PreTrack() override { ; }
   void BeginEvent() override { ; }
-
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
+    ;
+  }
  protected:
   /** Track information to be stored until the track leaves the active volume.*/
   Int_t fEventID;       //!  event index
@@ -87,7 +88,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
   Double_t fTime;       //!  time
   Double_t fLength;     //!  length
   Double_t fELoss;      //!  energy loss
-  std::vector<PointType>* fDetPoints = nullptr;
+  std::vector<PointType>* fDetPoints;
 
   TGeoVolume* fDetector = nullptr;  // Detector object
 };
