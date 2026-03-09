@@ -103,7 +103,6 @@ var annotated_dup =
     [ "Pythia8Generator", "classPythia8Generator.html", "classPythia8Generator" ],
     [ "PyTr1Rng", "classPyTr1Rng.html", "classPyTr1Rng" ],
     [ "PyTr3Rng", "classPyTr3Rng.html", "classPyTr3Rng" ],
-    [ "regression", "structregression.html", "structregression" ],
     [ "ShipBellField", "classShipBellField.html", "classShipBellField" ],
     [ "ShipBFieldMap", "classShipBFieldMap.html", "classShipBFieldMap" ],
     [ "ShipCave", "classShipCave.html", "classShipCave" ],

@@ -1,14 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"makeMuonEM_8py.html#a0d9d140e57ebdb6f5d9e3f663f855ac2":[7,0,9,8,14],
-"makeMuonEM_8py.html#a0fb48413916b98e06de1787680b67eab":[7,0,9,8,6],
-"makeMuonEM_8py.html#a18f9fe1922ed604c12ef952e88ff7d7a":[7,0,9,8,0],
-"makeMuonEM_8py.html#a1ffa96feb5a37585a673c5a9d5bb7aa2":[7,0,9,8,2],
-"makeMuonEM_8py.html#a2f541edec5da16cf64dcce3ea03d80c8":[7,0,9,8,4],
-"makeMuonEM_8py.html#a3604e3063985ec5f0cc8636c5c9e2b8b":[7,0,9,8,10],
-"makeMuonEM_8py.html#a60d6f22c97137e52694045555ca0b5e9":[7,0,9,8,25],
-"makeMuonEM_8py.html#a622d501e573a35cf9e01929c1cdbf4da":[7,0,9,8,15],
-"makeMuonEM_8py.html#a63f3cff550cbaaf04db6ad994cf105f6":[7,0,9,8,12],
 "makeMuonEM_8py.html#a66d6058c6282460f25b0a5b6aca5fb98":[7,0,9,8,21],
 "makeMuonEM_8py.html#a761d974ec988f616ec1020f343fe2bf9":[7,0,9,8,11],
 "makeMuonEM_8py.html#a7db9802d8622bb7355470e66fc770be2":[7,0,9,8,8],
@@ -249,5 +240,14 @@ var NAVTREEINDEX17 =
 "mergeMbias_8py_source.html":[7,0,7,17],
 "method__logger_8py.html":[7,0,11,18],
 "method__logger_8py_source.html":[7,0,11,18],
-"muDIS__mergeFiles_8py.html":[7,0,9,9]
+"muDIS__mergeFiles_8py.html":[7,0,9,9],
+"muDIS__mergeFiles_8py.html#a4272df3d93776489cbaf69a8c4a2ca87":[7,0,9,9,0],
+"muDIS__mergeFiles_8py.html#a83f94c211fdeec0f62c2f112ef51da13":[7,0,9,9,4],
+"muDIS__mergeFiles_8py.html#ab4fbf22cc0259817a2268d6b4f736bf6":[7,0,9,9,2],
+"muDIS__mergeFiles_8py.html#ac9b6cc3beba4698015a60694a23fb16a":[7,0,9,9,3],
+"muDIS__mergeFiles_8py.html#aec573fccfc6fe0a2450b5d41ae58767a":[7,0,9,9,1],
+"muDIS__mergeFiles_8py_source.html":[7,0,9,9],
+"muonDIS_2makeMuonDIS_8py.html":[7,0,8,3],
+"muonDIS_2makeMuonDIS_8py.html#a00f881b8b0529f9f9d19aa80a70703b8":[7,0,8,3,10],
+"muonDIS_2makeMuonDIS_8py.html#a1cd7e954ef137c6b2936151af44b5624":[7,0,8,3,16]
 };

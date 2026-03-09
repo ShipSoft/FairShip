@@ -114,7 +114,6 @@ var hierarchy =
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],
       [ "study_thinTarget.Block", "classstudy__thinTarget_1_1Block.html", null ]
     ] ],
-    [ "regression", "structregression.html", null ],
     [ "Pythia8::RndmEngine", null, [
       [ "PyTr1Rng", "classPyTr1Rng.html", null ],
       [ "PyTr3Rng", "classPyTr3Rng.html", null ]
