@@ -32,7 +32,6 @@ class ShipMuonShield : public FairModule {
   Double_t dZ0{0.}, dZ1{0.}, dZ2{0.}, dZ3{0.}, dZ4{0.}, dZ5{0.}, dZ6{0.},
       dZ7{0.}, dXgap{0.}, z_end_of_proximity_shielding{0.};
   size_t nMagnets{0};
-  Int_t InitMedium(TString name);
   Int_t nParams{0};
   Bool_t fWithConstShieldField{false};
   Bool_t fSC_mag{false};

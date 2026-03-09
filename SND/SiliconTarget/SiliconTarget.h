@@ -83,7 +83,6 @@ class SiliconTarget : public FairDetector, public ISTLPointContainer {
 
   SiliconTarget(const SiliconTarget&) = delete;
   SiliconTarget& operator=(const SiliconTarget&) = delete;
-  Int_t InitMedium(const char* name);
   ClassDefOverride(SiliconTarget, 1)
 };
 
