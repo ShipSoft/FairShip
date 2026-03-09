@@ -2,6 +2,7 @@
 #define SHIPDATA_ISTLPOINTCONTAINER_H_
 
 #include <map>
+#include "RtypesCore.h"
 
 /**
  * @brief Interface for detectors using STL containers (std::vector) for MC
