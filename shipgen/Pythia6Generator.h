@@ -126,8 +126,6 @@ class Pythia6Generator : public SHiP::Generator {
   /** PDG data base */
 
   //  TDatabasePDG *fPDG; //!
-
-  ClassDefOverride(Pythia6Generator, 2);
 };
 
 #endif  // SHIPGEN_PYTHIA6GENERATOR_H_

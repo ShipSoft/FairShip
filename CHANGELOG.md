@@ -20,6 +20,7 @@ it in future.
 
 ### Fixed
 
+* Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
 * Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`
 * Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`

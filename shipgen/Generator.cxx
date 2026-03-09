@@ -4,5 +4,3 @@
 
 #include "Generator.h"
 SHiP::Generator::~Generator() {}
-
-ClassImp(SHiP::Generator)

@@ -116,8 +116,6 @@ class HNLPythia8Generator : public SHiP::Generator {
       hid[1], mid[1];
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
-
-  ClassDefOverride(HNLPythia8Generator, 7);
 };
 
 #endif  // SHIPGEN_HNLPYTHIA8GENERATOR_H_

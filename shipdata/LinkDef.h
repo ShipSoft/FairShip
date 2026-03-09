@@ -13,5 +13,6 @@
 #pragma link C++ class ShipMCTrack+;
 #pragma link C++ class ShipParticle+;
 #pragma link C++ class TrackInfo+;
+#pragma link C++ class ISTLPointContainer-;
 
 #endif

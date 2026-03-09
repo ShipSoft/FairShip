@@ -64,7 +64,6 @@ class MuonBackGenerator : public SHiP::Generator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
-  ClassDefOverride(MuonBackGenerator, 7);
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

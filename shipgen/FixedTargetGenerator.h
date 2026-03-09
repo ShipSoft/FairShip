@@ -156,7 +156,5 @@ class FixedTargetGenerator : public SHiP::Generator {
   Float_t n_id, n_px, n_py, n_pz, n_M, n_E, n_mpx, n_mpy, n_mpz, n_mE, n_mid,
       ck;
   Int_t heartbeat;
-
-  ClassDefOverride(FixedTargetGenerator, 3);
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_
