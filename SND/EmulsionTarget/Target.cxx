@@ -34,6 +34,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
 #include "TClonesArray.h"
@@ -93,24 +94,6 @@ Target::~Target() {
 }
 
 void Target::Initialize() { FairDetector::Initialize(); }
-
-// -----   Private method InitMedium
-Int_t Target::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
-}
 
 //--------------Options for detector construction
 void Target::SetDetectorDesign(Int_t Design) {
@@ -213,13 +196,13 @@ void Target::SetHpTParam(Int_t n, Double_t dd,
 void Target::ConstructGeometry() {
   // cout << "Design = " << fDesign << endl;
 
-  InitMedium("air");
+  ShipGeo::InitMedium("air");
   TGeoMedium* air = gGeoManager->GetMedium("air");
 
-  InitMedium("PlasticBase");
+  ShipGeo::InitMedium("PlasticBase");
   TGeoMedium* PBase = gGeoManager->GetMedium("PlasticBase");
 
-  InitMedium("NuclearEmulsion");
+  ShipGeo::InitMedium("NuclearEmulsion");
   TGeoMedium* NEmu = gGeoManager->GetMedium("NuclearEmulsion");
 
   TGeoMaterial* NEmuMat =
@@ -247,7 +230,7 @@ void Target::ConstructGeometry() {
 
   TGeoMedium* Emufilm = new TGeoMedium("EmulsionFilm", 100, emufilmmixture);
 
-  InitMedium("tungsten");
+  ShipGeo::InitMedium("tungsten");
   TGeoMedium* tungsten = gGeoManager->GetMedium("tungsten");
 
   Int_t NPlates = number_of_plates;  // Number of doublets emulsion + Pb

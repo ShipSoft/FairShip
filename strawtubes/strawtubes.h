@@ -140,7 +140,6 @@ class strawtubes : public FairDetector, public ISTLPointContainer {
 
   strawtubes(const strawtubes&) = delete;
   strawtubes& operator=(const strawtubes&) = delete;
-  Int_t InitMedium(const char* name);
   ClassDefOverride(strawtubes, 7)
 };
 

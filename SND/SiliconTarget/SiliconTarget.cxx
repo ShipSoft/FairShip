@@ -6,6 +6,7 @@
 
 #include "FairLink.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
 #include "SiliconTargetPoint.h"
@@ -73,24 +74,6 @@ SiliconTarget::~SiliconTarget() {
 }
 
 void SiliconTarget::Initialize() { FairDetector::Initialize(); }
-
-// -----   Private method InitMedium
-Int_t SiliconTarget::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
-}
 
 void SiliconTarget::SetSiliconTargetParameters(
     Double_t targetWidth, Double_t targetHeight, Double_t sensorWidth,
@@ -161,11 +144,11 @@ TGeoVolume* SiliconTarget::CreateSiliconPlanes(const char* name, Double_t width,
   return trackingStation;
 }
 void SiliconTarget::ConstructGeometry() {
-  InitMedium("tungstenalloySND");
+  ShipGeo::InitMedium("tungstenalloySND");
   TGeoMedium* tungsten = gGeoManager->GetMedium("tungstenalloySND");
-  InitMedium("air");
+  ShipGeo::InitMedium("air");
   TGeoMedium* air = gGeoManager->GetMedium("air");
-  InitMedium("silicon");
+  ShipGeo::InitMedium("silicon");
   TGeoMedium* Silicon = gGeoManager->GetMedium("silicon");
 
   Double_t totalLength = fLayers * fTargetSpacing;

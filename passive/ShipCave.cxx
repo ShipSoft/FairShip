@@ -10,6 +10,7 @@
 #include "FairGeoLoader.h"     // for FairGeoLoader
 #include "FairGeoMedia.h"
 #include "ShipGeoCave.h"  // for ShipGeoCave
+#include "ShipGeoUtil.h"
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
@@ -24,21 +25,6 @@ ShipCave::ShipCave(Double_t z) : FairModule("Cave", "ShipCave") {
   z_end_of_proximity_shielding = z;
 }
 
-Int_t ShipCave::InitMedium(TString name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium)
-    Fatal("InitMedium", "Material %s not defined in media file.", name.Data());
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
-}
-
 void ShipCave::ConstructGeometry() {
   FairGeoLoader* loader = FairGeoLoader::Instance();
   FairGeoInterface* GeoInterface = loader->getGeoInterface();
@@ -50,7 +36,7 @@ void ShipCave::ConstructGeometry() {
     MGeo->create(loader->getGeoBuilder());
   }
   TGeoVolume* top = gGeoManager->GetTopVolume();
-  InitMedium("Concrete");
+  ShipGeo::InitMedium("Concrete");
   TGeoMedium* concrete = gGeoManager->GetMedium("Concrete");
 
   Double_t TCC8_length = 170 * m;

@@ -231,8 +231,6 @@ class Target : public FairDetector, public ISTLPointContainer {
   Double_t fHpTDistance;
   Double_t fHpTDZ;
   Int_t fnHpT;
-
-  Int_t InitMedium(const char* name);
 };
 
 #endif  // SND_EMULSIONTARGET_TARGET_H_
