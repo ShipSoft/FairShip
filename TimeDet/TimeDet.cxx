@@ -23,6 +23,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoBBox.h"
@@ -171,7 +172,7 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
 void TimeDet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
-  InitMedium("polyvinyltoluene");
+  ShipGeo::InitMedium("polyvinyltoluene");
   TGeoMedium* Scint = gGeoManager->GetMedium("polyvinyltoluene");
 
   ///////////////////////////////////////////////////////

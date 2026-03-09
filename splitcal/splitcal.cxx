@@ -18,6 +18,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TCanvas.h"
 #include "TClonesArray.h"
@@ -57,8 +58,6 @@ Int_t splitcal::InitMedium(const char* name) {
   TGeoMedium* medium = gGeoManager->GetMedium(name);
   if (medium != nullptr) return ShipMedium->getMediumIndex();
 
-  return geoBuild->createMedium(ShipMedium);
-}
 Bool_t splitcal::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   // Set parameters at entrance of volume. Reset ELoss.
@@ -168,11 +167,11 @@ void splitcal::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tSplitCal = new TGeoVolumeAssembly("SplitCalDetector");
 
-  InitMedium("iron");
-  InitMedium("lead");
-  InitMedium("Scintillator");
-  InitMedium("argon");
-  InitMedium("GEMmixture");
+  ShipGeo::InitMedium("iron");
+  ShipGeo::InitMedium("lead");
+  ShipGeo::InitMedium("Scintillator");
+  ShipGeo::InitMedium("argon");
+  ShipGeo::InitMedium("GEMmixture");
 
   TGeoMedium* A2 = gGeoManager->GetMedium("iron");
   TGeoMedium* A3 = gGeoManager->GetMedium("lead");

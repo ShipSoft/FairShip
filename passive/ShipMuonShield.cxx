@@ -11,6 +11,7 @@
 #include "FairGeoMedia.h"
 #include "FairLogger.h"     /// for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "ShipGeoUtil.h"
 #include "ShipUnit.h"
 #include "TFile.h"
 #include "TGeoBBox.h"
@@ -49,22 +50,6 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
   fWithConstShieldField = WithConstShieldField;
   fSC_mag = SC_key;
   z_end_of_proximity_shielding = z;
-}
-
-// -----   Private method InitMedium
-Int_t ShipMuonShield::InitMedium(TString name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium)
-    Fatal("InitMedium", "Material %s not defined in media file.", name.Data());
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
 }
 
 void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
@@ -401,7 +386,7 @@ void ShipMuonShield::ConstructGeometry() {
   LOG(debug) << " Construct Geometry of the MS ";
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
-  InitMedium("iron");
+  ShipGeo::InitMedium("iron");
   TGeoMedium* iron = gGeoManager->GetMedium("iron");
 
   std::vector<TString> magnetName;
@@ -456,11 +441,13 @@ void ShipMuonShield::ConstructGeometry() {
       "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
       "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
   };
-  TString absorber_magnet_components;
-  for (auto&& magnet_component : magnet_components) {
-    absorber_magnet_components +=
-        ("-" + absorber_magnets[0] + magnet_component);
-  }
+  const TString absorber_magnet_components = [&] {
+    TString result;
+    for (auto&& magnet_component : magnet_components) {
+      result += ("-" + absorber_magnets[0] + magnet_component);
+    }
+    return result;
+  }();
 
   TGeoCompositeShape* absorberShape = new TGeoCompositeShape(
       "Absorber", "absorber:absorber_shift" + absorber_magnet_components);

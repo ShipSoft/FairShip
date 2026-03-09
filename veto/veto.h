@@ -129,7 +129,6 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   veto(const veto&) = delete;
   veto& operator=(const veto&) = delete;
-  Int_t InitMedium(const char* name);
   /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of
    * wX_end *wY_end

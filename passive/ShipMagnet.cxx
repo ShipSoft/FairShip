@@ -6,6 +6,7 @@
 
 #include "FairRun.h"        // for FairRun
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "ShipGeoUtil.h"
 #include "TGeoManager.h"
 // #include "FairGeoMedia.h"
 // #include "FairGeoBuilder.h"
@@ -44,24 +45,6 @@ ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c,
   CoilThick = CT;
 }
 
-// -----   Private method InitMedium
-Int_t ShipMagnet::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-}
 // private method make support of magnet
 TGeoVolume* ShipMagnet::MagnetSupport(Double_t hwidth, Double_t hheight,
                                       Double_t dz, Int_t colour,
@@ -116,9 +99,9 @@ TGeoVolume* ShipMagnet::MagnetSupport(Double_t hwidth, Double_t hheight,
 }
 void ShipMagnet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
-  InitMedium("iron");
+  ShipGeo::InitMedium("iron");
   TGeoMedium* Fe = gGeoManager->GetMedium("iron");
-  InitMedium("Aluminum");
+  ShipGeo::InitMedium("Aluminum");
   TGeoMedium* Al = gGeoManager->GetMedium("Aluminum");
   TGeoVolumeAssembly* tMagnet = new TGeoVolumeAssembly("SHiPMagnet");
   top->AddNode(tMagnet, 1, new TGeoTranslation(0, 0, 0));

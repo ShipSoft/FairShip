@@ -85,13 +85,9 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z,
   // rotate around z-axis
   Double_t pxr = c * px1 - s * py;
   Double_t pyr = s * px1 + c * py;
-  std::vector<double> pout;
-  pout.push_back(pxr);
-  pout.push_back(pyr);
-  pout.push_back(pzr);
-  // cout << "Info GenieGenerator: rotated" << pout[0] << " " << pout[1] << " "
-  // << pout[2] << " " << x << " " << y << " " << z <<endl;
-  return pout;
+  // cout << "Info GenieGenerator: rotated" << pxr << " " << pyr << " "
+  // << pzr << " " << x << " " << y << " " << z <<endl;
+  return {pxr, pyr, pzr};
 }
 
 // -----   Destructor   ----------------------------------------------------

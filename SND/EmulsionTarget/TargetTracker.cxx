@@ -32,6 +32,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
 #include "TClonesArray.h"
@@ -93,24 +94,6 @@ TargetTracker::~TargetTracker() {
 
 void TargetTracker::Initialize() { FairDetector::Initialize(); }
 
-// -----   Private method InitMedium
-Int_t TargetTracker::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
-}
-
 void TargetTracker::SetSciFiParam(Double_t scifimat_width_,
                                   Double_t scifimat_hor_,
                                   Double_t scifimat_vert_, Double_t scifimat_z_,
@@ -144,16 +127,16 @@ void TargetTracker::SetNumberTT(Int_t n) { fNTT = n; }
 void TargetTracker::SetDesign(Int_t Design) { fDesign = Design; }
 
 void TargetTracker::ConstructGeometry() {
-  InitMedium("vacuum");
+  ShipGeo::InitMedium("vacuum");
   TGeoMedium* vacuum = gGeoManager->GetMedium("vacuum");
 
-  InitMedium("CarbonComposite");
+  ShipGeo::InitMedium("CarbonComposite");
   TGeoMedium* CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
-  InitMedium("SciFiMat");
+  ShipGeo::InitMedium("SciFiMat");
   TGeoMedium* SciFiMat = gGeoManager->GetMedium("SciFiMat");
 
-  InitMedium("Airex");
+  ShipGeo::InitMedium("Airex");
   TGeoMedium* Airex = gGeoManager->GetMedium("Airex");
 
   // Target Tracker

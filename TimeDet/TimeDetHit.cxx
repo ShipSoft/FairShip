@@ -54,10 +54,7 @@ std::vector<double> TimeDetHit::GetTime(Double_t x) const {
   Double_t dt = 1. / TMath::Sqrt(w1 + w2);
   Double_t t =
       ((t_1 - lneg / v_drift) * w1 + (t_2 - lpos / v_drift) * w2) / (w1 + w2);
-  std::vector<double> m;
-  m.push_back(t);
-  m.push_back(dt);
-  return m;
+  return {t, dt};
 }
 // ---- return mean time information
 std::vector<double> TimeDetHit::GetTime() const {
@@ -70,22 +67,14 @@ std::vector<double> TimeDetHit::GetTime() const {
   Float_t r1 = Resol(lneg);
   Float_t r2 = Resol(lpos);
   Double_t dt = TMath::Sqrt(r1 * r1 + r2 * r2);
-  std::vector<double> m;
-  m.push_back(t0);
-  m.push_back(dt);
-  return m;
+  return {t0, dt};
 }
 // -----   resolution function-------------------
 Double_t TimeDetHit::Resol(Double_t x) const {
   return par[0] * TMath::Exp((x - par[2]) / par[1]) + par[3];
 }
 
-std::vector<double> TimeDetHit::GetMeasurements() const {
-  std::vector<double> m;
-  m.push_back(t_1);
-  m.push_back(t_2);
-  return m;
-}
+std::vector<double> TimeDetHit::GetMeasurements() const { return {t_1, t_2}; }
 
 // distance to edges
 void TimeDetHit::Dist(Float_t x, Float_t& lpos, Float_t& lneg) const {

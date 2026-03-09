@@ -31,7 +31,6 @@ class ShipMagnet : public FairModule {
   Double_t floorheight;
   TGeoVolume* MagnetSupport(Double_t hwidth, Double_t hheight, Double_t dz,
                             Int_t colour, TGeoMedium* material);
-  Int_t InitMedium(const char* name);
 };
 
 #endif  // PASSIVE_SHIPMAGNET_H_

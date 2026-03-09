@@ -24,6 +24,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoBBox.h"
@@ -55,26 +56,6 @@ UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
       det_zPos(0),
       UpstreamTagger_fulldet(0),
       scoringPlaneUBText(0) {}
-
-Int_t UpstreamTagger::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-
-  return 0;
-}
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -140,7 +121,7 @@ void UpstreamTagger::ConstructGeometry() {
 
   ///////////////////////////////////////////////////////
 
-  InitMedium("vacuum");
+  ShipGeo::InitMedium("vacuum");
   TGeoMedium* Vacuum_box = gGeoManager->GetMedium("vacuum");
   ///////////////////////////////////////////////////////////////////
 

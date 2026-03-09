@@ -132,8 +132,6 @@ class TargetTracker : public FairDetector, public ISTLPointContainer {
   Int_t fNTT;  // number of TT
 
   Int_t fDesign;
-
-  Int_t InitMedium(const char* name);
 };
 
 #endif  // SND_EMULSIONTARGET_TARGETTRACKER_H_
