@@ -8,19 +8,19 @@
 #include <utility>
 #include <vector>
 
-#include "ISTLPointContainer.h"
 #include "DetectorPoint.h"
 #include "FairDetector.h"
 #include "FairRootManager.h"
+#include "ISTLPointContainer.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
 namespace SHiP {
 template <typename PointType>
-class Detector : public FairDetector , public ISTLPointContainer {
+class Detector : public FairDetector, public ISTLPointContainer {
  public:
   Detector() = default;
-  ~Detector() override = default; 
+  ~Detector() override = default;
   Detector(const char* Name, Bool_t Active, Int_t detID)
       : FairDetector(Name, Active, detID),
         fEventID(-1),
@@ -57,7 +57,8 @@ class Detector : public FairDetector , public ISTLPointContainer {
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
 
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) override {
+  void UpdatePointTrackIndices(
+      const std::map<Int_t, Int_t>& indexMap) override {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
       auto iter = indexMap.find(oldTrackID);

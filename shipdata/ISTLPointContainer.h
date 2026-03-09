@@ -2,6 +2,7 @@
 #define SHIPDATA_ISTLPOINTCONTAINER_H_
 
 #include <map>
+
 #include "RtypesCore.h"
 
 /**
