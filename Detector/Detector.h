@@ -50,8 +50,8 @@ class Detector : public FairDetector {
 
   void Register() override {
     fDetPoints = new std::vector<PointType>();
-    FairRootManager::Instance()->RegisterAny(PointType::Class()->GetName(), fDetPoints,
-                                             kTRUE);
+    FairRootManager::Instance()->RegisterAny(PointType::Class()->GetName(),
+                                             fDetPoints, kTRUE);
   }
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
