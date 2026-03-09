@@ -19,7 +19,7 @@ template <typename PointType>
 class Detector : public FairDetector {
  public:
   Detector() = default;
-  ~Detector() override { delete fDetPoints; }
+  ~Detector() override = default;
   Detector(const char* Name, Bool_t Active, Int_t detID)
       : FairDetector(Name, Active, detID),
         fEventID(-1),
