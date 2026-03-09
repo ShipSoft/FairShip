@@ -56,8 +56,7 @@ class Detector : public FairDetector {
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
 
-  virtual void UpdatePointTrackIndices(
-      const std::map<Int_t, Int_t>& indexMap) {
+  virtual void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
     for (auto& point : *fDetPoints) {
       Int_t oldTrackID = point.GetTrackID();
       auto iter = indexMap.find(oldTrackID);
@@ -78,6 +77,7 @@ class Detector : public FairDetector {
   void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
     ;
   }
+
  protected:
   /** Track information to be stored until the track leaves the active volume.*/
   Int_t fEventID;       //!  event index
