@@ -15,6 +15,7 @@ it in future.
 ### Changed
 
 * Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
+* Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
 
 ### Fixed
 
