@@ -351,11 +351,7 @@ void ShipStack::AddPoint(DetectorId detId) {
   Int_t iDet = detId;
   // cout << "Add point for Detektor" << iDet << endl;
   pair<Int_t, Int_t> a(fCurrentTrack, iDet);
-  if (fPointsMap.find(a) == fPointsMap.end()) {
-    fPointsMap[a] = 1;
-  } else {
-    fPointsMap[a]++;
-  }
+  ++fPointsMap[a];
 }
 // -------------------------------------------------------------------------
 
@@ -366,11 +362,7 @@ void ShipStack::AddPoint(DetectorId detId, Int_t iTrack) {
   }
   Int_t iDet = detId;
   pair<Int_t, Int_t> a(iTrack, iDet);
-  if (fPointsMap.find(a) == fPointsMap.end()) {
-    fPointsMap[a] = 1;
-  } else {
-    fPointsMap[a]++;
-  }
+  ++fPointsMap[a];
 }
 // -------------------------------------------------------------------------
 
@@ -418,7 +410,7 @@ void ShipStack::SelectTracks() {
     Int_t nPoints = 0;
     for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
       pair<Int_t, Int_t> a(i, iDet);
-      if (fPointsMap.find(a) != fPointsMap.end()) {
+      if (fPointsMap.contains(a)) {
         nPoints += fPointsMap[a];
       }
     }
