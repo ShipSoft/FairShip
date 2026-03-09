@@ -373,23 +373,25 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  441</span>      <span class="stringliteral">&quot;_MiddleMagL&quot;</span>, <span class="stringliteral">&quot;_MiddleMagR&quot;</span>,  <span class="stringliteral">&quot;_MagRetL&quot;</span>,    <span class="stringliteral">&quot;_MagRetR&quot;</span>,</div>
 <div class="line"><span class="lineno">  442</span>      <span class="stringliteral">&quot;_MagTopLeft&quot;</span>, <span class="stringliteral">&quot;_MagTopRight&quot;</span>, <span class="stringliteral">&quot;_MagBotLeft&quot;</span>, <span class="stringliteral">&quot;_MagBotRight&quot;</span>,</div>
 <div class="line"><span class="lineno">  443</span>  };</div>
-<div class="line"><span class="lineno">  444</span>  TString absorber_magnet_components;</div>
-<div class="line"><span class="lineno">  445</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; magnet_component : magnet_components) {</div>
-<div class="line"><span class="lineno">  446</span>    absorber_magnet_components +=</div>
-<div class="line"><span class="lineno">  447</span>        (<span class="stringliteral">&quot;-&quot;</span> + absorber_magnets[0] + magnet_component);</div>
-<div class="line"><span class="lineno">  448</span>  }</div>
-<div class="line"><span class="lineno">  449</span> </div>
-<div class="line"><span class="lineno">  450</span>  TGeoCompositeShape* absorberShape = <span class="keyword">new</span> TGeoCompositeShape(</div>
-<div class="line"><span class="lineno">  451</span>      <span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift&quot;</span> + absorber_magnet_components);</div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>  TGeoVolume* absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
-<div class="line"><span class="lineno">  454</span>  absorber-&gt;SetLineColor(42);  <span class="comment">// brown / light red</span></div>
-<div class="line"><span class="lineno">  455</span>  tShield-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  456</span>      absorber, 1,</div>
-<div class="line"><span class="lineno">  457</span>      <span class="keyword">new</span> TGeoTranslation(0, 0,</div>
-<div class="line"><span class="lineno">  458</span>                          <a class="code hl_variable" href="classShipMuonShield.html#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + absorber_half_length +</div>
-<div class="line"><span class="lineno">  459</span>                              absorber_offset));  <span class="comment">// - Passive?</span></div>
-<div class="line"><span class="lineno">  460</span>}</div>
+<div class="line"><span class="lineno">  444</span>  <span class="keyword">const</span> TString absorber_magnet_components = [&amp;] {</div>
+<div class="line"><span class="lineno">  445</span>    TString result;</div>
+<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; magnet_component : magnet_components) {</div>
+<div class="line"><span class="lineno">  447</span>      result += (<span class="stringliteral">&quot;-&quot;</span> + absorber_magnets[0] + magnet_component);</div>
+<div class="line"><span class="lineno">  448</span>    }</div>
+<div class="line"><span class="lineno">  449</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">  450</span>  }();</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>  TGeoCompositeShape* absorberShape = <span class="keyword">new</span> TGeoCompositeShape(</div>
+<div class="line"><span class="lineno">  453</span>      <span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift&quot;</span> + absorber_magnet_components);</div>
+<div class="line"><span class="lineno">  454</span> </div>
+<div class="line"><span class="lineno">  455</span>  TGeoVolume* absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
+<div class="line"><span class="lineno">  456</span>  absorber-&gt;SetLineColor(42);  <span class="comment">// brown / light red</span></div>
+<div class="line"><span class="lineno">  457</span>  tShield-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  458</span>      absorber, 1,</div>
+<div class="line"><span class="lineno">  459</span>      <span class="keyword">new</span> TGeoTranslation(0, 0,</div>
+<div class="line"><span class="lineno">  460</span>                          <a class="code hl_variable" href="classShipMuonShield.html#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + absorber_half_length +</div>
+<div class="line"><span class="lineno">  461</span>                              absorber_offset));  <span class="comment">// - Passive?</span></div>
+<div class="line"><span class="lineno">  462</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a051a74c8506be0a4072e69b52b7113a8"><div class="ttname"><a href="ShipBellField_8cxx.html#a051a74c8506be0a4072e69b52b7113a8">tesla</a></div><div class="ttdeci">Double_t tesla</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00022">ShipBellField.cxx:22</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_a7bbec66dfe6198b6507880fb2bd8696a"><div class="ttname"><a href="classShipMuonShield.html#a7bbec66dfe6198b6507880fb2bd8696a">ShipMuonShield::Initialize</a></div><div class="ttdeci">void Initialize(std::vector&lt; TString &gt; &amp;magnetName, std::vector&lt; FieldDirection &gt; &amp;fieldDirection, std::vector&lt; Double_t &gt; &amp;dXIn, std::vector&lt; Double_t &gt; &amp;dYIn, std::vector&lt; Double_t &gt; &amp;dXOut, std::vector&lt; Double_t &gt; &amp;dYOut, std::vector&lt; Double_t &gt; &amp;ratio_yokesIn, std::vector&lt; Double_t &gt; &amp;ratio_yokesOut, std::vector&lt; Double_t &gt; &amp;dY_yokeIn, std::vector&lt; Double_t &gt; &amp;dY_yokeOut, std::vector&lt; Double_t &gt; &amp;dZ, std::vector&lt; Double_t &gt; &amp;Z_rel, std::vector&lt; Double_t &gt; &amp;midGapIn, std::vector&lt; Double_t &gt; &amp;midGapOut, std::vector&lt; Double_t &gt; &amp;Bgoal, std::vector&lt; Double_t &gt; &amp;gapIn, std::vector&lt; Double_t &gt; &amp;gapOut, std::vector&lt; Double_t &gt; &amp;Z)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00310">ShipMuonShield.cxx:310</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_adc4671e1413b00224c312f8f55ec65b7"><div class="ttname"><a href="classShipMuonShield.html#adc4671e1413b00224c312f8f55ec65b7">ShipMuonShield::CreateMagnet</a></div><div class="ttdeci">void CreateMagnet(TString magnetName, TGeoMedium *medium, TGeoVolume *tShield, TGeoUniformMagField *fields[4], FieldDirection fieldDirection, Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t ratio_yoke_1, Double_t ratio_yoke_2, Double_t dY_yoke_1, Double_t dY_yoke_2, Double_t dZ, Double_t middleGap, Double_t middleGap2, Double_t gap, Double_t gap2, Double_t Z, Bool_t NotMagnet, Bool_t SC_key)</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8cxx_source.html#l00133">ShipMuonShield.cxx:133</a></div></div>

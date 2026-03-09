@@ -569,12 +569,12 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classstrawtubesPoint.html">strawtubesPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00580">580</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  583</span>                                                                       {</div>
-<div class="line"><span class="lineno">  584</span>  <a class="code hl_variable" href="classstrawtubes.html#a9a696ca816806430efca3d8bfe66a0d0">fstrawtubesPoints</a>-&gt;emplace_back(eventID, trackID, detID, pos, mom, time,</div>
-<div class="line"><span class="lineno">  585</span>                                  length, eLoss, pdgCode, dist2Wire);</div>
-<div class="line"><span class="lineno">  586</span>  <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classstrawtubes.html#a9a696ca816806430efca3d8bfe66a0d0">fstrawtubesPoints</a>-&gt;back());</div>
-<div class="line"><span class="lineno">  587</span>}</div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00571">571</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  574</span>                                                                       {</div>
+<div class="line"><span class="lineno">  575</span>  <a class="code hl_variable" href="classstrawtubes.html#a9a696ca816806430efca3d8bfe66a0d0">fstrawtubesPoints</a>-&gt;emplace_back(eventID, trackID, detID, pos, mom, time,</div>
+<div class="line"><span class="lineno">  576</span>                                  length, eLoss, pdgCode, dist2Wire);</div>
+<div class="line"><span class="lineno">  577</span>  <span class="keywordflow">return</span> &amp;(<a class="code hl_variable" href="classstrawtubes.html#a9a696ca816806430efca3d8bfe66a0d0">fstrawtubesPoints</a>-&gt;back());</div>
+<div class="line"><span class="lineno">  578</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -771,122 +771,118 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  375</span> </div>
 <div class="line"><span class="lineno">  376</span>    <span class="keywordflow">for</span> (Int_t vnb = 0; vnb &lt; 4; vnb++) {</div>
 <div class="line"><span class="lineno">  377</span>      <span class="comment">// View loop</span></div>
-<div class="line"><span class="lineno">  378</span>      TString nmview;</div>
-<div class="line"><span class="lineno">  379</span>      Double_t angle;</div>
-<div class="line"><span class="lineno">  380</span>      Double_t stereo_growth;</div>
-<div class="line"><span class="lineno">  381</span>      Double_t stereo_pitch;</div>
-<div class="line"><span class="lineno">  382</span>      Double_t offset_layer;</div>
-<div class="line"><span class="lineno">  383</span>      Int_t straws_per_layer;</div>
-<div class="line"><span class="lineno">  384</span> </div>
-<div class="line"><span class="lineno">  385</span>      <span class="keywordflow">switch</span> (vnb) {</div>
-<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">case</span> 0:</div>
-<div class="line"><span class="lineno">  387</span>          angle = 0.;</div>
-<div class="line"><span class="lineno">  388</span>          nmview = nmstation + <span class="stringliteral">&quot;_y1&quot;</span>;</div>
-<div class="line"><span class="lineno">  389</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  390</span>        <span class="keywordflow">case</span> 1:</div>
-<div class="line"><span class="lineno">  391</span>          angle = <a class="code hl_variable" href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">f_view_angle</a>;</div>
-<div class="line"><span class="lineno">  392</span>          nmview = nmstation + <span class="stringliteral">&quot;_u&quot;</span>;</div>
-<div class="line"><span class="lineno">  393</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">case</span> 2:</div>
-<div class="line"><span class="lineno">  395</span>          angle = -<a class="code hl_variable" href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">f_view_angle</a>;</div>
-<div class="line"><span class="lineno">  396</span>          nmview = nmstation + <span class="stringliteral">&quot;_v&quot;</span>;</div>
-<div class="line"><span class="lineno">  397</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  398</span>        <span class="keywordflow">case</span> 3:</div>
-<div class="line"><span class="lineno">  399</span>          angle = 0.;</div>
-<div class="line"><span class="lineno">  400</span>          nmview = nmstation + <span class="stringliteral">&quot;_y2&quot;</span>;</div>
-<div class="line"><span class="lineno">  401</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  402</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  403</span>          angle = 0.;</div>
-<div class="line"><span class="lineno">  404</span>          nmview = nmstation + <span class="stringliteral">&quot;_y1&quot;</span>;</div>
-<div class="line"><span class="lineno">  405</span>      }</div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>      <span class="comment">// Adjustments in the stereo views</span></div>
-<div class="line"><span class="lineno">  408</span>      <span class="comment">// stereo_growth: extension of stereo views beyond aperture</span></div>
-<div class="line"><span class="lineno">  409</span>      <span class="comment">// stereo_pitch: straw pitch in stereo views</span></div>
-<div class="line"><span class="lineno">  410</span>      <span class="comment">// offset_layer: layer offset in stereo views</span></div>
-<div class="line"><span class="lineno">  411</span>      <span class="comment">// straws_per_layer: number of straws in one layer with stereo extension</span></div>
-<div class="line"><span class="lineno">  412</span>      <span class="comment">// If angle == 0., all numbers return the case of non-stereo views.</span></div>
-<div class="line"><span class="lineno">  413</span>      stereo_growth =</div>
-<div class="line"><span class="lineno">  414</span>          TMath::Tan(TMath::Abs(angle) * TMath::Pi() / 180.0) * straw_length;</div>
-<div class="line"><span class="lineno">  415</span>      stereo_pitch =</div>
-<div class="line"><span class="lineno">  416</span>          <a class="code hl_variable" href="classstrawtubes.html#a594d1d5471ca4fe361c7c0b6951dd9b3">f_straw_pitch</a> / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);</div>
-<div class="line"><span class="lineno">  417</span>      offset_layer =</div>
-<div class="line"><span class="lineno">  418</span>          <a class="code hl_variable" href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">f_offset_layer</a> / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);</div>
-<div class="line"><span class="lineno">  419</span>      straws_per_layer =</div>
-<div class="line"><span class="lineno">  420</span>          std::ceil(2 * (<a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth) / stereo_pitch);</div>
-<div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>      <span class="keywordflow">for</span> (Int_t lnb = 0; lnb &lt; 2; lnb++) {</div>
-<div class="line"><span class="lineno">  423</span>        <span class="comment">// Layer loop</span></div>
-<div class="line"><span class="lineno">  424</span>        TString nmlayer = nmview + <span class="stringliteral">&quot;_layer_&quot;</span>;</div>
-<div class="line"><span class="lineno">  425</span>        nmlayer += lnb;</div>
-<div class="line"><span class="lineno">  426</span>        TGeoBBox* layer = <span class="keyword">new</span> TGeoBBox(</div>
-<div class="line"><span class="lineno">  427</span>            <span class="stringliteral">&quot;layer box&quot;</span>, straw_length + eps / 4,</div>
-<div class="line"><span class="lineno">  428</span>            <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth * 2 + offset_layer + eps / 4,</div>
-<div class="line"><span class="lineno">  429</span>            <a class="code hl_variable" href="classstrawtubes.html#ab80522eb272e260d2f1a243e104d2d0d">f_outer_straw_diameter</a> / 2. + eps / 4);</div>
-<div class="line"><span class="lineno">  430</span>        TGeoVolume* layerbox = <span class="keyword">new</span> TGeoVolume(nmlayer, layer, med);</div>
-<div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>        <span class="comment">// The layer box sits in the viewframe.</span></div>
-<div class="line"><span class="lineno">  433</span>        <span class="comment">// Hence, z-translate the layer w.r.t. the view</span></div>
-<div class="line"><span class="lineno">  434</span>        vol-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  435</span>            layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4,</div>
-<div class="line"><span class="lineno">  436</span>            <span class="keyword">new</span> TGeoTranslation(0, -floor_offset / 2.,</div>
-<div class="line"><span class="lineno">  437</span>                                (vnb - 3. / 2.) * <a class="code hl_variable" href="classstrawtubes.html#a799da7ddd56aafed911f45f140a55dc7">f_delta_z_view</a> +</div>
-<div class="line"><span class="lineno">  438</span>                                    (lnb - 1. / 2.) * <a class="code hl_variable" href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">f_delta_z_layer</a>));</div>
-<div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span>        TGeoRotation r6s;</div>
-<div class="line"><span class="lineno">  441</span>        TGeoTranslation t6s;</div>
-<div class="line"><span class="lineno">  442</span>        <span class="keywordflow">for</span> (Int_t snb = 1; snb &lt;= straws_per_layer; snb++) {</div>
-<div class="line"><span class="lineno">  443</span>          <span class="comment">// Straw loop</span></div>
-<div class="line"><span class="lineno">  444</span>          <span class="comment">// y-translate the straw to its position</span></div>
-<div class="line"><span class="lineno">  445</span>          t6s.SetTranslation(0,</div>
-<div class="line"><span class="lineno">  446</span>                             <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth -</div>
-<div class="line"><span class="lineno">  447</span>                                 (snb - 1. / 2.) * stereo_pitch +</div>
-<div class="line"><span class="lineno">  448</span>                                 lnb * offset_layer,</div>
-<div class="line"><span class="lineno">  449</span>                             0);</div>
-<div class="line"><span class="lineno">  450</span>          <span class="comment">// Rotate the straw with stereo angle</span></div>
-<div class="line"><span class="lineno">  451</span>          r6s.SetAngles(90 + angle, 90, 0);</div>
-<div class="line"><span class="lineno">  452</span>          TGeoCombiTrans c6s(t6s, r6s);</div>
-<div class="line"><span class="lineno">  453</span>          TGeoHMatrix* h6s = <span class="keyword">new</span> TGeoHMatrix(c6s);</div>
+<div class="line"><span class="lineno">  378</span>      <span class="keyword">const</span> Double_t angle = [&amp;] {</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">switch</span> (vnb) {</div>
+<div class="line"><span class="lineno">  380</span>          <span class="keywordflow">case</span> 1:</div>
+<div class="line"><span class="lineno">  381</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">f_view_angle</a>;</div>
+<div class="line"><span class="lineno">  382</span>          <span class="keywordflow">case</span> 2:</div>
+<div class="line"><span class="lineno">  383</span>            <span class="keywordflow">return</span> -<a class="code hl_variable" href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">f_view_angle</a>;</div>
+<div class="line"><span class="lineno">  384</span>          <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  385</span>            <span class="keywordflow">return</span> 0.;</div>
+<div class="line"><span class="lineno">  386</span>        }</div>
+<div class="line"><span class="lineno">  387</span>      }();</div>
+<div class="line"><span class="lineno">  388</span>      <span class="keyword">const</span> TString nmview = [&amp;] {</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">switch</span> (vnb) {</div>
+<div class="line"><span class="lineno">  390</span>          <span class="keywordflow">case</span> 0:</div>
+<div class="line"><span class="lineno">  391</span>            <span class="keywordflow">return</span> nmstation + <span class="stringliteral">&quot;_y1&quot;</span>;</div>
+<div class="line"><span class="lineno">  392</span>          <span class="keywordflow">case</span> 1:</div>
+<div class="line"><span class="lineno">  393</span>            <span class="keywordflow">return</span> nmstation + <span class="stringliteral">&quot;_u&quot;</span>;</div>
+<div class="line"><span class="lineno">  394</span>          <span class="keywordflow">case</span> 2:</div>
+<div class="line"><span class="lineno">  395</span>            <span class="keywordflow">return</span> nmstation + <span class="stringliteral">&quot;_v&quot;</span>;</div>
+<div class="line"><span class="lineno">  396</span>          <span class="keywordflow">case</span> 3:</div>
+<div class="line"><span class="lineno">  397</span>            <span class="keywordflow">return</span> nmstation + <span class="stringliteral">&quot;_y2&quot;</span>;</div>
+<div class="line"><span class="lineno">  398</span>          <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  399</span>            <span class="keywordflow">return</span> nmstation + <span class="stringliteral">&quot;_y1&quot;</span>;</div>
+<div class="line"><span class="lineno">  400</span>        }</div>
+<div class="line"><span class="lineno">  401</span>      }();</div>
+<div class="line"><span class="lineno">  402</span> </div>
+<div class="line"><span class="lineno">  403</span>      <span class="comment">// Adjustments in the stereo views</span></div>
+<div class="line"><span class="lineno">  404</span>      <span class="comment">// stereo_growth: extension of stereo views beyond aperture</span></div>
+<div class="line"><span class="lineno">  405</span>      <span class="comment">// stereo_pitch: straw pitch in stereo views</span></div>
+<div class="line"><span class="lineno">  406</span>      <span class="comment">// offset_layer: layer offset in stereo views</span></div>
+<div class="line"><span class="lineno">  407</span>      <span class="comment">// straws_per_layer: number of straws in one layer with stereo extension</span></div>
+<div class="line"><span class="lineno">  408</span>      <span class="comment">// If angle == 0., all numbers return the case of non-stereo views.</span></div>
+<div class="line"><span class="lineno">  409</span>      <span class="keyword">const</span> Double_t stereo_growth =</div>
+<div class="line"><span class="lineno">  410</span>          TMath::Tan(TMath::Abs(angle) * TMath::Pi() / 180.0) * straw_length;</div>
+<div class="line"><span class="lineno">  411</span>      <span class="keyword">const</span> Double_t stereo_pitch =</div>
+<div class="line"><span class="lineno">  412</span>          <a class="code hl_variable" href="classstrawtubes.html#a594d1d5471ca4fe361c7c0b6951dd9b3">f_straw_pitch</a> / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);</div>
+<div class="line"><span class="lineno">  413</span>      <span class="keyword">const</span> Double_t offset_layer =</div>
+<div class="line"><span class="lineno">  414</span>          <a class="code hl_variable" href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">f_offset_layer</a> / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);</div>
+<div class="line"><span class="lineno">  415</span>      <span class="keyword">const</span> Int_t straws_per_layer =</div>
+<div class="line"><span class="lineno">  416</span>          std::ceil(2 * (<a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth) / stereo_pitch);</div>
+<div class="line"><span class="lineno">  417</span> </div>
+<div class="line"><span class="lineno">  418</span>      <span class="keywordflow">for</span> (Int_t lnb = 0; lnb &lt; 2; lnb++) {</div>
+<div class="line"><span class="lineno">  419</span>        <span class="comment">// Layer loop</span></div>
+<div class="line"><span class="lineno">  420</span>        TString nmlayer = nmview + <span class="stringliteral">&quot;_layer_&quot;</span>;</div>
+<div class="line"><span class="lineno">  421</span>        nmlayer += lnb;</div>
+<div class="line"><span class="lineno">  422</span>        TGeoBBox* layer = <span class="keyword">new</span> TGeoBBox(</div>
+<div class="line"><span class="lineno">  423</span>            <span class="stringliteral">&quot;layer box&quot;</span>, straw_length + eps / 4,</div>
+<div class="line"><span class="lineno">  424</span>            <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth * 2 + offset_layer + eps / 4,</div>
+<div class="line"><span class="lineno">  425</span>            <a class="code hl_variable" href="classstrawtubes.html#ab80522eb272e260d2f1a243e104d2d0d">f_outer_straw_diameter</a> / 2. + eps / 4);</div>
+<div class="line"><span class="lineno">  426</span>        TGeoVolume* layerbox = <span class="keyword">new</span> TGeoVolume(nmlayer, layer, med);</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>        <span class="comment">// The layer box sits in the viewframe.</span></div>
+<div class="line"><span class="lineno">  429</span>        <span class="comment">// Hence, z-translate the layer w.r.t. the view</span></div>
+<div class="line"><span class="lineno">  430</span>        vol-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  431</span>            layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4,</div>
+<div class="line"><span class="lineno">  432</span>            <span class="keyword">new</span> TGeoTranslation(0, -floor_offset / 2.,</div>
+<div class="line"><span class="lineno">  433</span>                                (vnb - 3. / 2.) * <a class="code hl_variable" href="classstrawtubes.html#a799da7ddd56aafed911f45f140a55dc7">f_delta_z_view</a> +</div>
+<div class="line"><span class="lineno">  434</span>                                    (lnb - 1. / 2.) * <a class="code hl_variable" href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">f_delta_z_layer</a>));</div>
+<div class="line"><span class="lineno">  435</span> </div>
+<div class="line"><span class="lineno">  436</span>        TGeoRotation r6s;</div>
+<div class="line"><span class="lineno">  437</span>        TGeoTranslation t6s;</div>
+<div class="line"><span class="lineno">  438</span>        <span class="keywordflow">for</span> (Int_t snb = 1; snb &lt;= straws_per_layer; snb++) {</div>
+<div class="line"><span class="lineno">  439</span>          <span class="comment">// Straw loop</span></div>
+<div class="line"><span class="lineno">  440</span>          <span class="comment">// y-translate the straw to its position</span></div>
+<div class="line"><span class="lineno">  441</span>          t6s.SetTranslation(0,</div>
+<div class="line"><span class="lineno">  442</span>                             <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth -</div>
+<div class="line"><span class="lineno">  443</span>                                 (snb - 1. / 2.) * stereo_pitch +</div>
+<div class="line"><span class="lineno">  444</span>                                 lnb * offset_layer,</div>
+<div class="line"><span class="lineno">  445</span>                             0);</div>
+<div class="line"><span class="lineno">  446</span>          <span class="comment">// Rotate the straw with stereo angle</span></div>
+<div class="line"><span class="lineno">  447</span>          r6s.SetAngles(90 + angle, 90, 0);</div>
+<div class="line"><span class="lineno">  448</span>          TGeoCombiTrans c6s(t6s, r6s);</div>
+<div class="line"><span class="lineno">  449</span>          TGeoHMatrix* h6s = <span class="keyword">new</span> TGeoHMatrix(c6s);</div>
+<div class="line"><span class="lineno">  450</span>          layerbox-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  451</span>              straw, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb, h6s);</div>
+<div class="line"><span class="lineno">  452</span>          layerbox-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  453</span>              gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + snb, h6s);</div>
 <div class="line"><span class="lineno">  454</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  455</span>              straw, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb, h6s);</div>
-<div class="line"><span class="lineno">  456</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  457</span>              gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + snb, h6s);</div>
-<div class="line"><span class="lineno">  458</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  459</span>              wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);</div>
-<div class="line"><span class="lineno">  460</span>          <span class="comment">// End of straw loop</span></div>
-<div class="line"><span class="lineno">  461</span>        }</div>
-<div class="line"><span class="lineno">  462</span> </div>
-<div class="line"><span class="lineno">  463</span>        <span class="keywordflow">if</span> (lnb == 1) {</div>
-<div class="line"><span class="lineno">  464</span>          <span class="comment">// Add one more straw at the bottom of the second layer to cover</span></div>
-<div class="line"><span class="lineno">  465</span>          <span class="comment">// aperture entirely</span></div>
-<div class="line"><span class="lineno">  466</span>          t6s.SetTranslation(0,</div>
-<div class="line"><span class="lineno">  467</span>                             <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth -</div>
-<div class="line"><span class="lineno">  468</span>                                 (straws_per_layer - 1. / 2.) * stereo_pitch -</div>
-<div class="line"><span class="lineno">  469</span>                                 lnb * offset_layer,</div>
-<div class="line"><span class="lineno">  470</span>                             0);</div>
-<div class="line"><span class="lineno">  471</span>          r6s.SetAngles(90 + angle, 90, 0);</div>
-<div class="line"><span class="lineno">  472</span>          TGeoCombiTrans c6s(t6s, r6s);</div>
-<div class="line"><span class="lineno">  473</span>          TGeoHMatrix* h6s = <span class="keyword">new</span> TGeoHMatrix(c6s);</div>
+<div class="line"><span class="lineno">  455</span>              wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);</div>
+<div class="line"><span class="lineno">  456</span>          <span class="comment">// End of straw loop</span></div>
+<div class="line"><span class="lineno">  457</span>        }</div>
+<div class="line"><span class="lineno">  458</span> </div>
+<div class="line"><span class="lineno">  459</span>        <span class="keywordflow">if</span> (lnb == 1) {</div>
+<div class="line"><span class="lineno">  460</span>          <span class="comment">// Add one more straw at the bottom of the second layer to cover</span></div>
+<div class="line"><span class="lineno">  461</span>          <span class="comment">// aperture entirely</span></div>
+<div class="line"><span class="lineno">  462</span>          t6s.SetTranslation(0,</div>
+<div class="line"><span class="lineno">  463</span>                             <a class="code hl_variable" href="classstrawtubes.html#a698d1452dea289218cab634354699517">f_aperture_height</a> + stereo_growth -</div>
+<div class="line"><span class="lineno">  464</span>                                 (straws_per_layer - 1. / 2.) * stereo_pitch -</div>
+<div class="line"><span class="lineno">  465</span>                                 lnb * offset_layer,</div>
+<div class="line"><span class="lineno">  466</span>                             0);</div>
+<div class="line"><span class="lineno">  467</span>          r6s.SetAngles(90 + angle, 90, 0);</div>
+<div class="line"><span class="lineno">  468</span>          TGeoCombiTrans c6s(t6s, r6s);</div>
+<div class="line"><span class="lineno">  469</span>          TGeoHMatrix* h6s = <span class="keyword">new</span> TGeoHMatrix(c6s);</div>
+<div class="line"><span class="lineno">  470</span>          layerbox-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  471</span>              straw,</div>
+<div class="line"><span class="lineno">  472</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + straws_per_layer + 1,</div>
+<div class="line"><span class="lineno">  473</span>              h6s);</div>
 <div class="line"><span class="lineno">  474</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  475</span>              straw,</div>
-<div class="line"><span class="lineno">  476</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + straws_per_layer + 1,</div>
+<div class="line"><span class="lineno">  475</span>              gas,</div>
+<div class="line"><span class="lineno">  476</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + straws_per_layer + 1,</div>
 <div class="line"><span class="lineno">  477</span>              h6s);</div>
 <div class="line"><span class="lineno">  478</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  479</span>              gas,</div>
-<div class="line"><span class="lineno">  480</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + straws_per_layer + 1,</div>
+<div class="line"><span class="lineno">  479</span>              wire,</div>
+<div class="line"><span class="lineno">  480</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + straws_per_layer + 1,</div>
 <div class="line"><span class="lineno">  481</span>              h6s);</div>
-<div class="line"><span class="lineno">  482</span>          layerbox-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  483</span>              wire,</div>
-<div class="line"><span class="lineno">  484</span>              statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + straws_per_layer + 1,</div>
-<div class="line"><span class="lineno">  485</span>              h6s);</div>
-<div class="line"><span class="lineno">  486</span>        }</div>
-<div class="line"><span class="lineno">  487</span>        <span class="comment">// End of layer loop</span></div>
-<div class="line"><span class="lineno">  488</span>      }</div>
-<div class="line"><span class="lineno">  489</span>      <span class="comment">// End of view loop</span></div>
-<div class="line"><span class="lineno">  490</span>    }</div>
-<div class="line"><span class="lineno">  491</span>    <span class="comment">// End of tracking station loop</span></div>
-<div class="line"><span class="lineno">  492</span>  }</div>
-<div class="line"><span class="lineno">  493</span>}</div>
+<div class="line"><span class="lineno">  482</span>        }</div>
+<div class="line"><span class="lineno">  483</span>        <span class="comment">// End of layer loop</span></div>
+<div class="line"><span class="lineno">  484</span>      }</div>
+<div class="line"><span class="lineno">  485</span>      <span class="comment">// End of view loop</span></div>
+<div class="line"><span class="lineno">  486</span>    }</div>
+<div class="line"><span class="lineno">  487</span>    <span class="comment">// End of tracking station loop</span></div>
+<div class="line"><span class="lineno">  488</span>  }</div>
+<div class="line"><span class="lineno">  489</span>}</div>
 <div class="ttc" id="aclassstrawtubes_html_a14acb5455a4ee380c98f82739f249267"><div class="ttname"><a href="classstrawtubes.html#a14acb5455a4ee380c98f82739f249267">strawtubes::f_aperture_width</a></div><div class="ttdeci">Double_t f_aperture_width</div><div class="ttdoc">z-position of tracking station 4</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00120">strawtubes.h:120</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_a150665aba5f021b053f06b1259e8ccd2"><div class="ttname"><a href="classstrawtubes.html#a150665aba5f021b053f06b1259e8ccd2">strawtubes::f_inner_straw_diameter</a></div><div class="ttdeci">Double_t f_inner_straw_diameter</div><div class="ttdoc">Aperture height (y)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00122">strawtubes.h:122</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_a1b49204ad2db574995f7a5f5b3116e54"><div class="ttname"><a href="classstrawtubes.html#a1b49204ad2db574995f7a5f5b3116e54">strawtubes::f_station_length</a></div><div class="ttdeci">Double_t f_station_length</div><div class="ttdoc">Station envelope height (y)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00133">strawtubes.h:133</a></div></div>
@@ -1294,8 +1290,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  173</span>  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><span class="lineno">  174</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00048">ShipStack.h:48</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a49574e3d2ed60566c2709b7effa6dc42"><div class="ttname"><a href="classstrawtubes.html#a49574e3d2ed60566c2709b7effa6dc42">strawtubes::StrawEndPoints</a></div><div class="ttdeci">static void StrawEndPoints(Int_t detID, TVector3 &amp;top, TVector3 &amp;bot)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00519">strawtubes.cxx:519</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a74578f62f3a33c224b91c51dbc1e5a32"><div class="ttname"><a href="classstrawtubes.html#a74578f62f3a33c224b91c51dbc1e5a32">strawtubes::AddHit</a></div><div class="ttdeci">strawtubesPoint * AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode, Double_t dist2Wire)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00580">strawtubes.cxx:580</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a49574e3d2ed60566c2709b7effa6dc42"><div class="ttname"><a href="classstrawtubes.html#a49574e3d2ed60566c2709b7effa6dc42">strawtubes::StrawEndPoints</a></div><div class="ttdeci">static void StrawEndPoints(Int_t detID, TVector3 &amp;top, TVector3 &amp;bot)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00515">strawtubes.cxx:515</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a74578f62f3a33c224b91c51dbc1e5a32"><div class="ttname"><a href="classstrawtubes.html#a74578f62f3a33c224b91c51dbc1e5a32">strawtubes::AddHit</a></div><div class="ttdeci">strawtubesPoint * AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode, Double_t dist2Wire)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00571">strawtubes.cxx:571</a></div></div>
 <div class="ttc" id="anamespaceevd__addParticleFollower_html_ae322592f9d93fa2f17428793bf6e5457"><div class="ttname"><a href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">evd_addParticleFollower.v</a></div><div class="ttdeci">v</div><div class="ttdef"><b>Definition</b> <a href="evd__addParticleFollower_8py_source.html#l00080">evd_addParticleFollower.py:80</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00326">makeCascade.py:326</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
@@ -1794,25 +1790,25 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00497">497</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  497</span>                                                                        {</div>
-<div class="line"><span class="lineno">  498</span>  Int_t statnb, vnb, lnb, snb;</div>
-<div class="line"><span class="lineno">  499</span>  statnb = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> / 1e6;</div>
-<div class="line"><span class="lineno">  500</span>  vnb = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6) / 1e5;</div>
-<div class="line"><span class="lineno">  501</span>  lnb = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6 - vnb * 1e5) / 1e4;</div>
-<div class="line"><span class="lineno">  502</span>  snb = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;</div>
-<div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>  <span class="keywordflow">if</span> (statnb &lt; 1 || statnb &gt; 4 || vnb &lt; 0 || vnb &gt; 3 || lnb &lt; 0 || lnb &gt; 1 ||</div>
-<div class="line"><span class="lineno">  505</span>      snb &lt; 1 || snb &gt; 317) {</div>
-<div class="line"><span class="lineno">  506</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Invalid strawtubes detID:&quot;</span>;</div>
-<div class="line"><span class="lineno">  507</span>    LOG(warning) &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> &lt;&lt; <span class="stringliteral">&quot; -&gt; station: &quot;</span> &lt;&lt; statnb &lt;&lt; <span class="stringliteral">&quot;, view: &quot;</span> &lt;&lt; vnb</div>
-<div class="line"><span class="lineno">  508</span>                 &lt;&lt; <span class="stringliteral">&quot;, layer: &quot;</span> &lt;&lt; lnb &lt;&lt; <span class="stringliteral">&quot;, straw: &quot;</span> &lt;&lt; snb;</div>
-<div class="line"><span class="lineno">  509</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes detID is 7-digit!&quot;</span>;</div>
-<div class="line"><span class="lineno">  510</span>    <span class="keywordflow">return</span> std::make_tuple(0, -1, -1, 0);</div>
-<div class="line"><span class="lineno">  511</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  512</span>    <span class="keywordflow">return</span> std::make_tuple(statnb, vnb, lnb, snb);</div>
-<div class="line"><span class="lineno">  513</span>  }</div>
-<div class="line"><span class="lineno">  514</span>}</div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00493">493</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  493</span>                                                                        {</div>
+<div class="line"><span class="lineno">  494</span>  Int_t statnb, vnb, lnb, snb;</div>
+<div class="line"><span class="lineno">  495</span>  statnb = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> / 1e6;</div>
+<div class="line"><span class="lineno">  496</span>  vnb = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6) / 1e5;</div>
+<div class="line"><span class="lineno">  497</span>  lnb = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6 - vnb * 1e5) / 1e4;</div>
+<div class="line"><span class="lineno">  498</span>  snb = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;</div>
+<div class="line"><span class="lineno">  499</span> </div>
+<div class="line"><span class="lineno">  500</span>  <span class="keywordflow">if</span> (statnb &lt; 1 || statnb &gt; 4 || vnb &lt; 0 || vnb &gt; 3 || lnb &lt; 0 || lnb &gt; 1 ||</div>
+<div class="line"><span class="lineno">  501</span>      snb &lt; 1 || snb &gt; 317) {</div>
+<div class="line"><span class="lineno">  502</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Invalid strawtubes detID:&quot;</span>;</div>
+<div class="line"><span class="lineno">  503</span>    LOG(warning) &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> &lt;&lt; <span class="stringliteral">&quot; -&gt; station: &quot;</span> &lt;&lt; statnb &lt;&lt; <span class="stringliteral">&quot;, view: &quot;</span> &lt;&lt; vnb</div>
+<div class="line"><span class="lineno">  504</span>                 &lt;&lt; <span class="stringliteral">&quot;, layer: &quot;</span> &lt;&lt; lnb &lt;&lt; <span class="stringliteral">&quot;, straw: &quot;</span> &lt;&lt; snb;</div>
+<div class="line"><span class="lineno">  505</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes detID is 7-digit!&quot;</span>;</div>
+<div class="line"><span class="lineno">  506</span>    <span class="keywordflow">return</span> std::make_tuple(0, -1, -1, 0);</div>
+<div class="line"><span class="lineno">  507</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  508</span>    <span class="keywordflow">return</span> std::make_tuple(statnb, vnb, lnb, snb);</div>
+<div class="line"><span class="lineno">  509</span>  }</div>
+<div class="line"><span class="lineno">  510</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00243">make_nTuple_SBT.py:243</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1857,66 +1853,61 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00519">519</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  522</span>{</div>
-<div class="line"><span class="lineno">  523</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [statnb, vnb, lnb, snb] = <a class="code hl_function" href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">StrawDecode</a>(fDetectorID);</div>
-<div class="line"><span class="lineno">  524</span>  TString stat = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
-<div class="line"><span class="lineno">  525</span>  stat += statnb;</div>
-<div class="line"><span class="lineno">  526</span>  stat += <span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><span class="lineno">  527</span>  stat += statnb;</div>
-<div class="line"><span class="lineno">  528</span>  TString view;</div>
-<div class="line"><span class="lineno">  529</span>  <span class="keywordflow">switch</span> (vnb) {</div>
-<div class="line"><span class="lineno">  530</span>    <span class="keywordflow">case</span> 0:</div>
-<div class="line"><span class="lineno">  531</span>      view = <span class="stringliteral">&quot;_y1&quot;</span>;</div>
-<div class="line"><span class="lineno">  532</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  533</span>    <span class="keywordflow">case</span> 1:</div>
-<div class="line"><span class="lineno">  534</span>      view = <span class="stringliteral">&quot;_u&quot;</span>;</div>
-<div class="line"><span class="lineno">  535</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  536</span>    <span class="keywordflow">case</span> 2:</div>
-<div class="line"><span class="lineno">  537</span>      view = <span class="stringliteral">&quot;_v&quot;</span>;</div>
-<div class="line"><span class="lineno">  538</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  539</span>    <span class="keywordflow">case</span> 3:</div>
-<div class="line"><span class="lineno">  540</span>      view = <span class="stringliteral">&quot;_y2&quot;</span>;</div>
-<div class="line"><span class="lineno">  541</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  543</span>      view = <span class="stringliteral">&quot;_y1&quot;</span>;</div>
-<div class="line"><span class="lineno">  544</span>  }</div>
-<div class="line"><span class="lineno">  545</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  546</span>  TString <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
-<div class="line"><span class="lineno">  547</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += statnb;</div>
-<div class="line"><span class="lineno">  548</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += view;</div>
-<div class="line"><span class="lineno">  549</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += <span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><span class="lineno">  550</span>  TString layer = <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> + <span class="stringliteral">&quot;layer_&quot;</span>;</div>
-<div class="line"><span class="lineno">  551</span>  layer += lnb;</div>
-<div class="line"><span class="lineno">  552</span>  layer += <span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><span class="lineno">  553</span>  layer += statnb;</div>
-<div class="line"><span class="lineno">  554</span>  layer += vnb;</div>
-<div class="line"><span class="lineno">  555</span>  layer += lnb;</div>
-<div class="line"><span class="lineno">  556</span>  layer += <span class="stringliteral">&quot;0000&quot;</span>;</div>
-<div class="line"><span class="lineno">  557</span>  TString wire = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
-<div class="line"><span class="lineno">  558</span>  wire += fDetectorID + 1e3;</div>
-<div class="line"><span class="lineno">  559</span>  TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><span class="lineno">  560</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += stat;</div>
-<div class="line"><span class="lineno">  561</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><span class="lineno">  562</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += layer;</div>
-<div class="line"><span class="lineno">  563</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><span class="lineno">  564</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += wire;</div>
-<div class="line"><span class="lineno">  565</span>  Bool_t <a class="code hl_variable" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> = nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  566</span>  <span class="keywordflow">if</span> (!rc) {</div>
-<div class="line"><span class="lineno">  567</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes::StrawDecode, TGeoNavigator failed&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>;</div>
-<div class="line"><span class="lineno">  568</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  569</span>  }</div>
-<div class="line"><span class="lineno">  570</span>  TGeoNode* W = nav-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  571</span>  TGeoTube* S = <span class="keyword">dynamic_cast&lt;</span>TGeoTube*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  572</span>  Double_t <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>[3] = {0, 0, S-&gt;GetDZ()};</div>
-<div class="line"><span class="lineno">  573</span>  Double_t bot[3] = {0, 0, -S-&gt;GetDZ()};</div>
-<div class="line"><span class="lineno">  574</span>  Double_t Gtop[3], Gbot[3];</div>
-<div class="line"><span class="lineno">  575</span>  nav-&gt;LocalToMaster(top, Gtop);</div>
-<div class="line"><span class="lineno">  576</span>  nav-&gt;LocalToMaster(bot, Gbot);</div>
-<div class="line"><span class="lineno">  577</span>  vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
-<div class="line"><span class="lineno">  578</span>  vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
-<div class="line"><span class="lineno">  579</span>}</div>
-<div class="ttc" id="aclassstrawtubes_html_a39111485b9ec838493978ddfd461ab2e"><div class="ttname"><a href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">strawtubes::StrawDecode</a></div><div class="ttdeci">static std::tuple&lt; Int_t, Int_t, Int_t, Int_t &gt; StrawDecode(Int_t detID)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00497">strawtubes.cxx:497</a></div></div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00515">515</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  518</span>{</div>
+<div class="line"><span class="lineno">  519</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [statnb, vnb, lnb, snb] = <a class="code hl_function" href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">StrawDecode</a>(fDetectorID);</div>
+<div class="line"><span class="lineno">  520</span>  TString stat = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
+<div class="line"><span class="lineno">  521</span>  stat += statnb;</div>
+<div class="line"><span class="lineno">  522</span>  stat += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><span class="lineno">  523</span>  stat += statnb;</div>
+<div class="line"><span class="lineno">  524</span>  <span class="keyword">const</span> TString view = [&amp;] {</div>
+<div class="line"><span class="lineno">  525</span>    <span class="keywordflow">switch</span> (vnb) {</div>
+<div class="line"><span class="lineno">  526</span>      <span class="keywordflow">case</span> 1:</div>
+<div class="line"><span class="lineno">  527</span>        <span class="keywordflow">return</span> TString(<span class="stringliteral">&quot;_u&quot;</span>);</div>
+<div class="line"><span class="lineno">  528</span>      <span class="keywordflow">case</span> 2:</div>
+<div class="line"><span class="lineno">  529</span>        <span class="keywordflow">return</span> TString(<span class="stringliteral">&quot;_v&quot;</span>);</div>
+<div class="line"><span class="lineno">  530</span>      <span class="keywordflow">case</span> 3:</div>
+<div class="line"><span class="lineno">  531</span>        <span class="keywordflow">return</span> TString(<span class="stringliteral">&quot;_y2&quot;</span>);</div>
+<div class="line"><span class="lineno">  532</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  533</span>        <span class="keywordflow">return</span> TString(<span class="stringliteral">&quot;_y1&quot;</span>);</div>
+<div class="line"><span class="lineno">  534</span>    }</div>
+<div class="line"><span class="lineno">  535</span>  }();</div>
+<div class="line"><span class="lineno">  536</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  537</span>  TString <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
+<div class="line"><span class="lineno">  538</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += statnb;</div>
+<div class="line"><span class="lineno">  539</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += view;</div>
+<div class="line"><span class="lineno">  540</span>  <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><span class="lineno">  541</span>  TString layer = <a class="code hl_variable" href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">prefix</a> + <span class="stringliteral">&quot;layer_&quot;</span>;</div>
+<div class="line"><span class="lineno">  542</span>  layer += lnb;</div>
+<div class="line"><span class="lineno">  543</span>  layer += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><span class="lineno">  544</span>  layer += statnb;</div>
+<div class="line"><span class="lineno">  545</span>  layer += vnb;</div>
+<div class="line"><span class="lineno">  546</span>  layer += lnb;</div>
+<div class="line"><span class="lineno">  547</span>  layer += <span class="stringliteral">&quot;0000&quot;</span>;</div>
+<div class="line"><span class="lineno">  548</span>  TString wire = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
+<div class="line"><span class="lineno">  549</span>  wire += fDetectorID + 1e3;</div>
+<div class="line"><span class="lineno">  550</span>  TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><span class="lineno">  551</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += stat;</div>
+<div class="line"><span class="lineno">  552</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><span class="lineno">  553</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += layer;</div>
+<div class="line"><span class="lineno">  554</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><span class="lineno">  555</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += wire;</div>
+<div class="line"><span class="lineno">  556</span>  Bool_t <a class="code hl_variable" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> = nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  557</span>  <span class="keywordflow">if</span> (!rc) {</div>
+<div class="line"><span class="lineno">  558</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes::StrawDecode, TGeoNavigator failed&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>;</div>
+<div class="line"><span class="lineno">  559</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  560</span>  }</div>
+<div class="line"><span class="lineno">  561</span>  TGeoNode* W = nav-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  562</span>  TGeoTube* S = <span class="keyword">dynamic_cast&lt;</span>TGeoTube*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  563</span>  Double_t <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>[3] = {0, 0, S-&gt;GetDZ()};</div>
+<div class="line"><span class="lineno">  564</span>  Double_t bot[3] = {0, 0, -S-&gt;GetDZ()};</div>
+<div class="line"><span class="lineno">  565</span>  Double_t Gtop[3], Gbot[3];</div>
+<div class="line"><span class="lineno">  566</span>  nav-&gt;LocalToMaster(top, Gtop);</div>
+<div class="line"><span class="lineno">  567</span>  nav-&gt;LocalToMaster(bot, Gbot);</div>
+<div class="line"><span class="lineno">  568</span>  vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
+<div class="line"><span class="lineno">  569</span>  vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
+<div class="line"><span class="lineno">  570</span>}</div>
+<div class="ttc" id="aclassstrawtubes_html_a39111485b9ec838493978ddfd461ab2e"><div class="ttname"><a href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">strawtubes::StrawDecode</a></div><div class="ttdeci">static std::tuple&lt; Int_t, Int_t, Int_t, Int_t &gt; StrawDecode(Int_t detID)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00493">strawtubes.cxx:493</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a3d4bd8cc92b46f518e764a26ebbc1c73"><div class="ttname"><a href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">ana_ShipMuon.prefix</a></div><div class="ttdeci">str prefix</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00333">ana_ShipMuon.py:333</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a8ae49156f9341ca95732cc2c31159dda"><div class="ttname"><a href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">makeDecay.rc</a></div><div class="ttdeci">rc</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00111">makeDecay.py:111</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a5296266b8955872e3259622e903275de"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">make_nTuple_SBT.path</a></div><div class="ttdeci">path</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00045">make_nTuple_SBT.py:45</a></div></div>

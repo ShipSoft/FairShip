@@ -298,8 +298,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00039">ShipHit.h:39</a></div></div>
 <div class="ttc" id="aclassTimeDetHit_html_a385c185f1350cef189a913d69792c99b"><div class="ttname"><a href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">TimeDetHit::v_drift</a></div><div class="ttdeci">static constexpr Double_t v_drift</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8h_source.html#l00059">TimeDetHit.h:59</a></div></div>
 <div class="ttc" id="aclassTimeDetHit_html_a571b03abb8bdcda0b7477741a6b7537f"><div class="ttname"><a href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">TimeDetHit::t_1</a></div><div class="ttdeci">Float_t t_1</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8h_source.html#l00063">TimeDetHit.h:63</a></div></div>
-<div class="ttc" id="aclassTimeDetHit_html_a6940b7d3e545c87bdd4d0c1f5981d350"><div class="ttname"><a href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">TimeDetHit::Resol</a></div><div class="ttdeci">Double_t Resol(Double_t x) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00079">TimeDetHit.cxx:79</a></div></div>
-<div class="ttc" id="aclassTimeDetHit_html_a75dcde375f3adbebcc6e71ece5fa20fe"><div class="ttname"><a href="classTimeDetHit.html#a75dcde375f3adbebcc6e71ece5fa20fe">TimeDetHit::Dist</a></div><div class="ttdeci">void Dist(Float_t x, Float_t &amp;lpos, Float_t &amp;lneg) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00091">TimeDetHit.cxx:91</a></div></div>
+<div class="ttc" id="aclassTimeDetHit_html_a6940b7d3e545c87bdd4d0c1f5981d350"><div class="ttname"><a href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">TimeDetHit::Resol</a></div><div class="ttdeci">Double_t Resol(Double_t x) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00073">TimeDetHit.cxx:73</a></div></div>
+<div class="ttc" id="aclassTimeDetHit_html_a75dcde375f3adbebcc6e71ece5fa20fe"><div class="ttname"><a href="classTimeDetHit.html#a75dcde375f3adbebcc6e71ece5fa20fe">TimeDetHit::Dist</a></div><div class="ttdeci">void Dist(Float_t x, Float_t &amp;lpos, Float_t &amp;lneg) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00080">TimeDetHit.cxx:80</a></div></div>
 <div class="ttc" id="aclassTimeDetHit_html_afd7624444a531e555ebcd4a1a1bbe87d"><div class="ttname"><a href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">TimeDetHit::t_2</a></div><div class="ttdeci">Float_t t_2</div><div class="ttdoc">TDC on both sides.</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8h_source.html#l00063">TimeDetHit.h:63</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_ad45038a272d420fb8f07f6a7a4bb95eb"><div class="ttname"><a href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">makeCascade.t0</a></div><div class="ttdeci">t0</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00238">makeCascade.py:238</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
@@ -432,16 +432,16 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00091">91</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span>                                                                   {</div>
-<div class="line"><span class="lineno">   92</span>  TGeoNode* node = <a class="code hl_function" href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">GetNode</a>();</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">   94</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   95</span>  lpos = TMath::Abs(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() + shape-&gt;GetDX() - x);</div>
-<div class="line"><span class="lineno">   96</span>  lneg = TMath::Abs(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() - shape-&gt;GetDX() - x);</div>
-<div class="line"><span class="lineno">   97</span>}</div>
-<div class="ttc" id="aclassTimeDetHit_html_a30d3e41b9c900ce12ee69b55e8a92b16"><div class="ttname"><a href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">TimeDetHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00099">TimeDetHit.cxx:99</a></div></div>
-<div class="ttc" id="aclassTimeDetHit_html_a6e69747362b4aa62398f5ac7b046891a"><div class="ttname"><a href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">TimeDetHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00126">TimeDetHit.cxx:126</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00080">80</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>                                                                   {</div>
+<div class="line"><span class="lineno">   81</span>  TGeoNode* node = <a class="code hl_function" href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">GetNode</a>();</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">   83</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   84</span>  lpos = TMath::Abs(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() + shape-&gt;GetDX() - x);</div>
+<div class="line"><span class="lineno">   85</span>  lneg = TMath::Abs(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() - shape-&gt;GetDX() - x);</div>
+<div class="line"><span class="lineno">   86</span>}</div>
+<div class="ttc" id="aclassTimeDetHit_html_a30d3e41b9c900ce12ee69b55e8a92b16"><div class="ttname"><a href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">TimeDetHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00088">TimeDetHit.cxx:88</a></div></div>
+<div class="ttc" id="aclassTimeDetHit_html_a6e69747362b4aa62398f5ac7b046891a"><div class="ttname"><a href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">TimeDetHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode() const</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00115">TimeDetHit.cxx:115</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00583">ana_ShipMuon.py:583</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -461,14 +461,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00083">83</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>                                                    {</div>
-<div class="line"><span class="lineno">   84</span>  std::vector&lt;double&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   85</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a>);</div>
-<div class="line"><span class="lineno">   86</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(<a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a>);</div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   88</span>}</div>
-<div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00077">77</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> {<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a>, <a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a>}; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -487,14 +481,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00126">126</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span>                                    {</div>
-<div class="line"><span class="lineno">  127</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  128</span>  TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;/Timing Detector_1/TimeDet_&quot;</span>;</div>
-<div class="line"><span class="lineno">  129</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
-<div class="line"><span class="lineno">  130</span>  nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">return</span> nav-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  132</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00115">115</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>                                    {</div>
+<div class="line"><span class="lineno">  116</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">  117</span>  TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;/Timing Detector_1/TimeDet_&quot;</span>;</div>
+<div class="line"><span class="lineno">  118</span>  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
+<div class="line"><span class="lineno">  119</span>  nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> nav-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  121</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a5296266b8955872e3259622e903275de"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">make_nTuple_SBT.path</a></div><div class="ttdeci">path</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00045">make_nTuple_SBT.py:45</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -514,22 +508,19 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00063">63</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>                                            {</div>
-<div class="line"><span class="lineno">   64</span>  TGeoBBox* shape =</div>
-<div class="line"><span class="lineno">   65</span>      <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;TimeDet&quot;</span>)-&gt;GetShape());</div>
-<div class="line"><span class="lineno">   66</span>  Double_t <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a> = (<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> + <a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a>) / 2. - shape-&gt;GetDX() / <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
-<div class="line"><span class="lineno">   67</span>  Float_t lpos, lneg;</div>
-<div class="line"><span class="lineno">   68</span>  lneg = (<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> - <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a>) * <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
-<div class="line"><span class="lineno">   69</span>  lpos = (<a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a> - <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a>) * <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
-<div class="line"><span class="lineno">   70</span>  Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945">r1</a> = <a class="code hl_function" href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">Resol</a>(lneg);</div>
-<div class="line"><span class="lineno">   71</span>  Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">r2</a> = <a class="code hl_function" href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">Resol</a>(lpos);</div>
-<div class="line"><span class="lineno">   72</span>  Double_t dt = TMath::Sqrt(r1 * r1 + r2 * r2);</div>
-<div class="line"><span class="lineno">   73</span>  std::vector&lt;double&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(t0);</div>
-<div class="line"><span class="lineno">   75</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(dt);</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00060">60</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>                                            {</div>
+<div class="line"><span class="lineno">   61</span>  TGeoBBox* shape =</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;TimeDet&quot;</span>)-&gt;GetShape());</div>
+<div class="line"><span class="lineno">   63</span>  Double_t <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a> = (<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> + <a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a>) / 2. - shape-&gt;GetDX() / <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
+<div class="line"><span class="lineno">   64</span>  Float_t lpos, lneg;</div>
+<div class="line"><span class="lineno">   65</span>  lneg = (<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> - <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a>) * <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
+<div class="line"><span class="lineno">   66</span>  lpos = (<a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a> - <a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a>) * <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>;</div>
+<div class="line"><span class="lineno">   67</span>  Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945">r1</a> = <a class="code hl_function" href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">Resol</a>(lneg);</div>
+<div class="line"><span class="lineno">   68</span>  Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">r2</a> = <a class="code hl_function" href="classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350">Resol</a>(lpos);</div>
+<div class="line"><span class="lineno">   69</span>  Double_t dt = TMath::Sqrt(r1 * r1 + r2 * r2);</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb">t0</a>, dt};</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a9659d4d32a1cb6cfd4a31d22e63b3a06"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">ana_ShipMuon.r2</a></div><div class="ttdeci">r2</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00430">ana_ShipMuon.py:430</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_aaebf25eb0ed22ac1e88c3566b5f95945"><div class="ttname"><a href="namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945">ana_ShipMuon.r1</a></div><div class="ttdeci">r1</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00429">ana_ShipMuon.py:429</a></div></div>
 </div><!-- fragment -->
@@ -563,11 +554,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>  Double_t dt = 1. / TMath::Sqrt(w1 + w2);</div>
 <div class="line"><span class="lineno">   55</span>  Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">t</a> =</div>
 <div class="line"><span class="lineno">   56</span>      ((<a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> - lneg / <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>) * w1 + (<a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a> - lpos / <a class="code hl_variable" href="classTimeDetHit.html#a385c185f1350cef189a913d69792c99b">v_drift</a>) * w2) / (w1 + w2);</div>
-<div class="line"><span class="lineno">   57</span>  std::vector&lt;double&gt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(t);</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>.push_back(dt);</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">t</a>, dt};</div>
+<div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a5745239ac3de03e89b0deb73f59bb52f"><div class="ttname"><a href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">run_fixedTarget.t</a></div><div class="ttdeci">t</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00473">run_fixedTarget.py:473</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -588,11 +576,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Accessors </p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00111">111</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>                                {</div>
-<div class="line"><span class="lineno">  112</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X();</div>
-<div class="line"><span class="lineno">  114</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00100">100</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>                                {</div>
+<div class="line"><span class="lineno">  101</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X();</div>
+<div class="line"><span class="lineno">  103</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -611,18 +599,18 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00099">99</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>                                  {</div>
-<div class="line"><span class="lineno">  100</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">  101</span>  TGeoNode* node = <a class="code hl_function" href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">GetNode</a>();</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  103</span>  Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98">origin</a>[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1],</div>
-<div class="line"><span class="lineno">  104</span>                        shape-&gt;GetOrigin()[2]};</div>
-<div class="line"><span class="lineno">  105</span>  Double_t master[3] = {0, 0, 0};</div>
-<div class="line"><span class="lineno">  106</span>  nav-&gt;LocalToMaster(origin, master);</div>
-<div class="line"><span class="lineno">  107</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = TVector3(master[0], master[1], master[2]);</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
-<div class="line"><span class="lineno">  109</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00088">88</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>                                  {</div>
+<div class="line"><span class="lineno">   89</span>  TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">   90</span>  TGeoNode* node = <a class="code hl_function" href="classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a">GetNode</a>();</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">   92</span>  Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98">origin</a>[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1],</div>
+<div class="line"><span class="lineno">   93</span>                        shape-&gt;GetOrigin()[2]};</div>
+<div class="line"><span class="lineno">   94</span>  Double_t master[3] = {0, 0, 0};</div>
+<div class="line"><span class="lineno">   95</span>  nav-&gt;LocalToMaster(origin, master);</div>
+<div class="line"><span class="lineno">   96</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = TVector3(master[0], master[1], master[2]);</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
+<div class="line"><span class="lineno">   98</span>}</div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a28d7d8b8350de8fec28cb9f07ffd7a98"><div class="ttname"><a href="namespaceana__ShipMuon.html#a28d7d8b8350de8fec28cb9f07ffd7a98">ana_ShipMuon.origin</a></div><div class="ttdeci">None origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00390">ana_ShipMuon.py:390</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -642,11 +630,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00116">116</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>                                {</div>
-<div class="line"><span class="lineno">  117</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y();</div>
-<div class="line"><span class="lineno">  119</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00105">105</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>                                {</div>
+<div class="line"><span class="lineno">  106</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y();</div>
+<div class="line"><span class="lineno">  108</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -665,11 +653,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00121">121</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span>                                {</div>
-<div class="line"><span class="lineno">  122</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z();</div>
-<div class="line"><span class="lineno">  124</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00110">110</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>                                {</div>
+<div class="line"><span class="lineno">  111</span>  TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a30d3e41b9c900ce12ee69b55e8a92b16">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z();</div>
+<div class="line"><span class="lineno">  113</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -750,12 +738,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00135">135</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>                             {</div>
-<div class="line"><span class="lineno">  136</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- TimeDetHit: TimeDet hit &quot;</span> &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a></div>
-<div class="line"><span class="lineno">  137</span>       &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  138</span>  cout &lt;&lt; <span class="stringliteral">&quot;  TDC left &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> &lt;&lt; <span class="stringliteral">&quot; ns   TDC right &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  139</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00124">124</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>                             {</div>
+<div class="line"><span class="lineno">  125</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- TimeDetHit: TimeDet hit &quot;</span> &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a></div>
+<div class="line"><span class="lineno">  126</span>       &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  127</span>  cout &lt;&lt; <span class="stringliteral">&quot;  TDC left &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f">t_1</a> &lt;&lt; <span class="stringliteral">&quot; ns   TDC right &quot;</span> &lt;&lt; <a class="code hl_variable" href="classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d">t_2</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  128</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -805,10 +793,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00079">79</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>                                           {</div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[0] * TMath::Exp((x - <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[2]) / <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[1]) + <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[3];</div>
-<div class="line"><span class="lineno">   81</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00073">73</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>                                           {</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[0] * TMath::Exp((x - <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[2]) / <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[1]) + <a class="code hl_variable" href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">par</a>[3];</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 <div class="ttc" id="aclassTimeDetHit_html_a73846fe61151fd4029156ed083f6d930"><div class="ttname"><a href="classTimeDetHit.html#a73846fe61151fd4029156ed083f6d930">TimeDetHit::par</a></div><div class="ttdeci">static constexpr Double_t par[4]</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8h_source.html#l00060">TimeDetHit.h:60</a></div></div>
 </div><!-- fragment -->
 </div>
