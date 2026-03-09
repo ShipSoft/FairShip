@@ -77,7 +77,6 @@ class EvtCalcGenerator : public SHiP::Generator {
   int fn;
   int nBranches;
   int Ndau;
-  ClassDefOverride(EvtCalcGenerator, 2);
 };
 
 #endif  // SHIPGEN_EVTCALCGENERATOR_H_

@@ -47,7 +47,5 @@ class MuDISGenerator : public SHiP::Generator {
   int fNevents;
   int fn;
   bool fFirst;
-
-  ClassDefOverride(MuDISGenerator, 2);
 };
 #endif  // SHIPGEN_MUDISGENERATOR_H_

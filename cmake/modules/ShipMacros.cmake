@@ -20,6 +20,7 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
       DEPENDENCIES <dep1> [<dep2> ...]
       [INCLUDE_DIRECTORIES <dir1> ...]
       [SYSTEM_INCLUDE_DIRECTORIES <dir1> ...]
+      [EXTRA_DICT_HEADERS <hdr1> ...]
     )
 
   ``NAME``
@@ -42,6 +43,10 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
   ``SYSTEM_INCLUDE_DIRECTORIES``
     External include directories added as SYSTEM PRIVATE (suppresses warnings).
 
+  ``EXTRA_DICT_HEADERS``
+    Additional headers to pass to rootcling that have no corresponding ``.cxx``
+    source (e.g. header-only interfaces that need a LinkDef entry).
+
 The current source directory is always added as a PUBLIC include directory
 with a ``BUILD_INTERFACE`` / ``INSTALL_INTERFACE`` generator expression, so
 dependents of the library automatically receive its include path.
@@ -56,7 +61,7 @@ function(ship_add_library)
     PARSE_ARGV 0 ARG
     ""
     "NAME;LINKDEF"
-    "SOURCES;DEPENDENCIES;INCLUDE_DIRECTORIES;SYSTEM_INCLUDE_DIRECTORIES"
+    "SOURCES;DEPENDENCIES;INCLUDE_DIRECTORIES;SYSTEM_INCLUDE_DIRECTORIES;EXTRA_DICT_HEADERS"
   )
 
   if(NOT ARG_NAME)
@@ -97,7 +102,7 @@ function(ship_add_library)
     # Also extract directories for include paths (matches fairroot_target_root_dictionary)
     set(_abs_headers)
     set(_hdr_dirs)
-    foreach(_h ${_hdrs})
+    foreach(_h ${_hdrs} ${ARG_EXTRA_DICT_HEADERS})
       get_filename_component(_abs_h ${_h} ABSOLUTE)
       list(APPEND _abs_headers ${_abs_h})
       get_filename_component(_hdr_dir ${_abs_h} DIRECTORY)

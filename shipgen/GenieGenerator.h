@@ -65,8 +65,6 @@ class GenieGenerator : public SHiP::Generator {
       fEntrB, fL1z, fScintDz;
   TH1D* pxhist[3000];        //!
   TH1D* pyslice[3000][100];  //!
-
-  ClassDefOverride(GenieGenerator, 2);
 };
 
 #endif  // SHIPGEN_GENIEGENERATOR_H_ /* !PNDGeGENERATOR_H */

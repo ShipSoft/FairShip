@@ -50,7 +50,6 @@ class tPythia6Generator : public SHiP::Generator {
   Bool_t fPionKaonDecay;
   TString fType;  // muon proton scattering
   TString fTarget;
-  ClassDefOverride(tPythia6Generator, 2);
 };
 
 #endif  // SHIPGEN_TPYTHIA6GENERATOR_H_ /* !PNDP6GENERATOR_H */
