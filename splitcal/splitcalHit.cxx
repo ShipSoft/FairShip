@@ -29,15 +29,16 @@ namespace {
 constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
 }  // namespace
 // -----   Default constructor   -------------------------------------------
-splitcalHit::splitcalHit() : ShipHit() { flag = true; }
+splitcalHit::splitcalHit() : SHiP::DetectorHit() { flag = true; }
 // -----   Standard constructor   ------------------------------------------
-splitcalHit::splitcalHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {
+splitcalHit::splitcalHit(Int_t detID, Float_t tdc)
+    : SHiP::DetectorHit(detID, tdc) {
   flag = true;
 }
 // -----   constructor from vector of splitcalPoints
 // ------------------------------------------
 splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
-    : ShipHit() {
+    : SHiP::DetectorHit() {
   flag = true;
 
   // Empty vector check

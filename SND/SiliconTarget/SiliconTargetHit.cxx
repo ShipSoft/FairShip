@@ -14,7 +14,7 @@
 #include "TGeoNavigator.h"
 #include "TROOT.h"
 
-SiliconTargetHit::SiliconTargetHit() : ShipHit() { flag = true; }
+SiliconTargetHit::SiliconTargetHit() : SHiP::DetectorHit() { flag = true; }
 
 SiliconTargetHit::SiliconTargetHit(Int_t detID,
                                    const std::vector<SiliconTargetPoint*>& V) {

@@ -5,5 +5,5 @@ ship_add_library(
   NAME SiliconTarget
   SOURCES SiliconTarget.cxx SiliconTargetPoint.cxx SiliconTargetHit.cxx
   LINKDEF SiliconTargetLinkDef.h
-  DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
+  DEPENDENCIES Base ShipData Detector GeoBase ParBase Geom Core FairLogger::FairLogger
 )

@@ -5,12 +5,12 @@
 #ifndef SND_SILICONTARGET_SILICONTARGETHIT_H_
 #define SND_SILICONTARGET_SILICONTARGETHIT_H_
 
-#include "ShipHit.h"
+#include "DetectorHit.h"
 #include "SiliconTargetPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
 
-class SiliconTargetHit : public ShipHit {
+class SiliconTargetHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   SiliconTargetHit();
@@ -27,7 +27,7 @@ class SiliconTargetHit : public ShipHit {
   SiliconTargetHit& operator=(const SiliconTargetHit& hit) = default;
 
   /** Output to screen **/
-  using ShipHit::Print;
+  using SHiP::DetectorHit::Print;
   void Print();
   // void Print() const;
   Float_t GetSignal() const { return fSignal; };

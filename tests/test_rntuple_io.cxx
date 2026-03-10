@@ -6,6 +6,7 @@
  * - Round-trip serialization preserves values
  */
 
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -18,9 +19,9 @@
 #include "TFile.h"
 
 // Include data class headers
+#include "DetectorHit.h"
 #include "MTCDetHit.h"
 #include "MTCDetPoint.h"
-#include "ShipHit.h"
 #include "ShipMCTrack.h"
 #include "ShipParticle.h"
 #include "SiliconTargetHit.h"
@@ -51,7 +52,9 @@ template <typename T>
 bool test_rntuple_io(const char* class_name, std::vector<T>& test_objects) {
   std::cout << "Testing " << class_name << " RNtuple I/O... " << std::flush;
 
-  const std::string filename = std::string("test_") + class_name + ".root";
+  std::string sanitised_name{class_name};
+  std::replace(sanitised_name.begin(), sanitised_name.end(), ':', '_');
+  const std::string filename = std::string("test_") + sanitised_name + ".root";
   const std::string ntuple_name = std::string(class_name) + "_ntuple";
 
   try {
@@ -138,11 +141,11 @@ int main(int argc, char** argv) {
   std::cout << "--- Base Classes ---" << std::endl;
 
   {
-    std::vector<ShipHit> objects;
+    std::vector<SHiP::DetectorHit> objects;
     objects.emplace_back(1001, 123.45f);
     objects.emplace_back(2002, 678.90f);
     total++;
-    if (test_rntuple_io("ShipHit", objects)) passed++;
+    if (test_rntuple_io("SHiP::DetectorHit", objects)) passed++;
   }
 
   {

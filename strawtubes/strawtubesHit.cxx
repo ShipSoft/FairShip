@@ -25,12 +25,14 @@ using std::endl;
 Double_t speedOfLight =
     TMath::C() * 100. / 1000000000.0;  // from m/sec to cm/ns
 // -----   Default constructor   -------------------------------------------
-strawtubesHit::strawtubesHit() : ShipHit() {}
+strawtubesHit::strawtubesHit() : SHiP::DetectorHit() {}
 // -----   Standard constructor   ------------------------------------------
-strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {}
+strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
+    : SHiP::DetectorHit(detID, tdc) {}
 // -----   constructor from strawtubesPoint
 // ------------------------------------------
-strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0) : ShipHit() {
+strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
+    : SHiP::DetectorHit() {
   TVector3 start = TVector3();
   TVector3 stop = TVector3();
   fDetectorID = p->GetDetectorID();
