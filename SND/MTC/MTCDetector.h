@@ -33,10 +33,12 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   MTCDetector();
   ~MTCDetector() override;
 
-  void SetMTCParameters(Double_t width, Double_t height, Double_t angle,
-                        Double_t ironThick, Double_t sciFiThick,
-                        Int_t channelAggregated, Double_t scintThick,
-                        Int_t nLayers, Double_t zCenter, Double_t fieldY);
+  void SetMTCParameters(Double_t width, Double_t height,
+                        Double_t fiber_tilt_angle, Double_t iron_thickness,
+                        Double_t scifi_thickness, Int_t num_of_agg_channels,
+                        Double_t scint_cell_size, Double_t scint_thickness,
+                        Int_t number_of_layers, Double_t z_position,
+                        Double_t field_strength);
   virtual void CreateScintModule(const char* name,
                                  TGeoVolumeAssembly* modMotherVol,
                                  Double_t z_shift, Double_t width,
@@ -109,6 +111,7 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   Double_t fIronThick;
   Double_t fSciFiThick;
   Double_t fScintThick;
+  Double_t fScintCellSize;
   Int_t fLayers;
   Double_t fZCenter;
   Double_t fFieldY;
@@ -148,7 +151,7 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
 
   MTCDetector(const MTCDetector&) = delete;
   MTCDetector& operator=(const MTCDetector&) = delete;
-  ClassDefOverride(MTCDetector, 3)
+  ClassDefOverride(MTCDetector, 4)
 };
 
 #endif  // SND_MTC_MTCDETECTOR_H_
