@@ -1,34 +1,47 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="27,203,129,228"/>
-<area shape="rect" id="Node000001" href="$classMTCDetector.html" title=" " alt="" coords="221,301,328,327"/>
-<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="142,231,152,237,167,250,177,263,186,276,200,288,223,299,221,304,197,292,182,279,172,266,164,254,149,242,139,236"/>
-<area shape="rect" id="Node000003" href="$classSiliconTarget.html" title=" " alt="" coords="222,351,327,376"/>
-<area shape="poly" id="edge16_Node000000_Node000003" title=" " alt="" coords="143,230,152,237,164,250,171,263,177,289,183,314,190,326,200,337,223,351,220,355,197,341,185,329,178,316,172,290,166,265,160,253,149,241,140,235"/>
-<area shape="rect" id="Node000004" href="$classTarget.html" title=" " alt="" coords="243,400,306,425"/>
-<area shape="poly" id="edge17_Node000000_Node000004" title=" " alt="" coords="143,229,153,237,167,257,174,276,177,314,180,351,187,369,200,387,221,400,244,407,242,412,218,405,197,391,182,371,175,352,172,314,169,277,162,259,149,241,139,234"/>
-<area shape="rect" id="Node000005" href="$classTargetTracker.html" title=" " alt="" coords="221,449,329,475"/>
-<area shape="poly" id="edge18_Node000000_Node000005" title=" " alt="" coords="143,229,153,238,170,263,178,289,179,314,177,339,175,364,176,388,184,412,201,436,222,450,219,455,197,440,179,414,171,389,170,364,172,339,174,314,173,290,165,266,149,241,139,233"/>
-<area shape="rect" id="Node000006" href="$classTimeDet.html" title=" " alt="" coords="235,5,314,31"/>
-<area shape="poly" id="edge19_Node000000_Node000006" title=" " alt="" coords="88,189,105,155,129,115,160,75,197,40,215,30,234,23,236,28,217,34,200,44,164,78,133,118,109,158,93,191"/>
-<area shape="rect" id="Node000007" href="$classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector." alt="" coords="210,55,339,80"/>
-<area shape="poly" id="edge20_Node000000_Node000007" title=" " alt="" coords="94,190,137,139,166,112,197,89,221,78,223,82,200,94,169,116,141,143,99,193"/>
-<area shape="rect" id="Node000008" href="$classexitHadronAbsorber.html" title=" " alt="" coords="199,104,351,129"/>
-<area shape="poly" id="edge21_Node000000_Node000008" title=" " alt="" coords="106,192,148,165,198,138,227,127,229,132,200,143,151,169,109,197"/>
-<area shape="rect" id="Node000009" href="$classsplitcal.html" title=" " alt="" coords="240,153,309,179"/>
-<area shape="poly" id="edge22_Node000000_Node000009" title=" " alt="" coords="141,197,239,172,240,177,143,202"/>
-<area shape="rect" id="Node000010" href="$classstrawtubes.html" title=" " alt="" coords="227,203,322,228"/>
-<area shape="poly" id="edge23_Node000000_Node000010" title=" " alt="" coords="142,213,227,213,227,218,142,218"/>
-<area shape="rect" id="Node000011" href="$classveto.html" title=" " alt="" coords="249,252,300,277"/>
-<area shape="poly" id="edge24_Node000000_Node000011" title=" " alt="" coords="143,229,250,256,249,261,141,234"/>
-<area shape="rect" id="Node000002" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="5,252,151,277"/>
-<area shape="poly" id="edge25_Node000002_Node000001" title=" " alt="" coords="143,278,224,299,223,304,142,283"/>
-<area shape="poly" id="edge26_Node000002_Node000003" title=" " alt="" coords="109,283,151,311,200,337,229,348,227,353,198,342,148,315,106,288"/>
-<area shape="poly" id="edge27_Node000002_Node000004" title=" " alt="" coords="99,287,141,337,169,364,200,386,222,397,244,404,242,409,220,402,197,391,166,368,137,341,94,290"/>
-<area shape="poly" id="edge28_Node000002_Node000005" title=" " alt="" coords="93,289,109,322,133,362,164,402,200,436,222,448,219,452,197,440,160,405,129,365,105,325,88,291"/>
-<area shape="poly" id="edge29_Node000002_Node000006" title=" " alt="" coords="144,242,149,238,165,213,172,189,174,165,172,141,170,116,171,91,179,66,197,40,214,27,234,20,236,25,217,32,201,44,184,68,176,92,175,116,177,140,179,165,178,190,170,215,153,241,147,246"/>
-<area shape="poly" id="edge30_Node000002_Node000007" title=" " alt="" coords="143,243,149,238,162,219,169,202,172,165,175,127,182,108,197,89,213,78,216,82,201,93,187,111,180,129,177,165,174,203,167,222,153,241,146,247"/>
-<area shape="poly" id="edge31_Node000002_Node000008" title=" " alt="" coords="141,243,149,237,166,214,172,189,178,164,185,151,197,139,215,127,218,132,200,143,190,154,183,166,177,190,171,216,153,241,144,248"/>
-<area shape="poly" id="edge32_Node000002_Node000009" title=" " alt="" coords="136,244,149,237,163,225,172,213,182,200,197,188,239,171,241,175,200,192,186,204,177,216,167,229,152,242,139,249"/>
-<area shape="poly" id="edge33_Node000002_Node000010" title=" " alt="" coords="142,246,226,225,228,230,143,251"/>
-<area shape="poly" id="edge34_Node000002_Node000011" title=" " alt="" coords="165,262,249,262,249,267,165,267"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="27,228,129,253"/>
+<area shape="rect" id="Node000001" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="199,301,433,327"/>
+<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="134,255,152,262,176,275,200,286,243,299,242,304,198,291,173,280,150,267,132,260"/>
+<area shape="rect" id="Node000004" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="219,351,413,391"/>
+<area shape="poly" id="edge17_Node000000_Node000004" title=" " alt="" coords="142,256,152,263,169,282,177,301,185,319,200,336,223,349,220,353,197,340,180,322,172,303,164,284,149,267,139,260"/>
+<area shape="rect" id="Node000006" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="227,415,405,455"/>
+<area shape="poly" id="edge19_Node000000_Node000006" title=" " alt="" coords="142,255,153,263,166,281,174,299,177,334,180,369,187,385,200,401,228,419,225,423,197,405,183,388,175,370,172,335,168,300,162,283,149,267,139,259"/>
+<area shape="rect" id="Node000008" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="215,479,417,519"/>
+<area shape="poly" id="edge21_Node000000_Node000008" title=" " alt="" coords="143,254,153,263,170,289,178,315,179,341,177,367,174,392,175,417,183,441,201,465,216,478,213,482,197,469,178,443,170,418,169,392,171,366,174,341,173,316,166,291,149,266,139,258"/>
+<area shape="rect" id="Node000010" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="212,544,420,569"/>
+<area shape="poly" id="edge23_Node000000_Node000010" title=" " alt="" coords="142,254,153,263,174,298,182,332,181,367,175,400,170,433,170,466,178,498,201,529,217,542,214,546,197,533,173,500,164,466,165,433,170,399,176,366,177,333,169,300,149,266,139,258"/>
+<area shape="rect" id="Node000012" href="$classMTCDetector.html" title=" " alt="" coords="263,5,369,31"/>
+<area shape="poly" id="edge25_Node000000_Node000012" title=" " alt="" coords="85,214,100,175,123,128,155,80,175,58,197,40,229,25,262,17,263,22,230,30,200,44,179,62,159,83,128,130,104,177,90,216"/>
+<area shape="rect" id="Node000013" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="211,55,421,80"/>
+<area shape="poly" id="edge26_Node000000_Node000013" title=" " alt="" coords="90,214,131,151,162,117,197,89,221,78,224,83,200,94,165,121,136,154,94,217"/>
+<area shape="rect" id="Node000014" href="$classSiliconTarget.html" title=" " alt="" coords="263,104,369,129"/>
+<area shape="poly" id="edge27_Node000000_Node000014" title=" " alt="" coords="98,216,141,176,168,155,198,138,230,126,263,119,264,124,231,131,200,143,171,160,145,180,102,220"/>
+<area shape="rect" id="Node000015" href="$classTarget.html" title=" " alt="" coords="285,153,347,179"/>
+<area shape="poly" id="edge28_Node000000_Node000015" title=" " alt="" coords="117,219,198,187,284,168,285,173,199,193,119,224"/>
+<area shape="rect" id="Node000016" href="$classTargetTracker.html" title=" " alt="" coords="262,203,370,228"/>
+<area shape="poly" id="edge29_Node000000_Node000016" title=" " alt="" coords="142,231,261,218,262,224,142,237"/>
+<area shape="rect" id="Node000017" href="$classexitHadronAbsorber.html" title=" " alt="" coords="240,252,392,277"/>
+<area shape="poly" id="edge30_Node000000_Node000017" title=" " alt="" coords="142,244,240,254,240,260,142,250"/>
+<area shape="rect" id="Node000002" href="$classTimeDet.html" title=" " alt="" coords="507,301,585,327"/>
+<area shape="poly" id="edge16_Node000001_Node000002" title=" " alt="" coords="447,311,506,311,506,317,447,317"/>
+<area shape="rect" id="Node000005" href="$classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector." alt="" coords="481,359,611,384"/>
+<area shape="poly" id="edge18_Node000004_Node000005" title=" " alt="" coords="427,369,481,369,481,374,427,374"/>
+<area shape="rect" id="Node000007" href="$classsplitcal.html" title=" " alt="" coords="511,423,581,448"/>
+<area shape="poly" id="edge20_Node000006_Node000007" title=" " alt="" coords="419,433,511,433,511,438,419,438"/>
+<area shape="rect" id="Node000009" href="$classstrawtubes.html" title=" " alt="" coords="499,487,593,512"/>
+<area shape="poly" id="edge22_Node000008_Node000009" title=" " alt="" coords="432,497,498,497,498,502,432,502"/>
+<area shape="rect" id="Node000011" href="$classveto.html" title=" " alt="" coords="521,544,571,569"/>
+<area shape="poly" id="edge24_Node000010_Node000011" title=" " alt="" coords="434,554,520,554,520,559,434,559"/>
+<area shape="rect" id="Node000003" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="5,277,151,303"/>
+<area shape="poly" id="edge31_Node000003_Node000001" title=" " alt="" coords="165,296,199,300,198,305,164,301"/>
+<area shape="poly" id="edge32_Node000003_Node000004" title=" " alt="" coords="122,306,200,335,241,349,240,354,198,341,120,310"/>
+<area shape="poly" id="edge33_Node000003_Node000006" title=" " alt="" coords="100,312,143,357,170,381,200,401,228,414,226,418,197,406,167,385,139,361,96,315"/>
+<area shape="poly" id="edge34_Node000003_Node000008" title=" " alt="" coords="92,314,108,349,132,390,163,431,200,465,221,477,218,482,197,469,159,434,128,393,104,351,87,317"/>
+<area shape="poly" id="edge35_Node000003_Node000010" title=" " alt="" coords="87,316,100,363,122,421,155,480,176,506,200,529,221,542,219,546,197,533,172,510,150,483,117,423,95,364,82,317"/>
+<area shape="poly" id="edge36_Node000003_Node000012" title=" " alt="" coords="144,268,149,263,167,235,174,207,174,180,170,152,167,124,168,96,176,68,197,40,211,29,228,21,262,14,263,19,229,27,214,34,201,44,181,70,173,97,172,124,175,151,179,179,179,208,171,237,153,266,148,272"/>
+<area shape="poly" id="edge37_Node000003_Node000013" title=" " alt="" coords="143,268,149,263,164,241,170,220,171,177,172,133,180,111,197,89,213,78,216,82,201,93,184,113,177,134,176,177,176,221,168,244,153,266,147,272"/>
+<area shape="poly" id="edge38_Node000003_Node000014" title=" " alt="" coords="143,268,149,263,161,248,167,233,171,201,176,170,183,154,197,139,228,121,263,114,264,119,230,126,200,143,188,157,181,171,176,202,172,234,165,250,153,267,146,272"/>
+<area shape="poly" id="edge39_Node000003_Node000015" title=" " alt="" coords="139,269,149,263,164,244,172,226,180,206,197,188,218,177,241,169,284,163,285,169,242,175,220,182,200,192,184,209,177,228,169,247,152,267,142,273"/>
+<area shape="poly" id="edge40_Node000003_Node000016" title=" " alt="" coords="130,270,150,262,173,249,198,237,261,220,263,226,200,242,176,254,152,267,132,275"/>
+<area shape="poly" id="edge41_Node000003_Node000017" title=" " alt="" coords="164,278,240,270,240,275,165,283"/>
 </map>

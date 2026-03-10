@@ -21,16 +21,27 @@ var hierarchy =
       [ "vetoContFact", "classvetoContFact.html", null ]
     ] ],
     [ "FairDetector", null, [
+      [ "SHiP::Detector< TimeDetPoint >", "classSHiP_1_1Detector.html", [
+        [ "TimeDet", "classTimeDet.html", null ]
+      ] ],
+      [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", [
+        [ "UpstreamTagger", "classUpstreamTagger.html", null ]
+      ] ],
+      [ "SHiP::Detector< splitcalPoint >", "classSHiP_1_1Detector.html", [
+        [ "splitcal", "classsplitcal.html", null ]
+      ] ],
+      [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", [
+        [ "strawtubes", "classstrawtubes.html", null ]
+      ] ],
+      [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", [
+        [ "veto", "classveto.html", null ]
+      ] ],
       [ "MTCDetector", "classMTCDetector.html", null ],
+      [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ],
       [ "SiliconTarget", "classSiliconTarget.html", null ],
       [ "Target", "classTarget.html", null ],
       [ "TargetTracker", "classTargetTracker.html", null ],
-      [ "TimeDet", "classTimeDet.html", null ],
-      [ "UpstreamTagger", "classUpstreamTagger.html", null ],
-      [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
-      [ "splitcal", "classsplitcal.html", null ],
-      [ "strawtubes", "classstrawtubes.html", null ],
-      [ "veto", "classveto.html", null ]
+      [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ]
     ] ],
     [ "FairField", null, [
       [ "ShipBellField", "classShipBellField.html", null ],
@@ -97,16 +108,17 @@ var hierarchy =
     ] ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "ISTLPointContainer", "classISTLPointContainer.html", [
+      [ "SHiP::Detector< TimeDetPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< UpstreamTaggerPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< splitcalPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< strawtubesPoint >", "classSHiP_1_1Detector.html", null ],
+      [ "SHiP::Detector< vetoPoint >", "classSHiP_1_1Detector.html", null ],
       [ "MTCDetector", "classMTCDetector.html", null ],
+      [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ],
       [ "SiliconTarget", "classSiliconTarget.html", null ],
       [ "Target", "classTarget.html", null ],
       [ "TargetTracker", "classTargetTracker.html", null ],
-      [ "TimeDet", "classTimeDet.html", null ],
-      [ "UpstreamTagger", "classUpstreamTagger.html", null ],
-      [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
-      [ "splitcal", "classsplitcal.html", null ],
-      [ "strawtubes", "classstrawtubes.html", null ],
-      [ "veto", "classveto.html", null ]
+      [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ]
     ] ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
     [ "ROOT.pyFairModule", null, [

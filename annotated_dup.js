@@ -46,6 +46,7 @@ var annotated_dup =
       [ "SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", "classSciFiMapping_1_1SciFiMapping" ]
     ] ],
     [ "SHiP", "namespaceSHiP.html", [
+      [ "Detector", "classSHiP_1_1Detector.html", "classSHiP_1_1Detector" ],
       [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
       [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ]
     ] ],
@@ -147,8 +148,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

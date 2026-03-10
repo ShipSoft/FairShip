@@ -1,23 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,153,104,179"/>
 <area shape="rect" id="Node000001" href="$classMTCDetPoint.html" title=" " alt="" coords="173,55,280,80"/>
-<area shape="poly" id="edge53_Node000000_Node000001" title=" " alt="" coords="78,142,111,115,151,89,177,78,179,83,153,94,114,119,81,146"/>
+<area shape="poly" id="edge60_Node000000_Node000001" title=" " alt="" coords="78,142,111,115,151,89,177,78,179,83,153,94,114,119,81,146"/>
 <area shape="rect" id="Node000002" href="$classSHiP_1_1DetectorPoint.html" title=" " alt="" coords="152,104,301,129"/>
-<area shape="poly" id="edge54_Node000000_Node000002" title=" " alt="" coords="112,147,181,127,182,132,113,152"/>
+<area shape="poly" id="edge61_Node000000_Node000002" title=" " alt="" coords="112,147,181,127,182,132,113,152"/>
 <area shape="rect" id="Node000008" href="$classSiliconTargetPoint.html" title=" " alt="" coords="157,153,296,179"/>
-<area shape="poly" id="edge60_Node000000_Node000008" title=" " alt="" coords="118,163,157,163,157,169,118,169"/>
+<area shape="poly" id="edge67_Node000000_Node000008" title=" " alt="" coords="118,163,157,163,157,169,118,169"/>
 <area shape="rect" id="Node000009" href="$classTTPoint.html" title=" " alt="" coords="191,203,262,228"/>
-<area shape="poly" id="edge61_Node000000_Node000009" title=" " alt="" coords="113,180,192,203,190,208,112,185"/>
+<area shape="poly" id="edge68_Node000000_Node000009" title=" " alt="" coords="113,180,192,203,190,208,112,185"/>
 <area shape="rect" id="Node000010" href="$classTargetPoint.html" title=" " alt="" coords="179,252,274,277"/>
-<area shape="poly" id="edge62_Node000000_Node000010" title=" " alt="" coords="81,186,114,213,153,238,180,250,178,255,151,243,111,217,78,190"/>
+<area shape="poly" id="edge69_Node000000_Node000010" title=" " alt="" coords="81,186,114,213,153,238,180,250,178,255,151,243,111,217,78,190"/>
 <area shape="rect" id="Node000003" href="$classTimeDetPoint.html" title=" " alt="" coords="375,5,486,31"/>
-<area shape="poly" id="edge55_Node000002_Node000003" title=" " alt="" coords="287,96,300,89,314,77,323,65,333,52,348,40,374,28,376,33,351,44,336,56,327,68,318,81,303,94,289,101"/>
+<area shape="poly" id="edge62_Node000002_Node000003" title=" " alt="" coords="287,96,300,89,314,77,323,65,333,52,348,40,374,28,376,33,351,44,336,56,327,68,318,81,303,94,289,101"/>
 <area shape="rect" id="Node000004" href="$classUpstreamTaggerPoint.html" title=" " alt="" coords="349,55,512,80"/>
-<area shape="poly" id="edge56_Node000002_Node000004" title=" " alt="" coords="292,98,377,77,378,83,294,103"/>
+<area shape="poly" id="edge63_Node000002_Node000004" title=" " alt="" coords="292,98,377,77,378,83,294,103"/>
 <area shape="rect" id="Node000005" href="$classsplitcalPoint.html" title=" " alt="" coords="379,104,482,129"/>
-<area shape="poly" id="edge57_Node000002_Node000005" title=" " alt="" coords="315,114,379,114,379,119,315,119"/>
+<area shape="poly" id="edge64_Node000002_Node000005" title=" " alt="" coords="315,114,379,114,379,119,315,119"/>
 <area shape="rect" id="Node000006" href="$classstrawtubesPoint.html" title=" " alt="" coords="367,153,494,179"/>
-<area shape="poly" id="edge58_Node000002_Node000006" title=" " alt="" coords="294,130,378,151,377,156,292,135"/>
+<area shape="poly" id="edge65_Node000002_Node000006" title=" " alt="" coords="294,130,378,151,377,156,292,135"/>
 <area shape="rect" id="Node000007" href="$classvetoPoint.html" title=" " alt="" coords="389,203,473,228"/>
-<area shape="poly" id="edge59_Node000002_Node000007" title=" " alt="" coords="292,132,303,138,318,151,327,164,336,176,351,188,390,204,388,209,348,192,333,180,323,167,314,155,300,143,289,137"/>
+<area shape="poly" id="edge66_Node000002_Node000007" title=" " alt="" coords="292,132,303,138,318,151,327,164,336,176,351,188,390,204,388,209,348,192,333,180,323,167,314,155,300,143,289,137"/>
 </map>

@@ -1,23 +1,35 @@
 <map id="ISTLPointContainer" name="ISTLPointContainer">
-<area shape="rect" id="Node000001" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="5,228,151,253"/>
-<area shape="rect" id="Node000002" href="$classMTCDetector.html" title=" " alt="" coords="221,5,328,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,214,101,175,125,129,157,81,197,40,220,27,222,32,200,44,161,84,129,131,106,178,91,216"/>
-<area shape="rect" id="Node000003" href="$classSiliconTarget.html" title=" " alt="" coords="222,55,327,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="91,215,133,152,163,118,197,89,220,77,223,82,200,94,166,122,137,155,95,218"/>
-<area shape="rect" id="Node000004" href="$classTarget.html" title=" " alt="" coords="243,104,306,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="99,216,143,177,197,138,242,121,244,126,200,143,146,181,103,220"/>
-<area shape="rect" id="Node000005" href="$classTargetTracker.html" title=" " alt="" coords="221,153,329,179"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="119,220,198,188,231,176,233,181,200,192,121,225"/>
-<area shape="rect" id="Node000006" href="$classTimeDet.html" title=" " alt="" coords="235,203,314,228"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="164,227,235,218,235,223,165,232"/>
-<area shape="rect" id="Node000007" href="$classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector." alt="" coords="210,252,339,277"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="165,249,210,254,209,259,164,254"/>
-<area shape="rect" id="Node000008" href="$classexitHadronAbsorber.html" title=" " alt="" coords="199,301,351,327"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="123,256,200,286,235,299,234,304,198,291,121,261"/>
-<area shape="rect" id="Node000009" href="$classsplitcal.html" title=" " alt="" coords="240,351,309,376"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="104,261,147,299,200,336,241,352,239,357,197,340,143,303,100,265"/>
-<area shape="rect" id="Node000010" href="$classstrawtubes.html" title=" " alt="" coords="227,400,322,425"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="95,264,138,324,167,357,200,385,228,399,226,404,197,390,163,361,133,328,91,267"/>
-<area shape="rect" id="Node000011" href="$classveto.html" title=" " alt="" coords="249,449,300,475"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="91,266,107,303,130,349,161,395,200,435,224,448,250,456,248,461,222,453,197,439,157,398,126,351,102,306,86,268"/>
+<area shape="rect" id="Node000001" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="5,297,151,323"/>
+<area shape="rect" id="Node000002" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="199,5,433,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,283,92,232,113,166,147,98,170,68,197,41,218,29,221,33,200,45,174,71,152,101,118,168,97,233,86,284"/>
+<area shape="rect" id="Node000004" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="219,55,413,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="85,283,100,244,123,196,156,147,197,105,217,93,220,98,200,109,160,150,128,198,105,246,90,285"/>
+<area shape="rect" id="Node000006" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="227,119,405,159"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="92,284,134,226,164,195,197,169,225,155,227,160,200,174,167,199,138,230,96,287"/>
+<area shape="rect" id="Node000008" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="215,183,417,223"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="106,287,148,260,198,234,233,221,235,226,200,239,151,265,109,292"/>
+<area shape="rect" id="Node000010" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="212,248,420,273"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="152,292,253,271,254,276,154,297"/>
+<area shape="rect" id="Node000012" href="$classMTCDetector.html" title=" " alt="" coords="263,297,369,323"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="165,307,263,307,263,313,165,313"/>
+<area shape="rect" id="Node000013" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="211,347,421,372"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="153,323,199,333,253,344,252,349,198,338,152,328"/>
+<area shape="rect" id="Node000014" href="$classSiliconTarget.html" title=" " alt="" coords="263,396,369,421"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="108,329,150,357,200,382,264,399,263,405,198,387,147,361,105,333"/>
+<area shape="rect" id="Node000015" href="$classTarget.html" title=" " alt="" coords="285,445,347,471"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="97,332,140,384,168,410,200,432,243,447,285,454,284,459,242,453,197,436,165,414,136,387,93,336"/>
+<area shape="rect" id="Node000016" href="$classTargetTracker.html" title=" " alt="" coords="262,495,370,520"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="92,334,108,368,132,409,162,448,200,481,230,495,262,502,261,507,228,500,197,486,159,452,127,412,103,371,87,337"/>
+<area shape="rect" id="Node000017" href="$classexitHadronAbsorber.html" title=" " alt="" coords="240,544,392,569"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="88,336,102,379,124,432,157,486,177,510,200,530,219,541,240,548,239,554,217,546,197,535,173,514,152,489,119,435,97,381,83,337"/>
+<area shape="rect" id="Node000003" href="$classTimeDet.html" title=" " alt="" coords="507,5,585,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="447,15,506,15,506,21,447,21"/>
+<area shape="rect" id="Node000005" href="$classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector." alt="" coords="481,63,611,88"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="427,73,481,73,481,78,427,78"/>
+<area shape="rect" id="Node000007" href="$classsplitcal.html" title=" " alt="" coords="511,127,581,152"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="419,137,511,137,511,142,419,142"/>
+<area shape="rect" id="Node000009" href="$classstrawtubes.html" title=" " alt="" coords="499,191,593,216"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="432,201,498,201,498,206,432,206"/>
+<area shape="rect" id="Node000011" href="$classveto.html" title=" " alt="" coords="521,248,571,273"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="434,258,520,258,520,263,434,263"/>
 </map>
