@@ -8,8 +8,7 @@
 #include <map>
 #include <vector>
 
-#include "FairDetector.h"
-#include "ISTLPointContainer.h"
+#include "Detector.h"
 #include "TGeoVolume.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
@@ -27,7 +26,7 @@ class TClonesArray;
  * the detector geometry, processing hits, and handling input parameters.
  */
 
-class veto : public FairDetector, public ISTLPointContainer {
+class veto : public SHiP::Detector<vetoPoint> {
  public:
   /**      Name :  Veto
    *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -36,28 +35,10 @@ class veto : public FairDetector, public ISTLPointContainer {
 
   veto();
 
-  /**       destructor     */
-  ~veto() override;
-
-  /**      Initialization of the detector is done here    */
-  void Initialize() override;
-
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
   Bool_t ProcessHits(FairVolume* v = 0) override;
-
-  /**       Registers the produced collections in FAIRRootManager.     */
-  void Register() override;
-
-  /** Gets the produced collections */
-  TClonesArray* GetCollection(Int_t iColl) const override;
-
-  /** Update track indices in point collection (for std::vector migration) */
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
-  /**      has to be called after each event to reset the containers      */
-  void Reset() override;
 
   void SetFastMuon() { fFastMuon = true; }  // kill all tracks except of muons
   void SetFollowMuon() {
@@ -73,7 +54,7 @@ class veto : public FairDetector, public ISTLPointContainer {
   }
 
   /**      Create the detector geometry        */
-  void ConstructGeometry();
+  void ConstructGeometry() override;
 
   void SetVesselStructure(Float_t a, Float_t b, Float_t c, TString d, Float_t l,
                           TString e, TString f, TString v, Float_t r) {
@@ -88,29 +69,11 @@ class veto : public FairDetector, public ISTLPointContainer {
     f_RibThickness = r;
   }
 
-  /**      This method is an example of how to add your own point
-   *       of type vetoPoint to the clones array
-   */
-  vetoPoint* AddHit(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                    TVector3 mom, Double_t time, Double_t length,
-                    Double_t eLoss, Int_t pdgcode, TVector3 Lpos,
-                    TVector3 Lmom);
-
   /** The following methods can be implemented if you need to make
    *  any optional action in your detector during the transport.
    */
 
-  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
-    ;
-  }
-  void SetSpecialPhysicsCuts() override { ; }
-  void EndOfEvent() override;
-  void FinishPrimary() override { ; }
-  void FinishRun() override { ; }
-  void BeginPrimary() override { ; }
-  void PostTrack() override { ; }
   void PreTrack() override;
-  void BeginEvent() override { ; }
 
   inline void SetUseSupport(Int_t use = 1) { fUseSupport = use; }
   inline Int_t GetUseSupport() const { return fUseSupport; }
@@ -122,22 +85,6 @@ class veto : public FairDetector, public ISTLPointContainer {
   /** Track information to be stored until the track leaves the
   active volume.
   */
-  //!  event index
-  Int_t fEventID;
-  //!  track index
-  Int_t fTrackID;
-  //!  volume id
-  Int_t fVolumeID;
-  //!  position at entrance
-  TLorentzVector fPos;
-  //!  momentum at entrance
-  TLorentzVector fMom;
-  //!  time
-  Float_t fTime;
-  //!  length
-  Float_t fLength;
-  //!  energy loss
-  Float_t fELoss;
 
   Bool_t fFastMuon, fFollowMuon;
 
@@ -179,8 +126,6 @@ class veto : public FairDetector, public ISTLPointContainer {
   Int_t fUseSupport;
   //! Flag option for Liquid Scintillator (Default=True).
   Int_t fLiquidVeto;
-  /** container for data points */
-  std::vector<vetoPoint>* fvetoPoints;
 
   veto(const veto&) = delete;
   veto& operator=(const veto&) = delete;
@@ -252,7 +197,7 @@ class veto : public FairDetector, public ISTLPointContainer {
 
   TGeoVolume* MakeSegments();
 
-  ClassDefOverride(veto, 2)
+  ClassDefOverride(veto, 3)
 };
 
 #endif  // VETO_VETO_H_

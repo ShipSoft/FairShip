@@ -41,16 +41,7 @@ using std::cout;
 using std::endl;
 
 TimeDet::TimeDet()
-    : FairDetector("TimeDet", kTRUE, kTimeDet),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      //
+    : Detector("TimeDet", kTRUE, kTimeDet),
       fzPos(0),
       fxSize(450),
       fySize(650),
@@ -62,11 +53,7 @@ TimeDet::TimeDet()
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0),
-      //
-      fDetector(0),
-      //
-      fTimeDetPoints(nullptr) {
+      fyCenter(0) {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -79,15 +66,7 @@ TimeDet::TimeDet()
 }
 
 TimeDet::TimeDet(const char* name, Bool_t active)
-    : FairDetector(name, active, kTimeDet),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
+    : Detector(name, active, kTimeDet),
       //
       fzPos(0),
       fxSize(450),
@@ -100,11 +79,7 @@ TimeDet::TimeDet(const char* name, Bool_t active)
       fNCol(3),
       fNRow(148),
       fxCenter(0),
-      fyCenter(0),
-      //
-      fDetector(0),
-      //
-      fTimeDetPoints(nullptr) {
+      fyCenter(0) {
   fNBars = fNCol * fNRow;
   if (fNCol > 1)
     fxOv = (fxBar * fNCol - fxSize) / static_cast<double>(fNCol - 1);
@@ -114,15 +89,6 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fyOv = (fyBar * fNRow - fySize) / static_cast<double>(fNRow - 1);
   else
     fyOv = 0;
-}
-
-void TimeDet::Initialize() { FairDetector::Initialize(); }
-
-TimeDet::~TimeDet() {
-  if (fTimeDetPoints) {
-    fTimeDetPoints->clear();
-    delete fTimeDetPoints;
-  }
 }
 
 Bool_t TimeDet::ProcessHits(FairVolume* vol) {
@@ -183,35 +149,6 @@ Bool_t TimeDet::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-void TimeDet::EndOfEvent() { fTimeDetPoints->clear(); }
-
-void TimeDet::Register() {
-  /** This will create a branch in the output tree called
-      TimeDetPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  fTimeDetPoints = new std::vector<TimeDetPoint>();
-  FairRootManager::Instance()->RegisterAny("TimeDetPoint", fTimeDetPoints,
-                                           kTRUE);
-}
-
-TClonesArray* TimeDet::GetCollection(Int_t iColl) const { return nullptr; }
-
-void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fTimeDetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void TimeDet::Reset() { fTimeDetPoints->clear(); }
-
 void TimeDet::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
 
@@ -247,15 +184,6 @@ void TimeDet::ConstructGeometry() {
   ///////////////////////////////////////////////////////
 
   return;
-}
-
-TimeDetPoint* TimeDet::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                              TVector3 pos, TVector3 mom, Double_t time,
-                              Double_t length, Double_t eLoss, Int_t pdgCode,
-                              TVector3 Lpos, TVector3 Lmom) {
-  fTimeDetPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                               eLoss, pdgCode, Lpos, Lmom);
-  return &(fTimeDetPoints->back());
 }
 
 void TimeDet::GetBarRowCol(int ib, int& irow, int& icol) const {

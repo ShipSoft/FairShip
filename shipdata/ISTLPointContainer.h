@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include "RtypesCore.h"
+
 /**
  * @brief Interface for detectors using STL containers (std::vector) for MC
  * points

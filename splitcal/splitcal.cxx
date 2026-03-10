@@ -37,38 +37,10 @@
 using std::cout;
 using std::endl;
 
-splitcal::splitcal()
-    : FairDetector("splitcal", kTRUE, kSplitCal),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fsplitcalPoints(nullptr) {}
+splitcal::splitcal() : Detector("splitcal", kTRUE, kSplitCal) {}
 
 splitcal::splitcal(const char* name, Bool_t active)
-    : FairDetector(name, active, kSplitCal),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fsplitcalPoints(nullptr) {}
-
-splitcal::~splitcal() {
-  if (fsplitcalPoints) {
-    fsplitcalPoints->clear();
-    delete fsplitcalPoints;
-  }
-}
-
-void splitcal::Initialize() { FairDetector::Initialize(); }
+    : Detector(name, active, kSplitCal) {}
 
 Bool_t splitcal::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -110,35 +82,6 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
 
   return kTRUE;
 }
-
-void splitcal::EndOfEvent() { fsplitcalPoints->clear(); }
-
-void splitcal::Register() {
-  /** This will create a branch in the output tree called
-      splitcalPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  fsplitcalPoints = new std::vector<splitcalPoint>();
-  FairRootManager::Instance()->RegisterAny("splitcalPoint", fsplitcalPoints,
-                                           kTRUE);
-}
-
-TClonesArray* splitcal::GetCollection(Int_t iColl) const { return nullptr; }
-
-void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fsplitcalPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void splitcal::Reset() { fsplitcalPoints->clear(); }
 
 void splitcal::SetZStart(Double_t ZStart) { fZStart = ZStart; }
 void splitcal::SetEmpty(Double_t Empty, Double_t BigGap,
@@ -282,8 +225,8 @@ void splitcal::ConstructGeometry() {
     }
 
     if (i_nlayECAL == 0)
-      z_splitcal += fEmpty;  // space after first layer? set to 0 in the config
-                             // file? for whar is it for?
+      z_splitcal += fEmpty;  // space after first layer? set to 0 in the
+                             // config file? for whar is it for?
     if (i_nlayECAL == 7) z_splitcal += fBigGap;
 
     // position high precision sensitive layers
@@ -315,8 +258,8 @@ void splitcal::ConstructGeometry() {
               double xCoordinate =
                   -fXMax + (fNStripsPerModule * mx + j + 0.5) *
                                fStripHalfWidth *
-                               2;  // the times 2 is to get the total width from
-                                   // the half-width
+                               2;  // the times 2 is to get the total width
+                                   // from the half-width
               double yCoordinate =
                   -fYMax + (my + 0.5) * fStripHalfLength *
                                2;  // the times 2 is to get the total length
@@ -343,8 +286,8 @@ void splitcal::ConstructGeometry() {
               double yCoordinate =
                   -fYMax + (fNStripsPerModule * my + j + 0.5) *
                                fStripHalfWidth *
-                               2;  // the times 2 is to get the total width from
-                                   // the half-width
+                               2;  // the times 2 is to get the total width
+                                   // from the half-width
               tSplitCal->AddNode(
                   stripGivingY, index,
                   new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
@@ -399,13 +342,4 @@ void splitcal::ConstructGeometry() {
   Double_t totLength = asmb->GetDZ();
   top->AddNode(tSplitCal, 1,
                new TGeoTranslation(0, 0, zStartSplitCal + totLength));
-}
-
-splitcalPoint* splitcal::AddHit(Int_t eventID, Int_t trackID, Int_t detID,
-                                TVector3 pos, TVector3 mom, Double_t time,
-                                Double_t length, Double_t eLoss,
-                                Int_t pdgCode) {
-  fsplitcalPoints->emplace_back(eventID, trackID, detID, pos, mom, time, length,
-                                eLoss, pdgCode);
-  return &(fsplitcalPoints->back());
 }
