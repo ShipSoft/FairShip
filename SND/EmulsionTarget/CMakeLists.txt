@@ -5,5 +5,6 @@ ship_add_library(
   NAME EmulsionTarget
   SOURCES Target.cxx TargetPoint.cxx TargetTracker.cxx TTPoint.cxx
   LINKDEF EmulsionTargetLinkDef.h
-  DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
+  EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h
+  DEPENDENCIES Detector Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
 )

@@ -5,33 +5,24 @@
 #ifndef SND_MTC_MTCDETECTOR_H_
 #define SND_MTC_MTCDETECTOR_H_
 
+#include <array>
 #include <map>
 #include <string>  // for string
-#include <vector>
 
-#include "FairDetector.h"
-#include "FairModule.h"  // for FairModule
-#include "ISTLPointContainer.h"
+#include "Detector.h"
 #include "MTCDetPoint.h"
-#include "Rtypes.h"  // for ShipMuonShield::Class, Bool_t, etc
-#include "TClonesArray.h"
 #include "TGeoMatrix.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
 
-class MTCDetPoint;
 class TGeoVolume;
 class TGeoVolumeAssembly;
 class TGeoMedium;
 class FairVolume;
-class TClonesArray;
 
-class MTCDetector : public FairDetector, public ISTLPointContainer {
+class MTCDetector : public SHiP::Detector<MTCDetPoint> {
  public:
   MTCDetector(const char* name, Bool_t Active, const char* Title = "",
               Int_t DetId = 0);
   MTCDetector();
-  ~MTCDetector() override;
 
   void SetMTCParameters(Double_t width, Double_t height, Double_t angle,
                         Double_t ironThick, Double_t sciFiThick,
@@ -49,7 +40,6 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
                                  Double_t width, Double_t height,
                                  Double_t thickness, Int_t LayerId);
   void ConstructGeometry() override;
-  void Initialize() override;
   /** Get position of single fibre in global coordinate system**/
   void GetPosition(Int_t fDetectorID, TVector3& vLeft,
                    TVector3& vRight);  // or top and bottom
@@ -76,31 +66,8 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   Float_t Get_SciFiActiveX() const { return fSciFiActiveX; }
   virtual void SiPMOverlap();
   Bool_t ProcessHits(FairVolume* vol = 0) override;
-  MTCDetPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                      Double_t time, Double_t length, Double_t eLoss,
-                      Int_t pdgCode);
-
-  void Register() override;
-  void EndOfEvent() override;
-  TClonesArray* GetCollection(Int_t iColl) const override;
-
-  /** Update track indices in point collection (for std::vector migration) */
-  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
-
-  void Reset() override;
 
  private:
-  /** Track information to be stored until the track leaves the
-   active volume.
-   */
-  Int_t fTrackID;       //!  track index
-  Int_t fPdgCode;       //!  pdg code
-  Int_t fVolumeID;      //!  volume id
-  TLorentzVector fPos;  //!  position at entrance
-  TLorentzVector fMom;  //!  momentum at entrance
-  Double32_t fTime;     //!  time
-  Double32_t fLength;   //!  length
-  Double32_t fELoss;    //!  energy loss
   Double_t fWidth;
   Double_t fHeight;
   Double_t fSciFiActiveX;
@@ -143,8 +110,6 @@ class MTCDetector : public FairDetector, public ISTLPointContainer {
   std::map<Int_t, std::map<Int_t, std::array<float, 2>>>
       siPMFibres_V;                             //! inverse mapping
   std::map<Int_t, float> SiPMPos_U, SiPMPos_V;  //! local SiPM channel position
-  /** container for data points */
-  std::vector<MTCDetPoint>* fMTCDetectorPoints;
 
   MTCDetector(const MTCDetector&) = delete;
   MTCDetector& operator=(const MTCDetector&) = delete;

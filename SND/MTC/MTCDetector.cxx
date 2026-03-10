@@ -5,7 +5,6 @@
 // MTC detector specific headers
 #include "MTCDetector.h"
 
-#include "FairLink.h"
 #include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
 #include "ShipGeoUtil.h"
@@ -34,13 +33,11 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
-#include "FairRootManager.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 
 // Additional standard headers
-#include "TClonesArray.h"
 #include "TList.h"      // for TListIter, TList (ptr only)
 #include "TObjArray.h"  // for TObjArray
 #include "TString.h"    // for TString
@@ -142,36 +139,11 @@ Double_t area(Double_t a, Double_t R, Double_t xL, Double_t xR) {
 }
 }  // namespace
 
-MTCDetector::MTCDetector()
-    : FairDetector("MTC", kTRUE, kMTC),
-      fTrackID(-1),
-      fPdgCode(),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fMTCDetectorPoints(nullptr) {}
+MTCDetector::MTCDetector() : Detector("MTC", kTRUE, kMTC) {}
 
-MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title,
-                         Int_t DetId)
-    : FairDetector(name, Active, kMTC),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fMTCDetectorPoints(nullptr) {}
-
-MTCDetector::~MTCDetector() {
-  if (fMTCDetectorPoints) {
-    fMTCDetectorPoints->clear();
-    delete fMTCDetectorPoints;
-  }
-}
+MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* /*Title*/,
+                         Int_t /*DetId*/)
+    : Detector(name, Active, kMTC) {}
 
 void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t angle,
                                    Double_t iron, Double_t sciFi,
@@ -401,8 +373,6 @@ void MTCDetector::ConstructGeometry() {
   gGeoManager->GetTopVolume()->AddNode(envVol, 1,
                                        new TGeoTranslation(0, 0, fZCenter));
 }
-// Standard FairDetector methods
-void MTCDetector::Initialize() { FairDetector::Initialize(); }
 
 Bool_t MTCDetector::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -767,40 +737,4 @@ void MTCDetector::SiPMmapping() {
       }
     }
   }
-}
-
-void MTCDetector::Register() {
-  if (!fMTCDetectorPoints) {
-    fMTCDetectorPoints = new std::vector<MTCDetPoint>();
-  }
-  FairRootManager::Instance()->RegisterAny("MTCDetPoint", fMTCDetectorPoints,
-                                           kTRUE);
-  LOG(debug) << this->GetName()
-             << ", Register() says: registered MTCDetPoint collection";
-}
-
-TClonesArray* MTCDetector::GetCollection(Int_t iColl) const { return nullptr; }
-
-void MTCDetector::UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fMTCDetectorPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void MTCDetector::Reset() { fMTCDetectorPoints->clear(); }
-
-void MTCDetector::EndOfEvent() { fMTCDetectorPoints->clear(); }
-
-MTCDetPoint* MTCDetector::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                                 TVector3 mom, Double_t time, Double_t length,
-                                 Double_t eLoss, Int_t pdgCode) {
-  fMTCDetectorPoints->emplace_back(trackID, detID, pos, mom, time, length,
-                                   eLoss, pdgCode);
-  return &(fMTCDetectorPoints->back());
 }
