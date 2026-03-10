@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespaceextractNeutrinosAndUpdateWeight.html#af7e96fcc0ed95760bbd1c692e634b12d":[5,0,32,4],
 "namespacegenfit.html":[5,0,33],
 "namespacegenie__interface.html":[5,0,34],
 "namespacegenie__interface.html#a07ebc2825ff161868cf7864006a40d85":[5,0,34,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "namespacemakeCascade.html#a897519cb1b024b7752c61d6a5b1aa46b":[5,0,46,44],
 "namespacemakeCascade.html#a95ffd118cf42cfdd3012256cf4bac800":[5,0,46,27],
 "namespacemakeCascade.html#a96da43ec4f060a21c1699b1feb259be4":[5,0,46,33],
-"namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366":[5,0,46,7],
-"namespacemakeCascade.html#aa94d0c9b32708cdeae41c45f2d47e9ef":[5,0,46,19]
+"namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366":[5,0,46,7]
 };

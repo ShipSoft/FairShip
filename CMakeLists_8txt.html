@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5e3a23151f522135e56b575a121b7a9c" id="r_a5e3a23151f522135e56b575a121b7a9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a5e3a23151f522135e56b575a121b7a9c">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) include(GNUInstallDirs) include(GNUInstallDirs) set(CMAKE_INSTALL_LIBDIR lib) set(CMAKE_CXX_STANDARD 17) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
-<tr class="separator:a5e3a23151f522135e56b575a121b7a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0a18d2499fc4a2ac943a628cdf20f6" id="r_acf0a18d2499fc4a2ac943a628cdf20f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#acf0a18d2499fc4a2ac943a628cdf20f6">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) include(GNUInstallDirs) include(GNUInstallDirs) set(CMAKE_INSTALL_LIBDIR lib) set(CMAKE_CXX_STANDARD 20) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
+<tr class="separator:acf0a18d2499fc4a2ac943a628cdf20f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5e3a23151f522135e56b575a121b7a9c" name="a5e3a23151f522135e56b575a121b7a9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e3a23151f522135e56b575a121b7a9c">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
+<a id="acf0a18d2499fc4a2ac943a628cdf20f6" name="acf0a18d2499fc4a2ac943a628cdf20f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf0a18d2499fc4a2ac943a628cdf20f6">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,8 +133,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   26</span><span class="preprocessor"># aliBuild modulefile expects libraries in lib/, not lib64/</span></div>
 <div class="line"><span class="lineno">   27</span>set(CMAKE_INSTALL_LIBDIR lib)</div>
 <div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span><span class="preprocessor"># C++17 required by ROOT 6.36</span></div>
-<div class="line"><span class="lineno">   30</span>set(CMAKE_CXX_STANDARD 17)</div>
+<div class="line"><span class="lineno">   29</span><span class="preprocessor"># C++20 required; ROOT 6.36 requires at least C++17</span></div>
+<div class="line"><span class="lineno">   30</span>set(CMAKE_CXX_STANDARD 20)</div>
 <div class="line"><span class="lineno">   31</span>set(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
 <div class="line"><span class="lineno">   32</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
 <div class="line"><span class="lineno">   33</span> </div>

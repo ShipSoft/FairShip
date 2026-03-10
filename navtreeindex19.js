@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"namespaceanalysis__example.html#a37197f68a23160081ca58a0805e4c527":[5,0,5,0],
 "namespacecheckMagFields.html":[5,0,7],
 "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249":[5,0,7,0],
 "namespacecheckZpositions.html":[5,0,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c":[5,0,32,20],
 "namespaceextractNeutrinosAndUpdateWeight.html#ae15dab9f41491fe6870152c83af6e443":[5,0,32,14],
 "namespaceextractNeutrinosAndUpdateWeight.html#aeee9358256fe96e5c6483243deb0d884":[5,0,32,7],
-"namespaceextractNeutrinosAndUpdateWeight.html#aef3a69a66e9465622a1a4762e9d207cf":[5,0,32,18],
-"namespaceextractNeutrinosAndUpdateWeight.html#af7e96fcc0ed95760bbd1c692e634b12d":[5,0,32,4]
+"namespaceextractNeutrinosAndUpdateWeight.html#aef3a69a66e9465622a1a4762e9d207cf":[5,0,32,18]
 };

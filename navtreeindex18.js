@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"namespaceACTSReco.html#a5a6b305b26347c412e74c3bf7c0bb680":[5,0,0,0],
 "namespaceACTSReco.html#a88c4fd607032ca29aaa7e2dcf9554f1c":[5,0,0,3],
 "namespaceACTSReco.html#aaad011aa4dbfc91687e4c37d0d3bc50e":[5,0,0,1],
 "namespaceACTSReco.html#aff51101f260e205ff8f6b0f0926c757c":[5,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceana__ShipMuon.html#afb4c16b8c54b5f5830f52012d9f0027f":[5,0,4,18],
 "namespaceana__ShipMuon.html#afc158cdf693444642cde812235c82218":[5,0,4,22],
 "namespaceana__ShipMuon.html#afdef13aeb78be77cb0567ddc93300556":[5,0,4,11],
-"namespaceanalysis__example.html":[5,0,5],
-"namespaceanalysis__example.html#a37197f68a23160081ca58a0805e4c527":[5,0,5,0]
+"namespaceanalysis__example.html":[5,0,5]
 };

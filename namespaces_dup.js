@@ -1398,7 +1398,7 @@ var namespaces_dup =
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", "namespaceshipDigiReco" ],
     [ "shipgen", "namespaceshipgen.html", [
-      [ "MeanMaterialBudget", "namespaceshipgen.html#abc8d24468b45babd8880fb0b38ef103a", null ]
+      [ "MeanMaterialBudget", "namespaceshipgen.html#ac85d3b1e8d74de7b65eee39a98e92c1b", null ]
     ] ],
     [ "ShipGeo", "namespaceShipGeo.html", [
       [ "InitMedium", "namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934", null ]
