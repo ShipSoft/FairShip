@@ -20,6 +20,7 @@ it in future.
 
 ### Fixed
 
+* Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
 * Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
 * Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`

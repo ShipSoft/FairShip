@@ -8,6 +8,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class strawtubesContFact;
+#pragma link C++ class SHiP::Detector<strawtubesPoint>-;
 #pragma link C++ class strawtubes+;
 #pragma link C++ class strawtubesPoint+;
 #pragma link C++ class std::vector<strawtubesPoint>+;
