@@ -6,5 +6,6 @@ ship_add_library(
   SOURCES splitcal.cxx splitcalContFact.cxx splitcalPoint.cxx splitcalHit.cxx
           splitcalCluster.cxx
   LINKDEF LinkDef.h
+  EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h
   DEPENDENCIES Base ShipData FairLogger::FairLogger Detector
 )
