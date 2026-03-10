@@ -2,7 +2,6 @@ var classFixedTargetGenerator =
 [
     [ "FixedTargetGenerator", "classFixedTargetGenerator.html#ac5ec4cf6867c0a414e9c5ca30a9121e0", null ],
     [ "~FixedTargetGenerator", "classFixedTargetGenerator.html#a0569be4e0f2547af009df1212b5f1c75", null ],
-    [ "ClassDefOverride", "classFixedTargetGenerator.html#aa24032e2d918c3a2e726b16e7cf6a3d8", null ],
     [ "GetPotForCharm", "classFixedTargetGenerator.html#a21e5e5ce6e3cbeb25f70bf6d7b93f62c", null ],
     [ "GetPythia", "classFixedTargetGenerator.html#ac40179e733cdec91b2bbee6c90ccc2db", null ],
     [ "GetPythiaN", "classFixedTargetGenerator.html#a31477dfe5670ff171755ed031f95b743", null ],

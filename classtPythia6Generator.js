@@ -2,7 +2,6 @@ var classtPythia6Generator =
 [
     [ "tPythia6Generator", "classtPythia6Generator.html#aeea3da641f150c363f9317105e1553c9", null ],
     [ "~tPythia6Generator", "classtPythia6Generator.html#afae032f836306ea35d3657cd55afe563", null ],
-    [ "ClassDefOverride", "classtPythia6Generator.html#ac6bce733d1be30e066ac054dee916b4d", null ],
     [ "getPyint5_NGEN", "classtPythia6Generator.html#ad7413f5c7079b22b80be9bfa9599de94", null ],
     [ "getPyint5_NGENPD", "classtPythia6Generator.html#a3b1f69c8c815ff1a1c10c65cb88940a6", null ],
     [ "getPyint5_XSEC", "classtPythia6Generator.html#a5c3879b87afe6a00aa066c994c254015", null ],

@@ -2,7 +2,6 @@ var classNtupleGenerator =
 [
     [ "NtupleGenerator", "classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2", null ],
     [ "~NtupleGenerator", "classNtupleGenerator.html#a3708cc20135eb54a0ae0c3abb7cf667f", null ],
-    [ "ClassDefOverride", "classNtupleGenerator.html#adcafddbbfcfe066cc3bf09efa458ebfd", null ],
     [ "GetNevents", "classNtupleGenerator.html#a9f910c61b9beeae27deb25de162a0068", null ],
     [ "Init", "classNtupleGenerator.html#afeefc4b720d31060b90b6794bcbdca54", null ],
     [ "Init", "classNtupleGenerator.html#afb456457d43552cdc495f6233da5abb8", null ],

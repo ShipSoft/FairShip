@@ -3,7 +3,6 @@ var classMuonBackGenerator =
     [ "MuonBackGenerator", "classMuonBackGenerator.html#ae695459b44ea6556520b0aba2d81c114", null ],
     [ "~MuonBackGenerator", "classMuonBackGenerator.html#a40d19e781d877f541f9f9ee7f82e6f03", null ],
     [ "checkDiMuon", "classMuonBackGenerator.html#a5109c3dd64422a61576bb3b3e637aafb", null ],
-    [ "ClassDefOverride", "classMuonBackGenerator.html#a9af45af6091bb4f22d8d5758fa557289", null ],
     [ "CloseFile", "classMuonBackGenerator.html#a88c0b94254a0a908933cd2f75f4ce901", null ],
     [ "FollowAllParticles", "classMuonBackGenerator.html#a4574131346a114a05b6ea600ba579908", null ],
     [ "GetNevents", "classMuonBackGenerator.html#ae8d4d2fe8df88e7a50a9d51a28efc167", null ],

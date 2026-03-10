@@ -2,7 +2,6 @@ var classDPPythia8Generator =
 [
     [ "DPPythia8Generator", "classDPPythia8Generator.html#a5747ec819bd117b324de73185d2c62a8", null ],
     [ "~DPPythia8Generator", "classDPPythia8Generator.html#a85f5874162cad6815b23a8630888f8ad", null ],
-    [ "ClassDefOverride", "classDPPythia8Generator.html#ae5e017536b5442122471b9f21fd73aa0", null ],
     [ "GetDPId", "classDPPythia8Generator.html#ad6164ba6a9f656989e2bae0121d7300b", null ],
     [ "GetMom", "classDPPythia8Generator.html#a704acb88857d5fc89fbc4f1cd3a8300a", null ],
     [ "getPythiaInstance", "classDPPythia8Generator.html#aa1c7f5d8c5355e16a5b74e162f471275", null ],

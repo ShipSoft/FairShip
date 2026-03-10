@@ -107,6 +107,8 @@ Changed</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
 <ul>
+<li>Fix TStreamerInfo warnings for <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> template instantiations by registering base class without streamer (<code>-</code>) in each detector's LinkDef</li>
+<li>Fix TStreamerInfo warnings for <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> and generator classes by suppressing unnecessary streamer generation</li>
 <li>Fix discarded <code>str(key)</code> result in <code>bookProf()</code> — TProfile name was not converted</li>
 <li>Fix <code>os._exit()</code> bypassing cleanup in <code><a class="el" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">rootUtils.checkFileExists()</a></code> — use <code>sys.exit()</code></li>
 <li>Fix mutable default arguments in <code><a class="el" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">rootUtils.readHists()</a></code> and <code><a class="el" href="namespacegeomGeant4.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29">geomGeant4.printWeightsandFields()</a></code></li>
