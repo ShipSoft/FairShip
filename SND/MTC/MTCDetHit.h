@@ -5,13 +5,11 @@
 #ifndef SND_MTC_MTCDETHIT_H_
 #define SND_MTC_MTCDETHIT_H_
 
+#include <vector>
+
 #include "DetectorHit.h"
-#include "MTCDetPoint.h"
-#include "TObject.h"
-#include "TVector3.h"
 
 class MTCDetPoint;
-class FairVolume;
 
 class MTCDetHit : public SHiP::DetectorHit {
  public:
@@ -25,11 +23,11 @@ class MTCDetHit : public SHiP::DetectorHit {
             const std::vector<Float_t>&);
 
   /** Destructor **/
-  virtual ~MTCDetHit();
+  ~MTCDetHit() override = default;
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  void Print();
+  void Print() const;
   Float_t GetSignal() const { return signals; };
   Float_t GetTime() const { return time; };
   /*
@@ -70,12 +68,9 @@ class MTCDetHit : public SHiP::DetectorHit {
   Float_t signals = 0;
   Float_t time;
   Float_t Xch = 0.0, Ych = 0.0, Zch = 0.0;
-  Float_t light_attenuation(Float_t distance);
-  Float_t sipm_saturation(Float_t ly);
-  Float_t n_pixels_to_qdc(Float_t npix);
-  Float_t flag;  ///< flag
+  Bool_t flag{true};  ///< flag
 
-  ClassDef(MTCDetHit, 5);
+  ClassDef(MTCDetHit, 6);
 };
 
 #endif  // SND_MTC_MTCDETHIT_H_

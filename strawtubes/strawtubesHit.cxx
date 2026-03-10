@@ -22,8 +22,9 @@
 using std::cout;
 using std::endl;
 
-Double_t speedOfLight =
-    TMath::C() * 100. / 1000000000.0;  // from m/sec to cm/ns
+namespace {
+constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
+}  // namespace
 // -----   Default constructor   -------------------------------------------
 strawtubesHit::strawtubesHit() : SHiP::DetectorHit() {}
 // -----   Standard constructor   ------------------------------------------
@@ -33,6 +34,10 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 // ------------------------------------------
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
     : SHiP::DetectorHit() {
+  if (!p) {
+    LOG(error) << "strawtubesHit: null strawtubesPoint pointer";
+    return;
+  }
   TVector3 start = TVector3();
   TVector3 stop = TVector3();
   fDetectorID = p->GetDetectorID();

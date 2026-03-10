@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "FairLogger.h"
 #include "TRandom.h"
 #include "UpstreamTaggerPoint.h"
 
@@ -20,6 +21,10 @@ UpstreamTaggerHit::UpstreamTaggerHit()
 UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
                                      Double_t pos_res, Double_t time_res)
     : SHiP::DetectorHit() {
+  if (!p) {
+    LOG(error) << "UpstreamTaggerHit: null UpstreamTaggerPoint pointer";
+    return;
+  }
   fDetectorID = p->GetDetectorID();
 
   // Smear position with Gaussian resolution
@@ -30,9 +35,6 @@ UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
   // Smear time with Gaussian resolution
   fTime = gRandom->Gaus(p->GetTime() + t0, time_res);
 }
-
-// -----   Destructor   -------------------------
-UpstreamTaggerHit::~UpstreamTaggerHit() {}
 
 // -----   Print   ------------------------------
 void UpstreamTaggerHit::Print() const {

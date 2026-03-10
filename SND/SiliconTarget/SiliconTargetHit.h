@@ -5,10 +5,10 @@
 #ifndef SND_SILICONTARGET_SILICONTARGETHIT_H_
 #define SND_SILICONTARGET_SILICONTARGETHIT_H_
 
+#include <vector>
+
 #include "DetectorHit.h"
 #include "SiliconTargetPoint.h"
-#include "TObject.h"
-#include "TVector3.h"
 
 class SiliconTargetHit : public SHiP::DetectorHit {
  public:
@@ -20,7 +20,7 @@ class SiliconTargetHit : public SHiP::DetectorHit {
   SiliconTargetHit(Int_t detID, const std::vector<SiliconTargetPoint*>&);
 
   /** Destructor **/
-  virtual ~SiliconTargetHit();
+  ~SiliconTargetHit() override = default;
 
   /** Copy constructor **/
   SiliconTargetHit(const SiliconTargetHit& hit) = default;
@@ -28,38 +28,39 @@ class SiliconTargetHit : public SHiP::DetectorHit {
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  void Print();
-  // void Print() const;
+  void Print() const;
   Float_t GetSignal() const { return fSignal; };
   Double_t GetX() const { return fX; }
   Double_t GetY() const { return fY; }
   Double_t GetZ() const { return fZ; }
 
-  constexpr int GetLayer() const { return floor(fDetectorID >> 17); }
+  constexpr int GetLayer() const {
+    return static_cast<unsigned>(fDetectorID) >> 17;
+  }
   constexpr int GetPlane() const {
-    return static_cast<int>(fDetectorID >> 16) % 2;
+    return (static_cast<unsigned>(fDetectorID) >> 16) % 2;
   }  // 0 is X-plane, 1 is Y-pane
   constexpr int GetColumn() const {
-    return static_cast<int>(fDetectorID >> 14) % 4;
+    return (static_cast<unsigned>(fDetectorID) >> 14) % 4;
   }
   constexpr int GetRow() const {
-    return static_cast<int>(fDetectorID >> 13) % 2;
+    return (static_cast<unsigned>(fDetectorID) >> 13) % 2;
   }
   constexpr int GetStrip() const {
-    return static_cast<int>(fDetectorID % 4096);
+    return static_cast<unsigned>(fDetectorID) % 4096;
   }
   constexpr int GetModule() const { return GetRow() + 1 + 2 * GetColumn(); }
 
   bool isValid() const { return flag; }
 
  private:
-  Float_t fSignal;
-  Double_t fX;
-  Double_t fY;
-  Double_t fZ;
-  Float_t flag;
+  Float_t fSignal{0.f};
+  Double_t fX{0.};
+  Double_t fY{0.};
+  Double_t fZ{0.};
+  Bool_t flag{true};
 
-  ClassDef(SiliconTargetHit, 1);
+  ClassDef(SiliconTargetHit, 2);
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGETHIT_H_

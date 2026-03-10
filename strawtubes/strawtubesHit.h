@@ -6,8 +6,6 @@
 #define STRAWTUBES_STRAWTUBESHIT_H_
 
 #include "DetectorHit.h"
-#include "TObject.h"
-#include "TVector3.h"
 #include "strawtubesPoint.h"
 
 class strawtubesHit : public SHiP::DetectorHit {
@@ -33,7 +31,7 @@ class strawtubesHit : public SHiP::DetectorHit {
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  virtual void Print() const;
+  void Print() const;
   Float_t GetTDC() const { return fdigi; }
   void setInvalid() { flag = false; }
   bool isValid() const { return flag; }

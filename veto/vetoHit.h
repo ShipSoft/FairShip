@@ -6,7 +6,6 @@
 #define VETO_VETOHIT_H_
 #include "DetectorHit.h"
 
-class vetoPoint;
 class TGeoNode;
 
 class vetoHit : public SHiP::DetectorHit {
@@ -35,7 +34,7 @@ class vetoHit : public SHiP::DetectorHit {
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  virtual void Print(Int_t detID) const;
+  void Print(Int_t detID) const;
   Float_t GetADC() const { return fdigi; }
   Float_t GetTDC() const { return ft; }
   Double_t GetEloss() const { return fdigi; }
