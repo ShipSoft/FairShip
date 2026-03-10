@@ -3,7 +3,7 @@
 
 ship_add_library(
   NAME Detector
-  SOURCES DetectorPoint.cxx
+  SOURCES DetectorPoint.cxx DetectorHit.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData FairLogger::FairLogger
 )

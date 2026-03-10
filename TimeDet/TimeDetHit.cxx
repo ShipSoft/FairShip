@@ -24,11 +24,11 @@ constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
 }  // namespace
 
 // -----   Default constructor   --------------
-TimeDetHit::TimeDetHit() : ShipHit() { flag = true; }
+TimeDetHit::TimeDetHit() : SHiP::DetectorHit() { flag = true; }
 
 // -----   constructor from TimeDetPoint from
 // TimeDetHit-------------------------------
-TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0) : ShipHit() {
+TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0) : SHiP::DetectorHit() {
   fDetectorID = p->GetDetectorID();
   Float_t lpos, lneg;
   Dist(p->GetX(), lpos, lneg);

@@ -5,15 +5,15 @@
 #ifndef SND_MTC_MTCDETHIT_H_
 #define SND_MTC_MTCDETHIT_H_
 
+#include "DetectorHit.h"
 #include "MTCDetPoint.h"
-#include "ShipHit.h"
 #include "TObject.h"
 #include "TVector3.h"
 
 class MTCDetPoint;
 class FairVolume;
 
-class MTCDetHit : public ShipHit {
+class MTCDetHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   MTCDetHit();
@@ -28,7 +28,7 @@ class MTCDetHit : public ShipHit {
   virtual ~MTCDetHit();
 
   /** Output to screen **/
-  using ShipHit::Print;
+  using SHiP::DetectorHit::Print;
   void Print();
   Float_t GetSignal() const { return signals; };
   Float_t GetTime() const { return time; };

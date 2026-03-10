@@ -7,12 +7,12 @@
 
 #include <vector>
 
-#include "ShipHit.h"
+#include "DetectorHit.h"
 #include "TObject.h"
 #include "TVector3.h"
 #include "splitcalPoint.h"
 
-class splitcalHit : public ShipHit {
+class splitcalHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   splitcalHit();
@@ -28,7 +28,7 @@ class splitcalHit : public ShipHit {
   virtual ~splitcalHit();
 
   /** Output to screen **/
-  using ShipHit::Print;
+  using SHiP::DetectorHit::Print;
   virtual void Print() const;
   Float_t GetTDC() const { return fdigi; }
   void setInvalid() { flag = false; }

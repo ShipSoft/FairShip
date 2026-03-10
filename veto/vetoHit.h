@@ -4,12 +4,12 @@
 
 #ifndef VETO_VETOHIT_H_
 #define VETO_VETOHIT_H_
-#include "ShipHit.h"
+#include "DetectorHit.h"
 
 class vetoPoint;
 class TGeoNode;
 
-class vetoHit : public ShipHit {
+class vetoHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   vetoHit();
@@ -34,7 +34,7 @@ class vetoHit : public ShipHit {
   void SetTDC(Double_t val) { ft = val; }
 
   /** Output to screen **/
-  using ShipHit::Print;
+  using SHiP::DetectorHit::Print;
   virtual void Print(Int_t detID) const;
   Float_t GetADC() const { return fdigi; }
   Float_t GetTDC() const { return ft; }

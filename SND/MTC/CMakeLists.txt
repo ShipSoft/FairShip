@@ -5,5 +5,5 @@ ship_add_library(
   NAME MTCDetector
   SOURCES MTCDetector.cxx MTCDetPoint.cxx MTCDetHit.cxx
   LINKDEF MTCDetectorLinkDef.h
-  DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
+  DEPENDENCIES Base ShipData Detector GeoBase ParBase Geom Core FairLogger::FairLogger
 )

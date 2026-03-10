@@ -4,14 +4,14 @@
 
 #ifndef TIMEDET_TIMEDETHIT_H_
 #define TIMEDET_TIMEDETHIT_H_
+#include "DetectorHit.h"
 #include "FairVolume.h"
-#include "ShipHit.h"
 #include "TGeoPhysicalNode.h"
 #include "TGeoShape.h"
 #include "TObject.h"
 #include "TimeDetPoint.h"
 
-class TimeDetHit : public ShipHit {
+class TimeDetHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   TimeDetHit();
@@ -46,7 +46,7 @@ class TimeDetHit : public ShipHit {
   }
 
   /** Output to screen **/
-  using ShipHit::Print;
+  using SHiP::DetectorHit::Print;
   virtual void Print() const;
 
   void Dist(Float_t x, Float_t& lpos, Float_t& lneg) const;

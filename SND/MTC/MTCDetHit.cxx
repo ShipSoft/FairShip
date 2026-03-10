@@ -30,7 +30,7 @@ constexpr Float_t n_pixels_to_qdc_params[4] = {0.172, -1.31, 0.006,
 }  // namespace
 
 // -----   Default constructor   -------------------------------------------
-MTCDetHit::MTCDetHit() : ShipHit() { flag = true; }
+MTCDetHit::MTCDetHit() : SHiP::DetectorHit() { flag = true; }
 
 // Optimized MTCDetHit Constructor
 
