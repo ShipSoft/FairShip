@@ -30,7 +30,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
         fMom(),
         fTime(-1.),
         fLength(-1.),
-        fELoss(-1) {};
+        fELoss(-1) {}
 
   Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {}
 
@@ -90,7 +90,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
   Double_t fTime;       //!  time
   Double_t fLength;     //!  length
   Double_t fELoss;      //!  energy loss
-  std::vector<PointType>* fDetPoints;
+  std::vector<PointType>* fDetPoints = nullptr;
 
   TGeoVolume* fDetector = nullptr;  // Detector object
 };
