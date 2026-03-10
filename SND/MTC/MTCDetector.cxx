@@ -174,14 +174,15 @@ MTCDetector::~MTCDetector() {
 }
 
 void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t angle,
-                                   Double_t iron, Double_t sciFi,
-                                   Int_t num_of_agg_channels, Double_t scint,
+                                   Double_t iron, Double_t sciFi, Int_t num_of_agg_channels,
+                                   Double_t scint_cell_size, Double_t scint,
                                    Int_t layers, Double_t z, Double_t field) {
   fWidth = w;
   fHeight = h;
   fSciFiBendingAngle = angle;
   fIronThick = iron;
   fSciFiThick = sciFi;
+  fScintCellSize = scint_cell_size;
   fChannelAggregated = num_of_agg_channels;
   fScintThick = scint;
   fLayers = layers;
@@ -378,7 +379,7 @@ void MTCDetector::ConstructGeometry() {
   // Define a layer for the SciFi module
   CreateSciFiModule("MTC", sensitiveModule, fWidth, fHeight, fSciFiThick, 1);
   CreateScintModule("MTC", sensitiveModule, fSciFiThick / 2 + fScintThick / 2,
-                    fWidth, fHeight, fScintThick, 1.0, 1.0, scintMed,
+                    fWidth, fHeight, fScintThick, fScintCellSize, fScintCellSize, scintMed,
                     kAzure + 7, 30, 1);
 
   for (Int_t i = 0; i < fLayers; i++) {

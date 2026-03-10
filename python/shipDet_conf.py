@@ -137,6 +137,7 @@ def configure_snd_mtc(yaml_file: str, ship_geo) -> None:
         ship_geo.mtc_geo.ironThick,
         ship_geo.mtc_geo.sciFiThick,
         ship_geo.mtc_geo.num_of_agg_channels,
+        ship_geo.mtc_geo.scint_cell_size,
         ship_geo.mtc_geo.scintThick,
         ship_geo.mtc_geo.nLayers,
         ship_geo.mtc_geo.zPosition,
