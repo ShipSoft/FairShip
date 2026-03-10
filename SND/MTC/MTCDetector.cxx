@@ -173,10 +173,12 @@ MTCDetector::~MTCDetector() {
   }
 }
 
-void MTCDetector::SetMTCParameters(Double_t width, Double_t height, Double_t fiber_tilt_angle,
-                                   Double_t iron_thickness, Double_t scifi_thickness, Int_t num_of_agg_channels,
-                                   Double_t scint_cell_size, Double_t scint_thickness,
-                                   Int_t number_of_layers, Double_t z_position, Double_t field_strength) {
+void MTCDetector::SetMTCParameters(
+    Double_t width, Double_t height, Double_t fiber_tilt_angle,
+    Double_t iron_thickness, Double_t scifi_thickness,
+    Int_t num_of_agg_channels, Double_t scint_cell_size,
+    Double_t scint_thickness, Int_t number_of_layers, Double_t z_position,
+    Double_t field_strength) {
   fWidth = width;
   fHeight = height;
   fSciFiBendingAngle = fiber_tilt_angle;
@@ -379,8 +381,8 @@ void MTCDetector::ConstructGeometry() {
   // Define a layer for the SciFi module
   CreateSciFiModule("MTC", sensitiveModule, fWidth, fHeight, fSciFiThick, 1);
   CreateScintModule("MTC", sensitiveModule, fSciFiThick / 2 + fScintThick / 2,
-                    fWidth, fHeight, fScintThick, fScintCellSize, fScintCellSize, scintMed,
-                    kAzure + 7, 30, 1);
+                    fWidth, fHeight, fScintThick, fScintCellSize,
+                    fScintCellSize, scintMed, kAzure + 7, 30, 1);
 
   for (Int_t i = 0; i < fLayers; i++) {
     // Compute the center position (z) for the current module
