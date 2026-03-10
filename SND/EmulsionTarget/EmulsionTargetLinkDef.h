@@ -12,5 +12,9 @@
 #pragma link C++ class TargetPoint+;
 #pragma link C++ class TargetTracker+;
 #pragma link C++ class TTPoint+;
+#pragma link C++ class SHiP::Detector<TargetPoint>-;
+#pragma link C++ class SHiP::Detector<TTPoint>-;
+#pragma link C++ class std::vector<TargetPoint>+;
+#pragma link C++ class std::vector<TTPoint>+;
 
 #endif

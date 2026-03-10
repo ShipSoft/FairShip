@@ -4,12 +4,10 @@
 
 #include "SiliconTarget.h"
 
-#include "FairLink.h"
 #include "ShipDetectorList.h"
 #include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
-#include "SiliconTargetPoint.h"
 
 // ROOT / TGeo headers
 #include "TGeoBBox.h"
@@ -17,63 +15,22 @@
 #include "TGeoManager.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-#include "TGeoTrd1.h"
-#include "TGeoTrd2.h"
 #include "TGeoVolume.h"
 #include "TParticle.h"
 #include "TVector3.h"
 
 // FairROOT headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairGeoNode.h"
-#include "FairGeoVolume.h"
-#include "FairRootManager.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
 #include "FairVolume.h"
-
-// Additional standard headers
-#include "TClonesArray.h"
-#include "TString.h"  // for TString
 #include "TVirtualMC.h"
 
 using namespace ShipUnit;
 
 SiliconTarget::SiliconTarget()
-    : FairDetector("SiliconTarget", kTRUE, kSiliconTarget),
-      fTrackID(-1),
-      fPdgCode(),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fSiliconTargetPoints(nullptr) {}
+    : Detector("SiliconTarget", kTRUE, kSiliconTarget) {}
 
-SiliconTarget::SiliconTarget(const char* name, Bool_t Active, const char* Title)
-    : FairDetector(name, Active, kSiliconTarget),
-      fTrackID(-1),
-      fPdgCode(),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fSiliconTargetPoints(nullptr) {}
-
-SiliconTarget::~SiliconTarget() {
-  if (fSiliconTargetPoints) {
-    fSiliconTargetPoints->clear();
-    delete fSiliconTargetPoints;
-  }
-}
-
-void SiliconTarget::Initialize() { FairDetector::Initialize(); }
+SiliconTarget::SiliconTarget(const char* name, Bool_t Active,
+                             const char* /*Title*/)
+    : Detector(name, Active, kSiliconTarget) {}
 
 void SiliconTarget::SetSiliconTargetParameters(
     Double_t targetWidth, Double_t targetHeight, Double_t sensorWidth,
@@ -236,43 +193,4 @@ Bool_t SiliconTarget::ProcessHits(FairVolume* vol) {
     stack->AddPoint(kSiliconTarget);
   }
   return kTRUE;
-}
-
-void SiliconTarget::EndOfEvent() { fSiliconTargetPoints->clear(); }
-
-void SiliconTarget::Register() {
-  if (!fSiliconTargetPoints) {
-    fSiliconTargetPoints = new std::vector<SiliconTargetPoint>();
-  }
-  FairRootManager::Instance()->RegisterAny("SiliconTargetPoint",
-                                           fSiliconTargetPoints, kTRUE);
-  LOG(debug) << this->GetName()
-             << ", Register() says: registered SiliconTargetPoint collection";
-}
-
-TClonesArray* SiliconTarget::GetCollection(Int_t iColl) const {
-  return nullptr;
-}
-
-void SiliconTarget::UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fSiliconTargetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void SiliconTarget::Reset() { fSiliconTargetPoints->clear(); }
-
-SiliconTargetPoint* SiliconTarget::AddHit(Int_t trackID, Int_t detID,
-                                          TVector3 pos, TVector3 mom,
-                                          Double_t time, Double_t length,
-                                          Double_t eLoss, Int_t pdgCode) {
-  fSiliconTargetPoints->emplace_back(trackID, detID, pos, mom, time, length,
-                                     eLoss, pdgCode);
-  return &(fSiliconTargetPoints->back());
 }

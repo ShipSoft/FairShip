@@ -47,6 +47,7 @@ it in future.
 ### Changed
 
 * Implement Detector base class. Now the veto detector uses doubles rather than floats. #1079
+* Migrate SND detectors to SHiP::Detector base class (MTCDetector, SiliconTarget, Target, TargetTracker)
 * Extract duplicated `InitMedium` into `ShipGeo::InitMedium` free function (shipdata/ShipGeoUtil.h)
 * Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues
 * Replace bare `except:` with specific exception types in core modules

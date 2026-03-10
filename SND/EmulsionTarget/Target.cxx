@@ -26,8 +26,6 @@
 #include "FairGeoNode.h"
 #include "FairGeoTransform.h"
 #include "FairGeoVolume.h"
-#include "FairLink.h"
-#include "FairRootManager.h"
 #include "FairRun.h"  // for FairRun
 #include "FairRun.h"
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
@@ -37,7 +35,6 @@
 #include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
-#include "TClonesArray.h"
 #include "TGeoArb8.h"
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
@@ -61,39 +58,13 @@
 using std::cout;
 using std::endl;
 
-Target::Target()
-    : FairDetector("Target", "", kTRUE),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fTargetPoints(nullptr) {}
+Target::Target() : Detector("Target", kTRUE, ktauTarget) {}
 
 Target::Target(const char* name, const Double_t Ydist, Bool_t Active,
-               const char* Title)
-    : FairDetector(name, true, ktauTarget),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fTargetPoints(nullptr) {
+               const char* /*Title*/)
+    : Detector(name, Active, ktauTarget) {
   Ydistance = Ydist;
 }
-
-Target::~Target() {
-  if (fTargetPoints) {
-    fTargetPoints->clear();
-    delete fTargetPoints;
-  }
-}
-
-void Target::Initialize() { FairDetector::Initialize(); }
 
 //--------------Options for detector construction
 void Target::SetDetectorDesign(Int_t Design) {
@@ -489,42 +460,4 @@ std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(
   Bool_t EmTop = static_cast<Bool_t>(divt_E1.rem);
 
   return std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);
-}
-
-void Target::EndOfEvent() { fTargetPoints->clear(); }
-
-void Target::Register() {
-  /** This will create a branch in the output tree called
-      TargetPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-
-  if (!fTargetPoints) {
-    fTargetPoints = new std::vector<TargetPoint>();
-  }
-  FairRootManager::Instance()->RegisterAny("TargetPoint", fTargetPoints, kTRUE);
-}
-
-TClonesArray* Target::GetCollection(Int_t iColl) const { return nullptr; }
-
-void Target::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fTargetPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void Target::Reset() { fTargetPoints->clear(); }
-
-TargetPoint* Target::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                            TVector3 mom, Double_t time, Double_t length,
-                            Double_t eLoss, Int_t pdgCode) {
-  fTargetPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss,
-                              pdgCode);
-  return &(fTargetPoints->back());
 }
