@@ -32,7 +32,7 @@ class UpstreamTaggerHit : public SHiP::DetectorHit {
                     Double_t time_res);
 
   /** Destructor **/
-  virtual ~UpstreamTaggerHit();
+  ~UpstreamTaggerHit() override = default;
 
   /** Copy constructor **/
   UpstreamTaggerHit(const UpstreamTaggerHit& hit) = default;
@@ -49,7 +49,7 @@ class UpstreamTaggerHit : public SHiP::DetectorHit {
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  virtual void Print() const;
+  void Print() const;
 
  private:
   Double_t fX;     ///< Smeared x position (cm)

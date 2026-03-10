@@ -15,6 +15,7 @@ it in future.
 ### Changed
 
 * Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
+* Clean up `SHiP::DetectorHit` subclass hierarchy: fix destructors, `override` specifiers, `Print()` const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations
 
 * Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
 * Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings

@@ -33,7 +33,7 @@ class DetectorHit : public TObject {
   void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
   /*** Output to screen */
-  void Print(const Option_t* opt = "") const override { ; }
+  void Print(const Option_t* opt = "") const override {}
 
  protected:
   Float_t fdigi;      ///< digitized detector hit

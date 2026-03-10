@@ -5,10 +5,7 @@
 #ifndef TIMEDET_TIMEDETHIT_H_
 #define TIMEDET_TIMEDETHIT_H_
 #include "DetectorHit.h"
-#include "FairVolume.h"
 #include "TGeoPhysicalNode.h"
-#include "TGeoShape.h"
-#include "TObject.h"
 #include "TimeDetPoint.h"
 
 class TimeDetHit : public SHiP::DetectorHit {
@@ -24,7 +21,7 @@ class TimeDetHit : public SHiP::DetectorHit {
   TimeDetHit(TimeDetPoint* p, Double_t t0);
 
   /** Destructor **/
-  virtual ~TimeDetHit();
+  ~TimeDetHit() override = default;
 
   /** Copy constructor **/
   TimeDetHit(const TimeDetHit& point) = default;
@@ -47,7 +44,7 @@ class TimeDetHit : public SHiP::DetectorHit {
 
   /** Output to screen **/
   using SHiP::DetectorHit::Print;
-  virtual void Print() const;
+  void Print() const;
 
   void Dist(Float_t x, Float_t& lpos, Float_t& lneg) const;
   Double_t Resol(Double_t x) const;
@@ -59,10 +56,10 @@ class TimeDetHit : public SHiP::DetectorHit {
   static constexpr Double_t v_drift = 15.;  // cm/ns
   static constexpr Double_t par[4] = {0.0272814, 109.303, 0, 0.0539487};
 
-  Float_t flag;      ///< flag
-  Float_t t_1, t_2;  ///< TDC on both sides
+  Bool_t flag{true};  ///< flag
+  Float_t t_1, t_2;   ///< TDC on both sides
 
-  ClassDef(TimeDetHit, 3);
+  ClassDef(TimeDetHit, 4);
 };
 
 #endif  // TIMEDET_TIMEDETHIT_H_
