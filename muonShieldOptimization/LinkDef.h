@@ -11,4 +11,5 @@
 
 #pragma link C++ class  exitHadronAbsorber+;
 #pragma link C++ class  pyFairModule+;
+#pragma link C++ class SHiP::Detector<vetoPoint>-;
 #endif
