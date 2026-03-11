@@ -70,6 +70,10 @@ repos:
   rev: v6.2.0
   hooks:
     - id: reuse
+- repo: https://github.com/BlankSpruce/gersemi
+  rev: 0.26.0
+  hooks:
+  - id: gersemi
 
 ci:
   autofix_prs: true
