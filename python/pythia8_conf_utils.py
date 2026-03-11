@@ -3,6 +3,7 @@
 
 import re
 import sys
+from typing import Literal
 
 import numpy as np
 import ROOT
@@ -14,7 +15,7 @@ def addHNLtoROOT(pid: int = 9900015, m: float = 1.0, g: float = 3.65420302037037
     pdg.AddParticle("N2", "HNL", m, False, g, 0.0, "N2", pid)
 
 
-def getbr_rpvsusy(h, histoname, mass, coupling):
+def getbr_rpvsusy(h, histoname: str, mass, coupling):
     if histoname in h:
         normalized_br = h[histoname](mass)
         br = normalized_br * coupling
@@ -113,7 +114,12 @@ def parse_histograms(filepath):
     return histograms
 
 
-def make_interpolators(filepath, kind: str = "linear"):
+def make_interpolators(
+    filepath: str,
+    kind: Literal[
+        "linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"
+    ] = "linear",
+):
     """
     This function reads a file containing branching ratio histograms, and
     returns a dictionary of interpolators of the branching ratios, indexed by
@@ -128,7 +134,7 @@ def make_interpolators(filepath, kind: str = "linear"):
     return histograms
 
 
-def get_br(histograms, channel, mass, couplings):
+def get_br(histograms: dict, channel: dict, mass: float, couplings: list[float]) -> float:
     """
     Utility function used to reliably query the branching ratio for a given
     channel at a given mass, taking into account the correct coupling.
@@ -159,7 +165,7 @@ def add_particles(P8gen, particles, data) -> None:
         P8gen.SetParameters(particle["cmd"])
 
 
-def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -> None:
+def add_channel(P8gen, ch: dict, histograms: dict, mass: float, couplings: list[float], scale_factor: float) -> None:
     "Add to PYTHIA a leptonic or semileptonic decay channel to HNL."
     if "idlepton" in ch:
         br = get_br(histograms, ch, mass, couplings)
@@ -181,7 +187,9 @@ def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -> None:
         raise ValueError(f"Missing key 'idlepton' in channel {ch}")
 
 
-def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -> None:
+def add_tau_channel(
+    P8gen: ROOT.Pythia8Generator, ch: dict, histograms: dict, mass: float, couplings: list[float], scale_factor: float
+) -> None:
     "Add to PYTHIA a tau decay channel to HNL."
     if "idhadron" in ch:
         br = get_br(histograms, ch, mass, couplings)
@@ -250,7 +258,7 @@ def add_dummy_channel(P8gen, particle, remainder) -> None:
         P8gen.SetParameters(f"{particle}:addChannel      1   {remainder:.16}    0       22      22")
 
 
-def compute_max_total_br(decay_chains) -> int:
+def compute_max_total_br(decay_chains) -> float:
     """
     This function computes the maximum total branching ratio for all decay chains.
 
@@ -272,11 +280,11 @@ def compute_max_total_br(decay_chains) -> int:
     return max(total_branching_ratios)
 
 
-def compute_total_br(particle, decay_chains) -> int:
+def compute_total_br(particle, decay_chains) -> float:
     """
     Returns the total branching ratio to HNLs for a given particle.
     """
-    return sum(np.prod(branching_ratios) for (top, branching_ratios) in decay_chains if top == particle)
+    return float(sum(np.prod(branching_ratios) for (top, branching_ratios) in decay_chains if top == particle))
 
 
 def get_top_level_particles(decay_chains):

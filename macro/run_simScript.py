@@ -20,6 +20,7 @@ DownScaleDiMuon = False
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
 theProductionCouplings = theDecayCouplings = None
+theCouplings = None
 
 # Default dark photon parameters
 theDPmass = 0.2 * u.GeV
@@ -286,8 +287,10 @@ if options.A != "c":
         HNL = False
     if options.A not in ["b", "c", "bc", "meson", "pbrem", "qcd"]:
         inclusive = True
+motherMode = None
 if options.MM:
     motherMode = options.MM
+Opt_high = None
 if options.cosmics:
     Opt_high = int(options.cosmics)
 if options.inputFile:
@@ -406,6 +409,7 @@ import shipDet_conf
 modules = shipDet_conf.configure(run, ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
+P8gen = None
 if options.pythia8:
     primGen.SetTarget(ship_geo.target.z0, 0.0)
     # -----Pythia8--------------------------------------
@@ -427,6 +431,8 @@ if options.pythia8:
                 P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
             )
         if options.RPVSUSY:
+            if theCouplings is None:
+                raise ValueError("RPVSUSY requires --couplings to be specified")
             print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
             print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
             print("and with stop mass=%.3f GeV\n" % theCouplings[2])
@@ -458,6 +464,7 @@ if options.pythia8:
         if passDPconf != 1:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
+        assert P8gen is not None
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
@@ -762,12 +769,15 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(" ")
 print("Macro finished successfully.")
-if "P8gen" in globals():
+if P8gen is not None:
     if HNL:
         print("number of retries, events without HNL ", P8gen.nrOfRetries())
     elif options.DarkPhoton:
         print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())
-        print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
+        print(
+            "total number of dark photons (including multiple meson decays per single collision) ",
+            P8gen.nrOfDP(),  # pyrefly: ignore[missing-attribute]
+        )
 
 print("Output file is ", outFile)
 print("Parameter file is ", parFile)
@@ -836,7 +846,8 @@ if options.muonback:
     print("removed empty events, left with:", nEvents)
     rc1 = os.system("rm  " + outFile)
     rc2 = os.system("mv " + tmpFile + " " + outFile)
-    fin.SetWritable(False)  # bpyass flush error
+    assert isinstance(fin, ROOT.TFile)
+    fin.SetWritable(False)  # bypass flush error
 
 if options.mudis:
     temp_filename = outFile.replace(".root", "_tmp.root")

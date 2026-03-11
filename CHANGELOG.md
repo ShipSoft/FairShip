@@ -20,6 +20,13 @@ it in future.
 
 ### Fixed
 
+* Fix `fgeo` unbound when `--geoFile` not provided in `ShipAna.py`
+* Fix `dy` unbound when `--dy` provided in `ShipReco.py`
+* Fix `theCouplings` unbound when running RPVSUSY without `--couplings` in `run_simScript.py`
+* Fix uninitialised `yMin`/`yMax`/`zMin`/`zMax` variables in `convertMap.py` and `convertNoisyMap.py`
+* Fix `p_value.all()` called on scalar float in `compare_histograms.py`
+* Fix incorrect return type annotation (`int` instead of `float`) in `pythia8_conf_utils.py`
+* Fix potential `None` dereference of module spec in `config_tester.py`
 * Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
 * Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted

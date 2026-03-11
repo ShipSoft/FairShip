@@ -7,13 +7,14 @@ import importlib.util
 import json
 import logging
 import os
+from argparse import Namespace
 
 logging.info("")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def parse_arguments():
+def parse_arguments() -> Namespace:
     ap = argparse.ArgumentParser(description="test configuration file")
     ap.add_argument("-d", "--debug", action="store_true")
     ap.add_argument(
@@ -28,13 +29,15 @@ def parse_arguments():
     return args
 
 
-def main(arguments):
+def main(arguments: Namespace) -> None:
     logger.info("file: %s" % arguments.config_file)
     if arguments.params:
         logger.info("parameters: %s" % arguments.params)
 
     # Load the geometry config module
     spec = importlib.util.spec_from_file_location("geometry_config", arguments.config_file)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load module from {arguments.config_file}")
     geometry_config = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(geometry_config)
 

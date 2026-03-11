@@ -51,12 +51,12 @@ ROOT.gROOT.ProcessLine(
 
 
 def run(
-    inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale: float | int = 1.0, storeCoords: bool = False
+    inFileName="FieldTest.txt", rootFileName="BFieldTest.root", cmScale: float = 1.0, storeCoords: bool = False
 ) -> None:
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
 
 
-def createRootMap(inFileName, rootFileName, cmScale, storeCoords) -> None:
+def createRootMap(inFileName, rootFileName, cmScale: float, storeCoords: bool) -> None:
     print(f"Create map {rootFileName} from {inFileName} using cmScale = {cmScale}")
     if storeCoords is True:
         print(f"We will also store the x,y,z field coordinates in {rootFileName}")
@@ -171,7 +171,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords) -> None:
     theFile.Close()
 
 
-def findRanges(inFileName, cmScale):
+def findRanges(inFileName, cmScale: float) -> dict[str, float]:
     # First read the data file to find the binning and coordinate ranges.
     # Store the unique (ordered) x, y and z values so we can then find the
     # bin widths, min/max limits and central offset
@@ -213,6 +213,12 @@ def findRanges(inFileName, cmScale):
     xMin = 0.0
     xMax = 0.0
     dx = 0.0
+    yMin = 0.0
+    yMax = 0.0
+    dy = 0.0
+    zMin = 0.0
+    zMax = 0.0
+    dz = 0.0
 
     if Nx > 0:
         xMin = xArray[0]

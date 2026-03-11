@@ -60,8 +60,8 @@ else:
 
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
-else:
-    fgeo = ROOT.TFile(options.geoFile)
+
+fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")
@@ -218,7 +218,7 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
 from array import array
 
 
-def dist2InnerWall(X, Y, Z):
+def dist2InnerWall(X: float, Y: float, Z: float):
     dist = 0
     # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
     node = sGeo.FindNode(X, Y, Z)
@@ -240,7 +240,7 @@ def dist2InnerWall(X, Y, Z):
     return minDistance
 
 
-def isInFiducial(X, Y, Z) -> bool:
+def isInFiducial(X: float, Y: float, Z: float) -> bool:
     if not fiducialCut:
         return True
     if ShipGeo.TrackStation1.z < Z:
@@ -250,7 +250,7 @@ def isInFiducial(X, Y, Z) -> bool:
 
 
 #
-def ImpactParameter(point, tPos, tMom):
+def ImpactParameter(point: ROOT.TVector3, tPos: ROOT.TLorentzVector, tMom: ROOT.TLorentzVector) -> float:
     t = 0
     if hasattr(tMom, "P"):
         P = tMom.P()
@@ -302,6 +302,7 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.Bfield.z)
     if not rc:
         return False
+    assert pos is not None
     if not dist2InnerWall(pos.X(), pos.Y(), pos.Z()) > 0:
         return False
     return inside
@@ -328,7 +329,7 @@ def access2SmearedHits(ev, TrackingHits, MCTracks) -> None:
         key += 1
 
 
-def myVertex(t1, t2, PosDir):
+def myVertex(t1, t2, PosDir) -> tuple[float, float, float, float]:
     # closest distance between two tracks
     # d = |pq . u x v|/|u x v|
     a = ROOT.TVector3(PosDir[t1][0](0), PosDir[t1][0](1), PosDir[t1][0](2))
@@ -351,7 +352,9 @@ def myVertex(t1, t2, PosDir):
     return X, Y, Z, abs(dist)
 
 
-def RedoVertexing(t1, t2):
+def RedoVertexing(
+    t1, t2
+) -> tuple[float, float, float, float, ROOT.TLorentzVector] | tuple[float, float, float, float, int]:
     PosDir = {}
     for tr in [t1, t2]:
         xx = sTree.FitTracks[tr].getFittedState()
@@ -396,7 +399,9 @@ def RedoVertexing(t1, t2):
         pid = abs(states[tr].getPDG())
         if pid == 2212:
             pid = 211
-        mass = PDG.GetParticle(pid).Mass()
+        _particle = PDG.GetParticle(pid)
+        assert _particle is not None
+        mass = _particle.Mass()
         E = ROOT.TMath.Sqrt(mass * mass + mom.Mag2())
         LV[tr] = ROOT.TLorentzVector()
         LV[tr].SetPxPyPzE(mom.x(), mom.y(), mom.z(), E)
@@ -538,12 +543,12 @@ def myEventLoop(n: int) -> None:
     # check if tracks are made from real pattern recognition
     measCut = measCutFK
     if sTree.GetBranch("FitTracks_PR"):
-        sTree.FitTracks = sTree.FitTracks_PR
+        sTree.FitTracks = sTree.FitTracks_PR  # pyrefly: ignore[missing-attribute]
         measCut = measCutPR
     if sTree.GetBranch("fitTrack2MC_PR"):
-        sTree.fitTrack2MC = sTree.fitTrack2MC_PR
+        sTree.fitTrack2MC = sTree.fitTrack2MC_PR  # pyrefly: ignore[missing-attribute]
     if sTree.GetBranch("Particles_PR"):
-        sTree.Particles = sTree.Particles_PR
+        sTree.Particles = sTree.Particles_PR  # pyrefly: ignore[missing-attribute]
     if not checkHNLorigin(sTree):
         return
     if not len(sTree.MCTrack) > 1:
@@ -741,6 +746,7 @@ def myEventLoop(n: int) -> None:
         for fT in sTree.FitTracks:
             rc, pos, _mom = TrackExtrapolateTool.extrapolateToPlane(fT, ShipGeo.TimeDet.z)
             if rc:
+                assert pos is not None
                 for aPoint in sTree.TimeDetPoint:
                     h["extrapTimeDetX"].Fill(pos.X() - aPoint.GetX())
                     h["extrapTimeDetY"].Fill(pos.Y() - aPoint.GetY())
