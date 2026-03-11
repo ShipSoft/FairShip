@@ -40,7 +40,7 @@ X = ROOT.FixedTargetGenerator()
 print("end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 
 
-def yBeam(Mproton: float = 0.938272081, pbeam: float = 400.0):
+def yBeam(Mproton: float = 0.938272081, pbeam: float = 400.0) -> float:
     Ebeam = ROOT.TMath.Sqrt(pbeam**2 + Mproton**2)
     betaCM = pbeam / (Ebeam + Mproton)
     y_beam = 0.5 * ROOT.TMath.Log((1 + betaCM) / (1 - betaCM))  # https://arxiv.org/pdf/1604.02651.pdf
@@ -259,6 +259,7 @@ def muflux() -> None:
     Z_Mo = 96.0
     P_Mo = 42
     fraction = {}
+    sigma = 0.0
     for g in generators:
         processes = generators[g].info.codesHard()
         name = generators[g].info.nameProc(processes[0])

@@ -94,7 +94,7 @@ class Block(ROOT.pyFairModule):
     def InitParContainers() -> None:
         print("not implemented!")
 
-    def makeSensitive(self, sensPlane) -> None:
+    def makeSensitive(self, sensPlane: ROOT.exitHadronAbsorber) -> None:
         self.sensPlane = sensPlane
 
 

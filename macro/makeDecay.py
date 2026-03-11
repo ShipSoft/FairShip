@@ -6,6 +6,7 @@
 import getopt
 import os
 import sys
+from typing import cast
 
 import ROOT
 import rootUtils as ut
@@ -47,7 +48,7 @@ if FIN.find("eos") < 0:
     fin = ROOT.TFile(FIN)
 else:
     fin = ROOT.TFile.Open(ROOT.gSystem.Getenv("EOSSHIP") + FIN)
-sTree = fin.FindObjectAny("pythia6")
+sTree = cast(ROOT.TTree, fin.FindObjectAny("pythia6"))
 nEvents = sTree.GetEntries()
 
 # Calculate weights, for the whole file.
@@ -97,12 +98,15 @@ for idnu in range(12, 18, 2):
         if idadd == -1:
             idhnu += 1000
             idw = -idnu
-        name = PDG.GetParticle(idw).GetName()
+        _particle = PDG.GetParticle(idw)
+        assert _particle is not None
+        name = _particle.GetName()
         ut.bookHist(h, str(idhnu), name + " momentum (GeV)", 400, 0.0, 400.0)
         ut.bookHist(h, str(idhnu + 100), name + " log10-p vs log10-pt", 100, -0.3, 1.7, 100, -2.0, 0.5)
         ut.bookHist(h, str(idhnu + 200), name + " log10-p vs log10-pt", 25, -0.3, 1.7, 100, -2.0, 0.5)
 
 pot = 0.0
+wspill = 0.0
 # Determine fDs on this file for primaries
 nDsprim = 0
 ntotprim = 0
@@ -131,7 +135,19 @@ for n in range(nEvents):
         if idabs == 431:
             nDsprim += 1
     P8.event.reset()
-    P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)
+    P8.event.append(
+        int(sTree.id),
+        1,
+        0,
+        0,
+        sTree.px,
+        sTree.py,
+        sTree.pz,
+        sTree.E,
+        sTree.M,
+        0.0,
+        9.0,
+    )
     next(P8)
     # P8.event.list()
     for n in range(len(P8.event)):

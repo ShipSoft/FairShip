@@ -475,6 +475,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 Y_fit = []
                 for az in Z_true:
                     _rc, pos, _mom = extrapolateToPlane(thetrack, az)
+                    assert pos is not None
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())

@@ -5,6 +5,7 @@
 import atexit
 import os
 import tkinter
+from typing import cast
 
 import ROOT
 
@@ -252,8 +253,12 @@ class DrawVetoDigi(ROOT.FairTask):
         DTrack.SetTitle(aP.__repr__())
         DTrack.SetName("Prtcle_" + str(n))
         DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())
-        lam = (self.Targetz - aP.Vz()) / aP.Pz()
-        DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)
+        lam = (self.Targetz - aP.Vz()) / aP.Pz()  # pyrefly: ignore[missing-attribute]
+        DTrack.SetNextPoint(
+            aP.Vx() + lam * aP.Px(),
+            aP.Vy() + lam * aP.Py(),
+            self.Targetz,  # pyrefly: ignore[missing-attribute]
+        )
         self.comp.AddElement(DTrack)
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
@@ -493,6 +498,7 @@ class DrawTracks(ROOT.FairTask):
             for i in range(self.niter):
                 rc, newpos, _newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
                 if rc:
+                    assert newpos is not None
                     DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())
                 else:
                     print("error with extrapolation: z=", zs)
@@ -577,7 +583,7 @@ class IO:
         else:
             a.set(0)
         self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
-        self.lbut[x].var = a
+        self.lbut[x].var = a  # pyrefly: ignore[missing-attribute]
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
@@ -649,18 +655,19 @@ class IO:
         SHiPDisplay.NextEvent(self.n)
 
     def toggleMCTracks(self) -> None:
+        assert fRun is not None
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
             globals()["withMCTracks"] = False
             self.lbut["withMC"].var.set(1)
             if geoTask:
-                geoTask.SetActive(0)
+                geoTask.SetActive(0)  # pyrefly: ignore[missing-attribute]
         else:
             globals()["withMCTracks"] = True
             self.lbut["withMC"].var.set(0)
             if geoTask:
-                geoTask.SetActive(1)
+                geoTask.SetActive(1)  # pyrefly: ignore[missing-attribute]
 
     def toggle(self, x) -> None:
         v = top.GetNode(x)
@@ -715,14 +722,15 @@ class EventLoop(ROOT.FairTask):
             self.n += 1
         else:
             self.n = i
+        assert fRun is not None
         fRun.Run(self.n, self.n + 1)  # go for first event
         # check if tracks are made from real pattern recognition
         if sTree.GetBranch("FitTracks_PR"):
-            sTree.FitTracks = sTree.FitTracks_PR
+            sTree.FitTracks = sTree.FitTracks_PR  # pyrefly: ignore[missing-attribute]
         if sTree.GetBranch("fitTrack2MC_PR"):
-            sTree.fitTrack2MC = sTree.fitTrack2MC_PR
+            sTree.fitTrack2MC = sTree.fitTrack2MC_PR  # pyrefly: ignore[missing-attribute]
         if sTree.GetBranch("Particles_PR"):
-            sTree.Particles = sTree.Particles_PR
+            sTree.Particles = sTree.Particles_PR  # pyrefly: ignore[missing-attribute]
         if hasattr(self, "tracks"):
             self.tracks.ExecuteTask()
         if sTree.FindBranch("Digi_SBTHits"):
@@ -1090,7 +1098,7 @@ class Rulers(ROOT.FairTask):
 
 
 def mydebug() -> None:
-    t = g.FindObjectAny("cbmsim")
+    t = cast(ROOT.TTree, g.FindObjectAny("cbmsim"))
     nev = t.GetEntriesFast()
     t.GetEntry(0)
     # Loop over Geo tracks
@@ -1141,7 +1149,7 @@ def mydebug() -> None:
 def debugStraw(n) -> None:
     sGeo = ROOT.gGeoManager
     vols = sGeo.GetListOfVolumes()
-    sTree = g.FindObjectAny("cbmsim")
+    sTree = cast(ROOT.TTree, g.FindObjectAny("cbmsim"))
     sTree.GetEntry(n)
     for s in sTree.strawtubesPoint:
         print(vols[s.GetDetectorID() - 1].GetName())
@@ -1288,6 +1296,7 @@ def DrawCharmTracks() -> None:
             continue
         if aTrack.GetMotherId() == 1:
             pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())
+            assert pa is not None
             if pa.Lifetime() > 1.0e-12:
                 print(sTree.MCTrack[i])
                 SHiPDisplay.tracks.DrawMCTrack(i)
@@ -1331,14 +1340,14 @@ def DrawSimpleMCTracks() -> None:
 
 
 def positionText(
-    r,
+    r: ROOT.TEveCompound,
     x: float,
     y: float,
     z,
-    angle,
+    angle: float,
     txt: str,
     size: int = 200,
-    color=ROOT.kBlue,
+    color: int = ROOT.kBlue,
     mode=ROOT.TGLFont.kExtrude,
     light=ROOT.kTRUE,
 ) -> None:

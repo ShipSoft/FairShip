@@ -41,7 +41,7 @@ import shipunit as u
 pdg = ROOT.TDatabasePDG.Instance()
 
 
-def PDGname(particle):
+def PDGname(particle: str) -> str:
     """
     Trim particle name for use with the PDG database
     """
@@ -79,28 +79,31 @@ def PDGcode(particle: str) -> int:
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return int(tPart.PdgCode())
 
 
-def mass(particle):
+def mass(particle: str) -> float:
     """
     Read particle mass from PDG database
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return tPart.Mass()
 
 
-def width(particle):
+def width(particle) -> float:
     """
     Read particle width from PDG database
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return tPart.Width()
 
 
-def lifetime(particle):
+def lifetime(particle) -> float:
     """
     Read particle lifetime from PDG database
     """
@@ -117,6 +120,7 @@ def lifetime(particle):
     elif particle == "B+" or particle == "B-":
         return 1.6e-12
 
+    assert tPart is not None
     return tPart.Lifetime()
 
 
@@ -268,7 +272,7 @@ class RPVSUSYbranchings:
             if verbose:
                 print("debug readdecay table", particles, codes, bf)
 
-    def Width_H_L(self, H, L):
+    def Width_H_L(self, H, L: str):
         """
         Returns the RPV neutralino decay width into neutral meson and lepton
 
@@ -398,7 +402,11 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino decay width
         """
         declist = self.decays[self.bench]
-        hadlist = [re.search(r"->\ (.+?)\ ", dec).group(1) for dec in declist]
+        hadlist = []
+        for dec in declist:
+            m = re.search(r"->\ (.+?)\ ", dec)
+            assert m is not None
+            hadlist.append(m.group(1))
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         print(leplist, hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
@@ -409,7 +417,11 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino production width
         """
         declist = self.prods[self.bench]
-        hadlist = [re.search(r"(.+?)\ ->", dec).group(1) for dec in declist]
+        hadlist = []
+        for dec in declist:
+            m = re.search(r"(.+?)\ ->", dec)
+            assert m is not None
+            hadlist.append(m.group(1))
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
         return totalwidth
@@ -421,8 +433,11 @@ class RPVSUSYbranchings:
         Inputs:
         - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
         """
-        had = re.search(r"->\ (.+?)\ ", decayString).group(1)
+        m = re.search(r"->\ (.+?)\ ", decayString)
+        assert m is not None
+        had = m.group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split
@@ -460,8 +475,11 @@ class RPVSUSYbranchings:
         Inputs:
         - decayString is a string describing the decay, in the form 'H -> N ... stuffN'
         """
-        had = re.search(r"(.+?)\ ->", decayString).group(1)
+        m = re.search(r"(.+?)\ ->", decayString)
+        assert m is not None
+        had = m.group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split

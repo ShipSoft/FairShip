@@ -28,6 +28,7 @@ weightCharm1GeV = 4895.24
 # for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+weight: float = 0.0
 
 h = {}
 PDG = ROOT.TDatabasePDG.Instance()
@@ -39,7 +40,9 @@ for idnu in range(12, 17, 2):
         if idadd == -1:
             idhnu += 1000
             idw = -idnu
-        name = PDG.GetParticle(idw).GetName()
+        particle = PDG.GetParticle(idw)
+        assert particle is not None
+        name = particle.GetName()
         title = name + " momentum (GeV)"
         key = idhnu
         ut.bookHist(h, key, title, 400, 0.0, 400.0)

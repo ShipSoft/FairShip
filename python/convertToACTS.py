@@ -15,7 +15,7 @@ import shipDet_conf
 from ShipGeoConfig import load_from_root_file
 
 
-def main():
+def main() -> None:
     inputFile = global_variables.inputFile
     sTree = ROOT.TChain("cbmsim")
     sTree.Add(inputFile)
@@ -494,7 +494,9 @@ def main():
                 pz.push_back(-part.GetPx())
                 pp.push_back(part.GetP())
                 m.push_back(part.GetMass())
-                charge = PDG.GetParticle(part.GetPdgCode()).Charge()
+                _partEntry = PDG.GetParticle(part.GetPdgCode())
+                assert _partEntry is not None
+                charge = _partEntry.Charge()
                 q.push_back(np.sign(charge))
                 eta.push_back(fourVec.Eta())
                 phi.push_back(fourVec.Phi())

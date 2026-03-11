@@ -23,16 +23,17 @@ from hnl import PDGname
 pdg = ROOT.TDatabasePDG.Instance()
 
 
-def PDGcode(particle):
+def PDGcode(particle) -> int:
     """
     Read particle ID from PDG database
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return int(tPart.PdgCode())
 
 
-def load(conffile=os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), verbose=True):
+def load(conffile: str = os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), verbose: bool = True):
     with open(conffile) as f:
         reader = csv.reader(f, delimiter=":")
         configuredDecays = {}
@@ -52,7 +53,9 @@ def load(conffile=os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), ve
     return configuredDecays
 
 
-def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), verbose=True):
+def addHNLdecayChannels(
+    P8Gen, hnl, conffile: str = os.path.expandvars("$FAIRSHIP/python/DecaySelection.conf"), verbose: bool = True
+) -> None:
     """
     Configures the HNL decay table in Pythia8
     Inputs:
@@ -87,8 +90,12 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars("$FAIRSHIP/pytho
 
 
 def addDarkPhotondecayChannels(
-    P8gen, mDP, DP, conffile=os.path.expandvars("$FAIRSHIP/python/darkphotonDecaySelection.conf"), verbose=True
-):
+    P8gen,
+    mDP,
+    DP,
+    conffile: str = os.path.expandvars("$FAIRSHIP/python/darkphotonDecaySelection.conf"),
+    verbose: bool = True,
+) -> None:
     """
     Configures the DP decay table in Pythia8
 

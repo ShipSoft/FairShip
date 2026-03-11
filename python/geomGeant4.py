@@ -101,8 +101,8 @@ def setMagnetField(flag=None) -> None:
         g4Run.GeometryHasBeenModified(True)
 
 
-def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
-    magnetMass = 0
+def printWF(vl, alreadyPrinted: dict[str, str], onlyWithField: bool = True):
+    magnetMass = 0.0
     vname = vl.GetName().data()
     if vname in alreadyPrinted:
         return magnetMass
@@ -143,7 +143,9 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
     return magnetMass
 
 
-def nextLevel(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):
+def nextLevel(
+    lv, magnetMass: float, onlyWithField: bool, exclude, alreadyPrinted: dict[str, str]
+) -> tuple[float, float]:
     tmp = 0
     for da in range(lv.GetNoDaughters()):
         lvn = lv.GetDaughter(da)
@@ -174,7 +176,9 @@ def printWeightsandFields(onlyWithField: bool = True, exclude=None) -> None:
     return
 
 
-def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirtualMC: bool = True):
+def addVMCFields(
+    shipGeo, controlFile: str = "", verbose: bool = False, withVirtualMC: bool = True
+) -> ROOT.ShipFieldMaker:
     """
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     """
@@ -255,7 +259,7 @@ def printVMCFields() -> None:
             print(f"Volume {v.GetName()} has B = ({B[0] / u.tesla}, {B[1] / u.tesla}, {B[2] / u.tesla}) T")
 
 
-def getRunManager():
+def getRunManager() -> ROOT.G4RunManager:
     return ROOT.G4RunManager.GetRunManager()
 
 

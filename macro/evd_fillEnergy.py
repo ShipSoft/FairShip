@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from typing import cast
+
 import eveGlobal
 import ROOT
 
@@ -56,7 +58,7 @@ def trajectory_init(lsOfGlobals, name: str = "SHiP MuonTraj"):
 
 def execute() -> None:
     N_MUONS = 2
-    canvas = ROOT.gROOT.FindObject("Root Canvas EnergyLoss")
+    canvas = cast(ROOT.TCanvas, ROOT.gROOT.FindObject("Root Canvas EnergyLoss"))
     if not canvas:
         print("add particle flower not started!")
         return

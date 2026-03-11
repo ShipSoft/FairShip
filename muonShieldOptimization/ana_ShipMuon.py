@@ -342,12 +342,17 @@ path = ""
 if prefixes[0] != "":
     testdir = path + prefixes[0] + "1"
 # figure out which setup
+fgeo = None
+sGeo = None
+inputFile = ""
 for f in os.listdir(testdir):
     if not f.find("geofile_full") < 0:
         fgeo = ROOT.TFile(testdir + "/" + f)
         sGeo = fgeo.Get("FAIRGeom")
         inputFile = f.replace("geofile_full", "ship")
         break
+else:
+    raise FileNotFoundError(f"No geofile_full found in {testdir}")
 # try to extract from input file name
 tmp = inputFile.split(".")
 try:
@@ -739,6 +744,7 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 trackID = ahit.GetTrackID()
                 phit = -100.0
                 mom = ROOT.TVector3()
+                aTrack = None
                 if not trackID < 0:
                     aTrack = sTree.MCTrack[trackID]
                     pdgID = aTrack.GetPdgCode()
@@ -764,11 +770,16 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                 h[detName + "_P"].Fill(phit, w)
                 h[detName + "_LP"].Fill(phit, w)
                 if not trackID < 0:
+                    assert aTrack is not None
                     r = ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m
                     h["origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     h[detName + "_origin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     if abs(pdgID) == 13:
-                        h[detName + "_originmu"].Fill(aTrack.GetStartZ() / u.m, r, w)
+                        h[detName + "_originmu"].Fill(
+                            aTrack.GetStartZ() / u.m,
+                            r,
+                            w,
+                        )
                     h["borigin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     aTrack.GetMomentum(mom)
                     h[detName + "_OP"].Fill(mom.Mag() / u.GeV, w)
@@ -907,7 +918,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                particle = PDG.GetParticle(temp)
+                assert particle is not None
+                nm = particle.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         hid = h[histlist[i] + "_mu_id"]
         for k in range(hid.GetNbinsX()):
@@ -915,7 +928,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                particle = PDG.GetParticle(temp)
+                assert particle is not None
+                nm = particle.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         #
         tc = h["ResultsV"].cd(1)
@@ -1029,6 +1044,7 @@ def analyzeConcrete() -> None:
         ut.bookHist(h, "conc_p" + m, "concrete hit p " + m, 1000, 0.0, 400.0)
         ut.bookHist(h, "conc_pt" + m, "concrete hit pt " + m, 100, 0.0, 20.0)
         ut.bookHist(h, "conc_hitzy" + m, "concrete hit zy " + m, 100, -100.0, 100.0, 100, -15.0, 15.0)
+    assert sGeo is not None
     top = sGeo.GetTopVolume()
     magn = top.GetNode("magyoke_1")
     z0 = magn.GetMatrix().GetTranslation()[2] / u.m
@@ -1349,6 +1365,7 @@ def depEnergy(sTree) -> None:
             dE = ahit.GetEnergyLoss() / u.keV
             ahit.Momentum(mom)
             pa = PDG.GetParticle(ahit.PdgCode())
+            assert pa is not None
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2() + mpa**2)
             ekin = E - mpa
@@ -1357,7 +1374,7 @@ def depEnergy(sTree) -> None:
         h["dE"].SetYTitle("MeV")
 
 
-def originOfMuon(fout: TextIOWrapper, n: int, fn, nEvents) -> None:
+def originOfMuon(fout: TextIOWrapper, n: int, fn: str, nEvents) -> None:
     # from fn extract Yandex or CERN/cracow
     ncpu = 9
     x = fn.find("/")

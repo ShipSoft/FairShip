@@ -30,7 +30,7 @@ class strawtubesDetector(BaseDetector):
                 else:
                     earliest_per_det_id[detector_id] = index
 
-    def withT0Estimate(self) -> list[dict[str, int]]:
+    def withT0Estimate(self) -> list[dict[str, int | float]]:
         # loop over all straw tdcs and make average, correct for ToF
         n = 0
         t0 = 0.0
@@ -69,7 +69,7 @@ class strawtubesDetector(BaseDetector):
             s["dist"] = (s["dist"] - delt1 - t0) * v_drift
         return SmearedHits
 
-    def smearHits(self, no_amb=None) -> list[dict[str, int]]:
+    def smearHits(self, no_amb=None) -> list[dict[str, int | float]]:
         # smear strawtube points
         SmearedHits = []
         key = -1

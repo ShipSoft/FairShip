@@ -5,7 +5,7 @@ import ROOT
 import shipunit as u
 
 
-def cmp(a, b):
+def cmp(a: float, b: float) -> int:
     return (a > b) - (a < b)
 
 

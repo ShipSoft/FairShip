@@ -45,7 +45,7 @@ def run(inFileName: str = "BFieldTest.txt", rootFileName: str = "BFieldTest.root
     createRootMap(inFileName, rootFileName)
 
 
-def createRootMap(inFileName, rootFileName) -> None:
+def createRootMap(inFileName: str, rootFileName: str) -> None:
     print(f"Create ROOT map {rootFileName} from {inFileName}")
 
     # Define ROOT file and its TTree

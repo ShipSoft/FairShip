@@ -40,7 +40,7 @@ import shipunit as u
 pdg = ROOT.TDatabasePDG.Instance()
 
 
-def PDGname(particle):
+def PDGname(particle: str) -> str:
     """
     Change particle name for use with the PDG database
     """
@@ -51,21 +51,23 @@ def PDGname(particle):
     return particle
 
 
-def mass(particle: str | None):
+def mass(particle: str) -> float:
     """
     Read particle mass from PDG database
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return tPart.Mass()
 
 
-def lifetime(particle):
+def lifetime(particle) -> float:
     """
     Read particle lifetime from PDG database
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None
     return tPart.Lifetime()
 
 
@@ -217,7 +219,7 @@ class HNLbranchings:
         else:
             return math.sqrt(kallen)
 
-    def QCD_correction(self):
+    def QCD_correction(self) -> float:
         """
         Returns 3-loops QCD correction to HNL decay width into quarks
         """
@@ -261,6 +263,8 @@ class HNLbranchings:
             logContent = x**4 + 4.0 * x**6 + 14.0 * x**8
         if logContent > 0:
             L = math.log(logContent)
+        C1 = 0.0
+        C2 = 0.0
         if beta < 4:  # lepton decay
             NZ = 1
             if alpha == beta:  # interference case
@@ -315,7 +319,7 @@ class HNLbranchings:
         res *= self.sqrt_lambda(1.0, x, xu2)
         return res
 
-    def integral(self, x1, x2, x3: int):
+    def integral(self, x1, x2, x3: int) -> float:
         """
         Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN

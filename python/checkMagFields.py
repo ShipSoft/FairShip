@@ -8,7 +8,7 @@ import rootUtils as ut
 import shipunit as u
 
 
-def run():
+def run() -> None:
     fGeo = ROOT.gGeoManager
     run = sys.modules["__main__"].run
     if hasattr(sys.modules["__main__"], "h"):

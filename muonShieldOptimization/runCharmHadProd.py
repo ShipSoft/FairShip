@@ -113,6 +113,7 @@ def makeBackgroundX(runList, cycle: int = 0) -> None:
 def merge(run, cycle: int = 0) -> None:
     fname = "pythia8_Geant4_XX_10.0.root"
     cmd = " "
+    orun = run + cycle * 1000
     for n in range(ncpus):
         for x in os.listdir(path + "/run" + str(run + n)):
             orun = run + cycle * 1000

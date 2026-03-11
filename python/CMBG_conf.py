@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 
-def configure(CMBG, ship_geo):
+def configure(CMBG, ship_geo) -> None:
     # handles external variables for the Cosmic Muon Background Generator within FairShip
     Z1 = ship_geo.MuonStation3.z  # 3900
     Z2 = ship_geo.vetoStation.z  # -1968

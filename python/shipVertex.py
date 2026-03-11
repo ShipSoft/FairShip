@@ -57,13 +57,13 @@ class Task:
     z0 = 0
     Vy = np.zeros(100)
 
-    def chi2(self, res, Vy) -> int:
+    def chi2(self, res: np.ndarray, Vy: np.ndarray) -> float:
         s = 0
         for i in range(100):
             s += Vy[i] * res[i // 10] * res[i % 10]
         return s
 
-    def residuals(self, y_data, a, z0: int):
+    def residuals(self, y_data: np.ndarray, a: np.ndarray, z0: float) -> np.ndarray:
         res = np.zeros(10)
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
@@ -324,8 +324,12 @@ class Task:
                 errors[2]
 
                 # fixme: mass from track reconstraction needed
-                m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()
-                m2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"]).Mass()
+                _part1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"])
+                assert _part1 is not None
+                m1 = _part1.Mass()
+                _part2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"])
+                assert _part2 is not None
+                m2 = _part2.Mass()
 
                 # self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
                 # self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )
@@ -334,7 +338,9 @@ class Task:
                 # self.h['dVyFit'].Fill( (mctrack.GetStartY()-yFit) )
                 # self.h['dVzFit'].Fill( (mctrack.GetStartZ()-zFit) )
 
-                def getP(fitValues: array[float], cov: array[float], m1, m2):
+                def getP(
+                    fitValues: array[float], cov: array[float], m1: float, m2: float
+                ) -> tuple[ROOT.TLorentzVector, ROOT.TMatrixD]:
                     a3 = fitValues[3]
                     a4 = fitValues[4]
                     a5 = fitValues[5]

@@ -102,13 +102,13 @@ class Task:
             w = 0.0
         return veto, w, nMultCon
 
-    def fiducialCheckSignal(self, n):
+    def fiducialCheckSignal(self, n) -> float:
         hnl = self.sTree.Particles[n]
         aPoint = ROOT.TVector3(hnl.Vx(), hnl.Vy(), hnl.Vz())
         distmin = self.fiducialCheck(aPoint)
         return distmin
 
-    def fiducialCheck(self, aPoint):
+    def fiducialCheck(self, aPoint: ROOT.TVector3) -> float:
         nav = ROOT.gGeoManager.GetCurrentNavigator()
         phi = 0.0
         nSteps = 36

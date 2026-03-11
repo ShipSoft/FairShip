@@ -4,6 +4,7 @@
 import os
 import random
 from array import array
+from typing import cast
 
 import geometry_config
 import ROOT
@@ -11,6 +12,7 @@ import rootUtils as ut
 
 pdg = ROOT.TDatabasePDG()
 mu = pdg.GetParticle(13)
+assert mu is not None
 Mmu = mu.Mass()
 Mmu2 = Mmu * Mmu
 rnr = ROOT.TRandom()
@@ -35,7 +37,7 @@ def fillWeights():
     weights = {}
     for p in productions:
         f = ROOT.TFile.Open(eospath + productions[p]["file"])
-        t = f.FindObjectAny("pythia8-Geant4")
+        t = cast(ROOT.TTree, f.FindObjectAny("pythia8-Geant4"))
         weights[p] = {}
         for n in range(t.GetEntries()):
             t.GetEvent(n)
@@ -47,7 +49,7 @@ def fillWeights():
     return weights
 
 
-def TplotP(sTree) -> None:
+def TplotP(sTree: ROOT.TTree) -> None:
     ut.bookCanvas(h, key="P", title="momentum", nx=1800, ny=1200, cx=3, cy=2)
     ut.bookCanvas(h, key=">P", title="N >P", nx=1800, ny=1200, cx=3, cy=2)
     ut.bookCanvas(h, key="PT", title="Pt", nx=1800, ny=1200, cx=3, cy=2)
@@ -177,7 +179,7 @@ def mergeMinBias(pot, norm=5.0e13, opt="") -> None:
     first = True
     for p in productions:
         f = ROOT.TFile.Open(eospath + productions[p]["file"])
-        t = f.FindObjectAny("pythia8-Geant4")
+        t = cast(ROOT.TTree, f.FindObjectAny("pythia8-Geant4"))
         if first:
             first = False
             tuples = ""
@@ -198,7 +200,7 @@ def mergeMinBias(pot, norm=5.0e13, opt="") -> None:
             t.Draw(">>temp", cuts[opt] + "&" + OpCharm)
         else:
             t.Draw(">>temp", cuts[opt] + "&" + noOpCharm)
-        temp = ROOT.gROOT.FindObjectAny("temp")
+        temp = cast(ROOT.TEntryList, ROOT.gROOT.FindObjectAny("temp"))
         t.SetEventList(temp)
         nev = temp.GetN()
         leaves = t.GetListOfLeaves()
@@ -280,7 +282,7 @@ def runProduction(opts: str = "") -> None:
 
 def removeCharm(p) -> None:
     f = ROOT.TFile.Open(eospath + productions[p]["file"])
-    t = f.FindObjectAny("pythia8-Geant4")
+    t = cast(ROOT.TTree, f.FindObjectAny("pythia8-Geant4"))
     first = True
     if first:
         first = False
@@ -292,11 +294,15 @@ def removeCharm(p) -> None:
                 tuples += ":" + leaf.GetName()
         h["N"] = ROOT.TFile(fnew, "RECREATE")
         print("new file created", fnew)
-        h["ntuple"] = ROOT.TNtuple("pythia8-Geant4", t.GetTitle() + " no charm", tuples)
+        h["ntuple"] = ROOT.TNtuple(
+            "pythia8-Geant4",
+            t.GetTitle() + " no charm",
+            tuples,
+        )
     ROOT.gROOT.cd()
     t.SetEventList(0)
     t.Draw(">>temp", noOpCharm)
-    temp = ROOT.gROOT.FindObjectAny("temp")
+    temp = cast(ROOT.TEntryList, ROOT.gROOT.FindObjectAny("temp"))
     t.SetEventList(temp)
     nev = temp.GetN()
     leaves = t.GetListOfLeaves()
@@ -360,7 +366,7 @@ def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
         # put all events in memory, otherwise will take years to finish
         event = ROOT.std.vector("float")
         f = ROOT.TFile("pythia8_Geant4-withCharm.root")
-        t = f.FindObjectAny("pythia8-Geant4")
+        t = cast(ROOT.TTree, f.FindObjectAny("pythia8-Geant4"))
         leaves = t.GetListOfLeaves()
         L = leaves.GetEntries()
         m = 0
@@ -409,11 +415,13 @@ def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
         cuts = {"_onlyNeutrinos": "abs(id)==12||abs(id)==14||abs(id)==16", "_onlyMuons": "abs(id)==13"}
         fName = "pythia8_Geant4-withCharm-ram.root"
         f = ROOT.TFile(fName)
-        t = f.FindObjectAny("pythia8-Geant4")
+        t = cast(ROOT.TTree, f.FindObjectAny("pythia8-Geant4"))
         tuples = ""
         # add histograms
         for idnu in [16, -16, 14, -14, 12, -12]:
-            name = pdg.GetParticle(idnu).GetName()
+            _particle = pdg.GetParticle(idnu)
+            assert _particle is not None
+            name = _particle.GetName()
             idhnu = 1000 + idnu
             if idnu < 0:
                 idhnu = 2000 + abs(idnu)
@@ -433,7 +441,7 @@ def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
             ROOT.gROOT.cd()
             t.SetEventList(0)
             t.Draw(">>temp", cuts[opt])
-            temp = ROOT.gROOT.FindObjectAny("temp")
+            temp = cast(ROOT.TEntryList, ROOT.gROOT.FindObjectAny("temp"))
             t.SetEventList(temp)
             for iev in range(temp.GetN()):
                 t.GetEntry(temp.GetEntry(iev))
@@ -465,7 +473,7 @@ def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
             print(" progress: split " + opt)
 
 
-def test(fname) -> None:
+def test(fname: str) -> None:
     h["f"] = ROOT.TFile.Open(fname)
     sTree = h["f"].FindObjectAny("pythia8-Geant4")
     TplotP(sTree)

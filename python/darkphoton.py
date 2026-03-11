@@ -22,13 +22,13 @@ hGeV = 6.58211928 * pow(10.0, -16) * pow(10.0, -9)  # no units or it messes up!!
 class DarkPhoton:
     "dark photon setup"
 
-    def __init__(self, mass, eps) -> None:
+    def __init__(self, mass: float, eps) -> None:
         self.mDarkPhoton = mass
         self.epsilon = eps
         self.dataEcm, self.dataR = self.readPDGtable()
         self.PdgR = self.interpolatePDGtable()
 
-    def readPDGtable(self):
+    def readPDGtable(self) -> tuple[r.std.vector, r.std.vector]:
         """Returns R data from PDG in a easy to use format"""
         ecm = r.vector("double")()
         ratio = r.vector("double")()
@@ -55,13 +55,13 @@ class DarkPhoton:
                     continue
         return ecm, ratio
 
-    def interpolatePDGtable(self):
+    def interpolatePDGtable(self) -> r.Math.Interpolator:
         """Find the best value for R for the given center-of-mass energy"""
         fun = r.Math.Interpolator(len(self.dataEcm), r.Math.Interpolation.kLINEAR)
         fun.SetData(self.dataEcm, self.dataR)
         return fun
 
-    def Ree_interp(self, s) -> float | int:  # s in GeV
+    def Ree_interp(self, s: float) -> float | int:  # s in GeV
         """Using PDG values for sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)"""
         # Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots
         # ecm = math.sqrt(s)

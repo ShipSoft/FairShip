@@ -126,17 +126,29 @@ myPythia = ROOT.TPythia6()
 tp = ROOT.tPythia6Generator()
 
 # Pythia6 can only accept names below in pyinit, hence reset PDG table:
-PDG.GetParticle(2212).SetName("p+")
-PDG.GetParticle(-2212).SetName("pbar-")
-PDG.GetParticle(2112).SetName("n0")
-PDG.GetParticle(-2112).SetName("nbar0")
-PDG.GetParticle(130).SetName("KL0")
-PDG.GetParticle(310).SetName("KS0")
+_p = PDG.GetParticle(2212)
+assert _p is not None
+_p.SetName("p+")
+_p = PDG.GetParticle(-2212)
+assert _p is not None
+_p.SetName("pbar-")
+_p = PDG.GetParticle(2112)
+assert _p is not None
+_p.SetName("n0")
+_p = PDG.GetParticle(-2112)
+assert _p is not None
+_p.SetName("nbar0")
+_p = PDG.GetParticle(130)
+assert _p is not None
+_p.SetName("KL0")
+_p = PDG.GetParticle(310)
+assert _p is not None
+_p.SetName("KS0")
 # lower lowest sqrt(s) allowed for generating events
 myPythia.SetPARP(2, 2.0)
 
 
-def PoorE791_tune(P6) -> None:
+def PoorE791_tune(P6: ROOT.TPythia6) -> None:
     # settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-
     # same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf
     print(" ")
@@ -160,7 +172,7 @@ def PoorE791_tune(P6) -> None:
     print(" ")
 
 
-def LHCb_tune(P6) -> None:
+def LHCb_tune(P6: ROOT.TPythia6) -> None:
     # settings by LHCb for Pythia 6.427
     # https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08
     print(" ")
@@ -241,8 +253,9 @@ print("Get chi vs momentum for all beam+target particles")
 for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
         idw = idbeam[idp] * idpm
-        if PDG.GetParticle(idw) is not None:  # if particle exists, book hists etc.
-            name = PDG.GetParticle(idw).GetName()
+        _particle = PDG.GetParticle(idw)
+        if _particle is not None:  # if particle exists, book hists etc.
+            name = _particle.GetName()
             id = id + 1
             for idnp in range(2):
                 idb = id * 10 + idnp * 4
@@ -328,6 +341,7 @@ for iev in range(args.nevgen):
     if iev % 1000 == 0:
         print("Generate event ", iev)
     nstack = 0
+    idpn = 0
     # put protons of energy pbeamh on the stack
     # stack: PID, px, py, pz, cascade depth, nstack of mother
     stack[nstack] = [2212, 0.0, 0.0, args.pbeamh, 1, 100 * [0], 100 * [0]]
@@ -351,7 +365,14 @@ for iev in range(args.nevgen):
                 myPythia.SetP(2, k, 0.0)
             # new particle/momentum, init again: signal run.
             myPythia.SetMSEL(args.mselcb)  # set forced ccbar or bbbar generation
-            myPythia.Initialize("3MOM", PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.0)
+            _beam_particle = PDG.GetParticle(stack[nstack][0])
+            assert _beam_particle is not None
+            myPythia.Initialize(
+                "3MOM",
+                _beam_particle.GetName(),
+                target[idpn],
+                0.0,
+            )
             myPythia.GenerateEvent()
             # look for the signal particles
             charmFound = []
@@ -425,7 +446,14 @@ for iev in range(args.nevgen):
         idpn = 0
         if random.random() > fracp:
             idpn = 1
-        myPythia.Initialize("3MOM", PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.0)
+        _beam_particle = PDG.GetParticle(stack[nstack][0])
+        assert _beam_particle is not None
+        myPythia.Initialize(
+            "3MOM",
+            _beam_particle.GetName(),
+            target[idpn],
+            0.0,
+        )
         myPythia.GenerateEvent()
         # remove used particle from the stack, before adding new
         # first store its history: cascade depth and ancestors-list

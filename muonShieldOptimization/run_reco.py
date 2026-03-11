@@ -80,7 +80,7 @@ def execute_parallel(prefix, ncpu: int = 4):
     return cpus, log
 
 
-def getJobs(prefix) -> list[str]:
+def getJobs(prefix: str) -> list[str]:
     jobs = []
     for x in os.listdir("."):
         if not x.find(prefix) < 0:
@@ -109,6 +109,7 @@ def killAll() -> None:
 
 def executeSimple(prefixes: list[str], reset=False) -> None:
     proc = {}
+    inputfile = ""
     for prefix in prefixes:
         jobs = getJobs(prefix)
         for x in jobs:
@@ -263,6 +264,7 @@ def mergeNtuples(prefixes: list[str]) -> None:
     for prefix in prefixes:
         jobs = getJobs(prefix)
         haddCommand = ""
+        inputfile = ""
         for x in jobs:
             for f in os.listdir(x):
                 if not f.find("geofile_full") < 0:

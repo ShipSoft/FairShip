@@ -52,7 +52,7 @@ n_events = args.n_events
 first_mu_event = args.first_mu_event
 
 
-def rotate(px, py, pz, theta, phi):
+def rotate(px: float, py: float, pz: float, theta: float, phi: float):
     """Rotate the daughter particle momentum to align with respect to the muon's momentum."""
     momentum = r.TVector3(px, py, pz)
 
@@ -66,7 +66,7 @@ def rotate(px, py, pz, theta, phi):
     return rotated_momentum.X(), rotated_momentum.Y(), rotated_momentum.Z()
 
 
-def update_file(filename: str, final_xsec) -> None:
+def update_file(filename: str, final_xsec: dict[int, float | int]) -> None:
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
 
@@ -200,7 +200,9 @@ def makeMuonDIS() -> None:
         nmuons = imuondata[9]  # number of muons in the original MuBack event
 
         p = r.TMath.Sqrt(px**2 + py**2 + pz**2)
-        mass = PDG.GetParticle(abs(int(pid))).Mass()
+        muon_particle = PDG.GetParticle(abs(int(pid)))
+        assert muon_particle is not None
+        mass = muon_particle.Mass()
         E = r.TMath.Sqrt(mass**2 + p**2)
 
         theta = r.TMath.ACos(pz / p)
@@ -258,7 +260,9 @@ def makeMuonDIS() -> None:
                     phi,
                 )
                 psq = dpx**2 + dpy**2 + dpz**2
-                masssq = PDG.GetParticle(did).Mass() ** 2
+                dis_particle = PDG.GetParticle(did)
+                assert dis_particle is not None
+                masssq = dis_particle.Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
                 part = r.TVectorD(5, m)
@@ -279,7 +283,9 @@ def makeMuonDIS() -> None:
                 dpz = softTrack.GetPz()
 
                 psq = dpx**2 + dpy**2 + dpz**2
-                masssq = PDG.GetParticle(did).Mass() ** 2
+                soft_particle = PDG.GetParticle(did)
+                assert soft_particle is not None
+                masssq = soft_particle.Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
 
                 softx = softTrack.GetStartX()

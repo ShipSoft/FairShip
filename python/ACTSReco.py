@@ -30,9 +30,14 @@ from ShipGeoConfig import load_from_root_file
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")
 
 
-def runTracking():
+def runTracking() -> None:
     customLogLevel = acts.examples.defaultLogging(logLevel=acts.logging.VERBOSE)
     u = acts.UnitConstants
+
+    detector = None
+    field = None
+    simHitTree = None
+    digiConfigFile = None
 
     if global_variables.detector == "SiliconTarget":
         field = acts.ConstantBField(acts.Vector3(0.0, 0.0, 0.0 * u.T))
@@ -77,6 +82,7 @@ def runTracking():
             volumeLogLevel=customLogLevel(),
         )
 
+    assert detector is not None, f"Unsupported detector: {global_variables.detector}"
     trackingGeometry = detector.trackingGeometry()
 
     s = acts.examples.Sequencer(events=global_variables.nEvents, numThreads=-1, trackFpes=False)

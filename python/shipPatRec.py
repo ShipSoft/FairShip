@@ -726,7 +726,7 @@ def get_best_seed(x, y, sigma: float, sample_weight=None):
     return best_seed_params
 
 
-def retina_func(track_prams, x, y, sigma, sample_weight=None):
+def retina_func(track_prams, x, y, sigma: float, sample_weight=None):
     """
     Calculates the artificial retina function value.
     Parameters

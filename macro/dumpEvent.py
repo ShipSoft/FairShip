@@ -3,6 +3,8 @@
 
 # example for dumping an MC event
 
+from typing import cast
+
 import ROOT
 import ShipGeoConfig
 import shipunit as u
@@ -30,7 +32,7 @@ def printMCTrack(n: int, MCTrack) -> None:
 
 
 def dump(i, pcut) -> None:
-    tree = ROOT.gROOT.FindObjectAny("cbmsim")
+    tree = cast(ROOT.TTree, ROOT.gROOT.FindObjectAny("cbmsim"))
     tree.GetEntry(i)
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
     n = -1
@@ -42,7 +44,7 @@ def dump(i, pcut) -> None:
 
 
 def dumpStraw(i) -> None:
-    tree = ROOT.gROOT.FindObjectAny("cbmsim")
+    tree = cast(ROOT.TTree, ROOT.gROOT.FindObjectAny("cbmsim"))
     tree.GetEntry(i)
     for aStraw in tree.strawtubesPoint:
         trID = aStraw.GetTrackID()

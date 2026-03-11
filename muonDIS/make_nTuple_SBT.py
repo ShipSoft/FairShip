@@ -96,7 +96,9 @@ def printMCTrack(n: int, MCTrack) -> None:
     RESET = "\033[0m"  # ANSI code Reset to default
 
     try:
-        particle_name = pdg.GetParticle(mcp.GetPdgCode()).GetName()
+        mcp_particle = pdg.GetParticle(mcp.GetPdgCode())
+        assert mcp_particle is not None
+        particle_name = mcp_particle.GetName()
 
         if particle_name == "mu+" or particle_name == "mu-":
             particle_name = f"{RED}{particle_name}{RESET}       "  # Highlight muons in red
@@ -246,7 +248,9 @@ for inputFolder in os.listdir(path):
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
 
             if 1000 < detID < 999999 and abs(pid) == 13 and P_threshold / u.GeV < P:
-                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                hit_particle = pdg.GetParticle(hit.PdgCode())
+                assert hit_particle is not None
+                particle_name = hit_particle.GetName()
                 if track_id not in muon_ids:
                     muon_ids.append(track_id)
                     muon_hits[track_id] = 0

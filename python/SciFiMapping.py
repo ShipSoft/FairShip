@@ -170,6 +170,7 @@ class SciFiMapping:
         ymin = 999.0
         ymax = -999.0
         fibre_positions = []
+        globfiberID = 0
         fibresSiPM = self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
         for fibre in fibresSiPM[locChannel]:
             globfiberID = (
@@ -453,6 +454,10 @@ class SciFiMapping:
         angle_U = -5.0  # tilt for U
         angle_V = +5.0  # tilt for V
 
+        channels_x_U = None
+        channels_x_V = None
+        channel_x_U = None
+        channel_x_V = None
         if not real_event:
             alpha_sipm, alpha_fibre = 0.75, 0.5
         else:
@@ -469,7 +474,7 @@ class SciFiMapping:
         centerU = next(c for c, x in self.sipm_pos_U.items() if abs(x) < DX)
         centerV = next(c for c, x in self.sipm_pos_V.items() if abs(x) < DX)
 
-        def get_surrounding(d, target, N):
+        def get_surrounding(d, target, N: int):
             keys = sorted(d.keys(), key=lambda k: d[k])
             i = keys.index(target)
             half = N // 2
@@ -490,6 +495,7 @@ class SciFiMapping:
         # colorsU = [cmap_U(i/(len(chansU)-1)) for i in range(len(chansU))]
         # colorsV = [cmap_V(i/(len(chansV)-1)) for i in range(len(chansV))]
         # 3) Draw ribbons and SiPM boxes per channel
+        alpha = 0.0
         for chan in all_chans:
             isU = chan in chansU
             x0 = self.sipm_pos_U[chan] if isU else self.sipm_pos_V[chan]

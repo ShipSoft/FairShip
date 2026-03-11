@@ -49,7 +49,7 @@ def run(inFileName: str = "test07_10cm_grid.table", outFileName: str = "MuonFilt
     createRootMap(outFileName, rootFileName)
 
 
-def createTextMap(inFileName, outFileName) -> None:
+def createTextMap(inFileName: str, outFileName: str) -> None:
     print(f"Creating text map {outFileName} from {inFileName}")
 
     tmpFileName = "tmpFile.txt"
@@ -182,7 +182,7 @@ def formatNumber(x: float) -> str:
     return xWord
 
 
-def createRootMap(inFileName, outFileName) -> None:
+def createRootMap(inFileName: str, outFileName: str) -> None:
     print(f"Create ROOT map {outFileName} from {inFileName}")
 
     # Define ROOT file and its TTree

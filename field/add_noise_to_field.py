@@ -21,6 +21,7 @@ def plot_my_hist(datum) -> None:
 
 
 def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None) -> None:
+    assert args is not None
     # (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)
     field = pd.read_csv(input_fileName, skiprows=1, sep=r"\s+", names=["x", "y", "z", "bx", "by", "bz"])
 
@@ -42,7 +43,7 @@ def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, st
         temp_by = np.array(field_new["by"]).reshape([xSpace, ySpace, zSpace])
         temp_by = gaussian_filter(temp_by, sigma=args.sigma)
         field_new["by"] = temp_by.reshape(-1)
-        field_new["by"] = field_new["by"] / (field_new["by"].abs().max())  # *field_mask['by']
+        field_new["by"] = field_new["by"] / (field_new["by"].abs().max())  # pyrefly: ignore[missing-attribute]
         field_new["by"] = field_new["by"] * field_mask["by"]
         rezult = field.copy()
         rezult["by"] = rezult["by"] + rezult["by"] * field_new["by"] * args.fraction
@@ -66,6 +67,7 @@ if __name__ == "__main__":
     parser.add_argument("--peak", default=500, type=float, action="store")
     parser.add_argument("--fraction", default=0.4, type=float, action="store")
     args = parser.parse_args()
+    assert args is not None
 
     with open(args.input) as f:
         first_line = f.readline().strip().split()

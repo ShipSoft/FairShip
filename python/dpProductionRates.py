@@ -10,11 +10,11 @@ PDG = ROOT.TDatabasePDG.Instance()
 protonFlux = 2e20
 
 
-def isDP(pdg):
+def isDP(pdg) -> bool:
     return bool(pdg == 9900015 or pdg == 4900023)
 
 
-def pbremProdRateVDM(mass, epsilon, doprint=True):
+def pbremProdRateVDM(mass, epsilon, doprint: bool = True):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint:
         print("A' production rate per p.o.t: \t %.8g" % (xswg))
@@ -26,7 +26,7 @@ def pbremProdRateVDM(mass, epsilon, doprint=True):
     return xswg * rhoff
 
 
-def pbremProdRateDipole(mass, epsilon, doprint=False):
+def pbremProdRateDipole(mass, epsilon, doprint: bool = False) -> float:
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint:
         print("A' production rate per p.o.t: \t %.8g" % (xswg))
@@ -39,7 +39,7 @@ def pbremProdRateDipole(mass, epsilon, doprint=False):
 
 
 # obtained with Pythia8: average number of meson expected per p.o.t from inclusive pp to X production, 100k events produced
-def getAverageMesonRate(mumPdg):
+def getAverageMesonRate(mumPdg: int) -> float:
     if mumPdg == 111:
         return 6.166
     if mumPdg == 221:
@@ -53,7 +53,7 @@ def getAverageMesonRate(mumPdg):
 
 
 # from the PDG, decay to photon channels available for mixing with DP
-def mesonBRtoPhoton(mumPdg, doprint=False):
+def mesonBRtoPhoton(mumPdg: int, doprint: bool = False) -> float:
     br = 1
     if mumPdg == 111:
         br = 0.9879900
@@ -68,8 +68,10 @@ def mesonBRtoPhoton(mumPdg, doprint=False):
     return br
 
 
-def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
-    mMeson = PDG.GetParticle(mumPdg).Mass()
+def brMesonToGammaDP(mass, epsilon, mumPdg: int, doprint: bool = False):
+    _mumParticle = PDG.GetParticle(mumPdg)
+    assert _mumParticle is not None
+    mMeson = _mumParticle.Mass()
     if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
     if mass < mMeson:
@@ -81,9 +83,13 @@ def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
     return br
 
 
-def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
-    mMeson = PDG.GetParticle(mumPdg).Mass()
-    mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
+def brMesonToMesonDP(mass, epsilon, mumPdg: int, dauPdg: int, doprint: bool = False):
+    _mumParticle = PDG.GetParticle(mumPdg)
+    assert _mumParticle is not None
+    mMeson = _mumParticle.Mass()
+    _dauParticle = PDG.GetParticle(dauPdg)
+    assert _dauParticle is not None
+    mDaughterMeson = _dauParticle.Mass()
     if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
     if doprint:
@@ -100,7 +106,7 @@ def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
     return br
 
 
-def brMesonToDP(mass, epsilon, mumPdg, doprint=False):
+def brMesonToDP(mass, epsilon, mumPdg, doprint: bool = False):
     if mumPdg == 223:
         return brMesonToMesonDP(mass, epsilon, mumPdg, 111, doprint)
     elif mumPdg == 111 or mumPdg == 221:
@@ -112,7 +118,7 @@ def brMesonToDP(mass, epsilon, mumPdg, doprint=False):
         return 1
 
 
-def mesonProdRate(mass, epsilon, mumPdg, doprint=False):
+def mesonProdRate(mass, epsilon, mumPdg, doprint: bool = False):
     brM2DP = brMesonToDP(mass, epsilon, mumPdg, doprint)
     if mumPdg == 331:
         avgMeson = getAverageMesonRate(mumPdg) * brM2DP[0]
@@ -125,7 +131,7 @@ def mesonProdRate(mass, epsilon, mumPdg, doprint=False):
 
 
 # from interpolation of Pythia XS, normalised to epsilon^2
-def qcdprodRate(mass, epsilon, doprint=False):
+def qcdprodRate(mass, epsilon, doprint: bool = False):
     xs = 0.0
     if mass > 3.0:
         xs = math.exp(-5.928 - 0.8669 * mass)
@@ -136,7 +142,7 @@ def qcdprodRate(mass, epsilon, doprint=False):
     return xs * epsilon * epsilon
 
 
-def getDPprodRate(mass, epsilon, prodMode, mumPdg, doprint=False):
+def getDPprodRate(mass, epsilon, prodMode, mumPdg, doprint: bool = False):
     if "pbrem" in prodMode:
         print("VDM")
         return pbremProdRateVDM(mass, epsilon, doprint)
