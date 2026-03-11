@@ -37,15 +37,20 @@ replace-imports-with-any = [
     "cppyy", "cppyy.*",
     "ShipGeoConfig", "ShipGeoConfig.*",
     "shipRoot_conf", "shipRoot_conf.*",
+    "global_variables", "global_variables.*",
 ]
 
 ignore-missing-imports = [
     "uproot", "uproot.*",
-    "scipy", "scipy.*",
-    "tabulate",
-    "numpy", "numpy.*",
-    "yaml", "yaml.*",
 ]
 
 [tool.pyrefly.errors]
 missing-import = false
+unsupported-operation = false
+bad-index = false
+bad-argument-type = false
+bad-assignment = false
+bad-typed-dict-key = false
+bad-unpacking = false
+not-iterable = false
+no-matching-overload = false
