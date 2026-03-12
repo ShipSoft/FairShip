@@ -12,14 +12,27 @@ it in future.
 
 ## Unreleased
 
+### Added
+
+* Type annotations for Python functions (via `pyrefly infer`, manually reviewed and corrected)
+
 ### Changed
 
+* Add `typing.cast` for `FindObjectAny`/`FindObject` returns and null-safety `assert` guards for `GetParticle`/`re.search`/`FindNode` results
 * Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
 * Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
 * Use `std::span` for `MeanMaterialBudget` parameters (compile-time size checking) and `ShipCompField::getCompFields` return type (avoids unnecessary copy)
 
 ### Fixed
 
+* Fix `fgeo` unbound when `--geoFile` not provided in `ShipAna.py`
+* Fix `dy` unbound when `--dy` provided in `ShipReco.py`
+* Fix `theCouplings` unbound when running RPVSUSY without `--couplings` in `run_simScript.py`
+* Fix uninitialised `yMin`/`yMax`/`zMin`/`zMax` variables in `convertMap.py` and `convertNoisyMap.py`
+* Fix `p_value.all()` called on scalar float in `compare_histograms.py`
+* Fix incorrect return type annotation (`int` instead of `float`) in `pythia8_conf_utils.py`
+* Fix potential `None` dereference of module spec in `config_tester.py`
+* Fix incorrect `str | None` type annotations in `hnl.py` (should be `str`)
 * Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
 * Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted

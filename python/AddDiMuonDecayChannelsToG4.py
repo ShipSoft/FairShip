@@ -8,7 +8,7 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4DecayTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4PhaseSpaceDecayChannel.hh"')
 
 
-def Initialize(p8):
+def Initialize(p8) -> None:
     # take decay and branching ratios from Pythia8
     pt = ROOT.G4ParticleTable.GetParticleTable()
     for vreso in [223, 333, 113]:

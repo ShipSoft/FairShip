@@ -22,8 +22,10 @@ weightCharm = 489.24 * 2.0 / 3.0
 # for 10GeV charm Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+weight: float = 0.0
 
-def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) -> int:
+
+def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm: bool = True) -> int:
     nMu = 0
     for v in sTree.vetoPoint:
         mu = v.GetTrackID()
@@ -46,7 +48,7 @@ def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) ->
     return nMu
 
 
-def PoT(f) -> tuple[float | int, float, float]:
+def PoT(f: ROOT.TFile) -> tuple[float | int, float, float]:
     nTot = 0
     # POT = 1000000000 with ecut=10.0 diMu100.0 X100.0
     diMuboost = 0.0

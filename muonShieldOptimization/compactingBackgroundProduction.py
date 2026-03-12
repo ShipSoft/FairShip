@@ -309,7 +309,9 @@ def makeHistos(rfile: str) -> None:
                 mother = t.GetMotherId()
                 if not mother < 0:
                     moPid = sTree.MCTrack[mother].GetPdgCode()
-                    name = pdg.GetParticle(moPid).GetName()
+                    mother_particle = pdg.GetParticle(moPid)
+                    assert mother_particle is not None
+                    name = mother_particle.GetName()
                     name = procID + " " + name
                     if name not in h:
                         h[name] = h["test"].Clone(name)
@@ -349,7 +351,9 @@ def makePrintout() -> None:
 
     sorted_p = sorted(p.items(), key=operator.itemgetter(1))
     for p in sorted_p:
-        print("%25s : %5.2G" % (pdg.GetParticle(p[0]).GetName(), float(p[1])))
+        p_particle = pdg.GetParticle(p[0])
+        assert p_particle is not None
+        print("%25s : %5.2G" % (p_particle.GetName(), float(p[1])))
     sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))
     print("origin of muons")
     for p in sorted_pr:

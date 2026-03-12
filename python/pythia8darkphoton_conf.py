@@ -19,17 +19,18 @@ omegamass = 0.78265
 eta1mass = 0.95778
 
 
-def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
+def addDPtoROOT(pid: int = 9900015, m: float = 0.2, g: float = 4.866182e-04) -> None:
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle("A", "DarkPhoton", m, False, g, 0.0, "A", pid)
 
 
-def readFromAscii():
+def readFromAscii() -> dict[str, ROOT.TH1F]:
     FairShip = os.environ["FAIRSHIP"]
     with open(FairShip + "/shipgen/branchingratios.dat") as ascii:
         content = ascii.readlines()
     h = {}
     n = 0
+    hname = ""
     while n < len(content):
         line = content[n]
         if "TH1F" in line:
@@ -49,7 +50,7 @@ def readFromAscii():
     return h
 
 
-def manipulatePhysics(motherMode, mass, P8gen):
+def manipulatePhysics(motherMode, mass, P8gen) -> int:
     # changes of the table, now it is deleted and we have each meson mother for each meson production
     # print motherMode
     if motherMode == "pi0" and pi0mass - mass >= 0.0000001:
@@ -91,7 +92,7 @@ def manipulatePhysics(motherMode, mass, P8gen):
     return selectedMum
 
 
-def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True):
+def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy: bool = False, debug: bool = True) -> int:
     # configure pythia8 for Ship usage
     _exit_stack = contextlib.ExitStack()
     if debug:

@@ -86,6 +86,8 @@ if not options.dy:
         dy = float(tmp[1] + "." + tmp[2])
     except (ValueError, IndexError):
         dy = None
+else:
+    dy = options.dy
 
 print(
     "configured to process ",
@@ -144,6 +146,7 @@ modules = shipDet_conf.configure(run, ShipGeo)
 fgeo["FAIRGeom"]
 import geomGeant4
 
+fieldMaker = None
 if hasattr(ShipGeo.Bfield, "fieldMap"):
     fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
 

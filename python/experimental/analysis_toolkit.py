@@ -75,7 +75,7 @@ class selection_check:
 
         return t_vtx  # units in ns
 
-    def impact_parameter(self, candidate):
+    def impact_parameter(self, candidate) -> float:
         """Calculate the impact parameter of the candidate relative to (0,0,target.z0)."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
@@ -162,7 +162,7 @@ class selection_check:
         """Invariant mass of the candidate."""
         return candidate.GetMass()
 
-    def DOCA(self, candidate):
+    def DOCA(self, candidate: ROOT.ShipParticle) -> float:
         """Distance of Closest Approach."""
         return candidate.GetDoca()
 

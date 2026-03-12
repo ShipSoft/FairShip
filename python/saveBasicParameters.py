@@ -33,7 +33,7 @@ def retrieveGitTags(o):
     return o
 
 
-def execute(f, ox, name="ShipGeo"):
+def execute(f, ox, name: str = "ShipGeo") -> None:
     """Save geometry configuration to ROOT file as JSON string"""
     if isinstance(ox, str):
         ox = AttrDict()

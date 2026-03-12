@@ -35,12 +35,12 @@ def rhoFormFactor(m):
 
 
 # useful functions
-def energy(p, m):
+def energy(p: float, m: float) -> float:
     """Compute energy from momentum and mass"""
     return math.sqrt(p * p + m * m)
 
 
-def penaltyFactor(m):
+def penaltyFactor(m) -> float:
     """Penalty factor for high masses - dipole form factor in the proton-A' vertex"""
     """ m in GeV """
     if m * m > 0.71:
@@ -95,7 +95,7 @@ def wba(p, theta, mDarkPhoton, epsilon):
     return const * (p1 - p2 + p3 + p4)
 
 
-def sigma(s):  # s in GeV^2 ---> sigma in mb
+def sigma(s: float):  # s in GeV^2 ---> sigma in mb
     """Parametrisation of sigma(s)"""
     a1 = 35.45
     a2 = 0.308
@@ -110,7 +110,7 @@ def sigma(s):  # s in GeV^2 ---> sigma in mb
     return a1 + p1 - p2 + p3
 
 
-def es(p, mDarkPhoton):
+def es(p, mDarkPhoton) -> float:
     """s(p,mA)"""
     return 2.0 * mProton * (energy(protonMomentum, mProton) - energy(p, mDarkPhoton))
 
@@ -131,27 +131,27 @@ def dPt2dTheta(p, theta):
     return 2.0 * theta * z2 * protonMomentum * protonMomentum
 
 
-def dZdP(p, theta):
+def dZdP(p, theta) -> float:
     """Jacobian z->p"""
     return 1.0 / (protonMomentum * math.sqrt(theta * theta + 1.0))
 
 
-def dNdPdTheta(p, theta, mDarkPhoton, epsilon):
+def dNdPdTheta(p, theta, mDarkPhoton, epsilon) -> float:
     """Differential A' rate per p.o.t. as a function of P and theta"""
     diffRate = dNdZdPtSquare(p, mDarkPhoton, theta, epsilon) * dPt2dTheta(p, theta) * dZdP(p, theta)
     return math.fabs(diffRate)  # integrating in (-pi, pi)...
 
 
-def pMin(mDarkPhoton):
+def pMin(mDarkPhoton) -> float:
     return max(0.14 * protonMomentum, mDarkPhoton)
 
 
-def pMax(mDarkPhoton):
+def pMax(mDarkPhoton) -> float:
     # return min(0.86*protonMomentum, math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.))
     return math.sqrt((energy(protonMomentum, mProton) ** 2.0 - mDarkPhoton**2.0) - mDarkPhoton**2.0)
 
 
-def prodRate(mDarkPhoton, epsilon, tmin=-0.5 * math.pi, tmax=0.5 * math.pi):
+def prodRate(mDarkPhoton, epsilon, tmin: float = -0.5 * math.pi, tmax: float = 0.5 * math.pi) -> float:
     """dNdPdTheta integrated over p and theta"""
     integral = dblquad(
         dNdPdTheta,  # integrand
@@ -181,7 +181,16 @@ def normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):
     return (1.0 / norm) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)
 
 
-def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin=-0.5 * math.pi, tmax=0.5 * math.pi, suffix=""):
+def hProdPDF(
+    mDarkPhoton,
+    epsilon,
+    norm,
+    binsp,
+    binstheta,
+    tmin: float = -0.5 * math.pi,
+    tmax: float = 0.5 * math.pi,
+    suffix: str = "",
+) -> r.TH2F:
     """Histogram of the PDF for A' production in SHIP"""
     angles = np.linspace(tmin, tmax, binstheta).tolist()
     anglestep = 2.0 * (tmax - tmin) / binstheta

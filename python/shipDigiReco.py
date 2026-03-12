@@ -349,7 +349,7 @@ class ShipDigiReco:
                 nGoodTracks += 1
         return nGoodTracks
 
-    def findVetoHitOnTrack(self, track):
+    def findVetoHitOnTrack(self, track) -> ROOT.vetoHitOnTrack:
         distMin = 99999.0
         hitID = -1
         xx = track.getFittedState()

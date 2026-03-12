@@ -37,10 +37,12 @@ for kf in [211, 321, 130, 310, 3112, 3122, 3222, 3312, 3322, 3334]:
 masssq = {}
 
 
-def getMasssq(pid):
+def getMasssq(pid: int):
     apid = abs(int(pid))
     if apid not in masssq:
-        masssq[apid] = PDG.GetParticle(apid).Mass() ** 2
+        particle = PDG.GetParticle(apid)
+        assert particle is not None
+        masssq[apid] = particle.Mass() ** 2
     return masssq[apid]
 
 
@@ -63,7 +65,9 @@ fin = ROOT.TFile(muonIn)  # id:px:py:pz:x:y:z:w
 sTree = fin.muons
 
 
-def rotate(ctheta, stheta, cphi, sphi, px, py, pz):
+def rotate(
+    ctheta: float, stheta: float, cphi: float, sphi: float, px: float, py: float, pz: float
+) -> tuple[float, float, float]:
     # rotate around y-axis
     px1 = ctheta * px + stheta * pz
     pzr = -stheta * px + ctheta * pz

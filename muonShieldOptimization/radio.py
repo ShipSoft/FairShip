@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from typing import cast
+
 import ROOT
 
 path = "./"
@@ -24,7 +26,7 @@ myHist.SetXTitle("Z [m]")
 myHist.SetZTitle("Y [m]")
 myHist.SetYTitle("X [m]")
 
-c1 = ROOT.gROOT.FindObject("c1")
+c1 = cast(ROOT.TCanvas, ROOT.gROOT.FindObject("c1"))
 myHist.Draw("box")
 c1.Print("radio.png")
 myHistxy = myHist.Project3D("xy")

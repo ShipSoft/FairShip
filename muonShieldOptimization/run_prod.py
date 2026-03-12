@@ -3,6 +3,7 @@
 
 import os
 import time
+from typing import cast
 
 import ROOT
 
@@ -22,7 +23,7 @@ def makeProd(prefix, DY, y: bool = False, phiRandom: bool = False, X=None) -> No
     if phiRandom:
         cmd = cmd + " --phiRandom"
     fn = ROOT.TFile(f)
-    sTree = fn.FindObjectAny("pythia8-Geant4")
+    sTree = cast(ROOT.TTree, fn.FindObjectAny("pythia8-Geant4"))
     ntot = sTree.GetEntries()
     fn.Close()
     ns = 0

@@ -4,6 +4,7 @@
 import atexit
 import os
 import sys
+from typing import cast
 
 import ROOT
 from pythia8_conf_utils import addHNLtoROOT
@@ -30,16 +31,17 @@ def pyExit() -> None:
         if "ROOT.genfit" in module:
             x = sys.modules["__main__"]
             if hasattr(x, "run"):
-                del x.run
+                delattr(x, "run")
                 print("make suicid, until better solution found to ROOT/genfit interference")
                 for f in ROOT.gROOT.GetListOfFiles():
-                    if f.IsWritable() and f.IsOpen():
-                        f.Close()
+                    rf = cast(ROOT.TFile, f)
+                    if rf.IsWritable() and rf.IsOpen():
+                        rf.Close()
                 os.system("kill " + str(os.getpid()))
             if hasattr(x, "fMan"):
-                del x.fMan
+                delattr(x, "fMan")
             if hasattr(x, "fRun"):
-                del x.fRun
+                delattr(x, "fRun")
             return
     print("Exit normally")
 

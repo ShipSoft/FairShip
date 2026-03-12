@@ -30,7 +30,7 @@ def compare_histograms(hist1, hist2, use_ks_test: bool = False, significance_thr
             # Perform the Kolmogorov-Smirnov test
             ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())
             print(f"KS Statistic: {ks_statistic}, p-value: {p_value}")
-            if p_value.all() < significance_threshold:
+            if p_value < significance_threshold:
                 print(f"Histograms '{hist1.name}' are statistically different (p < {significance_threshold}).")
             else:
                 print(f"Histograms '{hist1.name}' are statistically compatible (p >= {significance_threshold}).")

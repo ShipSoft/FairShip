@@ -7,7 +7,7 @@ import ROOT
 import shipunit as u
 
 
-def MCPointPrintOut(x):
+def MCPointPrintOut(x) -> str:
     p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())
     n = ""
     if p:
@@ -16,7 +16,7 @@ def MCPointPrintOut(x):
     return txt
 
 
-def MCTrackPrintOut(x):
+def MCTrackPrintOut(x) -> str:
     c = x.GetPdgCode()
     p = ROOT.TDatabasePDG.Instance().GetParticle(c)
     n = ""
@@ -62,7 +62,7 @@ def TParticlePrintOut(x) -> str:
     return txt
 
 
-def ShipParticlePrintOut(x):
+def ShipParticlePrintOut(x) -> str:
     txt = f'("ShipParticle") {x.GetName()} M:{x.GetMass():5.2F}GeV/c2 P:{x.P():5.2F}GeV/c VxZ:{x.Vz() / u.m:5.2F}m'
     return txt
 
