@@ -23,6 +23,7 @@ it in future.
 
 ### Fixed
 
+* Fix off-by-one in `MuonBackGenerator` end-of-tree check that incorrectly returned `kFALSE` when a muon was found on the last event
 * Fix uninitialised fDetPoints pointer in SHiP::Detector base class
 * Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
 * Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation

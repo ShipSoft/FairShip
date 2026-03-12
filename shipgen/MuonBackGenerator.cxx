@@ -195,6 +195,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return fUseSTL ? MCTrack_vec->size() : MCTrack->GetEntries();
   };
 
+  bool found_muon = false;
   while (fn < fNevents) {
     fTree->GetEntry(fn);
     muList.clear();
@@ -208,6 +209,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       mass = pdgBase->GetParticle(id)->Mass();
       e = TMath::Sqrt(px * px + py * py + pz * pz + mass * mass);
       tof = 0;
+      found_muon = true;
       break;
     }
     if (id == -1) {  // use tree as input file
@@ -245,11 +247,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         LOGF(debug, "No muon found %i", fn - 1);
       }
       if (found) {
+        found_muon = true;
         break;
       }
     }
   }
-  if (fn == fNevents) {
+  if (fn >= fNevents && !found_muon) {
     LOGF(info, "End of tree reached %i", fNevents);
     return kFALSE;
   }
