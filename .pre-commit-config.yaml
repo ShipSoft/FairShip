@@ -1,80 +1,84 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: trailing-whitespace
-    exclude: .dat
-  - id: end-of-file-fixer
-  - id: check-yaml
-  - id: check-toml
-  - id: check-added-large-files
-  - id: check-ast
-  - id: check-merge-conflict
-  - id: check-vcs-permalinks
-  - id: check-executables-have-shebangs
-  - id: mixed-line-ending
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.5
-  hooks:
-  - id: ruff-check
-    types_or: [python, pyi, jupyter]
-    args: [--fix, --show-fixes]
-  - id: ruff-format
-    types_or: [python, pyi, jupyter]
-- repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v22.1.0
-  hooks:
-  - id: clang-format
-    types_or: [c++, c, cuda]
-    exclude: LinkDef.h
-- repo: https://github.com/cpplint/cpplint
-  rev: 2.0.2
-  hooks:
-  - id: cpplint
-    exclude: LinkDef.h
-- repo: https://github.com/codespell-project/codespell
-  rev: "v2.4.2"
-  hooks:
-    - id: codespell
-      additional_dependencies: [tomli]
-- repo: https://github.com/asottile/pyupgrade
-  rev: v3.21.2
-  hooks:
-  - id: pyupgrade
-    args: [--py312-plus]
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.19.1
-  hooks:
-    - id: mypy
-      name: mypy (type-check)
-      types_or: [python, pyi]
-      files: ^(\.github/scripts/annotate_build\.py|python/experimental/check_overlaps\.py|python/experimental/compare_histograms\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/BaseDetector\.py|python/detectors/UpstreamTaggerDetector\.py|python/ShipGeoConfig\.py|python/method_logger\.py|python/decorators\.py|python/pythia8_conf_utils\.py|python/shipRoot_conf\.py|python/shipVeto\.py|python/rootUtils\.py|python/geomGeant4\.py|python/readDecayTable\.py|python/shipDigiReco\.py)$
-      args:
-        - --python-version=3.12
-        - --ignore-missing-imports
-        - --show-column-numbers
-        - --pretty
-        - --follow-imports=skip
-        - --disable-error-code=name-defined
-      additional_dependencies:
-        - types-PyYAML
-        - types-tabulate
-        - typing-extensions>=4.8
-- repo: https://github.com/citation-file-format/cffconvert
-  rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
-  hooks:
-    - id: validate-cff
-- repo: https://github.com/fsfe/reuse-tool
-  rev: v6.2.0
-  hooks:
-    - id: reuse
-- repo: https://github.com/BlankSpruce/gersemi
-  rev: 0.26.0
-  hooks:
-  - id: gersemi
-
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: .dat
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: check-executables-have-shebangs
+      - id: mixed-line-ending
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.5
+    hooks:
+      - id: ruff-check
+        types_or: [python, pyi, jupyter]
+        args: [--fix, --show-fixes]
+      - id: ruff-format
+        types_or: [python, pyi, jupyter]
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v22.1.0
+    hooks:
+      - id: clang-format
+        types_or: [c++, c, cuda]
+        exclude: LinkDef.h
+  - repo: https://github.com/cpplint/cpplint
+    rev: 2.0.2
+    hooks:
+      - id: cpplint
+        exclude: LinkDef.h
+  - repo: https://github.com/codespell-project/codespell
+    rev: "v2.4.2"
+    hooks:
+      - id: codespell
+        additional_dependencies: [tomli]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.21.2
+    hooks:
+      - id: pyupgrade
+        args: [--py312-plus]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.1
+    hooks:
+      - id: mypy
+        name: mypy (type-check)
+        types_or: [python, pyi]
+        files: ^(\.github/scripts/annotate_build\.py|python/experimental/check_overlaps\.py|python/experimental/compare_histograms\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/BaseDetector\.py|python/detectors/UpstreamTaggerDetector\.py|python/ShipGeoConfig\.py|python/method_logger\.py|python/decorators\.py|python/pythia8_conf_utils\.py|python/shipRoot_conf\.py|python/shipVeto\.py|python/rootUtils\.py|python/geomGeant4\.py|python/readDecayTable\.py|python/shipDigiReco\.py)$
+        args:
+          - --python-version=3.12
+          - --ignore-missing-imports
+          - --show-column-numbers
+          - --pretty
+          - --follow-imports=skip
+          - --disable-error-code=name-defined
+        additional_dependencies:
+          - types-PyYAML
+          - types-tabulate
+          - typing-extensions>=4.8
+  - repo: https://github.com/citation-file-format/cffconvert
+    rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
+    hooks:
+      - id: validate-cff
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+  - repo: https://github.com/BlankSpruce/gersemi
+    rev: 0.26.0
+    hooks:
+      - id: gersemi
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.19.0
+    hooks:
+      - id: yamlfmt
+        exclude: python/hnl_production|\.clang-tidy|\.clang-format
 ci:
   autofix_prs: true
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
