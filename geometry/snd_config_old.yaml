@@ -1,5 +1,4 @@
 # Configuration of SND (old version ported to yaml) for FairShip
-
 # tau Bricks
 nuTarget:
   z: 0
