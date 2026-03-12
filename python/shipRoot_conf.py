@@ -16,6 +16,7 @@ if os.environ.get("FAIRSHIP_ROOT", "") == "":
 ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libG4clhep")
+ROOT.gSystem.Load("libgenfit2")
 
 
 def forReadingOldFile() -> None:
