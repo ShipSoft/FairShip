@@ -122,7 +122,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   15</span>cmake_policy(SET CMP0118 NEW)</div>
 <div class="line"><span class="lineno">   16</span><span class="preprocessor"># CMP0144 (3.27): use &lt;PACKAGENAME&gt;_ROOT variables in find_package.</span></div>
 <div class="line"><span class="lineno">   17</span><span class="keywordflow">if</span>(POLICY CMP0144)</div>
-<div class="line"><span class="lineno">   18</span>  cmake_policy(SET CMP0144 NEW)</div>
+<div class="line"><span class="lineno">   18</span>    cmake_policy(SET CMP0144 NEW)</div>
 <div class="line"><span class="lineno">   19</span>endif()</div>
 <div class="line"><span class="lineno">   20</span> </div>
 <div class="line"><span class="lineno">   21</span>project(FairShip VERSION 0.0.0 LANGUAGES CXX)</div>
@@ -139,9 +139,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span>find_path(</div>
-<div class="line"><span class="lineno">   35</span>  FAIRBASE</div>
-<div class="line"><span class="lineno">   36</span>  NAMES FairRun.h</div>
-<div class="line"><span class="lineno">   37</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
+<div class="line"><span class="lineno">   35</span>    FAIRBASE</div>
+<div class="line"><span class="lineno">   36</span>    NAMES FairRun.h</div>
+<div class="line"><span class="lineno">   37</span>    PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
 </div><!-- fragment -->
 </div>
 </div>
