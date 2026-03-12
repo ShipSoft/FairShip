@@ -100,6 +100,8 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Changed</h2>
 <ul>
+<li>Rename <code>ShipHit</code> to <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> and move from <code>shipdata/</code> to <code>Detector/</code>, consistent with the <code><a class="el" href="classSHiP_1_1DetectorPoint.html">SHiP::DetectorPoint</a></code> pattern</li>
+<li>Clean up <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> subclass hierarchy: fix destructors, <code>override</code> specifiers, <code>Print()</code> const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations</li>
 <li>Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)</li>
 <li>Modernise C++ code with C++20/17 features: <code>map::contains()</code>, <code>std::ranges::transform</code>, <code>std::ranges::copy</code>, range-for loops, and structured bindings</li>
 <li>Use <code>std::span</code> for <code>MeanMaterialBudget</code> parameters (compile-time size checking) and <code><a class="el" href="classShipCompField.html#abdc692b942a02b69e2dac5f8113f5a13" title="Get the vector of fields.">ShipCompField::getCompFields</a></code> return type (avoids unnecessary copy)</li>
@@ -308,7 +310,7 @@ Data Structure Modernization</h3>
 <li><b>Migrate <a class="el" href="classShipStack.html">ShipStack</a> MC track storage from TClonesArray to std::vector</b> <a class="el" href="classShipStack.html">ShipStack</a> now uses <code>std::vector&lt;<a class="el" href="classShipMCTrack.html">ShipMCTrack</a>&gt;</code> instead of <code>TClonesArray</code> for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables <code>RegisterAny()</code> for MCTrack I/O. Includes bounds checking in <a class="el" href="ShipAna_8py.html">ShipAna.py</a> for all MCTrack vector accesses to handle the stricter indexing behaviour of std::vector compared to TClonesArray.</li>
 <li>Migrate <a class="el" href="classTracklet.html">Tracklet</a> container in <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a> from TClonesArray to std::vector</li>
 <li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, muonDetector, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
-<li>Modernise data classes by removing obsolete BOOST serialisation (<a class="el" href="classTracklet.html">Tracklet</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, <a class="el" href="classShipHit.html">ShipHit</a>, <a class="el" href="classTrackInfo.html">TrackInfo</a>)<ul>
+<li>Modernise data classes by removing obsolete BOOST serialisation (<a class="el" href="classTracklet.html">Tracklet</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, ShipHit, <a class="el" href="classTrackInfo.html">TrackInfo</a>)<ul>
 <li>Replace BOOST serialisation with native ROOT 6 serialisation</li>
 <li>Modernise <a class="el" href="classTracklet.html">Tracklet</a> constructor to accept <code>std::vector&lt;unsigned int&gt;</code> indices</li>
 <li>Update <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a> to use parameterised constructor in Python code</li>

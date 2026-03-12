@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"make__nTuple__Tr_8py.html#a41d5a4b3518db7eb2d36dd59960b9ea6":[7,0,8,2,16],
+"make__nTuple__Tr_8py.html#a429f87129746c00dd1899ac20597e7d9":[7,0,8,2,10],
 "make__nTuple__Tr_8py.html#a4311ade9b7c51ff5c528f3826a793919":[7,0,8,2,33],
 "make__nTuple__Tr_8py.html#a4aa1906029db6831bf4a216156896a77":[7,0,8,2,14],
 "make__nTuple__Tr_8py.html#a4e77032ab64aedd3e1849f336bee0c27":[7,0,8,2,15],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc":[5,0,9,0],
 "namespaceMTCDetector.html":[5,0,53],
 "namespacePythiaList.html":[5,0,59],
-"namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[5,0,59,2],
-"namespacePythiaList.html#a405f77fe1f708bdae18e23a84469b962":[5,0,59,1],
-"namespacePythiaList.html#a9c4dcba5de0e5687d6d032e471c97779":[5,0,59,0]
+"namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[5,0,59,2]
 };

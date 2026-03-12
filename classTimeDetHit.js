@@ -2,9 +2,9 @@ var classTimeDetHit =
 [
     [ "TimeDetHit", "classTimeDetHit.html#ade38b8e42aa0c93553fdbb4ace1826b1", null ],
     [ "TimeDetHit", "classTimeDetHit.html#a06c1fddb5db9a73cb25634e03172ace8", null ],
-    [ "~TimeDetHit", "classTimeDetHit.html#a248280b2e7aeb978f2baa45c9fe02cb9", null ],
+    [ "~TimeDetHit", "classTimeDetHit.html#a89ba0e3f6092eea74c888807f4486bb4", null ],
     [ "TimeDetHit", "classTimeDetHit.html#a054e5bd0e78b68ab2cb9b0dbeafe196d", null ],
-    [ "ClassDef", "classTimeDetHit.html#ac38cbeb33c74244cd6ceaeb85084e2cf", null ],
+    [ "ClassDef", "classTimeDetHit.html#a8a94ef74e94f9f5dedd1eb7cefde0bf5", null ],
     [ "Dist", "classTimeDetHit.html#a75dcde375f3adbebcc6e71ece5fa20fe", null ],
     [ "GetMeasurements", "classTimeDetHit.html#a19021c4a519a983a9bbb20dfd4a9e767", null ],
     [ "GetNode", "classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a", null ],
@@ -17,12 +17,11 @@ var classTimeDetHit =
     [ "isValid", "classTimeDetHit.html#a9bafe1f37c55cf1e0f7a9ab771712e15", null ],
     [ "operator=", "classTimeDetHit.html#a19ce5bfaf8964cc204181809bcc330d2", null ],
     [ "Print", "classTimeDetHit.html#acee0a0d0ff478f9b9eac425518b136c4", null ],
-    [ "Print", "classTimeDetHit.html#aa8a0ab3d7380139d9e4d46dc248f1aff", null ],
     [ "Resol", "classTimeDetHit.html#a6940b7d3e545c87bdd4d0c1f5981d350", null ],
     [ "setInvalid", "classTimeDetHit.html#a16e67da12f274786beb4c6d2d74f2e1b", null ],
     [ "setIsValid", "classTimeDetHit.html#a61d024099f37ba1dbf01b5037e55f575", null ],
     [ "SetTDC", "classTimeDetHit.html#ab8551f1f9270a0fa4e5ae9b7c79c29f6", null ],
-    [ "flag", "classTimeDetHit.html#aedc7c95bf6151cc008cdda57912bae73", null ],
+    [ "flag", "classTimeDetHit.html#a9e7d424e21827adaa0a142da3f73bd17", null ],
     [ "t_1", "classTimeDetHit.html#a571b03abb8bdcda0b7477741a6b7537f", null ],
     [ "t_2", "classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d", null ]
 ];

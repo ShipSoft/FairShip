@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"namespacePythiaList.html#a405f77fe1f708bdae18e23a84469b962":[5,0,59,1],
+"namespacePythiaList.html#a9c4dcba5de0e5687d6d032e471c97779":[5,0,59,0],
 "namespaceSBTDetector.html":[5,0,72],
 "namespaceSHiP.html":[5,0,74],
 "namespaceSciFiMapping.html":[5,0,73],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "namespacecheckZpositions.html#a4040402d5b3f2b28414152756c21d1dc":[5,0,8,0],
 "namespacecheckZpositions.html#a6f288b545491f59295cc51418daffef8":[5,0,8,2],
 "namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a":[5,0,8,7],
-"namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b":[5,0,8,4],
-"namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84":[5,0,8,6],
-"namespacecompactingBackgroundProduction.html":[5,0,10]
+"namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b":[5,0,8,4]
 };

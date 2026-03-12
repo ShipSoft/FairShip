@@ -7,8 +7,9 @@ var searchData=
   ['detector_3c_20timedetpoint_20_3e_4',['Detector&lt; TimeDetPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detector_3c_20upstreamtaggerpoint_20_3e_5',['Detector&lt; UpstreamTaggerPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
   ['detector_3c_20vetopoint_20_3e_6',['Detector&lt; vetoPoint &gt;',['../classSHiP_1_1Detector.html',1,'SHiP']]],
-  ['detectorpoint_7',['DetectorPoint',['../classSHiP_1_1DetectorPoint.html',1,'SHiP']]],
-  ['dppythia8generator_8',['DPPythia8Generator',['../classDPPythia8Generator.html',1,'']]],
-  ['drawtracks_9',['DrawTracks',['../classeventDisplay_1_1DrawTracks.html',1,'eventDisplay']]],
-  ['drawvetodigi_10',['DrawVetoDigi',['../classeventDisplay_1_1DrawVetoDigi.html',1,'eventDisplay']]]
+  ['detectorhit_7',['DetectorHit',['../classSHiP_1_1DetectorHit.html',1,'SHiP']]],
+  ['detectorpoint_8',['DetectorPoint',['../classSHiP_1_1DetectorPoint.html',1,'SHiP']]],
+  ['dppythia8generator_9',['DPPythia8Generator',['../classDPPythia8Generator.html',1,'']]],
+  ['drawtracks_10',['DrawTracks',['../classeventDisplay_1_1DrawTracks.html',1,'eventDisplay']]],
+  ['drawvetodigi_11',['DrawVetoDigi',['../classeventDisplay_1_1DrawVetoDigi.html',1,'eventDisplay']]]
 ];

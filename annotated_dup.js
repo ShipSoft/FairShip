@@ -47,6 +47,7 @@ var annotated_dup =
     ] ],
     [ "SHiP", "namespaceSHiP.html", [
       [ "Detector", "classSHiP_1_1Detector.html", "classSHiP_1_1Detector" ],
+      [ "DetectorHit", "classSHiP_1_1DetectorHit.html", "classSHiP_1_1DetectorHit" ],
       [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html", "classSHiP_1_1DetectorPoint" ],
       [ "Generator", "classSHiP_1_1Generator.html", "classSHiP_1_1Generator" ]
     ] ],
@@ -113,7 +114,6 @@ var annotated_dup =
     [ "ShipFieldMaker", "classShipFieldMaker.html", "classShipFieldMaker" ],
     [ "ShipFieldPar", "classShipFieldPar.html", "classShipFieldPar" ],
     [ "ShipGeoCave", "classShipGeoCave.html", "classShipGeoCave" ],
-    [ "ShipHit", "classShipHit.html", "classShipHit" ],
     [ "ShipMagnet", "classShipMagnet.html", "classShipMagnet" ],
     [ "ShipMCTrack", "classShipMCTrack.html", "classShipMCTrack" ],
     [ "ShipMuonShield", "classShipMuonShield.html", "classShipMuonShield" ],
@@ -148,8 +148,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "veto", "classveto.html", "classveto" ],
     [ "Veto", "classVeto.html", null ],
+    [ "veto", "classveto.html", "classveto" ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

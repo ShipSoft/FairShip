@@ -1,6 +1,6 @@
-<map id="shipdata/ShipHit.cxx" name="shipdata/ShipHit.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="72,5,228,31"/>
-<area shape="rect" id="Node000002" href="$ShipHit_8h.html" title=" " alt="" coords="109,79,191,104"/>
+<map id="Detector/DetectorHit.cxx" name="Detector/DetectorHit.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="58,5,242,31"/>
+<area shape="rect" id="Node000002" href="$DetectorHit_8h.html" title=" " alt="" coords="95,79,205,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,31,153,65,147,65,147,31"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,152,84,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,106,74,147,72,142,132,102"/>

@@ -15,7 +15,6 @@ var classvetoHit =
     [ "GetZ", "classvetoHit.html#a8934e3284171c1b158749334d99ed7ed", null ],
     [ "isValid", "classvetoHit.html#a9e7c32279ce9d6fe142ab42c2293f035", null ],
     [ "operator=", "classvetoHit.html#a4390033cf8b1f68910f3375050fb780e", null ],
-    [ "Print", "classvetoHit.html#aa8a0ab3d7380139d9e4d46dc248f1aff", null ],
     [ "Print", "classvetoHit.html#aed0c193a3159e56cda7377012272d233", null ],
     [ "SetEloss", "classvetoHit.html#ace3e27270dc49e73580d1f299e9c2c31", null ],
     [ "setInvalid", "classvetoHit.html#a05b5dab70909e140e471d910e4e3810a", null ],

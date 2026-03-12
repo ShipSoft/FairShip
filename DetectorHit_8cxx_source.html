@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FairShip: shipdata/ShipHit.cxx Source File</title>
+<title>FairShip: Detector/DetectorHit.cxx Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,7 +68,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('ShipHit_8cxx_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('DetectorHit_8cxx_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -94,36 +94,37 @@ $(document).ready(function(){initNavTree('ShipHit_8cxx_source.html',''); initRes
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">ShipHit.cxx</div></div>
+  <div class="headertitle"><div class="title">DetectorHit.cxx</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="ShipHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
+<a href="DetectorHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-License-Identifier: LGPL-3.0-or-later</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Collaboration</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="ShipHit_8h.html">ShipHit.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="DetectorHit_8h.html">DetectorHit.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">    8</a></span><a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a>() : TObject(), fdigi(0), fDetectorID(-1) {}</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classShipHit.html#a2ff089ef0408b99cbe73f03c14bf4e24">   12</a></span><a class="code hl_function" href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a>(Int_t detID, Float_t digi)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    : TObject(), fdigi(digi), fDetectorID(detID) {}</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSHiP.html">SHiP</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classSHiP_1_1DetectorHit.html#ad75b811170b453dc98d8d4cb3f73fc3d">   10</a></span><a class="code hl_function" href="classSHiP_1_1DetectorHit.html#ad75b811170b453dc98d8d4cb3f73fc3d">DetectorHit::DetectorHit</a>() : TObject(), fdigi(0), fDetectorID(-1) {}</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classSHiP_1_1DetectorHit.html#adb2798caab4590a3ec0c941735c04ddb">   14</a></span><a class="code hl_function" href="classSHiP_1_1DetectorHit.html#ad75b811170b453dc98d8d4cb3f73fc3d">DetectorHit::DetectorHit</a>(Int_t detID, Float_t digi)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    : TObject(), fdigi(digi), fDetectorID(detID) {}</div>
 </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="ttc" id="aShipHit_8h_html"><div class="ttname"><a href="ShipHit_8h.html">ShipHit.h</a></div></div>
-<div class="ttc" id="aclassShipHit_html_a1916d57d722314c27531a77a49ef655f"><div class="ttname"><a href="classShipHit.html#a1916d57d722314c27531a77a49ef655f">ShipHit::ShipHit</a></div><div class="ttdeci">ShipHit()</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8cxx_source.html#l00008">ShipHit.cxx:8</a></div></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}  <span class="comment">// namespace SHiP</span></div>
+<div class="ttc" id="aDetectorHit_8h_html"><div class="ttname"><a href="DetectorHit_8h.html">DetectorHit.h</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1DetectorHit_html_ad75b811170b453dc98d8d4cb3f73fc3d"><div class="ttname"><a href="classSHiP_1_1DetectorHit.html#ad75b811170b453dc98d8d4cb3f73fc3d">SHiP::DetectorHit::DetectorHit</a></div><div class="ttdeci">DetectorHit()</div><div class="ttdef"><b>Definition</b> <a href="DetectorHit_8cxx_source.html#l00010">DetectorHit.cxx:10</a></div></div>
+<div class="ttc" id="anamespaceSHiP_html"><div class="ttname"><a href="namespaceSHiP.html">SHiP</a></div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00018">Detector.h:18</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d32c3015c3e8f785dc4289736c132c3d.html">shipdata</a></li><li class="navelem"><a class="el" href="ShipHit_8cxx.html">ShipHit.cxx</a></li>
+    <li class="navelem"><a class="el" href="dir_f05c576c93f29c0a89698681fa56d8ab.html">Detector</a></li><li class="navelem"><a class="el" href="DetectorHit_8cxx.html">DetectorHit.cxx</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

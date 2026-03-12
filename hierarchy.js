@@ -142,7 +142,7 @@ var hierarchy =
       [ "ShipFieldMaker", "classShipFieldMaker.html", null ]
     ] ],
     [ "TObject", null, [
-      [ "ShipHit", "classShipHit.html", [
+      [ "SHiP::DetectorHit", "classSHiP_1_1DetectorHit.html", [
         [ "MTCDetHit", "classMTCDetHit.html", null ],
         [ "SiliconTargetHit", "classSiliconTargetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],

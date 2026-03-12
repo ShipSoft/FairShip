@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"namespacegenie__interface.html#a92940240873b4db915240f4844249337":[5,0,34,4],
+"namespacegenie__interface.html#ab2401c3e94ac951f50d0218e3ce1f4bb":[5,0,34,10],
 "namespacegenie__interface.html#ac6e6905f3b30305d16b57fe8d96cbb1e":[5,0,34,0],
 "namespacegenie__interface.html#ac9d54ff66c12884cbcc8fe919c90d459":[5,0,34,8],
 "namespacegenie__interface.html#ae99783f42c40a876e87e8fc273ae71ef":[5,0,34,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "namespacemakeCascade.html#ac9baae86629ca4ea344a65f7ff356218":[5,0,46,1],
 "namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb":[5,0,46,53],
 "namespacemakeCascade.html#ad46cc8bf7406c0a2d18c3525e1e4590b":[5,0,46,39],
-"namespacemakeCascade.html#ad86fcdd58919c1254e92a7799fab0748":[5,0,46,41],
-"namespacemakeCascade.html#ada75f99556791cdb8495c7c97fe92634":[5,0,46,23],
-"namespacemakeCascade.html#add259298592a80ac35262a17847aee2d":[5,0,46,36]
+"namespacemakeCascade.html#ad86fcdd58919c1254e92a7799fab0748":[5,0,46,41]
 };
