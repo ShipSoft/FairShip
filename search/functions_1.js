@@ -15,7 +15,7 @@ var searchData=
   ['adddarkphotondecaychannels_12',['addDarkPhotondecayChannels',['../namespacereadDecayTable.html#a02bdb1dd20ec4dc591b37bfc0aad40a4',1,'readDecayTable']]],
   ['adddptoroot_13',['addDPtoROOT',['../namespacepythia8darkphoton__conf.html#a2d210c1850611efa3f2d94cfed4a549d',1,'pythia8darkphoton_conf']]],
   ['addevtgenparticle_14',['AddEvtGenParticle',['../classTEvtGenDecayer.html#a587a785be405d458081c7c95044e87ac',1,'TEvtGenDecayer']]],
-  ['addhit_15',['addhit',['../classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4',1,'splitcalCluster::AddHit()'],['../classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952',1,'SHiP::Detector::AddHit()'],['../classexitHadronAbsorber.html#a2a2c1b7b6f7cff7887c37a2e58f091ee',1,'exitHadronAbsorber::AddHit()'],['../classTarget.html#ad28e3e742d75c32839c7749b560a481f',1,'Target::AddHit()'],['../classMTCDetector.html#ad30f725809b061545a6c7c880a25150e',1,'MTCDetector::AddHit()'],['../classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa',1,'TargetTracker::AddHit()'],['../classSiliconTarget.html#a1f1ac59438e9d52f672e3b347dcd2eb7',1,'SiliconTarget::AddHit()']]],
+  ['addhit_15',['addhit',['../classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4',1,'splitcalCluster::AddHit()'],['../classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952',1,'SHiP::Detector::AddHit()']]],
   ['addhnldecaychannels_16',['addHNLdecayChannels',['../namespacereadDecayTable.html#a7b20cc3e8df553c9dfbb68addb0e2665',1,'readDecayTable']]],
   ['addhnltoroot_17',['addHNLtoROOT',['../namespacepythia8__conf__utils.html#a12dd6cdb0de38bac05ee053540819a3c',1,'pythia8_conf_utils']]],
   ['addparticle_18',['AddParticle',['../classShipStack.html#afeefa9f615a432b44382bfa42958d0f0',1,'ShipStack']]],

@@ -1,8 +1,8 @@
 var searchData=
 [
   ['backview_0',['backView',['../classeventDisplay_1_1EventLoop.html#a64664b1343be8e6c9fc9df5c4cefef00',1,'eventDisplay::EventLoop']]],
-  ['beginevent_1',['beginevent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector::BeginEvent()'],['../classexitHadronAbsorber.html#a94288a58f58c1a7028b166d40bbf290f',1,'exitHadronAbsorber::BeginEvent()'],['../classTarget.html#a52b0ea941d453caa1dd11038fddf9eca',1,'Target::BeginEvent()'],['../classTargetTracker.html#a38b3e80ceeb2fd40772428abd4478aab',1,'TargetTracker::BeginEvent()']]],
-  ['beginprimary_2',['beginprimary',['../classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e',1,'SHiP::Detector::BeginPrimary()'],['../classexitHadronAbsorber.html#a273f8a5ec4b7457d121ec466588b672e',1,'exitHadronAbsorber::BeginPrimary()'],['../classTarget.html#a7c9bcf520a051e92e1cc308c90a35c36',1,'Target::BeginPrimary()'],['../classTargetTracker.html#a97206a493035317ad9eb7b42cd377a7e',1,'TargetTracker::BeginPrimary()']]],
+  ['beginevent_1',['BeginEvent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector']]],
+  ['beginprimary_2',['BeginPrimary',['../classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e',1,'SHiP::Detector']]],
   ['bigeventloop_3',['BigEventLoop',['../namespaceana__ShipMuon.html#a7261d9119dc8f042df0977eaee773b8d',1,'ana_ShipMuon']]],
   ['bintercalc_4',['BInterCalc',['../classShipBFieldMap.html#a352c01b50449bd888308ffe0cc52b860',1,'ShipBFieldMap']]],
   ['bookcanvas_5',['bookCanvas',['../namespacerootUtils.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5',1,'rootUtils']]],
