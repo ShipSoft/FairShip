@@ -1,11 +1,9 @@
 #name: Doxygen GitHub Pages Deploy Action
-
 on:
   push:
     branches:
       - master
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest

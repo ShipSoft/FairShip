@@ -1,5 +1,4 @@
 name: CI
-
 on:
   pull_request:
     branches:
@@ -10,7 +9,6 @@ on:
     tags:
       - v*
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: self-hosted
@@ -18,124 +16,105 @@ jobs:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-
     env:
       version: 26.02
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: FairShip
           lfs: true
-
       - name: Build
         run: |
           set -o pipefail
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs $(nproc) --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
-
       - name: Run tests
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           cd sw/BUILD/FairShip-latest/FairShip
           ctest --output-on-failure
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: sw/
-
   run-sim-chain:
     runs-on: self-hosted
     needs: build
-
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-
     env:
       version: 26.02
-
     strategy:
       matrix:
         vessel_option: [vacuums, helium]
         SND_option: [all]
         muon_shield: [TRY_2025]
         target: [Jun25]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: FairShip
           lfs: true
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: sw/
-
       - name: Run Sim
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --EvtGenDecayer --tag ci-test
-
       - name: Overlap check
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/python/experimental/check_overlaps.py --geofile geo_ci-test.root | tee log
           ! grep "Overlap" log
-
       - name: Geo information
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/getGeoInformation.py --geometry geo_ci-test.root --level 2
-
       - name: Run Reco
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --Debug
-
       - name: Run Ana
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root
-
       - name: Run examples
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root
-
-      # - name: Extract physics metrics
-      #   run: |
-      #     source /cvmfs/ship.cern.ch/$version/setUp.sh
-      #     eval $(alienv load FairShip/latest)
-      #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
-      #
-      # - name: Upload .root artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
-      #     path: |
-      #       *.root
-      #
-      # - name: Upload physics metrics
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
-      #     path: physics_metrics.json
-
+        # - name: Extract physics metrics
+        #   run: |
+        #     source /cvmfs/ship.cern.ch/$version/setUp.sh
+        #     eval $(alienv load FairShip/latest)
+        #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
+        #
+        # - name: Upload .root artifacts
+        #   uses: actions/upload-artifact@v4
+        #   with:
+        #     name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+        #     path: |
+        #       *.root
+        #
+        # - name: Upload physics metrics
+        #   uses: actions/upload-artifact@v4
+        #   with:
+        #     name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+        #     path: physics_metrics.json
   # store-metrics:
   #   runs-on: ubuntu-latest
   #   needs: run-sim-chain
@@ -275,38 +254,31 @@ jobs:
   #               body: comment
   #             });
   #           }
-
   run-fixed-target:
     runs-on: self-hosted
     needs: build
-
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-
     env:
       version: 26.02
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: FairShip
           lfs: true
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: sw/
-
       - name: Run Fixed Target Simulation
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_fixedTarget.py -n 10 -e 10.0 -r 1
-
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
         with:
