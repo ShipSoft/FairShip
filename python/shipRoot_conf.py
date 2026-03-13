@@ -17,6 +17,9 @@ ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libG4clhep")
 ROOT.gSystem.Load("libgenfit2")
+genfit_root = os.environ.get("GENFIT_ROOT", os.environ.get("GENFIT", ""))
+if genfit_root:
+    ROOT.gInterpreter.AddIncludePath(os.path.join(genfit_root, "include"))
 
 
 def forReadingOldFile() -> None:
