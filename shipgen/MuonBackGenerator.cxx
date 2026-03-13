@@ -249,7 +249,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
   }
-  if (fn == fNevents) {
+  if (fn > fNevents) {
     LOGF(info, "End of tree reached %i", fNevents);
     return kFALSE;
   }
