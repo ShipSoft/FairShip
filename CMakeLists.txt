@@ -171,6 +171,10 @@ set(PROJECT_LIBRARY_PROPERTIES
 
 install(DIRECTORY geometry DESTINATION share/${PROJECT_NAME})
 
+# GenFit 02-03-00 no longer ships rootmap files.  Install a replacement so
+# that ROOT autoloading can discover genfit::* classes at runtime.
+install(FILES cmake/genfit2.rootmap DESTINATION lib)
+
 # Generate a Clang compile_commands.json "compilation database" file for use
 # with various development tools, such as Vim's YouCompleteMe plugin. See
 # http://clang.llvm.org/docs/JSONCompilationDatabase.html
