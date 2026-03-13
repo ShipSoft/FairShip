@@ -23,6 +23,7 @@ it in future.
 
 ### Fixed
 
+* Fix duplicate `SHiP::Detector<vetoPoint>` rootmap entry warning by removing redundant LinkDef pragma from `muonShieldOptimization`
 * Fix uninitialised fDetPoints pointer in SHiP::Detector base class
 * Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
 * Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
