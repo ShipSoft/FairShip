@@ -31,11 +31,15 @@ void Config() {
   /// When more than one options are selected, they should be separated with '+'
   /// character: eg. stepLimit+specialCuts.
 
+  const char* env = std::getenv("KAON_PION_SPLITS");
+  int32_t fNsplits = env ? std::atoi(env) : 0;
+
+  std::string controls = "stepLimiter+specialCuts+specialControls";
   /// stackPopper is required when adding secondaries, e.g. when splitting the
   /// pions and kaons
+  if (fNsplits != 0) controls += "+stackPopper";
   TG4RunConfiguration* runConfiguration = new TG4RunConfiguration(
-      "geomRoot", "FTFP_BERT_HP_EMZ",
-      "stepLimiter+specialCuts+specialControls+stackPopper");
+      "geomRoot", "FTFP_BERT_HP_EMZ", controls.c_str());
 
   /// Create the G4 VMC
   TGeant4* geant4 =

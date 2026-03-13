@@ -204,18 +204,17 @@ void exitHadronAbsorber::EndOfEvent() {
 
 void exitHadronAbsorber::BeginEvent() {
   fIsSplitting = false;
-  // fexitHadronAbsorberPointCollection->clear();
 }
 
 
 
 void exitHadronAbsorber::PostTrack() {
+  Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
   if ((fNsplits > 0) && !(fIsSplitting)) {
     TArrayI processes;
     gMC->StepProcesses(processes);
 
     bool isDecay = false;
-    bool isKaonOrMuon = false;
     for (int i = 0; i < processes.GetSize(); i++) {
        if (processes[i] == kPDecay) {
           isDecay = true;
@@ -224,9 +223,9 @@ void exitHadronAbsorber::PostTrack() {
     }
     Int_t track_pid = gMC->TrackPid();
 
-    bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321);
+    bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321 || TMath::Abs(track_pid) == 310 || TMath::Abs(track_pid) == 130);
 
-    if ((isDecay) & (kaon_or_pion)) {
+    if ((isDecay) && (kaon_or_pion) && !(fIsSplitting)) {
         TParticle* part = gMC->GetStack()->GetCurrentTrack();
         double polX = 0, polY = 0, polZ = 0;
         TVector3 polVector;
@@ -235,28 +234,27 @@ void exitHadronAbsorber::PostTrack() {
         polY = polVector.Y();
         polZ = polVector.Z();
 
-        TLorentzVector pos, mom, pol;
+        TLorentzVector pos, mom;
         gMC->TrackPosition(pos);
         gMC->TrackMomentum(mom);
         Int_t trueParentId = part->GetFirstMother();
         Double_t weight = gMC->TrackWeight() / fNsplits;
-        // printf("DEBUG: Splitting PID %d | Old W: %f | New W: %f\n", track_pid, gMC->TrackWeight(), weight);
         Int_t ntr;
         for (int i = 0; i < fNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg      = track_pid;
             clone.px       = mom.Px(); clone.py = mom.Py(); clone.pz = mom.Pz(); clone.e = mom.E();
             clone.x        = pos.X();  clone.y  = pos.Y();  clone.z  = pos.Z();  clone.t = pos.T();
-            clone.polx     = polX;
+            clone.polx = polX;
             clone.poly = polY;
             clone.polz = polZ;
             clone.weight   = weight;
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
+
         }
         gMC->StopTrack();
         fIsSplitting = true;
-
     }
   }
 }
