@@ -2,18 +2,18 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import logging
+import os
 from array import array
 
+import acts
+import acts.examples
+import acts.examples.tgeo
 import global_variables
 import ROOT
 import rootUtils as ut
 import shipPatRec
 import shipunit as u
 import shipVertex
-import os
-import acts
-import acts.examples
-import acts.examples.tgeo
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
@@ -112,11 +112,9 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
         ##Set up ACTS tracking geometry and magnetic field
-        detector = acts.examples.StrawtubeBuilder(
-            rootObject=fgeo
-        )
+        detector = acts.examples.StrawtubeBuilder(rootObject=fgeo)
         self.trackingGeometry = detector.trackingGeometry()
-        #Read the root file containing spectrometer B field
+        # Read the root file containing spectrometer B field
         u = acts.UnitConstants
         currentPath = os.path.dirname(__file__)
         sourcePath = os.path.abspath(os.path.join(currentPath, ".."))
@@ -132,13 +130,13 @@ class ShipDigiReco:
 
     def reconstruct(self) -> None:
         self.actsTracks()
-        #self.findTracks()
-        #self.findGoodTracks()
-        #if hasattr(self, "digiSBT"):
+        # self.findTracks()
+        # self.findGoodTracks()
+        # if hasattr(self, "digiSBT"):
         #    self.linkVetoOnTracks()
-        #if global_variables.vertexing:
-            # now go for 2-track combinations
-            #self.Vertexing.execute()
+        # if global_variables.vertexing:
+        # now go for 2-track combinations
+        # self.Vertexing.execute()
 
     def actsTracks(self) -> None:
         self.strawHits.clear()
@@ -173,13 +171,20 @@ class ShipDigiReco:
             py = tr.GetPy()
             pz = tr.GetPz()
             mass = tr.GetMass()
-            charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.
+            charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
             pdg = tr.GetPdgCode()
             iTrack = ROOT.std.vector("float")()
             iTrack += [index, Vx, Vy, Vz, px, py, pz, mass, charge, pdg]
             self.MCTracks.push_back(iTrack)
 
-        actsTracks = acts.examples.SHiPReco(self.trackingGeometry, self.actsFieldMap, global_variables.vertexing, self.strawHits, self.MCTrack, self.recoTree)
+        actsTracks = acts.examples.SHiPReco(
+            self.trackingGeometry,
+            self.actsFieldMap,
+            global_variables.vertexing,
+            self.strawHits,
+            self.MCTrack,
+            self.recoTree,
+        )
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
