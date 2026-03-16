@@ -17,6 +17,32 @@ ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libG4clhep")
 
+# GenFit 02-03-00 no longer ships rootmap or unified PCM files, so ROOT's
+# autoloading cannot discover genfit classes.  Load the library, point Cling
+# at the headers, and explicitly parse those used at runtime.
+genfit_root = os.environ.get("GENFIT_ROOT", os.environ.get("GENFIT", ""))
+if genfit_root:
+    ROOT.gSystem.Load("libgenfit2")
+    ROOT.gInterpreter.AddIncludePath(os.path.join(genfit_root, "include"))
+    ROOT.gInterpreter.Declare(
+        """
+#include "DAF.h"
+#include "DetPlane.h"
+#include "Exception.h"
+#include "FieldManager.h"
+#include "MaterialEffects.h"
+#include "MeasuredStateOnPlane.h"
+#include "RKTrackRep.h"
+#include "SharedPlanePtr.h"
+#include "StateOnPlane.h"
+#include "TGeoMaterialInterface.h"
+#include "Tools.h"
+#include "Track.h"
+#include "TrackPoint.h"
+#include "WireMeasurement.h"
+"""
+    )
+
 
 def forReadingOldFile() -> None:
     ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
