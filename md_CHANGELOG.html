@@ -109,6 +109,7 @@ Changed</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
 <ul>
+<li>Fix <code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code> off-by-one returning <code>kFALSE</code> when a muon is found on the last event, and gracefully stop the MC run via <code>gMC-&gt;StopRun()</code> instead of triggering FairRoot's <code>exit(0)</code></li>
 <li>Fix duplicate <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a>&lt;<a class="el" href="classvetoPoint.html">vetoPoint</a>&gt;</code> rootmap entry warning by removing redundant LinkDef pragma from <code>muonShieldOptimization</code></li>
 <li>Fix uninitialised fDetPoints pointer in <a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a> base class</li>
 <li>Fix TStreamerInfo warnings for <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> template instantiations by registering base class without streamer (<code>-</code>) in each detector's LinkDef</li>
