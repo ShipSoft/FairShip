@@ -136,7 +136,9 @@ class ShipDigiReco:
             tree="Data",
             lengthUnit=u.cm,
             BFieldUnit=u.T,
-            translateToGlobal=acts.Vector3(ShipGeo.Bfield.x, ShipGeo.Bfield.y, ShipGeo.Bfield.z),
+            translateToGlobal=acts.Vector3(
+                global_variables.ShipGeo.Bfield.x, global_variables.ShipGeo.Bfield.y, global_variables.ShipGeo.Bfield.z
+            ),
             rotateAxis=True,
             firstOctant=False,
         )
@@ -202,7 +204,6 @@ class ShipDigiReco:
             Vx = tr.GetStartX()
             Vy = tr.GetStartY()
             Vz = tr.GetStartZ()
-            Vt = tr.GetStartT()
             px = tr.GetPx()
             py = tr.GetPy()
             pz = tr.GetPz()
@@ -218,9 +219,12 @@ class ShipDigiReco:
             self.actsFieldMap,
             global_variables.vertexing,
             self.strawHits,
-            self.MCTrack,
+            self.MCTracks,
             self.recoTree,
         )
+
+        print(actsTracks[0])
+        print(type(actsTracks[0]))
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
