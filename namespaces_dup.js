@@ -1473,7 +1473,8 @@ var namespaces_dup =
     [ "shipRoot_conf", "namespaceshipRoot__conf.html", [
       [ "configure", "namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6", null ],
       [ "forReadingOldFile", "namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad", null ],
-      [ "pyExit", "namespaceshipRoot__conf.html#a5e5d2200a27772b5ef5cba873d91fee1", null ]
+      [ "pyExit", "namespaceshipRoot__conf.html#a5e5d2200a27772b5ef5cba873d91fee1", null ],
+      [ "genfit_root", "namespaceshipRoot__conf.html#abe7f64e661e45192074d6aff22e9fa75", null ]
     ] ],
     [ "shipStrawTracking", "namespaceshipStrawTracking.html", [
       [ "cmp", "namespaceshipStrawTracking.html#afa3352edb87c33e580243f775a6cc5ed", null ],
