@@ -73,16 +73,16 @@ var NAVTREEINDEX4 =
 "classMTCDetector.html#af9dc50dcea3a6a580ab5345a6e373f50":[6,0,32,21],
 "classMTCDetector.html#afa87dfe0b28157190f0c7267c3a6c3fb":[6,0,32,47],
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[6,0,32,11],
-"classMTCDetector_1_1MTCDetector.html":[6,0,7,0],
 "classMTCDetector_1_1MTCDetector.html":[5,0,53,0],
+"classMTCDetector_1_1MTCDetector.html":[6,0,7,0],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[6,0,7,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[5,0,53,0,2],
 "classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[6,0,7,0,1],
 "classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[5,0,53,0,1],
-"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[6,0,7,0,0],
 "classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[5,0,53,0,0],
-"classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[6,0,7,0,3],
+"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[6,0,7,0,0],
 "classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[5,0,53,0,3],
+"classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[6,0,7,0,3],
 "classMuDISGenerator.html":[6,0,35],
 "classMuDISGenerator.html#a02a27ca2523fef8be266e35faa18414e":[6,0,35,12],
 "classMuDISGenerator.html#a0ce1232934fc28d9259d5255e0c34f57":[6,0,35,2],
@@ -249,5 +249,5 @@ var NAVTREEINDEX4 =
 "classPythia8Generator.html#af56b43879aa68df1f93d3fa5d7309244":[6,0,40,28],
 "classPythia8Generator.html#af6c553dba17223a063a3fa9a700d9869":[6,0,40,35],
 "classPythia8Generator.html#af9b0d7cc138e3e2cc6b19ead232a248a":[6,0,40,53],
-"classSBTDetector_1_1SBTDetector.html":[5,0,72,0]
+"classSBTDetector_1_1SBTDetector.html":[6,0,9,0]
 };

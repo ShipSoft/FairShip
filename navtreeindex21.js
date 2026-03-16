@@ -1,5 +1,9 @@
 var NAVTREEINDEX21 =
 {
+"namespacemakeMuonDIS.html#a83a6c50cd675445a633965c37ea8cfcd":[5,0,49,6],
+"namespacemakeMuonDIS.html#a87df2756dfbe2dd0f5799f72833a0708":[5,0,49,23],
+"namespacemakeMuonDIS.html#a89bb5da26bfd8081f9e2c9cca9bcf2eb":[5,0,49,53],
+"namespacemakeMuonDIS.html#a8a458fca77824c9b6c84acde6b595e52":[5,0,49,15],
 "namespacemakeMuonDIS.html#a8fe80f6234b8e9bc38b5cdf200238d32":[5,0,49,61],
 "namespacemakeMuonDIS.html#a92793b82e133944d8355b8d3dd8e7c92":[5,0,49,57],
 "namespacemakeMuonDIS.html#a97a1dc6075489da0ebf469de625d5ac9":[5,0,49,27],
@@ -245,9 +249,5 @@ var NAVTREEINDEX21 =
 "namespacemembers_vars_m.html":[5,1,2,13],
 "namespacemembers_vars_n.html":[5,1,2,14],
 "namespacemembers_vars_o.html":[5,1,2,15],
-"namespacemembers_vars_p.html":[5,1,2,16],
-"namespacemembers_vars_q.html":[5,1,2,17],
-"namespacemembers_vars_r.html":[5,1,2,18],
-"namespacemembers_vars_s.html":[5,1,2,19],
-"namespacemembers_vars_t.html":[5,1,2,20]
+"namespacemembers_vars_p.html":[5,1,2,16]
 };
