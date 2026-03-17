@@ -43,7 +43,7 @@ it in future.
 * Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
 * Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
 * Remove dead SND@LHC code from event display (#900)
-
+* Make the MTC scintillating tile size configurable (#1091)
 ### Added
 
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork
