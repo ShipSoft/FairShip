@@ -318,31 +318,31 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classTimeDet.html#a6ce53eb6a477bdbf0ad2ab1855627a44">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00068">68</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>),</div>
-<div class="line"><span class="lineno">   70</span>      <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   71</span>      <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>(0),</div>
-<div class="line"><span class="lineno">   72</span>      <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>(450),</div>
-<div class="line"><span class="lineno">   73</span>      <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>(650),</div>
-<div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a>(168),</div>
-<div class="line"><span class="lineno">   75</span>      <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a>(6),</div>
-<div class="line"><span class="lineno">   76</span>      <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a>(1),</div>
-<div class="line"><span class="lineno">   77</span>      <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>(2.4),</div>
-<div class="line"><span class="lineno">   78</span>      <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a>(1.2),</div>
-<div class="line"><span class="lineno">   79</span>      <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>(3),</div>
-<div class="line"><span class="lineno">   80</span>      <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>(148),</div>
-<div class="line"><span class="lineno">   81</span>      <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>(0),</div>
-<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>(0) {</div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a> = <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>;</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> &gt; 1)</div>
-<div class="line"><span class="lineno">   85</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - 1);</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   87</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = 0;</div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> &gt; 1)</div>
-<div class="line"><span class="lineno">   89</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - 1);</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   91</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = 0;</div>
-<div class="line"><span class="lineno">   92</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00067">67</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>),</div>
+<div class="line"><span class="lineno">   69</span>      <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   70</span>      <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>(0),</div>
+<div class="line"><span class="lineno">   71</span>      <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>(450),</div>
+<div class="line"><span class="lineno">   72</span>      <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>(650),</div>
+<div class="line"><span class="lineno">   73</span>      <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a>(168),</div>
+<div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a>(6),</div>
+<div class="line"><span class="lineno">   75</span>      <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a>(1),</div>
+<div class="line"><span class="lineno">   76</span>      <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>(2.4),</div>
+<div class="line"><span class="lineno">   77</span>      <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a>(1.2),</div>
+<div class="line"><span class="lineno">   78</span>      <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>(3),</div>
+<div class="line"><span class="lineno">   79</span>      <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>(148),</div>
+<div class="line"><span class="lineno">   80</span>      <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>(0),</div>
+<div class="line"><span class="lineno">   81</span>      <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>(0) {</div>
+<div class="line"><span class="lineno">   82</span>  <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a> = <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>;</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> &gt; 1)</div>
+<div class="line"><span class="lineno">   84</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - 1);</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = 0;</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> &gt; 1)</div>
+<div class="line"><span class="lineno">   88</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - 1);</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   90</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = 0;</div>
+<div class="line"><span class="lineno">   91</span>}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a></div><div class="ttdeci">@ kTimeDet</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00018">ShipDetectorList.h:18</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_ae2bab78eb81793a0bdf1e79ee2e19eb4"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">SHiP::Detector&lt; TimeDetPoint &gt;::Detector</a></div><div class="ttdeci">Detector()=default</div></div>
 <div class="ttc" id="aclassTimeDet_html_a0a5057123ce950ebbb09beb40aed2a06"><div class="ttname"><a href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">TimeDet::fxSize</a></div><div class="ttdeci">Double_t fxSize</div><div class="ttdoc">z-position of veto station</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8h_source.html#l00057">TimeDet.h:57</a></div></div>
@@ -379,30 +379,30 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00043">43</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(<span class="stringliteral">&quot;TimeDet&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>),</div>
-<div class="line"><span class="lineno">   45</span>      <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>(0),</div>
-<div class="line"><span class="lineno">   46</span>      <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>(450),</div>
-<div class="line"><span class="lineno">   47</span>      <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>(650),</div>
-<div class="line"><span class="lineno">   48</span>      <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a>(168),</div>
-<div class="line"><span class="lineno">   49</span>      <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a>(6),</div>
-<div class="line"><span class="lineno">   50</span>      <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a>(1),</div>
-<div class="line"><span class="lineno">   51</span>      <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>(2.4),</div>
-<div class="line"><span class="lineno">   52</span>      <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a>(1.2),</div>
-<div class="line"><span class="lineno">   53</span>      <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>(3),</div>
-<div class="line"><span class="lineno">   54</span>      <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>(148),</div>
-<div class="line"><span class="lineno">   55</span>      <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>(0),</div>
-<div class="line"><span class="lineno">   56</span>      <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>(0) {</div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a> = <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>;</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> &gt; 1)</div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - 1);</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = 0;</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> &gt; 1)</div>
-<div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - 1);</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   65</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = 0;</div>
-<div class="line"><span class="lineno">   66</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00042">42</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(<span class="stringliteral">&quot;TimeDet&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>),</div>
+<div class="line"><span class="lineno">   44</span>      <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>(0),</div>
+<div class="line"><span class="lineno">   45</span>      <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>(450),</div>
+<div class="line"><span class="lineno">   46</span>      <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>(650),</div>
+<div class="line"><span class="lineno">   47</span>      <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a>(168),</div>
+<div class="line"><span class="lineno">   48</span>      <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a>(6),</div>
+<div class="line"><span class="lineno">   49</span>      <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a>(1),</div>
+<div class="line"><span class="lineno">   50</span>      <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>(2.4),</div>
+<div class="line"><span class="lineno">   51</span>      <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a>(1.2),</div>
+<div class="line"><span class="lineno">   52</span>      <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>(3),</div>
+<div class="line"><span class="lineno">   53</span>      <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>(148),</div>
+<div class="line"><span class="lineno">   54</span>      <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>(0),</div>
+<div class="line"><span class="lineno">   55</span>      <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>(0) {</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a> = <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a>;</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> &gt; 1)</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a> - 1);</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> = 0;</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> &gt; 1)</div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = (<a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * <a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTimeDet.html#a361531a08fe30ea94d83616a2a716776">fNRow</a> - 1);</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> = 0;</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -461,46 +461,46 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classSHiP_1_1Detector.html#a5904684ed427b3620dc01d9d66450d51">SHiP::Detector&lt; TimeDetPoint &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00152">152</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  152</span>                                {</div>
-<div class="line"><span class="lineno">  153</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
-<div class="line"><span class="lineno">  156</span>  TGeoMedium* Scint = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a> = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;Timing Detector&quot;</span>);</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>  TGeoVolume* plate =</div>
-<div class="line"><span class="lineno">  163</span>      gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;TimeDet&quot;</span>, Scint, <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> / 2, <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> / 2, <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a> / 2);</div>
-<div class="line"><span class="lineno">  164</span>  plate-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  165</span>  AddSensitiveVolume(plate);</div>
-<div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ib = 0; <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> &lt; <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a>; <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a>++) {</div>
-<div class="line"><span class="lineno">  168</span>    <span class="keywordtype">int</span> irow = 0, icol = 0;</div>
-<div class="line"><span class="lineno">  169</span>    <a class="code hl_function" href="classTimeDet.html#a33e75291e79024305fa5d50a1e2e3f70">GetBarRowCol</a>(ib, irow, icol);</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordtype">double</span> xbar = 0, ybar = 0, zbar = 0;</div>
-<div class="line"><span class="lineno">  172</span>    xbar = <a class="code hl_function" href="classTimeDet.html#a35405227d2b0e67da960090f29325fc1">GetXCol</a>(icol);</div>
-<div class="line"><span class="lineno">  173</span>    ybar = <a class="code hl_function" href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">GetYRow</a>(irow);</div>
-<div class="line"><span class="lineno">  174</span>    zbar = <a class="code hl_function" href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">GetZBar</a>(irow, icol);</div>
-<div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>-&gt;AddNode(plate, ib, <span class="keyword">new</span> TGeoTranslation(xbar, ybar, zbar));</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>    <span class="comment">// printf(&quot;%3i  %3i %2i   %8.3f %8.3f %8.3f\n&quot;,ib, irow,icol,</span></div>
-<div class="line"><span class="lineno">  179</span>    <span class="comment">// xbar,ybar,zbar);</span></div>
-<div class="line"><span class="lineno">  180</span>  }</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>));</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  187</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a97ab161eb00fb79673c501a571781c39"><div class="ttname"><a href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">SHiP::Detector&lt; TimeDetPoint &gt;::fDetector</a></div><div class="ttdeci">TGeoVolume * fDetector</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00095">Detector.h:95</a></div></div>
-<div class="ttc" id="aclassTimeDet_html_a33e75291e79024305fa5d50a1e2e3f70"><div class="ttname"><a href="classTimeDet.html#a33e75291e79024305fa5d50a1e2e3f70">TimeDet::GetBarRowCol</a></div><div class="ttdeci">void GetBarRowCol(int ib, int &amp;irow, int &amp;icol) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00189">TimeDet.cxx:189</a></div></div>
-<div class="ttc" id="aclassTimeDet_html_a35405227d2b0e67da960090f29325fc1"><div class="ttname"><a href="classTimeDet.html#a35405227d2b0e67da960090f29325fc1">TimeDet::GetXCol</a></div><div class="ttdeci">double GetXCol(int ic) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00195">TimeDet.cxx:195</a></div></div>
-<div class="ttc" id="aclassTimeDet_html_abef730f3f10809e953b551ce5df7a9a0"><div class="ttname"><a href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">TimeDet::GetZBar</a></div><div class="ttdeci">double GetZBar(int ir, int ic) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00207">TimeDet.cxx:207</a></div></div>
-<div class="ttc" id="aclassTimeDet_html_affcd8cbcaca2c4d7dccdca8cae05a487"><div class="ttname"><a href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">TimeDet::GetYRow</a></div><div class="ttdeci">double GetYRow(int ir) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00201">TimeDet.cxx:201</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00151">151</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  151</span>                                {</div>
+<div class="line"><span class="lineno">  152</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
+<div class="line"><span class="lineno">  155</span>  TGeoMedium* Scint = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a> = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;Timing Detector&quot;</span>);</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>  TGeoVolume* plate =</div>
+<div class="line"><span class="lineno">  162</span>      gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;TimeDet&quot;</span>, Scint, <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> / 2, <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> / 2, <a class="code hl_variable" href="classTimeDet.html#a8e66640ad9a9172dbaa3fcd4e82be38e">fzBar</a> / 2);</div>
+<div class="line"><span class="lineno">  163</span>  plate-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  164</span>  AddSensitiveVolume(plate);</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ib = 0; <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> &lt; <a class="code hl_variable" href="classTimeDet.html#a3b352cd436a811b67690e08314678ca1">fNBars</a>; <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a>++) {</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordtype">int</span> irow = 0, icol = 0;</div>
+<div class="line"><span class="lineno">  168</span>    <a class="code hl_function" href="classTimeDet.html#a33e75291e79024305fa5d50a1e2e3f70">GetBarRowCol</a>(ib, irow, icol);</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>    <span class="keywordtype">double</span> xbar = 0, ybar = 0, zbar = 0;</div>
+<div class="line"><span class="lineno">  171</span>    xbar = <a class="code hl_function" href="classTimeDet.html#a35405227d2b0e67da960090f29325fc1">GetXCol</a>(icol);</div>
+<div class="line"><span class="lineno">  172</span>    ybar = <a class="code hl_function" href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">GetYRow</a>(irow);</div>
+<div class="line"><span class="lineno">  173</span>    zbar = <a class="code hl_function" href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">GetZBar</a>(irow, icol);</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>-&gt;AddNode(plate, ib, <span class="keyword">new</span> TGeoTranslation(xbar, ybar, zbar));</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>    <span class="comment">// printf(&quot;%3i  %3i %2i   %8.3f %8.3f %8.3f\n&quot;,ib, irow,icol,</span></div>
+<div class="line"><span class="lineno">  178</span>    <span class="comment">// xbar,ybar,zbar);</span></div>
+<div class="line"><span class="lineno">  179</span>  }</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>));</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  186</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a97ab161eb00fb79673c501a571781c39"><div class="ttname"><a href="classSHiP_1_1Detector.html#a97ab161eb00fb79673c501a571781c39">SHiP::Detector&lt; TimeDetPoint &gt;::fDetector</a></div><div class="ttdeci">TGeoVolume * fDetector</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00094">Detector.h:94</a></div></div>
+<div class="ttc" id="aclassTimeDet_html_a33e75291e79024305fa5d50a1e2e3f70"><div class="ttname"><a href="classTimeDet.html#a33e75291e79024305fa5d50a1e2e3f70">TimeDet::GetBarRowCol</a></div><div class="ttdeci">void GetBarRowCol(int ib, int &amp;irow, int &amp;icol) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00188">TimeDet.cxx:188</a></div></div>
+<div class="ttc" id="aclassTimeDet_html_a35405227d2b0e67da960090f29325fc1"><div class="ttname"><a href="classTimeDet.html#a35405227d2b0e67da960090f29325fc1">TimeDet::GetXCol</a></div><div class="ttdeci">double GetXCol(int ic) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00194">TimeDet.cxx:194</a></div></div>
+<div class="ttc" id="aclassTimeDet_html_abef730f3f10809e953b551ce5df7a9a0"><div class="ttname"><a href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">TimeDet::GetZBar</a></div><div class="ttdeci">double GetZBar(int ir, int ic) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00206">TimeDet.cxx:206</a></div></div>
+<div class="ttc" id="aclassTimeDet_html_affcd8cbcaca2c4d7dccdca8cae05a487"><div class="ttname"><a href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">TimeDet::GetYRow</a></div><div class="ttdeci">double GetYRow(int ir) const</div><div class="ttdef"><b>Definition</b> <a href="TimeDet_8cxx_source.html#l00200">TimeDet.cxx:200</a></div></div>
 <div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="ShipGeoUtil_8h_source.html#l00020">ShipGeoUtil.h:20</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01228">eventDisplay.py:1228</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a7a8bc960c6e04868f276776273ab46a9"><div class="ttname"><a href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">makeCascade.ib</a></div><div class="ttdeci">dict ib</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00345">makeCascade.py:345</a></div></div>
@@ -539,12 +539,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00189">189</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>                                                             {</div>
-<div class="line"><span class="lineno">  190</span>  irow = <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> / <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>;</div>
-<div class="line"><span class="lineno">  191</span>  icol = (<a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> % <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>);</div>
-<div class="line"><span class="lineno">  192</span>  <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  193</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00188">188</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>                                                             {</div>
+<div class="line"><span class="lineno">  189</span>  irow = <a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> / <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>;</div>
+<div class="line"><span class="lineno">  190</span>  icol = (<a class="code hl_variable" href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">ib</a> % <a class="code hl_variable" href="classTimeDet.html#a9a3351b9a5430e959ff64e6ef98f5b14">fNCol</a>);</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  192</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -564,12 +564,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00195">195</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  195</span>                                    {</div>
-<div class="line"><span class="lineno">  196</span>  ic += 1;</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * ic - <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> * (ic - 1) - <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> / 2;</div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a> / 2 + <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>;</div>
-<div class="line"><span class="lineno">  199</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00194">194</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  194</span>                                    {</div>
+<div class="line"><span class="lineno">  195</span>  ic += 1;</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> * ic - <a class="code hl_variable" href="classTimeDet.html#af87399a7b5bcd1abc6cad4d78beb6c38">fxOv</a> * (ic - 1) - <a class="code hl_variable" href="classTimeDet.html#a18b89f8acb9a3b3351394c1087344a45">fxBar</a> / 2;</div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> - <a class="code hl_variable" href="classTimeDet.html#a0a5057123ce950ebbb09beb40aed2a06">fxSize</a> / 2 + <a class="code hl_variable" href="classTimeDet.html#a290fade10c890516f07974217fc647ec">fxCenter</a>;</div>
+<div class="line"><span class="lineno">  198</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00488">run_fixedTarget.py:488</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -590,12 +590,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00201">201</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  201</span>                                    {</div>
-<div class="line"><span class="lineno">  202</span>  ir += 1;</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * ir - <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> * (ir - 1) - <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> / 2;</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a> / 2 + <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>;</div>
-<div class="line"><span class="lineno">  205</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00200">200</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  200</span>                                    {</div>
+<div class="line"><span class="lineno">  201</span>  ir += 1;</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> * ir - <a class="code hl_variable" href="classTimeDet.html#a2235defabd8aab4265a063b679823dcd">fyOv</a> * (ir - 1) - <a class="code hl_variable" href="classTimeDet.html#a66c6887dc736e9fbca61b2a82c7fef11">fyBar</a> / 2;</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> - <a class="code hl_variable" href="classTimeDet.html#a634e2834facc81472b1e18202937c1a4">fySize</a> / 2 + <a class="code hl_variable" href="classTimeDet.html#a74d143c639710516d033c83968c70d16">fyCenter</a>;</div>
+<div class="line"><span class="lineno">  204</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00395">make_nTuple_SBT.py:395</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -626,11 +626,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00207">207</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  207</span>                                            {</div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (ir % 2) * <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a> + (ic % 2) * <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>;</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
-<div class="line"><span class="lineno">  210</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00206">206</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  206</span>                                            {</div>
+<div class="line"><span class="lineno">  207</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = (ir % 2) * <a class="code hl_variable" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a> + (ic % 2) * <a class="code hl_variable" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>;</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>;</div>
+<div class="line"><span class="lineno">  209</span>}</div>
 <div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00514">run_simScript.py:514</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -687,71 +687,71 @@ Additional Inherited Members</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00094">94</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>                                           {</div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
-<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  100</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
-<div class="line"><span class="lineno">  102</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  106</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
-<div class="line"><span class="lineno">  110</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  113</span>    }</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  116</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
-<div class="line"><span class="lineno">  117</span>    Int_t uniqueId;</div>
-<div class="line"><span class="lineno">  118</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(uniqueId);</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">if</span> (uniqueId &gt; 1000000)  <span class="comment">// Solid scintillator case</span></div>
-<div class="line"><span class="lineno">  120</span>    {</div>
-<div class="line"><span class="lineno">  121</span>      Int_t vcpy;</div>
-<div class="line"><span class="lineno">  122</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolOffID(1, vcpy);</div>
-<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">if</span> (vcpy == 5) uniqueId += 4;  <span class="comment">// Copy of half</span></div>
-<div class="line"><span class="lineno">  124</span>    }</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  127</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  128</span>    TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">  129</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">  130</span>    TLorentzVector Mom;</div>
-<div class="line"><span class="lineno">  131</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
-<div class="line"><span class="lineno">  132</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + Pos.X()) / 2.;</div>
-<div class="line"><span class="lineno">  133</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + Pos.Y()) / 2.;</div>
-<div class="line"><span class="lineno">  134</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + Pos.Z()) / 2.;</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>    <span class="comment">// cout &lt;&lt; uniqueId &lt;&lt; &quot; :(&quot; &lt;&lt; xmean &lt;&lt; &quot;, &quot; &lt;&lt; ymean &lt;&lt; &quot;, &quot; &lt;&lt; zmean &lt;&lt;</span></div>
-<div class="line"><span class="lineno">  137</span>    <span class="comment">// &quot;): &quot; &lt;&lt; gMC-&gt;CurrentVolName() &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, uniqueId, TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">  140</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
-<div class="line"><span class="lineno">  141</span>           pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),</div>
-<div class="line"><span class="lineno">  142</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>    <span class="comment">// Increment number of veto det points in TParticle</span></div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  146</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>);</div>
-<div class="line"><span class="lineno">  147</span>  }</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  150</span>}</div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector&lt; TimeDetPoint &gt;::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00086">Detector.h:86</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector&lt; TimeDetPoint &gt;::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00088">Detector.h:88</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector&lt; TimeDetPoint &gt;::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00090">Detector.h:90</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a73510d2ac4e0508cd8297620923db8e4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">SHiP::Detector&lt; TimeDetPoint &gt;::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00092">Detector.h:92</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00093">93</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>                                           {</div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
+<div class="line"><span class="lineno">   97</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  100</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
+<div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  105</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
+<div class="line"><span class="lineno">  109</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  112</span>    }</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  115</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
+<div class="line"><span class="lineno">  116</span>    Int_t uniqueId;</div>
+<div class="line"><span class="lineno">  117</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(uniqueId);</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (uniqueId &gt; 1000000)  <span class="comment">// Solid scintillator case</span></div>
+<div class="line"><span class="lineno">  119</span>    {</div>
+<div class="line"><span class="lineno">  120</span>      Int_t vcpy;</div>
+<div class="line"><span class="lineno">  121</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolOffID(1, vcpy);</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">if</span> (vcpy == 5) uniqueId += 4;  <span class="comment">// Copy of half</span></div>
+<div class="line"><span class="lineno">  123</span>    }</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  126</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  127</span>    TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">  128</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">  129</span>    TLorentzVector Mom;</div>
+<div class="line"><span class="lineno">  130</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
+<div class="line"><span class="lineno">  131</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + Pos.X()) / 2.;</div>
+<div class="line"><span class="lineno">  132</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + Pos.Y()) / 2.;</div>
+<div class="line"><span class="lineno">  133</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + Pos.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>    <span class="comment">// cout &lt;&lt; uniqueId &lt;&lt; &quot; :(&quot; &lt;&lt; xmean &lt;&lt; &quot;, &quot; &lt;&lt; ymean &lt;&lt; &quot;, &quot; &lt;&lt; zmean &lt;&lt;</span></div>
+<div class="line"><span class="lineno">  136</span>    <span class="comment">// &quot;): &quot; &lt;&lt; gMC-&gt;CurrentVolName() &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, uniqueId, TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">  139</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
+<div class="line"><span class="lineno">  140</span>           pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),</div>
+<div class="line"><span class="lineno">  141</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>    <span class="comment">// Increment number of veto det points in TParticle</span></div>
+<div class="line"><span class="lineno">  144</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  145</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>);</div>
+<div class="line"><span class="lineno">  146</span>  }</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  149</span>}</div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector&lt; TimeDetPoint &gt;::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector&lt; TimeDetPoint &gt;::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00087">Detector.h:87</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector&lt; TimeDetPoint &gt;::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00089">Detector.h:89</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a73510d2ac4e0508cd8297620923db8e4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">SHiP::Detector&lt; TimeDetPoint &gt;::fELoss</a></div><div class="ttdeci">Double_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00091">Detector.h:91</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a9885b9592a20ae576f27735098c33952"><div class="ttname"><a href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">SHiP::Detector&lt; TimeDetPoint &gt;::AddHit</a></div><div class="ttdeci">TimeDetPoint * AddHit(Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00038">Detector.h:38</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_a9a38f37bdd864a330614332b9846f206"><div class="ttname"><a href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">SHiP::Detector&lt; TimeDetPoint &gt;::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00089">Detector.h:89</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_ac4ba571377f2accd0775e010df940ba1"><div class="ttname"><a href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">SHiP::Detector&lt; TimeDetPoint &gt;::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
-<div class="ttc" id="aclassSHiP_1_1Detector_html_ae214ab7c082d1472301f659910703f70"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">SHiP::Detector&lt; TimeDetPoint &gt;::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00091">Detector.h:91</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_a9a38f37bdd864a330614332b9846f206"><div class="ttname"><a href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">SHiP::Detector&lt; TimeDetPoint &gt;::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00088">Detector.h:88</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_ac4ba571377f2accd0775e010df940ba1"><div class="ttname"><a href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">SHiP::Detector&lt; TimeDetPoint &gt;::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00084">Detector.h:84</a></div></div>
+<div class="ttc" id="aclassSHiP_1_1Detector_html_ae214ab7c082d1472301f659910703f70"><div class="ttname"><a href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">SHiP::Detector&lt; TimeDetPoint &gt;::fLength</a></div><div class="ttdeci">Double_t fLength</div><div class="ttdoc">time</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00090">Detector.h:90</a></div></div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00048">ShipStack.h:48</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00326">makeCascade.py:326</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
