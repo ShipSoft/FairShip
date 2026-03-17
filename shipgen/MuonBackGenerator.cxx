@@ -196,6 +196,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   };
 
   while (fn < fNevents) {
+    std::cout<<"fn: "<<fn<<" - fNevents: "<<fNevents<<" - fTree: "<<std::endl;
+    fTree->Print();
     fTree->GetEntry(fn);
     muList.clear();
     moList.clear();
@@ -249,7 +251,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
   }
-  if (fn == fNevents) {
+  if (fn > fNevents) {
     LOGF(info, "End of tree reached %i", fNevents);
     return kFALSE;
   }

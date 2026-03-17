@@ -12,7 +12,6 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
-#include "FairLink.h"
 #include "FairRootManager.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
