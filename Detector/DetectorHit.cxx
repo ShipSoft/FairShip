@@ -2,16 +2,16 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#include "ShipHit.h"
+#include "DetectorHit.h"
+
+namespace SHiP {
 
 // -----   Default constructor   -------------------------------------------
-ShipHit::ShipHit() : TObject(), fdigi(0), fDetectorID(-1) {}
+DetectorHit::DetectorHit() : TObject(), fdigi(0), fDetectorID(-1) {}
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-ShipHit::ShipHit(Int_t detID, Float_t digi)
+DetectorHit::DetectorHit(Int_t detID, Float_t digi)
     : TObject(), fdigi(digi), fDetectorID(detID) {}
 
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
+}  // namespace SHiP

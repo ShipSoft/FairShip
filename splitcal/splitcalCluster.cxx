@@ -35,8 +35,7 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
     // hits from high precision layers give both x and y coordinates --> use
     // if-if instead of if-else
     if (hit.IsX()) {
-      if (mapLayerWeigthedX.count(layer) ==
-          0) {  // if key is not yet in map, initialise element to 0
+      if (!mapLayerWeigthedX.contains(layer)) {
         mapLayerWeigthedX[layer] = 0.;
         mapLayerSumWeigthsX[layer] = 0.;
       }
@@ -45,8 +44,7 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
       mapLayerZ1[layer] = hit.GetZ();
     }
     if (hit.IsY()) {
-      if (mapLayerWeigthedY.count(layer) ==
-          0) {  // if key is not yet in map, initialise element to 0
+      if (!mapLayerWeigthedY.contains(layer)) {
         mapLayerWeigthedY[layer] = 0.;
         mapLayerSumWeigthsY[layer] = 0.;
       }
@@ -56,28 +54,24 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
     }
   }  // end loop on hit
 
-  auto const& firstElementX = mapLayerWeigthedX.begin();
-  int minLayerX = firstElementX->first;
-  double minX = firstElementX->second / mapLayerSumWeigthsX[minLayerX];
+  auto const& [minLayerX, weightedMinX] = *mapLayerWeigthedX.begin();
+  double minX = weightedMinX / mapLayerSumWeigthsX[minLayerX];
   double minZ1 = mapLayerZ1[minLayerX];
 
-  auto const& firstElementY = mapLayerWeigthedY.begin();
-  int minLayerY = firstElementY->first;
-  double minY = firstElementY->second / mapLayerSumWeigthsY[minLayerY];
+  auto const& [minLayerY, weightedMinY] = *mapLayerWeigthedY.begin();
+  double minY = weightedMinY / mapLayerSumWeigthsY[minLayerY];
   double minZ2 = mapLayerZ1[minLayerY];
 
   double minZ = (minZ1 + minZ2) / 2.;
 
   SetStartPoint(minX, minY, minZ);
 
-  auto const& lastElementX = mapLayerWeigthedX.rbegin();
-  int maxLayerX = lastElementX->first;
-  double maxX = lastElementX->second / mapLayerSumWeigthsX[maxLayerX];
+  auto const& [maxLayerX, weightedMaxX] = *mapLayerWeigthedX.rbegin();
+  double maxX = weightedMaxX / mapLayerSumWeigthsX[maxLayerX];
   double maxZ1 = mapLayerZ1[maxLayerX];
 
-  auto const& lastElementY = mapLayerWeigthedY.rbegin();
-  int maxLayerY = lastElementY->first;
-  double maxY = lastElementY->second / mapLayerSumWeigthsY[maxLayerY];
+  auto const& [maxLayerY, weightedMaxY] = *mapLayerWeigthedY.rbegin();
+  double maxY = weightedMaxY / mapLayerSumWeigthsY[maxLayerY];
   double maxZ2 = mapLayerZ1[maxLayerY];
 
   double maxZ = (maxZ1 + maxZ2) / 2.;

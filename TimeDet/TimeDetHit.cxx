@@ -24,11 +24,15 @@ constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
 }  // namespace
 
 // -----   Default constructor   --------------
-TimeDetHit::TimeDetHit() : ShipHit() { flag = true; }
+TimeDetHit::TimeDetHit() : SHiP::DetectorHit() {}
 
 // -----   constructor from TimeDetPoint from
 // TimeDetHit-------------------------------
-TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0) : ShipHit() {
+TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0) : SHiP::DetectorHit() {
+  if (!p) {
+    LOG(error) << "TimeDetHit: null TimeDetPoint pointer";
+    return;
+  }
   fDetectorID = p->GetDetectorID();
   Float_t lpos, lneg;
   Dist(p->GetX(), lpos, lneg);
@@ -36,11 +40,7 @@ TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0) : ShipHit() {
   t_1 = gRandom->Gaus(0, sigma) + lneg / v_drift + t0 + p->GetTime();
   sigma = Resol(lpos);  // in ns
   t_2 = gRandom->Gaus(0, sigma) + lpos / v_drift + t0 + p->GetTime();
-  flag = true;
 }
-
-// -----   Destructor   -------------------------
-TimeDetHit::~TimeDetHit() {}
 
 // ---- return time information for a given track extrapolation
 std::vector<double> TimeDetHit::GetTime(Double_t x) const {

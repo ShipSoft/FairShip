@@ -87,7 +87,6 @@ class Pythia8Generator : public SHiP::Generator {
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;  //
   GenieGenerator* fMaterialInvestigator;  //!
-  ClassDefOverride(Pythia8Generator, 4);
   TString targetName;
   Double_t xOff;
   Double_t yOff;

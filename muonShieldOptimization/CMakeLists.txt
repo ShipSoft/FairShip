@@ -7,6 +7,7 @@ ship_add_library(
   NAME ShipMuonShieldBackground
   SOURCES exitHadronAbsorber.cxx pyFairModule.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base veto ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
+  EXTRA_DICT_HEADERS ${CMAKE_SOURCE_DIR}/Detector/Detector.h
+  DEPENDENCIES Detector Base veto ShipData GeoBase ParBase Geom Core FairLogger::FairLogger
   INCLUDE_DIRECTORIES ${Python3_INCLUDE_DIRS}
 )

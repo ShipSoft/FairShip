@@ -13,8 +13,9 @@
 
 namespace shipgen {
 
-double MeanMaterialBudget(const double* start, const double* end,
-                          double* mparam) {
+double MeanMaterialBudget(std::span<const double, 3> start,
+                          std::span<const double, 3> end,
+                          std::span<double, 10> mparam) {
   //
   // Calculate mean material budget and material properties between
   //    the points "start" and "end".
@@ -80,7 +81,7 @@ double MeanMaterialBudget(const double* start, const double* end,
 
   // Initialise start point and direction
   TGeoNode* currentnode = 0;
-  TGeoNode* startnode = gGeoManager->InitTrack(start, dir);
+  TGeoNode* startnode = gGeoManager->InitTrack(start.data(), dir);
   if (!startnode) {
     LOG(error) << "MeanMaterialBudget: start point out of geometry: x "
                << start[0] << ", y " << start[1] << ", z " << start[2];

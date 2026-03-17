@@ -5,12 +5,10 @@
 #ifndef STRAWTUBES_STRAWTUBESHIT_H_
 #define STRAWTUBES_STRAWTUBESHIT_H_
 
-#include "ShipHit.h"
-#include "TObject.h"
-#include "TVector3.h"
+#include "DetectorHit.h"
 #include "strawtubesPoint.h"
 
-class strawtubesHit : public ShipHit {
+class strawtubesHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   strawtubesHit();
@@ -32,8 +30,8 @@ class strawtubesHit : public ShipHit {
   Int_t GetStrawNumber() const;
 
   /** Output to screen **/
-  using ShipHit::Print;
-  virtual void Print() const;
+  using SHiP::DetectorHit::Print;
+  void Print() const;
   Float_t GetTDC() const { return fdigi; }
   void setInvalid() { flag = false; }
   bool isValid() const { return flag; }

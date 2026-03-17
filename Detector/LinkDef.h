@@ -11,5 +11,6 @@
 
 #pragma link C++ namespace SHiP;
 #pragma link C++ class SHiP::DetectorPoint+;
+#pragma link C++ class SHiP::DetectorHit+;
 
 #endif

@@ -3,7 +3,8 @@
 
 ship_add_library(
   NAME ShipData
-  SOURCES ShipHit.cxx ShipStack.cxx ShipMCTrack.cxx ShipParticle.cxx TrackInfo.cxx
+  SOURCES ShipStack.cxx ShipMCTrack.cxx ShipParticle.cxx TrackInfo.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger
+  EXTRA_DICT_HEADERS ISTLPointContainer.h
 )

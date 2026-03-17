@@ -22,6 +22,7 @@
 #include "TRandom3.h"
 #include "TVector3.h"
 #include "splitcal.h"
+#include "splitcalPoint.h"
 using std::cout;
 using std::endl;
 
@@ -29,17 +30,14 @@ namespace {
 constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
 }  // namespace
 // -----   Default constructor   -------------------------------------------
-splitcalHit::splitcalHit() : ShipHit() { flag = true; }
+splitcalHit::splitcalHit() : SHiP::DetectorHit() {}
 // -----   Standard constructor   ------------------------------------------
-splitcalHit::splitcalHit(Int_t detID, Float_t tdc) : ShipHit(detID, tdc) {
-  flag = true;
-}
+splitcalHit::splitcalHit(Int_t detID, Float_t tdc)
+    : SHiP::DetectorHit(detID, tdc) {}
 // -----   constructor from vector of splitcalPoints
 // ------------------------------------------
 splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
-    : ShipHit() {
-  flag = true;
-
+    : SHiP::DetectorHit() {
   // Empty vector check
   if (points.empty()) {
     LOG(error)
@@ -98,7 +96,7 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
                2 * (zHalfLength + zPassiveHalfLength));
 }
 
-std::string splitcalHit::GetPaddedString(int& id) {
+std::string splitcalHit::GetPaddedString(int id) {
   // zero padded string
   int totalLength = 9;
   std::string stringID = std::to_string(id);
@@ -108,7 +106,7 @@ std::string splitcalHit::GetPaddedString(int& id) {
   return encodedID;
 }
 
-std::string splitcalHit::GetDetectorElementName(int& id) {
+std::string splitcalHit::GetDetectorElementName(int id) {
   std::string encodedID = GetPaddedString(id);
   int isPrec, nL, nMx, nMy, nS;
   Decoder(encodedID, isPrec, nL, nMx, nMy, nS);
@@ -132,8 +130,9 @@ std::string splitcalHit::GetDetectorElementName(int& id) {
   return name;
 }
 
-void splitcalHit::Decoder(std::string& encodedID, int& isPrecision, int& nLayer,
-                          int& nModuleX, int& nModuleY, int& nStrip) {
+void splitcalHit::Decoder(const std::string& encodedID, int& isPrecision,
+                          int& nLayer, int& nModuleX, int& nModuleY,
+                          int& nStrip) {
   std::string substring;
 
   substring = encodedID.substr(0, 1);
@@ -152,16 +151,12 @@ void splitcalHit::Decoder(std::string& encodedID, int& isPrecision, int& nLayer,
   nStrip = atoi(substring.c_str());
 }
 
-void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,
+void splitcalHit::Decoder(int id, int& isPrecision, int& nLayer, int& nModuleX,
                           int& nModuleY, int& nStrip) {
   std::string encodedID = GetPaddedString(id);
   Decoder(encodedID, isPrecision, nLayer, nModuleX, nModuleY, nStrip);
 }
 
-// -------------------------------------------------------------------------
-
-// -----   Destructor   ----------------------------------------------------
-splitcalHit::~splitcalHit() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

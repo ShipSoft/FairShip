@@ -2,26 +2,27 @@
 // SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
 // Collaboration
 
-#ifndef SHIPDATA_SHIPHIT_H_
-#define SHIPDATA_SHIPHIT_H_
+#ifndef DETECTOR_DETECTORHIT_H_
+#define DETECTOR_DETECTORHIT_H_
 
-#include "Rtypes.h"    // for Double_t, Int_t, Double32_t, etc
+#include "Rtypes.h"    // for Double_t, Int_t, Float_t, etc
 #include "TObject.h"   //
 #include "TVector3.h"  // for TVector3
 
+namespace SHiP {
 /**
  * copied from FairRoot FairHit and simplified
  */
-class ShipHit : public TObject {
+class DetectorHit : public TObject {
  public:
   /** Default constructor **/
-  ShipHit();
+  DetectorHit();
 
   /** Constructor with hit parameters **/
-  ShipHit(Int_t detID, Float_t digi);
+  DetectorHit(Int_t detID, Float_t digi);
 
   /** Destructor **/
-  ~ShipHit() override = default;
+  ~DetectorHit() override = default;
 
   /** Accessors **/
   Double_t GetDigi() const { return fdigi; };
@@ -32,13 +33,14 @@ class ShipHit : public TObject {
   void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
   /*** Output to screen */
-  void Print(const Option_t* opt = "") const override { ; }
+  void Print(const Option_t* opt = "") const override {}
 
  protected:
   Float_t fdigi;      ///< digitized detector hit
   Int_t fDetectorID;  ///< Detector unique identifier
 
-  ClassDefOverride(ShipHit, 2);
+  ClassDefOverride(SHiP::DetectorHit, 1);
 };
+}  // namespace SHiP
 
-#endif  // SHIPDATA_SHIPHIT_H_
+#endif  // DETECTOR_DETECTORHIT_H_

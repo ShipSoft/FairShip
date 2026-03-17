@@ -4,6 +4,8 @@
 #ifndef SHIPGEN_MEANMATERIALBUDGET_H_
 #define SHIPGEN_MEANMATERIALBUDGET_H_
 
+#include <span>
+
 //
 // Calculate mean material budget and material properties between two points
 // in the geometry using TGeoManager navigation.
@@ -33,8 +35,7 @@ namespace shipgen {
 // Parameters:
 //   start  - starting point coordinates [x, y, z] in cm
 //   end    - ending point coordinates [x, y, z] in cm
-//   mparam - output array with material parameters (must have at least 10
-//   elements):
+//   mparam - output array with material parameters (10 elements):
 //
 // mparam[0] - mean density: sum(x_i*rho_i)/sum(x_i) [g/cm3]
 // mparam[1] - equivalent rad length fraction: sum(x_i/X0_i) [dimensionless]
@@ -49,8 +50,9 @@ namespace shipgen {
 //
 // Returns: mean density along the path
 //
-double MeanMaterialBudget(const double* start, const double* end,
-                          double* mparam);
+double MeanMaterialBudget(std::span<const double, 3> start,
+                          std::span<const double, 3> end,
+                          std::span<double, 10> mparam);
 
 }  // namespace shipgen
 

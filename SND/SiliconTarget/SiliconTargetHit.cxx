@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "FairLogger.h"
 #include "FairRunSim.h"
 #include "ShipUnit.h"
 #include "SiliconTarget.h"
@@ -14,36 +15,28 @@
 #include "TGeoNavigator.h"
 #include "TROOT.h"
 
-SiliconTargetHit::SiliconTargetHit() : ShipHit() { flag = true; }
+SiliconTargetHit::SiliconTargetHit() : SHiP::DetectorHit() {}
 
 SiliconTargetHit::SiliconTargetHit(Int_t detID,
-                                   const std::vector<SiliconTargetPoint*>& V) {
-  // Set detectorID.
-  fDetectorID = detID;
+                                   const std::vector<SiliconTargetPoint*>& V)
+    : SHiP::DetectorHit(detID, 0.f) {
+  if (V.empty()) {
+    LOG(error) << "SiliconTargetHit constructor called with empty point vector";
+    return;
+  }
 
-  // Sum up signal from all points within the hit
-  std::vector<double> _signals;
   double totalSig = 0;
-
   for (auto* point : V) {
-    _signals.push_back(point->GetEnergyLoss());
+    totalSig += point->GetEnergyLoss();
     fX = point->GetX();
     fY = point->GetY();
     fZ = point->GetZ();
   }
 
-  for (unsigned i = 0; i < _signals.size(); i++) {
-    totalSig += _signals[i];
-  }
-
   fSignal = totalSig;
 }
-// -----   Destructor   ----------------------------------------------------
-SiliconTargetHit::~SiliconTargetHit() {}
-// -------------------------------------------------------------------------
-
 // -----   Public method Print   -------------------------------------------
-void SiliconTargetHit::Print() {
+void SiliconTargetHit::Print() const {
   std::cout << Form(
       "SiliconTargetHit: Detector ID %d, Layer %d, Plane %d, Module %d, Strip "
       "%d, Signal %.2f \n",

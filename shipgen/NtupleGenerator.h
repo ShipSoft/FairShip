@@ -38,7 +38,6 @@ class NtupleGenerator : public SHiP::Generator {
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
-  ClassDefOverride(NtupleGenerator, 2);
 };
 
 #endif  // SHIPGEN_NTUPLEGENERATOR_H_ /* !PNDntGENERATOR_H */

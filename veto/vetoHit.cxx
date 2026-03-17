@@ -21,9 +21,9 @@
 #include "vetoPoint.h"
 
 // -----   Default constructor   -------------------------------------------
-vetoHit::vetoHit() : ShipHit() {}
+vetoHit::vetoHit() : SHiP::DetectorHit() {}
 // -----   Standard constructor   ------------------------------------------
-vetoHit::vetoHit(Int_t detID, Float_t adc) : ShipHit(detID, adc) {}
+vetoHit::vetoHit(Int_t detID, Float_t adc) : SHiP::DetectorHit(detID, adc) {}
 
 // -------------------------------------------------------------------------
 

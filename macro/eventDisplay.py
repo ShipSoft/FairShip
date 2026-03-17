@@ -34,12 +34,7 @@ def evExit() -> None:
 atexit.register(evExit)
 
 fMan = None
-
-fMan = ROOT.FairEventManager()
 fRun = None
-
-# -----   Reconstruction run   -------------------------------------------
-fRun = ROOT.FairRunAna()
 pdg = ROOT.TDatabasePDG.Instance()
 g = ROOT.gROOT
 gEnv = ROOT.gEnv
@@ -1158,6 +1153,8 @@ if root_version >= 63200:
 ROOT.gSystem.Load("libPythia6.so")
 ROOT.gSystem.Load("libpythia8.so")
 
+# -----   Reconstruction run   -------------------------------------------
+fRun = ROOT.FairRunAna()
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
@@ -1174,6 +1171,8 @@ if options.ParFile:
     parInput1 = ROOT.FairParRootFileIo()
     parInput1.open(options.ParFile)
     rtdb.setFirstInput(parInput1)
+
+fMan = ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
 fMan.SetEvtMaxEnergy(400.0)  # what is the difference between EvtMaxEnergy and MaxEnergy ?
@@ -1241,7 +1240,12 @@ if hasattr(ShipGeo, "Bfield"):
         bfield = ROOT.genfit.FairShipFields()
         bfield.setField(fieldMaker.getGlobalField())
     else:
-        bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m)
+        bellField = ROOT.ShipBellField(
+            "bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m
+        )
+        compField = ROOT.ShipCompField("compfield", bellField)
+        bfield = ROOT.genfit.FairShipFields()
+        bfield.setField(compField)
     geoMat = ROOT.genfit.TGeoMaterialInterface()
     ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
     fM = ROOT.genfit.FieldManager.getInstance()

@@ -46,7 +46,6 @@ class Generator : public FairGenerator {
  protected:
   std::optional<std::string> fextFile;
   Int_t firstEvent = 0;
-  ClassDef(SHiP::Generator, 2);
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_

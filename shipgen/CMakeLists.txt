@@ -3,10 +3,12 @@
 
 # Define PYTHIA_VERSION_INTEGER for older Pythia8 versions that don't have it
 try_compile(
-  HAS_PYTHIA_VERSION_INTEGER ${CMAKE_BINARY_DIR}/temp
-  ${CMAKE_SOURCE_DIR}/cmake/test_pythia_version.cpp
-  CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${PYTHIA8_INCLUDE_DIR}"
-  OUTPUT_VARIABLE COMPILE_OUTPUT)
+    HAS_PYTHIA_VERSION_INTEGER
+    ${CMAKE_BINARY_DIR}/temp
+    ${CMAKE_SOURCE_DIR}/cmake/test_pythia_version.cpp
+    CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${PYTHIA8_INCLUDE_DIR}"
+    OUTPUT_VARIABLE COMPILE_OUTPUT
+)
 
 ship_add_library(
   NAME ShipGen
@@ -26,16 +28,23 @@ ship_add_library(
 
 # Apply Pythia version definition to this target only
 if(NOT HAS_PYTHIA_VERSION_INTEGER)
-  if(PYTHIA8_VERSION)
-    string(REPLACE "." "" PYTHIA8_VERSION_INTEGER ${PYTHIA8_VERSION})
-    target_compile_definitions(ShipGen PRIVATE
-      PYTHIA_VERSION_INTEGER=${PYTHIA8_VERSION_INTEGER})
-    message(STATUS
-      "Defined PYTHIA_VERSION_INTEGER=${PYTHIA8_VERSION_INTEGER} for Pythia8 ${PYTHIA8_VERSION}")
-  else()
-    target_compile_definitions(ShipGen PRIVATE PYTHIA_VERSION_INTEGER=8223)
-    message(STATUS "Defined PYTHIA_VERSION_INTEGER=8223 for old Pythia8 version")
-  endif()
+    if(PYTHIA8_VERSION)
+        string(REPLACE "." "" PYTHIA8_VERSION_INTEGER ${PYTHIA8_VERSION})
+        target_compile_definitions(
+            ShipGen
+            PRIVATE PYTHIA_VERSION_INTEGER=${PYTHIA8_VERSION_INTEGER}
+        )
+        message(
+            STATUS
+            "Defined PYTHIA_VERSION_INTEGER=${PYTHIA8_VERSION_INTEGER} for Pythia8 ${PYTHIA8_VERSION}"
+        )
+    else()
+        target_compile_definitions(ShipGen PRIVATE PYTHIA_VERSION_INTEGER=8223)
+        message(
+            STATUS
+            "Defined PYTHIA_VERSION_INTEGER=8223 for old Pythia8 version"
+        )
+    endif()
 else()
-  message(STATUS "PYTHIA_VERSION_INTEGER already defined in Pythia8 headers")
+    message(STATUS "PYTHIA_VERSION_INTEGER already defined in Pythia8 headers")
 endif()

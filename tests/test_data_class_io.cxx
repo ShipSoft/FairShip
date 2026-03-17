@@ -13,9 +13,9 @@
 #include <vector>
 
 // Include all data class headers
+#include "DetectorHit.h"
 #include "MTCDetHit.h"
 #include "MTCDetPoint.h"
-#include "ShipHit.h"
 #include "ShipMCTrack.h"
 #include "SiliconTargetHit.h"
 #include "SiliconTargetPoint.h"
@@ -47,7 +47,7 @@ void test_const_access(const T& obj) {
 }
 
 // Specializations for const-access tests
-void test_const_access(const ShipHit& obj) {
+void test_const_access(const SHiP::DetectorHit& obj) {
   [[maybe_unused]] auto digi = obj.GetDigi();
   [[maybe_unused]] auto detID = obj.GetDetectorID();
 }
@@ -206,7 +206,7 @@ int main(int argc, char** argv) {
   // Test base classes
   std::cout << "\n--- Base Classes ---" << std::endl;
   total++;
-  if (test_vector_operations<ShipHit>("ShipHit")) passed++;
+  if (test_vector_operations<SHiP::DetectorHit>("SHiP::DetectorHit")) passed++;
   total++;
   if (test_vector_operations<ShipMCTrack>("ShipMCTrack")) passed++;
   total++;

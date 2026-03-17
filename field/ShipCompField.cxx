@@ -40,9 +40,7 @@ void ShipCompField::Field(const Double_t* position, Double_t* B) {
   // First initialise the field components to zero
   B[0] = 0.0, B[1] = 0.0, B[2] = 0.0;
 
-  std::vector<TVirtualMagField*>::const_iterator iter;
-  for (iter = theFields_.begin(); iter != theFields_.end(); ++iter) {
-    TVirtualMagField* theField = *iter;
+  for (auto* theField : theFields_) {
     if (theField) {
       // std::cout<<"Finding field for "<<theField->GetName()<<std::endl;
 

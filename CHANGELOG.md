@@ -12,8 +12,22 @@ it in future.
 
 ## Unreleased
 
+### Changed
+
+* Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
+* Clean up `SHiP::DetectorHit` subclass hierarchy: fix destructors, `override` specifiers, `Print()` const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations
+
+* Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
+* Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
+* Use `std::span` for `MeanMaterialBudget` parameters (compile-time size checking) and `ShipCompField::getCompFields` return type (avoids unnecessary copy)
+
 ### Fixed
 
+* Fix `MuonBackGenerator` off-by-one returning `kFALSE` when a muon is found on the last event, and gracefully stop the MC run via `gMC->StopRun()` instead of triggering FairRoot's `exit(0)`
+* Fix duplicate `SHiP::Detector<vetoPoint>` rootmap entry warning by removing redundant LinkDef pragma from `muonShieldOptimization`
+* Fix uninitialised fDetPoints pointer in SHiP::Detector base class
+* Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
+* Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
 * Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
 * Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`
 * Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`
@@ -35,6 +49,8 @@ it in future.
 ### Changed
 
 * Implement Detector base class. Now the veto detector uses doubles rather than floats. #1079
+* Migrate SND detectors to SHiP::Detector base class (MTCDetector, SiliconTarget, Target, TargetTracker)
+* Migrate exitHadronAbsorber to SHiP::Detector base class
 * Extract duplicated `InitMedium` into `ShipGeo::InitMedium` free function (shipdata/ShipGeoUtil.h)
 * Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues
 * Replace bare `except:` with specific exception types in core modules

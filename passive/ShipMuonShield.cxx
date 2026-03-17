@@ -4,7 +4,10 @@
 
 #include "ShipMuonShield.h"
 
-#include <iostream>  // for operator<<, basic_ostream, etc
+#include <algorithm>   // for std::ranges::copy, std::ranges::transform
+#include <functional>  // for std::negate
+#include <iostream>    // for operator<<, basic_ostream, etc
+#include <iterator>    // for std::back_inserter
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -37,9 +40,7 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params, Double_t z,
                                const Bool_t SC_key)
     : FairModule("MuonShield", "ShipMuonShield") {
   LOG(debug) << " Function ShipMuonShield MS ";
-  for (size_t i = 0; i < in_params.size(); i++) {
-    shield_params.push_back(in_params[i]);
-  }
+  std::ranges::copy(in_params, std::back_inserter(shield_params));
   nParams = 15;
   nMagnets = in_params.size() / nParams;  // integer division
 
@@ -236,24 +237,21 @@ void ShipMuonShield::CreateMagnet(
   std::array<Double_t, 16> cornersMainR, cornersCLBA, cornersMainSideR,
       cornersCLTA, cornersCRBA, cornersCRTA, cornersTR, cornersBL, cornersBR;
   // Use symmetries to define remaining magnets
-  for (int i = 0; i < 16; ++i) {
-    cornersMainR[i] = -cornersMainL[i];
-    cornersMainSideR[i] = -cornersMainSideL[i];
-    cornersCRTA[i] = -cornersCLBA[i];
-    cornersBR[i] = -cornersTL[i];
-  }
+  std::ranges::transform(cornersMainL, cornersMainR.begin(), std::negate{});
+  std::ranges::transform(cornersMainSideL, cornersMainSideR.begin(),
+                         std::negate{});
+  std::ranges::transform(cornersCLBA, cornersCRTA.begin(), std::negate{});
+  std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});
   // Need to change order as corners need to be defined clockwise
-  for (int i = 0, j = 4; i < 8; ++i) {
-    j = (11 - i) % 8;
+  for (int i = 0; i < 8; ++i) {
+    int j = (11 - i) % 8;
     cornersCLTA[2 * j] = cornersCLBA[2 * i];
     cornersCLTA[2 * j + 1] = -cornersCLBA[2 * i + 1];
     cornersTR[2 * j] = -cornersTL[2 * i];
     cornersTR[2 * j + 1] = cornersTL[2 * i + 1];
   }
-  for (int i = 0; i < 16; ++i) {
-    cornersCRBA[i] = -cornersCLTA[i];
-    cornersBL[i] = -cornersTR[i];
-  }
+  std::ranges::transform(cornersCLTA, cornersCRBA.begin(), std::negate{});
+  std::ranges::transform(cornersTR, cornersBL.begin(), std::negate{});
 
   TString str1L = "_MiddleMagL";
   TString str1R = "_MiddleMagR";

@@ -86,7 +86,6 @@ class CosmicsGenerator : public SHiP::Generator {
 
   void GenerateDynamics();
   Bool_t DetectorBox();
-  ClassDefOverride(CosmicsGenerator, 5);
 };
 
 #endif  // SHIPGEN_COSMICSGENERATOR_H_ /* !PNDCoGENERATOR_H */

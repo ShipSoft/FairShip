@@ -5,7 +5,7 @@
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
 
-#include "ShipHit.h"
+#include "DetectorHit.h"
 #include "TVector3.h"
 
 class UpstreamTaggerPoint;
@@ -17,7 +17,7 @@ class UpstreamTaggerPoint;
  * Stores smeared position and time from MC truth.
  * Does not store MC truth information directly.
  */
-class UpstreamTaggerHit : public ShipHit {
+class UpstreamTaggerHit : public SHiP::DetectorHit {
  public:
   /** Default constructor **/
   UpstreamTaggerHit();
@@ -32,7 +32,7 @@ class UpstreamTaggerHit : public ShipHit {
                     Double_t time_res);
 
   /** Destructor **/
-  virtual ~UpstreamTaggerHit();
+  ~UpstreamTaggerHit() override = default;
 
   /** Copy constructor **/
   UpstreamTaggerHit(const UpstreamTaggerHit& hit) = default;
@@ -48,8 +48,8 @@ class UpstreamTaggerHit : public ShipHit {
   Double_t GetTime() const { return fTime; }
 
   /** Output to screen **/
-  using ShipHit::Print;
-  virtual void Print() const;
+  using SHiP::DetectorHit::Print;
+  void Print() const;
 
  private:
   Double_t fX;     ///< Smeared x position (cm)

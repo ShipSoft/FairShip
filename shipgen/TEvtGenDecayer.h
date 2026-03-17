@@ -59,9 +59,6 @@ class TEvtGenDecayer : public TVirtualMCDecayer {
   // Storage for EvtGen decay products
   TClonesArray* fEvtGenProducts;  // Array to store converted EvtGen particles
   Bool_t fHasEvtGenDecay;  // Flag indicating if last decay was from EvtGen
-
-  ClassDefOverride(TEvtGenDecayer,
-                   1)  // External decayer using EvtGen for specific particles
 };
 
 #endif  // SHIPGEN_TEVTGENDECAYER_H_
