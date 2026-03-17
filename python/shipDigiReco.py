@@ -42,6 +42,7 @@ class ShipDigiReco:
         self.fGenFitArray = ROOT.std.vector("genfit::Track*")()
         self.fitTrack2MC = ROOT.std.vector("int")()
         self.goodTracksVect = ROOT.std.vector("int")()
+        self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
         self.fitTracks = self.recoTree.Branch("FitTracks", self.fGenFitArray, 32000, -1)
         self.goodTracksBranch = self.recoTree.Branch("goodTracks", self.goodTracksVect, 32000, -1)
         self.fTrackletsArray = ROOT.std.vector("Tracklet")()
