@@ -198,7 +198,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
   bool found_muon = false;
   while (fn < fNevents) {
-    std::cout<<"fn: "<<fn<<" - fNevents: "<<fNevents<<" - fTree: "<<std::endl;
+    std::cout << "fn: " << fn << " - fNevents: " << fNevents
+              << " - fTree: " << std::endl;
     fTree->Print();
     fTree->GetEntry(fn);
     muList.clear();
