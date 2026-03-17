@@ -14,6 +14,7 @@ it in future.
 
 ### Changed
 
+* Remove setting of FairMC links #1109
 * Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
 * Clean up `SHiP::DetectorHit` subclass hierarchy: fix destructors, `override` specifiers, `Print()` const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations
 
