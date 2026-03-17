@@ -23,6 +23,7 @@ it in future.
 
 ### Fixed
 
+* Fix `MuonBackGenerator` off-by-one returning `kFALSE` when a muon is found on the last event, and gracefully stop the MC run via `gMC->StopRun()` instead of triggering FairRoot's `exit(0)`
 * Fix duplicate `SHiP::Detector<vetoPoint>` rootmap entry warning by removing redundant LinkDef pragma from `muonShieldOptimization`
 * Fix uninitialised fDetPoints pointer in SHiP::Detector base class
 * Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef

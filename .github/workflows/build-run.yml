@@ -10,14 +10,25 @@ on:
       - v*
   workflow_dispatch:
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo 'matrix={"version":["26.02","26.03"],"vessel_option":["vacuums","helium"],"SND_option":["all"],"muon_shield":["TRY_2025"],"target":["Jun25"]}' >> "$GITHUB_OUTPUT"
   build:
     runs-on: self-hosted
+    needs: generate-matrix
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.generate-matrix.outputs.matrix).version }}
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
     env:
-      version: 26.02
+      version: ${{ matrix.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,23 +49,19 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.version }}
           path: sw/
   run-sim-chain:
     runs-on: self-hosted
-    needs: build
+    needs: [generate-matrix, build]
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
     env:
-      version: 26.02
+      version: ${{ matrix.version }}
     strategy:
-      matrix:
-        vessel_option: [vacuums, helium]
-        SND_option: [all]
-        muon_shield: [TRY_2025]
-        target: [Jun25]
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,7 +71,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.version }}
           path: sw/
       - name: Run Sim
         run: |
@@ -106,14 +113,14 @@ jobs:
         # - name: Upload .root artifacts
         #   uses: actions/upload-artifact@v4
         #   with:
-        #     name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+        #     name: root-files-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: |
         #       *.root
         #
         # - name: Upload physics metrics
         #   uses: actions/upload-artifact@v4
         #   with:
-        #     name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+        #     name: metrics-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: physics_metrics.json
   # store-metrics:
   #   runs-on: ubuntu-latest
@@ -256,13 +263,16 @@ jobs:
   #           }
   run-fixed-target:
     runs-on: self-hosted
-    needs: build
+    needs: [generate-matrix, build]
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.generate-matrix.outputs.matrix).version }}
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
     env:
-      version: 26.02
+      version: ${{ matrix.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -272,7 +282,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.version }}
           path: sw/
       - name: Run Fixed Target Simulation
         run: |
@@ -282,6 +292,6 @@ jobs:
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: root-files-fixed-target
+          name: root-files-fixed-target-${{ matrix.version }}
           path: |
             /__w/FairShip/FairShip/*_run_fixedTarget_1/*.root

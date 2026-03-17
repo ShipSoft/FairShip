@@ -1241,7 +1241,12 @@ if hasattr(ShipGeo, "Bfield"):
         bfield = ROOT.genfit.FairShipFields()
         bfield.setField(fieldMaker.getGlobalField())
     else:
-        bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m)
+        bellField = ROOT.ShipBellField(
+            "bellfield", ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m
+        )
+        compField = ROOT.ShipCompField("compfield", bellField)
+        bfield = ROOT.genfit.FairShipFields()
+        bfield.setField(compField)
     geoMat = ROOT.genfit.TGeoMaterialInterface()
     ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
     fM = ROOT.genfit.FieldManager.getInstance()
