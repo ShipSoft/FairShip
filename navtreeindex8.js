@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"classSiliconTarget.html#adb60ef0f46ddc26b11237848a7053456":[6,0,60,4],
 "classSiliconTarget.html#af4c00d5186b1ee93effdccca9ff457b8":[6,0,60,3],
 "classSiliconTargetHit.html":[6,0,61],
 "classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8":[6,0,61,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "classTimeDetHit.html#afd7624444a531e555ebcd4a1a1bbe87d":[6,0,77,23],
 "classTimeDetPoint.html":[6,0,78],
 "classTimeDetPoint.html#a2c03e35eff7452e5fc63eabf09792308":[6,0,78,2],
-"classTimeDetPoint.html#aafe2379e48cac8fa6104047ad5d437d6":[6,0,78,0],
-"classTimeDetPoint.html#ab1b5e3c56cc71d776be49fd677bdde02":[6,0,78,1]
+"classTimeDetPoint.html#aafe2379e48cac8fa6104047ad5d437d6":[6,0,78,0]
 };

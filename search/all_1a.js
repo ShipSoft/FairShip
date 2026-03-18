@@ -20,7 +20,7 @@ var searchData=
   ['width_5fcharged_5fleptons_17',['Width_charged_leptons',['../classhnl_1_1HNLbranchings.html#ab627cc8a31c233a9516be3e7fc53fa01',1,'hnl::HNLbranchings']]],
   ['width_5fcharged_5fmesons_18',['Width_charged_mesons',['../classhnl_1_1HNLbranchings.html#ab8b29c8042b6a7c375cef6d046d18f95',1,'hnl::HNLbranchings']]],
   ['width_5fh0_5fnu_19',['Width_H0_nu',['../classhnl_1_1HNLbranchings.html#ac1bcbcd213afd57926798435e7a667d2',1,'hnl::HNLbranchings']]],
-  ['width_5fh_5fl_20',['width_h_l',['../classrpvsusy_1_1RPVSUSYbranchings.html#a74cff71935c1fbc7c02190ba0501cf31',1,'rpvsusy.RPVSUSYbranchings.Width_H_L()'],['../classhnl_1_1HNLbranchings.html#af0fdb969ce768ee503660f06cdd3b973',1,'hnl.HNLbranchings.Width_H_l(self, str H, int alpha)']]],
+  ['width_5fh_5fl_20',['width_h_l',['../classhnl_1_1HNLbranchings.html#af0fdb969ce768ee503660f06cdd3b973',1,'hnl.HNLbranchings.Width_H_l()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a74cff71935c1fbc7c02190ba0501cf31',1,'rpvsusy.RPVSUSYbranchings.Width_H_L()']]],
   ['width_5fl1_5fl2_5fnu2_21',['Width_l1_l2_nu2',['../classhnl_1_1HNLbranchings.html#af52b900057f400f2630a5a4f8917a87e',1,'hnl::HNLbranchings']]],
   ['width_5fl_5fu_5fd_22',['Width_l_u_d',['../classhnl_1_1HNLbranchings.html#abd7b5534ed721f87417dda3a5f946841',1,'hnl::HNLbranchings']]],
   ['width_5fn_5fl_23',['Width_N_L',['../classrpvsusy_1_1RPVSUSYbranchings.html#a42844acbf1d05e2018850bf3dbca5bb7',1,'rpvsusy::RPVSUSYbranchings']]],

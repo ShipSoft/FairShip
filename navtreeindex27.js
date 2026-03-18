@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"shipPatRec_8py.html#a1b2eef17cc3ac04669d2fa4c73c11257":[7,0,11,32,24],
 "shipPatRec_8py.html#a34ca2cd92dbeecb478eb4b53152a3f46":[7,0,11,32,6],
 "shipPatRec_8py.html#a371e8899cacb15e2020e0b6c4a605198":[7,0,11,32,15],
 "shipPatRec_8py.html#a4d4091fbd8bc88c49ee621dd481e131f":[7,0,11,32,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "strawtubes_8h.html":[7,0,16,2],
 "strawtubes_8h_source.html":[7,0,16,2],
 "structShipFieldMaker_1_1fieldInfo.html":[6,0,49,0],
-"structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036":[6,0,49,0,2],
-"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[6,0,49,0,3]
+"structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036":[6,0,49,0,2]
 };

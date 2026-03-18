@@ -1,5 +1,6 @@
 var NAVTREEINDEX26 =
 {
+"run__ACTSTracking_8py.html#ada17fddea233d5062ff3d42d82490ac5":[7,0,7,18,20],
 "run__ACTSTracking_8py.html#add83f453e6b2696958aff0de0969b1dc":[7,0,7,18,21],
 "run__ACTSTracking_8py.html#ae2648259c10b1cdb180ebf92eb72690c":[7,0,7,18,13],
 "run__ACTSTracking_8py.html#ae53a95e20963a6302fd64e695c1c779a":[7,0,7,18,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX26 =
 "shipDigiReco_8py.html":[7,0,11,30],
 "shipDigiReco_8py_source.html":[7,0,11,30],
 "shipPatRec_8py.html":[7,0,11,32],
-"shipPatRec_8py.html#a14630232c258b560f832ed72fb3f9138":[7,0,11,32,22],
-"shipPatRec_8py.html#a1b2eef17cc3ac04669d2fa4c73c11257":[7,0,11,32,24]
+"shipPatRec_8py.html#a14630232c258b560f832ed72fb3f9138":[7,0,11,32,22]
 };

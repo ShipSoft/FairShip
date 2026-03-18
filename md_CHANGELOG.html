@@ -106,6 +106,8 @@ Changed</h2>
 <li>Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)</li>
 <li>Modernise C++ code with C++20/17 features: <code>map::contains()</code>, <code>std::ranges::transform</code>, <code>std::ranges::copy</code>, range-for loops, and structured bindings</li>
 <li>Use <code>std::span</code> for <code>MeanMaterialBudget</code> parameters (compile-time size checking) and <code><a class="el" href="classShipCompField.html#abdc692b942a02b69e2dac5f8113f5a13" title="Get the vector of fields.">ShipCompField::getCompFields</a></code> return type (avoids unnecessary copy)</li>
+<li>Make the MTC scintillating tile size configurable (#1091)</li>
+<li>Change the default magnetic field of MTC (-1.2 T -&gt; -1.7 T) and the size of the scintillating tile (1 cm -&gt; 5 cm) (#1091)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>

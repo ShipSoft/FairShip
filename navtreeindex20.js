@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespacehepunit.html#a6e5ced31b2c08f52c389811f6fce54c2":[5,0,40,15],
 "namespacehepunit.html#a6ff0706ce14856d9eb6bb84a4e9a1e3d":[5,0,40,84],
 "namespacehepunit.html#a7068164f075ffd54fd3d5acee160584b":[5,0,40,33],
 "namespacehepunit.html#a72568a58527d52c09283be17ea87a8a7":[5,0,40,23],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "namespacemakeMuonDIS.html#a71037eb86a4ab119462d7a1e41085c07":[5,0,49,9],
 "namespacemakeMuonDIS.html#a727205ecfa4b92c88595ade1bb6f8c7d":[5,0,49,12],
 "namespacemakeMuonDIS.html#a733fd53aa252e7e2d8d7eb70d6c37edb":[5,0,49,44],
-"namespacemakeMuonDIS.html#a820b4fb7438d85f2cf1c7b6e808a07a5":[5,0,49,45],
-"namespacemakeMuonDIS.html#a82c7870b447df507f0b9676553792b8a":[5,0,49,21]
+"namespacemakeMuonDIS.html#a820b4fb7438d85f2cf1c7b6e808a07a5":[5,0,49,45]
 };

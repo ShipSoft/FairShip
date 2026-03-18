@@ -1,5 +1,6 @@
 var NAVTREEINDEX28 =
 {
+"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[6,0,49,0,3],
 "structShipFieldMaker_1_1fieldInfo.html#a816598a56ecb7f46b26bc348734290da":[6,0,49,0,0],
 "structShipFieldMaker_1_1fieldInfo.html#aa63ca69b924db536e0c7e0da19e5e02e":[6,0,49,0,1],
 "structShipFieldMaker_1_1fieldInfo.html#ac9a321e62f357da7f2e7c7209688c217":[6,0,49,0,4],
