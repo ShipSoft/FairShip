@@ -1,25 +1,12 @@
 <map id="TimeDet/TimeDetHit.h" name="TimeDet/TimeDetHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="133,5,302,31"/>
-<area shape="rect" id="Node000002" href="$DetectorHit_8h.html" title=" " alt="" coords="5,79,115,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,33,99,75,97,71,191,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="139,79,295,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="220,31,220,65,215,65,215,31"/>
-<area shape="rect" id="Node000007" href="$TimeDetPoint_8h.html" title=" " alt="" coords="320,79,443,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="245,28,343,71,341,76,243,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="6,152,85,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="60,105,53,139,48,138,55,104"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="161,152,245,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="84,102,168,143,166,148,82,106"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="208,225,299,251"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="72,102,105,137,150,175,218,217,216,221,146,179,101,140,68,106"/>
-<area shape="poly" id="edge12_Node000007_Node000004" title=" " alt="" coords="354,107,245,149,243,144,352,102"/>
-<area shape="poly" id="edge13_Node000007_Node000005" title=" " alt="" coords="366,106,338,127,310,154,287,184,268,214,264,211,282,181,306,150,335,123,363,102"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="459,225,515,251"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="402,102,430,122,457,150,473,181,483,211,478,212,468,183,453,154,427,126,399,106"/>
-<area shape="rect" id="Node000009" href="$DetectorPoint_8h.html" title=" " alt="" coords="320,152,443,177"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="384,104,384,138,379,138,379,104"/>
-<area shape="poly" id="edge11_Node000009_Node000005" title=" " alt="" coords="362,180,288,221,285,216,359,175"/>
-<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="400,175,460,215,457,220,397,180"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="323,225,434,251"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="384,178,382,212,377,212,378,178"/>
+<area shape="rect" id="node1" title=" " alt="" coords="133,5,302,31"/>
+<area shape="rect" id="node2" href="$DetectorHit_8h.html" title=" " alt="" coords="5,79,115,104"/>
+<area shape="rect" id="node6" title=" " alt="" coords="139,79,295,104"/>
+<area shape="rect" id="node7" href="$TimeDetPoint_8h.html" title=" " alt="" coords="320,79,443,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="6,152,85,177"/>
+<area shape="rect" id="node4" title=" " alt="" coords="161,152,245,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="208,225,299,251"/>
+<area shape="rect" id="node8" title=" " alt="" coords="459,225,515,251"/>
+<area shape="rect" id="node9" href="$DetectorPoint_8h.html" title=" " alt="" coords="320,152,443,177"/>
+<area shape="rect" id="node10" title=" " alt="" coords="323,225,434,251"/>
 </map>

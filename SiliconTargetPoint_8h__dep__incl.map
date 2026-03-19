@@ -1,20 +1,10 @@
 <map id="SND/SiliconTarget/SiliconTargetPoint.h" name="SND/SiliconTarget/SiliconTargetPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="452,5,636,45"/>
-<area shape="rect" id="Node000002" href="$SiliconTarget_8h.html" title=" " alt="" coords="193,93,377,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="475,52,343,96,341,91,473,47"/>
-<area shape="rect" id="Node000005" href="$SiliconTargetHit_8h.html" title=" " alt="" coords="452,93,636,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="547,59,547,93,541,93,541,59"/>
-<area shape="rect" id="Node000006" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="422,181,581,221"/>
-<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="485,54,461,72,442,95,438,106,438,117,446,140,461,161,479,179,476,183,457,165,441,142,433,118,433,105,438,92,457,68,481,50"/>
-<area shape="rect" id="Node000007" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="605,181,741,221"/>
-<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="602,50,628,68,650,92,662,114,670,138,676,181,670,182,665,139,657,116,646,95,624,72,599,54"/>
-<area shape="rect" id="Node000008" href="$SiliconTargetPoint_8cxx.html" title=" " alt="" coords="711,93,895,133"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="615,47,747,91,745,96,613,52"/>
-<area shape="rect" id="Node000003" href="$SiliconTarget_8cxx.html" title=" " alt="" coords="5,181,189,221"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,141,140,184,137,179,231,137"/>
-<area shape="rect" id="Node000004" href="$SiliconTargetHit_8cxx.html" title=" " alt="" coords="213,181,397,221"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="295,146,304,181,298,182,290,148"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="479,141,358,184,357,179,478,136"/>
-<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="531,147,513,182,508,180,526,145"/>
-<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="586,139,646,179,643,183,583,144"/>
+<area shape="rect" id="node1" title=" " alt="" coords="452,5,636,45"/>
+<area shape="rect" id="node2" href="$SiliconTarget_8h.html" title=" " alt="" coords="193,93,377,133"/>
+<area shape="rect" id="node5" href="$SiliconTargetHit_8h.html" title=" " alt="" coords="452,93,636,133"/>
+<area shape="rect" id="node6" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="422,181,581,221"/>
+<area shape="rect" id="node7" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="605,181,741,221"/>
+<area shape="rect" id="node8" href="$SiliconTargetPoint_8cxx.html" title=" " alt="" coords="711,93,895,133"/>
+<area shape="rect" id="node3" href="$SiliconTarget_8cxx.html" title=" " alt="" coords="5,181,189,221"/>
+<area shape="rect" id="node4" href="$SiliconTargetHit_8cxx.html" title=" " alt="" coords="213,181,397,221"/>
 </map>

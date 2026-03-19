@@ -1,7 +1,5 @@
 <map id="strawtubes/Tracklet.h" name="strawtubes/Tracklet.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="102,5,263,31"/>
-<area shape="rect" id="Node000002" href="$Tracklet_8cxx.html" title=" " alt="" coords="5,86,181,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,42,108,88,105,84,158,38"/>
-<area shape="rect" id="Node000003" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="205,79,341,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,38,253,76,250,81,205,42"/>
+<area shape="rect" id="node1" title=" " alt="" coords="102,5,263,31"/>
+<area shape="rect" id="node2" href="$Tracklet_8cxx.html" title=" " alt="" coords="5,86,181,111"/>
+<area shape="rect" id="node3" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="205,79,341,119"/>
 </map>

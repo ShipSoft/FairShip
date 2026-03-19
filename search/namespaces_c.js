@@ -1,5 +1,27 @@
 var searchData=
 [
-  ['timedetector_0',['timeDetector',['../namespacetimeDetector.html',1,'']]],
-  ['trackextrapolatetool_1',['TrackExtrapolateTool',['../namespaceTrackExtrapolateTool.html',1,'']]]
+  ['savebasicparameters_0',['saveBasicParameters',['../namespacesaveBasicParameters.html',1,'']]],
+  ['sbtdetector_1',['SBTDetector',['../namespaceSBTDetector.html',1,'']]],
+  ['scifimapping_2',['SciFiMapping',['../namespaceSciFiMapping.html',1,'']]],
+  ['ship_3',['SHiP',['../namespaceSHiP.html',1,'']]],
+  ['shipana_4',['ShipAna',['../namespaceShipAna.html',1,'']]],
+  ['shipdet_5fconf_5',['shipDet_conf',['../namespaceshipDet__conf.html',1,'']]],
+  ['shipdigireco_6',['shipDigiReco',['../namespaceshipDigiReco.html',1,'']]],
+  ['shipgen_7',['shipgen',['../namespaceshipgen.html',1,'']]],
+  ['shipgeo_8',['ShipGeo',['../namespaceShipGeo.html',1,'']]],
+  ['shipgeoconfig_9',['ShipGeoConfig',['../namespaceShipGeoConfig.html',1,'']]],
+  ['shippatrec_10',['shipPatRec',['../namespaceshipPatRec.html',1,'']]],
+  ['shipreco_11',['ShipReco',['../namespaceShipReco.html',1,'']]],
+  ['shiproot_5fconf_12',['shipRoot_conf',['../namespaceshipRoot__conf.html',1,'']]],
+  ['shipstrawtracking_13',['shipStrawTracking',['../namespaceshipStrawTracking.html',1,'']]],
+  ['shipunit_14',['ShipUnit',['../namespaceShipUnit.html',1,'']]],
+  ['shipunit_15',['shipunit',['../namespaceshipunit.html',1,'']]],
+  ['shipvertex_16',['shipVertex',['../namespaceshipVertex.html',1,'']]],
+  ['shipveto_17',['shipVeto',['../namespaceshipVeto.html',1,'']]],
+  ['splitcaldetector_18',['splitcalDetector',['../namespacesplitcalDetector.html',1,'']]],
+  ['strawtubesdetector_19',['strawtubesDetector',['../namespacestrawtubesDetector.html',1,'']]],
+  ['strip_5fexample_20',['strip_example',['../namespacestrip__example.html',1,'']]],
+  ['study_5fgammaconv_21',['study_GammaConv',['../namespacestudy__GammaConv.html',1,'']]],
+  ['study_5fmumsc_22',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
+  ['study_5fthintarget_23',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]]
 ];

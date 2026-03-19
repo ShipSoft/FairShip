@@ -1,13 +1,8 @@
 <map id="Detector/DetectorPoint.cxx" name="Detector/DetectorPoint.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="110,5,309,31"/>
-<area shape="rect" id="Node000002" href="$DetectorPoint_8h.html" title=" " alt="" coords="80,79,203,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,33,164,70,160,67,196,29"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="227,79,327,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="222,29,259,67,255,70,219,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,61,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,106,64,147,61,142,123,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="86,152,197,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="144,104,144,138,139,138,139,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="221,152,312,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="163,102,236,143,233,147,160,106"/>
+<area shape="rect" id="node1" title=" " alt="" coords="110,5,309,31"/>
+<area shape="rect" id="node2" href="$DetectorPoint_8h.html" title=" " alt="" coords="80,79,203,104"/>
+<area shape="rect" id="node6" title=" " alt="" coords="227,79,327,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,152,61,177"/>
+<area shape="rect" id="node4" title=" " alt="" coords="86,152,197,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="221,152,312,177"/>
 </map>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['upstreamtaggerdetector_0',['UpstreamTaggerDetector',['../namespaceUpstreamTaggerDetector.html',1,'']]]
+  ['timedetector_0',['timeDetector',['../namespacetimeDetector.html',1,'']]],
+  ['trackextrapolatetool_1',['TrackExtrapolateTool',['../namespaceTrackExtrapolateTool.html',1,'']]]
 ];

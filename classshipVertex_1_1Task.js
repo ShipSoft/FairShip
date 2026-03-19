@@ -4,9 +4,9 @@ var classshipVertex_1_1Task =
     [ "chi2", "classshipVertex_1_1Task.html#af4b5b45f380bba6037a12de48b94a0f2", null ],
     [ "execute", "classshipVertex_1_1Task.html#ad3b6ca33c6dbacdbd127c5dbf9026d32", null ],
     [ "fcn", "classshipVertex_1_1Task.html#a584a51495b0b99857f7c00d5157edd64", null ],
-    [ "residuals", "classshipVertex_1_1Task.html#acf58b39be9d62ad4e55ef955707b9c41", null ],
+    [ "residuals", "classshipVertex_1_1Task.html#a60a1daec91df01bdd81f1f0bb4aef1f2", null ],
     [ "TwoTrackVertex", "classshipVertex_1_1Task.html#a05c9c6228be8c7358fed28db577e25d7", null ],
-    [ "VertexError", "classshipVertex_1_1Task.html#aa67a3ef5247c7f98bdffc19c1de28248", null ],
+    [ "VertexError", "classshipVertex_1_1Task.html#a72ace079d27346ce3372694536b47068", null ],
     [ "fitTrackLoc", "classshipVertex_1_1Task.html#a8f47d281152a1520072deb2591b0fca0", null ],
     [ "fPartArray", "classshipVertex_1_1Task.html#a70ad22db45107af549be32527fb1af7c", null ],
     [ "goodTracksLoc", "classshipVertex_1_1Task.html#a5d42d79fcc4adca8ce45513a32c16f99", null ],
@@ -16,8 +16,8 @@ var classshipVertex_1_1Task =
     [ "newPosDir", "classshipVertex_1_1Task.html#a48d187d13d4cb29622188a83429e0432", null ],
     [ "Particles", "classshipVertex_1_1Task.html#adf7b0f6106975263d9ef0ab6215aa1a7", null ],
     [ "PDG", "classshipVertex_1_1Task.html#ab211b231ae71463bed7fd022894cb08d", null ],
-    [ "reps", "classshipVertex_1_1Task.html#aeab744c99702553e5967dbebe4df0dd4", null ],
-    [ "states", "classshipVertex_1_1Task.html#afbc36bd12714b7340270895cce95249c", null ],
     [ "sTree", "classshipVertex_1_1Task.html#a7ee85724944ecae9d2b2fb0e60491d6a", null ],
+    [ "Vy", "classshipVertex_1_1Task.html#a86f86c96e9e76918c774d7c24b77caf7", null ],
+    [ "y_data", "classshipVertex_1_1Task.html#a8ca5c8775cc4a7b23568c0eeee8ec0a7", null ],
     [ "z0", "classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042", null ]
 ];

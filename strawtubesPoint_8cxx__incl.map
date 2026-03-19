@@ -1,22 +1,12 @@
 <map id="strawtubes/strawtubesPoint.cxx" name="strawtubes/strawtubesPoint.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="318,5,549,31"/>
-<area shape="rect" id="Node000002" href="$strawtubesPoint_8h.html" title=" " alt="" coords="191,79,329,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="406,33,302,76,300,71,404,28"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="354,79,417,104"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="428,33,403,69,398,66,423,30"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="441,79,521,104"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="443,30,468,66,464,69,439,33"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="546,79,646,104"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="461,28,558,71,556,75,458,33"/>
-<area shape="rect" id="Node000003" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,152,216,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="245,106,184,147,182,142,242,102"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="221,225,312,251"/>
-<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="263,104,268,212,263,212,258,105"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="298,152,382,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="275,102,319,141,315,145,271,106"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,61,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="137,180,66,221,63,216,134,175"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="86,225,197,251"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="155,178,149,212,143,211,150,177"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="174,175,238,215,235,220,171,180"/>
+<area shape="rect" id="node1" title=" " alt="" coords="318,5,549,31"/>
+<area shape="rect" id="node2" href="$strawtubesPoint_8h.html" title=" " alt="" coords="191,79,329,104"/>
+<area shape="rect" id="node8" title=" " alt="" coords="354,79,417,104"/>
+<area shape="rect" id="node9" title=" " alt="" coords="441,79,521,104"/>
+<area shape="rect" id="node10" title=" " alt="" coords="546,79,646,104"/>
+<area shape="rect" id="node3" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,152,216,177"/>
+<area shape="rect" id="node6" title=" " alt="" coords="221,225,312,251"/>
+<area shape="rect" id="node7" title=" " alt="" coords="298,152,382,177"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,225,61,251"/>
+<area shape="rect" id="node5" title=" " alt="" coords="86,225,197,251"/>
 </map>

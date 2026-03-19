@@ -1,35 +1,18 @@
 <map id="shipgen/EvtCalcGenerator.cxx" name="shipgen/EvtCalcGenerator.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="515,5,733,31"/>
-<area shape="rect" id="Node000002" href="$EvtCalcGenerator_8h.html" title=" " alt="" coords="248,79,395,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="576,33,384,78,383,73,575,28"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="429,225,529,251"/>
-<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="585,33,546,51,528,64,513,80,495,112,485,148,480,212,475,211,480,147,490,110,509,77,524,60,543,47,582,28"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="381,152,446,177"/>
-<area shape="poly" id="edge16_Node000001_Node000010" title=" " alt="" coords="568,33,516,51,490,64,467,81,442,109,425,140,421,138,438,106,464,77,488,60,514,46,567,28"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="522,79,585,104"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="614,33,576,71,572,67,610,29"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="609,79,781,104"/>
-<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="638,29,676,67,672,71,634,33"/>
-<area shape="rect" id="Node000014" href="$ShipUnit_8h.html" title=" " alt="" coords="805,79,894,104"/>
-<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="661,28,801,72,799,77,659,33"/>
-<area shape="rect" id="Node000015" title=" " alt="" coords="918,79,1050,104"/>
-<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="682,28,913,73,912,79,681,33"/>
-<area shape="rect" id="Node000016" title=" " alt="" coords="1075,79,1149,104"/>
-<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="728,28,882,48,1062,76,1061,81,881,53,728,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="63,152,140,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="287,107,150,150,149,145,285,101"/>
-<area shape="rect" id="Node000004" href="$Generator_8h.html" title=" " alt="" coords="164,152,263,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="305,106,244,147,241,142,303,102"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="338,102,389,141,386,146,334,106"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="287,152,356,177"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="324,104,324,138,319,138,319,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="5,225,80,251"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="187,180,84,222,82,218,185,175"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="104,225,163,251"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="202,179,158,218,155,214,199,175"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="187,225,250,251"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="217,177,219,212,214,212,212,178"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="274,225,395,251"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="234,175,305,216,302,221,231,180"/>
-<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="257,175,423,219,422,224,255,180"/>
+<area shape="rect" id="node1" title=" " alt="" coords="515,5,733,31"/>
+<area shape="rect" id="node2" href="$EvtCalcGenerator_8h.html" title=" " alt="" coords="248,79,395,104"/>
+<area shape="rect" id="node9" title=" " alt="" coords="429,225,529,251"/>
+<area shape="rect" id="node10" title=" " alt="" coords="381,152,446,177"/>
+<area shape="rect" id="node12" title=" " alt="" coords="522,79,585,104"/>
+<area shape="rect" id="node13" title=" " alt="" coords="609,79,781,104"/>
+<area shape="rect" id="node14" href="$ShipUnit_8h.html" title=" " alt="" coords="805,79,894,104"/>
+<area shape="rect" id="node15" title=" " alt="" coords="918,79,1050,104"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1075,79,1149,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="63,152,140,177"/>
+<area shape="rect" id="node4" href="$Generator_8h.html" title=" " alt="" coords="164,152,263,177"/>
+<area shape="rect" id="node11" title=" " alt="" coords="287,152,356,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,225,80,251"/>
+<area shape="rect" id="node6" title=" " alt="" coords="104,225,163,251"/>
+<area shape="rect" id="node7" title=" " alt="" coords="187,225,250,251"/>
+<area shape="rect" id="node8" title=" " alt="" coords="274,225,395,251"/>
 </map>

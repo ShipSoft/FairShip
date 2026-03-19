@@ -1,5 +1,10 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,92,31"/>
-<area shape="rect" id="Node000001" href="$classgenfit_1_1FairShipFields.html" title="Field for SHiP." alt="" coords="140,5,296,31"/>
-<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="105,15,140,15,140,21,105,21"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,144,55,169"/>
+<area shape="rect" id="node2" href="$classBaseDetector_1_1BaseDetector.html" title=" " alt="" coords="103,144,304,169"/>
+<area shape="rect" id="node3" href="$classMTCDetector_1_1MTCDetector.html" title=" " alt="" coords="381,5,575,31"/>
+<area shape="rect" id="node4" href="$classSBTDetector_1_1SBTDetector.html" title=" " alt="" coords="385,55,571,80"/>
+<area shape="rect" id="node5" href="$classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html" title=" " alt="" coords="352,105,604,145"/>
+<area shape="rect" id="node6" href="$classsplitcalDetector_1_1splitcalDetector.html" title=" " alt="" coords="391,169,565,209"/>
+<area shape="rect" id="node7" href="$classstrawtubesDetector_1_1strawtubesDetector.html" title=" " alt="" coords="365,233,591,273"/>
+<area shape="rect" id="node8" href="$classtimeDetector_1_1timeDetector.html" title=" " alt="" coords="379,297,577,323"/>
 </map>

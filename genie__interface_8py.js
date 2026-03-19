@@ -12,6 +12,6 @@ var genie__interface_8py =
     [ "make_splines", "genie__interface_8py.html#a5ecc8aa0bf0813750c080fec4ad356f6", null ],
     [ "__all__", "genie__interface_8py.html#ab2401c3e94ac951f50d0218e3ce1f4bb", null ],
     [ "__version__", "genie__interface_8py.html#a07ebc2825ff161868cf7864006a40d85", null ],
-    [ "logger", "genie__interface_8py.html#a8f17cbbaa6408171e262ba75a09c86a9", null ],
-    [ "PathLike", "genie__interface_8py.html#a68539ce63930ec8fb7cd576ae839bb04", null ]
+    [ "logger", "genie__interface_8py.html#a31a0c4c4cca9b1c4c42b4338e4e0c45f", null ],
+    [ "PathLike", "genie__interface_8py.html#a8d582c3cd77cda2ed0f68fdc7d48e803", null ]
 ];

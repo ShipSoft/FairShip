@@ -9,6 +9,5 @@ var classeventDisplay_1_1IO =
     [ "geoscene", "classeventDisplay_1_1IO.html#a57cd8f57be7556a9428cd1367808b9d9", null ],
     [ "lbut", "classeventDisplay_1_1IO.html#a60c1c14546f74e6515578b5c897554e0", null ],
     [ "master", "classeventDisplay_1_1IO.html#a26b81f6043b935740903df787046dbce", null ],
-    [ "n", "classeventDisplay_1_1IO.html#a8e156007b0f68e9796ca7969a2362ca4", null ],
-    [ "nextEvent", "classeventDisplay_1_1IO.html#a94c7300f13d1e21f753bb7b0c9ee77ec", null ]
+    [ "n", "classeventDisplay_1_1IO.html#a8e156007b0f68e9796ca7969a2362ca4", null ]
 ];

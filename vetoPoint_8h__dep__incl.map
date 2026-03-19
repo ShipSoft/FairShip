@@ -1,19 +1,11 @@
 <map id="veto/vetoPoint.h" name="veto/vetoPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="659,5,788,31"/>
-<area shape="rect" id="Node000002" href="$exitHadronAbsorber_8h.html" title=" " alt="" coords="5,79,188,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="645,29,444,50,201,81,189,83,188,78,200,76,443,45,645,24"/>
-<area shape="rect" id="Node000004" href="$MuonBackGenerator_8cxx.html" title=" " alt="" coords="212,86,448,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="653,36,388,89,387,83,652,31"/>
-<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="472,79,631,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="687,39,594,81,592,76,685,34"/>
-<area shape="rect" id="Node000006" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="655,79,791,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="726,44,726,79,721,79,721,44"/>
-<area shape="rect" id="Node000007" href="$veto_8cxx.html" title="Implementation of the Veto detector class." alt="" coords="816,86,927,111"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="759,35,851,83,848,88,756,40"/>
-<area shape="rect" id="Node000008" href="$vetoHit_8cxx.html" title=" " alt="" coords="951,86,1082,111"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="780,32,975,83,973,89,778,37"/>
-<area shape="rect" id="Node000009" href="$vetoPoint_8cxx.html" title=" " alt="" coords="1106,86,1250,111"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="802,28,1094,76,1130,83,1129,89,1094,81,801,33"/>
-<area shape="rect" id="Node000003" href="$exitHadronAbsorber_8cxx.html" title=" " alt="" coords="5,167,188,207"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,133,99,166,94,166,94,133"/>
+<area shape="rect" id="node1" title=" " alt="" coords="659,5,788,31"/>
+<area shape="rect" id="node2" href="$exitHadronAbsorber_8h.html" title=" " alt="" coords="5,79,188,119"/>
+<area shape="rect" id="node4" href="$MuonBackGenerator_8cxx.html" title=" " alt="" coords="212,86,448,111"/>
+<area shape="rect" id="node5" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="472,79,631,119"/>
+<area shape="rect" id="node6" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="655,79,791,119"/>
+<area shape="rect" id="node7" href="$veto_8cxx.html" title="Implementation of the Veto detector class." alt="" coords="816,86,927,111"/>
+<area shape="rect" id="node8" href="$vetoHit_8cxx.html" title=" " alt="" coords="951,86,1082,111"/>
+<area shape="rect" id="node9" href="$vetoPoint_8cxx.html" title=" " alt="" coords="1106,86,1250,111"/>
+<area shape="rect" id="node3" href="$exitHadronAbsorber_8cxx.html" title=" " alt="" coords="5,167,188,207"/>
 </map>

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['upstreamtagger_0',['UpstreamTagger',['../classUpstreamTagger.html',1,'']]],
-  ['upstreamtaggerdetector_1',['UpstreamTaggerDetector',['../classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html',1,'UpstreamTaggerDetector']]],
-  ['upstreamtaggerhit_2',['UpstreamTaggerHit',['../classUpstreamTaggerHit.html',1,'']]],
-  ['upstreamtaggerpoint_3',['UpstreamTaggerPoint',['../classUpstreamTaggerPoint.html',1,'']]]
+  ['rpvsusy_0',['RPVSUSY',['../classrpvsusy_1_1RPVSUSY.html',1,'rpvsusy']]],
+  ['rpvsusybranchings_1',['RPVSUSYbranchings',['../classrpvsusy_1_1RPVSUSYbranchings.html',1,'rpvsusy']]],
+  ['rulers_2',['Rulers',['../classeventDisplay_1_1Rulers.html',1,'eventDisplay']]]
 ];

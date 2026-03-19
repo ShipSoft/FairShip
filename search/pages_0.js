@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['changelog_0',['Changelog',['../md_CHANGELOG.html',1,'']]],
-  ['configuration_20files_20for_20genie_20simulations_1',['Configuration files for GENIE simulations',['../md_shipgen_2genie__config_2README.html',1,'']]]
+  ['a_20documentation_20page_0',['A documentation page',['../page1.html',1,'']]],
+  ['another_20page_1',['Another page',['../page2.html',1,'']]]
 ];
