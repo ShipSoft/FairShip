@@ -47,7 +47,7 @@ jobs:
           cd sw/BUILD/FairShip-latest/FairShip
           ctest --output-on-failure
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifact-${{ matrix.version }}
           path: sw/
@@ -111,14 +111,14 @@ jobs:
         #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
         #
         # - name: Upload .root artifacts
-        #   uses: actions/upload-artifact@v4
+        #   uses: actions/upload-artifact@v7
         #   with:
         #     name: root-files-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: |
         #       *.root
         #
         # - name: Upload physics metrics
-        #   uses: actions/upload-artifact@v4
+        #   uses: actions/upload-artifact@v7
         #   with:
         #     name: metrics-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: physics_metrics.json
@@ -201,7 +201,7 @@ jobs:
   #         fi
   #
   #     - name: Upload comparison results
-  #       uses: actions/upload-artifact@v4
+  #       uses: actions/upload-artifact@v7
   #       with:
   #         name: comparison-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
   #         path: comparison_*.txt
@@ -290,7 +290,7 @@ jobs:
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_fixedTarget.py -n 10 -e 10.0 -r 1
       - name: Upload .root artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: root-files-fixed-target-${{ matrix.version }}
           path: |
