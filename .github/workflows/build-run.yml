@@ -273,14 +273,14 @@ jobs:
       version: 26.02
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: FairShip
           fetch-depth: 0
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
-          name: build-artifact
+          name: build-artifact-${{ env.version }}
           path: sw/
       - name: Fix source symlinks
         run: |
