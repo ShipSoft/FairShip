@@ -18,6 +18,7 @@ it in future.
 * Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
 * Clean up `SHiP::DetectorHit` subclass hierarchy: fix destructors, `override` specifiers, `Print()` const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations
 
+* Remove outdated version gates for Pythia8 < 8.300, ROOT < 6.32, and old Geant4VMC
 * Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
 * Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
 * Use `std::span` for `MeanMaterialBudget` parameters (compile-time size checking) and `ShipCompField::getCompFields` return type (avoids unnecessary copy)

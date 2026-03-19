@@ -123,19 +123,7 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
         print("%-35s volume = %5.2Fm3  mass = %5.2F t" % (vln, cvol, M / 1000.0))
     if fm:
         fi = fm.GetDetectorField()
-        if hasattr(fi, "GetConstantFieldValue"):
-            print("   Magnetic field:", fi.GetConstantFieldValue() / G4Unit.tesla)
-        else:
-            serv = ROOT.TG4GeometryServices.Instance()
-            pos = array("d", [0, 0, 0])
-            bf = array("d", [0, 0, 0])
-            name = ROOT.G4String(lvl.GetName().c_str())
-            print("debug", name, lvl.GetName(), lvl)
-            serv.GetField(name, pos, bf)
-            print(
-                "   Magnetic field Bx,By,Bz: %4.2F %4.2F %4.2F"
-                % (bf[0] / G4Unit.tesla, bf[1] / G4Unit.tesla, bf[2] / G4Unit.tesla)
-            )
+        print("   Magnetic field:", fi.GetConstantFieldValue() / G4Unit.tesla)
     # if vl.GetName().c_str()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
     name = vl.GetName().c_str()
     if "_" in name and "Mag" in name.split("_")[1]:

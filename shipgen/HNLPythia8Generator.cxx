@@ -41,13 +41,8 @@ Bool_t HNLPythia8Generator::Init() {
   if (debug) {
     List(9900015);
   }
-#if PYTHIA_VERSION_INTEGER >= 8300
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
-#else
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-#endif
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile) {

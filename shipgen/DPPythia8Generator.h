@@ -89,11 +89,7 @@ class DPPythia8Generator : public SHiP::Generator {
   Pythia8::Pythia* fPythia;  //!
   // Pythia8::Pythia* fPythiaHadDecay;             //!
  private:
-#if PYTHIA_VERSION_INTEGER >= 8300
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
-#else
-  Pythia8::RndmEngine* fRandomEngine;  //!
-#endif
 
  protected:
   // Bool_t fHadDecay;    //select hadronic decay
