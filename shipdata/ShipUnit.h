@@ -10,6 +10,8 @@
 #ifndef SHIPDATA_SHIPUNIT_H_
 #define SHIPDATA_SHIPUNIT_H_
 
+#include "Rtypes.h"
+
 namespace ShipUnit {
 
 //

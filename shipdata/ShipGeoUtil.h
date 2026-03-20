@@ -9,6 +9,8 @@
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
 #include "FairGeoMedia.h"
+#include "FairGeoMedium.h"
+#include "FairLogger.h"
 #include "TGeoManager.h"
 #include "TGeoMedium.h"
 
@@ -26,8 +28,8 @@ inline Int_t InitMedium(const char* name) {
   FairGeoMedium* ShipMedium = media->getMedium(name);
 
   if (!ShipMedium) {
-    Fatal("ShipGeo::InitMedium", "Material %s not defined in media file.",
-          name);
+    LOG(fatal) << "ShipGeo::InitMedium: Material " << name
+               << " not defined in media file.";
     return -1111;
   }
   TGeoMedium* medium = gGeoManager->GetMedium(name);
