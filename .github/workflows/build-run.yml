@@ -290,9 +290,9 @@ jobs:
         run: |
           cd FairShip
           CPP_FILES=$(find . \( -name '*.cxx' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.hxx' -o -name '*.hpp' \) | tr '\n' ' ')
-          PY_FILES=$(find . -name '*.py' | tr '\n' ' ')
           echo "cpp=$CPP_FILES" >> "$GITHUB_OUTPUT"
-          echo "py=$PY_FILES" >> "$GITHUB_OUTPUT"
+      - name: Install clang-tidy
+        run: pip install clang-tidy
       - name: Run clang-tidy
         if: steps.files.outputs.cpp != ''
         continue-on-error: true
@@ -302,14 +302,12 @@ jobs:
           cd FairShip
           echo "${{ steps.files.outputs.cpp }}" | xargs -P $(nproc) clang-tidy -p $GITHUB_WORKSPACE/sw/BUILD/FairShip-latest/FairShip 2>&1 | python3 .github/scripts/annotate_build.py
       - name: Install pyrefly
-        if: steps.files.outputs.py != ''
         run: pip install pyrefly
       - name: Run pyrefly
-        if: steps.files.outputs.py != ''
         continue-on-error: true
         run: |
           cd FairShip
-          echo "${{ steps.files.outputs.py }}" | xargs pyrefly check --output-format=github
+          pyrefly check --output-format=github
   run-fixed-target:
     runs-on: self-hosted
     needs: [generate-matrix, build]
