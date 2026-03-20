@@ -341,7 +341,7 @@ jobs:
         id: files
         run: |
           cd FairShip
-          CPP_FILES=$(find . \( -name '*.cxx' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.hxx' -o -name '*.hpp' \) | tr '\n' ' ')
+          CPP_FILES=$(find . -not -path './cmake/*' \( -name '*.cxx' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.hxx' -o -name '*.hpp' \) | tr '\n' ' ')
           echo "cpp=$CPP_FILES" >> "$GITHUB_OUTPUT"
       - name: Install clang-tidy
         run: pip install clang-tidy
