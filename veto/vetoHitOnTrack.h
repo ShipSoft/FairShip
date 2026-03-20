@@ -21,7 +21,7 @@ class vetoHitOnTrack : public TObject {
   vetoHitOnTrack(Int_t hitID, Float_t dist);
 
   /** Destructor **/
-  virtual ~vetoHitOnTrack();
+  ~vetoHitOnTrack() override;
 
   /** Accessors **/
   Double_t GetDist() const { return fDist; };

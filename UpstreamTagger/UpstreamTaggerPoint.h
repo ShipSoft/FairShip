@@ -20,7 +20,7 @@ class UpstreamTaggerPoint : public SHiP::DetectorPoint {
 
   using SHiP::DetectorPoint::DetectorPoint;
   /** Destructor **/
-  virtual ~UpstreamTaggerPoint();
+  ~UpstreamTaggerPoint() override;
 
   void extraPrintInfo() const override;
 

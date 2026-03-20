@@ -31,7 +31,7 @@ class vetoPoint : public SHiP::DetectorPoint {
    **/
 
   /** Destructor **/
-  virtual ~vetoPoint();
+  ~vetoPoint() override;
 
   void extraPrintInfo() const override;
 

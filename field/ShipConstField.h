@@ -42,7 +42,7 @@ class ShipConstField : public FairField {
   explicit ShipConstField(ShipFieldPar* fieldPar);
 
   /** Destructor **/
-  virtual ~ShipConstField();
+  ~ShipConstField() override;
 
   /** Set the field region
    ** @param xMin,xMax   x region of field (global coordinates)

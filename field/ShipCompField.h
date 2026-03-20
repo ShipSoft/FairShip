@@ -43,7 +43,7 @@ class ShipCompField : public TVirtualMagField {
                 const std::vector<TVirtualMagField*>& theFields);
 
   //! Destructor
-  virtual ~ShipCompField();
+  ~ShipCompField() override;
 
   //! The total magnetic field from all of the composite sources (linear
   //! superposition)

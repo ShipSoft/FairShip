@@ -43,7 +43,7 @@ class ShipMCTrack : public TObject {
   explicit ShipMCTrack(TParticle* particle);
 
   /**  Destructor  **/
-  virtual ~ShipMCTrack();
+  ~ShipMCTrack() override;
 
   /**  Output to screen  **/
   using TObject::Print;

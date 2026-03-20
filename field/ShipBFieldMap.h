@@ -69,7 +69,7 @@ class ShipBFieldMap : public TVirtualMagField {
                 Float_t newPsi = 0.0, Float_t newScale = 1.0);
 
   //! Destructor
-  virtual ~ShipBFieldMap();
+  ~ShipBFieldMap() override;
 
   //! Implementation of evaluating the B field
   /*!

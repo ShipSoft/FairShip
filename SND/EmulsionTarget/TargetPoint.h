@@ -33,14 +33,14 @@ class TargetPoint : public FairMCPoint {
               Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
   /** Destructor **/
-  virtual ~TargetPoint();
+  ~TargetPoint() override;
 
   /** Copy constructor **/
   TargetPoint(const TargetPoint& point) = default;
   TargetPoint& operator=(const TargetPoint& point) = default;
 
   /** Output to screen **/
-  virtual void Print(const Option_t* opt) const;
+  void Print(const Option_t* opt) const override;
 
   Int_t PdgCode() const { return fPdgCode; }
 

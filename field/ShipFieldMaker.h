@@ -41,7 +41,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction {
   explicit ShipFieldMaker(Bool_t verbose = kFALSE);
 
   //! Destructor
-  virtual ~ShipFieldMaker();
+  ~ShipFieldMaker() override;
 
   //! Typedef for a TString-TVirtualMagField* map
   typedef std::map<TString, TVirtualMagField*> SFMap;

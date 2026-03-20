@@ -28,7 +28,7 @@ class MTCDetPoint : public FairMCPoint {
               Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode);
 
   /** Destructor **/
-  virtual ~MTCDetPoint();
+  ~MTCDetPoint() override;
 
   /** Copy constructor **/
   MTCDetPoint(const MTCDetPoint& point) = default;

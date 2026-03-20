@@ -41,7 +41,7 @@ class ShipBellField : public FairField {
   explicit ShipBellField(ShipFieldPar* fieldPar);
 
   /** Destructor **/
-  virtual ~ShipBellField();
+  ~ShipBellField() override;
 
   /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]

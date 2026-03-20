@@ -19,7 +19,7 @@ class TimeDetPoint : public SHiP::DetectorPoint {
   using SHiP::DetectorPoint::DetectorPoint;
 
   /** Destructor **/
-  virtual ~TimeDetPoint();
+  ~TimeDetPoint() override;
 
   void extraPrintInfo() const override;
 
