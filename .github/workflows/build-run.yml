@@ -299,6 +299,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
+          unset PYTHONHOME PYTHONPATH
           cd FairShip
           echo "${{ steps.files.outputs.cpp }}" | xargs -P $(nproc) clang-tidy -p $GITHUB_WORKSPACE/sw/BUILD/FairShip-latest/FairShip 2>&1 | python3 .github/scripts/annotate_build.py
       - name: Install pyrefly
