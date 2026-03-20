@@ -262,6 +262,58 @@ jobs:
   #             });
   #           }
   static-analysis:
+    if: github.event_name == 'pull_request'
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+    env:
+      version: 26.02
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: FairShip
+          fetch-depth: 0
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: build-artifact-${{ env.version }}
+          path: sw/
+      - name: Fix source symlinks
+        run: |
+          rm -rf sw/SOURCES/FairShip/master/0
+          ln -s $GITHUB_WORKSPACE/FairShip sw/SOURCES/FairShip/master/0
+      - name: Find changed files
+        id: files
+        run: |
+          cd FairShip
+          CHANGED=$(git diff --name-only --diff-filter=d ${{ github.event.pull_request.base.sha }} HEAD)
+          CPP_FILES=$(echo "$CHANGED" | grep -E '\.(cxx|h|cpp|cc|hxx|hpp)$' | sed 's|^|./|' | tr '\n' ' ')
+          PY_FILES=$(echo "$CHANGED" | grep -E '\.py$' | tr '\n' ' ')
+          echo "cpp=$CPP_FILES" >> "$GITHUB_OUTPUT"
+          echo "py=$PY_FILES" >> "$GITHUB_OUTPUT"
+      - name: Install clang-tidy
+        run: pip install clang-tidy
+      - name: Run clang-tidy
+        if: steps.files.outputs.cpp != ''
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          unset PYTHONHOME PYTHONPATH
+          cd FairShip
+          echo "${{ steps.files.outputs.cpp }}" | xargs -P $(nproc) clang-tidy -p $GITHUB_WORKSPACE/sw/BUILD/FairShip-latest/FairShip 2>&1 | python3 .github/scripts/annotate_build.py
+      - name: Install pyrefly
+        run: pip install pyrefly
+      - name: Run pyrefly
+        if: steps.files.outputs.py != ''
+        run: |
+          cd FairShip
+          pyrefly check --output-format=github ${{ steps.files.outputs.py }}
+  static-analysis-push:
+    if: github.event_name == 'push'
     runs-on: self-hosted
     needs: build
     container:
