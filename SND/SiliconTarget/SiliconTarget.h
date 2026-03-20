@@ -29,7 +29,7 @@ class SiliconTarget : public SHiP::Detector<SiliconTargetPoint> {
 
   void ConstructGeometry() override;
 
-  Bool_t ProcessHits(FairVolume* vol = 0) override;
+  Bool_t ProcessHits(FairVolume* vol = nullptr) override;
 
  private:
   Double_t fTargetWidth;

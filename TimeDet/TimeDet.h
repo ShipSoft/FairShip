@@ -30,7 +30,7 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
   /**   this method is called for each step during simulation
    *    (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   /** Sets detector position along z */
   void SetZposition(Double_t z) { fzPos = z; }

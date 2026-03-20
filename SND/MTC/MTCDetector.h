@@ -67,7 +67,7 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
   Int_t Get_NSiPMChan() const { return fNSiPMChan; }
   Float_t Get_SciFiActiveX() const { return fSciFiActiveX; }
   virtual void SiPMOverlap();
-  Bool_t ProcessHits(FairVolume* vol = 0) override;
+  Bool_t ProcessHits(FairVolume* vol = nullptr) override;
 
  private:
   Double_t fWidth;

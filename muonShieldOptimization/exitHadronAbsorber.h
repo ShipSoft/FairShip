@@ -19,7 +19,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   void Initialize() override;
 
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   void Register() override;
 

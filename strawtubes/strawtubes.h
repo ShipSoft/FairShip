@@ -32,7 +32,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
   void SetApertureArea(Double_t width, Double_t height);

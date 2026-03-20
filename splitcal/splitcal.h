@@ -30,7 +30,7 @@ class splitcal : public SHiP::Detector<splitcalPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   void SetZStart(Double_t ZStart);
   void SetEmpty(Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap,
