@@ -11,7 +11,6 @@
 #include <iostream>  // for operator<<, etc
 
 #include "FairDetector.h"        // for FairDetector
-#include "FairLink.h"            // for FairLink
 #include "FairLogger.h"          // for FairLogger, MESSAGE_ORIGIN
 #include "FairMCPoint.h"         // for FairMCPoint
 #include "FairRootManager.h"     // for FairRootManager
@@ -303,7 +302,6 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
                  iTrack);
           }
           point->SetTrackID((*fIndexIter).second);
-          point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
         }
 
       }  // Collections of this detector

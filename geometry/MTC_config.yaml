@@ -6,6 +6,7 @@ MTC:
   sciFiThick: 0.97 # SciFi layer thickness (cm)
   num_of_agg_channels: 4 # Number of SiPM channels to be aggregated
   scintThick: 1.5 # Scintillator layer thickness (cm)
+  scint_cell_size: 5 # Scintillator tile cell size (cm)
   nLayers: 45 # Number of sandwich layers
   zPosition: auto # Default: auto -- center of the last magnet or global z position in cm
-  fieldY: -1.2 # Magnetic field strength (tesla)
+  fieldY: -1.7 # Magnetic field strength (tesla)

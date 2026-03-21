@@ -64,7 +64,6 @@ class Detector : public FairDetector, public ISTLPointContainer {
       auto iter = indexMap.find(oldTrackID);
       if (iter != indexMap.end()) {
         point.SetTrackID(iter->second);
-        point.SetLink(FairLink("MCTrack", iter->second));
       }
     }
   }

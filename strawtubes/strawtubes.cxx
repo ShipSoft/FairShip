@@ -18,7 +18,6 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
-#include "FairLink.h"
 #include "FairLogger.h"
 #include "FairRootManager.h"
 #include "FairRun.h"

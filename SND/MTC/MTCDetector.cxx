@@ -145,20 +145,23 @@ MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* /*Title*/,
                          Int_t /*DetId*/)
     : Detector(name, Active, kMTC) {}
 
-void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t angle,
-                                   Double_t iron, Double_t sciFi,
-                                   Int_t num_of_agg_channels, Double_t scint,
-                                   Int_t layers, Double_t z, Double_t field) {
-  fWidth = w;
-  fHeight = h;
-  fSciFiBendingAngle = angle;
-  fIronThick = iron;
-  fSciFiThick = sciFi;
+void MTCDetector::SetMTCParameters(
+    Double_t width, Double_t height, Double_t fiber_tilt_angle,
+    Double_t iron_thickness, Double_t scifi_thickness,
+    Int_t num_of_agg_channels, Double_t scint_cell_size,
+    Double_t scint_thickness, Int_t number_of_layers, Double_t z_position,
+    Double_t field_strength) {
+  fWidth = width;
+  fHeight = height;
+  fSciFiBendingAngle = fiber_tilt_angle;
+  fIronThick = iron_thickness;
+  fSciFiThick = scifi_thickness;
   fChannelAggregated = num_of_agg_channels;
-  fScintThick = scint;
-  fLayers = layers;
-  fZCenter = z;
-  fFieldY = field;
+  fScintCellSize = scint_cell_size;
+  fScintThick = scint_thickness;
+  fLayers = number_of_layers;
+  fZCenter = z_position;
+  fFieldY = field_strength;
   fSciFiActiveX = fWidth - fWidth * tan(fSciFiBendingAngle * TMath::DegToRad());
   fSciFiActiveY = fHeight;
 }
@@ -350,8 +353,8 @@ void MTCDetector::ConstructGeometry() {
   // Define a layer for the SciFi module
   CreateSciFiModule("MTC", sensitiveModule, fWidth, fHeight, fSciFiThick, 1);
   CreateScintModule("MTC", sensitiveModule, fSciFiThick / 2 + fScintThick / 2,
-                    fWidth, fHeight, fScintThick, 1.0, 1.0, scintMed,
-                    kAzure + 7, 30, 1);
+                    fWidth, fHeight, fScintThick, fScintCellSize,
+                    fScintCellSize, scintMed, kAzure + 7, 30, 1);
 
   for (Int_t i = 0; i < fLayers; i++) {
     // Compute the center position (z) for the current module

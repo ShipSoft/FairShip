@@ -31,7 +31,7 @@ jobs:
       version: ${{ matrix.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: FairShip
           lfs: true
@@ -47,7 +47,7 @@ jobs:
           cd sw/BUILD/FairShip-latest/FairShip
           ctest --output-on-failure
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifact-${{ matrix.version }}
           path: sw/
@@ -64,12 +64,12 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: FairShip
           lfs: true
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-artifact-${{ matrix.version }}
           path: sw/
@@ -111,14 +111,14 @@ jobs:
         #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
         #
         # - name: Upload .root artifacts
-        #   uses: actions/upload-artifact@v4
+        #   uses: actions/upload-artifact@v7
         #   with:
         #     name: root-files-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: |
         #       *.root
         #
         # - name: Upload physics metrics
-        #   uses: actions/upload-artifact@v4
+        #   uses: actions/upload-artifact@v7
         #   with:
         #     name: metrics-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
         #     path: physics_metrics.json
@@ -129,12 +129,12 @@ jobs:
   #
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v6
   #       with:
   #         fetch-depth: 0
   #
   #     - name: Download all physics metrics
-  #       uses: actions/download-artifact@v4
+  #       uses: actions/download-artifact@v8
   #       with:
   #         pattern: metrics-*
   #         path: metrics/
@@ -173,7 +173,7 @@ jobs:
   #
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v6
   #       with:
   #         fetch-depth: 0
   #
@@ -182,7 +182,7 @@ jobs:
   #         git fetch origin 'refs/notes/ci/physics-metrics/*:refs/notes/ci/physics-metrics/*' || echo "No notes found yet"
   #
   #     - name: Download physics metrics
-  #       uses: actions/download-artifact@v4
+  #       uses: actions/download-artifact@v8
   #       with:
   #         name: metrics-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
   #
@@ -201,7 +201,7 @@ jobs:
   #         fi
   #
   #     - name: Upload comparison results
-  #       uses: actions/upload-artifact@v4
+  #       uses: actions/upload-artifact@v7
   #       with:
   #         name: comparison-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
   #         path: comparison_*.txt
@@ -213,10 +213,10 @@ jobs:
   #
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v6
   #
   #     - name: Download all comparison results
-  #       uses: actions/download-artifact@v4
+  #       uses: actions/download-artifact@v8
   #       with:
   #         pattern: comparison-*
   #         path: comparisons/
@@ -275,12 +275,12 @@ jobs:
       version: ${{ matrix.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: FairShip
           lfs: true
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-artifact-${{ matrix.version }}
           path: sw/
@@ -290,7 +290,7 @@ jobs:
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_fixedTarget.py -n 10 -e 10.0 -r 1
       - name: Upload .root artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: root-files-fixed-target-${{ matrix.version }}
           path: |
