@@ -49,6 +49,7 @@ it in future.
 * Fix digitisation crash when optional detector branches are missing (#738)
 * Fix splitcalHit dropping MC point arrival time in digitisation (#925)
 * Fix argparse -f/subparser conflict in run_simScript.py by using action="append" (#1044)
+* Disable multi-threading exclicitly, as it is not supported in FairShip
 
 ### Changed
 
