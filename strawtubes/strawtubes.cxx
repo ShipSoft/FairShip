@@ -8,9 +8,9 @@
 
 #include "strawtubes.h"
 
+#include <array>
 #include <iostream>
 #include <sstream>
-#include <tuple>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -418,7 +418,7 @@ void strawtubes::ConstructGeometry() {
 // -----   Public method StrawDecode -------------------------------------------
 // -----   returns station, view, layer, straw number in a tuple
 // -----------------------------------
-std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID) {
+std::array<Int_t, 4> strawtubes::StrawDecode(Int_t detID) {
   Int_t statnb, vnb, lnb, snb;
   statnb = detID / 1e6;
   vnb = (detID - statnb * 1e6) / 1e5;
@@ -431,9 +431,9 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID) {
     LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb
                  << ", layer: " << lnb << ", straw: " << snb;
     LOG(warning) << "strawtubes detID is 7-digit!";
-    return std::make_tuple(0, -1, -1, 0);
+    return {0, -1, -1, 0};
   } else {
-    return std::make_tuple(statnb, vnb, lnb, snb);
+    return {statnb, vnb, lnb, snb};
   }
 }
 // -----   Public method StrawEndPoints
