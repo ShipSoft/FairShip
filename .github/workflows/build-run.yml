@@ -362,6 +362,43 @@ jobs:
         run: |
           cd FairShip
           pyrefly check --output-format=github
+  run-tracking-benchmark:
+    runs-on: self-hosted
+    needs: [generate-matrix, build]
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.generate-matrix.outputs.matrix).version }}
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+    env:
+      version: ${{ matrix.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: FairShip
+          lfs: true
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: build-artifact-${{ matrix.version }}
+          path: sw/
+      - name: Run tracking benchmark
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/macro/run_tracking_benchmark.py \
+            -n 200 --seed 42 --tag ci-benchmark \
+            --output-json tracking_metrics.json
+      - name: Upload tracking metrics
+        uses: actions/upload-artifact@v7
+        with:
+          name: tracking-metrics-${{ matrix.version }}
+          path: |
+            tracking_metrics.json
+            tracking_benchmark_histos.root
   run-fixed-target:
     runs-on: self-hosted
     needs: [generate-matrix, build]

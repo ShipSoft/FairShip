@@ -12,6 +12,11 @@ it in future.
 
 ## Unreleased
 
+### Added
+
+* Tracking performance benchmark for straw tube spectrometer (`python/tracking_benchmark.py`, `macro/run_tracking_benchmark.py`): measures efficiency, clone rate, ghost rate, and momentum/position/angular resolution using particle gun events with template matching pattern recognition
+* CI job `run-tracking-benchmark` in build-run workflow to run the benchmark on every PR
+
 ### Fixed
 
 * Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580):
@@ -60,7 +65,6 @@ it in future.
 * Fix digitisation crash when optional detector branches are missing (#738)
 * Fix splitcalHit dropping MC point arrival time in digitisation (#925)
 * Fix argparse -f/subparser conflict in run_simScript.py by using action="append" (#1044)
-* Disable multi-threading exclicitly, as it is not supported in FairShip
 
 ### Changed
 
