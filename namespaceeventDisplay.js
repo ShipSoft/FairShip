@@ -65,7 +65,6 @@ var namespaceeventDisplay =
     [ "pdg", "namespaceeventDisplay.html#a2b585f785c30544d2d646c651989386a", null ],
     [ "recoFile", "namespaceeventDisplay.html#adba141c1a1c4d0b578c4334a40346649", null ],
     [ "required", "namespaceeventDisplay.html#a634deb6cb1584bf45b4ed7a4be8da532", null ],
-    [ "root_version", "namespaceeventDisplay.html#acc3f3c55d1cd3447dd18bd5cd1b031f0", null ],
     [ "rtdb", "namespaceeventDisplay.html#addebb4dde58ebe1ed709127709ba169d", null ],
     [ "rulers", "namespaceeventDisplay.html#a516f0e60a6edf8398af3c1e29fdb9997", null ],
     [ "sGeo", "namespaceeventDisplay.html#adaa161ab232c4851346d8c13c4d94098", null ],

@@ -103,6 +103,7 @@ Changed</h2>
 <li>Remove setting of FairMC links #1109</li>
 <li>Rename <code>ShipHit</code> to <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> and move from <code>shipdata/</code> to <code>Detector/</code>, consistent with the <code><a class="el" href="classSHiP_1_1DetectorPoint.html">SHiP::DetectorPoint</a></code> pattern</li>
 <li>Clean up <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> subclass hierarchy: fix destructors, <code>override</code> specifiers, <code>Print()</code> const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations</li>
+<li>Remove outdated version gates for <a class="el" href="namespacePythia8.html">Pythia8</a> &lt; 8.300, ROOT &lt; 6.32, and old Geant4VMC</li>
 <li>Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)</li>
 <li>Modernise C++ code with C++20/17 features: <code>map::contains()</code>, <code>std::ranges::transform</code>, <code>std::ranges::copy</code>, range-for loops, and structured bindings</li>
 <li>Use <code>std::span</code> for <code>MeanMaterialBudget</code> parameters (compile-time size checking) and <code><a class="el" href="classShipCompField.html#abdc692b942a02b69e2dac5f8113f5a13" title="Get the vector of fields.">ShipCompField::getCompFields</a></code> return type (avoids unnecessary copy)</li>
@@ -537,7 +538,7 @@ Build System</h3>
 <li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
 <li>Fix EvtGen library linking order for old autotools-based EvtGen installations</li>
 <li>Use standard library to expand env</li>
-<li>Autoload Pythia8 instead of manually loading in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
+<li>Autoload <a class="el" href="namespacePythia8.html">Pythia8</a> instead of manually loading in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
 </ul>
 <h3><a class="anchor" id="autotoc_md41"></a>
 Code Quality</h3>

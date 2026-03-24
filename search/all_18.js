@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator']]],
+  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x()'],['../namespacerunCharmHadProd.html#a74bc2b422e279701aa8adf1c82df7d5d',1,'runCharmHadProd.x()'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x()'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x()'],['../namespacemake__nTuple__Tr.html#a551f606ebfae350519dcc7bf9cac35c4',1,'make_nTuple_Tr.x()'],['../namespacemake__nTuple__SBT.html#a1cc05fe3f9845f1e42d8a60c3ae5fd87',1,'make_nTuple_SBT.x()'],['../namespacerun__fixedTarget.html#a797bc569effa4b7ecc13c7c3510802e4',1,'run_fixedTarget.x()']]],
   ['x_1',['X',['../namespacerunPythia8.html#aa4bb787e889b8046fb5e863a986f0069',1,'runPythia8']]],
-  ['x_2',['x',['../namespacerunCharmHadProd.html#a74bc2b422e279701aa8adf1c82df7d5d',1,'runCharmHadProd.x()'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x()'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x()'],['../namespacemake__nTuple__Tr.html#a551f606ebfae350519dcc7bf9cac35c4',1,'make_nTuple_Tr.x()'],['../namespacemake__nTuple__SBT.html#a1cc05fe3f9845f1e42d8a60c3ae5fd87',1,'make_nTuple_SBT.x()'],['../namespacerun__fixedTarget.html#a797bc569effa4b7ecc13c7c3510802e4',1,'run_fixedTarget.x()'],['../structCoordStruct.html#a183d7226fc5a8470ce9b9f04f9cb69bb',1,'CoordStruct::x()']]],
+  ['x_2',['x',['../structCoordStruct.html#a183d7226fc5a8470ce9b9f04f9cb69bb',1,'CoordStruct']]],
   ['x0_5f_3',['x0_',['../structShipFieldMaker_1_1transformInfo.html#a3a709cf11c81f7e10e2b69f6fe93ed02',1,'ShipFieldMaker::transformInfo']]],
   ['xaxis_4',['xAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e',1,'ShipBFieldMap']]],
   ['xbox_5',['xBox',['../classCosmicsGenerator.html#a0b94b15a80545d75d55bcd4a88271e63',1,'CosmicsGenerator']]],

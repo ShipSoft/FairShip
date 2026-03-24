@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemakeMuonDIS.html#ac7bc19be64d2b103364593e23c0d12a7":[10,0,50,4],
-"namespacemakeMuonDIS.html#acda54e66335db27f41a035fbc3a3cd83":[10,0,50,44],
 "namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5":[10,0,50,5],
 "namespacemakeMuonDIS.html#ad31461bc98e6a276fb3cba7e0e56ea63":[10,0,50,0],
 "namespacemakeMuonDIS.html#ad34d5ab7e20f907f51cbdb5c2857de3e":[10,0,50,37],
@@ -170,8 +168,8 @@ var NAVTREEINDEX22 =
 "namespacemembers_d.html":[10,1,0,4],
 "namespacemembers_e.html":[10,1,0,5],
 "namespacemembers_f.html":[10,1,0,6],
-"namespacemembers_func.html":[10,1,1],
 "namespacemembers_func.html":[10,1,1,0],
+"namespacemembers_func.html":[10,1,1],
 "namespacemembers_func_a.html":[10,1,1,1],
 "namespacemembers_func_b.html":[10,1,1,2],
 "namespacemembers_func_c.html":[10,1,1,3],
@@ -212,8 +210,8 @@ var NAVTREEINDEX22 =
 "namespacemembers_t.html":[10,1,0,20],
 "namespacemembers_u.html":[10,1,0,21],
 "namespacemembers_v.html":[10,1,0,22],
-"namespacemembers_vars.html":[10,1,2,0],
 "namespacemembers_vars.html":[10,1,2],
+"namespacemembers_vars.html":[10,1,2,0],
 "namespacemembers_vars_a.html":[10,1,2,1],
 "namespacemembers_vars_b.html":[10,1,2,2],
 "namespacemembers_vars_c.html":[10,1,2,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX22 =
 "namespacemergeMbias.html#a0244ff4c77d46f894a0360086f22f7b7":[10,0,52,3],
 "namespacemergeMbias.html#a090f13dac409b4f5f13664de9ae51a36":[10,0,52,10],
 "namespacemergeMbias.html#a2772c34552d597809e5aa550d951f2e3":[10,0,52,18],
-"namespacemergeMbias.html#a2f639e99b6bf71e30180f29ffbe5c96d":[10,0,52,15]
+"namespacemergeMbias.html#a2f639e99b6bf71e30180f29ffbe5c96d":[10,0,52,15],
+"namespacemergeMbias.html#a326ee8240121d3b588c15423aab85494":[10,0,52,0],
+"namespacemergeMbias.html#a3bcfbbfb4acd4d3f4622d42b175ba4f2":[10,0,52,23]
 };

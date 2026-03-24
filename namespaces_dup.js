@@ -940,6 +940,7 @@ var namespaces_dup =
       [ "protonMomentum", "namespaceproton__bremsstrahlung.html#a03021b62ce66ff04300f39eca18abcd2", null ]
     ] ],
     [ "pyexample", "namespacepyexample.html", "namespacepyexample" ],
+    [ "Pythia8", "namespacePythia8.html", null ],
     [ "pythia8_conf", "namespacepythia8__conf.html", [
       [ "add_hnl", "namespacepythia8__conf.html#a2c21f5a1d3a08c24f33d3684c22beb81", null ],
       [ "configure", "namespacepythia8__conf.html#afbe9bd6344e6a6a4920207fc7c3101c8", null ],
