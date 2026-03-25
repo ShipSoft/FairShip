@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import logging
 from array import array
 
 import global_variables
@@ -9,6 +10,8 @@ import rootUtils as ut
 import shipPatRec
 import shipunit as u
 import shipVertex
+
+logger = logging.getLogger(__name__)
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
@@ -132,6 +135,7 @@ class ShipDigiReco:
         hit_detector_ids = {}
         stationCrossed: dict[int, dict[int, int]] = {}
         listOfIndices: dict[int, list[int]] = {}
+        trackParams: dict[int, dict] = {}
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
         self.fitTrack2MC.clear()
@@ -148,6 +152,7 @@ class ShipDigiReco:
         if global_variables.realPR:
             # Do real PatRec
             track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)
+            logger.debug("PatRec returned %d track candidates", len(track_hits))
             # Create hitPosLists for track fit
             for i_track in track_hits:
                 atrack = track_hits[i_track]
@@ -158,6 +163,13 @@ class ShipDigiReco:
                 atrack_smeared_hits = (
                     list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
                 )
+                # Store PatRec track parameters for seeding the fitter
+                trackParams[i_track] = {
+                    "k_y12": atrack.get("k_y12"),
+                    "b_y12": atrack.get("b_y12"),
+                    "k_y34": atrack.get("k_y34"),
+                    "b_y34": atrack.get("b_y34"),
+                }
                 for sm in atrack_smeared_hits:
                     detID = sm["detID"]
                     station = self.strawtubes.det[sm["digiHit"]].GetStationNumber()
@@ -192,34 +204,34 @@ class ShipDigiReco:
                 if station not in stationCrossed[trID]:
                     stationCrossed[trID][station] = 0
                 stationCrossed[trID][station] += 1
-        #
-        # for atrack in listOfIndices:
-        #   # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
-        #  nTracks   = self.fTrackletsArray.GetEntries()
-        #  aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-        #  listOfHits = aTracklet.getList()
-        #  aTracklet.setType(3)
-        #  for index in listOfIndices[atrack]:
-        #    listOfHits.push_back(index)
-        #
+
+        n_too_few_hits = 0
+        n_too_few_stations = 0
+        n_prefit_fail = 0
+        n_fit_fail = 0
+        n_postfit_fail = 0
+        n_no_state = 0
+        n_no_ndf = 0
+
         for atrack in hitPosLists:
             if atrack < 0:
                 continue  # these are hits not assigned to MC track because low E cut
-            # pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
-            # if not self.PDG.GetParticle(pdg): continue # unknown particle
             pdg = 13  # assume all tracks are muons
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
             nM = len(meas)
-            if nM < 25:
+            if nM < 13:
+                n_too_few_hits += 1
                 continue  # not enough hits to make a good trackfit
             if len(stationCrossed[atrack]) < 3:
+                n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
             if global_variables.debug:
                 self.sTree.MCTrack[atrack]
-            # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
-            posM = ROOT.TVector3(0, 0, 5812.0)  # seed is at decay vessel centre
-            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
+
+            # Seed state: use PatRec track parameters when available
+            posM, momM = self._compute_seed_state(atrack, meas, trackParams)
+
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
@@ -248,16 +260,13 @@ class ShipDigiReco:
                 measurement = ROOT.genfit.WireMeasurement(
                     m, hitCov, detID, hitID, tp
                 )  # the measurement is told which trackpoint it belongs to
-                # print measurement.getMaxDistance()
                 measurement.setMaxDistance(
                     global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
                     - global_variables.ShipGeo.strawtubes_geo.wall_thickness
                 )
-                # measurement.setLeftRightResolution(-1)
                 tp.addRawMeasurement(measurement)  # package measurement in the TrackPoint
                 theTrack.insertPoint(tp)  # add point to Track
                 hitID += 1
-            # print("debug meas", atrack, nM, stationCrossed[atrack], self.sTree.MCTrack[atrack], pdg)
             trackCandidates.append([theTrack, atrack])
 
         for entry in trackCandidates:
@@ -267,6 +276,7 @@ class ShipDigiReco:
             try:
                 theTrack.checkConsistency()
             except ROOT.genfit.Exception as e:
+                n_prefit_fail += 1
                 print("Problem with track before fit, not consistent", atrack, theTrack)
                 print(e.what())
                 ut.reportError(e)
@@ -274,6 +284,7 @@ class ShipDigiReco:
             try:
                 self.fitter.processTrack(theTrack)  # processTrackWithRep(theTrack,rep,True)
             except Exception:
+                n_fit_fail += 1
                 if global_variables.debug:
                     print("genfit failed to fit track")
                 error = "genfit failed to fit track"
@@ -283,6 +294,7 @@ class ShipDigiReco:
             try:
                 theTrack.checkConsistency()
             except ROOT.genfit.Exception as e:
+                n_postfit_fail += 1
                 if global_variables.debug:
                     print("Problem with track after fit, not consistent", atrack, theTrack)
                     print(e.what())
@@ -292,6 +304,7 @@ class ShipDigiReco:
                 fittedState = theTrack.getFittedState()
                 fittedState.getMomMag()
             except Exception:
+                n_no_state += 1
                 error = "Problem with fittedstate"
                 ut.reportError(error)
                 continue
@@ -304,6 +317,7 @@ class ShipDigiReco:
             nmeas = fitStatus.getNdf()
             global_variables.h["nmeas"].Fill(nmeas)
             if nmeas <= 0:
+                n_no_ndf += 1
                 continue
             chi2 = fitStatus.getChi2() / nmeas
             global_variables.h["chi2"].Fill(chi2)
@@ -312,7 +326,6 @@ class ShipDigiReco:
             trackCopy = ROOT.genfit.Track(theTrack)
             ROOT.SetOwnership(trackCopy, False)  # ROOT TTree owns the track
             self.fGenFitArray.push_back(trackCopy)
-            # self.fitTrack2MC.push_back(atrack)
             if global_variables.debug:
                 print("save track", theTrack, chi2, nmeas, fitStatus.isFitConverged())
             # Save MC link
@@ -328,12 +341,63 @@ class ShipDigiReco:
                 indices.push_back(index)
             aTracklet = ROOT.Tracklet(1, indices)
             self.fTrackletsArray.push_back(aTracklet)
+
+        logger.debug(
+            "findTracks: %d candidates, %d too few hits, %d too few stations, "
+            "%d prefit fail, %d fit fail, %d postfit fail, %d no state, "
+            "%d no NDF, %d fitted tracks saved",
+            len(hitPosLists),
+            n_too_few_hits,
+            n_too_few_stations,
+            n_prefit_fail,
+            n_fit_fail,
+            n_postfit_fail,
+            n_no_state,
+            n_no_ndf,
+            len(self.fGenFitArray),
+        )
+
         # debug
         if global_variables.debug:
             print("save tracklets:")
             for x in self.recoTree.Tracklets:
                 print(x.getType(), len(x.getList()))
         return len(self.fGenFitArray)
+
+    def _compute_seed_state(self, atrack, meas, trackParams):
+        """Compute seed position and momentum for the track fitter.
+
+        When PatRec track parameters (k_y, b_y) are available, use them
+        to place the seed at the first hit's Z with the correct Y position
+        and momentum direction. Otherwise fall back to the default seed
+        at the decay vessel centre.
+        """
+        params = trackParams.get(atrack)
+        if params and params.get("k_y12") is not None:
+            # Use station 1-2 parameters to seed near the first measurement
+            k_y = params["k_y12"]
+            b_y = params["b_y12"]
+            # Seed Z at the first measurement's Z coordinate
+            z_seed = meas[0][2]  # z is the 3rd element of the TVectorD
+            y_seed = k_y * z_seed + b_y
+            posM = ROOT.TVector3(0, y_seed, z_seed)
+            # Use slope as py/pz ratio; assume 3 GeV total momentum
+            p_total = 3.0 * u.GeV
+            pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)
+            py = k_y * pz
+            momM = ROOT.TVector3(0, py, pz)
+            logger.debug(
+                "seed from PatRec: z=%.1f y=%.1f k_y=%.4f p=(0, %.2f, %.2f)",
+                z_seed,
+                y_seed,
+                k_y,
+                py,
+                pz,
+            )
+        else:
+            posM = ROOT.TVector3(0, 0, 5812.0)  # decay vessel centre
+            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
+        return posM, momM
 
     def findGoodTracks(self) -> int:
         self.goodTracksVect.clear()

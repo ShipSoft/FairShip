@@ -12,6 +12,13 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580):
+  - Halve the minimum hit threshold (`nM < 25` to `nM < 13`) to match the halved measurement layers
+  - Use PatRec fitted track parameters (k_y, b_y) to seed the Kalman fitter instead of hardcoded position/momentum, improving fit convergence
+  - Pass track parameters through `tracks_combination_using_extrapolation()` to the output
+
 ### Changed
 
 * Remove setting of FairMC links #1109
