@@ -202,6 +202,8 @@ var NAVTREEINDEX1 =
 "UpstreamTagger_8cxx_source.html":[12,0,19,1],
 "UpstreamTagger_8h.html":[12,0,19,2],
 "UpstreamTagger_8h_source.html":[12,0,19,2],
+"VectorMCPointSource_8h.html":[12,0,12,14],
+"VectorMCPointSource_8h_source.html":[12,0,12,14],
 "____init_____8py.html":[12,0,11,1,0],
 "____init_____8py_source.html":[12,0,11,1,0],
 "add__muonresponse_8py.html":[12,0,8,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "ana__ShipMuon_8py.html#a28d7d8b8350de8fec28cb9f07ffd7a98":[12,0,9,0,19],
 "ana__ShipMuon_8py.html#a314533c328f7d1fdae0b8930d139dbab":[12,0,9,0,6],
 "ana__ShipMuon_8py.html#a334ba0573fc8a1b030943f9ed6718cc2":[12,0,9,0,20],
-"ana__ShipMuon_8py.html#a36b197afa16b335384f40188951df4e6":[12,0,9,0,70],
-"ana__ShipMuon_8py.html#a36b3ccb533d84d54030247733ea80f98":[12,0,9,0,75],
-"ana__ShipMuon_8py.html#a37ec6d67d500dcab407c4a134cdbe046":[12,0,9,0,27]
+"ana__ShipMuon_8py.html#a36b197afa16b335384f40188951df4e6":[12,0,9,0,70]
 };

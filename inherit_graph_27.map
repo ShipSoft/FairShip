@@ -1,13 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,153,104,179"/>
-<area shape="rect" id="node2" href="$classMTCDetPoint.html" title=" " alt="" coords="173,55,280,80"/>
-<area shape="rect" id="node3" href="$classSHiP_1_1DetectorPoint.html" title=" " alt="" coords="152,104,301,129"/>
-<area shape="rect" id="node9" href="$classSiliconTargetPoint.html" title=" " alt="" coords="157,153,296,179"/>
-<area shape="rect" id="node10" href="$classTTPoint.html" title=" " alt="" coords="191,203,262,228"/>
-<area shape="rect" id="node11" href="$classTargetPoint.html" title=" " alt="" coords="179,252,274,277"/>
-<area shape="rect" id="node4" href="$classTimeDetPoint.html" title=" " alt="" coords="375,5,486,31"/>
-<area shape="rect" id="node5" href="$classUpstreamTaggerPoint.html" title=" " alt="" coords="349,55,512,80"/>
-<area shape="rect" id="node6" href="$classsplitcalPoint.html" title=" " alt="" coords="379,104,482,129"/>
-<area shape="rect" id="node7" href="$classstrawtubesPoint.html" title=" " alt="" coords="367,153,494,179"/>
-<area shape="rect" id="node8" href="$classvetoPoint.html" title=" " alt="" coords="389,203,473,228"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,97,31"/>
+<area shape="rect" id="node2" href="$classShipGeoCave.html" title=" " alt="" coords="145,5,255,31"/>
 </map>

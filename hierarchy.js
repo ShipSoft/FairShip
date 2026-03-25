@@ -41,6 +41,9 @@ var hierarchy =
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],
       [ "vetoContFact", "classvetoContFact.html", null ]
     ] ],
+    [ "FairDataSourceI", null, [
+      [ "VectorMCPointSource< PointType >", "classVectorMCPointSource.html", null ]
+    ] ],
     [ "FairDetector", null, [
       [ "SHiP::Detector< MTCDetPoint >", "classSHiP_1_1Detector.html", [
         [ "MTCDetector", "classMTCDetector.html", null ]

@@ -1,6 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,55,155,80"/>
-<area shape="rect" id="node2" href="$classstudy__GammaConv_1_1Block.html" title=" " alt="" coords="203,5,392,31"/>
-<area shape="rect" id="node3" href="$classstudy__muMSC_1_1Block.html" title=" " alt="" coords="220,55,375,80"/>
-<area shape="rect" id="node4" href="$classstudy__thinTarget_1_1Block.html" title=" " alt="" coords="212,104,383,129"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,80,120,105"/>
+<area shape="rect" id="node2" href="$classeventDisplay_1_1DrawTracks.html" title=" " alt="" coords="175,5,360,31"/>
+<area shape="rect" id="node3" href="$classeventDisplay_1_1DrawVetoDigi.html" title=" " alt="" coords="168,55,367,80"/>
+<area shape="rect" id="node4" href="$classeventDisplay_1_1EventLoop.html" title=" " alt="" coords="178,104,357,129"/>
+<area shape="rect" id="node5" href="$classeventDisplay_1_1Rulers.html" title=" " alt="" coords="192,153,343,179"/>
 </map>

@@ -13,5 +13,6 @@ var dir_d32c3015c3e8f785dc4289736c132c3d =
     [ "ShipStack.h", "ShipStack_8h.html", "ShipStack_8h" ],
     [ "ShipUnit.h", "ShipUnit_8h.html", "ShipUnit_8h" ],
     [ "TrackInfo.cxx", "TrackInfo_8cxx.html", null ],
-    [ "TrackInfo.h", "TrackInfo_8h.html", "TrackInfo_8h" ]
+    [ "TrackInfo.h", "TrackInfo_8h.html", "TrackInfo_8h" ],
+    [ "VectorMCPointSource.h", "VectorMCPointSource_8h.html", "VectorMCPointSource_8h" ]
 ];

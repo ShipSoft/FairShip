@@ -73,6 +73,7 @@ var eventDisplay_8py =
     [ "SHiPDisplay", "eventDisplay_8py.html#a681445dbc58506f91aedc16be890fd0d", null ],
     [ "ShipGeo", "eventDisplay_8py.html#a537e36bd2f30e3db58264bba58a65a91", null ],
     [ "simEngine", "eventDisplay_8py.html#adf28bd8623ab6b58aed4be6ff3c089ba", null ],
+    [ "source", "eventDisplay_8py.html#aeda936f3b6d1f9205929acd87d78e466", null ],
     [ "sTree", "eventDisplay_8py.html#a2628f1da56474637e97bd02055a0be1b", null ],
     [ "top", "eventDisplay_8py.html#a38dbcabc35fe613684a8d655726736b7", null ],
     [ "Track", "eventDisplay_8py.html#a104f8dd996e0fd7d757fe470218d3b0f", null ],
