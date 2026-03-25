@@ -212,8 +212,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a39111485b9ec838493978ddfd461ab2e"><td class="memItemLeft" align="right" valign="top">static std::tuple&lt; Int_t, Int_t, Int_t, Int_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">StrawDecode</a> (Int_t detID)</td></tr>
-<tr class="separator:a39111485b9ec838493978ddfd461ab2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3e906a77fed45747cf8fd6084b571b5"><td class="memItemLeft" align="right" valign="top">static std::array&lt; Int_t, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#ae3e906a77fed45747cf8fd6084b571b5">StrawDecode</a> (Int_t detID)</td></tr>
+<tr class="separator:ae3e906a77fed45747cf8fd6084b571b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49574e3d2ed60566c2709b7effa6dc42"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a49574e3d2ed60566c2709b7effa6dc42">StrawEndPoints</a> (Int_t detID, TVector3 &amp;top, TVector3 &amp;bot)</td></tr>
 <tr class="separator:a49574e3d2ed60566c2709b7effa6dc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -324,7 +324,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00020">20</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00019">19</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad43527fbd6a42b9b35113435219caf0f" name="ad43527fbd6a42b9b35113435219caf0f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad43527fbd6a42b9b35113435219caf0f">&#9670;&#160;</a></span>strawtubes() <span class="overload">[1/4]</span></h2>
@@ -386,7 +386,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00047">47</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(<span class="stringliteral">&quot;strawtubes&quot;</span>, kTRUE, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd">kStraw</a>), <a class="code hl_variable" href="classstrawtubes.html#a137d9d8240e1c4841e92d2182b10ff91">fMedium</a>(medium) {}</div>
-<div class="ttc" id="aclassstrawtubes_html_a137d9d8240e1c4841e92d2182b10ff91"><div class="ttname"><a href="classstrawtubes.html#a137d9d8240e1c4841e92d2182b10ff91">strawtubes::fMedium</a></div><div class="ttdeci">std::string fMedium</div><div class="ttdoc">spatial resolution</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00085">strawtubes.h:85</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a137d9d8240e1c4841e92d2182b10ff91"><div class="ttname"><a href="classstrawtubes.html#a137d9d8240e1c4841e92d2182b10ff91">strawtubes::fMedium</a></div><div class="ttdeci">std::string fMedium</div><div class="ttdoc">spatial resolution</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00084">strawtubes.h:84</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -701,24 +701,24 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  415</span>    <span class="comment">// End of tracking station loop</span></div>
 <div class="line"><span class="lineno">  416</span>  }</div>
 <div class="line"><span class="lineno">  417</span>}</div>
-<div class="ttc" id="aclassstrawtubes_html_a14acb5455a4ee380c98f82739f249267"><div class="ttname"><a href="classstrawtubes.html#a14acb5455a4ee380c98f82739f249267">strawtubes::f_aperture_width</a></div><div class="ttdeci">Double_t f_aperture_width</div><div class="ttdoc">z-position of tracking station 4</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00069">strawtubes.h:69</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a150665aba5f021b053f06b1259e8ccd2"><div class="ttname"><a href="classstrawtubes.html#a150665aba5f021b053f06b1259e8ccd2">strawtubes::f_inner_straw_diameter</a></div><div class="ttdeci">Double_t f_inner_straw_diameter</div><div class="ttdoc">Aperture height (y)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00071">strawtubes.h:71</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a1b49204ad2db574995f7a5f5b3116e54"><div class="ttname"><a href="classstrawtubes.html#a1b49204ad2db574995f7a5f5b3116e54">strawtubes::f_station_length</a></div><div class="ttdeci">Double_t f_station_length</div><div class="ttdoc">Station envelope height (y)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00082">strawtubes.h:82</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a2c3b2535c871522868dc3f32d3b9a68c"><div class="ttname"><a href="classstrawtubes.html#a2c3b2535c871522868dc3f32d3b9a68c">strawtubes::f_wire_thickness</a></div><div class="ttdeci">Double_t f_wire_thickness</div><div class="ttdoc">Stereo view angle.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00077">strawtubes.h:77</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a35087aea2f908255b855d87d4a06a6cf"><div class="ttname"><a href="classstrawtubes.html#a35087aea2f908255b855d87d4a06a6cf">strawtubes::f_T2_z</a></div><div class="ttdeci">Double_t f_T2_z</div><div class="ttdoc">z-position of tracking station 1</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00066">strawtubes.h:66</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a3c4c6e033485f496b614f5253a2dc38c"><div class="ttname"><a href="classstrawtubes.html#a3c4c6e033485f496b614f5253a2dc38c">strawtubes::f_frame_material</a></div><div class="ttdeci">TString f_frame_material</div><div class="ttdoc">Sense wire thickness.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00078">strawtubes.h:78</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a594d1d5471ca4fe361c7c0b6951dd9b3"><div class="ttname"><a href="classstrawtubes.html#a594d1d5471ca4fe361c7c0b6951dd9b3">strawtubes::f_straw_pitch</a></div><div class="ttdeci">Double_t f_straw_pitch</div><div class="ttdoc">Outer Straw diameter.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00073">strawtubes.h:73</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a67f513030cfba1514327a3c945a05e02"><div class="ttname"><a href="classstrawtubes.html#a67f513030cfba1514327a3c945a05e02">strawtubes::f_T3_z</a></div><div class="ttdeci">Double_t f_T3_z</div><div class="ttdoc">z-position of tracking station 2</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00067">strawtubes.h:67</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a698d1452dea289218cab634354699517"><div class="ttname"><a href="classstrawtubes.html#a698d1452dea289218cab634354699517">strawtubes::f_aperture_height</a></div><div class="ttdeci">Double_t f_aperture_height</div><div class="ttdoc">Aperture width (x)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00070">strawtubes.h:70</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_a799da7ddd56aafed911f45f140a55dc7"><div class="ttname"><a href="classstrawtubes.html#a799da7ddd56aafed911f45f140a55dc7">strawtubes::f_delta_z_view</a></div><div class="ttdeci">Double_t f_delta_z_view</div><div class="ttdoc">Structure frame material.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00079">strawtubes.h:79</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_aa0fd9deb2887cacdbe8f5c94e80e4fa4"><div class="ttname"><a href="classstrawtubes.html#aa0fd9deb2887cacdbe8f5c94e80e4fa4">strawtubes::f_station_height</a></div><div class="ttdeci">Double_t f_station_height</div><div class="ttdoc">Station envelope width (x)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00081">strawtubes.h:81</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_aa387682355632f5a852a364fb25dd983"><div class="ttname"><a href="classstrawtubes.html#aa387682355632f5a852a364fb25dd983">strawtubes::f_T1_z</a></div><div class="ttdeci">Double_t f_T1_z</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00065">strawtubes.h:65</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_aa47f56cd57f547151af136210b51d674"><div class="ttname"><a href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">strawtubes::f_view_angle</a></div><div class="ttdeci">Double_t f_view_angle</div><div class="ttdoc">Distance (z) between layers.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00076">strawtubes.h:76</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_ab80522eb272e260d2f1a243e104d2d0d"><div class="ttname"><a href="classstrawtubes.html#ab80522eb272e260d2f1a243e104d2d0d">strawtubes::f_outer_straw_diameter</a></div><div class="ttdeci">Double_t f_outer_straw_diameter</div><div class="ttdoc">Inner Straw diameter.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00072">strawtubes.h:72</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_ac2e379c763a193ecaf2775d8ec3db2b2"><div class="ttname"><a href="classstrawtubes.html#ac2e379c763a193ecaf2775d8ec3db2b2">strawtubes::f_station_width</a></div><div class="ttdeci">Double_t f_station_width</div><div class="ttdoc">Distance (z) between stereo views.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00080">strawtubes.h:80</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_aeda0cf05872ca2e260fd695de5607110"><div class="ttname"><a href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">strawtubes::f_offset_layer</a></div><div class="ttdeci">Double_t f_offset_layer</div><div class="ttdoc">Distance (y) between straws in a layer.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00074">strawtubes.h:74</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_afd76b6aa474f6257df2257ce618b68c5"><div class="ttname"><a href="classstrawtubes.html#afd76b6aa474f6257df2257ce618b68c5">strawtubes::f_T4_z</a></div><div class="ttdeci">Double_t f_T4_z</div><div class="ttdoc">z-position of tracking station 3</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00068">strawtubes.h:68</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_afdeccc886ea2fb425f453e37d2ba7dba"><div class="ttname"><a href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">strawtubes::f_delta_z_layer</a></div><div class="ttdeci">Double_t f_delta_z_layer</div><div class="ttdoc">Offset (y) of straws between layers.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00075">strawtubes.h:75</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a14acb5455a4ee380c98f82739f249267"><div class="ttname"><a href="classstrawtubes.html#a14acb5455a4ee380c98f82739f249267">strawtubes::f_aperture_width</a></div><div class="ttdeci">Double_t f_aperture_width</div><div class="ttdoc">z-position of tracking station 4</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00068">strawtubes.h:68</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a150665aba5f021b053f06b1259e8ccd2"><div class="ttname"><a href="classstrawtubes.html#a150665aba5f021b053f06b1259e8ccd2">strawtubes::f_inner_straw_diameter</a></div><div class="ttdeci">Double_t f_inner_straw_diameter</div><div class="ttdoc">Aperture height (y)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00070">strawtubes.h:70</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a1b49204ad2db574995f7a5f5b3116e54"><div class="ttname"><a href="classstrawtubes.html#a1b49204ad2db574995f7a5f5b3116e54">strawtubes::f_station_length</a></div><div class="ttdeci">Double_t f_station_length</div><div class="ttdoc">Station envelope height (y)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00081">strawtubes.h:81</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a2c3b2535c871522868dc3f32d3b9a68c"><div class="ttname"><a href="classstrawtubes.html#a2c3b2535c871522868dc3f32d3b9a68c">strawtubes::f_wire_thickness</a></div><div class="ttdeci">Double_t f_wire_thickness</div><div class="ttdoc">Stereo view angle.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00076">strawtubes.h:76</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a35087aea2f908255b855d87d4a06a6cf"><div class="ttname"><a href="classstrawtubes.html#a35087aea2f908255b855d87d4a06a6cf">strawtubes::f_T2_z</a></div><div class="ttdeci">Double_t f_T2_z</div><div class="ttdoc">z-position of tracking station 1</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00065">strawtubes.h:65</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a3c4c6e033485f496b614f5253a2dc38c"><div class="ttname"><a href="classstrawtubes.html#a3c4c6e033485f496b614f5253a2dc38c">strawtubes::f_frame_material</a></div><div class="ttdeci">TString f_frame_material</div><div class="ttdoc">Sense wire thickness.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00077">strawtubes.h:77</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a594d1d5471ca4fe361c7c0b6951dd9b3"><div class="ttname"><a href="classstrawtubes.html#a594d1d5471ca4fe361c7c0b6951dd9b3">strawtubes::f_straw_pitch</a></div><div class="ttdeci">Double_t f_straw_pitch</div><div class="ttdoc">Outer Straw diameter.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00072">strawtubes.h:72</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a67f513030cfba1514327a3c945a05e02"><div class="ttname"><a href="classstrawtubes.html#a67f513030cfba1514327a3c945a05e02">strawtubes::f_T3_z</a></div><div class="ttdeci">Double_t f_T3_z</div><div class="ttdoc">z-position of tracking station 2</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00066">strawtubes.h:66</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a698d1452dea289218cab634354699517"><div class="ttname"><a href="classstrawtubes.html#a698d1452dea289218cab634354699517">strawtubes::f_aperture_height</a></div><div class="ttdeci">Double_t f_aperture_height</div><div class="ttdoc">Aperture width (x)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00069">strawtubes.h:69</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a799da7ddd56aafed911f45f140a55dc7"><div class="ttname"><a href="classstrawtubes.html#a799da7ddd56aafed911f45f140a55dc7">strawtubes::f_delta_z_view</a></div><div class="ttdeci">Double_t f_delta_z_view</div><div class="ttdoc">Structure frame material.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00078">strawtubes.h:78</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_aa0fd9deb2887cacdbe8f5c94e80e4fa4"><div class="ttname"><a href="classstrawtubes.html#aa0fd9deb2887cacdbe8f5c94e80e4fa4">strawtubes::f_station_height</a></div><div class="ttdeci">Double_t f_station_height</div><div class="ttdoc">Station envelope width (x)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00080">strawtubes.h:80</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_aa387682355632f5a852a364fb25dd983"><div class="ttname"><a href="classstrawtubes.html#aa387682355632f5a852a364fb25dd983">strawtubes::f_T1_z</a></div><div class="ttdeci">Double_t f_T1_z</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00064">strawtubes.h:64</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_aa47f56cd57f547151af136210b51d674"><div class="ttname"><a href="classstrawtubes.html#aa47f56cd57f547151af136210b51d674">strawtubes::f_view_angle</a></div><div class="ttdeci">Double_t f_view_angle</div><div class="ttdoc">Distance (z) between layers.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00075">strawtubes.h:75</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ab80522eb272e260d2f1a243e104d2d0d"><div class="ttname"><a href="classstrawtubes.html#ab80522eb272e260d2f1a243e104d2d0d">strawtubes::f_outer_straw_diameter</a></div><div class="ttdeci">Double_t f_outer_straw_diameter</div><div class="ttdoc">Inner Straw diameter.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00071">strawtubes.h:71</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ac2e379c763a193ecaf2775d8ec3db2b2"><div class="ttname"><a href="classstrawtubes.html#ac2e379c763a193ecaf2775d8ec3db2b2">strawtubes::f_station_width</a></div><div class="ttdeci">Double_t f_station_width</div><div class="ttdoc">Distance (z) between stereo views.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00079">strawtubes.h:79</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_aeda0cf05872ca2e260fd695de5607110"><div class="ttname"><a href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">strawtubes::f_offset_layer</a></div><div class="ttdeci">Double_t f_offset_layer</div><div class="ttdoc">Distance (y) between straws in a layer.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00073">strawtubes.h:73</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_afd76b6aa474f6257df2257ce618b68c5"><div class="ttname"><a href="classstrawtubes.html#afd76b6aa474f6257df2257ce618b68c5">strawtubes::f_T4_z</a></div><div class="ttdeci">Double_t f_T4_z</div><div class="ttdoc">z-position of tracking station 3</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00067">strawtubes.h:67</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_afdeccc886ea2fb425f453e37d2ba7dba"><div class="ttname"><a href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">strawtubes::f_delta_z_layer</a></div><div class="ttdeci">Double_t f_delta_z_layer</div><div class="ttdoc">Offset (y) of straws between layers.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00074">strawtubes.h:74</a></div></div>
 <div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00020">ShipGeoUtil.h:20</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a38dbcabc35fe613684a8d655726736b7"><div class="ttname"><a href="namespaceeventDisplay.html#a38dbcabc35fe613684a8d655726736b7">eventDisplay.top</a></div><div class="ttdeci">ROOT top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01240">eventDisplay.py:1240</a></div></div>
 </div><!-- fragment -->
@@ -1161,13 +1161,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00051">51</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>                                                  {</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">v_drift</a> = a;</div>
-<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">sigma_spatial</a> = b;</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
-<div class="ttc" id="aclassstrawtubes_html_ab683c19901a645b1f78a524a8f202384"><div class="ttname"><a href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">strawtubes::v_drift</a></div><div class="ttdeci">Double_t v_drift</div><div class="ttdoc">Station envelope length (z)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00083">strawtubes.h:83</a></div></div>
-<div class="ttc" id="aclassstrawtubes_html_aeda099b7d2519e31ee29b16977ff04d4"><div class="ttname"><a href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">strawtubes::sigma_spatial</a></div><div class="ttdeci">Double_t sigma_spatial</div><div class="ttdoc">drift velocity</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00084">strawtubes.h:84</a></div></div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00050">50</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                  {</div>
+<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">v_drift</a> = a;</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">sigma_spatial</a> = b;</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="ttc" id="aclassstrawtubes_html_ab683c19901a645b1f78a524a8f202384"><div class="ttname"><a href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">strawtubes::v_drift</a></div><div class="ttdeci">Double_t v_drift</div><div class="ttdoc">Station envelope length (z)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00082">strawtubes.h:82</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_aeda099b7d2519e31ee29b16977ff04d4"><div class="ttname"><a href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">strawtubes::sigma_spatial</a></div><div class="ttdeci">Double_t sigma_spatial</div><div class="ttdoc">drift velocity</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00083">strawtubes.h:83</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1247,8 +1247,8 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a39111485b9ec838493978ddfd461ab2e" name="a39111485b9ec838493978ddfd461ab2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39111485b9ec838493978ddfd461ab2e">&#9670;&#160;</a></span>StrawDecode()</h2>
+<a id="ae3e906a77fed45747cf8fd6084b571b5" name="ae3e906a77fed45747cf8fd6084b571b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3e906a77fed45747cf8fd6084b571b5">&#9670;&#160;</a></span>StrawDecode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1257,7 +1257,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt; Int_t, Int_t, Int_t, Int_t &gt; strawtubes::StrawDecode </td>
+          <td class="memname">std::array&lt; Int_t, 4 &gt; strawtubes::StrawDecode </td>
           <td>(</td>
           <td class="paramtype">Int_t&#160;</td>
           <td class="paramname"><em>detID</em></td><td>)</td>
@@ -1272,7 +1272,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00421">421</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  421</span>                                                                        {</div>
+<div class="fragment"><div class="line"><span class="lineno">  421</span>                                                      {</div>
 <div class="line"><span class="lineno">  422</span>  Int_t statnb, vnb, lnb, snb;</div>
 <div class="line"><span class="lineno">  423</span>  statnb = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a6ad4b7c8ba02235ab6ee7e23242e9434">detID</a> / 1e6;</div>
 <div class="line"><span class="lineno">  424</span>  vnb = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a6ad4b7c8ba02235ab6ee7e23242e9434">detID</a> - statnb * 1e6) / 1e5;</div>
@@ -1285,9 +1285,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  431</span>    LOG(warning) &lt;&lt; <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a6ad4b7c8ba02235ab6ee7e23242e9434">detID</a> &lt;&lt; <span class="stringliteral">&quot; -&gt; station: &quot;</span> &lt;&lt; statnb &lt;&lt; <span class="stringliteral">&quot;, view: &quot;</span> &lt;&lt; vnb</div>
 <div class="line"><span class="lineno">  432</span>                 &lt;&lt; <span class="stringliteral">&quot;, layer: &quot;</span> &lt;&lt; lnb &lt;&lt; <span class="stringliteral">&quot;, straw: &quot;</span> &lt;&lt; snb;</div>
 <div class="line"><span class="lineno">  433</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes detID is 7-digit!&quot;</span>;</div>
-<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">return</span> std::make_tuple(0, -1, -1, 0);</div>
+<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">return</span> {0, -1, -1, 0};</div>
 <div class="line"><span class="lineno">  435</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  436</span>    <span class="keywordflow">return</span> std::make_tuple(statnb, vnb, lnb, snb);</div>
+<div class="line"><span class="lineno">  436</span>    <span class="keywordflow">return</span> {statnb, vnb, lnb, snb};</div>
 <div class="line"><span class="lineno">  437</span>  }</div>
 <div class="line"><span class="lineno">  438</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a6ad4b7c8ba02235ab6ee7e23242e9434"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a6ad4b7c8ba02235ab6ee7e23242e9434">make_nTuple_SBT.detID</a></div><div class="ttdeci">hit detID</div><div class="ttdef"><b>Definition:</b> <a href="make__nTuple__SBT_8py_source.html#l00243">make_nTuple_SBT.py:243</a></div></div>
@@ -1336,7 +1336,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00443">443</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  446</span>{</div>
-<div class="line"><span class="lineno">  447</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [statnb, vnb, lnb, snb] = <a class="code hl_function" href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">StrawDecode</a>(fDetectorID);</div>
+<div class="line"><span class="lineno">  447</span>  <span class="keyword">const</span> <span class="keyword">auto</span> [statnb, vnb, lnb, snb] = <a class="code hl_function" href="classstrawtubes.html#ae3e906a77fed45747cf8fd6084b571b5">StrawDecode</a>(fDetectorID);</div>
 <div class="line"><span class="lineno">  448</span>  TString stat = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
 <div class="line"><span class="lineno">  449</span>  stat += statnb;</div>
 <div class="line"><span class="lineno">  450</span>  stat += <span class="stringliteral">&quot;_&quot;</span>;</div>
@@ -1388,7 +1388,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  496</span>  vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
 <div class="line"><span class="lineno">  497</span>  vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
 <div class="line"><span class="lineno">  498</span>}</div>
-<div class="ttc" id="aclassstrawtubes_html_a39111485b9ec838493978ddfd461ab2e"><div class="ttname"><a href="classstrawtubes.html#a39111485b9ec838493978ddfd461ab2e">strawtubes::StrawDecode</a></div><div class="ttdeci">static std::tuple&lt; Int_t, Int_t, Int_t, Int_t &gt; StrawDecode(Int_t detID)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8cxx_source.html#l00421">strawtubes.cxx:421</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ae3e906a77fed45747cf8fd6084b571b5"><div class="ttname"><a href="classstrawtubes.html#ae3e906a77fed45747cf8fd6084b571b5">strawtubes::StrawDecode</a></div><div class="ttdeci">static std::array&lt; Int_t, 4 &gt; StrawDecode(Int_t detID)</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8cxx_source.html#l00421">strawtubes.cxx:421</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a3d4bd8cc92b46f518e764a26ebbc1c73"><div class="ttname"><a href="namespaceana__ShipMuon.html#a3d4bd8cc92b46f518e764a26ebbc1c73">ana_ShipMuon.prefix</a></div><div class="ttdeci">str prefix</div><div class="ttdef"><b>Definition:</b> <a href="ana__ShipMuon_8py_source.html#l00333">ana_ShipMuon.py:333</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_ae4166920351f95f796990be56994c65e"><div class="ttname"><a href="namespacemakeDecay.html#ae4166920351f95f796990be56994c65e">makeDecay.rc</a></div><div class="ttdeci">ROOT rc</div><div class="ttdef"><b>Definition:</b> <a href="makeDecay_8py_source.html#l00111">makeDecay.py:111</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_ae3236870ff09ec4453db591c21323176"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ae3236870ff09ec4453db591c21323176">make_nTuple_SBT.path</a></div><div class="ttdeci">argparse path</div><div class="ttdef"><b>Definition:</b> <a href="make__nTuple__SBT_8py_source.html#l00045">make_nTuple_SBT.py:45</a></div></div>
@@ -1418,8 +1418,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00056">56</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">sigma_spatial</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00055">55</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4">sigma_spatial</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1446,8 +1446,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00055">55</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">v_drift</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00054">54</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classstrawtubes.html#ab683c19901a645b1f78a524a8f202384">v_drift</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1474,7 +1474,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Aperture width (x) </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00070">70</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00069">69</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1500,7 +1500,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>z-position of tracking station 4 </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00069">69</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00068">68</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1526,7 +1526,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Offset (y) of straws between layers. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00075">75</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00074">74</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1552,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Structure frame material. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00079">79</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00078">78</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1578,7 +1578,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Sense wire thickness. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00078">78</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00077">77</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1604,7 +1604,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Aperture height (y) </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00071">71</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00070">70</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1630,7 +1630,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Distance (y) between straws in a layer. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00074">74</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00073">73</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1656,7 +1656,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Inner Straw diameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00072">72</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00071">71</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1682,7 +1682,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Station envelope width (x) </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00081">81</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00080">80</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1708,7 +1708,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Station envelope height (y) </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00082">82</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00081">81</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1734,7 +1734,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Distance (z) between stereo views. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00080">80</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00079">79</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1760,7 +1760,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Outer Straw diameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00073">73</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00072">72</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1785,7 +1785,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Track information to be stored until the track leaves the active volume. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00065">65</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00064">64</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1811,7 +1811,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>z-position of tracking station 1 </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00066">66</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00065">65</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1837,7 +1837,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>z-position of tracking station 2 </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00067">67</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00066">66</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1863,7 +1863,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>z-position of tracking station 3 </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00068">68</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00067">67</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1889,7 +1889,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Distance (z) between layers. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00076">76</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00075">75</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1915,7 +1915,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Stereo view angle. </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00077">77</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00076">76</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1941,7 +1941,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>spatial resolution </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00085">85</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00084">84</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1967,7 +1967,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>drift velocity </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00084">84</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00083">83</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>
@@ -1993,7 +1993,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Station envelope length (z) </p>
 
-<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00083">83</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="strawtubes_8h_source.html#l00082">82</a> of file <a class="el" href="strawtubes_8h_source.html">strawtubes.h</a>.</p>
 
 </div>
 </div>

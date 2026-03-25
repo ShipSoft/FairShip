@@ -1,6 +1,7 @@
 var classshipDigiReco_1_1ShipDigiReco =
 [
     [ "__init__", "classshipDigiReco_1_1ShipDigiReco.html#af3eba756365a33fe6498b13d04577f20", null ],
+    [ "_compute_seed_state", "classshipDigiReco_1_1ShipDigiReco.html#a17c87ef63a1f7339ddcc5d707abcc03c", null ],
     [ "digitize", "classshipDigiReco_1_1ShipDigiReco.html#ad5784402bac7294d364aa95047a86c76", null ],
     [ "findGoodTracks", "classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5", null ],
     [ "findTracks", "classshipDigiReco_1_1ShipDigiReco.html#ae1d2a9ec233871d7bd585153cc7a1a28", null ],
