@@ -1163,6 +1163,8 @@ ROOT.gSystem.Load("libEGPythia6.so")
 ROOT.gSystem.Load("libPythia6.so")
 ROOT.gSystem.Load("libpythia8.so")
 
+ROOT.gInterpreter.Declare('#include "VectorMCPointSource.h"')
+
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
 if options.geoFile:
@@ -1206,14 +1208,14 @@ _candidates = {
     "VetoPoints": ("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond),
     "TimeDetPoints": ("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond),
     "StrawPoints": ("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle),
-    "RpcPoints": ("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare),
     "TargetPoints": ("TargetPoint", ROOT.kRed, ROOT.kFullSquare),
     "MTCDetPoint": ("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare),
     "SiliconTargetPoint": ("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare),
 }
 for key, (branch, colour, marker) in _candidates.items():
     if _tmpTree and _tmpTree.GetBranch(branch):
-        mcHits[key] = ROOT.FairMCPointDraw(branch, colour, marker)
+        source = ROOT.VectorMCPointSource[branch](branch)
+        mcHits[key] = ROOT.FairMCPointDraw(branch, source, colour, marker)
 
 if _tmpFile:
     _tmpFile.Close()

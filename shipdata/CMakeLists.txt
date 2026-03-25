@@ -8,3 +8,6 @@ ship_add_library(
   DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger
   EXTRA_DICT_HEADERS ISTLPointContainer.h
 )
+
+# Header-only template included at runtime by eventDisplay.py via cling
+install(FILES VectorMCPointSource.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
