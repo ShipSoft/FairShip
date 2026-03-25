@@ -1,5 +1,9 @@
 var NAVTREEINDEX28 =
 {
+"saveBasicParameters_8py.html":[12,0,11,27],
+"saveBasicParameters_8py.html#ad172d0b07addcf52b03b3252a2bd878f":[12,0,11,27,0],
+"saveBasicParameters_8py.html#aefdc93125d397ae6232f4d3286807b1f":[12,0,11,27,1],
+"saveBasicParameters_8py_source.html":[12,0,11,27],
 "shipDet__conf_8py.html":[12,0,11,29],
 "shipDet__conf_8py.html#a0507a6f94174d43157cb96b2984eb98d":[12,0,11,29,6],
 "shipDet__conf_8py.html#a2f1dbf4e6c24e237425ed38e92d377db":[12,0,11,29,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX28 =
 "strawtubesContFact_8cxx_source.html":[12,0,16,3],
 "strawtubesContFact_8h.html":[12,0,16,4],
 "strawtubesContFact_8h_source.html":[12,0,16,4],
-"strawtubesDetector_8py.html":[12,0,11,0,3],
-"strawtubesDetector_8py_source.html":[12,0,11,0,3],
-"strawtubesHit_8cxx.html":[12,0,16,5],
-"strawtubesHit_8cxx_source.html":[12,0,16,5],
-"strawtubesHit_8h.html":[12,0,16,6]
+"strawtubesDetector_8py.html":[12,0,11,0,3]
 };

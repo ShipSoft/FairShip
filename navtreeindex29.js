@@ -1,5 +1,9 @@
 var NAVTREEINDEX29 =
 {
+"strawtubesDetector_8py_source.html":[12,0,11,0,3],
+"strawtubesHit_8cxx.html":[12,0,16,5],
+"strawtubesHit_8cxx_source.html":[12,0,16,5],
+"strawtubesHit_8h.html":[12,0,16,6],
 "strawtubesHit_8h_source.html":[12,0,16,6],
 "strawtubesPoint_8cxx.html":[12,0,16,7],
 "strawtubesPoint_8cxx_source.html":[12,0,16,7],

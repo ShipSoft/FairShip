@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"mergeMbias_8py.html#a8d752950589c1ea80023881305e9eeab":[12,0,7,17,21],
+"mergeMbias_8py.html#a8e4d2fb81c1a62a82ce74ad8ae722d67":[12,0,7,17,1],
 "mergeMbias_8py.html#aad008d057c90762599791506da6cabf5":[12,0,7,17,7],
 "mergeMbias_8py.html#ab6d04f5767e060df14115d993461d528":[12,0,7,17,16],
 "mergeMbias_8py.html#abdf8b516207b70880c2dec0e7f7735b8":[12,0,7,17,13],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceadd__muonresponse.html":[10,0,1],
 "namespaceadd__muonresponse.html#a09495aade917e02ac0ebed7c98c142ca":[10,0,1,7],
 "namespaceadd__muonresponse.html#a0e6dfb886e28c9a5548f9147316a8efa":[10,0,1,3],
-"namespaceadd__muonresponse.html#a29b72ac3853266c162e109e30b028287":[10,0,1,1],
-"namespaceadd__muonresponse.html#a379e276fffa8319443f49b2249b754f2":[10,0,1,0],
-"namespaceadd__muonresponse.html#a52981cb8fd991a0b5e889fdbcedd5cb7":[10,0,1,4]
+"namespaceadd__muonresponse.html#a29b72ac3853266c162e109e30b028287":[10,0,1,1]
 };

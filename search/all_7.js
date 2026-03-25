@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['g_0',['g',['../namespaceeventDisplay.html#ab4fd2576eda0ea96f1b1fce928e6be77',1,'eventDisplay.g()'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g()'],['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g()']]],
-  ['g_1',['G',['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G()'],['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G()']]],
+  ['g_0',['G',['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G()'],['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G()']]],
+  ['g_1',['g',['../namespaceeventDisplay.html#ab4fd2576eda0ea96f1b1fce928e6be77',1,'eventDisplay.g()'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g()'],['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g()']]],
   ['g4only_2',['G4only',['../classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b',1,'FixedTargetGenerator']]],
   ['gamma_3',['gamma',['../namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700',1,'makeCascade']]],
   ['gapfromvacuum_4',['GapFromVacuum',['../classShipTAUMagneticSpectrometer.html#a8830b299f287f54198ff559416c58cae',1,'ShipTAUMagneticSpectrometer']]],
