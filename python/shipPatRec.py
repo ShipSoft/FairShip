@@ -896,7 +896,6 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
     max_dy = 50
     used_y12 = []
     used_y34 = []
-    n_matched = 0
 
     for i in np.argsort(deltas_y):
         dy = deltas_y[i]
@@ -916,7 +915,6 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
             recognized_tracks_combo.append(atrack)
             used_y12.append(i_12)
             used_y34.append(i_34)
-            n_matched += 1
 
     for i_12 in range(len(recognized_tracks_12)):
         if i_12 not in used_y12:
@@ -948,7 +946,7 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
         "tracks_combo: %d 12-tracks, %d 34-tracks, %d matched pairs, %d total combos",
         len(recognized_tracks_12),
         len(recognized_tracks_34),
-        n_matched,
+        len(used_y12),
         len(recognized_tracks_combo),
     )
 

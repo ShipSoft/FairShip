@@ -10,14 +10,14 @@ import rootUtils as ut
 import shipPatRec
 import shipunit as u
 import shipVertex
-
-logger = logging.getLogger(__name__)
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+
+logger = logging.getLogger(__name__)
 
 
 class ShipDigiReco:
@@ -277,8 +277,8 @@ class ShipDigiReco:
                 theTrack.checkConsistency()
             except ROOT.genfit.Exception as e:
                 n_prefit_fail += 1
-                print("Problem with track before fit, not consistent", atrack, theTrack)
-                print(e.what())
+                logger.warning("Problem with track before fit, not consistent %s %s", atrack, theTrack)
+                logger.warning(e.what())
                 ut.reportError(e)
             # do the fit
             try:
