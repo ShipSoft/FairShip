@@ -23,6 +23,20 @@ shipRoot_conf.configure()
 decorators.apply_decorators()
 
 
+def _file_accessible(path: str) -> bool:
+    """Check whether a file exists (local or remote via XRootD)."""
+    if path.startswith("root://"):
+        from urllib.parse import urlparse
+
+        from XRootD import client as xrd_client
+
+        parsed = urlparse(path)
+        fs = xrd_client.FileSystem(f"{parsed.scheme}://{parsed.netloc}")
+        status, _ = fs.stat(parsed.path)
+        return status.ok
+    return os.path.exists(path)
+
+
 def evExit() -> None:
     """Prevent double delete due to a FairRoot bug."""
     # Check whether the Eve window was closed/destructed
@@ -113,7 +127,9 @@ if not options.recoFile:
         options.recoFile = options.InputFile
         options.InputFile = options.InputFile.replace("_rec.root", ".root")
     else:
-        options.recoFile = options.InputFile.replace(".root", "_rec.root")
+        candidate = options.InputFile.replace(".root", "_rec.root")
+        if _file_accessible(candidate):
+            options.recoFile = candidate
 
 
 def printMCTrack(n: int, MCTrack) -> None:
@@ -1153,8 +1169,6 @@ if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
 inFile = ROOT.FairFileSource(options.InputFile)
-# Add reconstruction file as friend tree
-inFile.AddFriend(options.recoFile)
 fRun.SetSource(inFile)
 if options.OutputFile is None:
     options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
@@ -1216,6 +1230,8 @@ fMan.Init(1, 4, 10)  # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal d
 #
 fRman = ROOT.FairRootManager.Instance()
 sTree = fRman.GetInChain()
+if options.recoFile and _file_accessible(options.recoFile):
+    sTree.AddFriend("ship_reco_sim", options.recoFile)
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree)
 sGeo = ROOT.gGeoManager
