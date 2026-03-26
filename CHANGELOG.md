@@ -21,6 +21,7 @@ it in future.
 
 ### Changed
 
+* Change passive SiliconTarget Material from tungstenalloySND to pure tungstensifon
 * Use real pattern recognition (Artificial Retina) instead of fake PatRec in CI
 * Remove setting of FairMC links #1109
 * Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
