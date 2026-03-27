@@ -40,7 +40,6 @@ replace-imports-with-any = [
 ]
 
 ignore-missing-imports = [
-    "uproot", "uproot.*",
     "scipy", "scipy.*",
     "tabulate",
     "numpy", "numpy.*",
