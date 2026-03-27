@@ -128,6 +128,8 @@ reco_cmd = [
     geo_file,
     "-n",
     str(options.nEvents),
+    "--realPR",
+    "AR",
 ]
 if options.debug > 0:
     reco_cmd.append("--Debug")
