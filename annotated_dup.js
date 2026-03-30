@@ -88,6 +88,9 @@ var annotated_dup =
     [ "timeDetector", "namespacetimeDetector.html", [
       [ "timeDetector", "classtimeDetector_1_1timeDetector.html", "classtimeDetector_1_1timeDetector" ]
     ] ],
+    [ "tracking_benchmark", "namespacetracking__benchmark.html", [
+      [ "TrackingBenchmark", "classtracking__benchmark_1_1TrackingBenchmark.html", "classtracking__benchmark_1_1TrackingBenchmark" ]
+    ] ],
     [ "UpstreamTaggerDetector", "namespaceUpstreamTaggerDetector.html", [
       [ "UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector" ]
     ] ],

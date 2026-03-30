@@ -1275,6 +1275,30 @@ var namespaces_dup =
       [ "zDV", "namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe", null ],
       [ "zTa", "namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253", null ]
     ] ],
+    [ "run_tracking_benchmark", "namespacerun__tracking__benchmark.html", [
+      [ "run_phase", "namespacerun__tracking__benchmark.html#a1d8f150281346821d2717300c993a3ca", null ],
+      [ "bench", "namespacerun__tracking__benchmark.html#a9c19a4ab360b0363b297a2d45b6afdb1", null ],
+      [ "choices", "namespacerun__tracking__benchmark.html#aa48dd3742c688dacd0400587d71e95c6", null ],
+      [ "default", "namespacerun__tracking__benchmark.html#a310f0fc695a73331b080bf0a5e26d866", null ],
+      [ "fairship", "namespacerun__tracking__benchmark.html#a1914271356dcfa02da6722face9863f6", null ],
+      [ "float", "namespacerun__tracking__benchmark.html#a69275dcd6b4ef7d8a47b83292ab4470d", null ],
+      [ "geo_file", "namespacerun__tracking__benchmark.html#abd194ca8b2a6d90fa2e255db5636a289", null ],
+      [ "help", "namespacerun__tracking__benchmark.html#a9240c0556fd3625c4cbef3180d68040b", null ],
+      [ "histo_file", "namespacerun__tracking__benchmark.html#a23cf98731ce1bd9a94d473225cf423b9", null ],
+      [ "int", "namespacerun__tracking__benchmark.html#ad6da7a837803eccc78586193192e4050", null ],
+      [ "json_file", "namespacerun__tracking__benchmark.html#a7ea8d49422ae955482e2f159f486c61e", null ],
+      [ "None", "namespacerun__tracking__benchmark.html#a6028e7a9de31e5976d0fff46998abaf0", null ],
+      [ "options", "namespacerun__tracking__benchmark.html#adc1672f997019ab77726794fe2c2fdd6", null ],
+      [ "parser", "namespacerun__tracking__benchmark.html#abb1fd7968ce03cbc177bcc7b2fc948ef", null ],
+      [ "reco_cmd", "namespacerun__tracking__benchmark.html#a558c27dfa9eadfd69763d006386907a4", null ],
+      [ "reco_file", "namespacerun__tracking__benchmark.html#a31e55e57943aab6522a31a0d703ac5e9", null ],
+      [ "reco_script", "namespacerun__tracking__benchmark.html#af9229b0b2ade07a3fa24e24c984bd0f5", null ],
+      [ "sim_cmd", "namespacerun__tracking__benchmark.html#ac877adb617f49dc84d9dea141c9f7079", null ],
+      [ "sim_file", "namespacerun__tracking__benchmark.html#ad243cdcedf036bc8d1a144373053581d", null ],
+      [ "sim_script", "namespacerun__tracking__benchmark.html#ad199ed5b9b99c908ce67acda1d8f24db", null ],
+      [ "tag", "namespacerun__tracking__benchmark.html#a60e041dc38b7460fb6e744963d56af6e", null ],
+      [ "type", "namespacerun__tracking__benchmark.html#ab6b3af9f30f9eca3d93e62aa9fb1ab53", null ]
+    ] ],
     [ "runCharmHadProd", "namespacerunCharmHadProd.html", [
       [ "compactifyCascade", "namespacerunCharmHadProd.html#ae03908cdbe212aeb9709dd676686466d", null ],
       [ "makeBackground", "namespacerunCharmHadProd.html#ab8513ba48dca84d9ba0ec5b34c140a7d", null ],
@@ -1688,5 +1712,6 @@ var namespaces_dup =
       [ "top", "namespaceTrackExtrapolateTool.html#a4b06d4f17917897662a38cceeac605d2", null ],
       [ "z_ecal", "namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60", null ]
     ] ],
+    [ "tracking_benchmark", "namespacetracking__benchmark.html", "namespacetracking__benchmark" ],
     [ "UpstreamTaggerDetector", "namespaceUpstreamTaggerDetector.html", "namespaceUpstreamTaggerDetector" ]
 ];

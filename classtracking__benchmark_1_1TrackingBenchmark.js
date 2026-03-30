@@ -1,0 +1,25 @@
+var classtracking__benchmark_1_1TrackingBenchmark =
+[
+    [ "__init__", "classtracking__benchmark_1_1TrackingBenchmark.html#a49f74fb39d0c9862b4f4976e833f0d74", null ],
+    [ "__del__", "classtracking__benchmark_1_1TrackingBenchmark.html#a16825769361e41860ae4a5b5b9fbc2e5", null ],
+    [ "_fracMCsame", "classtracking__benchmark_1_1TrackingBenchmark.html#a88b132ab11154e664d21f19522f1bb94", null ],
+    [ "_get_ptruth_first", "classtracking__benchmark_1_1TrackingBenchmark.html#a8395b7239f3a4735ec49c51445243608", null ],
+    [ "_get_truth_pos_first", "classtracking__benchmark_1_1TrackingBenchmark.html#a61a742d9a78e49e92bb3eaeb8469197a", null ],
+    [ "_get_truth_slopes", "classtracking__benchmark_1_1TrackingBenchmark.html#afee539a40a96722a5d0c0bb9b14d7cfb", null ],
+    [ "_is_reconstructible", "classtracking__benchmark_1_1TrackingBenchmark.html#ab40a3bde38677b91fc36e6a91cc1daf6", null ],
+    [ "compute_metrics", "classtracking__benchmark_1_1TrackingBenchmark.html#a002ecb32d0e9560394657d10c7104023", null ],
+    [ "print_summary", "classtracking__benchmark_1_1TrackingBenchmark.html#a238c3d0b9b91950dc599beae4aca920a", null ],
+    [ "save_histograms", "classtracking__benchmark_1_1TrackingBenchmark.html#a4aeec4547316a67467cb120008e9073d", null ],
+    [ "save_json", "classtracking__benchmark_1_1TrackingBenchmark.html#ad585047aabb1df8b470a85f680f20e71", null ],
+    [ "_histos", "classtracking__benchmark_1_1TrackingBenchmark.html#a74bc2bbb9e1dc493febaeedd1ec0f9c5", null ],
+    [ "f_geo", "classtracking__benchmark_1_1TrackingBenchmark.html#a5421b14acc6ea3948fd0509474d36d5f", null ],
+    [ "f_reco", "classtracking__benchmark_1_1TrackingBenchmark.html#a5edc5a84fb8cc5b24b7af50251ada342", null ],
+    [ "f_sim", "classtracking__benchmark_1_1TrackingBenchmark.html#a2f082ca7238cc2e696ea8cbb10ccb65b", null ],
+    [ "metrics", "classtracking__benchmark_1_1TrackingBenchmark.html#a16582e52519ab554c714c732f5642cf5", null ],
+    [ "min_hits", "classtracking__benchmark_1_1TrackingBenchmark.html#ab3476521953687a4ac7fc0c570d50d0d", null ],
+    [ "min_stations", "classtracking__benchmark_1_1TrackingBenchmark.html#a02664c1adae8f589694929c0dd221680", null ],
+    [ "PDG", "classtracking__benchmark_1_1TrackingBenchmark.html#a50885c8ee8e5dd181cac58728e31ca65", null ],
+    [ "purity_cut", "classtracking__benchmark_1_1TrackingBenchmark.html#a229df0f4fb34524017a68f176b97a200", null ],
+    [ "reco_tree", "classtracking__benchmark_1_1TrackingBenchmark.html#a9f8c337d5e4ddb53567ed23709a29465", null ],
+    [ "sim_tree", "classtracking__benchmark_1_1TrackingBenchmark.html#a98ccaea6ccb2e92ad1b410f34d32e5f0", null ]
+];

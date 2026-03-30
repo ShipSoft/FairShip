@@ -92,10 +92,10 @@ $(document).ready(function(){initNavTree('md_shipgen_genie_config_README.html','
   <div class="headertitle"><div class="title">Configuration files for GENIE simulations </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md79"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md80"></a>
 Introduction</h1>
 <p>Following ROOT's deprecation of TPythia6, these files replace the Pythia6Decayer with Pythia8Decayer in GENIE.</p>
-<h1><a class="anchor" id="autotoc_md80"></a>
+<h1><a class="anchor" id="autotoc_md81"></a>
 Details</h1>
 <p>For more information, see:</p>
 <ul>
@@ -104,12 +104,12 @@ Details</h1>
 </ul>
 <p>To use these files, set the <code>GXMLPATH</code> environment variable to this folder before launching the simulation. This is done automatically by <code><a class="el" href="makeGenieEvents_8py.html">makeGenieEvents.py</a></code>.</p>
 <p>This folder mirrors the structure of the default GENIE configuration and currently only contains the files needed to switch from Pythia6Decayer to Pythia8Decayer.</p>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<h1><a class="anchor" id="autotoc_md82"></a>
 History</h1>
 <ul>
 <li>February 2026: Initial creation (Antonio Iuliano)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md83"></a>
 Notes on particle decays</h1>
 <p>Particle decays were previously configured in <code>UserPhysicsOptions.xml</code>. They are now provided in a "tune" folder. See for example: <a href="https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml">https://github.com/SND-LHC/sndsw/blob/master/shipgen/genie_config/SNDGHE19_00b/CommonDecay.xml</a></p>
 <p>GENIE no longer decays tau and charmed hadrons by default (this was the default in our old branch: <a href="https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml">https://github.com/ShipSoft/GENIE/blob/v2.12.6-ship2021/config/UserPhysicsOptions.xml</a>), so we no longer need to override these settings. </p>

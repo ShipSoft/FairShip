@@ -15,12 +15,13 @@ var searchData=
   ['width_5fnu_5ff_5ffbar_12',['Width_nu_f_fbar',['../classhnl_1_1HNLbranchings.html#a46c241a06ad4f3be33bef5c28dceb8e5',1,'hnl::HNLbranchings']]],
   ['width_5fquarks_5flepton_13',['Width_quarks_lepton',['../classhnl_1_1HNLbranchings.html#afc3da0c7a4a43f46c442861556424f7f',1,'hnl::HNLbranchings']]],
   ['width_5fquarks_5fneutrino_14',['Width_quarks_neutrino',['../classhnl_1_1HNLbranchings.html#a0dd1a2b4398c558e8567107c6e3fcb33',1,'hnl::HNLbranchings']]],
-  ['withevtgen_15',['WithEvtGen',['../classFixedTargetGenerator.html#a5ac1d30be0d2c97f573ba4bba3d3a919',1,'FixedTargetGenerator']]],
-  ['witht0estimate_16',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#af526a9662b90f007e826bbe03be143cb',1,'strawtubesDetector::strawtubesDetector']]],
-  ['wl_17',['wL',['../classTrackInfo.html#ad12e8894f804966d79ef97df812f35a8',1,'TrackInfo']]],
-  ['wr_18',['wR',['../classTrackInfo.html#a8f779eb4ac7406e66535a47d13c3230c',1,'TrackInfo']]],
-  ['write_19',['write',['../classShipGeoCave.html#a878e976ffd88bba945bb7578dc6ab1d6',1,'ShipGeoCave::write()'],['../structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36',1,'write():&#160;structcmd.h']]],
-  ['writehists_20',['writeHists',['../namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb',1,'rootUtils']]],
-  ['wx_21',['wx',['../classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1',1,'veto']]],
-  ['wy_22',['wy',['../classveto.html#a640ca9ef4299a581706070003a0e4c7c',1,'veto']]]
+  ['wilson_5finterval_15',['wilson_interval',['../namespacetracking__benchmark.html#a43d849a9d7aa8a659be88622a393b1f2',1,'tracking_benchmark']]],
+  ['withevtgen_16',['WithEvtGen',['../classFixedTargetGenerator.html#a5ac1d30be0d2c97f573ba4bba3d3a919',1,'FixedTargetGenerator']]],
+  ['witht0estimate_17',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#af526a9662b90f007e826bbe03be143cb',1,'strawtubesDetector::strawtubesDetector']]],
+  ['wl_18',['wL',['../classTrackInfo.html#ad12e8894f804966d79ef97df812f35a8',1,'TrackInfo']]],
+  ['wr_19',['wR',['../classTrackInfo.html#a8f779eb4ac7406e66535a47d13c3230c',1,'TrackInfo']]],
+  ['write_20',['write',['../classShipGeoCave.html#a878e976ffd88bba945bb7578dc6ab1d6',1,'ShipGeoCave::write()'],['../structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36',1,'write():&#160;structcmd.h']]],
+  ['writehists_21',['writeHists',['../namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb',1,'rootUtils']]],
+  ['wx_22',['wx',['../classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1',1,'veto']]],
+  ['wy_23',['wy',['../classveto.html#a640ca9ef4299a581706070003a0e4c7c',1,'veto']]]
 ];

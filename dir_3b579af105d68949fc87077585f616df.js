@@ -21,6 +21,7 @@ var dir_3b579af105d68949fc87077585f616df =
     [ "run_ACTSTracking.py", "run__ACTSTracking_8py.html", "run__ACTSTracking_8py" ],
     [ "run_fixedTarget.py", "run__fixedTarget_8py.html", "run__fixedTarget_8py" ],
     [ "run_simScript.py", "run__simScript_8py.html", "run__simScript_8py" ],
+    [ "run_tracking_benchmark.py", "run__tracking__benchmark_8py.html", "run__tracking__benchmark_8py" ],
     [ "runPythia8.py", "runPythia8_8py.html", "runPythia8_8py" ],
     [ "ShipAna.py", "ShipAna_8py.html", "ShipAna_8py" ],
     [ "ShipReco.py", "ShipReco_8py.html", "ShipReco_8py" ]
