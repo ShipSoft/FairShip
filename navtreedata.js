@@ -29,10 +29,11 @@ var NAVTREE =
     [ "Changelog", "md_CHANGELOG.html", [
       [ "Unreleased", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md3", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ],
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md5", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md6", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md4", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md5", null ]
+      ] ],
+      [ "26.03 - 2026-03-31", "md_CHANGELOG.html#autotoc_md6", [
         [ "Added", "md_CHANGELOG.html#autotoc_md7", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md8", null ],
         [ "Fixed", "md_CHANGELOG.html#autotoc_md9", null ],

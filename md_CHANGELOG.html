@@ -99,136 +99,100 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
-<ul>
-<li>Tracking performance benchmark for straw tube spectrometer (<code><a class="el" href="tracking__benchmark_8py.html">python/tracking_benchmark.py</a></code>, <code><a class="el" href="run__tracking__benchmark_8py.html">macro/run_tracking_benchmark.py</a></code>): measures efficiency, clone rate, ghost rate, and momentum/position/angular resolution using particle gun events with template matching pattern recognition</li>
-<li>CI job <code>run-tracking-benchmark</code> in build-run workflow to run the benchmark on every PR</li>
-</ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
-Fixed</h2>
-<ul>
-<li>Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580):<ul>
-<li>Halve the minimum hit threshold (<code>nM &lt; 25</code> to <code>nM &lt; 13</code>) to match the halved measurement layers</li>
-<li>Use PatRec fitted track parameters (k_y, b_y) to seed the Kalman fitter instead of hardcoded position/momentum, improving fit convergence</li>
-<li>Pass track parameters through <code>tracks_combination_using_extrapolation()</code> to the output</li>
-</ul>
-</li>
-</ul>
+Changed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
-Changed</h2>
-<ul>
-<li>Change passive <a class="el" href="classSiliconTarget.html">SiliconTarget</a> Material from tungstenalloySND to pure tungstensifon</li>
-<li>Use real pattern recognition (Artificial Retina) instead of fake PatRec in CI</li>
-<li>Remove setting of FairMC links #1109</li>
-<li>Rename <code>ShipHit</code> to <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> and move from <code>shipdata/</code> to <code>Detector/</code>, consistent with the <code><a class="el" href="classSHiP_1_1DetectorPoint.html">SHiP::DetectorPoint</a></code> pattern</li>
-<li>Clean up <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> subclass hierarchy: fix destructors, <code>override</code> specifiers, <code>Print()</code> const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations</li>
-<li>Remove outdated version gates for <a class="el" href="namespacePythia8.html">Pythia8</a> &lt; 8.300, ROOT &lt; 6.32, and old Geant4VMC</li>
-<li>Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)</li>
-<li>Modernise C++ code with C++20/17 features: <code>map::contains()</code>, <code>std::ranges::transform</code>, <code>std::ranges::copy</code>, range-for loops, and structured bindings</li>
-<li>Use <code>std::span</code> for <code>MeanMaterialBudget</code> parameters (compile-time size checking) and <code><a class="el" href="classShipCompField.html#abdc692b942a02b69e2dac5f8113f5a13" title="Get the vector of fields.">ShipCompField::getCompFields</a></code> return type (avoids unnecessary copy)</li>
-<li>Make the MTC scintillating tile size configurable (#1091)</li>
-<li>Change the default magnetic field of MTC (-1.2 T -&gt; -1.7 T) and the size of the scintillating tile (1 cm -&gt; 5 cm) (#1091)</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
 Fixed</h2>
-<ul>
-<li>Fix <code>StrawDecode</code> Python indexing: change return type from <code>std::tuple</code> to <code>std::array</code> so cppyy maps <code>operator[]</code> to <code>__getitem__</code>, unblocking <code><a class="el" href="shipPatRec_8py.html">shipPatRec.py</a></code> and <code><a class="el" href="shipStrawTracking_8py.html">shipStrawTracking.py</a></code></li>
-<li>Fix EventDisplay "Branch not found" errors for MC point branches after <code>std::vector</code> migration (#1126)</li>
-<li>Fix <code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code> off-by-one returning <code>kFALSE</code> when a muon is found on the last event, and gracefully stop the MC run via <code>gMC-&gt;StopRun()</code> instead of triggering FairRoot's <code>exit(0)</code></li>
-<li>Fix duplicate <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a>&lt;<a class="el" href="classvetoPoint.html">vetoPoint</a>&gt;</code> rootmap entry warning by removing redundant LinkDef pragma from <code>muonShieldOptimization</code></li>
-<li>Fix uninitialised fDetPoints pointer in <a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a> base class</li>
-<li>Fix TStreamerInfo warnings for <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> template instantiations by registering base class without streamer (<code>-</code>) in each detector's LinkDef</li>
-<li>Fix TStreamerInfo warnings for <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a> and generator classes by suppressing unnecessary streamer generation</li>
-<li>Fix discarded <code>str(key)</code> result in <code>bookProf()</code> — TProfile name was not converted</li>
-<li>Fix <code>os._exit()</code> bypassing cleanup in <code><a class="el" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">rootUtils.checkFileExists()</a></code> — use <code>sys.exit()</code></li>
-<li>Fix mutable default arguments in <code><a class="el" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">rootUtils.readHists()</a></code> and <code><a class="el" href="namespacegeomGeant4.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29">geomGeant4.printWeightsandFields()</a></code></li>
-<li>Fix unclosed file handles in <a class="el" href="namespacereadDecayTable.html">readDecayTable</a>, <a class="el" href="namespacepythia8__conf.html">pythia8_conf</a>, and <a class="el" href="namespacepythia8darkphoton__conf.html">pythia8darkphoton_conf</a></li>
-<li>Fix closure variable binding bug in event display toggle callbacks</li>
-<li>Fix null dereference in <a class="el" href="classShipFieldMaker.html" title="Creates various magnetic fields and assigns them to geometry regions.">ShipFieldMaker</a> when VMCWORKDIR is unset</li>
-<li>Fix uninitialised gField_ pointer in FairShipFields</li>
-<li>Fix null dereference in <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> on missing input file or histogram</li>
-<li>Fix off-by-one in <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> target node access</li>
-<li>Fix uninitialised members in <a class="el" href="classvetoHit.html">vetoHit</a>, <a class="el" href="classstrawtubesHit.html">strawtubesHit</a>, and <a class="el" href="classShipMuonShield.html">ShipMuonShield</a></li>
-<li>Change <a class="el" href="classvetoHit.html">vetoHit</a> and <a class="el" href="classstrawtubesHit.html">strawtubesHit</a> flag member from Float_t to Bool_t to match actual usage</li>
-<li>Fix NaN mass/energy for photons in <a class="el" href="classShipMCTrack.html">ShipMCTrack</a> due to floating-point rounding (#384)</li>
-<li>Move <a class="el" href="classTimeDetHit.html">TimeDetHit</a> v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)</li>
-<li>Fix event display errors for nonexistent MC point branches (#900)</li>
-<li>Fix digitisation crash when optional detector branches are missing (#738)</li>
-<li>Fix <a class="el" href="classsplitcalHit.html">splitcalHit</a> dropping MC point arrival time in digitisation (#925)</li>
-<li>Fix argparse -f/subparser conflict in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> by using action="append" (#1044)</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md6"></a>
-Changed</h2>
-<ul>
-<li>Implement Detector base class. Now the veto detector uses doubles rather than floats. #1079</li>
-<li>Migrate SND detectors to <a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a> base class (<a class="el" href="classMTCDetector.html">MTCDetector</a>, <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, <a class="el" href="classTarget.html">Target</a>, <a class="el" href="classTargetTracker.html">TargetTracker</a>)</li>
-<li>Migrate <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> to <a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a> base class</li>
-<li>Extract duplicated <code>InitMedium</code> into <code><a class="el" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></code> free function (<a class="el" href="ShipGeoUtil_8h.html">shipdata/ShipGeoUtil.h</a>)</li>
-<li>Expand ruff lint rules (<a class="el" href="classB.html">B</a>, <a class="el" href="classC4.html" title="class C4 in group 2">C4</a>, SIM, UP, RUF) and fix all detected issues</li>
-<li>Replace bare <code>except:</code> with specific exception types in core modules</li>
-<li>Expand mypy pre-commit coverage to <a class="el" href="namespacerootUtils.html">rootUtils</a>, <a class="el" href="namespacegeomGeant4.html">geomGeant4</a>, <a class="el" href="namespacereadDecayTable.html">readDecayTable</a>, <a class="el" href="namespacegeometry__config.html">geometry_config</a>, <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a></li>
-<li>Modernise C++: replace NULL with nullptr, <a class="el" href="classC.html">C</a> headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes</li>
-<li>Take vectors by const ref in <a class="el" href="classShipTargetStation.html#a3f10bb33c08c56c4a4fbe94b044a6eaf">ShipTargetStation::SetLayerPosMat</a>; fix assert logic bug</li>
-<li>Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param</li>
-<li>Remove dead SND@LHC code from event display (#900)</li>
-</ul>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Removed</h2>
+<h1><a class="anchor" id="autotoc_md6"></a>
+26.03 - 2026-03-31</h1>
 <h2><a class="anchor" id="autotoc_md7"></a>
 Added</h2>
 <ul>
+<li>Tracking performance benchmark for straw tube spectrometer (<code><a class="el" href="tracking__benchmark_8py.html">python/tracking_benchmark.py</a></code>, <code><a class="el" href="run__tracking__benchmark_8py.html">macro/run_tracking_benchmark.py</a></code>): measures efficiency, clone rate, ghost rate, and momentum/position/angular resolution using particle gun events with template matching pattern recognition</li>
 <li>Add Findgenfit2.cmake module to support both upstream GenFit and the fork</li>
-<li>New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map</li>
-<li>Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer</li>
-<li>Add clang-tidy and pyrefly static analysis to CI</li>
+<li>New warm MS option TRY_2025 (Stellatryon v.2) and its field map</li>
+<li>Add GENIE configs for <a class="el" href="namespacePythia8.html">Pythia8</a> instead of Pythia6 (#1054)</li>
+<li>Add <code><a class="el" href="classSHiP_1_1DetectorPoint.html">SHiP::DetectorPoint</a></code> base class with EventID for all detector points (#1059, #1075)</li>
+<li>Add file glob and <code>nEvents=-1</code> support to <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> input files (#1041)</li>
+<li>Store coordinates of MTC hits (#1026)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md8"></a>
 Changed</h2>
 <ul>
-<li>Add type annotations across the Python codebase using pyrefly infer</li>
-<li>Add mypy pre-commit hook for gradual type checking</li>
-<li>Fix pickle serialisation file modes in <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a> (text → binary)</li>
-<li>Fix type annotations for physics quantities (axis limits, momentum/IP cuts) from int to float</li>
-<li>Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059 #1075</li>
-<li>Change a const char* in <a class="el" href="classSHiP_1_1Generator.html">SHiP::Generator</a> to optional&lt;string&gt;. #1053</li>
-<li>Only get evtNo in <a class="el" href="classShipStack.html">ShipStack</a> if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051</li>
-<li><a class="el" href="namespacemakeGenieEvents.html">makeGenieEvents</a>: automatically set GXMLPATH to the genie_config folder. Remove option &ndash;nudet since now GXMLPATH always needs to be set.</li>
-<li>Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047</li>
-<li>Add file glob to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041</li>
-<li>Turn warning to debug in <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> to prevent overly verbose output. #1036</li>
-<li>Changed input file reading to TChain and modified <a class="el" href="run__simScript_8py.html">run_simScript.py</a> command line argument to take list of files. #1027</li>
-<li>UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)</li>
-<li>Bump minimum ROOT version to 6.36</li>
-<li>Bump minimum CMake version to 3.20 (same as ROOT)</li>
-<li>Change function SND in <a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a></li>
-<li>Change disable magnetic field in the MS and remove field map upload in <a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></li>
-<li>Change the <a class="el" href="classShipMuonShield.html">ShipMuonShield</a> script to accept new magnet configuration: no fixed number of magnets and variable z-gap between them.</li>
-<li>Change naming convention for simulation files to <code>{sim,geo,params}_{uuid4}.root</code>, with optional <code>--tag</code> parameter to specify custom identifier</li>
+<li>Implement <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> base class; veto detector now uses doubles (#1079)</li>
+<li>Migrate SND detectors (<a class="el" href="classMTCDetector.html">MTCDetector</a>, <a class="el" href="classSiliconTarget.html">SiliconTarget</a>, <a class="el" href="classTarget.html">Target</a>, <a class="el" href="classTargetTracker.html">TargetTracker</a>) and <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> to <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> base class</li>
+<li>Rename <code>ShipHit</code> to <code><a class="el" href="classSHiP_1_1DetectorHit.html">SHiP::DetectorHit</a></code> and clean up subclass hierarchy</li>
+<li>Extract duplicated <code>InitMedium</code> into <code><a class="el" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></code> free function</li>
+<li>Make <code><a class="el" href="classSHiP_1_1Generator.html">SHiP::Generator</a></code> base class for all generators (#1047); change <code>const char*</code> to <code>optional&lt;string&gt;</code> (#1053)</li>
+<li>Input file reading uses TChain; <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> accepts list of files (#1027)</li>
+<li>Make MTC scintillating tile size configurable; change default field (-1.2 T to -1.7 T) and tile size (1 cm to 5 cm) (#1091)</li>
+<li>Remove setting of FairMC links (#1109)</li>
+<li>Change passive <a class="el" href="classSiliconTarget.html">SiliconTarget</a> material from tungstenalloySND to pure tungsten</li>
+<li>Change naming convention for simulation files to <code>{sim,geo,params}_{uuid4}.root</code>, with optional <code>--tag</code> parameter</li>
+<li>Change <a class="el" href="classShipMuonShield.html">ShipMuonShield</a> to accept new magnet configuration: no fixed number of magnets and variable z-gap between them</li>
+<li>Disable magnetic field in the MS and remove field map upload in <code><a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></code></li>
+<li>Update <code><a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a></code> to save tracks for hits in post-target sensitive plane</li>
+<li>Change function SND in <code><a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a></code></li>
+<li>UseGeneralProcess only set to false when cross-sections need changing</li>
+<li><code><a class="el" href="namespacemakeGenieEvents.html">makeGenieEvents</a></code>: automatically set GXMLPATH to genie_config folder; remove <code>--nudet</code> option</li>
+<li>Only get evtNo in <a class="el" href="classShipStack.html">ShipStack</a> if there are tracks (#1051)</li>
+<li>Turn warning to debug in <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> (#1036)</li>
+<li>Bump minimum ROOT to 6.36, CMake to 3.20, C++ standard to C++20</li>
+<li>Remove outdated dependency version gates for <a class="el" href="namespacePythia8.html">Pythia8</a> &lt; 8.300, ROOT &lt; 6.32, and old Geant4VMC</li>
+<li>Modernise C++: use C++20 features (<code>map::contains</code>, <code>ranges</code>, structured bindings), <code>std::span</code>, nullptr, override, <code>= delete</code></li>
+<li>Expand ruff lint rules and fix Python code quality issues; replace bare <code>except:</code> with specific exception types</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md9"></a>
 Fixed</h2>
 <ul>
-<li>Fix clang-tidy findings: null-check getenv, incorrect rounding, pointer arithmetic on polymorphic type, integer abs on floats, VLA, literal truncation, unused variables, and using-namespace directives</li>
-<li>Fix <code>errorSummary</code> not printing its header (bare string expression instead of <code>print</code>)</li>
-<li>Fix <code>reportError</code>/<code>errorSummary</code> using fragile &lsquo;sys.modules[&rsquo;<b>main</b>'].log` pattern; use module-level counter instead</li>
+<li>Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580)</li>
+<li>Fix <code>StrawDecode</code> Python indexing: change return type from <code>std::tuple</code> to <code>std::array</code> so cppyy maps <code>operator[]</code> to <code>__getitem__</code></li>
+<li>Fix EventDisplay "Branch not found" errors for MC point branches after <code>std::vector</code> migration (#1126)</li>
+<li>Fix EventDisplay errors for nonexistent MC point branches (#900)</li>
+<li>Fix EventDisplay initialisation order for FairRunAna/FairEventManager</li>
+<li>Fix EventDisplay handling of reco files using native <code>AddFriend</code></li>
+<li>Fix GenFit 02-03-00 compatibility: replace removed <code>genfit::BellField</code> with <code><a class="el" href="classShipBellField.html">ShipBellField</a></code>; explicitly parse genfit2 headers for 26.03 stack</li>
+<li>Fix generator Python bindings by removing <code>//!</code> directives from public method declarations</li>
+<li>Fix <code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code> off-by-one at last event; gracefully stop via <code>gMC-&gt;StopRun()</code> instead of FairRoot's <code>exit(0)</code></li>
+<li>Fix <code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code> to support both TClonesArray and std::vector input formats</li>
+<li>Fix duplicate <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a>&lt;<a class="el" href="classvetoPoint.html">vetoPoint</a>&gt;</code> rootmap entry warning</li>
+<li>Fix TStreamerInfo warnings for <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> instantiations, generators, and <a class="el" href="classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points.">ISTLPointContainer</a></li>
+<li>Fix uninitialised <code>fDetPoints</code> pointer in <code><a class="el" href="classSHiP_1_1Detector.html">SHiP::Detector</a></code> base class</li>
+<li>Fix NaN mass/energy for photons in <a class="el" href="classShipMCTrack.html">ShipMCTrack</a> due to floating-point rounding (#384)</li>
+<li>Move <a class="el" href="classTimeDetHit.html">TimeDetHit</a> v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)</li>
+<li>Fix digitisation crash when optional detector branches are missing (#738)</li>
+<li>Fix <a class="el" href="classsplitcalHit.html">splitcalHit</a> dropping MC point arrival time in digitisation (#925)</li>
+<li>Fix argparse -f/subparser conflict in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> (#1044)</li>
+<li>Fix duplicated events in digitisation output (#1028)</li>
 <li>Fix file-filtering logic to support STL branches</li>
-<li>Update <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> to support both TClonesArray and std::vector input formats for MCTrack and <a class="el" href="classvetoPoint.html">vetoPoint</a> branches</li>
-<li>Fix function call in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use SetPhiRandomize instead of deprecated SetPhiRandom</li>
-<li>Update <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a> to save tracks for hits in post-target sensitive plane</li>
+<li>Fix <code>SetPhiRandom</code> to <code>SetPhiRandomize</code> in <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
+<li>Clamp random seed to PYTHIA8's maximum allowed value (900000000)</li>
 <li>Set correct trackIDs for <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> class</li>
-<li>Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds</li>
-<li>Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028</li>
+<li>Disable multi-threading explicitly, as it is not supported in FairShip</li>
+<li>Fix pickle serialisation file modes in <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a> (text to binary)</li>
+<li>Fix type annotations for physics quantities from int to float</li>
+<li>Fix null dereferences in <a class="el" href="classShipFieldMaker.html" title="Creates various magnetic fields and assigns them to geometry regions.">ShipFieldMaker</a>, FairShipFields, and <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
+<li>Fix uninitialised members in <a class="el" href="classvetoHit.html">vetoHit</a>, <a class="el" href="classstrawtubesHit.html">strawtubesHit</a>, <a class="el" href="classShipMuonShield.html">ShipMuonShield</a>; change flag from Float_t to Bool_t</li>
+<li>Fix off-by-one in <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> target node access</li>
+<li>Fix <code>errorSummary</code>/<code>reportError</code> logging issues in <a class="el" href="namespacerootUtils.html">rootUtils</a></li>
+<li>Fix closure variable binding bug in event display toggle callbacks</li>
+<li>Fix unclosed file handles in <a class="el" href="namespacereadDecayTable.html">readDecayTable</a>, <a class="el" href="namespacepythia8__conf.html">pythia8_conf</a>, and <a class="el" href="namespacepythia8darkphoton__conf.html">pythia8darkphoton_conf</a></li>
+<li>Fix mutable default arguments in <code><a class="el" href="namespacerootUtils.html#a61db3e66b871a770b6bc264b9e3ac33e">rootUtils.readHists()</a></code> and <code><a class="el" href="namespacegeomGeant4.html#a0f2dbb7cfd99fcab16c9f0edb9d36a29">geomGeant4.printWeightsandFields()</a></code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md10"></a>
 Removed</h2>
 <ul>
-<li>Remove g4Ex scripts, which are unused and rely on g4py and Geant4 python imports</li>
+<li>Remove g4Ex scripts</li>
 <li>Remove old (CDR) target configuration; Jun25 is now the only supported target</li>
-<li>Remove unused ShipStyle, which seems copy-pasted from LHCb</li>
-<li>Remove old scripts run_simEcal.py and flux_map.py</li>
-<li>Remove unused functions and dead code from <a class="el" href="namespacerootUtils.html">rootUtils</a>: <code>printout</code>, <code>setAttributes</code>, <code>container_sizes</code>, <code>stripOffBranches</code>, <code>findMaximumAndMinimum</code>, <code>makeIntegralDistrib</code>, <code>PyListOfLeaves</code></li>
+<li>Remove unused ShipStyle, run_simEcal.py, and flux_map.py</li>
+<li>Remove unused functions and dead code from <a class="el" href="namespacerootUtils.html">rootUtils</a></li>
 <li>Remove unused <a class="el" href="namespacerootUtils.html">rootUtils</a> imports from <code><a class="el" href="dumpEvent_8py.html">dumpEvent.py</a></code> and <code><a class="el" href="extractMuonsAndUpdateWeight_8py.html">extractMuonsAndUpdateWeight.py</a></code></li>
-<li>Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)</li>
-<li>Remove unused legacy ShipGeo.py (superseded by <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a>)</li>
-<li>Remove unused create_field_perturbation.py script</li>
-<li>New_HA_Design and warm_opt muon shield configuration are no longer supported</li>
+<li>Remove TDirectory pythonisation backport (now provided by ROOT &gt;= 6.32)</li>
+<li>Remove unused legacy ShipGeo.py and create_field_perturbation.py</li>
+<li>Remove SND@LHC leftover code from event display (#900)</li>
+<li>New_HA_Design and warm_opt muon shield configurations no longer supported</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md11"></a>
 25.12 - 2025-12-22</h1>
