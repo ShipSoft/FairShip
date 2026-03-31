@@ -11,136 +11,88 @@ Until April 2024 (inclusive) no changelog was kept. We might try to reconstruct
 it in future.
 
 ## Unreleased
-
 ### Added
 
 * Tracking performance benchmark for straw tube spectrometer (`python/tracking_benchmark.py`, `macro/run_tracking_benchmark.py`): measures efficiency, clone rate, ghost rate, and momentum/position/angular resolution using particle gun events with template matching pattern recognition
-* CI job `run-tracking-benchmark` in build-run workflow to run the benchmark on every PR
-
-### Fixed
-
-* Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580):
-  - Halve the minimum hit threshold (`nM < 25` to `nM < 13`) to match the halved measurement layers
-  - Use PatRec fitted track parameters (k_y, b_y) to seed the Kalman fitter instead of hardcoded position/momentum, improving fit convergence
-  - Pass track parameters through `tracks_combination_using_extrapolation()` to the output
+* Add Findgenfit2.cmake module to support both upstream GenFit and the fork
+* New warm MS option TRY_2025 (Stellatryon v.2) and its field map
+* Add GENIE configs for Pythia8 instead of Pythia6 (#1054)
+* Add `SHiP::DetectorPoint` base class with EventID for all detector points (#1059, #1075)
+* Add file glob and `nEvents=-1` support to `run_simScript.py` input files (#1041)
+* Store coordinates of MTC hits (#1026)
 
 ### Changed
 
-* Change passive SiliconTarget Material from tungstenalloySND to pure tungstensifon
-* Use real pattern recognition (Artificial Retina) instead of fake PatRec in CI
-* Remove setting of FairMC links #1109
-* Rename `ShipHit` to `SHiP::DetectorHit` and move from `shipdata/` to `Detector/`, consistent with the `SHiP::DetectorPoint` pattern
-* Clean up `SHiP::DetectorHit` subclass hierarchy: fix destructors, `override` specifiers, `Print()` const-correctness, redundant includes, uninitialised members, parameter const-correctness, and bit-shift operations
-
-* Remove outdated version gates for Pythia8 < 8.300, ROOT < 6.32, and old Geant4VMC
-* Bump C++ standard from 17 to 20 (ROOT 6.36 requires at least 17)
-* Modernise C++ code with C++20/17 features: `map::contains()`, `std::ranges::transform`, `std::ranges::copy`, range-for loops, and structured bindings
-* Use `std::span` for `MeanMaterialBudget` parameters (compile-time size checking) and `ShipCompField::getCompFields` return type (avoids unnecessary copy)
-* Make the MTC scintillating tile size configurable (#1091)
-* Change the default magnetic field of MTC (-1.2 T -> -1.7 T) and the size of the scintillating tile (1 cm -> 5 cm) (#1091)
+* Implement `SHiP::Detector` base class; veto detector now uses doubles (#1079)
+* Migrate SND detectors (MTCDetector, SiliconTarget, Target, TargetTracker) and exitHadronAbsorber to `SHiP::Detector` base class
+* Rename `ShipHit` to `SHiP::DetectorHit` and clean up subclass hierarchy
+* Extract duplicated `InitMedium` into `ShipGeo::InitMedium` free function
+* Make `SHiP::Generator` base class for all generators (#1047); change `const char*` to `optional<string>` (#1053)
+* Input file reading uses TChain; `run_simScript.py` accepts list of files (#1027)
+* Make MTC scintillating tile size configurable; change default field (-1.2 T to -1.7 T) and tile size (1 cm to 5 cm) (#1091)
+* Remove setting of FairMC links (#1109)
+* Change passive SiliconTarget material from tungstenalloySND to pure tungsten
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter
+* Change ShipMuonShield to accept new magnet configuration: no fixed number of magnets and variable z-gap between them
+* Disable magnetic field in the MS and remove field map upload in `run_fixedTarget.py`
+* Update `run_fixedTarget` to save tracks for hits in post-target sensitive plane
+* Change function SND in `shipDet_conf.py`
+* UseGeneralProcess only set to false when cross-sections need changing
+* `makeGenieEvents`: automatically set GXMLPATH to genie_config folder; remove `--nudet` option
+* Only get evtNo in ShipStack if there are tracks (#1051)
+* Turn warning to debug in MuonBackGenerator (#1036)
+* Bump minimum ROOT to 6.36, CMake to 3.20, C++ standard to C++20
+* Remove outdated dependency version gates for Pythia8 < 8.300, ROOT < 6.32, and old Geant4VMC
+* Modernise C++: use C++20 features (`map::contains`, `ranges`, structured bindings), `std::span`, nullptr, override, `= delete`
+* Expand ruff lint rules and fix Python code quality issues; replace bare `except:` with specific exception types
 
 ### Fixed
 
-* Fix `StrawDecode` Python indexing: change return type from `std::tuple` to `std::array` so cppyy maps `operator[]` to `__getitem__`, unblocking `shipPatRec.py` and `shipStrawTracking.py`
+* Fix pattern recognition producing far fewer tracks than expected after geometry change from 2 planes to 1 plane per view (#580)
+* Fix `StrawDecode` Python indexing: change return type from `std::tuple` to `std::array` so cppyy maps `operator[]` to `__getitem__`
 * Fix EventDisplay "Branch not found" errors for MC point branches after `std::vector` migration (#1126)
-* Fix `MuonBackGenerator` off-by-one returning `kFALSE` when a muon is found on the last event, and gracefully stop the MC run via `gMC->StopRun()` instead of triggering FairRoot's `exit(0)`
-* Fix duplicate `SHiP::Detector<vetoPoint>` rootmap entry warning by removing redundant LinkDef pragma from `muonShieldOptimization`
-* Fix uninitialised fDetPoints pointer in SHiP::Detector base class
-* Fix TStreamerInfo warnings for `SHiP::Detector` template instantiations by registering base class without streamer (`-`) in each detector's LinkDef
-* Fix TStreamerInfo warnings for ISTLPointContainer and generator classes by suppressing unnecessary streamer generation
-* Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
-* Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`
-* Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`
-* Fix unclosed file handles in readDecayTable, pythia8_conf, and pythia8darkphoton_conf
-* Fix closure variable binding bug in event display toggle callbacks
-* Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
-* Fix uninitialised gField_ pointer in FairShipFields
-* Fix null dereference in FixedTargetGenerator on missing input file or histogram
-* Fix off-by-one in FixedTargetGenerator target node access
-* Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
-* Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
+* Fix EventDisplay errors for nonexistent MC point branches (#900)
+* Fix EventDisplay initialisation order for FairRunAna/FairEventManager
+* Fix EventDisplay handling of reco files using native `AddFriend`
+* Fix GenFit 02-03-00 compatibility: replace removed `genfit::BellField` with `ShipBellField`; explicitly parse genfit2 headers for 26.03 stack
+* Fix generator Python bindings by removing `//!` directives from public method declarations
+* Fix `MuonBackGenerator` off-by-one at last event; gracefully stop via `gMC->StopRun()` instead of FairRoot's `exit(0)`
+* Fix `MuonBackGenerator` to support both TClonesArray and std::vector input formats
+* Fix duplicate `SHiP::Detector<vetoPoint>` rootmap entry warning
+* Fix TStreamerInfo warnings for `SHiP::Detector` instantiations, generators, and ISTLPointContainer
+* Fix uninitialised `fDetPoints` pointer in `SHiP::Detector` base class
 * Fix NaN mass/energy for photons in ShipMCTrack due to floating-point rounding (#384)
 * Move TimeDetHit v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)
-* Fix event display errors for nonexistent MC point branches (#900)
 * Fix digitisation crash when optional detector branches are missing (#738)
 * Fix splitcalHit dropping MC point arrival time in digitisation (#925)
-* Fix argparse -f/subparser conflict in run_simScript.py by using action="append" (#1044)
-
-### Changed
-
-* Implement Detector base class. Now the veto detector uses doubles rather than floats. #1079
-* Migrate SND detectors to SHiP::Detector base class (MTCDetector, SiliconTarget, Target, TargetTracker)
-* Migrate exitHadronAbsorber to SHiP::Detector base class
-* Extract duplicated `InitMedium` into `ShipGeo::InitMedium` free function (shipdata/ShipGeoUtil.h)
-* Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues
-* Replace bare `except:` with specific exception types in core modules
-* Expand mypy pre-commit coverage to rootUtils, geomGeant4, readDecayTable, geometry_config, shipDigiReco
-* Modernise C++: replace NULL with nullptr, C headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes
-* Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
-* Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
-* Remove dead SND@LHC code from event display (#900)
-
-### Added
-
-* Add Findgenfit2.cmake module to support both upstream GenFit and the fork
-
-* New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
-
-* Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer
-
-* Add clang-tidy and pyrefly static analysis to CI
-
-### Changed
-
-* Add type annotations across the Python codebase using pyrefly infer
-* Add mypy pre-commit hook for gradual type checking
-* Fix pickle serialisation file modes in ShipGeoConfig (text → binary)
-* Fix type annotations for physics quantities (axis limits, momentum/IP cuts) from int to float
-
-
-
-* Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059 #1075
-* Change a const char* in SHiP::Generator to optional<string>. #1053
-* Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
-* makeGenieEvents: automatically set GXMLPATH to the genie_config folder. Remove option --nudet since now GXMLPATH always needs to be set.
-* Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047
-* Add file glob to run_simScript.py input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041
-* Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
-* Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
-* UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
-* Bump minimum ROOT version to 6.36
-* Bump minimum CMake version to 3.20 (same as ROOT)
-* Change function SND in shipDet_conf.py
-* Change disable magnetic field in the MS and remove field map upload in run_fixedTarget.py
-* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
-* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
-
-### Fixed
-
-* Fix clang-tidy findings: null-check getenv, incorrect rounding, pointer arithmetic on polymorphic type, integer abs on floats, VLA, literal truncation, unused variables, and using-namespace directives
-* Fix `errorSummary` not printing its header (bare string expression instead of `print`)
-* Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
+* Fix argparse -f/subparser conflict in run_simScript.py (#1044)
+* Fix duplicated events in digitisation output (#1028)
 * Fix file-filtering logic to support STL branches
-* Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
-* Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
-+ Update run_fixedTarget to save tracks for hits in post-target sensitive plane
+* Fix `SetPhiRandom` to `SetPhiRandomize` in run_simScript.py
+* Clamp random seed to PYTHIA8's maximum allowed value (900000000)
 * Set correct trackIDs for exitHadronAbsorber class
-* Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds
-* Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028
+* Disable multi-threading explicitly, as it is not supported in FairShip
+* Fix pickle serialisation file modes in ShipGeoConfig (text to binary)
+* Fix type annotations for physics quantities from int to float
+* Fix null dereferences in ShipFieldMaker, FairShipFields, and FixedTargetGenerator
+* Fix uninitialised members in vetoHit, strawtubesHit, ShipMuonShield; change flag from Float_t to Bool_t
+* Fix off-by-one in FixedTargetGenerator target node access
+* Fix `errorSummary`/`reportError` logging issues in rootUtils
+* Fix closure variable binding bug in event display toggle callbacks
+* Fix unclosed file handles in readDecayTable, pythia8_conf, and pythia8darkphoton_conf
+* Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`
 
 ### Removed
 
-* Remove g4Ex scripts, which are unused and rely on g4py and Geant4 python imports
+* Remove g4Ex scripts
 * Remove old (CDR) target configuration; Jun25 is now the only supported target
-
-* Remove unused ShipStyle, which seems copy-pasted from LHCb
-* Remove old scripts run_simEcal.py and flux_map.py
-* Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
+* Remove unused ShipStyle, run_simEcal.py, and flux_map.py
+* Remove unused functions and dead code from rootUtils
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
-* Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
-* Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
-* Remove unused create_field_perturbation.py script
-* New_HA_Design and warm_opt muon shield configuration are no longer supported
+* Remove TDirectory pythonisation backport (now provided by ROOT >= 6.32)
+* Remove unused legacy ShipGeo.py and create_field_perturbation.py
+* Remove SND@LHC leftover code from event display (#900)
+* New_HA_Design and warm_opt muon shield configurations no longer supported
 
 ## 25.12 - 2025-12-22
 
