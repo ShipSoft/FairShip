@@ -13,6 +13,16 @@ it in future.
 ## Unreleased
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+## 26.03 - 2026-03-31
+
+### Added
+
 * Tracking performance benchmark for straw tube spectrometer (`python/tracking_benchmark.py`, `macro/run_tracking_benchmark.py`): measures efficiency, clone rate, ghost rate, and momentum/position/angular resolution using particle gun events with template matching pattern recognition
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork
 * New warm MS option TRY_2025 (Stellatryon v.2) and its field map
