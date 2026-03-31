@@ -7,6 +7,7 @@ veto/* @jasminwss  # Jasmin Weiß (HU Berlin)
 python/detectors/SBTDetector.py @jasminwss  # Jasmin Weiß (HU Berlin)
 
 UpstreamTagger/* @kholoimov  # Valerii Kholoimov (EPFL)
+python/detectors/UpstreamTaggerDetector.py @kholoimov  # Valerii Kholoimov (EPFL
 
 SND/* @antonioiuliano2  # Antonio Iuliano (INFN Napoli)
 SND/MTC/* @eduard322  # Eduard Ursov (HU Berlin)
