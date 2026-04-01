@@ -31,6 +31,9 @@ class GenieGenerator : public SHiP::Generator {
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
+  void SetGenerationOption(Int_t GenOption){
+    fGenOption = GenOption;
+  }
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {
@@ -54,6 +57,7 @@ class GenieGenerator : public SHiP::Generator {
   std::vector<TVector3> m_boxes;
   Bool_t cc, nuel;
   Int_t nf, neu;
+  Int_t fGenOption;
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
