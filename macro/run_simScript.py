@@ -81,7 +81,7 @@ genie_parser.add_argument(
     dest="GenieOption",
     default=1,
     type=int,
-    help="Genie generation option: (1 standard, 4 GENIE geometry driver)"
+    help="Genie generation option: (1 standard, 4 GENIE geometry driver)",
 )
 genie_parser.add_argument(
     "--z_start_nu",
@@ -566,10 +566,10 @@ if options.command == "Genie":
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.SetGenerationOption(options.GenieOption - 1) # 0 standard, 3 GENIE geometry driver
+    Geniegen.SetGenerationOption(options.GenieOption - 1)  # 0 standard, 3 GENIE geometry driver
     Geniegen.Init(inputFile, options.firstEvent)
     if options.GenieOption == 1:
-     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
+        Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
     run.SetPythiaDecayer("DecayConfigNuAge.C")

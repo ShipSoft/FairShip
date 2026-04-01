@@ -31,9 +31,7 @@ class GenieGenerator : public SHiP::Generator {
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
-  void SetGenerationOption(Int_t GenOption){
-    fGenOption = GenOption;
-  }
+  void SetGenerationOption(Int_t GenOption) { fGenOption = GenOption; }
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {
