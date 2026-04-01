@@ -7,7 +7,6 @@ import os
 from io import TextIOWrapper
 
 import ROOT
-from ROOT import TF1
 from ShipGeoConfig import load_from_root_file
 
 ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
@@ -493,7 +492,7 @@ def fitSingleGauss(x, ba=None, be=None) -> None:
         mean = h[x].GetMean()
         sigma = h[x].GetRMS()
         norm = h[x].GetEntries() * 0.3
-        myGauss = TF1(name, "[0]*" + str(bw) + "/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]", 4)
+        myGauss = ROOT.TF1(name, "[0]*" + str(bw) + "/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]", 4)
         myGauss.SetParameter(0, norm)
         myGauss.SetParameter(1, mean)
         myGauss.SetParameter(2, sigma)
