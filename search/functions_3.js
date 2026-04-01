@@ -28,7 +28,7 @@ var searchData=
   ['compactify_25',['compactify',['../namespacecompactingBackgroundProduction.html#a15735f3c727ee462f3a7b9b9adeee972',1,'compactingBackgroundProduction']]],
   ['compactifycascade_26',['compactifyCascade',['../namespacerunCharmHadProd.html#ae03908cdbe212aeb9709dd676686466d',1,'runCharmHadProd.compactifyCascade()'],['../namespacecompactingBackgroundProduction.html#a8a405f84e075ae78adb32c348d65fc90',1,'compactingBackgroundProduction.compactifyCascade()']]],
   ['compare_27',['compare',['../namespacemergeMbias.html#a326ee8240121d3b588c15423aab85494',1,'mergeMbias']]],
-  ['compare_5fhistograms_28',['compare_histograms',['../namespaceexperimental_1_1compare__histograms.html#a50304cf9e3f3b546d1322dad208b569c',1,'experimental::compare_histograms']]],
+  ['compare_5fhistograms_28',['compare_histograms',['../namespaceexperimental_1_1compare__histograms.html#aa085abd70ec6e91ce8cd3233f1bb44b1',1,'experimental::compare_histograms']]],
   ['compute_5fmaterial_5fbudget_29',['compute_material_budget',['../namespacegetInteractionAndRadiationLength.html#acc811e922001259c96c2e4f493adffba',1,'getInteractionAndRadiationLength']]],
   ['compute_5fmax_5ftotal_5fbr_30',['compute_max_total_br',['../namespacepythia8__conf__utils.html#a6319d4a26a81df3d147bed65059d4c51',1,'pythia8_conf_utils']]],
   ['compute_5fmetrics_31',['compute_metrics',['../classtracking__benchmark_1_1TrackingBenchmark.html#a002ecb32d0e9560394657d10c7104023',1,'tracking_benchmark::TrackingBenchmark']]],
