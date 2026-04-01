@@ -28,7 +28,9 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {}
+GenieGenerator::GenieGenerator() {
+  fGenOption = 0; //default value, standard Genie Generator
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
@@ -65,6 +67,12 @@ Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
   fTree->SetBranchAddress("pzf", &pzf);
   fTree->SetBranchAddress("nf", &nf);      // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf", &pdgf);  // pdg code of hadron
+
+  if (fGenOption != 0 && fGenOption != 3){ 
+     LOG(FATAL) <<"Invalid GenieGen Option: "<<fGenOption<<" Please check the option provided with --Genie "<<endl;
+     return kFALSE;
+  }
+
   fFirst = kTRUE;
   return kTRUE;
 }
@@ -251,6 +259,49 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  if (fGenOption == 3){
+    // Use GENIE geometry driver.
+
+    // Get event from GENIE TTree. If we reach the end of the file, return false.
+    if (fTree->GetEntry(fn) == 0 ) return kFALSE;
+
+    if (fn%100==0) {
+      cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
+    }
+
+    fn++;
+
+    // Add the neutrino to the MCTrack stack:
+    cpg->AddTrack(neu,                          // Neutrino PDG
+		  pxv, pyv, pzv,                // Neutrino momentum
+		  vtxx*100, vtxy*100, vtxz*100, // Event vertex [in cm!]
+		  -1,                           // Parent
+		  false);                       // Don't track this particle
+
+    // Add final state lepton to the MCTrack stack:
+    int outgoing_lepton_pdg = neu;
+    if (cc) outgoing_lepton_pdg = copysign(TMath::Abs(neu)-1,neu);
+    if (nuel) outgoing_lepton_pdg = 11;
+    
+    bool track_outgoing_lepton = (cc || nuel) ? true : false;
+    cpg->AddTrack(outgoing_lepton_pdg,
+		  pxl, pyl, pzl,    
+		  vtxx*100, vtxy*100, vtxz*100, 
+		  0,               
+		  track_outgoing_lepton);
+    
+    // Add final state hadrons to the MCTrack stack
+    for (int i_hadron = 0; i_hadron < nf; i_hadron++){
+      cpg->AddTrack(pdgf[i_hadron],
+		    pxf[i_hadron], pyf[i_hadron], pzf[i_hadron],    
+		    vtxx*100, vtxy*100, vtxz*100, 
+		    0,               
+		    true);
+    }
+
+    return kTRUE;
+
+  } else {
   // some start/end positions in z (emulsion to Tracker 1)
   Double_t start[3] = {0., 0., startZ};
   Double_t end[3] = {0., 0., endZ};
@@ -438,6 +489,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     // cout << "Info GenieGenerator Return from GenieGenerator" << endl;
   }
+ }
+
   return kTRUE;
 }
 // -------------------------------------------------------------------------
