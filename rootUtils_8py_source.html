@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> sys</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">from</span> ROOT <span class="keyword">import</span> TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> ROOT</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#af04f8d0c34113948aacb4ce59163ce02">   10</a></span>_error_log: Counter[str] = Counter()</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -108,10 +108,10 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">if</span> wanted <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        wanted = []</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        f = TFile.Open(eospath)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        eospath = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        f = ROOT.TFile.Open(eospath)</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        f = TFile(fname)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        f = ROOT.TFile(fname)</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        name = akey.GetName()</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">try</span>:</div>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            h[hname] = obj.Clone()</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">if</span> h[hname].GetSumw2N() == 0:</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                h[hname].Sumw2()</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        h[hname].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        h[hname].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">if</span> cln <span class="keywordflow">in</span> {<span class="stringliteral">&quot;TH2D&quot;</span>, <span class="stringliteral">&quot;TH2F&quot;</span>}:</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&quot;_projx&quot;</span>, <span class="stringliteral">&quot;_projy&quot;</span>]:</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">if</span> isinstance(hname, str):</div>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                    h[projname] = h[hname].ProjectionY()</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                h[projname].SetName(name + p)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                h[projname].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                h[projname].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
@@ -171,12 +171,12 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        h[key].Reset()</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">elif</span> nbinsz &gt; 0:</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        h[key] = TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        h[key] = ROOT.TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">elif</span> nbinsy &gt; 0:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        h[key] = TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        h[key] = ROOT.TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        h[key] = TH1D(rkey, title, nbinsx, xmin, xmax)</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        h[key] = ROOT.TH1D(rkey, title, nbinsx, xmin, xmax)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    h[key].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">   88</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#ae7d21aa6d2c4142e2b2c17659540b018">bookProf</a>(</div>
@@ -197,14 +197,14 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        h[key].Reset()</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">if</span> ymin <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, option)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, option)</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    h[key].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">  112</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerootUtils.html#a4288202f324fd0dae890c6208e1b9deb">writeHists</a>(h, fname, plusCanvas: bool = <span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    f = TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    f = ROOT.TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey], <span class="stringliteral">&quot;Class&quot;</span>):</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">continue</span></div>
@@ -221,7 +221,7 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span></div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        h[key] = TCanvas(key, title, nx, ny)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        h[key] = ROOT.TCanvas(key, title, nx, ny)</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        h[key].Divide(cx, cy)</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
@@ -246,10 +246,10 @@ $(document).ready(function(){initNavTree('rootUtils_8py_source.html',''); initRe
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                f = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                f = _f</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            test = TFile.Open(f)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            test = ROOT.TFile.Open(f)</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                sys.exit(1)</div>

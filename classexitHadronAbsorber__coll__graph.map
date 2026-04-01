@@ -1,7 +1,6 @@
 <map id="exitHadronAbsorber" name="exitHadronAbsorber">
-<area shape="rect" id="node1" title=" " alt="" coords="131,168,283,193"/>
-<area shape="rect" id="node2" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="25,80,233,105"/>
+<area shape="rect" id="node1" title=" " alt="" coords="53,152,205,177"/>
+<area shape="rect" id="node2" href="$classSHiP_1_1Detector.html" title=" " alt="" coords="25,79,233,104"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,5,107,31"/>
 <area shape="rect" id="node4" href="$classISTLPointContainer.html" title="Interface for detectors using STL containers (std::vector) for MC points." alt="" coords="131,5,277,31"/>
-<area shape="rect" id="node5" title=" " alt="" coords="257,80,311,105"/>
 </map>

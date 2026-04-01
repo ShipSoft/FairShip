@@ -183,7 +183,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  127</span>        print(<span class="stringliteral">&quot;missing key&quot;</span>)</div>
 <div class="line"><span class="lineno">  128</span>        <span class="keywordflow">return</span></div>
 <div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> key <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  130</span>        h[key] = TCanvas(key, title, nx, ny)</div>
+<div class="line"><span class="lineno">  130</span>        h[key] = ROOT.TCanvas(key, title, nx, ny)</div>
 <div class="line"><span class="lineno">  131</span>        h[key].Divide(cx, cy)</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span> </div>
@@ -285,12 +285,12 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
 <div class="line"><span class="lineno">   78</span>        h[key].Reset()</div>
 <div class="line"><span class="lineno">   79</span>    <span class="keywordflow">elif</span> nbinsz &gt; 0:</div>
-<div class="line"><span class="lineno">   80</span>        h[key] = TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
+<div class="line"><span class="lineno">   80</span>        h[key] = ROOT.TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)</div>
 <div class="line"><span class="lineno">   81</span>    <span class="keywordflow">elif</span> nbinsy &gt; 0:</div>
-<div class="line"><span class="lineno">   82</span>        h[key] = TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
+<div class="line"><span class="lineno">   82</span>        h[key] = ROOT.TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)</div>
 <div class="line"><span class="lineno">   83</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   84</span>        h[key] = TH1D(rkey, title, nbinsx, xmin, xmax)</div>
-<div class="line"><span class="lineno">   85</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">   84</span>        h[key] = ROOT.TH1D(rkey, title, nbinsx, xmin, xmax)</div>
+<div class="line"><span class="lineno">   85</span>    h[key].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><span class="lineno">   86</span> </div>
 <div class="line"><span class="lineno">   87</span> </div>
 </div><!-- fragment -->
@@ -373,10 +373,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> h:</div>
 <div class="line"><span class="lineno">  104</span>        h[key].Reset()</div>
 <div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> ymin <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> ymax <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  106</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, option)</div>
+<div class="line"><span class="lineno">  106</span>        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, option)</div>
 <div class="line"><span class="lineno">  107</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  108</span>        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
-<div class="line"><span class="lineno">  109</span>    h[key].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">  108</span>        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)</div>
+<div class="line"><span class="lineno">  109</span>    h[key].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><span class="lineno">  110</span> </div>
 <div class="line"><span class="lineno">  111</span> </div>
 </div><!-- fragment -->
@@ -409,10 +409,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  152</span>        fileType = <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  153</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> tx:</div>
 <div class="line"><span class="lineno">  154</span>            <span class="keywordflow">if</span> _f[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><span class="lineno">  155</span>                f = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
+<div class="line"><span class="lineno">  155</span>                f = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + _f</div>
 <div class="line"><span class="lineno">  156</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  157</span>                f = _f</div>
-<div class="line"><span class="lineno">  158</span>            test = TFile.Open(f)</div>
+<div class="line"><span class="lineno">  158</span>            test = ROOT.TFile.Open(f)</div>
 <div class="line"><span class="lineno">  159</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
 <div class="line"><span class="lineno">  160</span>                print(<span class="stringliteral">&quot;ERROR FileCheck: input file&quot;</span>, f, <span class="stringliteral">&quot; does not exist. Missing authentication?&quot;</span>)</div>
 <div class="line"><span class="lineno">  161</span>                sys.exit(1)</div>
@@ -492,10 +492,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   14</span>    <span class="keywordflow">if</span> wanted <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
 <div class="line"><span class="lineno">   15</span>        wanted = []</div>
 <div class="line"><span class="lineno">   16</span>    <span class="keywordflow">if</span> fname[0:4] == <span class="stringliteral">&quot;/eos&quot;</span>:</div>
-<div class="line"><span class="lineno">   17</span>        eospath = gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
-<div class="line"><span class="lineno">   18</span>        f = TFile.Open(eospath)</div>
+<div class="line"><span class="lineno">   17</span>        eospath = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>) + fname</div>
+<div class="line"><span class="lineno">   18</span>        f = ROOT.TFile.Open(eospath)</div>
 <div class="line"><span class="lineno">   19</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   20</span>        f = TFile(fname)</div>
+<div class="line"><span class="lineno">   20</span>        f = ROOT.TFile(fname)</div>
 <div class="line"><span class="lineno">   21</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> f.GetListOfKeys():</div>
 <div class="line"><span class="lineno">   22</span>        name = akey.GetName()</div>
 <div class="line"><span class="lineno">   23</span>        <span class="keywordflow">try</span>:</div>
@@ -518,7 +518,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>            h[hname] = obj.Clone()</div>
 <div class="line"><span class="lineno">   41</span>            <span class="keywordflow">if</span> h[hname].GetSumw2N() == 0:</div>
 <div class="line"><span class="lineno">   42</span>                h[hname].Sumw2()</div>
-<div class="line"><span class="lineno">   43</span>        h[hname].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">   43</span>        h[hname].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><span class="lineno">   44</span>        <span class="keywordflow">if</span> cln <span class="keywordflow">in</span> {<span class="stringliteral">&quot;TH2D&quot;</span>, <span class="stringliteral">&quot;TH2F&quot;</span>}:</div>
 <div class="line"><span class="lineno">   45</span>            <span class="keywordflow">for</span> p <span class="keywordflow">in</span> [<span class="stringliteral">&quot;_projx&quot;</span>, <span class="stringliteral">&quot;_projy&quot;</span>]:</div>
 <div class="line"><span class="lineno">   46</span>                <span class="keywordflow">if</span> isinstance(hname, str):</div>
@@ -530,7 +530,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>                <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">   53</span>                    h[projname] = h[hname].ProjectionY()</div>
 <div class="line"><span class="lineno">   54</span>                h[projname].SetName(name + p)</div>
-<div class="line"><span class="lineno">   55</span>                h[projname].SetDirectory(gROOT)</div>
+<div class="line"><span class="lineno">   55</span>                h[projname].SetDirectory(ROOT.gROOT)</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span></div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span> </div>
@@ -595,7 +595,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00112">112</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  112</span><span class="keyword">def </span>writeHists(h, fname, plusCanvas: bool = <span class="keyword">False</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  113</span>    f = TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">  113</span>    f = ROOT.TFile(fname, <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
 <div class="line"><span class="lineno">  114</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
 <div class="line"><span class="lineno">  115</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(h[akey], <span class="stringliteral">&quot;Class&quot;</span>):</div>
 <div class="line"><span class="lineno">  116</span>            <span class="keywordflow">continue</span></div>

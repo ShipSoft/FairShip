@@ -1,8 +1,6 @@
 <map id="FixedTargetGenerator" name="FixedTargetGenerator">
-<area shape="rect" id="node1" title=" " alt="" coords="25,271,186,296"/>
-<area shape="rect" id="node2" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="204,80,329,105"/>
-<area shape="rect" id="node4" href="$classGenieGenerator.html" title=" " alt="" coords="72,183,197,208"/>
-<area shape="rect" id="node3" title=" " alt="" coords="211,5,322,31"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,80,59,105"/>
-<area shape="rect" id="node6" title=" " alt="" coords="121,80,180,105"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,243,167,268"/>
+<area shape="rect" id="node2" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="18,80,143,105"/>
+<area shape="rect" id="node4" href="$classGenieGenerator.html" title=" " alt="" coords="102,155,227,180"/>
+<area shape="rect" id="node3" title=" " alt="" coords="25,5,136,31"/>
 </map>

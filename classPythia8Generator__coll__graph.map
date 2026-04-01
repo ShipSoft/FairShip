@@ -1,8 +1,6 @@
 <map id="Pythia8Generator" name="Pythia8Generator">
-<area shape="rect" id="node1" title=" " alt="" coords="45,271,181,296"/>
-<area shape="rect" id="node2" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="212,80,337,105"/>
-<area shape="rect" id="node5" href="$classGenieGenerator.html" title=" " alt="" coords="100,183,225,208"/>
-<area shape="rect" id="node3" title=" " alt="" coords="219,5,330,31"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,80,59,105"/>
-<area shape="rect" id="node6" title=" " alt="" coords="129,80,188,105"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,243,141,268"/>
+<area shape="rect" id="node2" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="5,80,131,105"/>
+<area shape="rect" id="node4" href="$classGenieGenerator.html" title=" " alt="" coords="89,155,215,180"/>
+<area shape="rect" id="node3" title=" " alt="" coords="13,5,123,31"/>
 </map>
