@@ -155,15 +155,15 @@ $(document).ready(function(){initNavTree('ShipReco_8py_source.html',''); initRes
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    type=int,</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>)</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>parser.add_argument(</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="stringliteral">&quot;--realPR&quot;</span>,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    dest=<span class="stringliteral">&quot;realPR&quot;</span>,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    help=<span class="stringliteral">&quot;Option for pattern recognition without MC truth. \n\</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="stringliteral">&quot;--patRec&quot;</span>,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    dest=<span class="stringliteral">&quot;patRec&quot;</span>,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    help=<span class="stringliteral">&quot;Options for pattern recognition. \n\</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="stringliteral">           FH                        : Hough transform.\n\</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="stringliteral">           AR                        : Artificial retina.\n\</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="stringliteral">      TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.&quot;</span>,</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    required=<span class="keyword">False</span>,</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a12a2a5b10f4a5325badc347d78021ee1">   71</a></span>    choices=[<span class="stringliteral">&quot;FH&quot;</span>, <span class="stringliteral">&quot;AR&quot;</span>, <span class="stringliteral">&quot;TemplateMatching&quot;</span>],</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    default=<span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    default=<span class="stringliteral">&quot;AR&quot;</span>,</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>)</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a19251702830556320d73755869bd74b3">   74</a></span>parser.add_argument(<span class="stringliteral">&quot;-dy&quot;</span>, dest=<span class="stringliteral">&quot;dy&quot;</span>, help=<span class="stringliteral">&quot;Max height of tank&quot;</span>, required=<span class="keyword">False</span>, default=<span class="keywordtype">None</span>, type=int)</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>parser.add_argument(<span class="stringliteral">&quot;--Debug&quot;</span>, dest=<span class="stringliteral">&quot;Debug&quot;</span>, help=<span class="stringliteral">&quot;Switch on debugging&quot;</span>, required=<span class="keyword">False</span>, action=<span class="stringliteral">&quot;store_true&quot;</span>)</div>
@@ -192,8 +192,8 @@ $(document).ready(function(){initNavTree('ShipReco_8py_source.html',''); initRes
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    dy,</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="stringliteral">&quot; with vertexing&quot;</span>,</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    vertexing,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="stringliteral">&quot; and real pattern reco &quot;</span>,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    options.realPR,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="stringliteral">&quot; and pattern reco &quot;</span>,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    options.patRec,</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"># Determine output filename (will contain only digi/reco branches)</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.inputFile.find(<span class="stringliteral">&quot;_rec.root&quot;</span>) &lt; 0:</div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('ShipReco_8py_source.html',''); initRes
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>global_variables.fieldMaker = fieldMaker</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>global_variables.pidProton = pidProton</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20">  154</a></span>global_variables.withT0 = options.withT0</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#abe146546d4e5254c83e1db8cd00936ed">  155</a></span>global_variables.realPR = options.realPR</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#aef73bfe78732856662cc5bc1afd8b169">  155</a></span>global_variables.patRec = options.patRec</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>global_variables.vertexing = vertexing</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>global_variables.ShipGeo = ShipGeo</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>global_variables.modules = modules</div>
