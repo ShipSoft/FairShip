@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
+* Add FileSummary to run_fixedTarget.py to save all the options for reference (#1140)
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
 
 ### Changed
