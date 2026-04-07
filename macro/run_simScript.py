@@ -24,9 +24,6 @@ theProductionCouplings = theDecayCouplings = None
 # Default dark photon parameters
 theDPmass = 0.2 * u.GeV
 
-# Alpaca
-# motherMode = True
-
 mcEngine = "TGeant4"
 
 inclusive = "c"  # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, if "bc" only Bc+/Bc- -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, qcd = ffbar -> DP.
