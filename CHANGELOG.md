@@ -17,6 +17,7 @@ it in future.
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
 
 ### Changed
+* Make artificial retina the baseline option for pattern recognition
 
 ### Fixed
 

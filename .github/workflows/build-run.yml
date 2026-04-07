@@ -94,7 +94,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --realPR AR --Debug
+          python $FAIRSHIP/macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --patRec AR --Debug
       - name: Run Ana
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh

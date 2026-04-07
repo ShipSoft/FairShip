@@ -149,49 +149,29 @@ class ShipDigiReco:
 
         trackCandidates = []
 
-        if global_variables.realPR:
-            # Do real PatRec
-            track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)
-            logger.debug("PatRec returned %d track candidates", len(track_hits))
-            # Create hitPosLists for track fit
-            for i_track in track_hits:
-                atrack = track_hits[i_track]
-                atrack_y12 = atrack["y12"]
-                atrack_stereo12 = atrack["stereo12"]
-                atrack_y34 = atrack["y34"]
-                atrack_stereo34 = atrack["stereo34"]
-                atrack_smeared_hits = (
-                    list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
-                )
-                # Store PatRec track parameters for seeding the fitter
-                trackParams[i_track] = {
-                    "k_y12": atrack.get("k_y12"),
-                    "b_y12": atrack.get("b_y12"),
-                    "k_y34": atrack.get("k_y34"),
-                    "b_y34": atrack.get("b_y34"),
-                }
-                for sm in atrack_smeared_hits:
-                    detID = sm["detID"]
-                    station = self.strawtubes.det[sm["digiHit"]].GetStationNumber()
-                    trID = i_track
-                    # Collect hits for track fit
-                    if trID not in hitPosLists:
-                        hitPosLists[trID] = ROOT.std.vector("TVectorD")()
-                        listOfIndices[trID] = []
-                        stationCrossed[trID] = {}
-                        hit_detector_ids[trID] = ROOT.std.vector("int")()
-                    hit_detector_ids[trID].push_back(detID)
-                    m = array("d", [sm["xtop"], sm["ytop"], sm["z"], sm["xbot"], sm["ybot"], sm["z"], sm["dist"]])
-                    hitPosLists[trID].push_back(ROOT.TVectorD(7, m))
-                    listOfIndices[trID].append(sm["digiHit"])
-                    if station not in stationCrossed[trID]:
-                        stationCrossed[trID][station] = 0
-                    stationCrossed[trID][station] += 1
-        else:  # do fake pattern recognition
-            for sm in self.SmearedHits:
-                detID = self.strawtubes.det[sm["digiHit"]].GetDetectorID()
+        # Do pattern recognition
+        track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
+        logger.debug("PatRec returned %d track candidates", len(track_hits))
+        # Create hitPosLists for track fit
+        for i_track in track_hits:
+            atrack = track_hits[i_track]
+            atrack_y12 = atrack["y12"]
+            atrack_stereo12 = atrack["stereo12"]
+            atrack_y34 = atrack["y34"]
+            atrack_stereo34 = atrack["stereo34"]
+            atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
+            # Store PatRec track parameters for seeding the fitter
+            trackParams[i_track] = {
+                "k_y12": atrack.get("k_y12"),
+                "b_y12": atrack.get("b_y12"),
+                "k_y34": atrack.get("k_y34"),
+                "b_y34": atrack.get("b_y34"),
+            }
+            for sm in atrack_smeared_hits:
+                detID = sm["detID"]
                 station = self.strawtubes.det[sm["digiHit"]].GetStationNumber()
-                trID = self.sTree.strawtubesPoint[sm["digiHit"]].GetTrackID()
+                trID = i_track
+                # Collect hits for track fit
                 if trID not in hitPosLists:
                     hitPosLists[trID] = ROOT.std.vector("TVectorD")()
                     listOfIndices[trID] = []
@@ -467,7 +447,6 @@ class ShipDigiReco:
         self.recoTree.Write()
         ut.errorSummary()
         ut.writeHists(global_variables.h, "recohists.root")
-        if global_variables.realPR:
-            shipPatRec.finalize()
+        shipPatRec.finalize()
         self.outputFile.Close()
         self.inputFile.Close()

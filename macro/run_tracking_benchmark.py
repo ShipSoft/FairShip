@@ -128,7 +128,7 @@ reco_cmd = [
     geo_file,
     "-n",
     str(options.nEvents),
-    "--realPR",
+    "--patRec",
     "AR",
 ]
 if options.debug > 0:
