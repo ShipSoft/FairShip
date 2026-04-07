@@ -9,7 +9,6 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
-import json
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -503,7 +502,7 @@ rc1 = os.system("rm  " + outFile)
 rc2 = os.system("mv " + tmpFile + " " + outFile)
 print("removed out file, moved tmpFile to out file", rc1, rc2)
 
-if rc1==0 and rc2==0:
+if rc1 == 0 and rc2 == 0:
     print("INFO: Adding file summary")
     fsr = vars(args)
     with ROOT.TFile.Open(outFile, "UPDATE") as _of:
