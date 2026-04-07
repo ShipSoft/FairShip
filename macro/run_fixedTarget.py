@@ -8,7 +8,6 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
-import uproot
 import json
 
 mcEngine = "TGeant4"
@@ -502,17 +501,14 @@ fout.Close()
 rc1 = os.system("rm  " + outFile)
 rc2 = os.system("mv " + tmpFile + " " + outFile)
 print("removed out file, moved tmpFile to out file", rc1, rc2)
-fsr = {
-    "script": "run_fixedTarget.py",
-    "runNumber": args.runnr,
-    "seed": seed,
-    "PoT": args.nev,
-    "boostDiMuon": args.boostDiMuon,
-    "boostFactor": args.boostFactor,
-}
 
-with uproot.update(outFile) as _of:
-    _of["FileSummary"] = json.dumps(fsr)
+if rc1==0 and rc2==0:
+    print("INFO: Adding file summary")
+    fsr = vars(args)
+    with ROOT.TFile.Open(outFile, "UPDATE") as _of:
+        _of.WriteObject(ROOT.TString(json.dumps(fsr)), "FileSummary")
+else:
+    print("WARNING: tempFile mv or rm not successful. No attempt at FileSummary writing")
 
 fin.SetWritable(False)  # bpyass flush error
 
