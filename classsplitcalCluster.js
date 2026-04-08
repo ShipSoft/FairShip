@@ -1,7 +1,7 @@
 var classsplitcalCluster =
 [
     [ "splitcalCluster", "classsplitcalCluster.html#a390c6a4ecd9984a299222ec893ff4d08", null ],
-    [ "~splitcalCluster", "classsplitcalCluster.html#a9f333dedc92942a9f13b765ebeb53eda", null ],
+    [ "~splitcalCluster", "classsplitcalCluster.html#a57b84c72f67f3c3d17cbba2154f4557a", null ],
     [ "splitcalCluster", "classsplitcalCluster.html#a799502f6e7b07473199f1432a1be77f9", null ],
     [ "AddHit", "classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4", null ],
     [ "ClassDef", "classsplitcalCluster.html#aaf24ae2ca1d5f0270fa4d88e3431333f", null ],

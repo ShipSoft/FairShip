@@ -3,7 +3,7 @@ var classShipBellField =
     [ "ShipBellField", "classShipBellField.html#af01b3e271d10f8408908a21f26a8fe1c", null ],
     [ "ShipBellField", "classShipBellField.html#a9f9d35b018977977e41059c1d9df53f2", null ],
     [ "ShipBellField", "classShipBellField.html#a55df46b742b137dfd0ddec56959a9e20", null ],
-    [ "~ShipBellField", "classShipBellField.html#a7a4ec510f92012344aa9f231acc01ebe", null ],
+    [ "~ShipBellField", "classShipBellField.html#a44a401f6bf4f07fe82fa22cf92cdd8d4", null ],
     [ "ClassDef", "classShipBellField.html#a45c3f20354fb674493fbeb63591b2119", null ],
     [ "GetBx", "classShipBellField.html#a45372a11739182e5e8275cc26c7f9980", null ],
     [ "GetBy", "classShipBellField.html#a0e382168696eeeb18f8f36b9ea0d6b65", null ],

@@ -181,7 +181,7 @@ var NAVTREEINDEX =
 "classHNLPythia8Generator.html#a5aad52eae7045c93ac6eb56a34b7304d",
 "classNtupleGenerator.html#afa96b2b3581fcffb76192830c8afbb5e",
 "classSciFiMapping_1_1SciFiMapping.html#a1eb581a8b0869e3ffa49a81c01c3d9d0",
-"classShipFieldMaker.html#ac1801a74f4a502f9998ebf6f445f256c",
+"classShipFieldMaker.html#abf937564fc0ec2b7acc56f01d0865b59",
 "classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7",
 "classTargetPoint.html",
 "classeventDisplay_1_1DrawTracks.html#a5871d609b34887e6db3b161e6249163d",

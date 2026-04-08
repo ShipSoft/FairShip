@@ -2,7 +2,7 @@ var classMTCDetPoint =
 [
     [ "MTCDetPoint", "classMTCDetPoint.html#a38fea1921833807f2a6da767bf58fa7c", null ],
     [ "MTCDetPoint", "classMTCDetPoint.html#a797bbf85fce5d1eee26b75e216d2835f", null ],
-    [ "~MTCDetPoint", "classMTCDetPoint.html#acd2f298bcbedeaf49f6911452896ed3a", null ],
+    [ "~MTCDetPoint", "classMTCDetPoint.html#aca9624bcf85b65ee9d226b84a6530392", null ],
     [ "MTCDetPoint", "classMTCDetPoint.html#a5c76ea60fac2b8f16f7b23f391f91123", null ],
     [ "GetLayer", "classMTCDetPoint.html#a8d5a2645f97542018a3819e3a448f285", null ],
     [ "GetLayerType", "classMTCDetPoint.html#a8dbfa793b609fe98e98632c5c6136f5d", null ],

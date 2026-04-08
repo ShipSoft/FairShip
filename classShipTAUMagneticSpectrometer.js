@@ -2,7 +2,7 @@ var classShipTAUMagneticSpectrometer =
 [
     [ "ShipTAUMagneticSpectrometer", "classShipTAUMagneticSpectrometer.html#a0a95a5ea4f48efeb38ca809103823203", null ],
     [ "ShipTAUMagneticSpectrometer", "classShipTAUMagneticSpectrometer.html#aa034db1318c65af7e7267bdccb1a4ca8", null ],
-    [ "~ShipTAUMagneticSpectrometer", "classShipTAUMagneticSpectrometer.html#a10262545a9d6dd6a53a2525b631aadf2", null ],
+    [ "~ShipTAUMagneticSpectrometer", "classShipTAUMagneticSpectrometer.html#a7e2240217d0a02f71634cdff53999cfb", null ],
     [ "ConstructGeometry", "classShipTAUMagneticSpectrometer.html#a98ab005807dcce5f989e5aa01b4b1c85", null ],
     [ "Initialize", "classShipTAUMagneticSpectrometer.html#a8df67f8bc0a23c15e29f2e21f47550af", null ],
     [ "AirLenght", "classShipTAUMagneticSpectrometer.html#a6362c913eb26c37d97d3617b26376669", null ],

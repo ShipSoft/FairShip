@@ -6,7 +6,7 @@ var classSiliconTarget =
     [ "ConstructGeometry", "classSiliconTarget.html#af4c00d5186b1ee93effdccca9ff457b8", null ],
     [ "CreateSiliconPlanes", "classSiliconTarget.html#adb60ef0f46ddc26b11237848a7053456", null ],
     [ "operator=", "classSiliconTarget.html#a2d8d7d99adab79e0d32fc1b687fb7d4f", null ],
-    [ "ProcessHits", "classSiliconTarget.html#a726b3cf6074fffd6f648eecc9ccc7262", null ],
+    [ "ProcessHits", "classSiliconTarget.html#a1f70999d37f0b8de06160f8e7e670aa1", null ],
     [ "SetSiliconTargetParameters", "classSiliconTarget.html#a776df0651edf60aa093675389bdf5a9e", null ],
     [ "fLayers", "classSiliconTarget.html#a9756f706212494e7813ef5f9393774bf", null ],
     [ "fModuleOffset", "classSiliconTarget.html#a0ff1e1a94872c63d14a1c19e3500ad5f", null ],

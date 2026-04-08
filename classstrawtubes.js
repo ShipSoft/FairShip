@@ -6,7 +6,7 @@ var classstrawtubes =
     [ "strawtubes", "classstrawtubes.html#a017929be84b88aabc9776863254cec34", null ],
     [ "ConstructGeometry", "classstrawtubes.html#aa2a757993536b23f11a2e49dc9f2eca4", null ],
     [ "operator=", "classstrawtubes.html#a413c79424f5bd446432a0c88d4cc953e", null ],
-    [ "ProcessHits", "classstrawtubes.html#a21513b705e69aea82ac666ca142813cb", null ],
+    [ "ProcessHits", "classstrawtubes.html#a44fa2198579595fa773a1c0cd279ada3", null ],
     [ "SetApertureArea", "classstrawtubes.html#ae082472915ec60b1c47726d3d2be62b8", null ],
     [ "SetDeltazLayer", "classstrawtubes.html#a2be79eb484ab732cc6201a2746357186", null ],
     [ "SetDeltazView", "classstrawtubes.html#a09cf73298007b72e4ee6b4734755fabc", null ],

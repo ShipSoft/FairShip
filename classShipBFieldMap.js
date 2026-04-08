@@ -9,7 +9,7 @@ var classShipBFieldMap =
     ] ],
     [ "ShipBFieldMap", "classShipBFieldMap.html#a308e307e932b4b35ad963ec61593cac5", null ],
     [ "ShipBFieldMap", "classShipBFieldMap.html#a06e67002d9891031bdb9e146f2f9753e", null ],
-    [ "~ShipBFieldMap", "classShipBFieldMap.html#ac3d6fe3f7521a83ab512a6cf1198b815", null ],
+    [ "~ShipBFieldMap", "classShipBFieldMap.html#ad4956091d9908f0150898a5acc44e679", null ],
     [ "ShipBFieldMap", "classShipBFieldMap.html#a2117a4ad076f903a07540e26b10501c2", null ],
     [ "BInterCalc", "classShipBFieldMap.html#a352c01b50449bd888308ffe0cc52b860", null ],
     [ "ClassDef", "classShipBFieldMap.html#a9b573ef2f1a31da01b219b4d4c5603da", null ],

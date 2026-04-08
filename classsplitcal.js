@@ -5,7 +5,7 @@ var classsplitcal =
     [ "splitcal", "classsplitcal.html#acb91ab24d2a8d81c6549a7aaa3f568d2", null ],
     [ "ConstructGeometry", "classsplitcal.html#a5f82cb0ac37e05190ec12e332d83ba14", null ],
     [ "operator=", "classsplitcal.html#a7feba62c6ea57e5557b1b69abd8b6874", null ],
-    [ "ProcessHits", "classsplitcal.html#a34b84db29f1bb8ed0c6fd12f9c019484", null ],
+    [ "ProcessHits", "classsplitcal.html#a01d0bffd33969207b2da5b610f1847a3", null ],
     [ "SetEmpty", "classsplitcal.html#acfca60eac51283cb896e7f4610dee1ac", null ],
     [ "SetMaterial", "classsplitcal.html#ae14f8f6c6d6f6597c0b136588640b0e2", null ],
     [ "SetNModules", "classsplitcal.html#a44a96e112d7a7ff8bba2bcac1f59a0c8", null ],

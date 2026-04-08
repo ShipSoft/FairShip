@@ -17,7 +17,7 @@ var classveto =
     [ "MakeSegments", "classveto.html#a5ff94ab044d1f2921698684d6072ca19", null ],
     [ "operator=", "classveto.html#a78e2b2b6f07c6849016ead5a75cf7d64", null ],
     [ "PreTrack", "classveto.html#a775bc0d5acd6b5988659144c8b2b19ca", null ],
-    [ "ProcessHits", "classveto.html#a28f3b23dfc13954530ddca2d93571490", null ],
+    [ "ProcessHits", "classveto.html#a89ff835c540dc9b4a1c403ae6e59ddf6", null ],
     [ "SetFastMuon", "classveto.html#a908f68bb15a24c99dc415196e9a42e13", null ],
     [ "SetFollowMuon", "classveto.html#a1a503dfdb9d90891e26410623e190c89", null ],
     [ "SetLiquidVeto", "classveto.html#a84264b72bfe667141d54af02e3e8c7f7", null ],

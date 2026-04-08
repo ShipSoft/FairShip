@@ -5,7 +5,7 @@ var classUpstreamTagger =
     [ "UpstreamTagger", "classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3", null ],
     [ "ConstructGeometry", "classUpstreamTagger.html#a8df87f3c69a722cddbd22d4c0aa8f777", null ],
     [ "operator=", "classUpstreamTagger.html#ab857469173016e305f2cff460d3bb75e", null ],
-    [ "ProcessHits", "classUpstreamTagger.html#a0b4bca75962a3c7d83ee1d0e124e4634", null ],
+    [ "ProcessHits", "classUpstreamTagger.html#a50e84425f21f58a52a73fc5474eb1641", null ],
     [ "SetBoxDimensions", "classUpstreamTagger.html#aaabe2638167e3521f0cf988c4a903275", null ],
     [ "SetZposition", "classUpstreamTagger.html#aad4dba52a94dcb89523e540d44327955", null ],
     [ "det_zPos", "classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8", null ],

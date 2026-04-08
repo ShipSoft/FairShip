@@ -128,8 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a42d6f9f3e899804d2fdf35e237ded7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0893df65b7be1fffb895510311c66ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsplitcal.html#ab0893df65b7be1fffb895510311c66ba">splitcal</a> ()</td></tr>
 <tr class="separator:ab0893df65b7be1fffb895510311c66ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34b84db29f1bb8ed0c6fd12f9c019484"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsplitcal.html#a34b84db29f1bb8ed0c6fd12f9c019484">ProcessHits</a> (FairVolume *v=0) override</td></tr>
-<tr class="separator:a34b84db29f1bb8ed0c6fd12f9c019484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d0bffd33969207b2da5b610f1847a3"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsplitcal.html#a01d0bffd33969207b2da5b610f1847a3">ProcessHits</a> (FairVolume *v=nullptr) override</td></tr>
+<tr class="separator:a01d0bffd33969207b2da5b610f1847a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f5ad05943784033ceb6be4153714b9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsplitcal.html#a5f5ad05943784033ceb6be4153714b9b">SetZStart</a> (Double_t ZStart)</td></tr>
 <tr class="separator:a5f5ad05943784033ceb6be4153714b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfca60eac51283cb896e7f4610dee1ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsplitcal.html#acfca60eac51283cb896e7f4610dee1ac">SetEmpty</a> (Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap, Double_t first_precision_layer, Double_t second_precision_layer, Double_t third_precision_layer, Double_t num_precision_layers)</td></tr>
@@ -330,7 +330,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classsplitcal.html#a34b84db29f1bb8ed0c6fd12f9c019484">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
+<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classsplitcal.html#a01d0bffd33969207b2da5b610f1847a3">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
 <p class="definition">Definition at line <a class="el" href="splitcal_8cxx_source.html#l00041">41</a> of file <a class="el" href="splitcal_8cxx_source.html">splitcal.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7">kSplitCal</a>) {}</div>
@@ -638,7 +638,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclasssplitcal_html_acd2a5d524e38ed7c5991b247964d5577"><div class="ttname"><a href="classsplitcal.html#acd2a5d524e38ed7c5991b247964d5577">splitcal::fStripHalfWidth</a></div><div class="ttdeci">Double_t fStripHalfWidth</div><div class="ttdef"><b>Definition:</b> <a href="splitcal_8h_source.html#l00084">splitcal.h:84</a></div></div>
 <div class="ttc" id="aclasssplitcal_html_acdba7df8698530053fec9ff8839f8b67"><div class="ttname"><a href="classsplitcal.html#acdba7df8698530053fec9ff8839f8b67">splitcal::fFilterECALThickness</a></div><div class="ttdeci">Double_t fFilterECALThickness</div><div class="ttdef"><b>Definition:</b> <a href="splitcal_8h_source.html#l00069">splitcal.h:69</a></div></div>
 <div class="ttc" id="aclasssplitcal_html_ad0b54248e85ece2713c13c730530a6e1"><div class="ttname"><a href="classsplitcal.html#ad0b54248e85ece2713c13c730530a6e1">splitcal::fnECALSamplings</a></div><div class="ttdeci">Int_t fnECALSamplings</div><div class="ttdef"><b>Definition:</b> <a href="splitcal_8h_source.html#l00074">splitcal.h:74</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00020">ShipGeoUtil.h:20</a></div></div>
+<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a38dbcabc35fe613684a8d655726736b7"><div class="ttname"><a href="namespaceeventDisplay.html#a38dbcabc35fe613684a8d655726736b7">eventDisplay.top</a></div><div class="ttdeci">ROOT top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01240">eventDisplay.py:1240</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition:</b> <a href="make__nTuple__SBT_8py_source.html#l00290">make_nTuple_SBT.py:290</a></div></div>
 </div><!-- fragment -->
@@ -670,8 +670,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a34b84db29f1bb8ed0c6fd12f9c019484" name="a34b84db29f1bb8ed0c6fd12f9c019484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34b84db29f1bb8ed0c6fd12f9c019484">&#9670;&#160;</a></span>ProcessHits()</h2>
+<a id="a01d0bffd33969207b2da5b610f1847a3" name="a01d0bffd33969207b2da5b610f1847a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d0bffd33969207b2da5b610f1847a3">&#9670;&#160;</a></span>ProcessHits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -683,7 +683,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">Bool_t splitcal::ProcessHits </td>
           <td>(</td>
           <td class="paramtype">FairVolume *&#160;</td>
-          <td class="paramname"><em>v</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"><em>v</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>

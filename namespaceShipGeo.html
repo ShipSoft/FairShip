@@ -126,25 +126,25 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Initialise a tracking medium from the FairRoot media file. Returns the medium index, or creates it via FairGeoBuilder if it does not yet exist in gGeoManager. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoUtil_8h_source.html#l00020">20</a> of file <a class="el" href="ShipGeoUtil_8h_source.html">ShipGeoUtil.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   20</span>                                          {</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keyword">static</span> FairGeoLoader* geoLoad = FairGeoLoader::Instance();</div>
-<div class="line"><span class="lineno">   22</span>  <span class="keyword">static</span> FairGeoInterface* geoFace = geoLoad-&gt;getGeoInterface();</div>
-<div class="line"><span class="lineno">   23</span>  <span class="keyword">static</span> FairGeoMedia* media = geoFace-&gt;getMedia();</div>
-<div class="line"><span class="lineno">   24</span>  <span class="keyword">static</span> FairGeoBuilder* geoBuild = geoLoad-&gt;getGeoBuilder();</div>
-<div class="line"><span class="lineno">   25</span> </div>
-<div class="line"><span class="lineno">   26</span>  FairGeoMedium* ShipMedium = media-&gt;getMedium(name);</div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoUtil_8h_source.html#l00022">22</a> of file <a class="el" href="ShipGeoUtil_8h_source.html">ShipGeoUtil.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>                                          {</div>
+<div class="line"><span class="lineno">   23</span>  <span class="keyword">static</span> FairGeoLoader* geoLoad = FairGeoLoader::Instance();</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keyword">static</span> FairGeoInterface* geoFace = geoLoad-&gt;getGeoInterface();</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keyword">static</span> FairGeoMedia* media = geoFace-&gt;getMedia();</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keyword">static</span> FairGeoBuilder* geoBuild = geoLoad-&gt;getGeoBuilder();</div>
 <div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">if</span> (!ShipMedium) {</div>
-<div class="line"><span class="lineno">   29</span>    Fatal(<span class="stringliteral">&quot;ShipGeo::InitMedium&quot;</span>, <span class="stringliteral">&quot;Material %s not defined in media file.&quot;</span>,</div>
-<div class="line"><span class="lineno">   30</span>          name);</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">   32</span>  }</div>
-<div class="line"><span class="lineno">   33</span>  TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (medium != <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
-<div class="line"><span class="lineno">   37</span>}</div>
+<div class="line"><span class="lineno">   28</span>  FairGeoMedium* ShipMedium = media-&gt;getMedium(name);</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (!ShipMedium) {</div>
+<div class="line"><span class="lineno">   31</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ShipGeo::InitMedium: Material &quot;</span> &lt;&lt; name</div>
+<div class="line"><span class="lineno">   32</span>               &lt;&lt; <span class="stringliteral">&quot; not defined in media file.&quot;</span>;</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span>  TGeoMedium* medium = gGeoManager-&gt;GetMedium(name);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (medium != <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> ShipMedium-&gt;getMediumIndex();</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> geoBuild-&gt;createMedium(ShipMedium);</div>
+<div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -128,8 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a85fd537750f9b6b3fee0911f6f2dffa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adea48348d5b84f2767fd2579294eab8f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDet.html#adea48348d5b84f2767fd2579294eab8f">TimeDet</a> ()</td></tr>
 <tr class="separator:adea48348d5b84f2767fd2579294eab8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ce53eb6a477bdbf0ad2ab1855627a44"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDet.html#a6ce53eb6a477bdbf0ad2ab1855627a44">ProcessHits</a> (FairVolume *v=0) override</td></tr>
-<tr class="separator:a6ce53eb6a477bdbf0ad2ab1855627a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c3493e2450059a1795c392f674fa24"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDet.html#ab5c3493e2450059a1795c392f674fa24">ProcessHits</a> (FairVolume *v=nullptr) override</td></tr>
+<tr class="separator:ab5c3493e2450059a1795c392f674fa24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e70984dbbc0e37dbbb416b824f0755d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDet.html#a3e70984dbbc0e37dbbb416b824f0755d">SetZposition</a> (Double_t z)</td></tr>
 <tr class="separator:a3e70984dbbc0e37dbbb416b824f0755d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada0b01fc94a765915fc8ec21b2fc6b07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimeDet.html#ada0b01fc94a765915fc8ec21b2fc6b07">SetBarZspacing</a> (Double_t row, Double_t column)</td></tr>
@@ -315,7 +315,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classTimeDet.html#a6ce53eb6a477bdbf0ad2ab1855627a44">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
+<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classTimeDet.html#ab5c3493e2450059a1795c392f674fa24">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
 <p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00067">67</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   68</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87">kTimeDet</a>),</div>
@@ -500,7 +500,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassTimeDet_html_a35405227d2b0e67da960090f29325fc1"><div class="ttname"><a href="classTimeDet.html#a35405227d2b0e67da960090f29325fc1">TimeDet::GetXCol</a></div><div class="ttdeci">double GetXCol(int ic) const</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00194">TimeDet.cxx:194</a></div></div>
 <div class="ttc" id="aclassTimeDet_html_abef730f3f10809e953b551ce5df7a9a0"><div class="ttname"><a href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">TimeDet::GetZBar</a></div><div class="ttdeci">double GetZBar(int ir, int ic) const</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00206">TimeDet.cxx:206</a></div></div>
 <div class="ttc" id="aclassTimeDet_html_affcd8cbcaca2c4d7dccdca8cae05a487"><div class="ttname"><a href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">TimeDet::GetYRow</a></div><div class="ttdeci">double GetYRow(int ir) const</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00200">TimeDet.cxx:200</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00020">ShipGeoUtil.h:20</a></div></div>
+<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a38dbcabc35fe613684a8d655726736b7"><div class="ttname"><a href="namespaceeventDisplay.html#a38dbcabc35fe613684a8d655726736b7">eventDisplay.top</a></div><div class="ttdeci">ROOT top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01240">eventDisplay.py:1240</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a7a8bc960c6e04868f276776273ab46a9"><div class="ttname"><a href="namespacemakeCascade.html#a7a8bc960c6e04868f276776273ab46a9">makeCascade.ib</a></div><div class="ttdeci">dict ib</div><div class="ttdef"><b>Definition:</b> <a href="makeCascade_8py_source.html#l00345">makeCascade.py:345</a></div></div>
 </div><!-- fragment -->
@@ -660,8 +660,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ce53eb6a477bdbf0ad2ab1855627a44" name="a6ce53eb6a477bdbf0ad2ab1855627a44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ce53eb6a477bdbf0ad2ab1855627a44">&#9670;&#160;</a></span>ProcessHits()</h2>
+<a id="ab5c3493e2450059a1795c392f674fa24" name="ab5c3493e2450059a1795c392f674fa24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c3493e2450059a1795c392f674fa24">&#9670;&#160;</a></span>ProcessHits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -673,7 +673,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">Bool_t TimeDet::ProcessHits </td>
           <td>(</td>
           <td class="paramtype">FairVolume *&#160;</td>
-          <td class="paramname"><em>v</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"><em>v</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>

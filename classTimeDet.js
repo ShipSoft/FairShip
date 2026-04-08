@@ -9,7 +9,7 @@ var classTimeDet =
     [ "GetYRow", "classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487", null ],
     [ "GetZBar", "classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0", null ],
     [ "operator=", "classTimeDet.html#a371668f9e1daff5adda9d8228f200202", null ],
-    [ "ProcessHits", "classTimeDet.html#a6ce53eb6a477bdbf0ad2ab1855627a44", null ],
+    [ "ProcessHits", "classTimeDet.html#ab5c3493e2450059a1795c392f674fa24", null ],
     [ "SetBarZ", "classTimeDet.html#a8c3421808056bac96640e98076b6a267", null ],
     [ "SetBarZspacing", "classTimeDet.html#ada0b01fc94a765915fc8ec21b2fc6b07", null ],
     [ "SetSizeX", "classTimeDet.html#ace48977a22839fc670d6822cdf89495c", null ],

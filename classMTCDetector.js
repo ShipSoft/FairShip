@@ -18,7 +18,7 @@ var classMTCDetector =
     [ "GetSiPMPos_V", "classMTCDetector.html#a2243e850816f863deeac5b169997c225", null ],
     [ "GetSiPMPosition", "classMTCDetector.html#aaedc85ebc22eee8a650cc1231ddca3d7", null ],
     [ "operator=", "classMTCDetector.html#a5a3069a39bc1b9dccd0bba285e18ed14", null ],
-    [ "ProcessHits", "classMTCDetector.html#af00b85b32cd61078a982cd5b3e6fd7fa", null ],
+    [ "ProcessHits", "classMTCDetector.html#aa18fafe1629ec58b39857a699da6051b", null ],
     [ "SetMTCParameters", "classMTCDetector.html#a6ebae99bd9cee2427cbf349a23bb0c9b", null ],
     [ "SiPMmapping", "classMTCDetector.html#a30eaee4d63aec259b43bccd07bc8797c", null ],
     [ "SiPMOverlap", "classMTCDetector.html#af9dc50dcea3a6a580ab5345a6e373f50", null ],

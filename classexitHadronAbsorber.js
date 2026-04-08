@@ -6,7 +6,7 @@ var classexitHadronAbsorber =
     [ "FinishRun", "classexitHadronAbsorber.html#acfab2dd72284690b8bbb2e0cd4067ad9", null ],
     [ "Initialize", "classexitHadronAbsorber.html#a3273b1256ffbb223445532f42eadc280", null ],
     [ "PreTrack", "classexitHadronAbsorber.html#aa16af626e32aae4bc4787cde6599f538", null ],
-    [ "ProcessHits", "classexitHadronAbsorber.html#a792af643a936acfa6cf13b53880c0d21", null ],
+    [ "ProcessHits", "classexitHadronAbsorber.html#a742f5adf2aeebb40be0a01f402edfa2f", null ],
     [ "Register", "classexitHadronAbsorber.html#ab484947e4d0692b6a35dc5703fa81d21", null ],
     [ "SetCylindricalPlane", "classexitHadronAbsorber.html#a63356fa368da2afbfa482b96492396ea", null ],
     [ "SetEnergyCut", "classexitHadronAbsorber.html#ab77815789c4a566bf96bd77f60112bd3", null ],

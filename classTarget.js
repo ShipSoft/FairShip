@@ -7,7 +7,7 @@ var classTarget =
     [ "MakeNuTargetPassive", "classTarget.html#af223e5af386b7b0f8fa52728c97025fa", null ],
     [ "MergeTopBot", "classTarget.html#a23231afd9a01a549f4c3a35bb2f5cb3d", null ],
     [ "operator=", "classTarget.html#a949617cac33de56dbd5c21cd28c078a5", null ],
-    [ "ProcessHits", "classTarget.html#a72145e302623eb343d162a8297910cf8", null ],
+    [ "ProcessHits", "classTarget.html#a646e212ba5378103ae10a534ed1395c8", null ],
     [ "SetBaseDimension", "classTarget.html#afeaf226a96e0d9d0e08a91a7d1e91df2", null ],
     [ "SetBaseHeight", "classTarget.html#ae7ac4e8ee671bac483c8a440ba7f00f1", null ],
     [ "SetBrickParam", "classTarget.html#a8606284eddc16bd398567ff3ed9f0fb3", null ],

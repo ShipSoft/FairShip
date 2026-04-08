@@ -7,7 +7,7 @@ var classTargetTracker =
     [ "ConstructGeometry", "classTargetTracker.html#a8de4dd47306a6697b4a933e29293ea60", null ],
     [ "DecodeTTID", "classTargetTracker.html#a4405f954069f85b445d9626ef331acb6", null ],
     [ "operator=", "classTargetTracker.html#a4895025ea25e7376d32c6cecb9b2e91b", null ],
-    [ "ProcessHits", "classTargetTracker.html#a0bf204e3e5b23154b5e485fd96eefc00", null ],
+    [ "ProcessHits", "classTargetTracker.html#ad770cfa6a9c8bb1718439e97da469cbd", null ],
     [ "SetBrickParam", "classTargetTracker.html#abd944b1de6ed61e186ba4cd520143125", null ],
     [ "SetDesign", "classTargetTracker.html#aa6b56197e30c3eb5a9c83f74e48b69ba", null ],
     [ "SetNumberSciFi", "classTargetTracker.html#a5af77caa0bec041621a06cab92584b74", null ],

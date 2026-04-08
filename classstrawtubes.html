@@ -131,8 +131,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a23ed2c046613502278cc4c2a2441582a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62363a63aad6039db2047531cf8ae0cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a62363a63aad6039db2047531cf8ae0cf">strawtubes</a> ()</td></tr>
 <tr class="separator:a62363a63aad6039db2047531cf8ae0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21513b705e69aea82ac666ca142813cb"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a21513b705e69aea82ac666ca142813cb">ProcessHits</a> (FairVolume *v=0) override</td></tr>
-<tr class="separator:a21513b705e69aea82ac666ca142813cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44fa2198579595fa773a1c0cd279ada3"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a44fa2198579595fa773a1c0cd279ada3">ProcessHits</a> (FairVolume *v=nullptr) override</td></tr>
+<tr class="separator:a44fa2198579595fa773a1c0cd279ada3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dcefa576e08fdb969972bea8a3f8005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a4dcefa576e08fdb969972bea8a3f8005">SetzPositions</a> (Double_t z1, Double_t z2, Double_t z3, Double_t z4)</td></tr>
 <tr class="separator:a4dcefa576e08fdb969972bea8a3f8005"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae082472915ec60b1c47726d3d2be62b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#ae082472915ec60b1c47726d3d2be62b8">SetApertureArea</a> (Double_t width, Double_t height)</td></tr>
@@ -351,7 +351,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classstrawtubes.html#a21513b705e69aea82ac666ca142813cb">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
+<p>Name : Detector Name Active: kTRUE for active detectors (<a class="el" href="classstrawtubes.html#a44fa2198579595fa773a1c0cd279ada3">ProcessHits()</a> will be called) kFALSE for inactive detectors </p>
 
 <p class="definition">Definition at line <a class="el" href="strawtubes_8cxx_source.html#l00050">50</a> of file <a class="el" href="strawtubes_8cxx_source.html">strawtubes.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   51</span>    : <a class="code hl_function" href="classSHiP_1_1Detector.html#ae2bab78eb81793a0bdf1e79ee2e19eb4">Detector</a>(name, active, <a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd">kStraw</a>) {}</div>
@@ -719,7 +719,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassstrawtubes_html_aeda0cf05872ca2e260fd695de5607110"><div class="ttname"><a href="classstrawtubes.html#aeda0cf05872ca2e260fd695de5607110">strawtubes::f_offset_layer</a></div><div class="ttdeci">Double_t f_offset_layer</div><div class="ttdoc">Distance (y) between straws in a layer.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00073">strawtubes.h:73</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_afd76b6aa474f6257df2257ce618b68c5"><div class="ttname"><a href="classstrawtubes.html#afd76b6aa474f6257df2257ce618b68c5">strawtubes::f_T4_z</a></div><div class="ttdeci">Double_t f_T4_z</div><div class="ttdoc">z-position of tracking station 3</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00067">strawtubes.h:67</a></div></div>
 <div class="ttc" id="aclassstrawtubes_html_afdeccc886ea2fb425f453e37d2ba7dba"><div class="ttname"><a href="classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba">strawtubes::f_delta_z_layer</a></div><div class="ttdeci">Double_t f_delta_z_layer</div><div class="ttdoc">Offset (y) of straws between layers.</div><div class="ttdef"><b>Definition:</b> <a href="strawtubes_8h_source.html#l00074">strawtubes.h:74</a></div></div>
-<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00020">ShipGeoUtil.h:20</a></div></div>
+<div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a38dbcabc35fe613684a8d655726736b7"><div class="ttname"><a href="namespaceeventDisplay.html#a38dbcabc35fe613684a8d655726736b7">eventDisplay.top</a></div><div class="ttdeci">ROOT top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01240">eventDisplay.py:1240</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -750,8 +750,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a21513b705e69aea82ac666ca142813cb" name="a21513b705e69aea82ac666ca142813cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21513b705e69aea82ac666ca142813cb">&#9670;&#160;</a></span>ProcessHits()</h2>
+<a id="a44fa2198579595fa773a1c0cd279ada3" name="a44fa2198579595fa773a1c0cd279ada3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44fa2198579595fa773a1c0cd279ada3">&#9670;&#160;</a></span>ProcessHits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -763,7 +763,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">Bool_t strawtubes::ProcessHits </td>
           <td>(</td>
           <td class="paramtype">FairVolume *&#160;</td>
-          <td class="paramname"><em>v</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"><em>v</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
