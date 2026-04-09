@@ -326,6 +326,7 @@ void Floor::ConstructGeometry()
       points.push_back(TVector3(P4[0],P4[1],P4[2]));
       LOG(DEBUG) << "bottom left "<<X0[0]<<","<<X0[1]<<","<<X0[2]<<";  "<<P4[0]<<","<<P4[1]<<","<<P4[2];
    }
+      
    Double_t dZ = (P3[2]-P1[2])/2.;
    auto arb = new TGeoArb8(name+"_arb8",dZ);
    arb->SetVertex(0, points[1][0], points[1][1]);
@@ -370,8 +371,311 @@ void Floor::ConstructGeometry()
                                  conf_floats["Floor/VetoPitZ"]-conf_floats["Floor/VetoPitZdim"]/2.,
                                  conf_floats["Floor/VetoPitY"]-conf_floats["Floor/VetoPitYdim"]/2.);
   VetoPit_transl->RegisterYourself();
+    
+    //UJ18 tunnel
+    // UJ18 translation and angle rotation
+         Double_t dx_0_UJ18 = -2300.0;
+         Double_t dy_0_UJ18 = -273.0;
+         Double_t dz_0_UJ18 = 7346.0;
+         Double_t rot_X = 1.3;
+         Double_t rot_Y = -13.63;
+         Double_t rot_Z = 0;
+    
+         TGeoRotation *rotA = new TGeoRotation("rotA");
+         rotA->RotateX(rot_X);
+         rotA->RotateY(rot_Y);
+         rotA->RotateZ(rot_Z);
+         TGeoCombiTrans *matA = new TGeoCombiTrans("matA",dx_0_UJ18, dy_0_UJ18, dz_0_UJ18, rotA);
+   
+    Double_t dx_UJ18, dy_UJ18, dz_UJ18;
+    Double_t dx_UJ181, dx_UJ182, dy_UJ181, dy_UJ182;
+    Double_t vert[20], par[20];
+    Double_t theta, phi, h1, bl1, tl1, alpha1, h2, bl2, tl2, alpha2;
+    Double_t twist;
+    Double_t origin[3];
+    Double_t rmin, rmax, rmin1, rmax1, rmin2, rmax2;
+    Double_t r, rlo, rhi;
+    Double_t a, b;
+    Double_t point[3], norm[3];
+    Double_t rin, stin, rout, stout;
+    Double_t thx, phx, thy, phy, thz, phz;
+    Double_t alpha, theta1, theta2, phi1, phi2, dphi;
+    Double_t tr[3], rot[9];
+    Double_t z, density, radl, absl, w;
+    Double_t lx, ly, lz, tx, ty, tz;
+    Double_t xvert[50], yvert[50];
+    Double_t zsect, x0, y0, scale0;
+    Int_t nel, numed, nz, nedges, nvert;
+    TGeoBoolNode *Boolean = nullptr;
 
-  auto total = new TGeoCompositeShape("Stotal","TI18_1_union+TI18_2_union+TI18_3_union-vetoPit:VetoPit_transl");
+    // UJ18 construction: Sequential naming represents step-by-step Boolean operations (e.g., Cut_001, Add_001, trans_1).
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 30;
+    TGeoShape *GDMLTube_001 = new TGeoTube("GDMLTube_001",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 40;
+    TGeoShape *GDMLBox_001 = new TGeoBBox("GDMLBox_001", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_1 = new TGeoCombiTrans("trans_1"); // trans = translation
+    trans_1->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_001,GDMLBox_001,0,trans_1);
+ 
+    TGeoShape *Cut_001 = new TGeoCompositeShape("Cut_001", Boolean); //Cut = sustraction in boolean operation
+
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 1799.5;
+    TGeoShape *GDMLTube_002 = new TGeoTube("GDMLTube_002",rmin,rmax,dz_UJ18);
+
+    rmin = 0;
+    rmax = 450;
+    dz_UJ18   = 1950;
+    TGeoShape *GDMLTube_003 = new TGeoTube("GDMLTube_003",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 500;
+    dy_UJ18 = 200;
+    dz_UJ18 = 2000;
+    TGeoShape *GDMLBox_002 = new TGeoBBox("GDMLBox_002", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -257.94;
+    dz_UJ18 = 0;
+    auto trans_2 = new TGeoCombiTrans("trans_2");
+    trans_2->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_003,GDMLBox_002,0,trans_2);
+
+    TGeoShape *Cut_002 = new TGeoCompositeShape("Cut_002", Boolean);
+    Boolean = new TGeoSubtraction(GDMLTube_002,Cut_002,0,0);
+
+    TGeoShape *Cut_003 = new TGeoCompositeShape("Cut_003", Boolean);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 2000;
+    TGeoShape *GDMLBox_003 = new TGeoBBox("GDMLBox_003", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_3 = new TGeoCombiTrans("trans_3");
+    trans_3->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(Cut_003,GDMLBox_003,0,trans_3);
+
+    TGeoShape *Cut_004 = new TGeoCompositeShape("Cut_004", Boolean);
+
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 30;
+    TGeoShape *GDMLTube_004 = new TGeoTube("GDMLTube_004",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 40;
+    TGeoShape *GDMLBox_004 = new TGeoBBox("GDMLBox_004", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_4 = new TGeoCombiTrans("trans_4");
+    trans_4->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_004,GDMLBox_004,0,trans_4);
+
+    TGeoShape *Cut_005 = new TGeoCompositeShape("Cut_005", Boolean);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = 0;
+    dz_UJ18 = -1829.5;
+    auto trans_5 = new TGeoCombiTrans("trans_5");
+    trans_5->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoUnion(Cut_004,Cut_005,0,trans_5);
+
+    TGeoShape *Add_001 = new TGeoCompositeShape("Add_001", Boolean); // Add = union in boolean operation
+
+    dx_UJ18 = 0;
+    dy_UJ18 = 0;
+    dz_UJ18 = -1829.5;
+    auto trans_6 = new TGeoCombiTrans("trans_6");
+    trans_6->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoUnion(Cut_001,Add_001,0,trans_6);
+
+    TGeoShape *Add_002 = new TGeoCompositeShape("Add_002", Boolean);
+
+    rmin = 0;
+    rmax = 175.65;
+    dz_UJ18   = 50;
+    TGeoShape *GDMLTube_005 = new TGeoTube("GDMLTube_005",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 250;
+    dy_UJ18 = 100;
+    dz_UJ18 = 60;
+    TGeoShape *GDMLBox_005 = new TGeoBBox("GDMLBox_005", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -196.2;
+    dz_UJ18 = 0;
+    auto trans_7 = new TGeoCombiTrans("trans_7");
+    trans_7->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_005,GDMLBox_005,0,trans_7);
+
+    TGeoShape *Cut_006 = new TGeoCompositeShape("Cut_006", Boolean);
+
+    dx_UJ18 = 245.426;
+    dy_UJ18 = 106.189;
+    dz_UJ18 = -3658.834;
+    auto trans_8 = new TGeoCombiTrans("trans_8");
+    trans_8->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(Add_002,Cut_006,0,trans_8);
+
+    TGeoShape *Cut_007 = new TGeoCompositeShape("Cut_007", Boolean);
+
+    rmin = 0;
+    rmax = 220.39;
+    dz_UJ18   = 1900;
+    TGeoShape *GDMLTube_006 = new TGeoTube("GDMLTube_006",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 250;
+    dy_UJ18 = 100;
+    dz_UJ18 = 1925;
+    TGeoShape *GDMLBox_006 = new TGeoBBox("GDMLBox_006", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -224.647;
+    dz_UJ18 = 0;
+    auto trans_9 = new TGeoCombiTrans("trans_9");
+    trans_9->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_006,GDMLBox_006,0,trans_9);
+
+    TGeoShape *Cut_008 = new TGeoCompositeShape("Cut_008", Boolean);
+
+    dx_UJ18 = -193.584;
+    dy_UJ18 = 55.7;
+    dz_UJ18 = -1829.5;
+    auto trans_10 = new TGeoCombiTrans("trans_10");
+    trans_10->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(Cut_007,Cut_008,0,trans_10);
+
+    TGeoShape *Cut_009 = new TGeoCompositeShape("Cut_009", Boolean);
+
+    dz_UJ18     = 473.8;
+    theta  = 0;
+    phi    = 0;
+    h1     = 37.375;
+    bl1    = 204.985;
+    tl1    = 204.985;
+    alpha1 = 0;
+    h2     = 0;
+    bl2    = 204.985;
+    tl2    = 204.985;
+    alpha2 = 0;
+    TGeoShape *GDMLTrap_1 = new TGeoTrap("GDMLTrap_1", dz_UJ18,theta,phi,h1,bl1,tl1,alpha1,h2,bl2,tl2,alpha2);
+
+    dx_UJ18 = 236.991;
+    dy_UJ18 = -45.068;
+    dz_UJ18 = -3156.224;
+
+    thx = 90;    phx = 0;
+    thy = 87.92;    phy = 90;
+    thz = 2.08;    phz = 270;
+    TGeoRotation *rot_1 = new TGeoRotation("rot_1",thx,phx,thy,phy,thz,phz);
+    auto trans_11 = new TGeoCombiTrans("trans_11", dx_UJ18, dy_UJ18, dz_UJ18, rot_1);
+    Boolean = new TGeoUnion(Cut_009,GDMLTrap_1,0,trans_11);
+    TGeoShape *pUJ18_shape_25 = new TGeoCompositeShape("UJ18_shape", Boolean);
+    
+    //get the new rotation and translation
+    TGeoHMatrix * Matrix_setup = new TGeoHMatrix("Matrix_setup");
+    Matrix_setup->Multiply(matA);
+    Matrix_setup->Multiply(trans_11);
+    
+    //create the new translation for union(with TI18) subtraction(with rock)
+    const Double_t *tr1 = Matrix_setup->GetTranslation();
+    TGeoRotation *rot2 = new TGeoRotation();
+    rot2->SetMatrix(Matrix_setup->GetRotationMatrix());
+    //for registyourself
+    auto new_translation_for_UJ18 = new TGeoCombiTrans("new_translation_for_UJ18", tr1[0], tr1[1], tr1[2], rot2);
+    new_translation_for_UJ18->RegisterYourself();
+
+    // UJ18_solid (to be subtracted from Bigbox)
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 30;
+    TGeoShape *GDMLTube_007 = new TGeoTube("GDMLTube_007",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 40;
+    TGeoShape *GDMLBox_007 = new TGeoBBox("GDMLBox_007", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_12 = new TGeoCombiTrans("trans_12");
+    trans_12->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_007,GDMLBox_007,0,trans_12);
+
+    TGeoShape *Cut_010 = new TGeoCompositeShape("Cut_010", Boolean);
+
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 1799.5;
+    TGeoShape *GDMLTube_008 = new TGeoTube("GDMLTube_8",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 2000;
+    TGeoShape *GDMLBox_008 = new TGeoBBox("GDML_Box008", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_13 = new TGeoCombiTrans("trans_13");
+    trans_13->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_008,GDMLBox_008,0,trans_13);
+
+    TGeoShape *Cut_011 = new TGeoCompositeShape("Cut_011", Boolean);
+
+    rmin = 0;
+    rmax = 506.18;
+    dz_UJ18   = 30;
+    TGeoShape *GDMLTube_009 = new TGeoTube("GDMLTube_009",rmin,rmax,dz_UJ18);
+
+    dx_UJ18 = 600;
+    dy_UJ18 = 200;
+    dz_UJ18 = 40;
+    TGeoShape *GDMLBox_009 = new TGeoBBox("GDMLBox_009", dx_UJ18,dy_UJ18,dz_UJ18);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = -524.94;
+    dz_UJ18 = 0;
+    auto trans_14 = new TGeoCombiTrans("trans_14");
+    trans_14->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoSubtraction(GDMLTube_009,GDMLBox_009,0,trans_14);
+
+    TGeoShape *Cut_012 = new TGeoCompositeShape("Cut_012", Boolean);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = 0;
+    dz_UJ18 = -1829.5;
+    auto trans_15 = new TGeoCombiTrans("trans_15");
+    trans_15->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoUnion(Cut_011,Cut_012,0,trans_15);
+
+    TGeoShape *Add_003 = new TGeoCompositeShape("Add_003", Boolean);
+
+    dx_UJ18 = 0;
+    dy_UJ18 = 0;
+    dz_UJ18 = -1829.5;
+    auto trans_16 = new TGeoCombiTrans("trans_16");
+    trans_16->SetTranslation(dx_UJ18, dy_UJ18, dz_UJ18);
+    Boolean = new TGeoUnion(Cut_010,Add_003,0,trans_16);
+    TGeoShape *Solid_UJ18_shape = new TGeoCompositeShape("Solid_UJ18_shape", Boolean);
+
+  auto total = new TGeoCompositeShape("Stotal","(UJ18_shape:new_translation_for_UJ18+TI18_1_union+TI18_2_union+TI18_3_union)-vetoPit:VetoPit_transl");
   auto volT = new TGeoVolume("VTI18",total,concrete);
   volT->SetTransparency(0);
   volT->SetLineColor(kGray);
@@ -437,22 +741,24 @@ void Floor::ConstructGeometry()
 
  double zs = 40900.;  // scoring plane
  double dz =  (geoParameters["TI18_o1"][2] - zs)/2.;
+ double extended_z = 1860; //extend the rock to cover the new added UJ18
 
- auto bigBox   = new TGeoBBox("BigBox", 1000.,1000. , dz);
- auto TR_1       = new TGeoTranslation("TR_1",0.,0.,-dz+geoParameters["TI18_o1"][2]-SND_Z - 50.); // move a bit more upstream to have free view from the back
+ auto bigBox   = new TGeoBBox("BigBox", 2000.,1500. , dz+extended_z);
+ auto TR_1       = new TGeoTranslation("TR_1",0.,0.,-dz+extended_z+geoParameters["TI18_o1"][2]-SND_Z - 50.); // move a bit more upstream to have free view from the back
  TR_1->RegisterYourself();
  
- auto cutOut   = new TGeoCompositeShape("cutOut", "BigBox:TR_1-Ftotal2-(TI18_1_Funion+TI18_2_Funion+TI18_3_Funion)");
+ auto cutOut   = new TGeoCompositeShape("cutOut", "BigBox:TR_1-Ftotal2-(TI18_1_Funion+TI18_2_Funion+TI18_3_Funion+Solid_UJ18_shape:new_translation_for_UJ18)");
  auto volT3      = new TGeoVolume("Vrock",cutOut,rock);
  volT3->SetTransparency(75);
  volT3->SetLineColor(kRed);
  tunnel->AddNode(volT3, 1);
 
-auto exitPlane =  gGeoManager->MakeBox("exitScoringPlane",vacuum,1000.,1000. , 1.);
+ double z_dim_exitPlane = 1.;
+auto exitPlane =  gGeoManager->MakeBox("exitScoringPlane",vacuum,1000.,1000. , z_dim_exitPlane);
 exitPlane->SetLineColor(kGreen);
 exitPlane->SetVisibility(kFALSE);
 if (fMakeSensitive) {AddSensitiveVolume(exitPlane);}
-tunnel->AddNode(exitPlane,1, new TGeoTranslation(0,0,1000.));
+tunnel->AddNode(exitPlane,1, new TGeoTranslation(-1500.0,0,((2*extended_z)+geoParameters["TI18_o1"][2]-SND_Z - 50 + z_dim_exitPlane)));
 
    // COLDBOX GEOM
    InitMedium("Borated30polyethylene");
