@@ -27,6 +27,7 @@ var run__fixedTarget_8py =
     [ "fin", "run__fixedTarget_8py.html#a8c709b3615dfd65d5142ea68fc9ba0cd", null ],
     [ "float", "run__fixedTarget_8py.html#af1277424a1c78c806b635aedae63a6c4", null ],
     [ "fout", "run__fixedTarget_8py.html#ad7ba56fca2f89ce1264c53fe95631cb7", null ],
+    [ "fsr", "run__fixedTarget_8py.html#a144cfd36aa631e5f6aaf3cc9fccfc31d", null ],
     [ "fStack", "run__fixedTarget_8py.html#a08f52f2f197fb78265e23a14bde5f7b2", null ],
     [ "G", "run__fixedTarget_8py.html#a049620ba28aeb292c74bb28518aa6c2f", null ],
     [ "gMC", "run__fixedTarget_8py.html#a32930b751f24e0949c3119776226026c", null ],

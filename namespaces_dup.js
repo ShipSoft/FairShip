@@ -1074,6 +1074,7 @@ var namespaces_dup =
       [ "fin", "namespacerun__fixedTarget.html#a8c709b3615dfd65d5142ea68fc9ba0cd", null ],
       [ "float", "namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4", null ],
       [ "fout", "namespacerun__fixedTarget.html#ad7ba56fca2f89ce1264c53fe95631cb7", null ],
+      [ "fsr", "namespacerun__fixedTarget.html#a144cfd36aa631e5f6aaf3cc9fccfc31d", null ],
       [ "fStack", "namespacerun__fixedTarget.html#a08f52f2f197fb78265e23a14bde5f7b2", null ],
       [ "G", "namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f", null ],
       [ "gMC", "namespacerun__fixedTarget.html#a32930b751f24e0949c3119776226026c", null ],

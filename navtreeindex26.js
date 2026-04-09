@@ -1,5 +1,6 @@
 var NAVTREEINDEX26 =
 {
+"namespacestrawtubesDetector.html":[10,0,95],
 "namespacestrip__example.html":[10,0,96],
 "namespacestrip__example.html#a9fff99ba5b5564a70fa48b9757ef9885":[10,0,96,0],
 "namespacestudy__GammaConv.html":[10,0,97],
@@ -248,6 +249,5 @@ var NAVTREEINDEX26 =
 "rootUtils_8py.html#a61db3e66b871a770b6bc264b9e3ac33e":[12,0,11,25,5],
 "rootUtils_8py.html#a6558e8446659e2fe282f24dff579b11d":[12,0,11,25,1],
 "rootUtils_8py.html#a9fad8948a40e9aac00e89f938b0a03af":[12,0,11,25,4],
-"rootUtils_8py.html#ab807114738eb9dfb5fef001e2fa9bc54":[12,0,11,25,6],
-"rootUtils_8py.html#ae7d21aa6d2c4142e2b2c17659540b018":[12,0,11,25,2]
+"rootUtils_8py.html#ab807114738eb9dfb5fef001e2fa9bc54":[12,0,11,25,6]
 };

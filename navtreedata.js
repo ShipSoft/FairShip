@@ -199,12 +199,12 @@ var NAVTREEINDEX =
 "namespacemakeGenieEvents.html#a43aff25673fa84d9c3c8f83835ea5099",
 "namespacemembers_func_o.html",
 "namespacerunPythia8.html#ae3a3275a7e71c83701ad0337df55065c",
-"namespacerun__simScript.html#ae49febd49d327dfcdf13f395786856a3",
-"namespacestrip__example.html",
-"rootUtils_8py.html#aea2713c1fd3249a6dd7ea82c6ccc8ef5",
-"run__simScript_8py.html#a324d5620e02a104287e12097df596e9c",
-"shipunit_8py.html#a6b859e93b8e87bcbe54fac2b365c6ba3",
-"study__muMSC_8py.html#af40bec1213f786d13938aea4817b82c4"
+"namespacerun__simScript.html#ae33bdd9891e2b28ad2bed3f3af498fb2",
+"namespacestrawtubesDetector.html",
+"rootUtils_8py.html#ae7d21aa6d2c4142e2b2c17659540b018",
+"run__simScript_8py.html#a286a3e332ea70141caf759d651069173",
+"shipunit_8py.html#a68470ac1d4e534a27bd592d2c0f74f8e",
+"study__muMSC_8py.html#ae0e2151c318c7666057adb54d84926f0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
