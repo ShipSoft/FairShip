@@ -208,8 +208,8 @@ void Floor::ConstructGeometry()
   std::vector<double> UJ18_x  = {-92.57914735775,108.94172460057,48288.782816717,-141.138131672,-35.36121461014,582.09072513608,175.0};
   std::vector<double> tu012_i = {     -596.38194369,    30., 47654.730979, -155.10509191, 0.0,2761.9020453, 220.0};
   std::vector<double> tu012_o = {   -596.38194369,    30., 4.7654730979E+04, -155.10509191, 0.0,2761.9020453, 250.0};
-  std::vector<double> tu011_i = {   -522.09173359,      30., 4.6171636594E+04, -99.7891926, 0.0,1954.9587043, 220.0};
-  std::vector<double> tu011_o = {   -522.09173359,    30., 4.6171636594E+04, -99.7891926, 0.0,1954.9587043, 250.0,360.,850.};
+  std::vector<double> tu011_i = {   -552.09173359,      30., 4.6171636594E+04, -99.7891926, 0.0,2700.9587043, 220.0};
+  std::vector<double> tu011_o = {   -552.09173359,    30., 4.6171636594E+04, -99.7891926, 0.0,2700.9587043, 250.0,360.,850.};
   std::vector<double> tu010_i = {   -451.24339295,      30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 220.0};
   std::vector<double> tu010_o = {   -451.24339295,     30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 250.0,750.,1100.};
 // PLA   TI18_01 and TI18_02
@@ -375,9 +375,9 @@ void Floor::ConstructGeometry()
     //UJ18 tunnel
     // UJ18 translation and angle rotation
          Double_t dx_0_UJ18 = -2300.0;
-         Double_t dy_0_UJ18 = -273.0;
+         Double_t dy_0_UJ18 = -117.0;
          Double_t dz_0_UJ18 = 7346.0;
-         Double_t rot_X = 1.3;
+         Double_t rot_X = 0;
          Double_t rot_Y = -13.63;
          Double_t rot_Z = 0;
     
@@ -708,8 +708,8 @@ void Floor::ConstructGeometry()
     CombiTrans->RegisterYourself();
     trans.push_back(CombiTrans);
   }
-    auto total2 = new TGeoCompositeShape("Stotal2","tu010_:TS_tu010_+tu011_:TS_tu011_");
-    auto Ftotal2 = new TGeoCompositeShape("Ftotal2","Ftu010_:TS_tu010_+Ftu011_:TS_tu011_");
+    auto total2 = new TGeoCompositeShape("Stotal2","tu011_:TS_tu011_-Solid_UJ18_shape:new_translation_for_UJ18");
+    auto Ftotal2 = new TGeoCompositeShape("Ftotal2","Ftu011_:TS_tu011_-Solid_UJ18_shape:new_translation_for_UJ18");
     auto volT2 = new TGeoVolume("VUJ",total2,concrete);
     volT2->SetTransparency(0);
     volT2->SetLineColor(kGray);
