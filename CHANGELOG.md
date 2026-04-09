@@ -21,6 +21,8 @@ it in future.
 
 ### Fixed
 
+* Fix CI build warnings: add missing `override` specifiers, fix `Print()` and `Init()` virtual hiding, remove unused `FairShipFields` LinkDef entry
+
 ### Removed
 
 ## 26.03 - 2026-03-31

@@ -15,6 +15,7 @@
 namespace SHiP {
 class Generator : public FairGenerator {
  public:
+  using FairGenerator::Init;
   Generator() {};
   ~Generator() override;
 

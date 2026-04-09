@@ -24,10 +24,10 @@ class ShipFieldPar : public FairParGenericSet {
   ~ShipFieldPar();
 
   /** Put parameters **/
-  virtual void putParams(FairParamList* list);
+  void putParams(FairParamList* list) override;
 
   /** Get parameters **/
-  virtual Bool_t getParams(FairParamList* list);
+  Bool_t getParams(FairParamList* list) override;
 
   /** Set parameters from CbmField  **/
   void SetParameters(FairField* field);
@@ -88,7 +88,7 @@ class ShipFieldPar : public FairParGenericSet {
   ShipFieldPar(const ShipFieldPar&) = delete;
   ShipFieldPar& operator=(const ShipFieldPar&) = delete;
 
-  ClassDef(ShipFieldPar, 1);
+  ClassDefOverride(ShipFieldPar, 1);
 };
 
 #endif  // FIELD_SHIPFIELDPAR_H_

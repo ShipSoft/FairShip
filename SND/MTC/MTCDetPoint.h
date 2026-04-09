@@ -46,7 +46,7 @@ class MTCDetPoint : public FairMCPoint {
   }
   Int_t fPdgCode;
 
-  ClassDef(MTCDetPoint, 3)
+  ClassDefOverride(MTCDetPoint, 3)
 };
 
 #endif  // SND_MTC_MTCDETPOINT_H_

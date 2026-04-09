@@ -47,7 +47,7 @@ class TargetPoint : public FairMCPoint {
  private:
   Int_t fPdgCode;
 
-  ClassDef(TargetPoint, 3)
+  ClassDefOverride(TargetPoint, 3)
 };
 
 #endif  // SND_EMULSIONTARGET_TARGETPOINT_H_

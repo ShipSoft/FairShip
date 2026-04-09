@@ -25,7 +25,7 @@ class ShipMuonShield : public FairModule {
                  const Bool_t WithConstShieldField, const Bool_t SC_key);
   ShipMuonShield();
   ~ShipMuonShield() override;
-  void ConstructGeometry();
+  void ConstructGeometry() override;
   void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy);
 
  protected:
@@ -68,7 +68,7 @@ class ShipMuonShield : public FairModule {
                     Double_t Z, Bool_t NotMagnet, Bool_t SC_key);
 
  public:
-  ClassDef(ShipMuonShield, 4)
+  ClassDefOverride(ShipMuonShield, 4)
 };
 
 #endif  // PASSIVE_SHIPMUONSHIELD_H_

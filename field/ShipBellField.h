@@ -46,14 +46,14 @@ class ShipBellField : public FairField {
   /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
    **/
-  virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
-  virtual Double_t GetBy(Double_t x, Double_t y, Double_t z);
-  virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
+  Double_t GetBx(Double_t x, Double_t y, Double_t z) override;
+  Double_t GetBy(Double_t x, Double_t y, Double_t z) override;
+  Double_t GetBz(Double_t x, Double_t y, Double_t z) override;
 
   void IncludeTarget(Double_t xy, Double_t z, Double_t l);
 
   /** Screen output **/
-  virtual void Print();
+  void Print(Option_t* = "") const override;
 
  private:
   /** Field parameters **/
@@ -66,7 +66,7 @@ class ShipBellField : public FairField {
   Double_t targetZ0;
   Double_t targetL;
 
-  ClassDef(ShipBellField, 2);
+  ClassDefOverride(ShipBellField, 2);
 };
 
 #endif  // FIELD_SHIPBELLFIELD_H_

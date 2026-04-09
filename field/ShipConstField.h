@@ -60,9 +60,9 @@ class ShipConstField : public FairField {
   /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
    **/
-  virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
-  virtual Double_t GetBy(Double_t x, Double_t y, Double_t z);
-  virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
+  Double_t GetBx(Double_t x, Double_t y, Double_t z) override;
+  Double_t GetBy(Double_t x, Double_t y, Double_t z) override;
+  Double_t GetBz(Double_t x, Double_t y, Double_t z) override;
 
   /** Accessors to field region **/
   Double_t GetXmin() const { return fXmin; }
@@ -78,7 +78,7 @@ class ShipConstField : public FairField {
   Double_t GetBz() const { return fBz; }
 
   /** Screen output **/
-  virtual void Print();
+  void Print(Option_t* = "") const override;
 
  private:
   /** Limits of the field region **/
@@ -94,7 +94,7 @@ class ShipConstField : public FairField {
   Double_t fBy;
   Double_t fBz;
 
-  ClassDef(ShipConstField, 1);
+  ClassDefOverride(ShipConstField, 1);
 };
 
 #endif  // FIELD_SHIPCONSTFIELD_H_

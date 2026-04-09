@@ -51,7 +51,7 @@ class ShipCompField : public TVirtualMagField {
     \param [in] position The x,y,z global coordinates of the point
     \param [out] B The x,y,z components of the magnetic field
   */
-  virtual void Field(const Double_t* position, Double_t* B);
+  void Field(const Double_t* position, Double_t* B) override;
 
   //! Get the number of fields in the composite
   /*!
@@ -68,7 +68,7 @@ class ShipCompField : public TVirtualMagField {
   }
 
   //! ClassDef for ROOT
-  ClassDef(ShipCompField, 1);
+  ClassDefOverride(ShipCompField, 1);
 
  protected:
  private:

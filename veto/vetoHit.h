@@ -49,7 +49,7 @@ class vetoHit : public SHiP::DetectorHit {
   Double_t ft{-1.};
   Bool_t flag{true};  ///< validity flag
 
-  ClassDef(vetoHit, 2);
+  ClassDefOverride(vetoHit, 2);
 };
 
 #endif  // VETO_VETOHIT_H_

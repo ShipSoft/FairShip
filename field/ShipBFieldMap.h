@@ -77,7 +77,7 @@ class ShipBFieldMap : public TVirtualMagField {
     \param [out] B The x,y,z components of the magnetic field (kGauss = 0.1
     tesla)
   */
-  virtual void Field(const Double_t* position, Double_t* B);
+  void Field(const Double_t* position, Double_t* B) override;
 
   //! Typedef for a vector containing a vector of floats
   typedef std::vector<std::vector<Float_t>> floatArray;
@@ -298,7 +298,7 @@ class ShipBFieldMap : public TVirtualMagField {
   Bool_t IsACopy() const { return isCopy_; }
 
   //! ClassDef for ROOT
-  ClassDef(ShipBFieldMap, 1);
+  ClassDefOverride(ShipBFieldMap, 1);
 
  protected:
  private:

@@ -42,7 +42,7 @@ class DetectorPoint : public FairMCPoint {
   std::array<Double_t, 3> fLpos, fLmom;
 
  private:
-  ClassDef(SHiP::DetectorPoint, 1);
+  ClassDefOverride(SHiP::DetectorPoint, 1);
 };
 }  // namespace SHiP
 

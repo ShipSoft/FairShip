@@ -57,7 +57,7 @@ class UpstreamTaggerHit : public SHiP::DetectorHit {
   Double_t fZ;     ///< Smeared z position (cm)
   Double_t fTime;  ///< Smeared time (ns)
 
-  ClassDef(UpstreamTaggerHit, 2);
+  ClassDefOverride(UpstreamTaggerHit, 2);
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_

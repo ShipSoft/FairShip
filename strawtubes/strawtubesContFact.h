@@ -17,8 +17,8 @@ class strawtubesContFact : public FairContFact {
   strawtubesContFact();
   ~strawtubesContFact() {}
   FairParSet* createContainer(FairContainer*);
-  ClassDef(strawtubesContFact,
-           0)  // Factory for all strawtubes parameter containers
+  ClassDefOverride(strawtubesContFact,
+                   0)  // Factory for all strawtubes parameter containers
 };
 
 #endif  // STRAWTUBES_STRAWTUBESCONTFACT_H_

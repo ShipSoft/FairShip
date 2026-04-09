@@ -47,7 +47,7 @@ class TTPoint : public FairMCPoint {
  private:
   Int_t fPdgCode;
 
-  ClassDef(TTPoint, 3)
+  ClassDefOverride(TTPoint, 3)
 };
 
 #endif  // SND_EMULSIONTARGET_TTPOINT_H_

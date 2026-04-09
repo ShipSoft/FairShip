@@ -17,7 +17,8 @@ class vetoContFact : public FairContFact {
   vetoContFact();
   ~vetoContFact() {}
   FairParSet* createContainer(FairContainer*);
-  ClassDef(vetoContFact, 0)  // Factory for all veto parameter containers
+  ClassDefOverride(vetoContFact,
+                   0)  // Factory for all veto parameter containers
 };
 
 #endif  // VETO_VETOCONTFACT_H_

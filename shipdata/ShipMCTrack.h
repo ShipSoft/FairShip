@@ -127,7 +127,7 @@ class ShipMCTrack : public TObject {
   /** Index of track in the event **/
   Int_t fTrackID;
 
-  ClassDef(ShipMCTrack, 9);
+  ClassDefOverride(ShipMCTrack, 9);
 };
 
 // ==========   Inline functions   ========================================

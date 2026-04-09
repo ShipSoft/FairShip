@@ -59,7 +59,7 @@ class SiliconTargetPoint : public FairMCPoint {
  private:
   Int_t fPdgCode;
 
-  ClassDef(SiliconTargetPoint, 2)
+  ClassDefOverride(SiliconTargetPoint, 2)
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGETPOINT_H_

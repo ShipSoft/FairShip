@@ -38,7 +38,7 @@ class vetoHitOnTrack : public TObject {
   Float_t fDist;  ///< distance to closest veto hit
   Int_t fHitID;   ///< hit ID
 
-  ClassDef(vetoHitOnTrack, 2);
+  ClassDefOverride(vetoHitOnTrack, 2);
 };
 
 #endif  // VETO_VETOHITONTRACK_H_

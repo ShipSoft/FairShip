@@ -166,7 +166,7 @@ class ShipStack : public FairGenericStack {
 
   /** Accessors **/
   TParticle* GetParticle(Int_t trackId) const;
-  TClonesArray* GetListOfParticles() { return fParticles; }
+  TClonesArray* GetListOfParticles() override { return fParticles; }
 
  private:
   /** STL stack (FILO) used to handle the TParticles for tracking **/
