@@ -11,13 +11,13 @@
         {
             "index": 0,
             "mean": 0.0,
-            "stddev": 0.0168,
+            "stddev": 0.12,
             "type": "Gauss"
         },
         {
             "index": 1,
             "mean": 0.0,
-            "stddev": 0.0168,
+            "stddev": 1.2,
             "type": "Gauss"
         },
         {
