@@ -7,7 +7,7 @@ from array import array
 
 import acts
 import acts.examples
-import acts.examples.tgeo
+from acts.examples.strawReco import runTracking
 import global_variables
 import ROOT
 import rootUtils as ut
@@ -46,6 +46,7 @@ class ShipDigiReco:
 
         # Create output file and new tree for digi/reco branches only
         self.outputFile = ROOT.TFile.Open(fout, "recreate")
+        #self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
         self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
 
         # Disable GeoTracks branch if present in input
@@ -132,8 +133,8 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
         ##Set up ACTS tracking geometry and magnetic field
-        detector = acts.examples.StrawtubeBuilder(rootObject=fgeo)
-        self.trackingGeometry = detector.trackingGeometry()
+#        detector = acts.examples.StrawtubeBuilder()
+#        self.trackingGeometry = detector.trackingGeometry()
         # Read the root file containing spectrometer B field
         u = acts.UnitConstants
         currentPath = os.path.dirname(__file__)
@@ -203,10 +204,15 @@ class ShipDigiReco:
             px = self.sTree.strawtubesPoint[sm["digiHit"]].GetPx()
             py = self.sTree.strawtubesPoint[sm["digiHit"]].GetPy()
             pz = self.sTree.strawtubesPoint[sm["digiHit"]].GetPz()
+            x = self.sTree.strawtubesPoint[sm["digiHit"]].GetX()
+            y = self.sTree.strawtubesPoint[sm["digiHit"]].GetY()
+            z = self.sTree.strawtubesPoint[sm["digiHit"]].GetZ()
             deltaE = self.sTree.strawtubesPoint[sm["digiHit"]].GetEnergyLoss()
 
+            #Structure of hit vector (station, layer, view, straw, track_id, Hx,Hy,Hz,Ht, Px,Py,Pz,E, deltaPx, deltaPy, deltaPz, deltaE )
             iHit = ROOT.std.vector("float")()
-            iHit += [station, layer, view, straw, trID, sm["xtop"], sm["ytop"], sm["z"], time, px, py, pz, deltaE]
+            #iHit += [station, layer, view, straw, trID, sm["xtop"], sm["ytop"], sm["z"], time, px, py, pz, 0, 0, 0, 0, deltaE]
+            iHit += [station, layer, view, straw, trID, x, y, z, time, px, py, pz, 0, 0, 0, 0, deltaE]
             self.strawHits.push_back(iHit)
 
         for index, tr in enumerate(self.sTree.MCTrack):
@@ -220,15 +226,15 @@ class ShipDigiReco:
             charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
             pdg = tr.GetPdgCode()
             iTrack = ROOT.std.vector("float")()
-            iTrack += [index, Vx, Vy, Vz, px, py, pz, mass, charge, pdg]
+            #Structure of particle vector (track_id,PDG, Vx,Vy,Vz,Vt, Px,Py,Pz,m,q )
+            iTrack += [index, pdg, Vx, Vy, Vz, 0, px, py, pz, mass, charge]
             self.MCTracks.push_back(iTrack)
 
         actsTracks = acts.examples.SHiPReco(self.trackingGeometry, self.actsFieldMap, global_variables.vertexing, self.strawHits, self.MCTrack, self.recoTree)
 
 
-
-        print(actsTracks[0])
-        print(type(actsTracks[0]))
+        #print(actsTracks[0])
+        #print(type(actsTracks[0]))
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
