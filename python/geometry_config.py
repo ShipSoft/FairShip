@@ -13,7 +13,7 @@ from ShipGeoConfig import AttrDict, Config
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
 
-# Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
+# Here you can select the MS geometry
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
@@ -133,7 +133,7 @@ def create_config(
     Yheight: float = 6.0,
     strawDesign: int = 10,
     muShieldGeo=None,
-    shieldName: str = "New_HA_Design",
+    shieldName: str = "TRY_2025",
     nuTargetPassive: int = 1,
     SND: bool = True,
     SND_design=None,
@@ -147,7 +147,7 @@ def create_config(
         Yheight: Height of vacuum tank in meters, default: 6.0
         strawDesign: Straw tube design (4=aluminium frame, 10=steel frame), default: 10
         muShieldGeo: Muon shield geometry file (for experts), default: None
-        shieldName: Name of shield configuration ("warm_opt" or "New_HA_Design"), default: "New_HA_Design"
+        shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
         SND_design: SND design options (list of design numbers), default: [2]

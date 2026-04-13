@@ -117,7 +117,7 @@ ap.add_argument(
 )
 ap.add_argument(
     "--shieldName",
-    help="Name of the shield in the database. New_HA_Design or warm_opt.",
+    help="Name of the shield in the database.",
     default="TRY_2025",
     choices=["TRY_2025"],
 )

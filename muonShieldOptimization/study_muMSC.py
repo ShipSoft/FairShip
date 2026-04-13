@@ -42,7 +42,7 @@ ecut = 0.0
 # -------------------------------------------------------------------
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
-ship_geo = geometry_config.create_config(Yheight=10, shieldName="warm_opt")
+ship_geo = geometry_config.create_config(Yheight=10, shieldName="TRY_2025")
 
 # -----Timer--------------------------------------------------------
 timer = ROOT.TStopwatch()
