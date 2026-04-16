@@ -337,7 +337,7 @@ var namespaces_dup =
       [ "PathLike", "namespacegenie__interface.html#a8d582c3cd77cda2ed0f68fdc7d48e803", null ]
     ] ],
     [ "geometry_config", "namespacegeometry__config.html", [
-      [ "create_config", "namespacegeometry__config.html#aa9bc722bb8270e8afec2f728f5f82b4e", null ],
+      [ "create_config", "namespacegeometry__config.html#a66266ffa760621dc63125dc6e54ac5b6", null ],
       [ "shield_db", "namespacegeometry__config.html#a4ebc72f6a5c5803cfcc7f6a783c1aaf3", null ]
     ] ],
     [ "geomGeant4", "namespacegeomGeant4.html", [
