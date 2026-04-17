@@ -5,7 +5,7 @@ var classstrawtubesHit =
     [ "strawtubesHit", "classstrawtubesHit.html#ab840267728ed1c2ccd78201d02740819", null ],
     [ "~strawtubesHit", "classstrawtubesHit.html#ad2eea28428aa4feb6fffec65ee710179", null ],
     [ "strawtubesHit", "classstrawtubesHit.html#a6e11d84affe82d06e2acf857f084db2d", null ],
-    [ "ClassDef", "classstrawtubesHit.html#a12390c9513913993265c768182105af5", null ],
+    [ "ClassDefOverride", "classstrawtubesHit.html#ab184802c106e19292914c4e6053cd897", null ],
     [ "GetLayerNumber", "classstrawtubesHit.html#a7fca85cb6daf4f0ce05f359707c52ad3", null ],
     [ "GetStationNumber", "classstrawtubesHit.html#a17fe7a11516d30be8c58a3180c6984b4", null ],
     [ "GetStrawNumber", "classstrawtubesHit.html#ad68404b626b1db1a4b992845f43e6272", null ],

@@ -5,7 +5,7 @@ var classSHiP_1_1DetectorPoint =
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#a7dda1db551da77ae9b8d6504ae96306c", null ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#af02402e7503c1aa62d13bc896c52fdc7", null ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#a421cd1b15a15aa6c5f3e8d7d69deac5e", null ],
-    [ "ClassDef", "classSHiP_1_1DetectorPoint.html#aa6fac145f2c9879b35fb97130e9f35e8", null ],
+    [ "ClassDefOverride", "classSHiP_1_1DetectorPoint.html#a80dbaf3c80e3054edf0b45adf4f47494", null ],
     [ "extraPrintInfo", "classSHiP_1_1DetectorPoint.html#aec89c4ada51119e9813ae739b175098d", null ],
     [ "LastMom", "classSHiP_1_1DetectorPoint.html#abae11f52eff248c631779e8ba505aff5", null ],
     [ "LastPoint", "classSHiP_1_1DetectorPoint.html#a886123b2b38136c7c98e4a1cb4c180cf", null ],

@@ -3,7 +3,7 @@ var classvetoHitOnTrack =
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html#a0269377ae88221e8ed503b22301034f1", null ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html#a58d0c62f6f45b7383fe478b435c12166", null ],
     [ "~vetoHitOnTrack", "classvetoHitOnTrack.html#a07895455585d3864d5ef096792237a91", null ],
-    [ "ClassDef", "classvetoHitOnTrack.html#a54f8468e0ab60f9f80a4a457cda26779", null ],
+    [ "ClassDefOverride", "classvetoHitOnTrack.html#ae9b91aeb8b18cc3ac20a34b3cf7e2cfd", null ],
     [ "GetDist", "classvetoHitOnTrack.html#a03b6392aa730388480b7a0b04bfd5f55", null ],
     [ "GetHitID", "classvetoHitOnTrack.html#ae5e83607bd7942db08c7442b9346c1d2", null ],
     [ "Print", "classvetoHitOnTrack.html#a37d31f07b1868d30d61d865889a65c15", null ],

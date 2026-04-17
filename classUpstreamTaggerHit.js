@@ -4,7 +4,7 @@ var classUpstreamTaggerHit =
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html#a42e87c5138bf1f2b039b03e06e08ec61", null ],
     [ "~UpstreamTaggerHit", "classUpstreamTaggerHit.html#a4ac78d61179ebce9b658e1da8f340731", null ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html#ae37857f35bff2cf150cbd7a9061322d8", null ],
-    [ "ClassDef", "classUpstreamTaggerHit.html#a0e947781aaa7b0d677a06e4a7fa79aa3", null ],
+    [ "ClassDefOverride", "classUpstreamTaggerHit.html#ac4109290961adbe3b0b34320578c47e0", null ],
     [ "GetTime", "classUpstreamTaggerHit.html#a97afc7ad9f16ce797ebb3978c243e012", null ],
     [ "GetX", "classUpstreamTaggerHit.html#a2a3d5c9569984aa301a522f6aba1e918", null ],
     [ "GetXYZ", "classUpstreamTaggerHit.html#a65c165cd101e20d678814eeda254096f", null ],

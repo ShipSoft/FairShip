@@ -4,7 +4,7 @@ var classMTCDetHit =
     [ "MTCDetHit", "classMTCDetHit.html#aee61f60f83aa2d509d272375badfcdc7", null ],
     [ "MTCDetHit", "classMTCDetHit.html#a7c86ac5b342de0f8bea667d1d5a13ef6", null ],
     [ "~MTCDetHit", "classMTCDetHit.html#a00a2acd5676fc160ec8d147b4988597d", null ],
-    [ "ClassDef", "classMTCDetHit.html#a139e50f4be0d9fb940d0281e6739f222", null ],
+    [ "ClassDefOverride", "classMTCDetHit.html#acdd5e17375bf8edd338c3854271b9ac8", null ],
     [ "GetChannelCoordinates", "classMTCDetHit.html#a074b71713b05f8aad10440dd766c3ade", null ],
     [ "GetChannelID", "classMTCDetHit.html#ad03ffca6b808d429de707303fedf268f", null ],
     [ "GetEnergy", "classMTCDetHit.html#a99702f859fa3d15106a1229fd7b78f4e", null ],

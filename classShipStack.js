@@ -10,7 +10,7 @@ var classShipStack =
     [ "GetCurrentParentTrackNumber", "classShipStack.html#a1c0662b66a53f4935fc60c1925580612", null ],
     [ "GetCurrentTrack", "classShipStack.html#a87a99caa944dc20e3bc9a0ca00ce623e", null ],
     [ "GetCurrentTrackNumber", "classShipStack.html#a24aaaded528a1bcca81cad06d1f19bb0", null ],
-    [ "GetListOfParticles", "classShipStack.html#a97ea821c9e269242b49acfa774b990bf", null ],
+    [ "GetListOfParticles", "classShipStack.html#a638375cc0b71d4845f01ee4bd86e29e0", null ],
     [ "GetNprimary", "classShipStack.html#aa7d08ef3b8d90c5dfc6e1c70b43b3949", null ],
     [ "GetNtrack", "classShipStack.html#a6343d5ac91960a21af0c5a3f8ae63829", null ],
     [ "GetParticle", "classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91", null ],

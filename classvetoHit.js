@@ -4,7 +4,7 @@ var classvetoHit =
     [ "vetoHit", "classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d", null ],
     [ "~vetoHit", "classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3", null ],
     [ "vetoHit", "classvetoHit.html#ab175a0d700526b9ca4611b4bfbd67516", null ],
-    [ "ClassDef", "classvetoHit.html#a28c2a34bdcab5f0947f69172bb8025e6", null ],
+    [ "ClassDefOverride", "classvetoHit.html#aeee7323829a0d46e9aa164d9cdebbb91", null ],
     [ "GetADC", "classvetoHit.html#a24f871c8ff5286470451080a9c0cbed3", null ],
     [ "GetEloss", "classvetoHit.html#acc59e65dc99ccd1c2078c8d970ab527a", null ],
     [ "GetNode", "classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e", null ],

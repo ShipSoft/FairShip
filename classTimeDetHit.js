@@ -4,7 +4,7 @@ var classTimeDetHit =
     [ "TimeDetHit", "classTimeDetHit.html#a06c1fddb5db9a73cb25634e03172ace8", null ],
     [ "~TimeDetHit", "classTimeDetHit.html#a89ba0e3f6092eea74c888807f4486bb4", null ],
     [ "TimeDetHit", "classTimeDetHit.html#a054e5bd0e78b68ab2cb9b0dbeafe196d", null ],
-    [ "ClassDef", "classTimeDetHit.html#a8a94ef74e94f9f5dedd1eb7cefde0bf5", null ],
+    [ "ClassDefOverride", "classTimeDetHit.html#aeff7dff684acfd43a9fd851ea0240f6f", null ],
     [ "Dist", "classTimeDetHit.html#a75dcde375f3adbebcc6e71ece5fa20fe", null ],
     [ "GetMeasurements", "classTimeDetHit.html#a19021c4a519a983a9bbb20dfd4a9e767", null ],
     [ "GetNode", "classTimeDetHit.html#a6e69747362b4aa62398f5ac7b046891a", null ],

@@ -4,7 +4,7 @@ var classSiliconTargetHit =
     [ "SiliconTargetHit", "classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8", null ],
     [ "~SiliconTargetHit", "classSiliconTargetHit.html#a44598ddd7a9ec4be9f2ea3b61dfde957", null ],
     [ "SiliconTargetHit", "classSiliconTargetHit.html#a5389bc8422d433e48f8ba668c34ab4c3", null ],
-    [ "ClassDef", "classSiliconTargetHit.html#aa09276e1d7a847e86688ce7c0d7f45cc", null ],
+    [ "ClassDefOverride", "classSiliconTargetHit.html#a036fec867f26484d0e965457215567ae", null ],
     [ "GetColumn", "classSiliconTargetHit.html#ab9c2953a2441d6b27c10174403bad890", null ],
     [ "GetLayer", "classSiliconTargetHit.html#aafa2b916823196655f34bbf9c97c9c78", null ],
     [ "GetModule", "classSiliconTargetHit.html#aab173ae2e4b275aa71b206a48a6fd073", null ],

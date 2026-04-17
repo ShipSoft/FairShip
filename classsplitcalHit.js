@@ -5,7 +5,7 @@ var classsplitcalHit =
     [ "splitcalHit", "classsplitcalHit.html#a7dbeec0d9339fafe0ee2c1402e67299b", null ],
     [ "~splitcalHit", "classsplitcalHit.html#a4e4bc6d351187cf70030c372c6b99310", null ],
     [ "splitcalHit", "classsplitcalHit.html#aa0e5e39f08640d120c729847338a0f68", null ],
-    [ "ClassDef", "classsplitcalHit.html#ac4562a7ad9688d97f9f9e619640cfe61", null ],
+    [ "ClassDefOverride", "classsplitcalHit.html#a3356c01b7441e3121b326b931f99d05f", null ],
     [ "Decoder", "classsplitcalHit.html#ae692491482120268d418707ef94bc704", null ],
     [ "Decoder", "classsplitcalHit.html#aa749608585ec702fa1f9f6448d2aa8c5", null ],
     [ "GetDetectorElementName", "classsplitcalHit.html#ac18bdfa234e33ae90d8e441694116805", null ],
