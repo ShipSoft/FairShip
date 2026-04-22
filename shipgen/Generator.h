@@ -45,6 +45,8 @@ class Generator : public FairGenerator {
     UseExternalFile(inFiles.at(0).c_str(), i);
   }
 
+  /// Set maximum allowed slopes |px/pz| and |py/pz| for vessel acceptance.
+  /// Parameters are tan(theta), not angle in radians.
   void SetMaxTheta(Double_t thetaX, Double_t thetaY) {
     fMaxThetaX = thetaX;
     fMaxThetaY = thetaY;

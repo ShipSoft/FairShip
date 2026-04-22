@@ -20,6 +20,7 @@ it in future.
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition
+* `nrOfRetries()` in HNL and DP generators now includes geometric acceptance rejections, not only phasespace failures
 
 ### Fixed
 

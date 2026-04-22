@@ -143,14 +143,25 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     iHNL = hnls.size();
     if (iHNL == 0) {
-      // fLogger->Info(MESSAGE_ORIGIN,"Event without HNL. Retry.");
-      // fPythia->event.list();
-      fnRetries += 1;  // can happen if phasespace does not allow charm hadron
-                       // to decay to HNL
+      fnRetries += 1;
     } else {
-      int r = static_cast<int>(gRandom->Uniform(0, iHNL));
-      // cout << " ----> debug 2 " << r  <<  endl;
-      int i = hnls[r];
+      // filter HNLs by vessel acceptance
+      std::vector<int> accepted;
+      for (int idx : hnls) {
+        if (IsInVesselAcceptance(fPythia->event[idx].px(),
+                                 fPythia->event[idx].py(),
+                                 fPythia->event[idx].pz())) {
+          accepted.push_back(idx);
+        }
+      }
+      if (accepted.empty()) {
+        iHNL = 0;
+        hnls.clear();
+        fnRetries += 1;
+        continue;
+      }
+      int r = static_cast<int>(gRandom->Uniform(0, accepted.size()));
+      int i = accepted[r];
       // production vertex
       zp = fPythia->event[i].zProd();
       xp = fPythia->event[i].xProd();
@@ -161,13 +172,6 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       px = fPythia->event[i].px();
       py = fPythia->event[i].py();
       e = fPythia->event[i].e();
-      // check if trajectory can reach the decay vessel
-      if (!IsInVesselAcceptance(px, py, pz)) {
-        iHNL = 0;
-        hnls.clear();
-        fnRetries += 1;
-        continue;
-      }
       // new decay vertex
       Double_t LS = gRandom->Uniform(fLmin, fLmax);  // mm, G4 and Pythia8 units
       Double_t p = TMath::Sqrt(px * px + py * py + pz * pz);

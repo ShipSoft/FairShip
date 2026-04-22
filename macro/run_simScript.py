@@ -459,11 +459,14 @@ if options.pythia8:
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
         P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
-        margin = 10 * u.cm
-        z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length
+        margin = 10 * u.cm  # covers beam smearing + non-projectivity of vessel
+        z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length  # vessel exit z from target
+        # xEndInner/yEndInner are full inner widths; divide by 2 for half-aperture.
+        # Assumes production vertex at target (z=0). Vessel is approximately
+        # projective, so a single angle cut at the exit (widest point) suffices.
         max_theta_x = (ship_geo.decayVolume.xEndInner / 2 + margin) / z_end
         max_theta_y = (ship_geo.decayVolume.yEndInner / 2 + margin) / z_end
-        P8gen.SetMaxTheta(max_theta_x, max_theta_y)
+        P8gen.SetMaxTheta(max_theta_x, max_theta_y)  # slope bounds: |px/pz|, |py/pz|
     if charmonly:
         primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
         ut.checkFileExists(inputFile)
@@ -766,9 +769,9 @@ print(" ")
 print("Macro finished successfully.")
 if "P8gen" in globals():
     if HNL:
-        print("number of retries, events without HNL ", P8gen.nrOfRetries())
+        print("number of retries (no HNL or outside vessel acceptance) ", P8gen.nrOfRetries())
     elif options.DarkPhoton:
-        print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())
+        print("number of retries (no DP or outside vessel acceptance) ", P8gen.nrOfRetries())
         print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
 
 print("Output file is ", outFile)
