@@ -5,6 +5,7 @@
 #ifndef SHIPGEN_GENERATOR_H_
 #define SHIPGEN_GENERATOR_H_
 
+#include <cmath>
 #include <optional>
 #include <string>
 #include <vector>
@@ -44,9 +45,24 @@ class Generator : public FairGenerator {
     UseExternalFile(inFiles.at(0).c_str(), i);
   }
 
+  void SetMaxTheta(Double_t thetaX, Double_t thetaY) {
+    fMaxThetaX = thetaX;
+    fMaxThetaY = thetaY;
+    fUseVesselAcceptance = true;
+  };
+
  protected:
+  bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const {
+    if (!fUseVesselAcceptance) return true;
+    if (pz <= 0) return false;
+    return std::abs(px / pz) < fMaxThetaX && std::abs(py / pz) < fMaxThetaY;
+  }
+
   std::optional<std::string> fextFile;
   Int_t firstEvent = 0;
+  Double_t fMaxThetaX = 0;
+  Double_t fMaxThetaY = 0;
+  bool fUseVesselAcceptance = false;
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_

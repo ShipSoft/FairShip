@@ -282,6 +282,10 @@ def create_config(
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
+    c.decayVolume.xStartInner = 100 * u.cm
+    c.decayVolume.xEndInner = 400 * u.cm
+    c.decayVolume.yStartInner = 270 * u.cm
+    c.decayVolume.yEndInner = 600 * u.cm
 
     c.chambers = AttrDict()
     magnetIncrease = 100.0 * u.cm

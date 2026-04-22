@@ -459,6 +459,11 @@ if options.pythia8:
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
         P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
+        margin = 10 * u.cm
+        z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length
+        max_theta_x = (ship_geo.decayVolume.xEndInner / 2 + margin) / z_end
+        max_theta_y = (ship_geo.decayVolume.yEndInner / 2 + margin) / z_end
+        P8gen.SetMaxTheta(max_theta_x, max_theta_y)
     if charmonly:
         primGen.SetTarget(0.0, 0.0)  # vertex is set in pythia8Generator
         ut.checkFileExists(inputFile)

@@ -243,6 +243,13 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       px = fPythia->event[i].px();
       py = fPythia->event[i].py();
       e = fPythia->event[i].e();
+      // check if trajectory can reach the decay vessel
+      if (!IsInVesselAcceptance(px, py, pz)) {
+        iDP = 0;
+        dpvec.clear();
+        fnRetries += 1;
+        continue;
+      }
       // old decay vertex
       // Int_t ida =fPythia->event[i].daughter1();
       std::cout << " Debug: decay product of A: "

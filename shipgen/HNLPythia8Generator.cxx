@@ -161,6 +161,13 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       px = fPythia->event[i].px();
       py = fPythia->event[i].py();
       e = fPythia->event[i].e();
+      // check if trajectory can reach the decay vessel
+      if (!IsInVesselAcceptance(px, py, pz)) {
+        iHNL = 0;
+        hnls.clear();
+        fnRetries += 1;
+        continue;
+      }
       // new decay vertex
       Double_t LS = gRandom->Uniform(fLmin, fLmax);  // mm, G4 and Pythia8 units
       Double_t p = TMath::Sqrt(px * px + py * py + pz * pz);
