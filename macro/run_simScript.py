@@ -70,6 +70,9 @@ pg_parser.add_argument(
 pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
+pg_parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--nTracks", type=int, default=1, help="Number of particles per event (default: 1)")
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
@@ -517,10 +520,10 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
-    myPgun = ROOT.FairBoxGenerator(options.pID, 1)
+    myPgun = ROOT.FairBoxGenerator(options.pID, options.nTracks)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    myPgun.SetThetaRange(options.thetaMin, options.thetaMax)  # Polar angle in lab system [degree]
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
         myPgun.SetBoxXYZ(
