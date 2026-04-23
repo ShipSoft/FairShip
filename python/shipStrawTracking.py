@@ -12,6 +12,7 @@ import ROOT
 
 # For modules
 import shipDet_conf
+import shipunit as u
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file
@@ -693,14 +694,18 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     hits4 = {}
     trackoutsidestations = []
 
+    margin = 5.0 * u.cm
+    x_bound = ShipGeo.strawtubes_geo.width - margin
+    y_bound = ShipGeo.strawtubes_geo.height - margin
+
     for i in range(nHits):
         if i in duplicatestrawhit:
             continue
 
         ahit = sTree.strawtubesPoint[i]
 
-        # is hit inside acceptance? if not mark the track as bad
-        if abs(ahit.GetX()) >= 195.0 or abs(ahit.GetY()) >= 295.0:
+        # is hit inside acceptance (width/height minus margin)?
+        if abs(ahit.GetX()) >= x_bound or abs(ahit.GetY()) >= y_bound:
             if ahit.GetTrackID() not in trackoutsidestations:
                 trackoutsidestations.append(ahit.GetTrackID())
 
