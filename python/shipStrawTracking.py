@@ -700,7 +700,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
         ahit = sTree.strawtubesPoint[i]
 
         # is hit inside acceptance? if not mark the track as bad
-        if ((ahit.GetX() / 245.0) ** 2 + (ahit.GetY() / 495.0) ** 2) >= 1.0:
+        if abs(ahit.GetX()) >= 195.0 or abs(ahit.GetY()) >= 295.0:
             if ahit.GetTrackID() not in trackoutsidestations:
                 trackoutsidestations.append(ahit.GetTrackID())
 
