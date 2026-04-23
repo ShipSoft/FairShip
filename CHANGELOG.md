@@ -17,6 +17,10 @@ it in future.
 
 * Added TRY_2026 MS version.
 
+* Make particle gun polar angle configurable via `--thetaMin`/`--thetaMax`
+* Add `run_tracking_scan.py` to sweep the tracking benchmark over angle and multiplicity grids
+* Add charge-ID efficiency metric to the tracking benchmark
+
 ### Changed
 
 ### Fixed

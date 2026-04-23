@@ -60,6 +60,7 @@ parser.add_argument("--Estart", type=float, default=1.0, help="Start of energy r
 parser.add_argument("--Eend", type=float, default=100.0, help="End of energy range in GeV (default: 100)")
 parser.add_argument("--seed", type=int, default=42, help="Base random seed (default: 42)")
 parser.add_argument("-o", "--outputDir", default="./scan_results", help="Base output directory")
+parser.add_argument("--mixCharges", action="store_true", help="Generate equal mix of particle and antiparticle")
 parser.add_argument("--keep-files", action="store_true", help="Keep intermediate sim/reco ROOT files")
 parser.add_argument(
     "--debug",
@@ -140,6 +141,8 @@ for i, (theta_min, theta_max, n_tracks, label_theta) in enumerate(scan_points):
         "--debug",
         str(options.debug),
     ]
+    if options.mixCharges:
+        cmd.append("--mixCharges")
 
     result = subprocess.run(cmd, check=False)
     if result.returncode != 0:
@@ -149,12 +152,15 @@ for i, (theta_min, theta_max, n_tracks, label_theta) in enumerate(scan_points):
     with open(json_path) as f:
         metrics = json.load(f)
 
+    # Dx=200, Dy=300 cm (benchmark defaults) → area in m²
+    gun_area_m2 = 200 * 300 * 1e-4
     all_results.append(
         {
             "theta": label_theta,
             "thetaMin": theta_min,
             "thetaMax": theta_max,
             "nTracks": n_tracks,
+            "density_per_m2": round(n_tracks / gun_area_m2, 4),
             "metrics": metrics["tracking_benchmark"],
         }
     )
@@ -191,13 +197,21 @@ import ROOT
 
 ROOT.gROOT.SetBatch(True)
 
-metric_names = ["efficiency", "ghost_rate", "clone_rate", "dp_over_p_sigma", "n_reconstructible"]
+metric_names = [
+    "efficiency",
+    "ghost_rate",
+    "clone_rate",
+    "dp_over_p_sigma",
+    "n_reconstructible",
+    "charge_id_efficiency",
+]
 metric_titles = {
     "efficiency": "Tracking efficiency",
     "ghost_rate": "Ghost rate",
     "clone_rate": "Clone rate",
     "dp_over_p_sigma": "#Deltap/p resolution (#sigma)",
     "n_reconstructible": "Reconstructible tracks",
+    "charge_id_efficiency": "Charge-ID efficiency",
 }
 
 # Group results — only include numeric theta values for "vs theta" graphs
@@ -216,22 +230,28 @@ f_out = ROOT.TFile.Open(summary_root, "recreate")
 for metric in metric_names:
     for n_tr, points in sorted(by_nTracks.items()):
         points.sort()
-        gr = ROOT.TGraphErrors(len(points))
+        valid = [(x, m) for x, m in points if m[metric]["value"] is not None]
+        if not valid:
+            continue
+        gr = ROOT.TGraphErrors(len(valid))
         gr.SetName(f"g_{metric}_vs_theta_nTr{n_tr}")
         gr.SetTitle(f"{metric_titles[metric]}, nTracks={n_tr};#theta [deg];{metric_titles[metric]}")
-        for j, (theta_val, m) in enumerate(points):
+        for j, (theta_val, m) in enumerate(valid):
             gr.SetPoint(j, theta_val, m[metric]["value"])
-            gr.SetPointError(j, 0, m[metric].get("uncertainty", 0))
+            gr.SetPointError(j, 0, m[metric].get("uncertainty") or 0)
         gr.Write()
 
     for theta_label, points in sorted(by_theta.items()):
         points.sort()
-        gr = ROOT.TGraphErrors(len(points))
+        valid = [(x, m) for x, m in points if m[metric]["value"] is not None]
+        if not valid:
+            continue
+        gr = ROOT.TGraphErrors(len(valid))
         gr.SetName(f"g_{metric}_vs_nTracks_theta{theta_label}")
         gr.SetTitle(f"{metric_titles[metric]}, #theta={theta_label}#circ;nTracks;{metric_titles[metric]}")
-        for j, (n_tr_val, m) in enumerate(points):
+        for j, (n_tr_val, m) in enumerate(valid):
             gr.SetPoint(j, n_tr_val, m[metric]["value"])
-            gr.SetPointError(j, 0, m[metric].get("uncertainty", 0))
+            gr.SetPointError(j, 0, m[metric].get("uncertainty") or 0)
         gr.Write()
 
 f_out.Close()
@@ -249,6 +269,7 @@ try:
         "clone_rate": (0, None),
         "dp_over_p_sigma": (0, None),
         "n_reconstructible": (0, None),
+        "charge_id_efficiency": (None, 1.05),
     }
 
     metric_ylabels = {
@@ -257,7 +278,10 @@ try:
         "clone_rate": "Clone rate",
         "dp_over_p_sigma": r"$\Delta p / p$ resolution ($\sigma$)",
         "n_reconstructible": f"Reconstructible tracks (out of {options.nEvents})",
+        "charge_id_efficiency": "Charge-ID efficiency",
     }
+
+    gun_area_m2 = 200 * 300 * 1e-4  # Dx=200, Dy=300 cm
 
     def _save_fig(fig: plt.Figure, base_path: str) -> None:
         """Save figure as both PDF and PNG."""
@@ -265,10 +289,15 @@ try:
         fig.savefig(base_path + ".png", dpi=150)
 
     def _get_values(points: list, metric: str) -> tuple[list, list, list]:
-        """Extract x, y, yerr from sorted scan points."""
-        x = [p[0] for p in points]
-        y = [p[1][metric]["value"] for p in points]
-        yerr = [p[1][metric].get("uncertainty", 0) for p in points]
+        """Extract x, y, yerr from sorted scan points, skipping None values."""
+        x, y, yerr = [], [], []
+        for p in points:
+            val = p[1][metric]["value"]
+            if val is None:
+                continue
+            x.append(p[0])
+            y.append(val)
+            yerr.append(p[1][metric].get("uncertainty") or 0)
         return x, y, yerr
 
     n_curves_theta = max(len(by_nTracks), 1)
@@ -286,7 +315,18 @@ try:
             for idx, (n_tr, points) in enumerate(sorted(by_nTracks.items())):
                 points.sort()
                 x, y, yerr = _get_values(points, metric)
-                ax.errorbar(x, y, yerr=yerr, marker="o", capsize=3, label=f"nTracks={n_tr}", color=colours_theta[idx])
+                if not x:
+                    continue
+                ax.errorbar(
+                    x,
+                    y,
+                    yerr=yerr,
+                    marker="o",
+                    linestyle="none",
+                    capsize=3,
+                    label=f"nTracks={n_tr}",
+                    color=colours_theta[idx],
+                )
             ax.set_xlabel(r"$\theta$ [deg]")
             ax.set_ylabel(ylabel)
             ax.set_title(f"{ylabel} vs polar angle")
@@ -306,6 +346,8 @@ try:
             for idx, (theta_label, points) in enumerate(sorted(by_theta.items())):
                 points.sort()
                 x, y, yerr = _get_values(points, metric)
+                if not x:
+                    continue
                 try:
                     theta_legend = rf"$\theta$={float(theta_label):.0f}°"
                 except ValueError:
@@ -315,13 +357,14 @@ try:
                     y,
                     yerr=yerr,
                     marker="s",
+                    linestyle="none",
                     capsize=3,
                     label=theta_legend,
                     color=colours_mult[idx],
                 )
             ax.set_xlabel("Tracks per event")
             ax.set_ylabel(ylabel)
-            ax.set_title(f"{ylabel} vs multiplicity")
+            ax.set_title(f"{ylabel} vs multiplicity (gun area = {gun_area_m2:.1f} m²)")
             if ymin is not None:
                 ax.set_ylim(bottom=ymin)
             if ymax is not None:
