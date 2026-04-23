@@ -16,6 +16,9 @@ it in future.
 
 * Add FileSummary to run_fixedTarget.py to save all the options for reference (#1140)
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
+* Make particle gun polar angle and multiplicity configurable via `--thetaMin`, `--thetaMax`, `--nTracks`
+* Add `run_tracking_scan.py` to sweep tracking benchmark over angle and multiplicity grids
+* Add charge-ID efficiency metric and `--mixCharges` flag for particle/antiparticle generation
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition

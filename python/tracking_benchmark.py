@@ -20,7 +20,7 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 
 
-def wilson_interval(k: int, n: int) -> float:
+def wilson_interval(k: int, n: int) -> float | None:
     """Wilson score interval half-width for a binomial proportion.
 
     Parameters
@@ -32,16 +32,22 @@ def wilson_interval(k: int, n: int) -> float:
 
     Returns
     -------
-    float
-        Half-width of the 68% Wilson score interval (~1 sigma).
+    float or None
+        Half-width of the 68% Wilson score interval (~1 sigma),
+        or None if n == 0 (undefined proportion).
     """
     if n == 0:
-        return 0.0
+        return None
     z = 1.0  # 1-sigma
     p = k / n
     denom = 1 + z**2 / n
     spread = z * math.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom
     return spread
+
+
+def _round_or_none(value: float | None, ndigits: int = 6) -> float | None:
+    """Round a value, passing through None unchanged."""
+    return round(value, ndigits) if value is not None else None
 
 
 class TrackingBenchmark:
@@ -199,6 +205,8 @@ class TrackingBenchmark:
         h_chi2ndf = ROOT.TH1D("h_chi2ndf", "#chi^{2}/ndf;#chi^{2}/ndf;Entries", 100, 0, 20)
         h_p_truth = ROOT.TH1D("h_p_truth", "p_{truth} (reconstructible);p [GeV/c];Entries", 50, 0, 120)
         h_p_matched = ROOT.TH1D("h_p_matched", "p_{truth} (matched);p [GeV/c];Entries", 50, 0, 120)
+        h_p_correct_charge = ROOT.TH1D("h_p_correct_charge", "p_{truth} (correct charge);p [GeV/c];Entries", 50, 0, 120)
+        h_p_wrong_charge = ROOT.TH1D("h_p_wrong_charge", "p_{truth} (wrong charge);p [GeV/c];Entries", 50, 0, 120)
 
         # Counters
         n_reconstructible = 0
@@ -206,6 +214,8 @@ class TrackingBenchmark:
         n_total_reco = 0
         n_matched_reco = 0  # reco tracks passing purity cut
         n_clone_reco = 0  # extra matches beyond the first for same MC particle
+        n_correct_charge = 0
+        n_wrong_charge = 0
 
         for i_event in range(n_events):
             self.sim_tree.GetEvent(i_event)
@@ -287,31 +297,52 @@ class TrackingBenchmark:
                                 h_dty.Fill(ty_reco - ty_t)
 
                             h_p_matched.Fill(p_truth)
+
+                            # Charge identification
+                            q_reco = fitted_state.getCharge()
+                            mc_pdg = self.sim_tree.MCTrack[mc_id].GetPdgCode()
+                            mc_particle = self.PDG.GetParticle(mc_pdg)
+                            if mc_particle:
+                                q_truth = mc_particle.Charge() / 3.0
+                                if q_reco * q_truth > 0:
+                                    n_correct_charge += 1
+                                    h_p_correct_charge.Fill(p_truth)
+                                else:
+                                    n_wrong_charge += 1
+                                    h_p_wrong_charge.Fill(p_truth)
                         except Exception:
                             pass
 
             n_matched_mc += len(matched_mc_this_event)
 
-        # Compute metrics
+        # Compute metrics (None when denominator is zero)
         n_ghost_reco = n_total_reco - n_matched_reco
 
-        efficiency = n_matched_mc / n_reconstructible if n_reconstructible > 0 else 0.0
+        efficiency = n_matched_mc / n_reconstructible if n_reconstructible > 0 else None
         efficiency_unc = wilson_interval(n_matched_mc, n_reconstructible)
 
-        clone_rate = n_clone_reco / n_matched_reco if n_matched_reco > 0 else 0.0
+        clone_rate = n_clone_reco / n_matched_reco if n_matched_reco > 0 else None
         clone_rate_unc = wilson_interval(n_clone_reco, n_matched_reco)
 
-        ghost_rate = n_ghost_reco / n_total_reco if n_total_reco > 0 else 0.0
+        ghost_rate = n_ghost_reco / n_total_reco if n_total_reco > 0 else None
         ghost_rate_unc = wilson_interval(n_ghost_reco, n_total_reco)
 
         # Fit dp/p with Gaussian
-        dp_p_sigma = h_dp_over_p.GetRMS()
-        dp_p_sigma_unc = h_dp_over_p.GetRMSError()
-        if h_dp_over_p.GetEntries() > 20:
-            fit_result = h_dp_over_p.Fit("gaus", "QS")
-            if fit_result and int(fit_result) == 0:
-                dp_p_sigma = fit_result.Parameter(2)
-                dp_p_sigma_unc = fit_result.ParError(2)
+        dp_p_sigma: float | None = None
+        dp_p_sigma_unc: float | None = None
+        if h_dp_over_p.GetEntries() > 0:
+            dp_p_sigma = h_dp_over_p.GetRMS()
+            dp_p_sigma_unc = h_dp_over_p.GetRMSError()
+            if h_dp_over_p.GetEntries() > 20:
+                fit_result = h_dp_over_p.Fit("gaus", "QS")
+                if fit_result and int(fit_result) == 0:
+                    dp_p_sigma = fit_result.Parameter(2)
+                    dp_p_sigma_unc = fit_result.ParError(2)
+
+        # Charge-ID efficiency
+        n_charge_total = n_correct_charge + n_wrong_charge
+        charge_id_eff = n_correct_charge / n_charge_total if n_charge_total > 0 else None
+        charge_id_eff_unc = wilson_interval(n_correct_charge, n_charge_total)
 
         self.metrics = {
             "tracking_benchmark": {
@@ -319,23 +350,23 @@ class TrackingBenchmark:
                 "n_reconstructible": {"value": int(n_reconstructible), "compare": "exact"},
                 "n_total_reco": {"value": int(n_total_reco), "compare": "exact"},
                 "efficiency": {
-                    "value": round(efficiency, 6),
-                    "uncertainty": round(efficiency_unc, 6),
+                    "value": _round_or_none(efficiency),
+                    "uncertainty": _round_or_none(efficiency_unc),
                     "compare": "statistical",
                 },
                 "clone_rate": {
-                    "value": round(clone_rate, 6),
-                    "uncertainty": round(clone_rate_unc, 6),
+                    "value": _round_or_none(clone_rate),
+                    "uncertainty": _round_or_none(clone_rate_unc),
                     "compare": "statistical",
                 },
                 "ghost_rate": {
-                    "value": round(ghost_rate, 6),
-                    "uncertainty": round(ghost_rate_unc, 6),
+                    "value": _round_or_none(ghost_rate),
+                    "uncertainty": _round_or_none(ghost_rate_unc),
                     "compare": "statistical",
                 },
                 "dp_over_p_sigma": {
-                    "value": round(dp_p_sigma, 6),
-                    "uncertainty": round(dp_p_sigma_unc, 6),
+                    "value": _round_or_none(dp_p_sigma),
+                    "uncertainty": _round_or_none(dp_p_sigma_unc),
                     "compare": "statistical",
                 },
                 "dx_rms": {
@@ -358,6 +389,13 @@ class TrackingBenchmark:
                     "uncertainty": round(h_dty.GetRMSError(), 6),
                     "compare": "statistical",
                 },
+                "charge_id_efficiency": {
+                    "value": _round_or_none(charge_id_eff),
+                    "uncertainty": _round_or_none(charge_id_eff_unc),
+                    "compare": "statistical",
+                },
+                "n_correct_charge": {"value": int(n_correct_charge), "compare": "exact"},
+                "n_wrong_charge": {"value": int(n_wrong_charge), "compare": "exact"},
             }
         }
 
@@ -371,6 +409,8 @@ class TrackingBenchmark:
             "h_chi2ndf": h_chi2ndf,
             "h_p_truth": h_p_truth,
             "h_p_matched": h_p_matched,
+            "h_p_correct_charge": h_p_correct_charge,
+            "h_p_wrong_charge": h_p_wrong_charge,
         }
 
         return self.metrics
@@ -389,24 +429,38 @@ class TrackingBenchmark:
         f_out.Close()
         print(f"Histograms saved to {output_path}")
 
+    @staticmethod
+    def _fmt(value: float | None, uncertainty: float | None, fmt: str = ".4f") -> str:
+        """Format value +/- uncertainty, handling None."""
+        if value is None:
+            return "undefined (no data)"
+        if uncertainty is None:
+            return f"{value:{fmt}}"
+        return f"{value:{fmt}} +/- {uncertainty:{fmt}}"
+
     def print_summary(self) -> None:
         """Print a human-readable summary of the benchmark results."""
         if not self.metrics:
             print("No metrics computed yet. Call compute_metrics() first.")
             return
         m = self.metrics["tracking_benchmark"]
+        fmt = self._fmt
         print("\n=== Tracking Benchmark Summary ===")
         print(f"  Events:           {m['n_events']['value']}")
         print(f"  Reconstructible:  {m['n_reconstructible']['value']}")
         print(f"  Total reco:       {m['n_total_reco']['value']}")
-        print(f"  Efficiency:       {m['efficiency']['value']:.4f} +/- {m['efficiency']['uncertainty']:.4f}")
-        print(f"  Clone rate:       {m['clone_rate']['value']:.4f} +/- {m['clone_rate']['uncertainty']:.4f}")
-        print(f"  Ghost rate:       {m['ghost_rate']['value']:.4f} +/- {m['ghost_rate']['uncertainty']:.4f}")
-        print(f"  dp/p sigma:       {m['dp_over_p_sigma']['value']:.6f} +/- {m['dp_over_p_sigma']['uncertainty']:.6f}")
-        print(f"  dx RMS:           {m['dx_rms']['value']:.4f} +/- {m['dx_rms']['uncertainty']:.4f} cm")
-        print(f"  dy RMS:           {m['dy_rms']['value']:.4f} +/- {m['dy_rms']['uncertainty']:.4f} cm")
-        print(f"  dtx RMS:          {m['dtx_rms']['value']:.6f} +/- {m['dtx_rms']['uncertainty']:.6f}")
-        print(f"  dty RMS:          {m['dty_rms']['value']:.6f} +/- {m['dty_rms']['uncertainty']:.6f}")
+        print(f"  Efficiency:       {fmt(m['efficiency']['value'], m['efficiency']['uncertainty'])}")
+        print(f"  Clone rate:       {fmt(m['clone_rate']['value'], m['clone_rate']['uncertainty'])}")
+        print(f"  Ghost rate:       {fmt(m['ghost_rate']['value'], m['ghost_rate']['uncertainty'])}")
+        print(f"  dp/p sigma:       {fmt(m['dp_over_p_sigma']['value'], m['dp_over_p_sigma']['uncertainty'], '.6f')}")
+        print(f"  dx RMS:           {fmt(m['dx_rms']['value'], m['dx_rms']['uncertainty'])} cm")
+        print(f"  dy RMS:           {fmt(m['dy_rms']['value'], m['dy_rms']['uncertainty'])} cm")
+        print(f"  dtx RMS:          {fmt(m['dtx_rms']['value'], m['dtx_rms']['uncertainty'], '.6f')}")
+        print(f"  dty RMS:          {fmt(m['dty_rms']['value'], m['dty_rms']['uncertainty'], '.6f')}")
+        print(
+            f"  Charge-ID eff:    {fmt(m['charge_id_efficiency']['value'], m['charge_id_efficiency']['uncertainty'])}"
+        )
+        print(f"  Correct/wrong:    {m['n_correct_charge']['value']}/{m['n_wrong_charge']['value']}")
         print("==================================\n")
 
     def __del__(self) -> None:

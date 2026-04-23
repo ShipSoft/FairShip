@@ -34,6 +34,7 @@ parser.add_argument("--Dy", type=float, default=300.0, help="Position spread in 
 parser.add_argument("--nTracks", type=int, default=1, help="Tracks per event (default: 1)")
 parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
 parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
+parser.add_argument("--mixCharges", action="store_true", help="Generate equal mix of particle and antiparticle")
 parser.add_argument("--tag", default="benchmark", help="Output file tag (default: benchmark)")
 parser.add_argument("--output-json", default=None, help="JSON metrics output path")
 parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
@@ -121,6 +122,8 @@ sim_cmd = [
     "--thetaMax",
     str(options.thetaMax),
 ]
+if options.mixCharges:
+    sim_cmd.append("--mixCharges")
 
 run_phase("Phase 1: Simulation", sim_cmd)
 
