@@ -22,6 +22,7 @@ it in future.
 
 ### Fixed
 
+* Fix vertex finding for upstream vertices by using stepwise extrapolation
 * Replace obsolete elliptical acceptance cut with rectangular acceptance in track pattern recognition
 * Fix CI build warnings: add missing `override` specifiers, fix `Print()` and `Init()` virtual hiding, remove unused `FairShipFields` LinkDef entry
 
