@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import contextlib
 import logging
 from array import array
 
@@ -221,93 +222,74 @@ class ShipDigiReco:
             # Seed state: use PatRec track parameters when available
             posM, momM = self._compute_seed_state(atrack, meas, trackParams)
 
-            # approximate covariance
-            covM = ROOT.TMatrixDSym(6)
-            resolution = self.sigma_spatial
-            if global_variables.withT0:
-                resolution *= 1.4  # worse resolution due to t0 estimate
-            for i in range(3):
-                covM[i][i] = resolution * resolution
-            covM[0][0] = resolution * resolution * 100.0
-            for i in range(3, 6):
-                covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
-                # trackrep
-            rep = ROOT.genfit.RKTrackRep(pdg)
-            # smeared start state
-            stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
-            rep.setPosMomCov(stateSmeared, posM, momM, covM)
-            # create track
-            seedState = ROOT.TVectorD(6)
-            seedCov = ROOT.TMatrixDSym(6)
-            rep.get6DStateCov(stateSmeared, seedState, seedCov)
-            theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
-            hitCov = ROOT.TMatrixDSym(7)
-            hitCov[6][6] = resolution * resolution
-            hitID = 0
-            for m, detID in zip(meas, detIDs):
-                tp = ROOT.genfit.TrackPoint(theTrack)  # note how the point is told which track it belongs to
-                measurement = ROOT.genfit.WireMeasurement(
-                    m, hitCov, detID, hitID, tp
-                )  # the measurement is told which trackpoint it belongs to
-                measurement.setMaxDistance(
-                    global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
-                    - global_variables.ShipGeo.strawtubes_geo.wall_thickness
-                )
-                tp.addRawMeasurement(measurement)  # package measurement in the TrackPoint
-                theTrack.insertPoint(tp)  # add point to Track
-                hitID += 1
-            trackCandidates.append([theTrack, atrack])
+            # Try both charge hypotheses, keep the one with better chi2/NDF
+            best_track = None
+            best_chi2ndf = float("inf")
+            for try_pdg in [pdg, -pdg]:
+                # approximate covariance
+                covM = ROOT.TMatrixDSym(6)
+                resolution = self.sigma_spatial
+                if global_variables.withT0:
+                    resolution *= 1.4  # worse resolution due to t0 estimate
+                for i in range(3):
+                    covM[i][i] = resolution * resolution
+                covM[0][0] = resolution * resolution * 100.0
+                for i in range(3, 6):
+                    covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
+                rep = ROOT.genfit.RKTrackRep(try_pdg)
+                stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
+                rep.setPosMomCov(stateSmeared, posM, momM, covM)
+                seedState = ROOT.TVectorD(6)
+                seedCov = ROOT.TMatrixDSym(6)
+                rep.get6DStateCov(stateSmeared, seedState, seedCov)
+                theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+                hitCov = ROOT.TMatrixDSym(7)
+                hitCov[6][6] = resolution * resolution
+                hitID = 0
+                for m, detID in zip(meas, detIDs):
+                    tp = ROOT.genfit.TrackPoint(theTrack)
+                    measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)
+                    measurement.setMaxDistance(
+                        global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
+                        - global_variables.ShipGeo.strawtubes_geo.wall_thickness
+                    )
+                    tp.addRawMeasurement(measurement)
+                    theTrack.insertPoint(tp)
+                    hitID += 1
+                # Fit this hypothesis
+                try:
+                    theTrack.checkConsistency()
+                except ROOT.genfit.Exception:
+                    continue
+                try:
+                    self.fitter.processTrack(theTrack)
+                except Exception:
+                    continue
+                with contextlib.suppress(ROOT.genfit.Exception):
+                    theTrack.checkConsistency()
+                try:
+                    fittedState = theTrack.getFittedState()
+                    fittedState.getMomMag()
+                except Exception:
+                    continue
+                fitStatus = theTrack.getFitStatus()
+                nmeas = fitStatus.getNdf()
+                if nmeas <= 0:
+                    continue
+                chi2ndf = fitStatus.getChi2() / nmeas
+                if chi2ndf < best_chi2ndf:
+                    best_chi2ndf = chi2ndf
+                    best_track = theTrack
+            if best_track is not None:
+                trackCandidates.append([best_track, atrack])
 
         for entry in trackCandidates:
-            # check
+            # Tracks are already fitted from the dual-hypothesis loop above
             atrack = entry[1]
             theTrack = entry[0]
-            try:
-                theTrack.checkConsistency()
-            except ROOT.genfit.Exception as e:
-                n_prefit_fail += 1
-                logger.warning("Problem with track before fit, not consistent %s %s", atrack, theTrack)
-                logger.warning(e.what())
-                ut.reportError(e)
-            # do the fit
-            try:
-                self.fitter.processTrack(theTrack)  # processTrackWithRep(theTrack,rep,True)
-            except Exception:
-                n_fit_fail += 1
-                if global_variables.debug:
-                    print("genfit failed to fit track")
-                error = "genfit failed to fit track"
-                ut.reportError(error)
-                continue
-            # check
-            try:
-                theTrack.checkConsistency()
-            except ROOT.genfit.Exception as e:
-                n_postfit_fail += 1
-                if global_variables.debug:
-                    print("Problem with track after fit, not consistent", atrack, theTrack)
-                    print(e.what())
-                error = "Problem with track after fit, not consistent"
-                ut.reportError(error)
-            try:
-                fittedState = theTrack.getFittedState()
-                fittedState.getMomMag()
-            except Exception:
-                n_no_state += 1
-                error = "Problem with fittedstate"
-                ut.reportError(error)
-                continue
             fitStatus = theTrack.getFitStatus()
-            try:
-                fitStatus.isFitConverged()
-            except ROOT.genfit.Exception:
-                error = "Fit not converged"
-                ut.reportError(error)
             nmeas = fitStatus.getNdf()
             global_variables.h["nmeas"].Fill(nmeas)
-            if nmeas <= 0:
-                n_no_ndf += 1
-                continue
             chi2 = fitStatus.getChi2() / nmeas
             global_variables.h["chi2"].Fill(chi2)
             # make track persistent
