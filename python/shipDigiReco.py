@@ -196,7 +196,16 @@ class ShipDigiReco:
         for atrack in hitPosLists:
             if atrack < 0:
                 continue  # these are hits not assigned to MC track because low E cut
-            pdg = 13  # assume all tracks are muons
+            # Determine charge sign from bending between stations 1-2 and 3-4.
+            # The slope difference dk = k_y34 - k_y12 encodes the charge:
+            # dk > 0 → positive charge (mu+, pi+), dk < 0 → negative charge (mu-, pi-)
+            params = trackParams.get(atrack, {})
+            k_y12 = params.get("k_y12")
+            k_y34 = params.get("k_y34")
+            if k_y12 is not None and k_y34 is not None:
+                pdg = -13 if k_y34 > k_y12 else 13
+            else:
+                pdg = 13
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
             nM = len(meas)
