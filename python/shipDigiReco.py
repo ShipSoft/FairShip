@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import contextlib
 import logging
 from array import array
 
@@ -188,11 +187,6 @@ class ShipDigiReco:
 
         n_too_few_hits = 0
         n_too_few_stations = 0
-        n_prefit_fail = 0
-        n_fit_fail = 0
-        n_postfit_fail = 0
-        n_no_state = 0
-        n_no_ndf = 0
 
         for atrack in hitPosLists:
             if atrack < 0:
@@ -265,14 +259,18 @@ class ShipDigiReco:
                     self.fitter.processTrack(theTrack)
                 except Exception:
                     continue
-                with contextlib.suppress(ROOT.genfit.Exception):
+                try:
                     theTrack.checkConsistency()
+                except ROOT.genfit.Exception:
+                    logger.debug("Track inconsistent after fit for hypothesis %d", try_pdg)
                 try:
                     fittedState = theTrack.getFittedState()
                     fittedState.getMomMag()
                 except Exception:
                     continue
                 fitStatus = theTrack.getFitStatus()
+                if not fitStatus.isFitConverged():
+                    continue
                 nmeas = fitStatus.getNdf()
                 if nmeas <= 0:
                     continue
@@ -288,7 +286,7 @@ class ShipDigiReco:
             atrack = entry[1]
             theTrack = entry[0]
             fitStatus = theTrack.getFitStatus()
-            nmeas = fitStatus.getNdf()
+            nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
             global_variables.h["nmeas"].Fill(nmeas)
             chi2 = fitStatus.getChi2() / nmeas
             global_variables.h["chi2"].Fill(chi2)
@@ -314,17 +312,10 @@ class ShipDigiReco:
             self.fTrackletsArray.push_back(aTracklet)
 
         logger.debug(
-            "findTracks: %d candidates, %d too few hits, %d too few stations, "
-            "%d prefit fail, %d fit fail, %d postfit fail, %d no state, "
-            "%d no NDF, %d fitted tracks saved",
+            "findTracks: %d candidates, %d too few hits, %d too few stations, %d fitted tracks saved",
             len(hitPosLists),
             n_too_few_hits,
             n_too_few_stations,
-            n_prefit_fail,
-            n_fit_fail,
-            n_postfit_fail,
-            n_no_state,
-            n_no_ndf,
             len(self.fGenFitArray),
         )
 
