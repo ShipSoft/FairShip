@@ -185,29 +185,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00162">162</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  162</span><span class="keyword">def </span>add_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -&gt; None:</div>
-<div class="line"><span class="lineno">  163</span>    <span class="stringliteral">&quot;Add to PYTHIA a leptonic or semileptonic decay channel to HNL.&quot;</span></div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;idlepton&quot;</span> <span class="keywordflow">in</span> ch:</div>
-<div class="line"><span class="lineno">  165</span>        br = get_br(histograms, ch, mass, couplings)</div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">if</span> br &lt;= 0:  <span class="comment"># Ignore kinematically closed channels</span></div>
-<div class="line"><span class="lineno">  167</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;idhadron&quot;</span> <span class="keywordflow">in</span> ch:  <span class="comment"># Semileptonic decay</span></div>
-<div class="line"><span class="lineno">  169</span>            P8gen.SetParameters(</div>
-<div class="line"><span class="lineno">  170</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.17}   22      {}       9900015   {}&quot;</span>.format(</div>
-<div class="line"><span class="lineno">  171</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>], ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
-<div class="line"><span class="lineno">  172</span>                )</div>
-<div class="line"><span class="lineno">  173</span>            )</div>
-<div class="line"><span class="lineno">  174</span>        <span class="keywordflow">else</span>:  <span class="comment"># Leptonic decay</span></div>
-<div class="line"><span class="lineno">  175</span>            P8gen.SetParameters(</div>
-<div class="line"><span class="lineno">  176</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.17}    0       9900015      {}&quot;</span>.format(</div>
-<div class="line"><span class="lineno">  177</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>]</div>
-<div class="line"><span class="lineno">  178</span>                )</div>
-<div class="line"><span class="lineno">  179</span>            )</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">else</span>:  <span class="comment"># Wrong decay</span></div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Missing key &#39;idlepton&#39; in channel {ch}&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00161">161</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  161</span><span class="keyword">def </span>add_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -&gt; None:</div>
+<div class="line"><span class="lineno">  162</span>    <span class="stringliteral">&quot;Add to PYTHIA a leptonic or semileptonic decay channel to HNL.&quot;</span></div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;idlepton&quot;</span> <span class="keywordflow">in</span> ch:</div>
+<div class="line"><span class="lineno">  164</span>        br = get_br(histograms, ch, mass, couplings)</div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">if</span> br &lt;= 0:  <span class="comment"># Ignore kinematically closed channels</span></div>
+<div class="line"><span class="lineno">  166</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;idhadron&quot;</span> <span class="keywordflow">in</span> ch:  <span class="comment"># Semileptonic decay</span></div>
+<div class="line"><span class="lineno">  168</span>            P8gen.SetParameters(</div>
+<div class="line"><span class="lineno">  169</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.17}   22      {}       9900015   {}&quot;</span>.format(</div>
+<div class="line"><span class="lineno">  170</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>], ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
+<div class="line"><span class="lineno">  171</span>                )</div>
+<div class="line"><span class="lineno">  172</span>            )</div>
+<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">else</span>:  <span class="comment"># Leptonic decay</span></div>
+<div class="line"><span class="lineno">  174</span>            P8gen.SetParameters(</div>
+<div class="line"><span class="lineno">  175</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.17}    0       9900015      {}&quot;</span>.format(</div>
+<div class="line"><span class="lineno">  176</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>]</div>
+<div class="line"><span class="lineno">  177</span>                )</div>
+<div class="line"><span class="lineno">  178</span>            )</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">else</span>:  <span class="comment"># Wrong decay</span></div>
+<div class="line"><span class="lineno">  180</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Missing key &#39;idlepton&#39; in channel {ch}&quot;</span>)</div>
+<div class="line"><span class="lineno">  181</span> </div>
 <div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -257,34 +257,34 @@ suitable process is added which conserves electric charge.
 All dummy channels can be identified by the presence of a photon among the
 decay products.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00226">226</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span><span class="keyword">def </span>add_dummy_channel(P8gen, particle, remainder) -&gt; None:</div>
-<div class="line"><span class="lineno">  227</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  228</span><span class="stringliteral">    Add a dummy channel to PYTHIA, </span><span class="keyword">with</span> branching ratio equal to `remainder.`</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    The purpose of this function <span class="keywordflow">is</span> to compensate <span class="keywordflow">for</span> the absence of SM</div>
-<div class="line"><span class="lineno">  231</span>    channels, which are ignored when investigating rare processes. A dummy</div>
-<div class="line"><span class="lineno">  232</span>    decay channel <span class="keywordflow">is</span> instead added to each particle <span class="keywordflow">in</span> order to maintain the</div>
-<div class="line"><span class="lineno">  233</span>    correct ratios between the branching ratios of each particle to rare</div>
-<div class="line"><span class="lineno">  234</span>    processes. This <span class="keywordflow">is</span> usually combined <span class="keyword">with</span> a <span class="keyword">global</span> reweighting of the</div>
-<div class="line"><span class="lineno">  235</span>    branching ratios.</div>
-<div class="line"><span class="lineno">  236</span> </div>
-<div class="line"><span class="lineno">  237</span>    In order to keep PYTHIA <span class="keyword">from</span> complaining about charge conservation, a</div>
-<div class="line"><span class="lineno">  238</span>    suitable process <span class="keywordflow">is</span> added which conserves electric charge.</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    All dummy channels can be identified by the presence of a photon among the</div>
-<div class="line"><span class="lineno">  241</span>    decay products.</div>
-<div class="line"><span class="lineno">  242</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  243</span><span class="stringliteral">    pdg = P8gen.getPythiaInstance().particleData</span></div>
-<div class="line"><span class="lineno">  244</span><span class="stringliteral">    charge = pdg.charge(particle)</span></div>
-<div class="line"><span class="lineno">  245</span><span class="stringliteral">    </span><span class="keywordflow">if</span> charge &gt; 0:</div>
-<div class="line"><span class="lineno">  246</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22      -11&quot;</span>)</div>
-<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">elif</span> charge &lt; 0:</div>
-<div class="line"><span class="lineno">  248</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22       11&quot;</span>)</div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  250</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22      22&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00225">225</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  225</span><span class="keyword">def </span>add_dummy_channel(P8gen, particle, remainder) -&gt; None:</div>
+<div class="line"><span class="lineno">  226</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  227</span><span class="stringliteral">    Add a dummy channel to PYTHIA, </span><span class="keyword">with</span> branching ratio equal to `remainder.`</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>    The purpose of this function <span class="keywordflow">is</span> to compensate <span class="keywordflow">for</span> the absence of SM</div>
+<div class="line"><span class="lineno">  230</span>    channels, which are ignored when investigating rare processes. A dummy</div>
+<div class="line"><span class="lineno">  231</span>    decay channel <span class="keywordflow">is</span> instead added to each particle <span class="keywordflow">in</span> order to maintain the</div>
+<div class="line"><span class="lineno">  232</span>    correct ratios between the branching ratios of each particle to rare</div>
+<div class="line"><span class="lineno">  233</span>    processes. This <span class="keywordflow">is</span> usually combined <span class="keyword">with</span> a <span class="keyword">global</span> reweighting of the</div>
+<div class="line"><span class="lineno">  234</span>    branching ratios.</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>    In order to keep PYTHIA <span class="keyword">from</span> complaining about charge conservation, a</div>
+<div class="line"><span class="lineno">  237</span>    suitable process <span class="keywordflow">is</span> added which conserves electric charge.</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>    All dummy channels can be identified by the presence of a photon among the</div>
+<div class="line"><span class="lineno">  240</span>    decay products.</div>
+<div class="line"><span class="lineno">  241</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  242</span><span class="stringliteral">    pdg = P8gen.getPythiaInstance().particleData</span></div>
+<div class="line"><span class="lineno">  243</span><span class="stringliteral">    charge = pdg.charge(particle)</span></div>
+<div class="line"><span class="lineno">  244</span><span class="stringliteral">    </span><span class="keywordflow">if</span> charge &gt; 0:</div>
+<div class="line"><span class="lineno">  245</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22      -11&quot;</span>)</div>
+<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">elif</span> charge &lt; 0:</div>
+<div class="line"><span class="lineno">  247</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22       11&quot;</span>)</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  249</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{particle}:addChannel      1   {remainder:.16}    0       22      22&quot;</span>)</div>
+<div class="line"><span class="lineno">  250</span> </div>
 <div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -328,27 +328,27 @@ from `data`.
 If the particle is not self-conjugate, the antiparticle is automatically
 added by PYTHIA.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00142">142</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  142</span><span class="keyword">def </span>add_particles(P8gen, particles, data) -&gt; None:</div>
-<div class="line"><span class="lineno">  143</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  144</span><span class="stringliteral">    Adds the corresponding particles to PYTHIA.</span></div>
-<div class="line"><span class="lineno">  145</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  146</span><span class="stringliteral">    `particles` must be a list containing either the particles PDG IDs, </span><span class="keywordflow">or</span></div>
-<div class="line"><span class="lineno">  147</span>    their PYTHIA names. The commands needed to add the particles are queried</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keyword">from</span> `data`.</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    If the particle <span class="keywordflow">is</span> <span class="keywordflow">not</span> self-conjugate, the antiparticle <span class="keywordflow">is</span> automatically</div>
-<div class="line"><span class="lineno">  151</span>    added by PYTHIA.</div>
-<div class="line"><span class="lineno">  152</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  153</span><span class="stringliteral">    </span><span class="keywordflow">for</span> particle_id <span class="keywordflow">in</span> particles:</div>
-<div class="line"><span class="lineno">  154</span>        <span class="comment"># Find particle in database (None: particle not found)</span></div>
-<div class="line"><span class="lineno">  155</span>        particle = next((p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> data[<span class="stringliteral">&quot;particles&quot;</span>] <span class="keywordflow">if</span> particle_id <span class="keywordflow">in</span> [p[<span class="stringliteral">&quot;id&quot;</span>], p[<span class="stringliteral">&quot;name&quot;</span>]]), <span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">if</span> particle <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Could not find particle ID {particle_id} in particle database&quot;</span>)</div>
-<div class="line"><span class="lineno">  158</span>        <span class="comment"># Add the particle</span></div>
-<div class="line"><span class="lineno">  159</span>        P8gen.SetParameters(particle[<span class="stringliteral">&quot;cmd&quot;</span>])</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00141">141</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span><span class="keyword">def </span>add_particles(P8gen, particles, data) -&gt; None:</div>
+<div class="line"><span class="lineno">  142</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  143</span><span class="stringliteral">    Adds the corresponding particles to PYTHIA.</span></div>
+<div class="line"><span class="lineno">  144</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  145</span><span class="stringliteral">    `particles` must be a list containing either the particles PDG IDs, </span><span class="keywordflow">or</span></div>
+<div class="line"><span class="lineno">  146</span>    their PYTHIA names. The commands needed to add the particles are queried</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keyword">from</span> `data`.</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>    If the particle <span class="keywordflow">is</span> <span class="keywordflow">not</span> self-conjugate, the antiparticle <span class="keywordflow">is</span> automatically</div>
+<div class="line"><span class="lineno">  150</span>    added by PYTHIA.</div>
+<div class="line"><span class="lineno">  151</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  152</span><span class="stringliteral">    </span><span class="keywordflow">for</span> particle_id <span class="keywordflow">in</span> particles:</div>
+<div class="line"><span class="lineno">  153</span>        <span class="comment"># Find particle in database (None: particle not found)</span></div>
+<div class="line"><span class="lineno">  154</span>        particle = next((p <span class="keywordflow">for</span> p <span class="keywordflow">in</span> data[<span class="stringliteral">&quot;particles&quot;</span>] <span class="keywordflow">if</span> particle_id <span class="keywordflow">in</span> [p[<span class="stringliteral">&quot;id&quot;</span>], p[<span class="stringliteral">&quot;name&quot;</span>]]), <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">if</span> particle <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Could not find particle ID {particle_id} in particle database&quot;</span>)</div>
+<div class="line"><span class="lineno">  157</span>        <span class="comment"># Add the particle</span></div>
+<div class="line"><span class="lineno">  158</span>        P8gen.SetParameters(particle[<span class="stringliteral">&quot;cmd&quot;</span>])</div>
+<div class="line"><span class="lineno">  159</span> </div>
 <div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -402,29 +402,29 @@ added by PYTHIA.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00184">184</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span><span class="keyword">def </span>add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -&gt; None:</div>
-<div class="line"><span class="lineno">  185</span>    <span class="stringliteral">&quot;Add to PYTHIA a tau decay channel to HNL.&quot;</span></div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;idhadron&quot;</span> <span class="keywordflow">in</span> ch:</div>
-<div class="line"><span class="lineno">  187</span>        br = get_br(histograms, ch, mass, couplings)</div>
-<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">if</span> br &lt;= 0:  <span class="comment"># Ignore kinematically closed channels</span></div>
-<div class="line"><span class="lineno">  189</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  190</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;idlepton&quot;</span> <span class="keywordflow">in</span> ch:  <span class="comment"># 3-body leptonic decay</span></div>
-<div class="line"><span class="lineno">  191</span>            P8gen.SetParameters(</div>
-<div class="line"><span class="lineno">  192</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.16}    1531       9900015      {} {}&quot;</span>.format(</div>
-<div class="line"><span class="lineno">  193</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>], ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
-<div class="line"><span class="lineno">  194</span>                )</div>
-<div class="line"><span class="lineno">  195</span>            )</div>
-<div class="line"><span class="lineno">  196</span>        <span class="keywordflow">else</span>:  <span class="comment"># 2-body semileptonic decay</span></div>
-<div class="line"><span class="lineno">  197</span>            P8gen.SetParameters(</div>
-<div class="line"><span class="lineno">  198</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.16}    1521       9900015      {}&quot;</span>.format(</div>
-<div class="line"><span class="lineno">  199</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
-<div class="line"><span class="lineno">  200</span>                )</div>
-<div class="line"><span class="lineno">  201</span>            )</div>
-<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  203</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Missing key &#39;idhadron&#39; in channel {ch}&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00183">183</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span><span class="keyword">def </span>add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor) -&gt; None:</div>
+<div class="line"><span class="lineno">  184</span>    <span class="stringliteral">&quot;Add to PYTHIA a tau decay channel to HNL.&quot;</span></div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">if</span> <span class="stringliteral">&quot;idhadron&quot;</span> <span class="keywordflow">in</span> ch:</div>
+<div class="line"><span class="lineno">  186</span>        br = get_br(histograms, ch, mass, couplings)</div>
+<div class="line"><span class="lineno">  187</span>        <span class="keywordflow">if</span> br &lt;= 0:  <span class="comment"># Ignore kinematically closed channels</span></div>
+<div class="line"><span class="lineno">  188</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;idlepton&quot;</span> <span class="keywordflow">in</span> ch:  <span class="comment"># 3-body leptonic decay</span></div>
+<div class="line"><span class="lineno">  190</span>            P8gen.SetParameters(</div>
+<div class="line"><span class="lineno">  191</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.16}    1531       9900015      {} {}&quot;</span>.format(</div>
+<div class="line"><span class="lineno">  192</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idlepton&quot;</span>], ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
+<div class="line"><span class="lineno">  193</span>                )</div>
+<div class="line"><span class="lineno">  194</span>            )</div>
+<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">else</span>:  <span class="comment"># 2-body semileptonic decay</span></div>
+<div class="line"><span class="lineno">  196</span>            P8gen.SetParameters(</div>
+<div class="line"><span class="lineno">  197</span>                <span class="stringliteral">&quot;{}:addChannel      1  {:.16}    1521       9900015      {}&quot;</span>.format(</div>
+<div class="line"><span class="lineno">  198</span>                    ch[<span class="stringliteral">&quot;id&quot;</span>], br * scale_factor, ch[<span class="stringliteral">&quot;idhadron&quot;</span>]</div>
+<div class="line"><span class="lineno">  199</span>                )</div>
+<div class="line"><span class="lineno">  200</span>            )</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  202</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Missing key &#39;idhadron&#39; in channel {ch}&quot;</span>)</div>
+<div class="line"><span class="lineno">  203</span> </div>
 <div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -497,29 +497,29 @@ the highest of those.
 
 Note: the decay chain length must be at most 2.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00253">253</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  253</span><span class="keyword">def </span>compute_max_total_br(decay_chains) -&gt; int:</div>
-<div class="line"><span class="lineno">  254</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  255</span><span class="stringliteral">    This function computes the maximum total branching ratio </span><span class="keywordflow">for</span> all decay chains.</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>    In order to make the event generation <span class="keyword">as</span> efficient <span class="keyword">as</span> possible when</div>
-<div class="line"><span class="lineno">  258</span>    studying very rare processes, it <span class="keywordflow">is</span> necessary to rescale the branching</div>
-<div class="line"><span class="lineno">  259</span>    ratios, <span class="keywordflow">while</span> enforcing the invariant that any total branching ratio must</div>
-<div class="line"><span class="lineno">  260</span>    remain lower that unity.</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    This <span class="keywordflow">is</span> accomplished by computing, <span class="keywordflow">for</span> each particle, the total branching</div>
-<div class="line"><span class="lineno">  263</span>    ratio to processes of interest, <span class="keywordflow">and</span> then dividing all branching ratios by</div>
-<div class="line"><span class="lineno">  264</span>    the highest of those.</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>    Note: the decay chain length must be at most 2.</div>
-<div class="line"><span class="lineno">  267</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  268</span><span class="stringliteral">    </span><span class="comment"># For each top-level charmed particle, sum BR over all its decay chains</span></div>
-<div class="line"><span class="lineno">  269</span>    top_level_particles = get_top_level_particles(decay_chains)</div>
-<div class="line"><span class="lineno">  270</span>    total_branching_ratios = [compute_total_br(particle, decay_chains) <span class="keywordflow">for</span> particle <span class="keywordflow">in</span> top_level_particles]</div>
-<div class="line"><span class="lineno">  271</span>    <span class="comment"># Find the maximum total branching ratio</span></div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">return</span> max(total_branching_ratios)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00252">252</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>compute_max_total_br(decay_chains) -&gt; int:</div>
+<div class="line"><span class="lineno">  253</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  254</span><span class="stringliteral">    This function computes the maximum total branching ratio </span><span class="keywordflow">for</span> all decay chains.</div>
+<div class="line"><span class="lineno">  255</span> </div>
+<div class="line"><span class="lineno">  256</span>    In order to make the event generation <span class="keyword">as</span> efficient <span class="keyword">as</span> possible when</div>
+<div class="line"><span class="lineno">  257</span>    studying very rare processes, it <span class="keywordflow">is</span> necessary to rescale the branching</div>
+<div class="line"><span class="lineno">  258</span>    ratios, <span class="keywordflow">while</span> enforcing the invariant that any total branching ratio must</div>
+<div class="line"><span class="lineno">  259</span>    remain lower that unity.</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>    This <span class="keywordflow">is</span> accomplished by computing, <span class="keywordflow">for</span> each particle, the total branching</div>
+<div class="line"><span class="lineno">  262</span>    ratio to processes of interest, <span class="keywordflow">and</span> then dividing all branching ratios by</div>
+<div class="line"><span class="lineno">  263</span>    the highest of those.</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>    Note: the decay chain length must be at most 2.</div>
+<div class="line"><span class="lineno">  266</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  267</span><span class="stringliteral">    </span><span class="comment"># For each top-level charmed particle, sum BR over all its decay chains</span></div>
+<div class="line"><span class="lineno">  268</span>    top_level_particles = get_top_level_particles(decay_chains)</div>
+<div class="line"><span class="lineno">  269</span>    total_branching_ratios = [compute_total_br(particle, decay_chains) <span class="keywordflow">for</span> particle <span class="keywordflow">in</span> top_level_particles]</div>
+<div class="line"><span class="lineno">  270</span>    <span class="comment"># Find the maximum total branching ratio</span></div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">return</span> max(total_branching_ratios)</div>
+<div class="line"><span class="lineno">  272</span> </div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -550,14 +550,14 @@ Note: the decay chain length must be at most 2.
 </div><div class="memdoc">
 <pre class="fragment">Returns the total branching ratio to HNLs for a given particle.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00275">275</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span><span class="keyword">def </span>compute_total_br(particle, decay_chains) -&gt; int:</div>
-<div class="line"><span class="lineno">  276</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  277</span><span class="stringliteral">    Returns the total branching ratio to HNLs </span><span class="keywordflow">for</span> a given particle.</div>
-<div class="line"><span class="lineno">  278</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  279</span><span class="stringliteral">    </span><span class="keywordflow">return</span> sum(np.prod(branching_ratios) <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains <span class="keywordflow">if</span> top == particle)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00274">274</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  274</span><span class="keyword">def </span>compute_total_br(particle, decay_chains) -&gt; int:</div>
+<div class="line"><span class="lineno">  275</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  276</span><span class="stringliteral">    Returns the total branching ratio to HNLs </span><span class="keywordflow">for</span> a given particle.</div>
+<div class="line"><span class="lineno">  277</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  278</span><span class="stringliteral">    </span><span class="keywordflow">return</span> sum(np.prod(branching_ratios) <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains <span class="keywordflow">if</span> top == particle)</div>
+<div class="line"><span class="lineno">  279</span> </div>
 <div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -599,13 +599,13 @@ Note: the decay chain length must be at most 2.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00289">289</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  289</span><span class="keyword">def </span>exit_if_zero_br(max_total_br, selection, mass, particle: str = <span class="stringliteral">&quot;HNL&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">if</span> max_total_br &lt;= 0:</div>
-<div class="line"><span class="lineno">  291</span>        print(f<span class="stringliteral">&quot;No phase space for {particle} from {selection} at this mass: {mass}. Quitting.&quot;</span>)</div>
-<div class="line"><span class="lineno">  292</span>        sys.exit()</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00288">288</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  288</span><span class="keyword">def </span>exit_if_zero_br(max_total_br, selection, mass, particle: str = <span class="stringliteral">&quot;HNL&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">if</span> max_total_br &lt;= 0:</div>
+<div class="line"><span class="lineno">  290</span>        print(f<span class="stringliteral">&quot;No phase space for {particle} from {selection} at this mass: {mass}. Quitting.&quot;</span>)</div>
+<div class="line"><span class="lineno">  291</span>        sys.exit()</div>
+<div class="line"><span class="lineno">  292</span> </div>
 <div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -654,27 +654,27 @@ for most particles since we are ignoring SM processes.
 This function adds a "filler" channel for each particle, in order to
 preserve the ratios between different branching ratios.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00206">206</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  206</span><span class="keyword">def </span>fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon: float = 1e-6) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  207</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  208</span><span class="stringliteral">    Add dummy channels </span><span class="keywordflow">for</span> correct rejection sampling.</div>
-<div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>    Even after rescaling the branching ratios, they do <span class="keywordflow">not</span> sum up to unity</div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">for</span> most particles since we are ignoring SM processes.</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>    This function adds a <span class="stringliteral">&quot;filler&quot;</span> channel <span class="keywordflow">for</span> each particle, <span class="keywordflow">in</span> order to</div>
-<div class="line"><span class="lineno">  214</span>    preserve the ratios between different branching ratios.</div>
-<div class="line"><span class="lineno">  215</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  216</span><span class="stringliteral">    top_level_particles = get_top_level_particles(decay_chains)</span></div>
-<div class="line"><span class="lineno">  217</span><span class="stringliteral">    </span><span class="keywordflow">for</span> particle <span class="keywordflow">in</span> top_level_particles:</div>
-<div class="line"><span class="lineno">  218</span>        my_total_br = compute_total_br(particle, decay_chains)</div>
-<div class="line"><span class="lineno">  219</span>        remainder = 1 - my_total_br / max_total_br</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keyword">assert</span> remainder &gt; -epsilon</div>
-<div class="line"><span class="lineno">  221</span>        <span class="keyword">assert</span> remainder &lt; 1 + epsilon</div>
-<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">if</span> remainder &gt; epsilon:</div>
-<div class="line"><span class="lineno">  223</span>            add_dummy_channel(P8gen, particle, remainder)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00205">205</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span><span class="keyword">def </span>fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon: float = 1e-6) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  206</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  207</span><span class="stringliteral">    Add dummy channels </span><span class="keywordflow">for</span> correct rejection sampling.</div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>    Even after rescaling the branching ratios, they do <span class="keywordflow">not</span> sum up to unity</div>
+<div class="line"><span class="lineno">  210</span>    <span class="keywordflow">for</span> most particles since we are ignoring SM processes.</div>
+<div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span>    This function adds a <span class="stringliteral">&quot;filler&quot;</span> channel <span class="keywordflow">for</span> each particle, <span class="keywordflow">in</span> order to</div>
+<div class="line"><span class="lineno">  213</span>    preserve the ratios between different branching ratios.</div>
+<div class="line"><span class="lineno">  214</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  215</span><span class="stringliteral">    top_level_particles = get_top_level_particles(decay_chains)</span></div>
+<div class="line"><span class="lineno">  216</span><span class="stringliteral">    </span><span class="keywordflow">for</span> particle <span class="keywordflow">in</span> top_level_particles:</div>
+<div class="line"><span class="lineno">  217</span>        my_total_br = compute_total_br(particle, decay_chains)</div>
+<div class="line"><span class="lineno">  218</span>        remainder = 1 - my_total_br / max_total_br</div>
+<div class="line"><span class="lineno">  219</span>        <span class="keyword">assert</span> remainder &gt; -epsilon</div>
+<div class="line"><span class="lineno">  220</span>        <span class="keyword">assert</span> remainder &lt; 1 + epsilon</div>
+<div class="line"><span class="lineno">  221</span>        <span class="keywordflow">if</span> remainder &gt; epsilon:</div>
+<div class="line"><span class="lineno">  222</span>            add_dummy_channel(P8gen, particle, remainder)</div>
+<div class="line"><span class="lineno">  223</span> </div>
 <div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -718,18 +718,18 @@ preserve the ratios between different branching ratios.
 <pre class="fragment">Utility function used to reliably query the branching ratio for a given
 channel at a given mass, taking into account the correct coupling.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00131">131</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span><span class="keyword">def </span>get_br(histograms, channel, mass, couplings):</div>
-<div class="line"><span class="lineno">  132</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  133</span><span class="stringliteral">    Utility function used to reliably query the branching ratio </span><span class="keywordflow">for</span> a given</div>
-<div class="line"><span class="lineno">  134</span>    channel at a given mass, taking into account the correct coupling.</div>
-<div class="line"><span class="lineno">  135</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  136</span><span class="stringliteral">    hist = histograms[channel[&quot;decay&quot;</span>]]</div>
-<div class="line"><span class="lineno">  137</span>    coupling = couplings[channel[<span class="stringliteral">&quot;coupling&quot;</span>]]</div>
-<div class="line"><span class="lineno">  138</span>    normalized_br = hist(mass)</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">return</span> normalized_br * coupling</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00130">130</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span><span class="keyword">def </span>get_br(histograms, channel, mass, couplings):</div>
+<div class="line"><span class="lineno">  131</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  132</span><span class="stringliteral">    Utility function used to reliably query the branching ratio </span><span class="keywordflow">for</span> a given</div>
+<div class="line"><span class="lineno">  133</span>    channel at a given mass, taking into account the correct coupling.</div>
+<div class="line"><span class="lineno">  134</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  135</span><span class="stringliteral">    hist = histograms[channel[&quot;decay&quot;</span>]]</div>
+<div class="line"><span class="lineno">  136</span>    coupling = couplings[channel[<span class="stringliteral">&quot;coupling&quot;</span>]]</div>
+<div class="line"><span class="lineno">  137</span>    normalized_br = hist(mass)</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">return</span> normalized_br * coupling</div>
+<div class="line"><span class="lineno">  139</span> </div>
 <div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -750,14 +750,14 @@ channel at a given mass, taking into account the correct coupling.
 </div><div class="memdoc">
 <pre class="fragment">Returns the set of particles which are at the top of a decay chain.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00282">282</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  282</span><span class="keyword">def </span>get_top_level_particles(decay_chains):</div>
-<div class="line"><span class="lineno">  283</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  284</span><span class="stringliteral">    Returns the set of particles which are at the top of a decay chain.</span></div>
-<div class="line"><span class="lineno">  285</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  286</span><span class="stringliteral">    </span><span class="keywordflow">return</span> {top <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains}</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00281">281</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  281</span><span class="keyword">def </span>get_top_level_particles(decay_chains):</div>
+<div class="line"><span class="lineno">  282</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  283</span><span class="stringliteral">    Returns the set of particles which are at the top of a decay chain.</span></div>
+<div class="line"><span class="lineno">  284</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  285</span><span class="stringliteral">    </span><span class="keywordflow">return</span> {top <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains}</div>
+<div class="line"><span class="lineno">  286</span> </div>
 <div class="line"><span class="lineno">  287</span> </div>
-<div class="line"><span class="lineno">  288</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -857,18 +857,17 @@ channel at a given mass, taking into account the correct coupling.
 <div class="line"><span class="lineno">   29</span>    sumbrs = {}</div>
 <div class="line"><span class="lineno">   30</span>    <span class="keywordflow">for</span> histoname <span class="keywordflow">in</span> histograms:</div>
 <div class="line"><span class="lineno">   31</span>        item = histoname.split(<span class="stringliteral">&quot;_&quot;</span>)</div>
-<div class="line"><span class="lineno">   32</span>        item[len(item) - 1]</div>
-<div class="line"><span class="lineno">   33</span>        meson = item[0]</div>
-<div class="line"><span class="lineno">   34</span>        coupling = couplings[1]</div>
-<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   36</span>            sumbrs[meson] += getbr_rpvsusy(h, histoname, mass, coupling)</div>
-<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">except</span> KeyError:</div>
-<div class="line"><span class="lineno">   38</span>            sumbrs[meson] = getbr_rpvsusy(h, histoname, mass, coupling)</div>
-<div class="line"><span class="lineno">   39</span>    print(list(sumbrs.values()))</div>
-<div class="line"><span class="lineno">   40</span>    maxsumbr = max(sumbrs.values())</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> maxsumbr</div>
+<div class="line"><span class="lineno">   32</span>        meson = item[0]</div>
+<div class="line"><span class="lineno">   33</span>        coupling = couplings[1]</div>
+<div class="line"><span class="lineno">   34</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   35</span>            sumbrs[meson] += getbr_rpvsusy(h, histoname, mass, coupling)</div>
+<div class="line"><span class="lineno">   36</span>        <span class="keywordflow">except</span> KeyError:</div>
+<div class="line"><span class="lineno">   37</span>            sumbrs[meson] = getbr_rpvsusy(h, histoname, mass, coupling)</div>
+<div class="line"><span class="lineno">   38</span>    print(list(sumbrs.values()))</div>
+<div class="line"><span class="lineno">   39</span>    maxsumbr = max(sumbrs.values())</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> maxsumbr</div>
+<div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -910,16 +909,16 @@ channel at a given mass, taking into account the correct coupling.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00044">44</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>gettotalbrrpvsusy(h, histograms, mass, couplings) -&gt; float:</div>
-<div class="line"><span class="lineno">   45</span>    totalbr = 0.0</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">for</span> histoname <span class="keywordflow">in</span> histograms:</div>
-<div class="line"><span class="lineno">   47</span>        histoname.split(<span class="stringliteral">&quot;_&quot;</span>)</div>
-<div class="line"><span class="lineno">   48</span>        coupling = couplings[1]</div>
-<div class="line"><span class="lineno">   49</span>        totalbr += getbr_rpvsusy(h, histoname, mass, coupling)</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> totalbr</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00043">43</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span>gettotalbrrpvsusy(h, histograms, mass, couplings) -&gt; float:</div>
+<div class="line"><span class="lineno">   44</span>    totalbr = 0.0</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> histoname <span class="keywordflow">in</span> histograms:</div>
+<div class="line"><span class="lineno">   46</span>        histoname.split(<span class="stringliteral">&quot;_&quot;</span>)</div>
+<div class="line"><span class="lineno">   47</span>        coupling = couplings[1]</div>
+<div class="line"><span class="lineno">   48</span>        totalbr += getbr_rpvsusy(h, histoname, mass, coupling)</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> totalbr</div>
+<div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -952,22 +951,22 @@ channel at a given mass, taking into account the correct coupling.
 returns a dictionary of interpolators of the branching ratios, indexed by
 the decay string.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00116">116</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span><span class="keyword">def </span>make_interpolators(filepath, kind: str = <span class="stringliteral">&quot;linear&quot;</span>):</div>
-<div class="line"><span class="lineno">  117</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  118</span><span class="stringliteral">    This function reads a file containing branching ratio histograms, </span><span class="keywordflow">and</span></div>
-<div class="line"><span class="lineno">  119</span>    returns a dictionary of interpolators of the branching ratios, indexed by</div>
-<div class="line"><span class="lineno">  120</span>    the decay string.</div>
-<div class="line"><span class="lineno">  121</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  122</span><span class="stringliteral">    histogram_data = parse_histograms(filepath)</span></div>
-<div class="line"><span class="lineno">  123</span><span class="stringliteral">    histograms = {}</span></div>
-<div class="line"><span class="lineno">  124</span><span class="stringliteral">    </span><span class="keywordflow">for</span> hist_string, (masses, br) <span class="keywordflow">in</span> histogram_data.items():</div>
-<div class="line"><span class="lineno">  125</span>        histograms[hist_string] = scipy.interpolate.interp1d(</div>
-<div class="line"><span class="lineno">  126</span>            masses, br, kind=kind, bounds_error=<span class="keyword">False</span>, fill_value=0, assume_sorted=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  127</span>        )</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> histograms</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00115">115</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span><span class="keyword">def </span>make_interpolators(filepath, kind: str = <span class="stringliteral">&quot;linear&quot;</span>):</div>
+<div class="line"><span class="lineno">  116</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  117</span><span class="stringliteral">    This function reads a file containing branching ratio histograms, </span><span class="keywordflow">and</span></div>
+<div class="line"><span class="lineno">  118</span>    returns a dictionary of interpolators of the branching ratios, indexed by</div>
+<div class="line"><span class="lineno">  119</span>    the decay string.</div>
+<div class="line"><span class="lineno">  120</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  121</span><span class="stringliteral">    histogram_data = parse_histograms(filepath)</span></div>
+<div class="line"><span class="lineno">  122</span><span class="stringliteral">    histograms = {}</span></div>
+<div class="line"><span class="lineno">  123</span><span class="stringliteral">    </span><span class="keywordflow">for</span> hist_string, (masses, br) <span class="keywordflow">in</span> histogram_data.items():</div>
+<div class="line"><span class="lineno">  124</span>        histograms[hist_string] = scipy.interpolate.interp1d(</div>
+<div class="line"><span class="lineno">  125</span>            masses, br, kind=kind, bounds_error=<span class="keyword">False</span>, fill_value=0, assume_sorted=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  126</span>        )</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> histograms</div>
+<div class="line"><span class="lineno">  128</span> </div>
 <div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -999,24 +998,24 @@ the decay string.
 <pre class="fragment">Make the particles with a lifetime above the specified one stable, to allow
 them to decay in Geant4 instead.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00053">53</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>make_particles_stable(P8gen, above_lifetime) -&gt; None:</div>
-<div class="line"><span class="lineno">   54</span>    <span class="comment"># FIXME: find time unit and add it to the docstring</span></div>
-<div class="line"><span class="lineno">   55</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   56</span><span class="stringliteral">    Make the particles </span><span class="keyword">with</span> a lifetime above the specified one stable, to allow</div>
-<div class="line"><span class="lineno">   57</span>    them to decay <span class="keywordflow">in</span> Geant4 instead.</div>
-<div class="line"><span class="lineno">   58</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   59</span><span class="stringliteral">    p8 = P8gen.getPythiaInstance()</span></div>
-<div class="line"><span class="lineno">   60</span><span class="stringliteral">    n = 1</span></div>
-<div class="line"><span class="lineno">   61</span><span class="stringliteral">    </span><span class="keywordflow">while</span> n != 0:</div>
-<div class="line"><span class="lineno">   62</span>        n = p8.particleData.nextId(n)</div>
-<div class="line"><span class="lineno">   63</span>        p = p8.particleData.particleDataEntryPtr(n)</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">if</span> p.tau0() &gt; above_lifetime:</div>
-<div class="line"><span class="lineno">   65</span>            command = f<span class="stringliteral">&quot;{n}:mayDecay = false&quot;</span></div>
-<div class="line"><span class="lineno">   66</span>            p8.readString(command)</div>
-<div class="line"><span class="lineno">   67</span>            print(f<span class="stringliteral">&quot;Pythia8 configuration: Made {p.name()} stable for Pythia, should decay in Geant4&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00052">52</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span><span class="keyword">def </span>make_particles_stable(P8gen, above_lifetime) -&gt; None:</div>
+<div class="line"><span class="lineno">   53</span>    <span class="comment"># FIXME: find time unit and add it to the docstring</span></div>
+<div class="line"><span class="lineno">   54</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   55</span><span class="stringliteral">    Make the particles </span><span class="keyword">with</span> a lifetime above the specified one stable, to allow</div>
+<div class="line"><span class="lineno">   56</span>    them to decay <span class="keywordflow">in</span> Geant4 instead.</div>
+<div class="line"><span class="lineno">   57</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span><span class="stringliteral">    p8 = P8gen.getPythiaInstance()</span></div>
+<div class="line"><span class="lineno">   59</span><span class="stringliteral">    n = 1</span></div>
+<div class="line"><span class="lineno">   60</span><span class="stringliteral">    </span><span class="keywordflow">while</span> n != 0:</div>
+<div class="line"><span class="lineno">   61</span>        n = p8.particleData.nextId(n)</div>
+<div class="line"><span class="lineno">   62</span>        p = p8.particleData.particleDataEntryPtr(n)</div>
+<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> p.tau0() &gt; above_lifetime:</div>
+<div class="line"><span class="lineno">   64</span>            command = f<span class="stringliteral">&quot;{n}:mayDecay = false&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>            p8.readString(command)</div>
+<div class="line"><span class="lineno">   66</span>            print(f<span class="stringliteral">&quot;Pythia8 configuration: Made {p.name()} stable for Pythia, should decay in Geant4&quot;</span>)</div>
+<div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1041,53 +1040,53 @@ It places them in a dictionary indexed by the decay string (e.g. 'd_K0_e'),
 as a pair ([masses...], [branching ratios...]), where the mass is expressed
 in GeV.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00070">70</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span><span class="keyword">def </span>parse_histograms(filepath):</div>
-<div class="line"><span class="lineno">   71</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   72</span><span class="stringliteral">    This function parses a file containing histograms of branching ratios.</span></div>
-<div class="line"><span class="lineno">   73</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   74</span><span class="stringliteral">    It places them </span><span class="keywordflow">in</span> a dictionary indexed by the decay string (e.g. <span class="stringliteral">&#39;d_K0_e&#39;</span>),</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">as</span> a pair ([masses...], [branching ratios...]), where the mass <span class="keywordflow">is</span> expressed</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">in</span> GeV.</div>
-<div class="line"><span class="lineno">   77</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   78</span><span class="stringliteral">    </span><span class="keyword">with</span> <a class="code hl_function" href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a>(filepath) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   79</span>        lines = f.readlines()</div>
-<div class="line"><span class="lineno">   80</span>    <span class="comment"># Define regular expressions matching (sub-)headers and data lines</span></div>
-<div class="line"><span class="lineno">   81</span>    th1f_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|.+&quot;</span>)</div>
-<div class="line"><span class="lineno">   82</span>    header_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \&zwj;(GeV\&zwj;)\|?&quot;</span>)</div>
-<div class="line"><span class="lineno">   83</span>    subheader_exp = re.compile(<span class="stringliteral">r&quot;^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$&quot;</span>)</div>
-<div class="line"><span class="lineno">   84</span>    data_exp = re.compile(<span class="stringliteral">r&quot;^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$&quot;</span>)</div>
-<div class="line"><span class="lineno">   85</span>    <span class="comment"># Locate beginning of each histogram</span></div>
-<div class="line"><span class="lineno">   86</span>    header_line_idx = [i <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(lines)) <span class="keywordflow">if</span> th1f_exp.match(lines[i]) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>]</div>
-<div class="line"><span class="lineno">   87</span>    <span class="comment"># Iterate over histograms</span></div>
-<div class="line"><span class="lineno">   88</span>    histograms = {}</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> offset <span class="keywordflow">in</span> header_line_idx:</div>
-<div class="line"><span class="lineno">   90</span>        <span class="comment"># Parse header</span></div>
-<div class="line"><span class="lineno">   91</span>        mh = header_exp.match(lines[offset])</div>
-<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">if</span> mh <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(mh.groups()) != 2:</div>
-<div class="line"><span class="lineno">   93</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed header encountered: {lines[offset]}&quot;</span>)</div>
-<div class="line"><span class="lineno">   94</span>        decay_code = mh.group(1)</div>
-<div class="line"><span class="lineno">   95</span>        <span class="comment"># Parse sub-header (min/max mass and number of points)</span></div>
-<div class="line"><span class="lineno">   96</span>        ms = subheader_exp.match(lines[offset + 1])</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">if</span> ms <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(ms.groups()) != 3:</div>
-<div class="line"><span class="lineno">   98</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed sub-header encountered: {lines[offset + 1]}&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span>        npoints = int(ms.group(1))</div>
-<div class="line"><span class="lineno">  100</span>        min_mass = float(ms.group(2))</div>
-<div class="line"><span class="lineno">  101</span>        max_mass = float(ms.group(3))</div>
-<div class="line"><span class="lineno">  102</span>        masses = np.linspace(min_mass, max_mass, npoints, endpoint=<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  103</span>        branching_ratios = np.zeros(npoints)</div>
-<div class="line"><span class="lineno">  104</span>        <span class="comment"># Now read the data lines (skipping the two header lines)</span></div>
-<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines[offset + 2 : offset + npoints + 1]:</div>
-<div class="line"><span class="lineno">  106</span>            md = data_exp.match(line)</div>
-<div class="line"><span class="lineno">  107</span>            <span class="keywordflow">if</span> md <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(md.groups()) != 2:</div>
-<div class="line"><span class="lineno">  108</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed data row encountered: {line}&quot;</span>)</div>
-<div class="line"><span class="lineno">  109</span>            idx = int(md.group(1))</div>
-<div class="line"><span class="lineno">  110</span>            br = float(md.group(2))</div>
-<div class="line"><span class="lineno">  111</span>            branching_ratios[idx] = br</div>
-<div class="line"><span class="lineno">  112</span>        histograms[decay_code] = (masses, branching_ratios)</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">return</span> histograms</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00069">69</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span><span class="keyword">def </span>parse_histograms(filepath):</div>
+<div class="line"><span class="lineno">   70</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   71</span><span class="stringliteral">    This function parses a file containing histograms of branching ratios.</span></div>
+<div class="line"><span class="lineno">   72</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   73</span><span class="stringliteral">    It places them </span><span class="keywordflow">in</span> a dictionary indexed by the decay string (e.g. <span class="stringliteral">&#39;d_K0_e&#39;</span>),</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">as</span> a pair ([masses...], [branching ratios...]), where the mass <span class="keywordflow">is</span> expressed</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">in</span> GeV.</div>
+<div class="line"><span class="lineno">   76</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   77</span><span class="stringliteral">    </span><span class="keyword">with</span> <a class="code hl_function" href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a>(filepath) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   78</span>        lines = f.readlines()</div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment"># Define regular expressions matching (sub-)headers and data lines</span></div>
+<div class="line"><span class="lineno">   80</span>    th1f_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|.+&quot;</span>)</div>
+<div class="line"><span class="lineno">   81</span>    header_exp = re.compile(<span class="stringliteral">r&quot;^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \&zwj;(GeV\&zwj;)\|?&quot;</span>)</div>
+<div class="line"><span class="lineno">   82</span>    subheader_exp = re.compile(<span class="stringliteral">r&quot;^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$&quot;</span>)</div>
+<div class="line"><span class="lineno">   83</span>    data_exp = re.compile(<span class="stringliteral">r&quot;^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$&quot;</span>)</div>
+<div class="line"><span class="lineno">   84</span>    <span class="comment"># Locate beginning of each histogram</span></div>
+<div class="line"><span class="lineno">   85</span>    header_line_idx = [i <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(lines)) <span class="keywordflow">if</span> th1f_exp.match(lines[i]) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>]</div>
+<div class="line"><span class="lineno">   86</span>    <span class="comment"># Iterate over histograms</span></div>
+<div class="line"><span class="lineno">   87</span>    histograms = {}</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">for</span> offset <span class="keywordflow">in</span> header_line_idx:</div>
+<div class="line"><span class="lineno">   89</span>        <span class="comment"># Parse header</span></div>
+<div class="line"><span class="lineno">   90</span>        mh = header_exp.match(lines[offset])</div>
+<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">if</span> mh <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(mh.groups()) != 2:</div>
+<div class="line"><span class="lineno">   92</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed header encountered: {lines[offset]}&quot;</span>)</div>
+<div class="line"><span class="lineno">   93</span>        decay_code = mh.group(1)</div>
+<div class="line"><span class="lineno">   94</span>        <span class="comment"># Parse sub-header (min/max mass and number of points)</span></div>
+<div class="line"><span class="lineno">   95</span>        ms = subheader_exp.match(lines[offset + 1])</div>
+<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">if</span> ms <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(ms.groups()) != 3:</div>
+<div class="line"><span class="lineno">   97</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed sub-header encountered: {lines[offset + 1]}&quot;</span>)</div>
+<div class="line"><span class="lineno">   98</span>        npoints = int(ms.group(1))</div>
+<div class="line"><span class="lineno">   99</span>        min_mass = float(ms.group(2))</div>
+<div class="line"><span class="lineno">  100</span>        max_mass = float(ms.group(3))</div>
+<div class="line"><span class="lineno">  101</span>        masses = np.linspace(min_mass, max_mass, npoints, endpoint=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  102</span>        branching_ratios = np.zeros(npoints)</div>
+<div class="line"><span class="lineno">  103</span>        <span class="comment"># Now read the data lines (skipping the two header lines)</span></div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> lines[offset + 2 : offset + npoints + 1]:</div>
+<div class="line"><span class="lineno">  105</span>            md = data_exp.match(line)</div>
+<div class="line"><span class="lineno">  106</span>            <span class="keywordflow">if</span> md <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> len(md.groups()) != 2:</div>
+<div class="line"><span class="lineno">  107</span>                <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Malformed data row encountered: {line}&quot;</span>)</div>
+<div class="line"><span class="lineno">  108</span>            idx = int(md.group(1))</div>
+<div class="line"><span class="lineno">  109</span>            br = float(md.group(2))</div>
+<div class="line"><span class="lineno">  110</span>            branching_ratios[idx] = br</div>
+<div class="line"><span class="lineno">  111</span>        histograms[decay_code] = (masses, branching_ratios)</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> histograms</div>
+<div class="line"><span class="lineno">  113</span> </div>
 <div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span> </div>
 <div class="ttc" id="astructcmd_8h_html_a2c4414339f388561554c2deab11a1a07"><div class="ttname"><a href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a></div><div class="ttdeci">int open(const char *, int)</div><div class="ttdoc">Opens a file descriptor.</div></div>
 </div><!-- fragment -->
 </div>
@@ -1108,10 +1107,10 @@ in GeV.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00295">295</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span><span class="keyword">def </span>print_scale_factor(scaling_factor) -&gt; None:</div>
-<div class="line"><span class="lineno">  296</span>    <span class="stringliteral">&quot;Prints the scale factor used to make event generation more efficient.&quot;</span></div>
-<div class="line"><span class="lineno">  297</span>    print(f<span class="stringliteral">&quot;One simulated event per {scaling_factor:.4g} meson decays&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00294">294</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span><span class="keyword">def </span>print_scale_factor(scaling_factor) -&gt; None:</div>
+<div class="line"><span class="lineno">  295</span>    <span class="stringliteral">&quot;Prints the scale factor used to make event generation more efficient.&quot;</span></div>
+<div class="line"><span class="lineno">  296</span>    print(f<span class="stringliteral">&quot;One simulated event per {scaling_factor:.4g} meson decays&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
