@@ -181,21 +181,6 @@ class Task:
                 # monitor Vx resolution and pulls
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
-                #   HNL true
-                if self.sTree.GetBranch("fitTrack2MC"):
-                    mctrack = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-                    self.mcTree.MCTrack[self.sTree.fitTrack2MC[t2]]
-                    self.mcTree.MCTrack[mctrack.GetMotherId()]
-                    # print "true vtx: ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
-                    # print "reco vtx: ",HNLPos[0],HNLPos[1],HNLPos[2]
-                    # self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
-                    # self.h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
-                    # self.h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
-                    # self.h['dVx'].Fill( (mctrack.GetStartX()-HNLPos[0]) )
-                    # self.h['dVy'].Fill( (mctrack.GetStartY()-HNLPos[1]) )
-                    # self.h['dVz'].Fill( (mctrack.GetStartZ()-HNLPos[2]) )
-
-                # print "*********************************** vertex fit precise   ******************************************** "
 
                 detPlane = ROOT.genfit.DetPlane(
                     ROOT.TVector3(0, 0, HNLPos[2]), ROOT.TVector3(1, 0, 0), ROOT.TVector3(0, 1, 0)
@@ -238,7 +223,6 @@ class Task:
                 for i in range(100):
                     self.Vy[i] = covInv[i // 10][i % 10]
 
-                np.array([0.0])
                 gMinuit = ROOT.TMinuit(9)
                 tempFcn = self.fcn
                 gMinuit.SetFCN(tempFcn)
@@ -319,9 +303,6 @@ class Task:
                 yFit = values[1]
                 zFit = values[2]
                 HNLPosFit = ROOT.TVector3(xFit, yFit, zFit)
-                errors[0]
-                errors[1]
-                errors[2]
 
                 # fixme: mass from track reconstraction needed
                 m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()

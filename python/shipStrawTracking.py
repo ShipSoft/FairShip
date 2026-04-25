@@ -345,10 +345,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
             metrics["reco_frac_tot"] += [frac_tot]
 
             # Momentum
-            hits["Pz"]
-            hits["Px"]
-            hits["Py"]
-
             p, px, py, pz = getPtruthFirst(sTree, tmax_tot)
             pt = math.sqrt(px**2 + py**2)
 

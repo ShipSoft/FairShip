@@ -24,6 +24,7 @@ it in future.
 
 * Replace obsolete elliptical acceptance cut with rectangular acceptance in track pattern recognition
 * Fix CI build warnings: add missing `override` specifiers, fix `Print()` and `Init()` virtual hiding, remove unused `FairShipFields` LinkDef entry
+* Remove no-effect statements (unused object creation, bare index accesses) from Python scripts
 
 ### Removed
 

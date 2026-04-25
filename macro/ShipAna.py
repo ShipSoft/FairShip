@@ -360,7 +360,6 @@ def RedoVertexing(t1, t2):
     # as we have learned, need iterative procedure
     dz = 99999.0
     reps, states, newPosDir = {}, {}, {}
-    ROOT.TVector3(0.0, 0.0, 1.0)
     rc = True
     step = 0
     while dz > 0.1:

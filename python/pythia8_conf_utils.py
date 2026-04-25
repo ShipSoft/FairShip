@@ -29,7 +29,6 @@ def getmaxsumbrrpvsusy(h, histograms, mass, couplings):
     sumbrs = {}
     for histoname in histograms:
         item = histoname.split("_")
-        item[len(item) - 1]
         meson = item[0]
         coupling = couplings[1]
         try:
