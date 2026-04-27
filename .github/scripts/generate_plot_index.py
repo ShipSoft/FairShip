@@ -52,7 +52,9 @@ def generate_html(manifests: list[dict], title: str) -> str:
                 f' <span class="type">({obj_type})</span>'
                 f"</figcaption></figure>"
             )
-        sections.append(f"<h2>{heading}</h2>\n<div class='grid'>{''.join(images)}</div>")
+        sections.append(
+            f"<details open><summary><h2>{heading}</h2></summary>\n<div class='grid'>{''.join(images)}</div></details>"
+        )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -63,7 +65,9 @@ def generate_html(manifests: list[dict], title: str) -> str:
 <style>
   body {{ font-family: system-ui, sans-serif; margin: 2rem; background: #fafafa; }}
   h1 {{ border-bottom: 2px solid #333; padding-bottom: 0.5rem; }}
-  h2 {{ color: #555; margin-top: 2rem; }}
+  details {{ margin-top: 2rem; }}
+  summary {{ cursor: pointer; list-style: revert; }}
+  summary h2 {{ display: inline; margin-top: 0; color: #555; }}
   .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1rem; }}
   figure {{ margin: 0; background: white; border: 1px solid #ddd; border-radius: 4px; padding: 0.5rem; }}
   img {{ width: 100%; height: auto; }}
