@@ -53,13 +53,14 @@ var searchData=
   ['_5frun_50',['_run',['../namespacegenie__interface.html#a466b0df6aee34de143ec73457187718b',1,'genie_interface']]],
   ['_5fsink_51',['_sink',['../classmethod__logger_1_1MethodLogger.html#a3f7195b3838085be442d4b1125eaafbb',1,'method_logger::MethodLogger']]],
   ['_5fstart_52',['_start',['../classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f',1,'splitcalCluster']]],
-  ['_5ftarget_5fcode_53',['_target_code',['../namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab',1,'makeGenieEvents']]],
-  ['_5ftmpfile_54',['_tmpFile',['../namespaceeventDisplay.html#ab3ac97fcd046690e7bf720f2bf7512f7',1,'eventDisplay']]],
-  ['_5ftmptree_55',['_tmpTree',['../namespaceeventDisplay.html#a0577fad0f1ef89dd8210daa738b69180',1,'eventDisplay']]],
-  ['_5fx_56',['_x',['../classsplitcalHit.html#a4595af3819f408287fa6501e7ab9e354',1,'splitcalHit']]],
-  ['_5fxerror_57',['_xError',['../classsplitcalHit.html#a11a49bd5e262ab5de76c6b9d261e52c8',1,'splitcalHit']]],
-  ['_5fy_58',['_y',['../classsplitcalHit.html#a70f406c448aaa254ee5cff16a2f49dd5',1,'splitcalHit']]],
-  ['_5fyerror_59',['_yError',['../classsplitcalHit.html#ae84881050d4af6aa485f1f88346854d4',1,'splitcalHit']]],
-  ['_5fz_60',['_z',['../classsplitcalHit.html#a4d1cf98969f6307434f09cf64df60ce7',1,'splitcalHit']]],
-  ['_5fzerror_61',['_zError',['../classsplitcalHit.html#aacaad93d20978f4526448fbbe71d2f36',1,'splitcalHit']]]
+  ['_5fstepwise_5fextrapolate_5fto_5fz_53',['_stepwise_extrapolate_to_z',['../classshipVertex_1_1Task.html#a68b1f3d9c5d2fbc2a5d9bd096c226a6b',1,'shipVertex::Task']]],
+  ['_5ftarget_5fcode_54',['_target_code',['../namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab',1,'makeGenieEvents']]],
+  ['_5ftmpfile_55',['_tmpFile',['../namespaceeventDisplay.html#ab3ac97fcd046690e7bf720f2bf7512f7',1,'eventDisplay']]],
+  ['_5ftmptree_56',['_tmpTree',['../namespaceeventDisplay.html#a0577fad0f1ef89dd8210daa738b69180',1,'eventDisplay']]],
+  ['_5fx_57',['_x',['../classsplitcalHit.html#a4595af3819f408287fa6501e7ab9e354',1,'splitcalHit']]],
+  ['_5fxerror_58',['_xError',['../classsplitcalHit.html#a11a49bd5e262ab5de76c6b9d261e52c8',1,'splitcalHit']]],
+  ['_5fy_59',['_y',['../classsplitcalHit.html#a70f406c448aaa254ee5cff16a2f49dd5',1,'splitcalHit']]],
+  ['_5fyerror_60',['_yError',['../classsplitcalHit.html#ae84881050d4af6aa485f1f88346854d4',1,'splitcalHit']]],
+  ['_5fz_61',['_z',['../classsplitcalHit.html#a4d1cf98969f6307434f09cf64df60ce7',1,'splitcalHit']]],
+  ['_5fzerror_62',['_zError',['../classsplitcalHit.html#aacaad93d20978f4526448fbbe71d2f36',1,'splitcalHit']]]
 ];

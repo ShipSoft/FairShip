@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"namespacemakeGenieEvents.html":[10,0,49],
+"namespacemakeGenieEvents.html#a21bd60f3fd933289fa2f5da835cff2ab":[10,0,49,4],
 "namespacemakeGenieEvents.html#a2753d22aa456638fb09ae9f003523cee":[10,0,49,0],
 "namespacemakeGenieEvents.html#a312cd2f4b1ebabae1b82e0acd4eff92e":[10,0,49,14],
 "namespacemakeGenieEvents.html#a43aff25673fa84d9c3c8f83835ea5099":[10,0,49,11],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemembers_func_f.html":[10,1,1,6],
 "namespacemembers_func_g.html":[10,1,1,7],
 "namespacemembers_func_h.html":[10,1,1,8],
-"namespacemembers_func_i.html":[10,1,1,9],
-"namespacemembers_func_k.html":[10,1,1,10],
-"namespacemembers_func_l.html":[10,1,1,11]
+"namespacemembers_func_i.html":[10,1,1,9]
 };
