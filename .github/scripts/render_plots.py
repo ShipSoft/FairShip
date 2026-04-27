@@ -5,7 +5,9 @@
 """Render ROOT histogram objects to PNG images for CI visualisation."""
 
 import argparse
+import itertools
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -17,6 +19,13 @@ ROOT.gStyle.SetOptStat(111111)
 ROOT.gStyle.SetOptFit(1111)
 
 DRAWABLE_TYPES = (ROOT.TH1, ROOT.TGraph, ROOT.TMultiGraph, ROOT.TEfficiency)
+_SAFE_CHARS = re.compile(r"[^A-Za-z0-9._-]")
+_canvas_counter = itertools.count()
+
+
+def _sanitise_filename(name: str) -> str:
+    """Replace non-alphanumeric characters with underscores."""
+    return _SAFE_CHARS.sub("_", name)
 
 
 def render_object(obj: Any, output_path: Path) -> dict[str, str] | None:
@@ -31,7 +40,7 @@ def render_object(obj: Any, output_path: Path) -> dict[str, str] | None:
     if not isinstance(obj, DRAWABLE_TYPES):
         return None
 
-    canvas = ROOT.TCanvas("c", "", 800, 600)
+    canvas = ROOT.TCanvas(f"c_{next(_canvas_counter)}", "", 800, 600)
 
     if isinstance(obj, ROOT.TH2):
         canvas.SetRightMargin(0.15)
@@ -42,6 +51,7 @@ def render_object(obj: Any, output_path: Path) -> dict[str, str] | None:
         obj.Draw()
 
     canvas.SaveAs(str(output_path))
+    del canvas
     return {"type": obj.ClassName()}
 
 
@@ -66,7 +76,7 @@ def render_directory(
             rendered.extend(render_directory(obj, output_dir, current_path, max_depth - 1))
             continue
 
-        safe_name = current_path.replace("/", "_")
+        safe_name = _sanitise_filename(current_path)
         png_path = output_dir / f"{safe_name}.png"
 
         try:

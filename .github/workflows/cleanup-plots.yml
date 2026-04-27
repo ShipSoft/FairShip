@@ -34,16 +34,20 @@ jobs:
             cutoff.setDate(cutoff.getDate() - 30);
 
             for (const prNum of fs.readdirSync(prDir)) {
+              const fullPath = path.join(prDir, prNum);
+              if (!fs.lstatSync(fullPath).isDirectory() || !/^\d+$/.test(prNum)) {
+                continue;
+              }
               try {
                 const {data: pr} = await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  pull_number: parseInt(prNum),
+                  pull_number: parseInt(prNum, 10),
                 });
 
                 if (pr.state === 'closed' && new Date(pr.closed_at) < cutoff) {
                   console.log(`Removing plots for PR #${prNum} (closed ${pr.closed_at})`);
-                  fs.rmSync(path.join(prDir, prNum), {recursive: true});
+                  fs.rmSync(fullPath, {recursive: true});
                 }
               } catch (e) {
                 console.log(`Skipping ${prNum}: ${e.message}`);
@@ -52,7 +56,7 @@ jobs:
       - name: Keep only last 10 master plot directories
         run: |
           if [ -d plots/master ]; then
-            ls -t plots/master | tail -n +11 | while read dir; do
+            ls -1 plots/master | sort -r | tail -n +11 | while read dir; do
               rm -rf "plots/master/$dir"
             done
           fi

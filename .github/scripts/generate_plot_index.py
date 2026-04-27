@@ -5,9 +5,11 @@
 """Generate an HTML index page and PR comment from rendered plot manifests."""
 
 import argparse
+import html
 import json
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 
 def collect_manifests(base_dir: Path) -> list[dict]:
@@ -22,7 +24,7 @@ def collect_manifests(base_dir: Path) -> list[dict]:
         manifest = json.loads(manifest_path.read_text())
         rel_dir = manifest_path.parent.relative_to(base_dir)
         for entry in manifest.get("files", []):
-            entry["file"] = str(rel_dir / entry["file"])
+            entry["file"] = (rel_dir / entry["file"]).as_posix()
         manifests.append(manifest)
     return manifests
 
@@ -37,13 +39,17 @@ def generate_html(manifests: list[dict], title: str) -> str:
         if not plots:
             continue
 
-        heading = f"{job} ({config})"
+        heading = html.escape(f"{job} ({config})")
         images = []
         for plot in plots:
+            src = html.escape(plot["file"], quote=True)
+            alt = html.escape(plot["name"], quote=True)
+            name = html.escape(plot["name"])
+            obj_type = html.escape(plot["type"])
             images.append(
-                f'<figure><img src="{plot["file"]}" alt="{plot["name"]}"'
-                f' loading="lazy"><figcaption>{plot["name"]}'
-                f' <span class="type">({plot["type"]})</span>'
+                f'<figure><img src="{src}" alt="{alt}"'
+                f' loading="lazy"><figcaption>{name}'
+                f' <span class="type">({obj_type})</span>'
                 f"</figcaption></figure>"
             )
         sections.append(f"<h2>{heading}</h2>\n<div class='grid'>{''.join(images)}</div>")
@@ -53,7 +59,7 @@ def generate_html(manifests: list[dict], title: str) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
+<title>{html.escape(title)}</title>
 <style>
   body {{ font-family: system-ui, sans-serif; margin: 2rem; background: #fafafa; }}
   h1 {{ border-bottom: 2px solid #333; padding-bottom: 0.5rem; }}
@@ -66,10 +72,17 @@ def generate_html(manifests: list[dict], title: str) -> str:
 </style>
 </head>
 <body>
-<h1>{title}</h1>
+<h1>{html.escape(title)}</h1>
 {"".join(sections)}
 </body>
 </html>"""
+
+
+def _md_image(name: str, url: str) -> str:
+    """Format a markdown image link with escaped alt text and URL."""
+    safe_alt = name.replace("]", r"\]")
+    safe_url = quote(url, safe="/:@!$&'*+,;=-._~?#[]")
+    return f"![{safe_alt}]({safe_url})"
 
 
 def generate_comment(manifests: list[dict], base_url: str) -> str:
@@ -91,13 +104,13 @@ def generate_comment(manifests: list[dict], base_url: str) -> str:
         inline = plots[:3]
         rest = plots[3:]
         for plot in inline:
-            lines.append(f"![{plot['name']}]({base_url}/{plot['file']})")
+            lines.append(_md_image(plot["name"], f"{base_url}/{plot['file']}"))
             lines.append("")
         if rest:
             lines.append("<details><summary>More plots</summary>")
             lines.append("")
             for plot in rest:
-                lines.append(f"![{plot['name']}]({base_url}/{plot['file']})")
+                lines.append(_md_image(plot["name"], f"{base_url}/{plot['file']}"))
                 lines.append("")
             lines.append("</details>")
             lines.append("")
