@@ -105,24 +105,37 @@ jobs:
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root
-        # - name: Extract physics metrics
-        #   run: |
-        #     source /cvmfs/ship.cern.ch/$version/setUp.sh
-        #     eval $(alienv load FairShip/latest)
-        #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
-        #
-        # - name: Upload .root artifacts
-        #   uses: actions/upload-artifact@v7
-        #   with:
-        #     name: root-files-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
-        #     path: |
-        #       *.root
-        #
-        # - name: Upload physics metrics
-        #   uses: actions/upload-artifact@v7
-        #   with:
-        #     name: metrics-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
-        #     path: physics_metrics.json
+      - name: Render plots
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python FairShip/.github/scripts/render_plots.py \
+            recohists.root \
+            --output-dir plots/sim-chain/${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }} \
+            --job sim-chain --config "${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}"
+      - name: Upload plot images
+        uses: actions/upload-artifact@v7
+        with:
+          name: plots-sim-chain-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+          path: plots/
+          # - name: Extract physics metrics
+          #   run: |
+          #     source /cvmfs/ship.cern.ch/$version/setUp.sh
+          #     eval $(alienv load FairShip/latest)
+          #     python FairShip/.github/scripts/extract_physics_metrics.py . -o physics_metrics.json --pretty
+          #
+          # - name: Upload .root artifacts
+          #   uses: actions/upload-artifact@v7
+          #   with:
+          #     name: root-files-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+          #     path: |
+          #       *.root
+          #
+          # - name: Upload physics metrics
+          #   uses: actions/upload-artifact@v7
+          #   with:
+          #     name: metrics-${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+          #     path: physics_metrics.json
   # store-metrics:
   #   runs-on: ubuntu-latest
   #   needs: run-sim-chain
@@ -392,6 +405,14 @@ jobs:
           python $FAIRSHIP/macro/run_tracking_benchmark.py \
             -n 200 --seed 42 --tag ci-benchmark \
             --output-json tracking_metrics.json
+      - name: Render plots
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python FairShip/.github/scripts/render_plots.py \
+            tracking_benchmark_histos.root \
+            --output-dir plots/tracking-benchmark/${{ matrix.version }} \
+            --job tracking-benchmark --config "${{ matrix.version }}"
       - name: Upload tracking metrics
         uses: actions/upload-artifact@v7
         with:
@@ -399,6 +420,11 @@ jobs:
           path: |
             tracking_metrics.json
             tracking_benchmark_histos.root
+      - name: Upload plot images
+        uses: actions/upload-artifact@v7
+        with:
+          name: plots-tracking-benchmark-${{ matrix.version }}
+          path: plots/
   run-fixed-target:
     runs-on: self-hosted
     needs: [generate-matrix, build]
@@ -427,12 +453,116 @@ jobs:
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_fixedTarget.py -n 10 -e 10.0 -r 1
+      - name: Render plots
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python FairShip/.github/scripts/render_plots.py \
+            /__w/FairShip/FairShip/*_run_fixedTarget_1/*.root \
+            --output-dir plots/fixed-target/${{ matrix.version }} \
+            --job fixed-target --config "${{ matrix.version }}"
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v7
         with:
           name: root-files-fixed-target-${{ matrix.version }}
           path: |
             /__w/FairShip/FairShip/*_run_fixedTarget_1/*.root
+      - name: Upload plot images
+        uses: actions/upload-artifact@v7
+        with:
+          name: plots-fixed-target-${{ matrix.version }}
+          path: plots/
+  deploy-plots:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: [run-tracking-benchmark, run-sim-chain, run-fixed-target]
+    concurrency:
+      group: gh-pages-deploy
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Download all plot artefacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: plots-*
+          path: all-plots/
+          merge-multiple: true
+      - name: Generate index page
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            TITLE="CI Plots for PR #${{ github.event.pull_request.number }}"
+            BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/plots/pr/${{ github.event.pull_request.number }}/${{ github.run_id }}"
+          else
+            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-8)
+            TITLE="CI Plots for $SHORT_SHA"
+            BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/plots/master/$SHORT_SHA"
+          fi
+          python3 .github/scripts/generate_plot_index.py all-plots/ \
+            --title "$TITLE" --base-url "$BASE_URL"
+      - name: Checkout gh-pages
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+          path: gh-pages-checkout
+      - name: Copy plots to gh-pages
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            DEST="gh-pages-checkout/plots/pr/${{ github.event.pull_request.number }}/${{ github.run_id }}"
+          else
+            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-8)
+            DEST="gh-pages-checkout/plots/master/$SHORT_SHA"
+          fi
+          mkdir -p "$DEST"
+          cp -r all-plots/* "$DEST/"
+      - name: Push to gh-pages
+        run: |
+          cd gh-pages-checkout
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plots/
+          git diff --staged --quiet && echo "No plot changes" && exit 0
+          git commit -m "Add CI plots for ${{ github.sha }}"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin gh-pages && git push origin gh-pages && break
+            echo "Push failed (attempt $attempt), retrying..."
+            sleep $((attempt * 5))
+          done
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- ci-plots-comment -->';
+            const body = fs.readFileSync('all-plots/comment.md', 'utf8');
+
+            const {data: comments} = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
   ci:
     if: always()
     runs-on: ubuntu-latest
