@@ -188,14 +188,65 @@ class TrackingBenchmark:
         n_events = min(n_events, n_reco_events)
 
         # Book histograms
-        h_dp_over_p = ROOT.TH1D("h_dp_over_p", "#Deltap/p;(p_{reco} - p_{truth})/p_{truth};Entries", 100, -0.5, 0.5)
-        h_dp_vs_p = ROOT.TH2D(
-            "h_dp_vs_p", "#Deltap/p vs p_{truth};p_{truth} [GeV/c];#Deltap/p", 50, 0, 120, 100, -0.5, 0.5
+        h_dp_over_p = ROOT.TH1D(
+            "h_dp_over_p",
+            "Momentum resolution;(p_{reco} #minus p_{truth}) / p_{truth};Entries",
+            100,
+            -0.5,
+            0.5,
         )
-        h_dx = ROOT.TH1D("h_dx", "#Deltax at first hit;x_{reco} - x_{truth} [cm];Entries", 100, -5.0, 5.0)
-        h_dy = ROOT.TH1D("h_dy", "#Deltay at first hit;y_{reco} - y_{truth} [cm];Entries", 100, -5.0, 5.0)
-        h_dtx = ROOT.TH1D("h_dtx", "#Deltat_{x};t_{x,reco} - t_{x,truth};Entries", 100, -0.01, 0.01)
-        h_dty = ROOT.TH1D("h_dty", "#Deltat_{y};t_{y,reco} - t_{y,truth};Entries", 100, -0.01, 0.01)
+        h_dp_vs_p = ROOT.TH2D(
+            "h_dp_vs_p",
+            "Momentum resolution vs p_{truth};p_{truth} [GeV/c];(p_{reco} #minus p_{truth}) / p_{truth}",
+            50,
+            0,
+            120,
+            100,
+            -0.5,
+            0.5,
+        )
+        h_dx = ROOT.TH1D(
+            "h_dx",
+            "x resolution at first hit;x_{reco} #minus x_{truth} [cm];Entries",
+            100,
+            -5.0,
+            5.0,
+        )
+        h_dy = ROOT.TH1D(
+            "h_dy",
+            "y resolution at first hit;y_{reco} #minus y_{truth} [cm];Entries",
+            100,
+            -5.0,
+            5.0,
+        )
+        h_dtx = ROOT.TH1D(
+            "h_dtx",
+            "Slope t_{x} resolution;t_{x,reco} #minus t_{x,truth} (t_{x} = p_{x}/p_{z});Entries",
+            100,
+            -0.01,
+            0.01,
+        )
+        h_dty = ROOT.TH1D(
+            "h_dty",
+            "Slope t_{y} resolution;t_{y,reco} #minus t_{y,truth} (t_{y} = p_{y}/p_{z});Entries",
+            100,
+            -0.01,
+            0.01,
+        )
+        h_hit_residual = ROOT.TH1D(
+            "h_hit_residual",
+            "Unbiased hit residual;drift distance residual [cm];Entries",
+            100,
+            -0.2,
+            0.2,
+        )
+        h_hit_pull = ROOT.TH1D(
+            "h_hit_pull",
+            "Unbiased hit pull;(residual) / #sigma;Entries",
+            100,
+            -5.0,
+            5.0,
+        )
         h_chi2ndf = ROOT.TH1D("h_chi2ndf", "#chi^{2}/ndf;#chi^{2}/ndf;Entries", 100, 0, 20)
         h_p_truth = ROOT.TH1D("h_p_truth", "p_{truth} (reconstructible);p [GeV/c];Entries", 50, 0, 120)
         h_p_matched = ROOT.TH1D("h_p_matched", "p_{truth} (matched);p [GeV/c];Entries", 50, 0, 120)
@@ -290,6 +341,23 @@ class TrackingBenchmark:
                         except Exception:
                             pass
 
+                    # Per-hit unbiased residuals and pulls
+                    n_meas = track.getNumPointsWithMeasurement()
+                    for i_hit in range(n_meas):
+                        try:
+                            tp = track.getPointWithMeasurement(i_hit)
+                            fitter_info = tp.getFitterInfo()
+                            if fitter_info is None:
+                                continue
+                            res = fitter_info.getResidual(0, False, False)
+                            res_val = res.getState()(0)
+                            res_cov = res.getCov()(0, 0)
+                            h_hit_residual.Fill(res_val)
+                            if res_cov > 0:
+                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))
+                        except Exception:
+                            continue
+
             n_matched_mc += len(matched_mc_this_event)
 
         # Compute metrics
@@ -312,6 +380,19 @@ class TrackingBenchmark:
             if fit_result and int(fit_result) == 0:
                 dp_p_sigma = fit_result.Parameter(2)
                 dp_p_sigma_unc = fit_result.ParError(2)
+
+        # Fit hit pull with Gaussian
+        hit_pull_mean = h_hit_pull.GetMean()
+        hit_pull_mean_unc = h_hit_pull.GetMeanError()
+        hit_pull_sigma = h_hit_pull.GetRMS()
+        hit_pull_sigma_unc = h_hit_pull.GetRMSError()
+        if h_hit_pull.GetEntries() > 50:
+            pull_fit = h_hit_pull.Fit("gaus", "QS")
+            if pull_fit and int(pull_fit) == 0:
+                hit_pull_mean = pull_fit.Parameter(1)
+                hit_pull_mean_unc = pull_fit.ParError(1)
+                hit_pull_sigma = pull_fit.Parameter(2)
+                hit_pull_sigma_unc = pull_fit.ParError(2)
 
         self.metrics = {
             "tracking_benchmark": {
@@ -358,6 +439,21 @@ class TrackingBenchmark:
                     "uncertainty": round(h_dty.GetRMSError(), 6),
                     "compare": "statistical",
                 },
+                "hit_residual_rms": {
+                    "value": round(h_hit_residual.GetRMS(), 6),
+                    "uncertainty": round(h_hit_residual.GetRMSError(), 6),
+                    "compare": "statistical",
+                },
+                "hit_pull_mean": {
+                    "value": round(hit_pull_mean, 6),
+                    "uncertainty": round(hit_pull_mean_unc, 6),
+                    "compare": "statistical",
+                },
+                "hit_pull_sigma": {
+                    "value": round(hit_pull_sigma, 6),
+                    "uncertainty": round(hit_pull_sigma_unc, 6),
+                    "compare": "statistical",
+                },
             }
         }
 
@@ -368,6 +464,8 @@ class TrackingBenchmark:
             "h_dy": h_dy,
             "h_dtx": h_dtx,
             "h_dty": h_dty,
+            "h_hit_residual": h_hit_residual,
+            "h_hit_pull": h_hit_pull,
             "h_chi2ndf": h_chi2ndf,
             "h_p_truth": h_p_truth,
             "h_p_matched": h_p_matched,
@@ -407,6 +505,11 @@ class TrackingBenchmark:
         print(f"  dy RMS:           {m['dy_rms']['value']:.4f} +/- {m['dy_rms']['uncertainty']:.4f} cm")
         print(f"  dtx RMS:          {m['dtx_rms']['value']:.6f} +/- {m['dtx_rms']['uncertainty']:.6f}")
         print(f"  dty RMS:          {m['dty_rms']['value']:.6f} +/- {m['dty_rms']['uncertainty']:.6f}")
+        print(
+            f"  Hit resid RMS:    {m['hit_residual_rms']['value']:.6f} +/- {m['hit_residual_rms']['uncertainty']:.6f} cm"
+        )
+        print(f"  Hit pull mean:    {m['hit_pull_mean']['value']:.4f} +/- {m['hit_pull_mean']['uncertainty']:.4f}")
+        print(f"  Hit pull sigma:   {m['hit_pull_sigma']['value']:.4f} +/- {m['hit_pull_sigma']['uncertainty']:.4f}")
         print("==================================\n")
 
     def __del__(self) -> None:
