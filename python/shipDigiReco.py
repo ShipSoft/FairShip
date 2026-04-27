@@ -332,19 +332,24 @@ class ShipDigiReco:
 
         When PatRec track parameters (k_y, b_y) are available, use them
         to place the seed at the first hit's Z with the correct Y position
-        and momentum direction. Otherwise fall back to the default seed
-        at the decay vessel centre.
+        and momentum direction. Prefers station 1-2 parameters, falls back
+        to station 3-4, then to a geometry-free default at the first hit.
         """
         params = trackParams.get(atrack)
-        if params and params.get("k_y12") is not None:
-            # Use station 1-2 parameters to seed near the first measurement
-            k_y = params["k_y12"]
-            b_y = params["b_y12"]
-            # Seed Z at the first measurement's Z coordinate
-            z_seed = meas[0][2]  # z is the 3rd element of the TVectorD
+        k_y = None
+        b_y = None
+        if params:
+            if params.get("k_y12") is not None:
+                k_y = params["k_y12"]
+                b_y = params["b_y12"]
+            elif params.get("k_y34") is not None:
+                k_y = params["k_y34"]
+                b_y = params["b_y34"]
+
+        z_seed = meas[0][2]  # z is the 3rd element of the TVectorD
+        if k_y is not None:
             y_seed = k_y * z_seed + b_y
             posM = ROOT.TVector3(0, y_seed, z_seed)
-            # Use slope as py/pz ratio; assume 3 GeV total momentum
             p_total = 3.0 * u.GeV
             pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)
             py = k_y * pz
@@ -358,7 +363,7 @@ class ShipDigiReco:
                 pz,
             )
         else:
-            posM = ROOT.TVector3(0, 0, 5812.0)  # decay vessel centre
+            posM = ROOT.TVector3(0, 0, z_seed)
             momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
         return posM, momM
 
