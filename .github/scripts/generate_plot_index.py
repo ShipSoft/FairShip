@@ -78,15 +78,15 @@ def generate_html(manifests: list[dict], title: str) -> str:
 </html>"""
 
 
-def _md_image(name: str, url: str) -> str:
-    """Format a markdown image link with escaped alt text and URL."""
-    safe_alt = name.replace("]", r"\]")
-    safe_url = quote(url, safe="/:@!$&'*+,;=-._~?#[]")
-    return f"![{safe_alt}]({safe_url})"
+def _html_thumbnail(name: str, url: str, width: int = 200) -> str:
+    """Format an HTML thumbnail image linking to the full-size version."""
+    safe_alt = html.escape(name, quote=True)
+    safe_url = html.escape(quote(url, safe="/:@!$&'*+,;=-._~?#[]"), quote=True)
+    return f'<a href="{safe_url}"><img src="{safe_url}" alt="{safe_alt}" width="{width}"></a>'
 
 
 def generate_comment(manifests: list[dict], base_url: str) -> str:
-    """Generate a markdown PR comment body."""
+    """Generate a markdown PR comment body with a thumbnail grid."""
     lines = ["<!-- ci-plots-comment -->", "## CI Plots", ""]
     lines.append(f"**[View all plots]({base_url}/index.html)**")
     lines.append("")
@@ -100,20 +100,9 @@ def generate_comment(manifests: list[dict], base_url: str) -> str:
 
         lines.append(f"### {job} ({config})")
         lines.append("")
-        # Show first 3 plots inline, rest in details
-        inline = plots[:3]
-        rest = plots[3:]
-        for plot in inline:
-            lines.append(_md_image(plot["name"], f"{base_url}/{plot['file']}"))
-            lines.append("")
-        if rest:
-            lines.append("<details><summary>More plots</summary>")
-            lines.append("")
-            for plot in rest:
-                lines.append(_md_image(plot["name"], f"{base_url}/{plot['file']}"))
-                lines.append("")
-            lines.append("</details>")
-            lines.append("")
+        for plot in plots:
+            lines.append(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}"))
+        lines.append("")
 
     return "\n".join(lines)
 
