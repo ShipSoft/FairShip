@@ -240,7 +240,7 @@ class ShipDigiReco:
                 hitCov = ROOT.TMatrixDSym(7)
                 hitCov[6][6] = resolution * resolution
                 hitID = 0
-                for m, detID in zip(meas, detIDs):
+                for m, detID in zip(meas, detIDs, strict=True):
                     tp = ROOT.genfit.TrackPoint(theTrack)
                     measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)
                     measurement.setMaxDistance(
@@ -257,7 +257,8 @@ class ShipDigiReco:
                     continue
                 try:
                     self.fitter.processTrack(theTrack)
-                except Exception:
+                except Exception as e:
+                    logger.debug("Failed to processTrack for hypothesis %d: %s", try_pdg, e)
                     continue
                 try:
                     theTrack.checkConsistency()
@@ -266,7 +267,8 @@ class ShipDigiReco:
                 try:
                     fittedState = theTrack.getFittedState()
                     fittedState.getMomMag()
-                except Exception:
+                except Exception as e:
+                    logger.debug("Failed to getFittedState/getMomMag for hypothesis %d: %s", try_pdg, e)
                     continue
                 fitStatus = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged():
@@ -279,12 +281,10 @@ class ShipDigiReco:
                     best_chi2ndf = chi2ndf
                     best_track = theTrack
             if best_track is not None:
-                trackCandidates.append([best_track, atrack])
+                trackCandidates.append((best_track, atrack))
 
-        for entry in trackCandidates:
+        for theTrack, atrack in trackCandidates:
             # Tracks are already fitted from the dual-hypothesis loop above
-            atrack = entry[1]
-            theTrack = entry[0]
             fitStatus = theTrack.getFitStatus()
             nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
             global_variables.h["nmeas"].Fill(nmeas)
