@@ -26,6 +26,7 @@ it in future.
 ### Fixed
 
 * Fix vertex finding for upstream vertices by using stepwise extrapolation
+* Derive track fit seed from pattern recognition and first hit position instead of hard-coded coordinate (#763)
 * Replace obsolete elliptical acceptance cut with rectangular acceptance in track pattern recognition
 * Fix CI build warnings: add missing `override` specifiers, fix `Print()` and `Init()` virtual hiding, remove unused `FairShipFields` LinkDef entry
 * Remove no-effect statements (unused object creation, bare index accesses) from Python scripts
