@@ -111,6 +111,7 @@ jobs:
           eval $(alienv load FairShip/latest)
           python FairShip/.github/scripts/render_plots.py \
             recohists.root \
+            sim_ci-test_ana.root \
             --output-dir plots/sim-chain/${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }} \
             --job sim-chain --config "${{ matrix.version }}-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}"
       - name: Upload plot images
