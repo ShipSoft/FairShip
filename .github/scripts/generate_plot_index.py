@@ -21,7 +21,11 @@ def collect_manifests(base_dir: Path) -> list[dict]:
     """
     manifests = []
     for manifest_path in sorted(base_dir.rglob("manifest.json")):
-        manifest = json.loads(manifest_path.read_text())
+        try:
+            manifest = json.loads(manifest_path.read_text())
+        except (json.JSONDecodeError, OSError, ValueError) as e:
+            print(f"WARNING: Skipping {manifest_path}: {e}", file=sys.stderr)
+            continue
         rel_dir = manifest_path.parent.relative_to(base_dir)
         for entry in manifest.get("files", []):
             entry["file"] = (rel_dir / entry["file"]).as_posix()

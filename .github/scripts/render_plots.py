@@ -66,9 +66,13 @@ def render_directory(
         return []
 
     rendered = []
+    seen: set[str] = set()
 
     for key in directory.GetListOfKeys():
         obj_name = key.GetName()
+        if obj_name in seen:
+            continue
+        seen.add(obj_name)
         obj = directory.Get(obj_name)
         current_path = f"{path}/{obj_name}" if path else obj_name
 
