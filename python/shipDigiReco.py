@@ -264,6 +264,7 @@ class ShipDigiReco:
                     theTrack.checkConsistency()
                 except ROOT.genfit.Exception:
                     logger.debug("Track inconsistent after fit for hypothesis %d", try_pdg)
+                    continue
                 try:
                     fittedState = theTrack.getFittedState()
                     fittedState.getMomMag()
