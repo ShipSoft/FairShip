@@ -12,12 +12,15 @@ establish a GenFit baseline and later measure ACTS performance.
 from __future__ import annotations
 
 import json
+import logging
 import math
 from typing import Any
 
 import ROOT
 
 ROOT.gROOT.SetBatch(True)
+
+logger = logging.getLogger(__name__)
 
 
 def wilson_interval(k: int, n: int) -> float:
@@ -349,13 +352,15 @@ class TrackingBenchmark:
                             fitter_info = tp.getFitterInfo()
                             if fitter_info is None:
                                 continue
-                            res = fitter_info.getResidual(0, False, False)
+                            res = fitter_info.getResidual()
+                            # Index 0: 1D residual (straw drift-distance measurement)
                             res_val = res.getState()(0)
                             res_cov = res.getCov()(0, 0)
                             h_hit_residual.Fill(res_val)
                             if res_cov > 0:
                                 h_hit_pull.Fill(res_val / math.sqrt(res_cov))
-                        except Exception:
+                        except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
+                            logger.debug("Skipping hit %d: %s", i_hit, e)
                             continue
 
             n_matched_mc += len(matched_mc_this_event)
@@ -382,17 +387,24 @@ class TrackingBenchmark:
                 dp_p_sigma_unc = fit_result.ParError(2)
 
         # Fit hit pull with Gaussian
-        hit_pull_mean = h_hit_pull.GetMean()
-        hit_pull_mean_unc = h_hit_pull.GetMeanError()
-        hit_pull_sigma = h_hit_pull.GetRMS()
-        hit_pull_sigma_unc = h_hit_pull.GetRMSError()
+        hit_pull_underflow = int(h_hit_pull.GetBinContent(0))
+        hit_pull_overflow = int(h_hit_pull.GetBinContent(h_hit_pull.GetNbinsX() + 1))
         if h_hit_pull.GetEntries() > 50:
+            hit_pull_mean = h_hit_pull.GetMean()
+            hit_pull_mean_unc = h_hit_pull.GetMeanError()
+            hit_pull_sigma = h_hit_pull.GetRMS()
+            hit_pull_sigma_unc = h_hit_pull.GetRMSError()
             pull_fit = h_hit_pull.Fit("gaus", "QS")
             if pull_fit and int(pull_fit) == 0:
                 hit_pull_mean = pull_fit.Parameter(1)
                 hit_pull_mean_unc = pull_fit.ParError(1)
                 hit_pull_sigma = pull_fit.Parameter(2)
                 hit_pull_sigma_unc = pull_fit.ParError(2)
+        else:
+            hit_pull_mean = math.nan
+            hit_pull_mean_unc = math.nan
+            hit_pull_sigma = math.nan
+            hit_pull_sigma_unc = math.nan
 
         self.metrics = {
             "tracking_benchmark": {
@@ -453,6 +465,14 @@ class TrackingBenchmark:
                     "value": round(hit_pull_sigma, 6),
                     "uncertainty": round(hit_pull_sigma_unc, 6),
                     "compare": "statistical",
+                },
+                "hit_pull_underflow": {
+                    "value": hit_pull_underflow,
+                    "compare": "exact",
+                },
+                "hit_pull_overflow": {
+                    "value": hit_pull_overflow,
+                    "compare": "exact",
                 },
             }
         }

@@ -111,10 +111,6 @@ class RKTrackRep:
 
 class AbsFitterInfo:
     # Partial stub
-    ...
-
-class KalmanFitterInfo(AbsFitterInfo):
-    # Partial stub
     def getResidual(
         self,
         iMeasurement: int = ...,
@@ -122,6 +118,10 @@ class KalmanFitterInfo(AbsFitterInfo):
         onlyMeasurementErrors: bool = ...,
     ) -> MeasurementOnPlane: ...
     def getWeights(self) -> TVectorD: ...
+
+class KalmanFitterInfo(AbsFitterInfo):
+    # Partial stub
+    ...
 
 class TrackPoint:
     # Partial stub
