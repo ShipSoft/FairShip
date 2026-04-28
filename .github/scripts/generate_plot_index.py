@@ -108,8 +108,8 @@ def generate_comment(manifests: list[dict], base_url: str) -> str:
 
         lines.append(f"### {job} ({config})")
         lines.append("")
-        for plot in plots:
-            lines.append(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}"))
+        thumbs = " ".join(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}") for plot in plots)
+        lines.append(thumbs)
         lines.append("")
 
     return "\n".join(lines)
