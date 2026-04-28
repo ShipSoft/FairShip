@@ -365,7 +365,12 @@ class TrackingBenchmark:
                                     n_wrong_charge += 1
                                     h_p_wrong_charge.Fill(p_truth)
                         except Exception:
-                            pass
+                            logger.debug(
+                                "Failed to extract fitted state for mc_id=%d, p_truth=%.3f",
+                                mc_id,
+                                p_truth,
+                                exc_info=True,
+                            )
 
                     # Per-hit unbiased residuals and pulls
                     n_meas = track.getNumPointsWithMeasurement()
