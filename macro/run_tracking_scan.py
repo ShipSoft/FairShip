@@ -94,6 +94,11 @@ else:  # grid
 
 os.makedirs(options.outputDir, exist_ok=True)
 
+# Gun position spread [cm]; single source of truth passed to the benchmark below.
+GUN_DX = 200.0
+GUN_DY = 300.0
+GUN_AREA_M2 = GUN_DX * GUN_DY * 1e-4
+
 fairship = os.environ.get("FAIRSHIP", "")
 benchmark_script = (
     os.path.join(fairship, "macro", "run_tracking_benchmark.py") if fairship else "macro/run_tracking_benchmark.py"
@@ -124,6 +129,10 @@ for i, (theta_min, theta_max, n_tracks, label_theta) in enumerate(scan_points):
         str(theta_max),
         "--nTracks",
         str(n_tracks),
+        "--Dx",
+        str(GUN_DX),
+        "--Dy",
+        str(GUN_DY),
         "--tag",
         tag,
         "--seed",
@@ -149,19 +158,22 @@ for i, (theta_min, theta_max, n_tracks, label_theta) in enumerate(scan_points):
         print(f"WARNING: scan point theta={theta_desc}, nTracks={n_tracks} failed (exit code {result.returncode})")
         continue
 
-    with open(json_path) as f:
-        metrics = json.load(f)
+    try:
+        with open(json_path) as f:
+            metrics = json.load(f)
+        benchmark_metrics = metrics["tracking_benchmark"]
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        print(f"WARNING: failed to read results from {json_path}: {e}")
+        continue
 
-    # Dx=200, Dy=300 cm (benchmark defaults) → area in m²
-    gun_area_m2 = 200 * 300 * 1e-4
     all_results.append(
         {
             "theta": label_theta,
             "thetaMin": theta_min,
             "thetaMax": theta_max,
             "nTracks": n_tracks,
-            "density_per_m2": round(n_tracks / gun_area_m2, 4),
-            "metrics": metrics["tracking_benchmark"],
+            "density_per_m2": round(n_tracks / GUN_AREA_M2, 4),
+            "metrics": benchmark_metrics,
         }
     )
 
@@ -281,8 +293,6 @@ try:
         "charge_id_efficiency": "Charge-ID efficiency",
     }
 
-    gun_area_m2 = 200 * 300 * 1e-4  # Dx=200, Dy=300 cm
-
     def _save_fig(fig: plt.Figure, base_path: str) -> None:
         """Save figure as both PDF and PNG."""
         fig.savefig(base_path + ".pdf")
@@ -364,7 +374,7 @@ try:
                 )
             ax.set_xlabel("Tracks per event")
             ax.set_ylabel(ylabel)
-            ax.set_title(f"{ylabel} vs multiplicity (gun area = {gun_area_m2:.1f} m²)")
+            ax.set_title(f"{ylabel} vs multiplicity (gun area = {GUN_AREA_M2:.1f} m²)")
             if ymin is not None:
                 ax.set_ylim(bottom=ymin)
             if ymax is not None:
