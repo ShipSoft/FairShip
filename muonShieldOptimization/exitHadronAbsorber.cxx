@@ -213,7 +213,6 @@ void exitHadronAbsorber::PostTrack() {
         TLorentzVector pos, mom;
         gMC->TrackPosition(pos);
         gMC->TrackMomentum(mom);
-        Int_t trueParentId = part->GetFirstMother();
         Double_t weight = gMC->TrackWeight() / fNsplits;
         Int_t ntr;
         for (int i = 0; i < fNsplits; ++i) {
@@ -225,7 +224,7 @@ void exitHadronAbsorber::PostTrack() {
             clone.poly = polY;
             clone.polz = polZ;
             clone.weight   = weight;
-            clone.parentID = trueParentId;
+            clone.parentID = currentTrackId;
             fSecondaryBuffer.push_back(clone);
 
         }
