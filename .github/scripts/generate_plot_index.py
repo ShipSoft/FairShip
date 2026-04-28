@@ -99,17 +99,28 @@ def generate_comment(manifests: list[dict], base_url: str) -> str:
     lines.append(f"**[View all plots]({base_url}/index.html)**")
     lines.append("")
 
+    # Group manifests by job, preserving order
+    jobs: dict[str, list[dict]] = {}
     for manifest in manifests:
-        job = manifest["job"]
-        config = manifest["config"]
         plots = manifest.get("files", [])
         if not plots:
             continue
+        jobs.setdefault(manifest["job"], []).append(manifest)
 
-        lines.append(f"### {job} ({config})")
+    for job, job_manifests in jobs.items():
+        lines.append(f"<details open><summary><h3>{job}</h3></summary>")
         lines.append("")
-        thumbs = " ".join(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}") for plot in plots)
-        lines.append(thumbs)
+        for manifest in job_manifests:
+            config = manifest["config"]
+            plots = manifest["files"]
+            lines.append(f"<details open><summary><h4>{config}</h4></summary>")
+            lines.append("")
+            thumbs = " ".join(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}") for plot in plots)
+            lines.append(thumbs)
+            lines.append("")
+            lines.append("</details>")
+            lines.append("")
+        lines.append("</details>")
         lines.append("")
 
     return "\n".join(lines)
