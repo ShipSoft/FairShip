@@ -14,6 +14,7 @@ import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
+import validationTools as validation_tools
 
 
 def _fraction_0_1(value: str) -> float:
@@ -352,6 +353,12 @@ parser.add_argument(
 )
 parser.add_argument(
     "--tag", dest="output_tag", help="Custom tag for output files instead of auto-generated UUID", default=None
+)
+parser.add_argument(
+    "--validation",
+    dest="validation",
+    help="Print an extended simulation validation summary after the run",
+    action="store_true",
 )
 
 
@@ -917,6 +924,7 @@ print("Parameter file is ", parFile)
 print("Geometry file is ", geofile_name)
 print("Real time ", rtime, " s, CPU time ", ctime, "s")
 
+
 # remove empty events
 if options.muonback:
     tmpFile = outFile + "tmp"
@@ -1032,6 +1040,25 @@ if options.command == "Genie":
 
     f_input.Close()
     f_output.Close()
+
+print("=" * 72)
+print("Simulation finished successfully")
+print("=" * 72)
+
+if options.validation:
+    validation_tools.print_simulation_output_summary(
+        ROOT,
+        outFile,
+        options.nEvents,
+        {"HNL": HNL, "DarkPhoton": options.DarkPhoton, "fixedTarget": options.fixedTarget},
+        {
+            "P8gen": globals().get("P8gen"),
+            "MuonBackgen": globals().get("MuonBackgen"),
+            "Ntuplegen": globals().get("Ntuplegen"),
+            "DISgen": globals().get("DISgen"),
+            "Geniegen": globals().get("Geniegen"),
+        },
+    )
 
 # ------------------------------------------------------------------------
 import checkMagFields

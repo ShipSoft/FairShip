@@ -141,6 +141,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         hnls.push_back(i);
       }
     }
+    IncrementCounter("hnl_candidates", hnls.size());
+    if (hnls.size() > 1) {
+      IncrementCounter("hnl_multi_candidate_tries");
+    }
     iHNL = hnls.size();
     if (iHNL == 0) {
       fnRetries += 1;
@@ -154,6 +158,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
           accepted.push_back(idx);
         }
       }
+      IncrementCounter("hnl_accepted_candidates", accepted.size());
       if (accepted.empty()) {
         iHNL = 0;
         hnls.clear();
@@ -277,6 +282,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     if (fextFile) {
       im += 1;
     }
+    IncrementCounter("hnl_stored_decay_products");
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS / cm, yS / cm,
                   zS / cm, im, wanttracking, e, tS / cm / c_light, w);
     // std::cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " <<
