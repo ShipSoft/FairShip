@@ -82,6 +82,7 @@ class ShipMCTrack : public TObject {
   /**  Modifiers  **/
   void SetMotherId(Int_t id) { fMotherId = id; }
   void SetNPoints(Int_t iDet, Int_t np);
+  void SetStartT(Double_t t) { fStartT = t; }
   void SetEventID(const Int_t& eventID);
   void SetTrackID(const Int_t& trackID);
 
