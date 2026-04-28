@@ -11,12 +11,12 @@ var searchData=
   ['list_5fsubclusters_5fof_5fhits_8',['list_subclusters_of_hits',['../classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb',1,'splitcalDetector::splitcalDetector']]],
   ['local_9',['local',['../namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce',1,'ana_ShipMuon']]],
   ['localinfo_5f_10',['localInfo_',['../classShipFieldMaker.html#a0c5203ee14b827b04a5a7f0c6b000c5d',1,'ShipFieldMaker']]],
-  ['logger_11',['logger',['../namespaceconfig__tester.html#a9f5abd70f103fa2889fc37624cc2a02a',1,'config_tester.logger'],['../namespacerun__fixedTarget.html#a9faaafed66d4cddff69c9096c8ed844c',1,'run_fixedTarget.logger'],['../namespacegenie__interface.html#a8f17cbbaa6408171e262ba75a09c86a9',1,'genie_interface.logger'],['../namespaceshipDigiReco.html#a0c278bbffd4fe9af5ba2582232f8ff77',1,'shipDigiReco.logger'],['../namespaceshipPatRec.html#a9308302671ea7bd5ccdf623c274fbdaa',1,'shipPatRec.logger']]],
+  ['logger_11',['logger',['../namespaceconfig__tester.html#a9f5abd70f103fa2889fc37624cc2a02a',1,'config_tester.logger'],['../namespacerun__fixedTarget.html#a9faaafed66d4cddff69c9096c8ed844c',1,'run_fixedTarget.logger'],['../namespacegenie__interface.html#a8f17cbbaa6408171e262ba75a09c86a9',1,'genie_interface.logger'],['../namespaceshipDigiReco.html#a0c278bbffd4fe9af5ba2582232f8ff77',1,'shipDigiReco.logger'],['../namespaceshipPatRec.html#a9308302671ea7bd5ccdf623c274fbdaa',1,'shipPatRec.logger'],['../namespacetracking__benchmark.html#a3a5b5e57431e2fe5e7840190f525432d',1,'tracking_benchmark.logger']]],
   ['logvols_12',['logVols',['../namespaceana__ShipMuon.html#a2149213ba9289ca064165a02bf55b718',1,'ana_ShipMuon']]],
   ['lowerironthick_13',['lowerIronThick',['../classMTCDetector.html#a880f256d6ce379a7b8f8575b79ea8639',1,'MTCDetector']]],
   ['lsofglobals_14',['lsOfGlobals',['../namespaceeventDisplay.html#a601d305733db2f2b9e498c9822e9d880',1,'eventDisplay']]],
-  ['lumen_15',['lumen',['../namespacehepunit.html#ab87a921c584f59dd9e2f56981d5fd315',1,'hepunit.lumen'],['../namespaceshipunit.html#a20bbe91dc1c15ee2a1844ef06402f9fa',1,'shipunit.lumen']]],
-  ['lux_16',['lux',['../namespaceshipunit.html#aa0dada46fb73282f13bbab53e61082fe',1,'shipunit.lux'],['../namespacehepunit.html#aad32433d021d9799cbcd4e6fc3a53e33',1,'hepunit.lux']]],
+  ['lumen_15',['lumen',['../namespaceshipunit.html#a20bbe91dc1c15ee2a1844ef06402f9fa',1,'shipunit.lumen'],['../namespacehepunit.html#ab87a921c584f59dd9e2f56981d5fd315',1,'hepunit.lumen']]],
+  ['lux_16',['lux',['../namespacehepunit.html#aad32433d021d9799cbcd4e6fc3a53e33',1,'hepunit.lux'],['../namespaceshipunit.html#aa0dada46fb73282f13bbab53e61082fe',1,'shipunit.lux']]],
   ['lv_17',['LV',['../classshipVertex_1_1Task.html#a3a62019011f72b1a6eef10ff677d177c',1,'shipVertex::Task']]],
   ['lvessel_18',['Lvessel',['../classGenieGenerator.html#a3b21483f03aff6002a9e41f3e97cd4e5',1,'GenieGenerator']]]
 ];
