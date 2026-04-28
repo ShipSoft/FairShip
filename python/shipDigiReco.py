@@ -153,33 +153,21 @@ class ShipDigiReco:
         print(f"  {'events_digitized':<40} : {self.validation_stats['events_digitized']}")
         print(f"  {'events_reconstructed':<40} : {self.validation_stats['events_reconstructed']}")
         print(f"  {'smeared_hits_total':<40} : {self.validation_stats['smeared_hits_total']}")
-        print(
-            f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}"
-        )
+        print(f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}")
         print(
             f"  {'track_candidates_rejected_hits':<40} : {self.validation_stats['track_candidates_rejected_hits']}"
         )
         print(
             f"  {'track_candidates_rejected_stations':<40} : {self.validation_stats['track_candidates_rejected_stations']}"
         )
-        print(
-            f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}"
-        )
+        print(f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}")
         print(
             f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}"
         )
-        print(
-            f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}"
-        )
-        print(
-            f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}"
-        )
-        print(
-            f"  {'vertexing_calls':<40} : {self.validation_stats['vertexing_calls']}"
-        )
-        print(
-            f"  {'veto_links_total':<40} : {self.validation_stats['veto_links_total']}"
-        )
+        print(f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}")
+        print(f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}")
+        print(f"  {'vertexing_calls':<40} : {self.validation_stats['vertexing_calls']}")
+        print(f"  {'veto_links_total':<40} : {self.validation_stats['veto_links_total']}")
         if self.validation_stats["events_reconstructed"] > 0:
             n_events = self.validation_stats["events_reconstructed"]
             print(

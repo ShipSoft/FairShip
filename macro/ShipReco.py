@@ -76,11 +76,10 @@ parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", require
 parser.add_argument(
     "--validation",
     dest="validation",
-    help="Print reconstruction validation summary and tracking benchmark after finishing",
+    help="Print reconstruction validation summary after finishing",
     required=False,
     action="store_true",
 )
-
 options = parser.parse_args()
 vertexing = not options.noVertexing
 
@@ -188,59 +187,3 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
 # mem_monitor()
 # end loop over events
 SHiP.finish()
-
-if options.validation:
-    try:
-        import tracking_benchmark
-
-        bench = tracking_benchmark.TrackingBenchmark(options.inputFile, outFile, options.geoFile)
-        metrics = bench.compute_metrics()["tracking_benchmark"]
-        print(" ")
-        print("[Tracking Validation]")
-        n_reconstructible = int(metrics["n_reconstructible"]["value"])
-        n_matched_mc = int(round(metrics["efficiency"]["value"] * n_reconstructible))
-        print(
-            f"  {'tracking_efficiency':<40} :"
-            f" {n_matched_mc:8d}/{n_reconstructible:8d}"
-            f"  {100.0 * metrics['efficiency']['value']:6.2f}%"
-            f"  +/- {100.0 * metrics['efficiency']['uncertainty']:.2f}%"
-        )
-        print(
-            f"  {'tracking_clone_rate':<40} :"
-            f" {100.0 * metrics['clone_rate']['value']:6.2f}%"
-            f"  +/- {100.0 * metrics['clone_rate']['uncertainty']:.2f}%"
-        )
-        print(
-            f"  {'tracking_ghost_rate':<40} :"
-            f" {100.0 * metrics['ghost_rate']['value']:6.2f}%"
-            f"  +/- {100.0 * metrics['ghost_rate']['uncertainty']:.2f}%"
-        )
-        print(
-            f"  {'tracking_dp_over_p_sigma':<40} :"
-            f" {metrics['dp_over_p_sigma']['value']:.6g}"
-            f"  +/- {metrics['dp_over_p_sigma']['uncertainty']:.6g}"
-        )
-        print(
-            f"  {'tracking_dx_rms':<40} :"
-            f" {metrics['dx_rms']['value']:.6g} cm"
-            f"  +/- {metrics['dx_rms']['uncertainty']:.6g} cm"
-        )
-        print(
-            f"  {'tracking_dy_rms':<40} :"
-            f" {metrics['dy_rms']['value']:.6g} cm"
-            f"  +/- {metrics['dy_rms']['uncertainty']:.6g} cm"
-        )
-        print(
-            f"  {'tracking_dtx_rms':<40} :"
-            f" {metrics['dtx_rms']['value']:.6g}"
-            f"  +/- {metrics['dtx_rms']['uncertainty']:.6g}"
-        )
-        print(
-            f"  {'tracking_dty_rms':<40} :"
-            f" {metrics['dty_rms']['value']:.6g}"
-            f"  +/- {metrics['dty_rms']['uncertainty']:.6g}"
-        )
-    except Exception as exc:
-        print(" ")
-        print("[Tracking Validation]")
-        print(f"  {'tracking_benchmark':<40} : failed ({exc})")
