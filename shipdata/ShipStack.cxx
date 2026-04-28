@@ -48,8 +48,8 @@ ShipStack::ShipStack(Int_t size)
       fMinPoints(1),
       fEnergyCut(0.),
       fStoreMothers(kTRUE) {
-  fTracks = new std::vector<ShipMCTrack>();
-  fTracks->reserve(size);
+    fTracks = new std::vector<ShipMCTrack>();
+    fTracks->reserve(size);
 }
 
 // -------------------------------------------------------------------------
@@ -86,14 +86,19 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
   // <<    " " << secondparentID<<" "<<proc<< endl;
 
+  Int_t trackId = fNParticles;
+
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
 
-  // --> Create new TParticle and add it to the TParticle array
-  Int_t trackId = fNParticles;
+  // --> Set argument variable
+  ntr = trackId;
+
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
+
+  // --> Create new TParticle and add it to the TParticle array
   TParticle* particle = new (partArray[fNParticles++])
       TParticle(pdgCode, trackId, parentId, nPoints, daughter1Id, daughter2Id,
                 px, py, pz, e, vx, vy, vz, time);
@@ -118,14 +123,10 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   if (parentId < 0) {
     fNPrimaries++;
   }
-
-  // --> Set argument variable
-  ntr = trackId;
-
-  // --> Push particle on the stack if toBeDone is set
   if (toBeDone == 1) {
-    particle->SetBit(kDoneBit);
-    fStack.push(particle);
+      // --> Push particle on the stack if toBeDone is set
+      particle->SetBit(kDoneBit);
+      fStack.push(particle);
   }
 }
 // -------------------------------------------------------------------------

@@ -18,7 +18,24 @@ it in future.
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
 
 ### Changed
+* Add option to split kaons and pions right before they decay, to increase the number of muons
 * Make artificial retina the baseline option for pattern recognition
+* Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
+* Change a const char* in SHiP::Generator to optional<string>. #1053
+* Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
+* makeGenieEvents: automatically set GXMLPATH to the genie_config folder. Remove option --nudet since now GXMLPATH always needs to be set.
+* Make Ship::Generator base class for all the generators. Each generator can in principal take a list of files, although each will need to implement the method to do so. #1047
+* Add file glob to run_simScript.py input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041
+* Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
+* Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
+* UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
+* Bump minimum ROOT version to 6.36
+* Bump minimum CMake version to 3.20 (same as ROOT)
+* Change function SND in shipDet_conf.py
+* Change disable magnetic field in the MS and remove field map upload in run_fixedTarget.py
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+>>>>>>> 8e56f36c6 (Pion-kaon splitting in exitHadronAbsorber)
 
 ### Fixed
 
