@@ -174,14 +174,19 @@ void exitHadronAbsorber::Initialize() {
 
 
 void exitHadronAbsorber::BeginEvent() {
-  fIsSplitting = false;
+  fCloneTracks.clear();
 }
 
 
 
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
-  if ((fNsplits > 0) && !(fIsSplitting)) {
+
+  if (fCloneTracks.count(currentTrackId)) {
+      return; 
+  }
+
+  if (fNsplits > 0) {
     TArrayI processes;
     gMC->StepProcesses(processes);
 
@@ -196,7 +201,7 @@ void exitHadronAbsorber::PostTrack() {
 
     bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321 || TMath::Abs(track_pid) == 310 || TMath::Abs(track_pid) == 130);
 
-    if ((isDecay) && (kaon_or_pion) && !(fIsSplitting)) {
+    if ((isDecay) && (kaon_or_pion)) {
         TParticle* part = gMC->GetStack()->GetCurrentTrack();
         double polX = 0, polY = 0, polZ = 0;
         TVector3 polVector;
@@ -225,7 +230,6 @@ void exitHadronAbsorber::PostTrack() {
 
         }
         gMC->StopTrack();
-        fIsSplitting = true;
     }
   }
 }
@@ -244,8 +248,10 @@ void exitHadronAbsorber::PreTrack() {
                 trk.polx, trk.poly, trk.polz,
                 kPNoProcess, ntr, trk.weight, 999
             );
+            fCloneTracks.insert(ntr);
+
         }
-        // Important: Clear the buffer so we don't duplicate them for the next track
+        // Clear the buffer so we don't duplicate them for the next track
         fSecondaryBuffer.clear();
   }
   gMC->TrackMomentum(fMom);
@@ -254,7 +260,9 @@ void exitHadronAbsorber::PreTrack() {
     return;
   }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
-  if ((fNsplits > 0) && (p->GetUniqueID() == kPNoProcess) && !(stackbufferisnotempty)) {
+  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
+
+  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
       // Force the decay time to 0
       gMC->ForceDecayTime(0);
     }

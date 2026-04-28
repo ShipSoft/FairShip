@@ -9,6 +9,7 @@
 #include "TFile.h"
 #include "TNtuple.h"
 #include "vetoPoint.h"
+#include <set>
 
 class FairVolume;
 
@@ -62,7 +63,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
 
   int32_t fNsplits;
   std::vector<TrackBuffer> fSecondaryBuffer;
-  bool fIsSplitting;
+  std::set<Int_t> fCloneTracks;
 
 
   TFile* fout;               //!
