@@ -44,6 +44,10 @@ class MuonBackGenerator : public SHiP::Generator {
   void SetPhiRandomize(Bool_t phiRandomize) { fPhiRandomize = phiRandomize; };
   Bool_t checkDiMuon(Int_t muIndex);
   void SetDownScaleDiMuon() { fdownScaleDiMuon = kTRUE; };
+  Long64_t GetScannedEntries() const { return fScannedEntries; }
+  Long64_t GetAcceptedEntries() const { return fAcceptedEntries; }
+  Long64_t GetSelectedMuons() const { return fSelectedMuons; }
+  Long64_t GetTransportedTracks() const { return fTransportedTracks; }
 
  private:
  protected:
@@ -64,6 +68,10 @@ class MuonBackGenerator : public SHiP::Generator {
   Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam;
+  Long64_t fScannedEntries;
+  Long64_t fAcceptedEntries;
+  Long64_t fSelectedMuons;
+  Long64_t fTransportedTracks;
 };
 
 #endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

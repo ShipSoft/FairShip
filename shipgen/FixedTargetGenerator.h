@@ -104,6 +104,12 @@ class FixedTargetGenerator : public SHiP::Generator {
   Double_t GetPotForCharm() { return nrpotspill / wspill; }
   Pythia8::Pythia* GetPythia() { return fPythiaP; }
   Pythia8::Pythia* GetPythiaN() { return fPythiaN; }
+  Long64_t GetGeneratedEvents() const { return fGeneratedEvents; }
+  Long64_t GetG4OnlyEvents() const { return fG4OnlyEvents; }
+  Long64_t GetCharmInputPairs() const { return fCharmInputPairs; }
+  Long64_t GetStoredTracks() const { return fStoredTracks; }
+  Long64_t GetTrackedFinalStateParticles() const { return fTrackedFinalStateParticles; }
+  Long64_t GetSkippedFinalStateParticles() const { return fSkippedFinalStateParticles; }
 
  private:
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
@@ -143,5 +149,11 @@ class FixedTargetGenerator : public SHiP::Generator {
   Float_t n_id, n_px, n_py, n_pz, n_M, n_E, n_mpx, n_mpy, n_mpz, n_mE, n_mid,
       ck;
   Int_t heartbeat;
+  Long64_t fGeneratedEvents;
+  Long64_t fG4OnlyEvents;
+  Long64_t fCharmInputPairs;
+  Long64_t fStoredTracks;
+  Long64_t fTrackedFinalStateParticles;
+  Long64_t fSkippedFinalStateParticles;
 };
 #endif  // SHIPGEN_FIXEDTARGETGENERATOR_H_

@@ -17,7 +17,11 @@ using std::endl;
 // read events from ntuples produced
 
 // -----   Default constructor   -------------------------------------------
-NtupleGenerator::NtupleGenerator() {}
+NtupleGenerator::NtupleGenerator() {
+  fScannedEntries = 0;
+  fAcceptedEntries = 0;
+  fRejectedEntries = 0;
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t NtupleGenerator::Init(const char* fileName) { return Init(fileName, 0); }
@@ -67,6 +71,7 @@ NtupleGenerator::~NtupleGenerator() {
 Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   while (fn < fNevents) {
     fTree->GetEntry(fn);
+    fScannedEntries += 1;
     fn++;
     if (fn % 10000 == 0) {
       cout << "reading event " << fn << endl;
@@ -75,8 +80,10 @@ Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Int_t i = Nmeas - 3;
     Float_t r2 = (vx[i] * vx[i] + vy[i] * vy[i]);
     if (procid[Nmeas - 1] == 2 && r2 < 9) {
+      fAcceptedEntries += 1;
       break;
     }
+    fRejectedEntries += 1;
   }
   if (fn == fNevents) {
     cout << "No more input events" << endl;

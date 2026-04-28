@@ -26,6 +26,9 @@ class NtupleGenerator : public SHiP::Generator {
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
   Int_t GetNevents();
+  Long64_t GetScannedEntries() const { return fScannedEntries; }
+  Long64_t GetAcceptedEntries() const { return fAcceptedEntries; }
+  Long64_t GetRejectedEntries() const { return fRejectedEntries; }
 
  private:
  protected:
@@ -38,6 +41,9 @@ class NtupleGenerator : public SHiP::Generator {
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
+  Long64_t fScannedEntries;
+  Long64_t fAcceptedEntries;
+  Long64_t fRejectedEntries;
 };
 
 #endif  // SHIPGEN_NTUPLEGENERATOR_H_ /* !PNDntGENERATOR_H */

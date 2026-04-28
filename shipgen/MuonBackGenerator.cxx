@@ -33,6 +33,10 @@ using ShipUnit::mm;
 MuonBackGenerator::MuonBackGenerator()
     : MCTrack_vec(nullptr), vetoPoints_vec(nullptr), fUseSTL(false) {
   followMuons = true;
+  fScannedEntries = 0;
+  fAcceptedEntries = 0;
+  fSelectedMuons = 0;
+  fTransportedTracks = 0;
 }
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
@@ -199,6 +203,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   bool found_muon = false;
   while (fn < fNevents) {
     fTree->GetEntry(fn);
+    fScannedEntries += 1;
     muList.clear();
     moList.clear();
     fn++;
@@ -248,6 +253,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         LOGF(debug, "No muon found %i", fn - 1);
       }
       if (found) {
+        fAcceptedEntries += 1;
+        fSelectedMuons += muList.size();
         found_muon = true;
         break;
       }
@@ -307,6 +314,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           break;
         }
       }
+      fTransportedTracks += 1;
       cpg->AddTrack(track->GetPdgCode(), px, py, pz, vx, vy, vz,
                     track->GetMotherId(), wanttracking, e, tof,
                     track->GetWeight(), (TMCProcess)track->GetProcID());
@@ -320,8 +328,11 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       px = pt * TMath::Cos(phi_random);
       py = pt * TMath::Sin(phi_random);
     }
+    fAcceptedEntries += 1;
+    fSelectedMuons += 1;
     cpg->AddTrack(static_cast<int>(pythiaid), px, py, pz, vx * 100., vy * 100.,
                   vz * 100., -1., false, e, pythiaid, parentid);
+    fTransportedTracks += 2;
     cpg->AddTrack(static_cast<int>(id), px, py, pz, vx * 100., vy * 100.,
                   vz * 100., -1., true, e, tof, w);
   }

@@ -1155,10 +1155,47 @@ def _print_simulation_output_summary(output_filename, requested_events):
         if HNL:
             generator_stats.append(("HNL retries", P8gen.nrOfRetries()))
             generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
+            generator_stats.append(("HNL candidates", P8gen.nrOfHNLCandidates()))
+            generator_stats.append(("Accepted HNL candidates", P8gen.nrOfAcceptedHNLCandidates()))
+            generator_stats.append(("Multi-HNL tries", P8gen.nrOfMultiHNLCandidateTries()))
+            generator_stats.append(("Stored decay products", P8gen.nrOfStoredDecayProducts()))
         elif options.DarkPhoton:
             generator_stats.append(("DP retries", P8gen.nrOfRetries()))
             generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
             generator_stats.append(("Total dark photons", P8gen.nrOfDP()))
+        elif options.fixedTarget:
+            generator_stats.append(("Generated events", P8gen.GetGeneratedEvents()))
+            generator_stats.append(("G4-only events", P8gen.GetG4OnlyEvents()))
+            generator_stats.append(("Charm input pairs", P8gen.GetCharmInputPairs()))
+            generator_stats.append(("Stored tracks", P8gen.GetStoredTracks()))
+            generator_stats.append(("Tracked final-state particles", P8gen.GetTrackedFinalStateParticles()))
+            generator_stats.append(("Skipped final-state particles", P8gen.GetSkippedFinalStateParticles()))
+
+    if "MuonBackgen" in globals():
+        generator_stats.append(("Scanned input entries", MuonBackgen.GetScannedEntries()))
+        generator_stats.append(("Accepted input entries", MuonBackgen.GetAcceptedEntries()))
+        generator_stats.append(("Selected muons", MuonBackgen.GetSelectedMuons()))
+        generator_stats.append(("Transported tracks", MuonBackgen.GetTransportedTracks()))
+
+    if "Ntuplegen" in globals():
+        generator_stats.append(("Scanned ntuple entries", Ntuplegen.GetScannedEntries()))
+        generator_stats.append(("Accepted ntuple entries", Ntuplegen.GetAcceptedEntries()))
+        generator_stats.append(("Rejected ntuple entries", Ntuplegen.GetRejectedEntries()))
+
+    if "DISgen" in globals():
+        generator_stats.append(("Generated DIS events", DISgen.GetGeneratedEvents()))
+        generator_stats.append(("Interaction sampling trials", DISgen.GetInteractionSamplingTrials()))
+        generator_stats.append(("Stored DIS particles", DISgen.GetDISParticlesStored()))
+        generator_stats.append(("Stored soft particles", DISgen.GetSoftParticlesStored()))
+        generator_stats.append(("Skipped soft particles", DISgen.GetSoftParticlesSkipped()))
+
+    if "Geniegen" in globals():
+        generator_stats.append(("Generated GENIE events", Geniegen.GetGeneratedEvents()))
+        generator_stats.append(("CC events", Geniegen.GetCCEvents()))
+        generator_stats.append(("nu-e elastic events", Geniegen.GetNuEElasticEvents()))
+        generator_stats.append(("Interaction sampling trials", Geniegen.GetInteractionSamplingTrials()))
+        generator_stats.append(("Stored outgoing leptons", Geniegen.GetOutgoingLeptonsStored()))
+        generator_stats.append(("Stored outgoing hadrons", Geniegen.GetOutgoingHadronsStored()))
 
     if generator_stats:
         _print_section("Generator Validation")

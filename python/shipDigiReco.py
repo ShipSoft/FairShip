@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
 
-    def __init__(self, finput, fout, fgeo) -> None:
+    def __init__(self, finput, fout, fgeo, validation: bool = False) -> None:
+        self.validation = validation
         # Open input file (read-only) and get the MC tree
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
@@ -105,15 +106,126 @@ class ShipDigiReco:
 
         # for 'real' PatRec
         shipPatRec.initialize(fgeo)
+        self.validation_stats = {
+            "events_digitized": 0,
+            "events_reconstructed": 0,
+            "smeared_hits_total": 0,
+            "track_candidates_total": 0,
+            "track_candidates_rejected_hits": 0,
+            "track_candidates_rejected_stations": 0,
+            "fit_hypotheses_tried": 0,
+            "fit_hypotheses_converged": 0,
+            "fitted_tracks_total": 0,
+            "good_tracks_total": 0,
+            "vertexing_calls": 0,
+            "veto_links_total": 0,
+            "event_track_candidates_sum": 0.0,
+            "event_track_candidates_sum_sq": 0.0,
+            "event_fitted_tracks_sum": 0.0,
+            "event_fitted_tracks_sum_sq": 0.0,
+            "event_good_tracks_sum": 0.0,
+            "event_good_tracks_sum_sq": 0.0,
+            "event_veto_links_sum": 0.0,
+            "event_veto_links_sum_sq": 0.0,
+            "chi2_sum": 0.0,
+            "chi2_sum_sq": 0.0,
+            "chi2_count": 0,
+            "ndf_sum": 0.0,
+            "ndf_sum_sq": 0.0,
+            "ndf_count": 0,
+        }
+
+    def _record_event_stat(self, key: str, value: float) -> None:
+        self.validation_stats[f"{key}_sum"] += value
+        self.validation_stats[f"{key}_sum_sq"] += value * value
+
+    def _format_mean_std(self, count: int, total: float, total_sq: float) -> str:
+        if count <= 0:
+            return "n/a"
+        mean = total / count
+        variance = max(0.0, total_sq / count - mean * mean)
+        std = variance**0.5
+        return f"{mean:.4g} +- {std:.4g}"
+
+    def _print_validation_summary(self) -> None:
+        print(" ")
+        print("[Reco Validation]")
+        print(f"  {'events_digitized':<40} : {self.validation_stats['events_digitized']}")
+        print(f"  {'events_reconstructed':<40} : {self.validation_stats['events_reconstructed']}")
+        print(f"  {'smeared_hits_total':<40} : {self.validation_stats['smeared_hits_total']}")
+        print(
+            f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}"
+        )
+        print(
+            f"  {'track_candidates_rejected_hits':<40} : {self.validation_stats['track_candidates_rejected_hits']}"
+        )
+        print(
+            f"  {'track_candidates_rejected_stations':<40} : {self.validation_stats['track_candidates_rejected_stations']}"
+        )
+        print(
+            f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}"
+        )
+        print(
+            f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}"
+        )
+        print(
+            f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}"
+        )
+        print(
+            f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}"
+        )
+        print(
+            f"  {'vertexing_calls':<40} : {self.validation_stats['vertexing_calls']}"
+        )
+        print(
+            f"  {'veto_links_total':<40} : {self.validation_stats['veto_links_total']}"
+        )
+        if self.validation_stats["events_reconstructed"] > 0:
+            n_events = self.validation_stats["events_reconstructed"]
+            print(
+                f"  {'track_candidates_per_event':<40} : "
+                f"{self._format_mean_std(n_events, self.validation_stats['event_track_candidates_sum'], self.validation_stats['event_track_candidates_sum_sq'])}"
+            )
+            print(
+                f"  {'fitted_tracks_per_event':<40} : "
+                f"{self._format_mean_std(n_events, self.validation_stats['event_fitted_tracks_sum'], self.validation_stats['event_fitted_tracks_sum_sq'])}"
+            )
+            print(
+                f"  {'good_tracks_per_event':<40} : "
+                f"{self._format_mean_std(n_events, self.validation_stats['event_good_tracks_sum'], self.validation_stats['event_good_tracks_sum_sq'])}"
+            )
+            if hasattr(self, "digiSBT"):
+                print(
+                    f"  {'veto_links_per_event':<40} : "
+                    f"{self._format_mean_std(n_events, self.validation_stats['event_veto_links_sum'], self.validation_stats['event_veto_links_sum_sq'])}"
+                )
+        if self.validation_stats["chi2_count"] > 0:
+            print(
+                f"  {'fit_chi2_over_ndf':<40} : "
+                f"{self._format_mean_std(self.validation_stats['chi2_count'], self.validation_stats['chi2_sum'], self.validation_stats['chi2_sum_sq'])}"
+            )
+        if self.validation_stats["ndf_count"] > 0:
+            print(
+                f"  {'fit_ndf':<40} : "
+                f"{self._format_mean_std(self.validation_stats['ndf_count'], self.validation_stats['ndf_sum'], self.validation_stats['ndf_sum_sq'])}"
+            )
 
     def reconstruct(self) -> None:
-        self.findTracks()
-        self.findGoodTracks()
+        n_tracks = self.findTracks()
+        n_good_tracks = self.findGoodTracks()
         if hasattr(self, "digiSBT"):
             self.linkVetoOnTracks()
         if global_variables.vertexing:
             # now go for 2-track combinations
+            self.validation_stats["vertexing_calls"] += 1
             self.Vertexing.execute()
+        self.validation_stats["events_reconstructed"] += 1
+        self.validation_stats["fitted_tracks_total"] += n_tracks
+        self.validation_stats["good_tracks_total"] += n_good_tracks
+        self._record_event_stat("event_fitted_tracks", n_tracks)
+        self._record_event_stat("event_good_tracks", n_good_tracks)
+        if hasattr(self, "digiSBT"):
+            self._record_event_stat("event_veto_links", len(self.vetoHitOnTrackArray))
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
@@ -131,6 +243,7 @@ class ShipDigiReco:
             self.digiMTC.process()
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
+        self.validation_stats["events_digitized"] += 1
 
     def findTracks(self) -> int:
         hitPosLists = {}
@@ -148,12 +261,15 @@ class ShipDigiReco:
         # old procedure, not including estimation of t0
         else:
             self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
+        self.validation_stats["smeared_hits_total"] += len(self.SmearedHits)
 
         trackCandidates = []
 
         # Do pattern recognition
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
         logger.debug("PatRec returned %d track candidates", len(track_hits))
+        self.validation_stats["track_candidates_total"] += len(track_hits)
+        self._record_event_stat("event_track_candidates", len(track_hits))
         # Create hitPosLists for track fit
         for i_track in track_hits:
             atrack = track_hits[i_track]
@@ -222,6 +338,7 @@ class ShipDigiReco:
             best_track = None
             best_chi2ndf = float("inf")
             for try_pdg in [pdg, -pdg]:
+                self.validation_stats["fit_hypotheses_tried"] += 1
                 # approximate covariance
                 covM = ROOT.TMatrixDSym(6)
                 resolution = self.sigma_spatial
@@ -279,6 +396,7 @@ class ShipDigiReco:
                 fitStatus = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged():
                     continue
+                self.validation_stats["fit_hypotheses_converged"] += 1
                 nmeas = fitStatus.getNdf()
                 if nmeas <= 0:
                     continue
@@ -295,6 +413,12 @@ class ShipDigiReco:
             nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
             global_variables.h["nmeas"].Fill(nmeas)
             chi2 = fitStatus.getChi2() / nmeas
+            self.validation_stats["chi2_sum"] += chi2
+            self.validation_stats["chi2_sum_sq"] += chi2 * chi2
+            self.validation_stats["chi2_count"] += 1
+            self.validation_stats["ndf_sum"] += nmeas
+            self.validation_stats["ndf_sum_sq"] += nmeas * nmeas
+            self.validation_stats["ndf_count"] += 1
             global_variables.h["chi2"].Fill(chi2)
             # make track persistent
             # Store pointer - make a copy and let ROOT manage lifetime
@@ -324,6 +448,8 @@ class ShipDigiReco:
             n_too_few_stations,
             len(self.fGenFitArray),
         )
+        self.validation_stats["track_candidates_rejected_hits"] += n_too_few_hits
+        self.validation_stats["track_candidates_rejected_stations"] += n_too_few_stations
 
         # debug
         if global_variables.debug:
@@ -414,6 +540,7 @@ class ShipDigiReco:
         for good_track in self.goodTracksVect:
             track = self.fGenFitArray[good_track]
             self.vetoHitOnTrackArray.push_back(self.findVetoHitOnTrack(track))
+        self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
 
     def fracMCsame(self, trackids):
         track = {}
@@ -435,6 +562,8 @@ class ShipDigiReco:
 
     def finish(self) -> None:
         del self.fitter
+        if self.validation:
+            self._print_validation_summary()
         print("finished writing tree")
         self.outputFile.cd()
         self.recoTree.Write()
