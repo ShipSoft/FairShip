@@ -441,122 +441,127 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="stringliteral"></span> </div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="stringliteral">        When PatRec track parameters (k_y, b_y) are available, use them</span></div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="stringliteral">        to place the seed at the first hit&#39;s Z with the correct Y position</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="stringliteral">        and momentum direction. Otherwise fall back to the default seed</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="stringliteral">        at the decay vessel centre.</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="stringliteral">        and momentum direction. Prefers station 1-2 parameters, falls back</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="stringliteral">        to station 3-4, then to a geometry-free default at the first hit.</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        params = trackParams.get(atrack)</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>        <span class="keywordflow">if</span> params <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;k_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>            <span class="comment"># Use station 1-2 parameters to seed near the first measurement</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>            k_y = params[<span class="stringliteral">&quot;k_y12&quot;</span>]</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>            b_y = params[<span class="stringliteral">&quot;b_y12&quot;</span>]</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>            <span class="comment"># Seed Z at the first measurement&#39;s Z coordinate</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>            z_seed = meas[0][2]  <span class="comment"># z is the 3rd element of the TVectorD</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            y_seed = k_y * z_seed + b_y</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>            posM = ROOT.TVector3(0, y_seed, z_seed)</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>            <span class="comment"># Use slope as py/pz ratio; assume 3 GeV total momentum</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            p_total = 3.0 * u.GeV</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>            pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>            py = k_y * pz</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>            momM = ROOT.TVector3(0, py, pz)</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            logger.debug(</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                <span class="stringliteral">&quot;seed from PatRec: z=%.1f y=%.1f k_y=%.4f p=(0, %.2f, %.2f)&quot;</span>,</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>                z_seed,</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>                y_seed,</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>                k_y,</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>                py,</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                pz,</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>            )</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            posM = ROOT.TVector3(0, 0, 5812.0)  <span class="comment"># decay vessel centre</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        <span class="keywordflow">return</span> posM, momM</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>        k_y = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        b_y = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        <span class="keywordflow">if</span> params:</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>            <span class="keywordflow">if</span> params.get(<span class="stringliteral">&quot;k_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y12&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>                k_y = params[<span class="stringliteral">&quot;k_y12&quot;</span>]</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>                b_y = params[<span class="stringliteral">&quot;b_y12&quot;</span>]</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            <span class="keywordflow">elif</span> params.get(<span class="stringliteral">&quot;k_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> params.get(<span class="stringliteral">&quot;b_y34&quot;</span>) <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                k_y = params[<span class="stringliteral">&quot;k_y34&quot;</span>]</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>                b_y = params[<span class="stringliteral">&quot;b_y34&quot;</span>]</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        z_seed = meas[0][2]  <span class="comment"># z is the 3rd element of the TVectorD</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">if</span> k_y <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>            y_seed = k_y * z_seed + b_y</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            posM = ROOT.TVector3(0, y_seed, z_seed)</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>            p_total = 3.0 * u.GeV</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>            pz = p_total / ROOT.TMath.Sqrt(1.0 + k_y * k_y)</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>            py = k_y * pz</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>            momM = ROOT.TVector3(0, py, pz)</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>            logger.debug(</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                <span class="stringliteral">&quot;seed from PatRec: z=%.1f y=%.1f k_y=%.4f p=(0, %.2f, %.2f)&quot;</span>,</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                z_seed,</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                y_seed,</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                k_y,</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                py,</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                pz,</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>            )</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>            posM = ROOT.TVector3(0, 0, z_seed)</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>            momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        <span class="keywordflow">return</span> posM, momM</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
 </div>
-<div class="foldopen" id="foldopen00365" data-start="" data-end="">
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">  365</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">findGoodTracks</a>(self) -&gt; int:</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>.clear()</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        nGoodTracks = 0</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>):</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>            fitStatus = track.getFitStatus()</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>            nmeas = fitStatus.getNdf()</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>            chi2 = fitStatus.getChi2() / nmeas</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>                self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>.push_back(i)</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                nGoodTracks += 1</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <span class="keywordflow">return</span> nGoodTracks</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="foldopen" id="foldopen00370" data-start="" data-end="">
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">  370</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">findGoodTracks</a>(self) -&gt; int:</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>.clear()</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        nGoodTracks = 0</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        <span class="keywordflow">for</span> i, track <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>):</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>            fitStatus = track.getFitStatus()</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged():</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>            nmeas = fitStatus.getNdf()</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>            chi2 = fitStatus.getChi2() / nmeas</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>            <span class="keywordflow">if</span> chi2 &lt; 50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2 &lt; 0:</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>                self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>.push_back(i)</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>                nGoodTracks += 1</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        <span class="keywordflow">return</span> nGoodTracks</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
 </div>
-<div class="foldopen" id="foldopen00379" data-start="" data-end="">
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">  379</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">findVetoHitOnTrack</a>(self, track):</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        distMin = 99999.0</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        hitID = -1</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        xx = track.getFittedState()</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        rep = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>        state = ROOT.genfit.StateOnPlane(rep)</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        rep.setPosMom(state, xx.getPos(), xx.getMom())</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        <span class="keywordflow">for</span> i, vetoHit <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a65eabfbe07243c8d20a72cc52a9ed173">digiSBT</a>.det):</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>            <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>            <span class="keywordflow">except</span> Exception:</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>                ut.reportError(error)</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                    print(error)</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>            dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            <span class="keywordflow">if</span> dist &lt; distMin:</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                distMin = dist</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                hitID = i</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        <span class="keywordflow">return</span> ROOT.vetoHitOnTrack(hitID, distMin)</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
+<div class="foldopen" id="foldopen00384" data-start="" data-end="">
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">  384</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">findVetoHitOnTrack</a>(self, track):</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        distMin = 99999.0</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        hitID = -1</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>        xx = track.getFittedState()</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>        rep = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        state = ROOT.genfit.StateOnPlane(rep)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>        rep.setPosMom(state, xx.getPos(), xx.getMom())</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>        <span class="keywordflow">for</span> i, vetoHit <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a65eabfbe07243c8d20a72cc52a9ed173">digiSBT</a>.det):</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            vetoHitPos = <a class="code hl_function" href="classvetoHit.html#a9218ccf1aac64809630111df37738014">vetoHit.GetXYZ</a>()</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                rep.extrapolateToPoint(state, vetoHitPos, <span class="keyword">False</span>)</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>            <span class="keywordflow">except</span> Exception:</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>                error = <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>                ut.reportError(error)</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                    print(error)</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>            dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            <span class="keywordflow">if</span> dist &lt; distMin:</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                distMin = dist</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>                hitID = i</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        <span class="keywordflow">return</span> ROOT.vetoHitOnTrack(hitID, distMin)</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
 </div>
-<div class="foldopen" id="foldopen00402" data-start="" data-end="">
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">  402</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">linkVetoOnTracks</a>(self) -&gt; None:</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f">vetoHitOnTrackArray</a>.clear()</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        <span class="keywordflow">for</span> good_track <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>:</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>            track = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>[good_track]</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>            self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f">vetoHitOnTrackArray</a>.push_back(self.<a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">findVetoHitOnTrack</a>(track))</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="foldopen" id="foldopen00407" data-start="" data-end="">
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">  407</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">linkVetoOnTracks</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f">vetoHitOnTrackArray</a>.clear()</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        <span class="keywordflow">for</span> good_track <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">goodTracksVect</a>:</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>            track = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b">fGenFitArray</a>[good_track]</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>            self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f">vetoHitOnTrackArray</a>.push_back(self.<a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">findVetoHitOnTrack</a>(track))</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
 </div>
-<div class="foldopen" id="foldopen00408" data-start="" data-end="">
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">  408</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">fracMCsame</a>(self, trackids):</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        track = {}</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        nh = len(trackids)</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                track[tid] += 1</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>                track[tid] = 1</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        <span class="keywordflow">if</span> track != {}:</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>            tmax = max(track, key=track.get)</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>            track = {-999: 0}</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>            tmax = -999</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>        frac = 0.0</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>        <span class="keywordflow">if</span> nh &gt; 0:</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>            frac = float(track[tmax]) / float(nh)</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>        <span class="keywordflow">return</span> frac, tmax</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="foldopen" id="foldopen00413" data-start="" data-end="">
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">  413</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">fracMCsame</a>(self, trackids):</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        track = {}</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        nh = len(trackids)</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>            <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>                track[tid] += 1</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>                track[tid] = 1</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>        <span class="keywordflow">if</span> track != {}:</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>            tmax = max(track, key=track.get)</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>            track = {-999: 0}</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>            tmax = -999</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>        frac = 0.0</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        <span class="keywordflow">if</span> nh &gt; 0:</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>            frac = float(track[tmax]) / float(nh)</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <span class="keywordflow">return</span> frac, tmax</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
 </div>
-<div class="foldopen" id="foldopen00426" data-start="" data-end="">
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">  426</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">finish</a>(self) -&gt; None:</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        del self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#af2e6cba015ec5bae153f4663f04c14f3">fitter</a></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>        print(<span class="stringliteral">&quot;finished writing tree&quot;</span>)</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#acabbf3962d24616f9f45c0812bbe6e20">outputFile</a>.cd()</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a7a0466251339c28ca5776a47e10d5219">recoTree</a>.Write()</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>        ut.errorSummary()</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>        ut.writeHists(global_variables.h, <span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a4d4091fbd8bc88c49ee621dd481e131f">shipPatRec.finalize</a>()</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#acabbf3962d24616f9f45c0812bbe6e20">outputFile</a>.Close()</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a13ae437c6726a69926bd512406052b49">inputFile</a>.Close()</div>
+<div class="foldopen" id="foldopen00431" data-start="" data-end="">
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">  431</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">finish</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>        del self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#af2e6cba015ec5bae153f4663f04c14f3">fitter</a></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>        print(<span class="stringliteral">&quot;finished writing tree&quot;</span>)</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#acabbf3962d24616f9f45c0812bbe6e20">outputFile</a>.cd()</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a7a0466251339c28ca5776a47e10d5219">recoTree</a>.Write()</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>        ut.errorSummary()</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>        ut.writeHists(global_variables.h, <span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>        <a class="code hl_function" href="namespaceshipPatRec.html#a4d4091fbd8bc88c49ee621dd481e131f">shipPatRec.finalize</a>()</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#acabbf3962d24616f9f45c0812bbe6e20">outputFile</a>.Close()</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>        self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a13ae437c6726a69926bd512406052b49">inputFile</a>.Close()</div>
 </div>
 </div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html">shipDigiReco.ShipDigiReco</a></div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00023">shipDigiReco.py:23</a></div></div>
-<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a04f488c41f82467b97c1c91eedfd01f5"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">shipDigiReco.ShipDigiReco.findGoodTracks</a></div><div class="ttdeci">int findGoodTracks(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00365">shipDigiReco.py:365</a></div></div>
-<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a06ef79c2d32574a4e9dda71d56fde1ad"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">shipDigiReco.ShipDigiReco.fracMCsame</a></div><div class="ttdeci">fracMCsame(self, trackids)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00408">shipDigiReco.py:408</a></div></div>
+<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a04f488c41f82467b97c1c91eedfd01f5"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5">shipDigiReco.ShipDigiReco.findGoodTracks</a></div><div class="ttdeci">int findGoodTracks(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00370">shipDigiReco.py:370</a></div></div>
+<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a06ef79c2d32574a4e9dda71d56fde1ad"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad">shipDigiReco.ShipDigiReco.fracMCsame</a></div><div class="ttdeci">fracMCsame(self, trackids)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00413">shipDigiReco.py:413</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a1384f7576fb48e91c1e0ecd5267ce217"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a1384f7576fb48e91c1e0ecd5267ce217">shipDigiReco.ShipDigiReco.header</a></div><div class="ttdeci">header</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00040">shipDigiReco.py:40</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a13ae437c6726a69926bd512406052b49"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a13ae437c6726a69926bd512406052b49">shipDigiReco.ShipDigiReco.inputFile</a></div><div class="ttdeci">inputFile</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00028">shipDigiReco.py:28</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a1640b7d3c5c5fe765738a54c33ded1c1"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a1640b7d3c5c5fe765738a54c33ded1c1">shipDigiReco.ShipDigiReco.fTrackletsArray</a></div><div class="ttdeci">fTrackletsArray</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00051">shipDigiReco.py:51</a></div></div>
@@ -565,14 +570,14 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a3e5a53decbb82dbbb50af59e51d135f7"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7">shipDigiReco.ShipDigiReco.SmearedHits</a></div><div class="ttdeci">SmearedHits</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00145">shipDigiReco.py:145</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a5027b7b524b47b50d68b34db23eded6c"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a5027b7b524b47b50d68b34db23eded6c">shipDigiReco.ShipDigiReco.recoSplitcal</a></div><div class="ttdeci">recoSplitcal</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00075">shipDigiReco.py:75</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a54283f8e004587c908a80f9a2483128f"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f">shipDigiReco.ShipDigiReco.vetoHitOnTrackArray</a></div><div class="ttdeci">vetoHitOnTrackArray</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00060">shipDigiReco.py:60</a></div></div>
-<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a56aede92784de8ca08bb53fe20907923"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">shipDigiReco.ShipDigiReco.finish</a></div><div class="ttdeci">None finish(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00426">shipDigiReco.py:426</a></div></div>
+<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a56aede92784de8ca08bb53fe20907923"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a56aede92784de8ca08bb53fe20907923">shipDigiReco.ShipDigiReco.finish</a></div><div class="ttdeci">None finish(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00431">shipDigiReco.py:431</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a60f54023b5d36dd748b5fb9d375d261d"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a60f54023b5d36dd748b5fb9d375d261d">shipDigiReco.ShipDigiReco.goodTracksVect</a></div><div class="ttdeci">goodTracksVect</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00047">shipDigiReco.py:47</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a65eabfbe07243c8d20a72cc52a9ed173"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a65eabfbe07243c8d20a72cc52a9ed173">shipDigiReco.ShipDigiReco.digiSBT</a></div><div class="ttdeci">digiSBT</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00059">shipDigiReco.py:59</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a6d1eda59c9098b43bb73cf17cc0877c1"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a6d1eda59c9098b43bb73cf17cc0877c1">shipDigiReco.ShipDigiReco.Vertexing</a></div><div class="ttdeci">Vertexing</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00078">shipDigiReco.py:78</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a6f117e48c82f7d36d4e25b6119518002"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002">shipDigiReco.ShipDigiReco.sTree</a></div><div class="ttdeci">sTree</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00029">shipDigiReco.py:29</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a730348eb662b22ed5b755ae782a92bcf"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a730348eb662b22ed5b755ae782a92bcf">shipDigiReco.ShipDigiReco.upstreamTaggerDetector</a></div><div class="ttdeci">upstreamTaggerDetector</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00065">shipDigiReco.py:65</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a746d172974f2de428479f522160cb064"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a746d172974f2de428479f522160cb064">shipDigiReco.ShipDigiReco.reconstruct</a></div><div class="ttdeci">None reconstruct(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00107">shipDigiReco.py:107</a></div></div>
-<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a7592ddb41bda1772205fa100806424f8"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">shipDigiReco.ShipDigiReco.linkVetoOnTracks</a></div><div class="ttdeci">None linkVetoOnTracks(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00402">shipDigiReco.py:402</a></div></div>
+<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a7592ddb41bda1772205fa100806424f8"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a7592ddb41bda1772205fa100806424f8">shipDigiReco.ShipDigiReco.linkVetoOnTracks</a></div><div class="ttdeci">None linkVetoOnTracks(self)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00407">shipDigiReco.py:407</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a7a0466251339c28ca5776a47e10d5219"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a7a0466251339c28ca5776a47e10d5219">shipDigiReco.ShipDigiReco.recoTree</a></div><div class="ttdeci">recoTree</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00033">shipDigiReco.py:33</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a7a8ad5ed24bdbedcc91f32db71c2fa5d"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a7a8ad5ed24bdbedcc91f32db71c2fa5d">shipDigiReco.ShipDigiReco.mcLink</a></div><div class="ttdeci">mcLink</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00048">shipDigiReco.py:48</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a8ca1a58b87c5049c4ba31f7c7f04e4f9"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a8ca1a58b87c5049c4ba31f7c7f04e4f9">shipDigiReco.ShipDigiReco.digiSplitcal</a></div><div class="ttdeci">digiSplitcal</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00074">shipDigiReco.py:74</a></div></div>
@@ -581,7 +586,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a9e770cda33bbf466e99554839715462a"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a9e770cda33bbf466e99554839715462a">shipDigiReco.ShipDigiReco.goodTracksBranch</a></div><div class="ttdeci">goodTracksBranch</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00050">shipDigiReco.py:50</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_a9f5c248192b6d24c792186da6f90234f"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#a9f5c248192b6d24c792186da6f90234f">shipDigiReco.ShipDigiReco.random</a></div><div class="ttdeci">random</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00080">shipDigiReco.py:80</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_aa757fff2e0e284747cd4262a39a471ca"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#aa757fff2e0e284747cd4262a39a471ca">shipDigiReco.ShipDigiReco.strawtubes</a></div><div class="ttdeci">strawtubes</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00054">shipDigiReco.py:54</a></div></div>
-<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_ab7eac4365fc761471e7bca2cf2831788"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">shipDigiReco.ShipDigiReco.findVetoHitOnTrack</a></div><div class="ttdeci">findVetoHitOnTrack(self, track)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00379">shipDigiReco.py:379</a></div></div>
+<div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_ab7eac4365fc761471e7bca2cf2831788"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788">shipDigiReco.ShipDigiReco.findVetoHitOnTrack</a></div><div class="ttdeci">findVetoHitOnTrack(self, track)</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00384">shipDigiReco.py:384</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_abe80355808dfeae8a191128858dbf486"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#abe80355808dfeae8a191128858dbf486">shipDigiReco.ShipDigiReco.fitTrack2MC</a></div><div class="ttdeci">fitTrack2MC</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00046">shipDigiReco.py:46</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_ac2183ffb516c391bcd688c91b35f1177"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#ac2183ffb516c391bcd688c91b35f1177">shipDigiReco.ShipDigiReco.vetoHitOnTrackBranch</a></div><div class="ttdeci">vetoHitOnTrackBranch</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00061">shipDigiReco.py:61</a></div></div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html_ac37808cf4026c7e6eb83174ec03ebcab"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab">shipDigiReco.ShipDigiReco.v_drift</a></div><div class="ttdeci">v_drift</div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00068">shipDigiReco.py:68</a></div></div>
