@@ -1087,68 +1087,6 @@ def _format_stat_summary(stats):
     )
 
 
-def _format_validation_ratio(numerator, denominator):
-    if denominator == 0:
-        return f"{numerator:8d}/{denominator:8d}  n/a"
-    return f"{numerator:8d}/{denominator:8d}  {100.0 * numerator / denominator:6.2f}%"
-
-
-def _print_validation_metric(label, value):
-    print(f"  {label:<40} : {value}")
-
-
-def _print_tracking_validation(sim_file, geo_file):
-    reco_file = sim_file.replace(".root", "_rec.root")
-    if not os.path.exists(reco_file):
-        _print_validation_metric("tracking_benchmark", f"skipped (reco file not found: {reco_file})")
-        return
-
-    try:
-        import tracking_benchmark
-
-        bench = tracking_benchmark.TrackingBenchmark(sim_file, reco_file, geo_file)
-        metrics = bench.compute_metrics()["tracking_benchmark"]
-    except Exception as exc:
-        _print_validation_metric("tracking_benchmark", f"failed ({exc})")
-        return
-
-    n_reconstructible = int(metrics["n_reconstructible"]["value"])
-    n_matched_mc = int(round(metrics["efficiency"]["value"] * n_reconstructible))
-    _print_validation_metric("reco_file", reco_file)
-    _print_validation_metric(
-        "tracking_efficiency",
-        f"{_format_validation_ratio(n_matched_mc, n_reconstructible)}  +/- {100.0 * metrics['efficiency']['uncertainty']:.2f}%",
-    )
-    _print_validation_metric(
-        "tracking_clone_rate",
-        f"{100.0 * metrics['clone_rate']['value']:6.2f}%  +/- {100.0 * metrics['clone_rate']['uncertainty']:.2f}%",
-    )
-    _print_validation_metric(
-        "tracking_ghost_rate",
-        f"{100.0 * metrics['ghost_rate']['value']:6.2f}%  +/- {100.0 * metrics['ghost_rate']['uncertainty']:.2f}%",
-    )
-    _print_validation_metric(
-        "tracking_dp_over_p_sigma",
-        f"{metrics['dp_over_p_sigma']['value']:.6g}  +/- {metrics['dp_over_p_sigma']['uncertainty']:.6g}",
-    )
-    _print_validation_metric(
-        "tracking_dx_rms",
-        f"{metrics['dx_rms']['value']:.6g} cm  +/- {metrics['dx_rms']['uncertainty']:.6g} cm",
-    )
-    _print_validation_metric(
-        "tracking_dy_rms",
-        f"{metrics['dy_rms']['value']:.6g} cm  +/- {metrics['dy_rms']['uncertainty']:.6g} cm",
-    )
-    _print_validation_metric(
-        "tracking_dtx_rms",
-        f"{metrics['dtx_rms']['value']:.6g}  +/- {metrics['dtx_rms']['uncertainty']:.6g}",
-    )
-    _print_validation_metric(
-        "tracking_dty_rms",
-        f"{metrics['dty_rms']['value']:.6g}  +/- {metrics['dty_rms']['uncertainty']:.6g}",
-    )
-
-
 def _print_simulation_output_summary(output_filename, requested_events):
     generator_stats = []
     if "P8gen" in globals():
@@ -1330,10 +1268,6 @@ def _print_simulation_output_summary(output_filename, requested_events):
                 f" active={stats['nonzero']}/{n_entries} ({active:5.1f}%), max={stats['max']}",
                 width=22,
             )
-
-        if options.validation:
-            _print_section("Tracking Validation")
-            _print_tracking_validation(output_filename, geofile_name)
 
 
 if options.validation:
