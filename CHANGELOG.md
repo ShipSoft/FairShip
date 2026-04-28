@@ -16,6 +16,8 @@ it in future.
 
 * Add FileSummary to run_fixedTarget.py to save all the options for reference (#1140)
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
+* Add experimental script to import Muons and Matter pkl files
+* Add TTreeGenerator to read M&M ntuples
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition

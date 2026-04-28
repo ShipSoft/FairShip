@@ -21,5 +21,6 @@
 #pragma link C++ class MuDISGenerator - ;
 #pragma link C++ class FixedTargetGenerator - ;
 #pragma link C++ class EvtCalcGenerator - ;
+#pragma link C++ class SHiP::TTreeGenerator - ;
 #pragma link C++ class TEvtGenDecayer - ;
 #endif
