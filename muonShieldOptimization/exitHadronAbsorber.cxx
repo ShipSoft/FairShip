@@ -46,11 +46,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fVetoName("veto"),
       fzPos(3E8),
       withNtuple(kFALSE),
-<<<<<<< HEAD
-      fCylindricalPlane(kFALSE) {}
-=======
       fCylindricalPlane(kFALSE),
-      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()),
       fNsplits(0) {
     fNsplits = 0;
     const char* env = std::getenv("KAON_PION_SPLITS");
@@ -58,7 +54,6 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
         fNsplits = std::atoi(env);
     }
 }
->>>>>>> 8e56f36c6 (Pion-kaon splitting in exitHadronAbsorber)
 
 exitHadronAbsorber::exitHadronAbsorber()
     : Detector("exitHadronAbsorber", kTRUE, kVETO),
@@ -69,11 +64,7 @@ exitHadronAbsorber::exitHadronAbsorber()
       fzPos(3E8),
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
-<<<<<<< HEAD
-      fUseCaveCoordinates(kFALSE) {}
-=======
       fUseCaveCoordinates(kFALSE),
-      fexitHadronAbsorberPointCollection(new std::vector<vetoPoint>()),
       fNsplits(0) {
     fNsplits = 0;
     const char* env = std::getenv("KAON_PION_SPLITS");
@@ -82,12 +73,6 @@ exitHadronAbsorber::exitHadronAbsorber()
     }
 }
 
-exitHadronAbsorber::~exitHadronAbsorber() {
-  if (fexitHadronAbsorberPointCollection) {
-    delete fexitHadronAbsorberPointCollection;
-  }
-}
->>>>>>> 8e56f36c6 (Pion-kaon splitting in exitHadronAbsorber)
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
@@ -187,11 +172,6 @@ void exitHadronAbsorber::Initialize() {
   }
 }
 
-<<<<<<< HEAD
-=======
-void exitHadronAbsorber::EndOfEvent() {
-  fexitHadronAbsorberPointCollection->clear();
-}
 
 void exitHadronAbsorber::BeginEvent() {
   fIsSplitting = false;
@@ -251,7 +231,6 @@ void exitHadronAbsorber::PostTrack() {
 }
 
 
->>>>>>> 8e56f36c6 (Pion-kaon splitting in exitHadronAbsorber)
 void exitHadronAbsorber::PreTrack() {
   bool stackbufferisnotempty = !fSecondaryBuffer.empty();
   if (stackbufferisnotempty) {
