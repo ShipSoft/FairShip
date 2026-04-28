@@ -339,10 +339,10 @@ class ShipDigiReco:
         k_y = None
         b_y = None
         if params:
-            if params.get("k_y12") is not None:
+            if params.get("k_y12") is not None and params.get("b_y12") is not None:
                 k_y = params["k_y12"]
                 b_y = params["b_y12"]
-            elif params.get("k_y34") is not None:
+            elif params.get("k_y34") is not None and params.get("b_y34") is not None:
                 k_y = params["k_y34"]
                 b_y = params["b_y34"]
 
