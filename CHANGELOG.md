@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add time window event overlay script (`macro/make_time_window.py`) for constructing realistic pile-up scenarios
+* Add `SetStartT` setter to `ShipMCTrack`
 * Add FileSummary to run_fixedTarget.py to save all the options for reference (#1140)
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
 
