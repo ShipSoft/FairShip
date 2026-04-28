@@ -20,8 +20,10 @@ Assumptions (documented here and printed at runtime):
 
 import argparse
 import logging
+import subprocess
 import sys
 from array import array
+from urllib.parse import urlparse
 
 import numpy as np
 import ROOT
@@ -35,6 +37,42 @@ FULL_SPILL_POT = 4e13  # protons on target per spill
 SPILL_DURATION = 1.0 * u.second  # 1 second in ns
 SIM_POT = 1e11  # approximate PoT in simulation sample
 TIME_WINDOW = 1.0 * u.microsecond  # 1 microsecond in ns
+
+
+def resolve_input_files(paths):
+    """Resolve input file paths, expanding xrootd directories.
+
+    For xrootd URIs (root://...) that point to a directory rather than
+    a specific file, use xrdfs to list .root files within.
+    """
+    resolved = []
+    for path in paths:
+        parsed = urlparse(path)
+        if parsed.scheme == "root":
+            server = parsed.netloc
+            remote_path = parsed.path
+            # Check if this looks like a directory (no .root extension)
+            if not remote_path.endswith(".root"):
+                # Strip trailing glob pattern if present
+                remote_path = remote_path.rstrip("/*")
+                log.info(f"Listing xrootd directory: {server}{remote_path}")
+                result = subprocess.run(
+                    ["xrdfs", server, "ls", remote_path],
+                    capture_output=True,
+                    text=True,
+                )
+                if result.returncode != 0:
+                    log.error(f"xrdfs ls failed: {result.stderr.strip()}")
+                    sys.exit(1)
+                for line in result.stdout.strip().splitlines():
+                    if line.endswith(".root"):
+                        resolved.append(f"root://{server}/{line}")
+                log.info(f"  Found {len(resolved)} ROOT files")
+            else:
+                resolved.append(path)
+        else:
+            resolved.append(path)
+    return resolved
 
 
 def discover_point_branches(tree):
@@ -186,11 +224,14 @@ def main():
     log.info(f"Output: {args.output}")
     log.info(f"Number of time windows: {args.n_windows}")
 
+    # Resolve xrootd directories to individual files
+    input_files = resolve_input_files(args.input_files)
+
     # Build input chain
     chain = ROOT.TChain("cbmsim")
-    for f in args.input_files:
-        n_added = chain.Add(f)
-        log.info(f"Added {f} ({n_added} files matched)")
+    for f in input_files:
+        chain.Add(f)
+    log.info(f"Added {len(input_files)} files to chain")
 
     n_events = chain.GetEntries()
     if n_events == 0:
