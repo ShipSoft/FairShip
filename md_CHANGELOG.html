@@ -100,6 +100,7 @@ Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
 <ul>
+<li>Add angular acceptance cut in HNL and DP generators to skip events outside the decay vessel</li>
 <li>Add FileSummary to <a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a> to save all the options for reference (#1140)</li>
 <li>Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap</li>
 </ul>
@@ -107,6 +108,8 @@ Added</h2>
 Changed</h2>
 <ul>
 <li>Make artificial retina the baseline option for pattern recognition</li>
+<li><code>nrOfRetries()</code> in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via <code>nrOfGeoRejections()</code></li>
+<li>Read vessel end dimensions from veto YAML config instead of hardcoding in <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>

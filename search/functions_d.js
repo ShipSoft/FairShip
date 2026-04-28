@@ -10,7 +10,8 @@ var searchData=
   ['normalisedproductionpdf_7',['normalisedProductionPDF',['../namespaceproton__bremsstrahlung.html#a11d3365e0a7dc4fa1fac32e960395aae',1,'proton_bremsstrahlung']]],
   ['nprodwidth_8',['NprodWidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#aa6d52e87bff518be795828cf4b4d0b35',1,'rpvsusy::RPVSUSYbranchings']]],
   ['nrofdp_9',['nrOfDP',['../classDPPythia8Generator.html#ac22405944fb875eafb294401d640dd3a',1,'DPPythia8Generator']]],
-  ['nrofretries_10',['nrofretries',['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()'],['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()']]],
-  ['ntuplegenerator_11',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
-  ['nuonly_12',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]]
+  ['nrofgeorejections_10',['nrOfGeoRejections',['../classSHiP_1_1Generator.html#a86124aa380a3b973a4ac328d2e86cfc6',1,'SHiP::Generator']]],
+  ['nrofretries_11',['nrofretries',['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()'],['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()']]],
+  ['ntuplegenerator_12',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
+  ['nuonly_13',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]]
 ];

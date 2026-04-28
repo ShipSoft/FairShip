@@ -47,6 +47,9 @@ var run__simScript_8py =
     [ "inputFile", "run__simScript_8py.html#a65fca546a6def5dfc16a44c8b410412e", null ],
     [ "int", "run__simScript_8py.html#a961362661e51487d9f3bb5a388d7175b", null ],
     [ "kParameterMerged", "run__simScript_8py.html#a6cb8e3a7ded8e6da4a673ddb21f330fb", null ],
+    [ "margin", "run__simScript_8py.html#aaa38a9735e755d2e67e116d460067155", null ],
+    [ "max_theta_x", "run__simScript_8py.html#adf64046f017783d194e10e49ea900807", null ],
+    [ "max_theta_y", "run__simScript_8py.html#afdf96f547aef978988fba81ebc71881c", null ],
     [ "mcEngine", "run__simScript_8py.html#adf997bf70dc58bfac80bc3a482d01d5a", null ],
     [ "MCTracksWithEnergyCutOnly", "run__simScript_8py.html#a72b9287fd77d5afe831004b5c07cc441", null ],
     [ "MCTracksWithHitsOnly", "run__simScript_8py.html#a1787db151d7f5b198dc03543fd7b3189", null ],
@@ -112,6 +115,7 @@ var run__simScript_8py =
     [ "type", "run__simScript_8py.html#adfb7a695088d9373dc7c795b7d8abb52", null ],
     [ "xxx", "run__simScript_8py.html#a74ff17349a4760ce81e57487c477618b", null ],
     [ "z", "run__simScript_8py.html#a90c25390918b8dd5a6f17d8efa00c9ed", null ],
+    [ "z_end", "run__simScript_8py.html#a79e45ce98ca051f0fab9a6eeebbb1f23", null ],
     [ "zDV", "run__simScript_8py.html#aa52a3b35fc9639050ea8dcf392b88abe", null ],
     [ "zTa", "run__simScript_8py.html#afce74e2bd8c0a67df6486c301366a253", null ]
 ];
