@@ -20,7 +20,6 @@ class ShipMagnet : public FairModule {
   ShipMagnet();
   ~ShipMagnet() override;
   void ConstructGeometry() override;
-  ClassDefOverride(ShipMagnet, 5);
 
  protected:
   Int_t fDesign;    // design, 1=circular 5m, 2 = ellipse 5x10, 3 = rectangular

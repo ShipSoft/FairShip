@@ -8,7 +8,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class MTCDetector+;
+#pragma link C++ class MTCDetector-;
 #pragma link C++ class MTCDetPoint+;
 #pragma link C++ class MTCDetHit+;
 #pragma link C++ class SHiP::Detector<MTCDetPoint>-;

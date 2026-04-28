@@ -45,8 +45,6 @@ class TargetTracker : public SHiP::Detector<TTPoint> {
   TargetTracker(const TargetTracker&) = delete;
   TargetTracker& operator=(const TargetTracker&) = delete;
 
-  ClassDefOverride(TargetTracker, 4);
-
  protected:
   Double_t TTrackerX;
   Double_t TTrackerY;
