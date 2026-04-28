@@ -521,6 +521,11 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
+    if options.mixCharges:
+        pdg_particle = ROOT.TDatabasePDG.Instance().GetParticle(abs(options.pID))
+        if pdg_particle is None or pdg_particle.Charge() == 0:
+            print(f"WARNING: pID {options.pID} is neutral or unknown, disabling mixCharges")
+            options.mixCharges = False
     if options.mixCharges and options.nTracks > 1:
         pids = [(abs(options.pID), options.nTracks // 2), (-abs(options.pID), (options.nTracks + 1) // 2)]
     else:

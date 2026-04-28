@@ -12,12 +12,15 @@ establish a GenFit baseline and later measure ACTS performance.
 from __future__ import annotations
 
 import json
+import logging
 import math
 from typing import Any
 
 import ROOT
 
 ROOT.gROOT.SetBatch(True)
+
+logger = logging.getLogger(__name__)
 
 
 def wilson_interval(k: int, n: int) -> float | None:
@@ -311,7 +314,12 @@ class TrackingBenchmark:
                                     n_wrong_charge += 1
                                     h_p_wrong_charge.Fill(p_truth)
                         except Exception:
-                            pass
+                            logger.debug(
+                                "Failed to extract fitted state for mc_id=%d, p_truth=%.3f",
+                                mc_id,
+                                p_truth,
+                                exc_info=True,
+                            )
 
             n_matched_mc += len(matched_mc_this_event)
 
