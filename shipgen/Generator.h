@@ -52,6 +52,7 @@ class Generator : public FairGenerator {
     fMaxThetaY = thetaY;
     fUseVesselAcceptance = true;
   };
+  Int_t nrOfGeoRejections() const { return fnGeoRejects; }
 
  protected:
   bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const {
@@ -65,6 +66,7 @@ class Generator : public FairGenerator {
   Double_t fMaxThetaX = 0;
   Double_t fMaxThetaY = 0;
   bool fUseVesselAcceptance = false;
+  Int_t fnGeoRejects = 0;
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_

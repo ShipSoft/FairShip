@@ -100,7 +100,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
-  Int_t fnRetries;     // retries: no HNL produced or outside vessel acceptance
+  Int_t fnRetries;     // retries: no HNL produced
   Double_t fctau;      // hnl lifetime
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;  // finite beam size

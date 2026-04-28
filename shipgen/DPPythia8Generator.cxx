@@ -237,7 +237,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       if (accepted.empty()) {
         iDP = 0;
         dpvec.clear();
-        fnRetries += 1;
+        fnGeoRejects += 1;
         continue;
       }
       int r = static_cast<int>(gRandom->Uniform(0, accepted.size()));

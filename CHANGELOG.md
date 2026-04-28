@@ -20,7 +20,8 @@ it in future.
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition
-* `nrOfRetries()` in HNL and DP generators now includes geometric acceptance rejections, not only phasespace failures
+* `nrOfRetries()` in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via `nrOfGeoRejections()`
+* Read vessel end dimensions from veto YAML config instead of hardcoding in `geometry_config.py`
 
 ### Fixed
 

@@ -157,7 +157,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       if (accepted.empty()) {
         iHNL = 0;
         hnls.clear();
-        fnRetries += 1;
+        fnGeoRejects += 1;
         continue;
       }
       int r = static_cast<int>(gRandom->Uniform(0, accepted.size()));
