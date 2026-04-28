@@ -1299,7 +1299,8 @@ def _print_simulation_output_summary(output_filename, requested_events):
             _print_tracking_validation(output_filename, geofile_name)
 
 
-_print_simulation_output_summary(outFile, options.nEvents)
+if options.validation:
+    _print_simulation_output_summary(outFile, options.nEvents)
 
 # ------------------------------------------------------------------------
 import checkMagFields
