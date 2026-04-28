@@ -1,6 +1,9 @@
 <map id="passive/ShipTAUMagneticSpectrometer.h" name="passive/ShipTAUMagneticSpectrometer.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,295,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="14,79,73,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="97,79,203,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="227,79,305,104"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,295,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="14,79,73,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,33,74,73,71,69,131,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="97,79,203,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,31,153,65,147,65,147,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="227,79,305,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,28,237,69,234,74,167,33"/>
 </map>

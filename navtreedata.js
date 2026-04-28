@@ -104,15 +104,7 @@ var NAVTREE =
         [ "Removed", "md_CHANGELOG.html#autotoc_md66", null ]
       ] ]
     ] ],
-    [ "pag_example", "pag_example.html", null ],
-    [ "A documentation page", "page1.html", [
-      [ "An example section", "page1.html#sec", [
-        [ "The first subsection", "page1.html#subsection1", null ],
-        [ "The second subsection", "page1.html#subsection2", null ]
-      ] ]
-    ] ],
-    [ "Another page", "page2.html", null ],
-    [ "README", "md_field_README.html", null ],
+    [ "README", "md_field_2README.html", null ],
     [ "FairShip", "md_README.html", [
       [ "Introduction", "md_README.html#autotoc_md69", [
         [ "Branches", "md_README.html#autotoc_md70", null ]
@@ -126,14 +118,12 @@ var NAVTREE =
       [ "License", "md_README.html#autotoc_md77", null ],
       [ "Contributing code", "md_README.html#autotoc_md78", null ]
     ] ],
-    [ "Configuration files for GENIE simulations", "md_shipgen_genie_config_README.html", [
-      [ "Introduction", "md_shipgen_genie_config_README.html#autotoc_md80", null ],
-      [ "Details", "md_shipgen_genie_config_README.html#autotoc_md81", null ],
-      [ "History", "md_shipgen_genie_config_README.html#autotoc_md82", null ],
-      [ "Notes on particle decays", "md_shipgen_genie_config_README.html#autotoc_md83", null ]
+    [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
+      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md80", null ],
+      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md81", null ],
+      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md82", null ],
+      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md83", null ]
     ] ],
-    [ "Bug List", "bug.html", null ],
-    [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -152,8 +142,7 @@ var NAVTREE =
         [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Enumerator", "functions_eval.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -167,44 +156,42 @@ var NAVTREE =
         [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
-    ] ],
-    [ "Examples", "examples.html", "examples" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "ACTSReco_8py.html",
-"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a62cf4a744fec236a91e51893814a99df",
-"ana__ShipMuon_8py.html#a36b3ccb533d84d54030247733ea80f98",
-"classDPPythia8Generator.html#acfd3be3b6cbb13221aa4580c6d342f2b",
-"classHNLPythia8Generator.html#a5aad52eae7045c93ac6eb56a34b7304d",
-"classNtupleGenerator.html#afa96b2b3581fcffb76192830c8afbb5e",
-"classSciFiMapping_1_1SciFiMapping.html#a1eb581a8b0869e3ffa49a81c01c3d9d0",
-"classShipFieldMaker.html#abf937564fc0ec2b7acc56f01d0865b59",
-"classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7",
-"classTargetPoint.html",
-"classeventDisplay_1_1DrawTracks.html#a5871d609b34887e6db3b161e6249163d",
-"classhnl_1_1HNLbranchings.html#a89cbb6c5120602cde4f7a23dd0427927",
-"classshipVertex_1_1Task.html#a70ad22db45107af549be32527fb1af7c",
-"classstrawtubes.html#a62363a63aad6039db2047531cf8ae0cf",
-"classvetoPoint.html#a459c3518715febac7e00298ed886f50c",
-"eventDisplay_8py.html#ab7c9178a6bec8a53c1f9fa86aed7216a",
-"hepunit_8py.html#a0522fceb45d64d0d4cf3bacf445ace51",
-"makeDecay_8py.html#a63289205e135162bcab167c6b8883a6f",
-"md_CHANGELOG.html#autotoc_md46",
-"namespaceShipAna.html#ae401fccfbdab53f736ff80b48983ee09",
-"namespacedecorators.html#a7523195a1670db25dd02931fc7f529ab",
-"namespacehepunit.html#a283ed1339a7de7684ca122093bcbd131",
-"namespacemakeGenieEvents.html",
-"namespacemembers_func_k.html",
-"namespacerunPythia8.html#ac637689a93f1fc521a1470e34d9ea6a3",
-"namespacerun__simScript.html#ada4b230dc7c5bcd47ed354be061fe9b9",
-"namespaceshipunit.html#aff15247b0aca829326bd74f17fb53f82",
-"rootUtils_8py.html#a61db3e66b871a770b6bc264b9e3ac33e",
-"run__simScript_8py.html#a248635485cd4f6bdad43e3dc17be4648",
-"shipunit_8py.html#a65c228ebd906827e234507c44d5a0c93",
-"study__muMSC_8py.html#ad17c86b825ba6b390137f3c9d5b952a9"
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2",
+"ana__ShipMuon_8py.html#a4c0c13295577eadb3dce5cadf4f0e194",
+"classEvtCalcGenerator.html#a975c5c1c8796d05ce19a250a05032572",
+"classMTCDetHit.html#acdd5e17375bf8edd338c3854271b9ac8",
+"classPythia8Generator.html#af6c553dba17223a063a3fa9a700d9869",
+"classShipBFieldMap.html#a864c88c84e1333f170a6df09cc5de2dd",
+"classShipGeoConfig_1_1Config.html#aa36885fca85b2ea273ad191e3508df8f",
+"classSiliconTarget.html#ac5e5558f9d3fcea2481184f1f41038b3",
+"classTimeDetPoint.html#a2c03e35eff7452e5fc63eabf09792308",
+"classexitHadronAbsorber.html#a4e344e5ef687176c93495090272a6778",
+"classrpvsusy_1_1constants.html#a2b824ca88c465c0b7c26a493e30ede05",
+"classsplitcalCluster.html#aac5d811be5bd795b5bff92fc20f91f7f",
+"classtracking__benchmark_1_1TrackingBenchmark.html#a16825769361e41860ae4a5b5b9fbc2e5",
+"dir_fe24cdf4a9f9ffbe8e86d90b3d49ea5b.html",
+"functions_vars_t.html",
+"makeCascade_8py.html#a2845a7c4488f4e6b4e96da1a5bcc61f6",
+"make__nTuple__Tr_8py.html#ad4593ea229ee6bba97f7a6236f19e33f",
+"namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe",
+"namespaceconvertEvtCalc.html#a8d40f2aa9130a085884c3eb860001f6e",
+"namespacegetGeoInformation.html#a5ff20c9ae097ed8d428f5e9f7cd8d824",
+"namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9",
+"namespacemake__nTuple__Tr.html#af42920c437a4cdd487f44e56a4ff9136",
+"namespacerunPythia8.html#a73714686db2b6d0b7de90c8aa2382d88",
+"namespacerun__simScript.html#abcf5040fef2f5816464371dd3982d3a8",
+"namespaceshipunit.html#aec681bf81ea0c5d9eac8e0c00818a361",
+"rpvsusy_8py.html#a3781638c4bf3e292c5c6a1f717cd3d73",
+"run__simScript_8py.html#a3aa0b86013751d051d25e6bba245707e",
+"shipunit_8py.html#a794ecefd028b1ef42d1c84a631f3bb0c",
+"study__thinTarget_8py.html#abf343d15ac513f7c099b042aa8b8910d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

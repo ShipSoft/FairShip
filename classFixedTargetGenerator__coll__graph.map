@@ -1,6 +1,10 @@
 <map id="FixedTargetGenerator" name="FixedTargetGenerator">
-<area shape="rect" id="node1" title=" " alt="" coords="5,243,167,268"/>
-<area shape="rect" id="node2" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="18,80,143,105"/>
-<area shape="rect" id="node4" href="$classGenieGenerator.html" title=" " alt="" coords="102,155,227,180"/>
-<area shape="rect" id="node3" title=" " alt="" coords="25,5,136,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,243,167,268"/>
+<area shape="rect" id="Node000002" href="$classSHiP_1_1Generator.html" title=" " alt="" coords="18,80,143,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,119,88,243,83,243,79,119"/>
+<area shape="rect" id="Node000004" href="$classGenieGenerator.html" title=" " alt="" coords="102,155,227,180"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="106,113,153,152,149,156,103,117"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="25,5,136,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="83,45,83,80,78,80,78,45"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,192,99,244,95,240,143,188"/>
 </map>

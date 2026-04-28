@@ -1,10 +1,20 @@
 <map id="strawtubes/strawtubesPoint.h" name="strawtubes/strawtubesPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="443,5,658,31"/>
-<area shape="rect" id="node2" href="$Tracklet_8cxx.html" title=" " alt="" coords="5,159,181,185"/>
-<area shape="rect" id="node3" href="$strawtubes_8cxx.html" title=" " alt="" coords="613,79,811,104"/>
-<area shape="rect" id="node4" href="$strawtubesHit_8h.html" title=" " alt="" coords="286,79,487,104"/>
-<area shape="rect" id="node6" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="446,152,605,192"/>
-<area shape="rect" id="node7" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="629,152,765,192"/>
-<area shape="rect" id="node8" href="$strawtubesPoint_8cxx.html" title=" " alt="" coords="835,79,1066,104"/>
-<area shape="rect" id="node5" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="205,159,421,185"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="443,5,658,31"/>
+<area shape="rect" id="Node000002" href="$Tracklet_8cxx.html" title=" " alt="" coords="5,159,181,185"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="458,36,368,54,274,81,182,122,113,162,110,157,180,118,272,76,367,49,457,30"/>
+<area shape="rect" id="Node000003" href="$strawtubes_8cxx.html" title=" " alt="" coords="613,79,811,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="590,34,687,76,685,81,588,39"/>
+<area shape="rect" id="Node000004" href="$strawtubesHit_8h.html" title=" " alt="" coords="286,79,487,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="513,39,415,81,412,76,511,34"/>
+<area shape="rect" id="Node000006" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="446,152,605,192"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="549,44,531,152,526,151,544,44"/>
+<area shape="rect" id="Node000007" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="629,152,765,192"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="564,42,581,72,603,102,633,129,665,150,662,154,630,133,599,106,576,75,559,44"/>
+<area shape="rect" id="Node000008" href="$strawtubesPoint_8cxx.html" title=" " alt="" coords="835,79,1066,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="629,30,886,76,885,81,628,36"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="332,110,137,162,135,157,330,105"/>
+<area shape="rect" id="Node000005" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="205,159,421,185"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="368,116,326,161,322,157,364,112"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="420,109,493,150,491,154,418,113"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="446,105,630,151,629,156,444,110"/>
 </map>

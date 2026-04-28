@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['fairship_0',['FairShip',['../md_README.html',1,'']]],
-  ['fairship_20documentation_1',['FairShip documentation',['../index.html',1,'']]]
+  ['genie_20simulations_0',['Configuration files for GENIE simulations',['../md_shipgen_2genie__config_2README.html',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var PythiaList_8py =
 [
-    [ "id", "PythiaList_8py.html#adb46aa17ae85a5ed8ad29f40ba1a2d55", null ],
-    [ "myPythia", "PythiaList_8py.html#a39241d2868ca62b98b9b3f4500a7ca3c", null ],
-    [ "PDG", "PythiaList_8py.html#aea4d4e4afe8b216b8963885ebc01fc08", null ]
+    [ "id", "PythiaList_8py.html#a9c4dcba5de0e5687d6d032e471c97779", null ],
+    [ "myPythia", "PythiaList_8py.html#a405f77fe1f708bdae18e23a84469b962", null ],
+    [ "PDG", "PythiaList_8py.html#a13f7f67ea0b996cb7ac40f53ffbf1bff", null ]
 ];

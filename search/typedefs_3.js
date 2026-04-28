@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['object_0',['Object',['../manual_8c.html#ab1287b6141419421dc5c14b9f7756b0a',1,'manual.c']]]
+  ['sfmap_0',['SFMap',['../classShipFieldMaker.html#aa1e6a61468cf4047a817ebba21dca3ac',1,'ShipFieldMaker']]],
+  ['stringvect_1',['stringVect',['../classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13',1,'ShipFieldMaker']]]
 ];

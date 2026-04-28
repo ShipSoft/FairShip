@@ -1,6 +1,9 @@
 <map id="Detector/DetectorPoint.h" name="Detector/DetectorPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="50,5,233,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,79,61,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="86,79,197,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="221,79,312,104"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="50,5,233,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,61,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,33,64,73,61,69,123,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,79,197,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="144,31,144,65,139,65,139,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="221,79,312,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,28,236,69,233,74,160,33"/>
 </map>

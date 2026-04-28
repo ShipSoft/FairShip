@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bug_20list_0',['Bug List',['../bug.html',1,'']]]
+  ['documentation_0',['FairShip documentation',['../index.html',1,'']]]
 ];

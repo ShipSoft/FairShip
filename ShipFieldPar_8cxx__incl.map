@@ -1,9 +1,15 @@
 <map id="field/ShipFieldPar.cxx" name="field/ShipFieldPar.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="183,5,341,31"/>
-<area shape="rect" id="node2" href="$ShipFieldPar_8h.html" title=" " alt="" coords="23,79,135,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="159,79,239,104"/>
-<area shape="rect" id="node5" title=" " alt="" coords="264,79,385,104"/>
-<area shape="rect" id="node6" href="$ShipConstField_8h.html" title=" " alt="" coords="410,79,541,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,152,153,177"/>
-<area shape="rect" id="node7" title=" " alt="" coords="431,152,519,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="183,5,341,31"/>
+<area shape="rect" id="Node000002" href="$ShipFieldPar_8h.html" title=" " alt="" coords="23,79,135,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,33,123,76,121,71,232,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="159,79,239,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="254,33,221,70,217,66,250,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="264,79,385,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="274,29,307,66,303,70,270,33"/>
+<area shape="rect" id="Node000006" href="$ShipConstField_8h.html" title=" " alt="" coords="410,79,541,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="297,28,429,72,427,77,295,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,153,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,104,82,138,77,138,77,104"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="431,152,519,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="478,104,478,138,473,138,473,104"/>
 </map>

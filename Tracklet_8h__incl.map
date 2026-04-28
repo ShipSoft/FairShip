@@ -1,6 +1,9 @@
 <map id="strawtubes/Tracklet.h" name="strawtubes/Tracklet.h">
-<area shape="rect" id="node1" title=" " alt="" coords="51,5,212,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,79,68,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="92,79,171,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="195,79,279,104"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="51,5,212,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,68,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,33,65,72,62,68,115,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="92,79,171,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="134,31,134,65,129,65,129,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="195,79,279,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,28,210,69,207,73,147,33"/>
 </map>

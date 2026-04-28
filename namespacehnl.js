@@ -4,9 +4,9 @@ var namespacehnl =
     [ "constants", "classhnl_1_1constants.html", "classhnl_1_1constants" ],
     [ "HNL", "classhnl_1_1HNL.html", "classhnl_1_1HNL" ],
     [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ],
-    [ "lifetime", "namespacehnl.html#a5da701761b0ce9b1cda9d2933645d225", null ],
-    [ "mass", "namespacehnl.html#a50c5be0b88a5ba91bb1ae9136ee6c132", null ],
-    [ "PDGname", "namespacehnl.html#aad42d2acb26e22bfa937e66b978f1f41", null ],
-    [ "c", "namespacehnl.html#a414db38db7a78d1a14ac5f6eb9146185", null ],
-    [ "pdg", "namespacehnl.html#a50ffe2d43debd299dbe9840c06b2e34e", null ]
+    [ "lifetime", "namespacehnl.html#a0f5362c95554b63c5317a978264e7ec6", null ],
+    [ "mass", "namespacehnl.html#a8da545ce4a1f3fdbb0c5eee151176fec", null ],
+    [ "PDGname", "namespacehnl.html#ad1a3a2b5587bf4e0fe7a55aa7feacf3b", null ],
+    [ "c", "namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5", null ],
+    [ "pdg", "namespacehnl.html#a3325414049eefafd4049b41bb2706133", null ]
 ];

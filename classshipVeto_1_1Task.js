@@ -1,9 +1,9 @@
 var classshipVeto_1_1Task =
 [
     [ "__init__", "classshipVeto_1_1Task.html#aa2243b390878567f83ef755d8d1fbbd5", null ],
-    [ "detMap", "classshipVeto_1_1Task.html#a1cab7f425e141a74d5392145aa0aa035", null ],
-    [ "fiducialCheck", "classshipVeto_1_1Task.html#a940085229b72cba061778d6e75614aa0", null ],
-    [ "fiducialCheckSignal", "classshipVeto_1_1Task.html#a10ac53bff2dd16193aabefce4cc7bf13", null ],
+    [ "detMap", "classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8", null ],
+    [ "fiducialCheck", "classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8", null ],
+    [ "fiducialCheckSignal", "classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886", null ],
     [ "SBT_decision", "classshipVeto_1_1Task.html#a11e203c4d9e454439697a9d4b28be4b3", null ],
     [ "SBT_liquid_decision", "classshipVeto_1_1Task.html#ac035212ebb6f3e602a9af1fb541bbaf7", null ],
     [ "SBT_plastic_decision", "classshipVeto_1_1Task.html#ac1d07235cd1f0f4654d2042761d600e7", null ],
