@@ -1033,6 +1033,148 @@ if options.command == "Genie":
     f_input.Close()
     f_output.Close()
 
+
+def _container_size(container):
+    """Return the number of elements for common ROOT container types."""
+    if container is None:
+        return None
+    for attr in ("size", "GetEntriesFast", "GetEntries"):
+        method = getattr(container, attr, None)
+        if callable(method):
+            try:
+                return int(method())
+            except TypeError:
+                continue
+    try:
+        return len(container)
+    except TypeError:
+        return None
+
+
+def _format_mean_std(count, total, total_sq):
+    if count <= 0:
+        return "n/a"
+    mean = total / count
+    variance = max(0.0, total_sq / count - mean * mean)
+    std = variance**0.5
+    return f"{mean:.4g} +- {std:.4g}"
+
+
+def _print_simulation_output_summary(output_filename, requested_events):
+    print(" ")
+    print("Final output summary")
+    with ROOT.TFile.Open(output_filename, "READ") as summary_file:
+        if not summary_file or summary_file.IsZombie():
+            print("Could not reopen output file for summary:", output_filename)
+            return
+
+        keys = list(summary_file.GetListOfKeys())
+        class_counts = {}
+        for key in keys:
+            class_name = key.GetClassName()
+            class_counts[class_name] = class_counts.get(class_name, 0) + 1
+
+        class_summary = ", ".join(f"{name}:{class_counts[name]}" for name in sorted(class_counts))
+        print(f"ROOT objects: {len(keys)} total [{class_summary}]")
+
+        tree = summary_file.Get("cbmsim")
+        if not tree:
+            print("No cbmsim tree found in output file.")
+            return
+
+        n_entries = tree.GetEntries()
+        print(f"Requested events: {requested_events}")
+        print(f"Final cbmsim entries: {n_entries}")
+
+        branch_names = [branch.GetName() for branch in tree.GetListOfBranches()]
+        print(f"Branches in cbmsim: {len(branch_names)}")
+
+        if n_entries <= 0:
+            print("cbmsim tree is empty.")
+            return
+
+        branch_stats = {}
+        track_stats = {
+            "total_tracks": 0,
+            "primary_tracks": 0,
+            "secondary_tracks": 0,
+            "weight_sum": 0.0,
+            "weight_sq_sum": 0.0,
+            "weight_min": None,
+            "weight_max": None,
+            "pdg_counts": {},
+        }
+
+        for branch_name in branch_names:
+            branch_stats[branch_name] = {
+                "total": 0,
+                "nonzero": 0,
+                "max": 0,
+                "sum_sq": 0.0,
+            }
+
+        for event_index in range(n_entries):
+            tree.GetEntry(event_index)
+            for branch_name in branch_names:
+                container = getattr(tree, branch_name, None)
+                count = _container_size(container)
+                if count is None:
+                    continue
+
+                stats = branch_stats[branch_name]
+                stats["total"] += count
+                if count > 0:
+                    stats["nonzero"] += 1
+                if count > stats["max"]:
+                    stats["max"] = count
+                stats["sum_sq"] += count * count
+
+                if branch_name == "MCTrack" and count > 0:
+                    for track in container:
+                        track_stats["total_tracks"] += 1
+                        if track.GetMotherId() < 0:
+                            track_stats["primary_tracks"] += 1
+                        else:
+                            track_stats["secondary_tracks"] += 1
+                        weight = float(track.GetWeight())
+                        track_stats["weight_sum"] += weight
+                        track_stats["weight_sq_sum"] += weight * weight
+                        if track_stats["weight_min"] is None or weight < track_stats["weight_min"]:
+                            track_stats["weight_min"] = weight
+                        if track_stats["weight_max"] is None or weight > track_stats["weight_max"]:
+                            track_stats["weight_max"] = weight
+                        pdg = int(track.GetPdgCode())
+                        track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
+
+        countable_branches = [name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0]
+        print(f"Countable branches: {len(countable_branches)}")
+
+        if track_stats["total_tracks"] > 0:
+            print(
+                "MCTrack summary:"
+                f" total={track_stats['total_tracks']},"
+                f" primary={track_stats['primary_tracks']},"
+                f" secondary={track_stats['secondary_tracks']},"
+                f" avg/event={track_stats['total_tracks'] / n_entries:.2f},"
+                f" weight={_format_mean_std(track_stats['total_tracks'], track_stats['weight_sum'], track_stats['weight_sq_sum'])},"
+                f" weight range=[{track_stats['weight_min']:.4g}, {track_stats['weight_max']:.4g}]"
+            )
+            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[:10]
+            print("Top MCTrack PDG counts:", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
+
+        print("Branch multiplicity counters:")
+        for branch_name in sorted(countable_branches):
+            stats = branch_stats[branch_name]
+            active = 100.0 * stats["nonzero"] / n_entries
+            print(
+                f"  {branch_name}: total={stats['total']},"
+                f" entries/event={_format_mean_std(n_entries, stats['total'], stats['sum_sq'])},"
+                f" active={stats['nonzero']}/{n_entries} ({active:5.1f}%), max={stats['max']}"
+            )
+
+
+_print_simulation_output_summary(outFile, options.nEvents)
+
 # ------------------------------------------------------------------------
 import checkMagFields
 
