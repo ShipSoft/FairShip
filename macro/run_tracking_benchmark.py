@@ -32,6 +32,9 @@ parser.add_argument("--Vz", type=float, default=8300.0, help="Gun z-position in 
 parser.add_argument("--Dx", type=float, default=200.0, help="Position spread in x [cm] (default: 200)")
 parser.add_argument("--Dy", type=float, default=300.0, help="Position spread in y [cm] (default: 300)")
 parser.add_argument("--nTracks", type=int, default=1, help="Tracks per event (default: 1)")
+parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
+parser.add_argument("--mixCharges", action="store_true", help="Generate equal mix of particle and antiparticle")
 parser.add_argument("--tag", default="benchmark", help="Output file tag (default: benchmark)")
 parser.add_argument("--output-json", default=None, help="JSON metrics output path")
 parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
@@ -48,23 +51,28 @@ options = parser.parse_args()
 
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
+options.outputDir = os.path.abspath(options.outputDir)
 
 tag = options.tag
-sim_file = f"{options.outputDir}/sim_{tag}.root"
-geo_file = f"{options.outputDir}/geo_{tag}.root"
-reco_file = f"{options.outputDir}/sim_{tag}_rec.root"
-json_file = options.output_json or f"{options.outputDir}/tracking_metrics.json"
-histo_file = f"{options.outputDir}/tracking_benchmark_histos.root"
+sim_file = os.path.join(options.outputDir, f"sim_{tag}.root")
+geo_file = os.path.join(options.outputDir, f"geo_{tag}.root")
+reco_file = os.path.join(options.outputDir, f"sim_{tag}_rec.root")
+json_file = (
+    os.path.abspath(options.output_json)
+    if options.output_json
+    else os.path.join(options.outputDir, "tracking_metrics.json")
+)
+histo_file = os.path.join(options.outputDir, "tracking_benchmark_histos.root")
 
 fairship = os.environ.get("FAIRSHIP", "")
 
 
-def run_phase(description: str, cmd: list[str]) -> None:
+def run_phase(description: str, cmd: list[str], **kwargs: str) -> None:
     """Run a subprocess phase, raising on failure."""
     print("=" * 60)
     print(f"{description}")
     print("=" * 60)
-    result = subprocess.run(cmd, check=False)
+    result = subprocess.run(cmd, check=False, **kwargs)
     if result.returncode != 0:
         print(f"FAILED: {description} (exit code {result.returncode})")
         sys.exit(result.returncode)
@@ -107,7 +115,15 @@ sim_cmd = [
     str(options.Dx),
     "--Dy",
     str(options.Dy),
+    "--nTracks",
+    str(options.nTracks),
+    "--thetaMin",
+    str(options.thetaMin),
+    "--thetaMax",
+    str(options.thetaMax),
 ]
+if options.mixCharges:
+    sim_cmd.append("--mixCharges")
 
 run_phase("Phase 1: Simulation", sim_cmd)
 
@@ -134,7 +150,7 @@ reco_cmd = [
 if options.debug > 0:
     reco_cmd.append("--Debug")
 
-run_phase("Phase 2: Reconstruction", reco_cmd)
+run_phase("Phase 2: Reconstruction", reco_cmd, cwd=options.outputDir)
 
 if not os.path.exists(reco_file):
     print(f"ERROR: Reconstruction output {reco_file} not found")

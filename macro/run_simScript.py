@@ -70,6 +70,10 @@ pg_parser.add_argument(
 pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
+pg_parser.add_argument("--thetaMin", type=float, default=0, help="Minimum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--thetaMax", type=float, default=0, help="Maximum polar angle [deg] (default: 0)")
+pg_parser.add_argument("--nTracks", type=int, default=1, help="Number of particles per event (default: 1)")
+pg_parser.add_argument("--mixCharges", action="store_true", help="Generate equal mix of particle and antiparticle")
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
@@ -517,23 +521,33 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
-    myPgun = ROOT.FairBoxGenerator(options.pID, 1)
-    myPgun.SetPRange(options.Estart, options.Eend)
-    myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
-    if options.multiplePG:
-        # multiple PG sources in the x-y plane; z is always the same!
-        myPgun.SetBoxXYZ(
-            (options.Vx - options.Dx / 2) * u.cm,
-            (options.Vy - options.Dy / 2) * u.cm,
-            (options.Vx + options.Dx / 2) * u.cm,
-            (options.Vy + options.Dy / 2) * u.cm,
-            options.Vz * u.cm,
-        )
+    if options.mixCharges:
+        pdg_particle = ROOT.TDatabasePDG.Instance().GetParticle(abs(options.pID))
+        if pdg_particle is None or pdg_particle.Charge() == 0:
+            print(f"WARNING: pID {options.pID} is neutral or unknown, disabling mixCharges")
+            options.mixCharges = False
+    if options.mixCharges and options.nTracks > 1:
+        pids = [(abs(options.pID), options.nTracks // 2), (-abs(options.pID), (options.nTracks + 1) // 2)]
     else:
-        # point source
-        myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
-    primGen.AddGenerator(myPgun)
+        pids = [(options.pID, options.nTracks)]
+    for pid, mult in pids:
+        myPgun = ROOT.FairBoxGenerator(pid, mult)
+        myPgun.SetPRange(options.Estart, options.Eend)
+        myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
+        myPgun.SetThetaRange(options.thetaMin, options.thetaMax)  # Polar angle in lab system [degree]
+        if options.multiplePG:
+            # multiple PG sources in the x-y plane; z is always the same!
+            myPgun.SetBoxXYZ(
+                (options.Vx - options.Dx / 2) * u.cm,
+                (options.Vy - options.Dy / 2) * u.cm,
+                (options.Vx + options.Dx / 2) * u.cm,
+                (options.Vy + options.Dy / 2) * u.cm,
+                options.Vz * u.cm,
+            )
+        else:
+            # point source
+            myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
+        primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if options.mudis:
     ut.checkFileExists(inputFile)
