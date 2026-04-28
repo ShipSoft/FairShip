@@ -47,13 +47,7 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fzPos(3E8),
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
-      fNsplits(0) {
-    fNsplits = 0;
-    const char* env = std::getenv("KAON_PION_SPLITS");
-    if (env) {
-        fNsplits = std::atoi(env);
-    }
-}
+      fNsplits(0) {}
 
 exitHadronAbsorber::exitHadronAbsorber()
     : Detector("exitHadronAbsorber", kTRUE, kVETO),
@@ -65,13 +59,7 @@ exitHadronAbsorber::exitHadronAbsorber()
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
       fUseCaveCoordinates(kFALSE),
-      fNsplits(0) {
-    fNsplits = 0;
-    const char* env = std::getenv("KAON_PION_SPLITS");
-    if (env) {
-        fNsplits = std::atoi(env);
-    }
-}
+      fNsplits(0) {}
 
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {

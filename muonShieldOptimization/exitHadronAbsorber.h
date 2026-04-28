@@ -40,6 +40,8 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   virtual void PostTrack();
   virtual void BeginEvent();
 
+  void SetNSplits(int32_t n) { fNsplits = n; }
+
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
   inline void SetOnlyMuons() { fOnlyMuons = kTRUE; }
   inline void SetOpt4DP() { withNtuple = kTRUE; }
