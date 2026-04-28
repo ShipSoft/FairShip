@@ -55,9 +55,9 @@ def resolve_input_files(paths):
             if not remote_path.endswith(".root"):
                 # Strip trailing glob pattern if present
                 remote_path = remote_path.rstrip("/*")
-                log.info(f"Listing xrootd directory: {server}{remote_path}")
+                log.info(f"Listing xrootd directory (recursive): {server}{remote_path}")
                 result = subprocess.run(
-                    ["xrdfs", server, "ls", remote_path],
+                    ["xrdfs", server, "ls", "-R", remote_path],
                     capture_output=True,
                     text=True,
                 )
