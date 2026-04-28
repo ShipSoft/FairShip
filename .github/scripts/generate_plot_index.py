@@ -27,8 +27,18 @@ def collect_manifests(base_dir: Path) -> list[dict]:
             print(f"WARNING: Skipping {manifest_path}: {e}", file=sys.stderr)
             continue
         rel_dir = manifest_path.parent.relative_to(base_dir)
-        for entry in manifest.get("files", []):
+        files = manifest.get("files", [])
+        if not isinstance(files, list):
+            print(f"WARNING: Skipping {manifest_path}: 'files' is not a list", file=sys.stderr)
+            continue
+        valid_entries = []
+        for entry in files:
+            if not isinstance(entry, dict) or "file" not in entry:
+                print(f"WARNING: Skipping malformed entry in {manifest_path}: {entry!r}", file=sys.stderr)
+                continue
             entry["file"] = (rel_dir / entry["file"]).as_posix()
+            valid_entries.append(entry)
+        manifest["files"] = valid_entries
         manifests.append(manifest)
     return manifests
 
@@ -108,12 +118,12 @@ def generate_comment(manifests: list[dict], base_url: str) -> str:
         jobs.setdefault(manifest["job"], []).append(manifest)
 
     for job, job_manifests in jobs.items():
-        lines.append(f"<details open><summary><h3>{job}</h3></summary>")
+        lines.append(f"<details open><summary><h3>{html.escape(job)}</h3></summary>")
         lines.append("")
         for manifest in job_manifests:
             config = manifest["config"]
             plots = manifest["files"]
-            lines.append(f"<details open><summary><h4>{config}</h4></summary>")
+            lines.append(f"<details open><summary><h4>{html.escape(config)}</h4></summary>")
             lines.append("")
             thumbs = " ".join(_html_thumbnail(plot["name"], f"{base_url}/{plot['file']}") for plot in plots)
             lines.append(thumbs)
