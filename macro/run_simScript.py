@@ -902,20 +902,9 @@ timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(" ")
-print("Macro finished successfully.")
-if "P8gen" in globals():
-    if HNL:
-        print("number of retries (no HNL produced) ", P8gen.nrOfRetries())
-        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
-    elif options.DarkPhoton:
-        print("number of retries (no DP produced) ", P8gen.nrOfRetries())
-        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
-        print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
-
-print("Output file is ", outFile)
-print("Parameter file is ", parFile)
-print("Geometry file is ", geofile_name)
-print("Real time ", rtime, " s, CPU time ", ctime, "s")
+print("=" * 72)
+print("Simulation finished successfully")
+print("=" * 72)
 
 # remove empty events
 if options.muonback:
@@ -1060,9 +1049,61 @@ def _format_mean_std(count, total, total_sq):
     return f"{mean:.4g} +- {std:.4g}"
 
 
-def _print_simulation_output_summary(output_filename, requested_events):
+def _safe_fraction(numerator, denominator):
+    if denominator == 0:
+        return "n/a"
+    return f"{100.0 * numerator / denominator:.2f}%"
+
+
+def _print_section(title):
     print(" ")
-    print("Final output summary")
+    print(f"[{title}]")
+
+
+def _print_kv(label, value, width=28):
+    print(f"  {label:<{width}} {value}")
+
+
+def _update_numeric_stat(stats, value):
+    stats["count"] += 1
+    stats["sum"] += value
+    stats["sum_sq"] += value * value
+    if stats["min"] is None or value < stats["min"]:
+        stats["min"] = value
+    if stats["max"] is None or value > stats["max"]:
+        stats["max"] = value
+
+
+def _format_stat_summary(stats):
+    return (
+        f"{_format_mean_std(stats['count'], stats['sum'], stats['sum_sq'])}"
+        f"  [min={stats['min']:.4g}, max={stats['max']:.4g}]"
+    )
+
+
+def _print_simulation_output_summary(output_filename, requested_events):
+    generator_stats = []
+    if "P8gen" in globals():
+        if HNL:
+            generator_stats.append(("HNL retries", P8gen.nrOfRetries()))
+            generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
+        elif options.DarkPhoton:
+            generator_stats.append(("DP retries", P8gen.nrOfRetries()))
+            generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
+            generator_stats.append(("Total dark photons", P8gen.nrOfDP()))
+
+    _print_section("Outputs")
+    _print_kv("Simulation file", output_filename)
+    _print_kv("Parameter file", parFile)
+    _print_kv("Geometry file", geofile_name)
+    _print_kv("Real time", f"{rtime:.3f} s")
+    _print_kv("CPU time", f"{ctime:.3f} s")
+
+    if generator_stats:
+        _print_section("Generator Validation")
+        for label, value in generator_stats:
+            _print_kv(label, value)
+
     with ROOT.TFile.Open(output_filename, "READ") as summary_file:
         if not summary_file or summary_file.IsZombie():
             print("Could not reopen output file for summary:", output_filename)
@@ -1074,8 +1115,8 @@ def _print_simulation_output_summary(output_filename, requested_events):
             class_name = key.GetClassName()
             class_counts[class_name] = class_counts.get(class_name, 0) + 1
 
-        class_summary = ", ".join(f"{name}:{class_counts[name]}" for name in sorted(class_counts))
-        print(f"ROOT objects: {len(keys)} total [{class_summary}]")
+        _print_section("Tree Validation")
+        _print_kv("Requested events", requested_events)
 
         tree = summary_file.Get("cbmsim")
         if not tree:
@@ -1083,16 +1124,25 @@ def _print_simulation_output_summary(output_filename, requested_events):
             return
 
         n_entries = tree.GetEntries()
-        print(f"Requested events: {requested_events}")
-        print(f"Final cbmsim entries: {n_entries}")
+        _print_kv("Final cbmsim entries", n_entries)
+        _print_kv("Kept fraction", _safe_fraction(n_entries, requested_events))
 
         branch_names = [branch.GetName() for branch in tree.GetListOfBranches()]
-        print(f"Branches in cbmsim: {len(branch_names)}")
+        _print_kv("Branches in cbmsim", len(branch_names))
+        _print_kv("ROOT objects", len(keys))
+        _print_kv("ROOT class mix", ", ".join(f"{name}:{class_counts[name]}" for name in sorted(class_counts)))
 
         if n_entries <= 0:
             print("cbmsim tree is empty.")
             return
 
+        scalar_stats = {}
+        header_stats = {
+            "run_ids": set(),
+            "event_id_min": None,
+            "event_id_max": None,
+            "z": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
+        }
         branch_stats = {}
         track_stats = {
             "total_tracks": 0,
@@ -1102,7 +1152,11 @@ def _print_simulation_output_summary(output_filename, requested_events):
             "weight_sq_sum": 0.0,
             "weight_min": None,
             "weight_max": None,
+            "p": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
+            "energy": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
+            "start_z": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
             "pdg_counts": {},
+            "proc_counts": {},
         }
 
         for branch_name in branch_names:
@@ -1115,10 +1169,30 @@ def _print_simulation_output_summary(output_filename, requested_events):
 
         for event_index in range(n_entries):
             tree.GetEntry(event_index)
+            header = getattr(tree, "MCEventHeader", None)
+            if header:
+                if hasattr(header, "GetRunID"):
+                    header_stats["run_ids"].add(int(header.GetRunID()))
+                if hasattr(header, "GetEventID"):
+                    event_id = int(header.GetEventID())
+                    if header_stats["event_id_min"] is None or event_id < header_stats["event_id_min"]:
+                        header_stats["event_id_min"] = event_id
+                    if header_stats["event_id_max"] is None or event_id > header_stats["event_id_max"]:
+                        header_stats["event_id_max"] = event_id
+                if hasattr(header, "GetZ"):
+                    _update_numeric_stat(header_stats["z"], float(header.GetZ()))
+
             for branch_name in branch_names:
                 container = getattr(tree, branch_name, None)
                 count = _container_size(container)
                 if count is None:
+                    try:
+                        value = float(container)
+                    except (TypeError, ValueError):
+                        continue
+                    if branch_name not in scalar_stats:
+                        scalar_stats[branch_name] = {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None}
+                    _update_numeric_stat(scalar_stats[branch_name], value)
                     continue
 
                 stats = branch_stats[branch_name]
@@ -1143,33 +1217,59 @@ def _print_simulation_output_summary(output_filename, requested_events):
                             track_stats["weight_min"] = weight
                         if track_stats["weight_max"] is None or weight > track_stats["weight_max"]:
                             track_stats["weight_max"] = weight
+                        _update_numeric_stat(track_stats["p"], float(track.GetP()))
+                        _update_numeric_stat(track_stats["energy"], float(track.GetEnergy()))
+                        _update_numeric_stat(track_stats["start_z"], float(track.GetStartZ()))
                         pdg = int(track.GetPdgCode())
                         track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
+                        proc_name = str(track.GetProcName().Data())
+                        track_stats["proc_counts"][proc_name] = track_stats["proc_counts"].get(proc_name, 0) + 1
 
         countable_branches = [name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0]
-        print(f"Countable branches: {len(countable_branches)}")
+        _print_kv("Countable branches", len(countable_branches))
+
+        if header_stats["run_ids"] or header_stats["event_id_min"] is not None:
+            _print_section("Event Header")
+            if header_stats["run_ids"]:
+                _print_kv("Run IDs", ", ".join(str(run_id) for run_id in sorted(header_stats["run_ids"])))
+            if header_stats["event_id_min"] is not None:
+                _print_kv("Event ID range", f"{header_stats['event_id_min']} .. {header_stats['event_id_max']}")
+            if header_stats["z"]["count"] > 0:
+                _print_kv("Header Z", _format_stat_summary(header_stats["z"]))
 
         if track_stats["total_tracks"] > 0:
-            print(
-                "MCTrack summary:"
-                f" total={track_stats['total_tracks']},"
-                f" primary={track_stats['primary_tracks']},"
-                f" secondary={track_stats['secondary_tracks']},"
-                f" avg/event={track_stats['total_tracks'] / n_entries:.2f},"
-                f" weight={_format_mean_std(track_stats['total_tracks'], track_stats['weight_sum'], track_stats['weight_sq_sum'])},"
-                f" weight range=[{track_stats['weight_min']:.4g}, {track_stats['weight_max']:.4g}]"
+            _print_section("MCTrack Validation")
+            _print_kv("Total tracks", track_stats["total_tracks"])
+            _print_kv("Primary tracks", track_stats["primary_tracks"])
+            _print_kv("Secondary tracks", track_stats["secondary_tracks"])
+            _print_kv("Tracks per event", f"{track_stats['total_tracks'] / n_entries:.4g}")
+            _print_kv(
+                "Track weight",
+                f"{_format_mean_std(track_stats['total_tracks'], track_stats['weight_sum'], track_stats['weight_sq_sum'])}"
+                f"  [min={track_stats['weight_min']:.4g}, max={track_stats['weight_max']:.4g}]",
             )
+            _print_kv("Track momentum", _format_stat_summary(track_stats["p"]))
+            _print_kv("Track energy", _format_stat_summary(track_stats["energy"]))
+            _print_kv("Track start Z", _format_stat_summary(track_stats["start_z"]))
             top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[:10]
-            print("Top MCTrack PDG counts:", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
+            _print_kv("Top PDG counts", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
+            top_procs = sorted(track_stats["proc_counts"].items(), key=lambda item: (-item[1], item[0]))[:10]
+            _print_kv("Top processes", ", ".join(f"{name}:{count}" for name, count in top_procs))
 
-        print("Branch multiplicity counters:")
+        if scalar_stats:
+            _print_section("Scalar Branch Validation")
+            for branch_name in sorted(scalar_stats):
+                _print_kv(branch_name, _format_stat_summary(scalar_stats[branch_name]))
+
+        _print_section("Branch Multiplicity")
         for branch_name in sorted(countable_branches):
             stats = branch_stats[branch_name]
             active = 100.0 * stats["nonzero"] / n_entries
-            print(
-                f"  {branch_name}: total={stats['total']},"
-                f" entries/event={_format_mean_std(n_entries, stats['total'], stats['sum_sq'])},"
-                f" active={stats['nonzero']}/{n_entries} ({active:5.1f}%), max={stats['max']}"
+            _print_kv(
+                branch_name,
+                f"total={stats['total']}, mean/event={_format_mean_std(n_entries, stats['total'], stats['sum_sq'])},"
+                f" active={stats['nonzero']}/{n_entries} ({active:5.1f}%), max={stats['max']}",
+                width=22,
             )
 
 
