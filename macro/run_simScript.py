@@ -908,6 +908,20 @@ timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(" ")
+print("Macro finished successfully.")
+if "P8gen" in globals():
+    if HNL:
+        print("number of retries (no HNL produced) ", P8gen.nrOfRetries())
+        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
+    elif options.DarkPhoton:
+        print("number of retries (no DP produced) ", P8gen.nrOfRetries())
+        print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
+        print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
+
+print("Output file is ", outFile)
+print("Parameter file is ", parFile)
+print("Geometry file is ", geofile_name)
+print("Real time ", rtime, " s, CPU time ", ctime, "s")
 print("=" * 72)
 print("Simulation finished successfully")
 print("=" * 72)
