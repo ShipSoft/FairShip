@@ -136,6 +136,11 @@ def generate_cpp(point_class_names):
     The generated code handles caching and merging for the specific set
     of Point branch types discovered in the input files.
     """
+    # --- #include directives for all types used ---
+    includes = '#include "ShipMCTrack.h"\n'
+    for class_name in sorted(set(point_class_names.values())):
+        includes += f'#include "{class_name}.h"\n'
+
     # --- EventCache struct members ---
     cache_members = ""
     for branch_name, class_name in point_class_names.items():
@@ -175,7 +180,7 @@ def generate_cpp(point_class_names):
             }}
             total_points += cached.{branch_name}.size();"""
 
-    return f"""
+    return f"""{includes}
 struct EventCache {{
     std::vector<ShipMCTrack> tracks;
 {cache_members}}};
@@ -258,12 +263,12 @@ int build_time_windows(
             int nt = static_cast<int>(cached.tracks.size());
 
             // Merge MCTracks with time offset and re-indexing
-            for (const auto& trk : cached.tracks) {{
-                auto t = trk;
-                t.SetStartT(trk.GetStartT() + t_offset);
-                if (trk.GetMotherId() >= 0)
-                    t.SetMotherId(trk.GetMotherId() + track_offset);
-                t.SetTrackID(trk.GetTrackID() + track_offset);
+            for (int i = 0; i < nt; ++i) {{
+                auto t = cached.tracks[i];
+                t.SetStartT(cached.tracks[i].GetStartT() + t_offset);
+                if (cached.tracks[i].GetMotherId() >= 0)
+                    t.SetMotherId(cached.tracks[i].GetMotherId() + track_offset);
+                t.SetTrackID(i + track_offset);
                 t.SetEventID(k);
                 out_tracks.push_back(std::move(t));
             }}
