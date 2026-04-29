@@ -35,13 +35,6 @@ class MuDISGenerator : public SHiP::Generator {
     startZ = z_start;
     endZ = z_end;
   }
-  Long64_t GetGeneratedEvents() const { return fGeneratedEvents; }
-  Long64_t GetInteractionSamplingTrials() const {
-    return fInteractionSamplingTrials;
-  }
-  Long64_t GetDISParticlesStored() const { return fDISParticlesStored; }
-  Long64_t GetSoftParticlesStored() const { return fSoftParticlesStored; }
-  Long64_t GetSoftParticlesSkipped() const { return fSoftParticlesSkipped; }
 
  protected:
   Double_t startZ, endZ;
@@ -54,10 +47,5 @@ class MuDISGenerator : public SHiP::Generator {
   int fNevents;
   int fn;
   bool fFirst;
-  Long64_t fGeneratedEvents;
-  Long64_t fInteractionSamplingTrials;
-  Long64_t fDISParticlesStored;
-  Long64_t fSoftParticlesStored;
-  Long64_t fSoftParticlesSkipped;
 };
 #endif  // SHIPGEN_MUDISGENERATOR_H_

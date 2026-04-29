@@ -62,12 +62,6 @@ FixedTargetGenerator::FixedTargetGenerator() {
   Option = "Primary";
   wspill = 1.;  // event weight == 1 for primary events
   heartbeat = 1000;
-  fGeneratedEvents = 0;
-  fG4OnlyEvents = 0;
-  fCharmInputPairs = 0;
-  fStoredTracks = 0;
-  fTrackedFinalStateParticles = 0;
-  fSkippedFinalStateParticles = 0;
 }
 Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev,
                                                   Double_t npot, Int_t nStart) {
@@ -382,9 +376,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
   Pythia8::Pythia* fPythia;
   if (G4only) {
-    fGeneratedEvents += 1;
-    fG4OnlyEvents += 1;
-    fStoredTracks += 1;
+    IncrementCounter("generated_events");
+    IncrementCounter("g4only_events");
+    IncrementCounter("stored_tracks");
     cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
                   start[2], -1, kTRUE, -1., 0., 1.);
     return kTRUE;
@@ -426,7 +420,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     nTree->GetEvent(nEntry);
     nEntry += 1;
-    fCharmInputPairs += 1;
+    IncrementCounter("charm_input_pairs");
     // sanity check, count number of p.o.t. on input file.
     Double_t pt = TMath::Sqrt((n_mpx * n_mpx) + (n_mpy * n_mpy));
     // every event appears twice, i.e.
@@ -449,7 +443,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     cpg->AddTrack(static_cast<int>(n_mid), n_mpx, n_mpy, n_mpz,
                   (xOff + dx) * cm, (yOff + dy) * cm, zinter * cm, -1, kFALSE,
                   n_mE, 0., wspill, procID);
-    fStoredTracks += 1;
+    IncrementCounter("stored_tracks");
     // second charm hadron in the event
     nTree->GetEvent(nEntry);
     if (nID1 * n_id > 0) {
@@ -504,11 +498,11 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         im = -1;
       }
     }
-    fStoredTracks += 1;
+    IncrementCounter("stored_tracks");
     if (wanttracking) {
-      fTrackedFinalStateParticles += 1;
+      IncrementCounter("tracked_final_state_particles");
     } else {
-      fSkippedFinalStateParticles += 1;
+      IncrementCounter("skipped_final_state_particles");
     }
     cpg->AddTrack(id, px, py, pz, x * cm, y * cm, z * cm, im, wanttracking, e,
                   tof, wspill, procID);
@@ -525,7 +519,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
   }
-  fGeneratedEvents += 1;
+  IncrementCounter("generated_events");
   return kTRUE;
 }
 // -------------------------------------------------------------------------

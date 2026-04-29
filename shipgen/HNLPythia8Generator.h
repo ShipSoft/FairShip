@@ -87,12 +87,6 @@ class HNLPythia8Generator : public SHiP::Generator {
 
   void UseDeepCopy() { fDeepCopy = kTRUE; };
   Int_t nrOfRetries() { return fnRetries; };
-  Long64_t nrOfHNLCandidates() const { return fHNLCandidates; };
-  Long64_t nrOfAcceptedHNLCandidates() const { return fAcceptedHNLCandidates; };
-  Long64_t nrOfMultiHNLCandidateTries() const {
-    return fMultiHNLCandidateTries;
-  };
-  Long64_t nrOfStoredDecayProducts() const { return fStoredDecayProducts; };
   Pythia8::Pythia* getPythiaInstance() { return fPythia; };
   Pythia8::Pythia* fPythia;  //!
  private:
@@ -116,10 +110,6 @@ class HNLPythia8Generator : public SHiP::Generator {
   Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];
-  Long64_t fHNLCandidates;
-  Long64_t fAcceptedHNLCandidates;
-  Long64_t fMultiHNLCandidateTries;
-  Long64_t fStoredDecayProducts;
   Bool_t fDeepCopy;     // not used
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 };
