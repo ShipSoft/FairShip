@@ -36,7 +36,9 @@ class MuDISGenerator : public SHiP::Generator {
     endZ = z_end;
   }
   Long64_t GetGeneratedEvents() const { return fGeneratedEvents; }
-  Long64_t GetInteractionSamplingTrials() const { return fInteractionSamplingTrials; }
+  Long64_t GetInteractionSamplingTrials() const {
+    return fInteractionSamplingTrials;
+  }
   Long64_t GetDISParticlesStored() const { return fDISParticlesStored; }
   Long64_t GetSoftParticlesStored() const { return fSoftParticlesStored; }
   Long64_t GetSoftParticlesSkipped() const { return fSoftParticlesSkipped; }

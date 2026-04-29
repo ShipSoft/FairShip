@@ -89,7 +89,9 @@ class HNLPythia8Generator : public SHiP::Generator {
   Int_t nrOfRetries() { return fnRetries; };
   Long64_t nrOfHNLCandidates() const { return fHNLCandidates; };
   Long64_t nrOfAcceptedHNLCandidates() const { return fAcceptedHNLCandidates; };
-  Long64_t nrOfMultiHNLCandidateTries() const { return fMultiHNLCandidateTries; };
+  Long64_t nrOfMultiHNLCandidateTries() const {
+    return fMultiHNLCandidateTries;
+  };
   Long64_t nrOfStoredDecayProducts() const { return fStoredDecayProducts; };
   Pythia8::Pythia* getPythiaInstance() { return fPythia; };
   Pythia8::Pythia* fPythia;  //!

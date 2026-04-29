@@ -174,25 +174,15 @@ class ShipDigiReco:
         print(f"  {'events_with_good_tracks':<40} : {self.validation_stats['events_with_good_tracks']}")
         print(f"  {'smeared_hits_total':<40} : {self.validation_stats['smeared_hits_total']}")
         print(f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}")
-        print(
-            f"  {'track_candidates_rejected_hits':<40} : {self.validation_stats['track_candidates_rejected_hits']}"
-        )
+        print(f"  {'track_candidates_rejected_hits':<40} : {self.validation_stats['track_candidates_rejected_hits']}")
         print(
             f"  {'track_candidates_rejected_stations':<40} : {self.validation_stats['track_candidates_rejected_stations']}"
         )
         print(f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}")
-        print(
-            f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}"
-        )
-        print(
-            f"  {'tracks_failed_consistency':<40} : {self.validation_stats['tracks_failed_consistency']}"
-        )
-        print(
-            f"  {'tracks_failed_fit':<40} : {self.validation_stats['tracks_failed_fit']}"
-        )
-        print(
-            f"  {'tracks_failed_state_access':<40} : {self.validation_stats['tracks_failed_state_access']}"
-        )
+        print(f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}")
+        print(f"  {'tracks_failed_consistency':<40} : {self.validation_stats['tracks_failed_consistency']}")
+        print(f"  {'tracks_failed_fit':<40} : {self.validation_stats['tracks_failed_fit']}")
+        print(f"  {'tracks_failed_state_access':<40} : {self.validation_stats['tracks_failed_state_access']}")
         print(f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}")
         print(f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}")
         print(f"  {'vertexing_calls':<40} : {self.validation_stats['vertexing_calls']}")

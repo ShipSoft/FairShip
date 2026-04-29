@@ -108,8 +108,12 @@ class FixedTargetGenerator : public SHiP::Generator {
   Long64_t GetG4OnlyEvents() const { return fG4OnlyEvents; }
   Long64_t GetCharmInputPairs() const { return fCharmInputPairs; }
   Long64_t GetStoredTracks() const { return fStoredTracks; }
-  Long64_t GetTrackedFinalStateParticles() const { return fTrackedFinalStateParticles; }
-  Long64_t GetSkippedFinalStateParticles() const { return fSkippedFinalStateParticles; }
+  Long64_t GetTrackedFinalStateParticles() const {
+    return fTrackedFinalStateParticles;
+  }
+  Long64_t GetSkippedFinalStateParticles() const {
+    return fSkippedFinalStateParticles;
+  }
 
  private:
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!

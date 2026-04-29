@@ -42,7 +42,9 @@ class GenieGenerator : public SHiP::Generator {
   Long64_t GetGeneratedEvents() const { return fGeneratedEvents; }
   Long64_t GetCCEvents() const { return fCCEvents; }
   Long64_t GetNuEElasticEvents() const { return fNuEElasticEvents; }
-  Long64_t GetInteractionSamplingTrials() const { return fInteractionSamplingTrials; }
+  Long64_t GetInteractionSamplingTrials() const {
+    return fInteractionSamplingTrials;
+  }
   Long64_t GetOutgoingLeptonsStored() const { return fOutgoingLeptonsStored; }
   Long64_t GetOutgoingHadronsStored() const { return fOutgoingHadronsStored; }
 

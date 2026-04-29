@@ -1238,7 +1238,9 @@ def _print_simulation_output_summary(output_filename, requested_events):
                         pdg = int(track.GetPdgCode())
                         track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
 
-        countable_branches = [name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0]
+        countable_branches = [
+            name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0
+        ]
         _print_kv("Countable branches", len(countable_branches))
 
         if track_stats["total_tracks"] > 0:
@@ -1250,7 +1252,9 @@ def _print_simulation_output_summary(output_filename, requested_events):
             _print_kv("Track momentum", _format_stat_summary(track_stats["p"]))
             _print_kv("Track energy", _format_stat_summary(track_stats["energy"]))
             _print_kv("Track start Z", _format_stat_summary(track_stats["start_z"]))
-            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[:10]
+            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[
+                :10
+            ]
             _print_kv("Top PDG counts", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
 
         if scalar_stats:
