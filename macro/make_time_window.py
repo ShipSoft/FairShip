@@ -65,7 +65,7 @@ def resolve_input_files(paths):
                     log.error(f"xrdfs ls failed: {result.stderr.strip()}")
                     sys.exit(1)
                 for line in result.stdout.strip().splitlines():
-                    if line.endswith(".root"):
+                    if line.endswith(".root") and line.rsplit("/", 1)[-1].startswith("sim_"):
                         resolved.append(f"root://{server}/{line}")
                 log.info(f"  Found {len(resolved)} ROOT files")
             else:
