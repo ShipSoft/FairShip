@@ -16,6 +16,12 @@ Assumptions (documented here and printed at runtime):
 - Uniform distribution of interactions in time
 - Number of interactions per window: Poisson distributed
 - Events sampled proportional to weight (with replacement)
+
+Performance notes:
+- Weight collection reads only the MCTrack branch (~1% of data)
+- All time window selections are pre-generated, then unique events
+  are read in sorted order (sequential I/O) and cached in memory
+- Time window construction is pure in-memory, no further I/O
 """
 
 import argparse
@@ -85,11 +91,27 @@ def discover_point_branches(tree):
     return branches
 
 
+def get_point_class_name(chain, branch_name):
+    """Get the C++ class name for a Point branch."""
+    branch = chain.GetBranch(branch_name)
+    if branch:
+        class_name = branch.GetClassName()
+        # For vector<X>, extract X
+        if class_name.startswith("vector<"):
+            return class_name[7:-1]
+        return class_name
+    return None
+
+
 def compute_lambda(chain, n_events):
     """Compute expected interactions per time window from event weights.
 
-    Returns (lambda, weights_array) where weights_array has per-event weights.
+    Only reads the MCTrack branch to minimise I/O.
+    Returns (lambda, weights_array).
     """
+    chain.SetBranchStatus("*", 0)
+    chain.SetBranchStatus("MCTrack*", 1)
+
     weights = np.empty(n_events)
     for i in range(n_events):
         chain.GetEntry(i)
@@ -98,69 +120,106 @@ def compute_lambda(chain, n_events):
         else:
             weights[i] = 0.0
 
+    # Re-enable all branches for subsequent reads
+    chain.SetBranchStatus("*", 1)
+
     sum_weights = np.sum(weights)
-    # lambda = sum_weights * (time_window / spill_duration) * (full_spill_pot / sim_pot)
     lam = sum_weights * (TIME_WINDOW / SPILL_DURATION) * (FULL_SPILL_POT / SIM_POT)
 
     log.info(f"Total input events: {n_events}")
     log.info(f"Sum of weights: {sum_weights:.6g}")
     log.info(
-        f"Scale factor: (TIME_WINDOW/SPILL_DURATION) * (FULL_SPILL_POT/SIM_POT) = {(TIME_WINDOW / SPILL_DURATION) * (FULL_SPILL_POT / SIM_POT):.6g}"
+        "Scale factor: (TIME_WINDOW/SPILL_DURATION) * (FULL_SPILL_POT/SIM_POT)"
+        f" = {(TIME_WINDOW / SPILL_DURATION) * (FULL_SPILL_POT / SIM_POT):.6g}"
     )
     log.info(f"Expected interactions per {TIME_WINDOW / u.microsecond:.0f} us time window (lambda): {lam:.4f}")
 
     return lam, weights
 
 
-def build_sampling_distribution(weights):
-    """Normalise weights to a probability distribution for sampling."""
-    total = np.sum(weights)
-    if total <= 0:
-        log.error("Sum of weights is zero or negative, cannot sample")
-        sys.exit(1)
-    return weights / total
+def pre_generate_selections(n_windows, n_events, lam, probs):
+    """Pre-generate all time window event selections.
+
+    Returns list of (event_indices, time_offsets) tuples and the set of
+    unique event indices needed.
+    """
+    all_windows = []
+    all_indices = []
+
+    for _ in range(n_windows):
+        n_sub = np.random.poisson(lam)
+        if n_sub == 0:
+            all_windows.append((np.array([], dtype=int), np.array([])))
+            continue
+        indices = np.random.choice(n_events, size=n_sub, replace=True, p=probs)
+        offsets = np.random.uniform(0, TIME_WINDOW, size=n_sub)
+        all_windows.append((indices, offsets))
+        all_indices.append(indices)
+
+    if all_indices:
+        unique_indices = np.unique(np.concatenate(all_indices))
+    else:
+        unique_indices = np.array([], dtype=int)
+
+    total_draws = sum(len(w[0]) for w in all_windows)
+    log.info(
+        f"Pre-generated {n_windows} windows: {total_draws} total event draws, {len(unique_indices)} unique events to cache"
+    )
+
+    return all_windows, unique_indices
 
 
-def merge_events(chain, event_indices, time_offsets, point_branches, out_tracks, out_points):
-    """Merge multiple sub-events into combined output vectors.
+def deep_copy_event(chain, point_branches):
+    """Deep-copy MCTrack and Point data from current chain entry into Python lists."""
+    tracks = [ROOT.ShipMCTrack(chain.MCTrack[i]) for i in range(len(chain.MCTrack))]
 
-    Parameters
-    ----------
-    chain : ROOT.TChain
-        Input chain positioned at various events.
-    event_indices : list of int
-        Indices of events to merge.
-    time_offsets : list of float
-        Time offset in ns for each sub-event.
-    point_branches : list of str
-        Names of Point branches to merge.
-    out_tracks : ROOT.std.vector('ShipMCTrack')
-        Output MCTrack vector.
-    out_points : dict of str -> ROOT.std.vector
-        Output Point vectors keyed by branch name.
+    points = {}
+    for branch_name in point_branches:
+        branch_data = getattr(chain, branch_name)
+        points[branch_name] = [type(branch_data[i])(branch_data[i]) for i in range(len(branch_data))]
 
-    Returns
-    -------
-    list of dict
-        Per-sub-event metadata for the debug tree.
+    return {"tracks": tracks, "points": points}
+
+
+def cache_events(chain, unique_indices, point_branches):
+    """Read unique events in sorted order and cache in memory.
+
+    Sequential access pattern enables ROOT's TTreeCache prefetch.
+    """
+    cache = {}
+    n_total = len(unique_indices)
+
+    for i, evt_idx in enumerate(unique_indices):
+        chain.GetEntry(int(evt_idx))
+        cache[int(evt_idx)] = deep_copy_event(chain, point_branches)
+
+        if (i + 1) % 1000 == 0 or i == n_total - 1:
+            log.info(f"  Cached {i + 1}/{n_total} events")
+
+    return cache
+
+
+def merge_from_cache(cache, event_indices, time_offsets, point_branches, out_tracks, out_points):
+    """Merge sub-events from cache into output vectors.
+
+    Pure in-memory operation — no I/O.
     """
     track_offset = 0
     sub_event_info = []
 
     for k, (evt_idx, t_offset) in enumerate(zip(event_indices, time_offsets)):
-        chain.GetEntry(evt_idx)
+        cached = cache[int(evt_idx)]
+        cached_tracks = cached["tracks"]
+        n_tracks = len(cached_tracks)
 
-        n_tracks = len(chain.MCTrack)
         info = {
-            "sub_event_index": k,
             "original_event": int(evt_idx),
-            "time_offset_ns": t_offset,
+            "time_offset_ns": float(t_offset),
             "n_tracks": n_tracks,
         }
 
         # Merge MCTracks
-        for i in range(n_tracks):
-            track = chain.MCTrack[i]
+        for track in cached_tracks:
             new_track = ROOT.ShipMCTrack(track)
             new_track.SetStartT(track.GetStartT() + t_offset)
             mother_id = track.GetMotherId()
@@ -173,11 +232,9 @@ def merge_events(chain, event_indices, time_offsets, point_branches, out_tracks,
         # Merge Point branches
         n_points_total = 0
         for branch_name in point_branches:
-            points = getattr(chain, branch_name)
-            n_points = len(points)
-            n_points_total += n_points
-            for i in range(n_points):
-                point = points[i]
+            cached_points = cached["points"][branch_name]
+            n_points_total += len(cached_points)
+            for point in cached_points:
                 new_point = type(point)(point)
                 new_point.SetTime(point.GetTime() + t_offset)
                 new_point.SetTrackID(point.GetTrackID() + track_offset)
@@ -188,18 +245,6 @@ def merge_events(chain, event_indices, time_offsets, point_branches, out_tracks,
         track_offset += n_tracks
 
     return sub_event_info
-
-
-def get_point_class_name(chain, branch_name):
-    """Get the C++ class name for a Point branch."""
-    branch = chain.GetBranch(branch_name)
-    if branch:
-        class_name = branch.GetClassName()
-        # For vector<X>, extract X
-        if class_name.startswith("vector<"):
-            return class_name[7:-1]
-        return class_name
-    return None
 
 
 def main():
@@ -238,12 +283,11 @@ def main():
         log.error("No events found in input files")
         sys.exit(1)
 
-    # Discover Point branches
+    # Discover Point branches (need one full entry for branch info)
     chain.GetEntry(0)
     point_branches = discover_point_branches(chain)
     log.info(f"Point branches: {point_branches}")
 
-    # Get class names for Point branches
     point_class_names = {}
     for branch_name in point_branches:
         class_name = get_point_class_name(chain, branch_name)
@@ -254,11 +298,23 @@ def main():
             log.warning(f"  {branch_name}: could not determine class, skipping")
     point_branches = [b for b in point_branches if b in point_class_names]
 
-    # Compute lambda and build sampling distribution
+    # --- Phase A: Weight collection (MCTrack branch only) ---
+    log.info("--- Phase A: Collecting weights (MCTrack branch only) ---")
     lam, weights = compute_lambda(chain, n_events)
-    probs = build_sampling_distribution(weights)
+    probs = weights / np.sum(weights)
 
-    # Set up output file and trees
+    # --- Phase B: Pre-generate all selections (pure CPU) ---
+    log.info("--- Phase B: Pre-generating time window selections ---")
+    all_windows, unique_indices = pre_generate_selections(args.n_windows, n_events, lam, probs)
+
+    # --- Phase C: Cache unique events (sorted sequential I/O) ---
+    log.info(f"--- Phase C: Caching {len(unique_indices)} unique events ---")
+    cache = cache_events(chain, unique_indices, point_branches)
+    log.info(f"  Cache complete ({len(cache)} events in memory)")
+
+    # --- Phase D: Build time windows from cache (in-memory) ---
+    log.info("--- Phase D: Building time windows from cache ---")
+
     out_file = ROOT.TFile(args.output, "RECREATE")
 
     # Main cbmsim tree with vector branches
@@ -282,7 +338,6 @@ def main():
     meta_tree.Branch("n_total_tracks", n_total_tracks, "n_total_tracks/I")
     meta_tree.Branch("n_total_points", n_total_points, "n_total_points/I")
 
-    # Per-sub-event vectors for metadata
     sub_time_offsets = ROOT.std.vector("double")()
     sub_n_tracks = ROOT.std.vector("int")()
     sub_original_indices = ROOT.std.vector("int")()
@@ -290,9 +345,7 @@ def main():
     meta_tree.Branch("sub_n_tracks", sub_n_tracks)
     meta_tree.Branch("sub_original_indices", sub_original_indices)
 
-    # Generate time windows
-    for window_idx in range(args.n_windows):
-        # Clear output vectors
+    for window_idx, (event_indices, time_offsets) in enumerate(all_windows):
         out_tracks.clear()
         for vec in out_points.values():
             vec.clear()
@@ -300,11 +353,9 @@ def main():
         sub_n_tracks.clear()
         sub_original_indices.clear()
 
-        # Draw number of sub-events from Poisson
-        n_sub = np.random.poisson(lam)
+        n_sub = len(event_indices)
 
         if n_sub == 0:
-            # Empty time window
             n_overlaid[0] = 0
             n_total_tracks[0] = 0
             n_total_points[0] = 0
@@ -312,16 +363,8 @@ def main():
             meta_tree.Fill()
             continue
 
-        # Sample events proportional to weight
-        event_indices = np.random.choice(n_events, size=n_sub, replace=True, p=probs)
+        sub_info = merge_from_cache(cache, event_indices, time_offsets, point_branches, out_tracks, out_points)
 
-        # Assign uniform time offsets within the window
-        time_offsets = np.random.uniform(0, TIME_WINDOW, size=n_sub)
-
-        # Merge sub-events
-        sub_info = merge_events(chain, event_indices, time_offsets, point_branches, out_tracks, out_points)
-
-        # Fill metadata
         n_overlaid[0] = n_sub
         n_total_tracks[0] = out_tracks.size()
         total_points = sum(vec.size() for vec in out_points.values())
@@ -337,7 +380,8 @@ def main():
 
         if (window_idx + 1) % 10 == 0 or window_idx == 0:
             log.info(
-                f"Window {window_idx + 1}/{args.n_windows}: {n_sub} sub-events, {out_tracks.size()} tracks, {total_points} points"
+                f"Window {window_idx + 1}/{args.n_windows}: "
+                f"{n_sub} sub-events, {out_tracks.size()} tracks, {total_points} points"
             )
 
     out_file.Write()
