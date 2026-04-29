@@ -360,6 +360,9 @@ def main():
 
     # --- Phase A: Extract weights via RDataFrame ---
     log.info("--- Phase A: Extracting weights via RDataFrame ---")
+    # Ensure Cling has full class definitions (not just forward declarations
+    # from dictionary payload) before RDataFrame instantiates RVec<T> templates
+    ROOT.gInterpreter.Declare('#include "ShipMCTrack.h"')
     file_vec = ROOT.std.vector("string")()
     for f in input_files:
         file_vec.push_back(f)
