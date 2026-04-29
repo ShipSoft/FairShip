@@ -109,12 +109,19 @@ class ShipDigiReco:
         self.validation_stats = {
             "events_digitized": 0,
             "events_reconstructed": 0,
+            "events_with_hits": 0,
+            "events_with_candidates": 0,
+            "events_with_fitted_tracks": 0,
+            "events_with_good_tracks": 0,
             "smeared_hits_total": 0,
             "track_candidates_total": 0,
             "track_candidates_rejected_hits": 0,
             "track_candidates_rejected_stations": 0,
             "fit_hypotheses_tried": 0,
             "fit_hypotheses_converged": 0,
+            "tracks_failed_consistency": 0,
+            "tracks_failed_fit": 0,
+            "tracks_failed_state_access": 0,
             "fitted_tracks_total": 0,
             "good_tracks_total": 0,
             "vertexing_calls": 0,
@@ -133,6 +140,15 @@ class ShipDigiReco:
             "ndf_sum": 0.0,
             "ndf_sum_sq": 0.0,
             "ndf_count": 0,
+            "candidate_hits_sum": 0.0,
+            "candidate_hits_sum_sq": 0.0,
+            "candidate_hits_count": 0,
+            "candidate_stations_sum": 0.0,
+            "candidate_stations_sum_sq": 0.0,
+            "candidate_stations_count": 0,
+            "veto_link_distance_sum": 0.0,
+            "veto_link_distance_sum_sq": 0.0,
+            "veto_link_distance_count": 0,
         }
 
     def _record_event_stat(self, key: str, value: float) -> None:
@@ -152,6 +168,10 @@ class ShipDigiReco:
         print("[Reco Validation]")
         print(f"  {'events_digitized':<40} : {self.validation_stats['events_digitized']}")
         print(f"  {'events_reconstructed':<40} : {self.validation_stats['events_reconstructed']}")
+        print(f"  {'events_with_hits':<40} : {self.validation_stats['events_with_hits']}")
+        print(f"  {'events_with_candidates':<40} : {self.validation_stats['events_with_candidates']}")
+        print(f"  {'events_with_fitted_tracks':<40} : {self.validation_stats['events_with_fitted_tracks']}")
+        print(f"  {'events_with_good_tracks':<40} : {self.validation_stats['events_with_good_tracks']}")
         print(f"  {'smeared_hits_total':<40} : {self.validation_stats['smeared_hits_total']}")
         print(f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}")
         print(
@@ -163,6 +183,15 @@ class ShipDigiReco:
         print(f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}")
         print(
             f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}"
+        )
+        print(
+            f"  {'tracks_failed_consistency':<40} : {self.validation_stats['tracks_failed_consistency']}"
+        )
+        print(
+            f"  {'tracks_failed_fit':<40} : {self.validation_stats['tracks_failed_fit']}"
+        )
+        print(
+            f"  {'tracks_failed_state_access':<40} : {self.validation_stats['tracks_failed_state_access']}"
         )
         print(f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}")
         print(f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}")
@@ -187,6 +216,21 @@ class ShipDigiReco:
                     f"  {'veto_links_per_event':<40} : "
                     f"{self._format_mean_std(n_events, self.validation_stats['event_veto_links_sum'], self.validation_stats['event_veto_links_sum_sq'])}"
                 )
+        if self.validation_stats["candidate_hits_count"] > 0:
+            print(
+                f"  {'hits_per_candidate':<40} : "
+                f"{self._format_mean_std(self.validation_stats['candidate_hits_count'], self.validation_stats['candidate_hits_sum'], self.validation_stats['candidate_hits_sum_sq'])}"
+            )
+        if self.validation_stats["candidate_stations_count"] > 0:
+            print(
+                f"  {'stations_per_candidate':<40} : "
+                f"{self._format_mean_std(self.validation_stats['candidate_stations_count'], self.validation_stats['candidate_stations_sum'], self.validation_stats['candidate_stations_sum_sq'])}"
+            )
+        if self.validation_stats["veto_link_distance_count"] > 0:
+            print(
+                f"  {'veto_link_distance':<40} : "
+                f"{self._format_mean_std(self.validation_stats['veto_link_distance_count'], self.validation_stats['veto_link_distance_sum'], self.validation_stats['veto_link_distance_sum_sq'])}"
+            )
         if self.validation_stats["chi2_count"] > 0:
             print(
                 f"  {'fit_chi2_over_ndf':<40} : "
@@ -196,6 +240,21 @@ class ShipDigiReco:
             print(
                 f"  {'fit_ndf':<40} : "
                 f"{self._format_mean_std(self.validation_stats['ndf_count'], self.validation_stats['ndf_sum'], self.validation_stats['ndf_sum_sq'])}"
+            )
+        if self.validation_stats["fit_hypotheses_tried"] > 0:
+            print(
+                f"  {'fit_convergence_fraction':<40} : "
+                f"{100.0 * self.validation_stats['fit_hypotheses_converged'] / self.validation_stats['fit_hypotheses_tried']:.2f}%"
+            )
+        if self.validation_stats["track_candidates_total"] > 0:
+            print(
+                f"  {'candidate_to_fit_fraction':<40} : "
+                f"{100.0 * self.validation_stats['fitted_tracks_total'] / self.validation_stats['track_candidates_total']:.2f}%"
+            )
+        if self.validation_stats["fitted_tracks_total"] > 0:
+            print(
+                f"  {'good_track_fraction':<40} : "
+                f"{100.0 * self.validation_stats['good_tracks_total'] / self.validation_stats['fitted_tracks_total']:.2f}%"
             )
 
     def reconstruct(self) -> None:
@@ -210,6 +269,10 @@ class ShipDigiReco:
         self.validation_stats["events_reconstructed"] += 1
         self.validation_stats["fitted_tracks_total"] += n_tracks
         self.validation_stats["good_tracks_total"] += n_good_tracks
+        if n_tracks > 0:
+            self.validation_stats["events_with_fitted_tracks"] += 1
+        if n_good_tracks > 0:
+            self.validation_stats["events_with_good_tracks"] += 1
         self._record_event_stat("event_fitted_tracks", n_tracks)
         self._record_event_stat("event_good_tracks", n_good_tracks)
         if hasattr(self, "digiSBT"):
@@ -250,6 +313,8 @@ class ShipDigiReco:
         else:
             self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
         self.validation_stats["smeared_hits_total"] += len(self.SmearedHits)
+        if len(self.SmearedHits) > 0:
+            self.validation_stats["events_with_hits"] += 1
 
         trackCandidates = []
 
@@ -257,6 +322,8 @@ class ShipDigiReco:
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
         logger.debug("PatRec returned %d track candidates", len(track_hits))
         self.validation_stats["track_candidates_total"] += len(track_hits)
+        if len(track_hits) > 0:
+            self.validation_stats["events_with_candidates"] += 1
         self._record_event_stat("event_track_candidates", len(track_hits))
         # Create hitPosLists for track fit
         for i_track in track_hits:
@@ -310,10 +377,17 @@ class ShipDigiReco:
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
             nM = len(meas)
+            self.validation_stats["candidate_hits_sum"] += nM
+            self.validation_stats["candidate_hits_sum_sq"] += nM * nM
+            self.validation_stats["candidate_hits_count"] += 1
+            n_stations_crossed = len(stationCrossed[atrack])
+            self.validation_stats["candidate_stations_sum"] += n_stations_crossed
+            self.validation_stats["candidate_stations_sum_sq"] += n_stations_crossed * n_stations_crossed
+            self.validation_stats["candidate_stations_count"] += 1
             if nM < 13:
                 n_too_few_hits += 1
                 continue  # not enough hits to make a good trackfit
-            if len(stationCrossed[atrack]) < 3:
+            if n_stations_crossed < 3:
                 n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
             if global_variables.debug:
@@ -364,22 +438,26 @@ class ShipDigiReco:
                 try:
                     theTrack.checkConsistency()
                 except ROOT.genfit.Exception:
+                    self.validation_stats["tracks_failed_consistency"] += 1
                     continue
                 try:
                     self.fitter.processTrack(theTrack)
                 except Exception as e:
                     logger.debug("Failed to processTrack for hypothesis %d: %s", try_pdg, e)
+                    self.validation_stats["tracks_failed_fit"] += 1
                     continue
                 try:
                     theTrack.checkConsistency()
                 except ROOT.genfit.Exception:
                     logger.debug("Track inconsistent after fit for hypothesis %d", try_pdg)
+                    self.validation_stats["tracks_failed_consistency"] += 1
                     continue
                 try:
                     fittedState = theTrack.getFittedState()
                     fittedState.getMomMag()
                 except Exception as e:
                     logger.debug("Failed to getFittedState/getMomMag for hypothesis %d: %s", try_pdg, e)
+                    self.validation_stats["tracks_failed_state_access"] += 1
                     continue
                 fitStatus = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged():
@@ -527,7 +605,12 @@ class ShipDigiReco:
         self.vetoHitOnTrackArray.clear()
         for good_track in self.goodTracksVect:
             track = self.fGenFitArray[good_track]
-            self.vetoHitOnTrackArray.push_back(self.findVetoHitOnTrack(track))
+            veto_link = self.findVetoHitOnTrack(track)
+            self.vetoHitOnTrackArray.push_back(veto_link)
+            dist = float(veto_link.GetDist())
+            self.validation_stats["veto_link_distance_sum"] += dist
+            self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
+            self.validation_stats["veto_link_distance_count"] += 1
         self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
 
     def fracMCsame(self, trackids):
