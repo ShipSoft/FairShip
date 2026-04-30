@@ -205,11 +205,10 @@ class ShipDigiReco:
 
         candidates = []
 
-        if global_variables.patRec == "AR": # Or whatever flag you use
+        if global_variables.patRec == "AR":
             # PatRec Source
             raw_candidates = self.findTracks()
             for cand in raw_candidates:
-                # cand is already in our dictionary format from the previous step
                 candidates.append(cand)
         elif globa_variables.patRec == "Truth":
             # Truth Source
