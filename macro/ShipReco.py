@@ -66,9 +66,10 @@ parser.add_argument(
     help="Options for pattern recognition. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
+           Truth                     : MC truth seeding.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
     required=False,
-    choices=["FH", "AR", "TemplateMatching"],
+    choices=["FH", "AR", "TemplateMatching", "Truth"],
     default="AR",
 )
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
@@ -164,7 +165,7 @@ global_variables.debug = options.Debug
 global_variables.fieldMaker = fieldMaker
 global_variables.pidProton = pidProton
 global_variables.withT0 = options.withT0
-global_variables.patRec = options.patRec
+global_variables.patRec = False#options.patRec
 global_variables.vertexing = vertexing
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
