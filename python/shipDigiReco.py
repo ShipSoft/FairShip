@@ -321,7 +321,6 @@ class ShipDigiReco:
         return frac, tmax
 
     def finish(self) -> None:
-        del self.fitter
         print("finished writing tree")
         self.outputFile.cd()
         self.recoTree.Write()
