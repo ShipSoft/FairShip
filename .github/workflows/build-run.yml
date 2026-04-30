@@ -17,7 +17,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo 'matrix={"version":["26.02","26.03"],"vessel_option":["vacuums","helium"],"SND_option":["all"],"muon_shield":["TRY_2025"],"target":["Jun25"]}' >> "$GITHUB_OUTPUT"
+        run: echo 'matrix={"version":["26.02","26.03","26.04"],"vessel_option":["vacuums","helium"],"SND_option":["all"],"muon_shield":["TRY_2025"],"target":["Jun25"]}' >> "$GITHUB_OUTPUT"
   build:
     runs-on: self-hosted
     needs: generate-matrix
