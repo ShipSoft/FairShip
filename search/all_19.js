@@ -13,7 +13,7 @@ var searchData=
   ['update_5ffile_10',['update_file',['../namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5',1,'makeMuonDIS']]],
   ['updateenergy_11',['UpdateEnergy',['../classsplitcalHit.html#a5896b24a017d44df6a292d4afa4b9c32',1,'splitcalHit']]],
   ['updatepointtrackindices_12',['updatepointtrackindices',['../classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168',1,'SHiP::Detector::UpdatePointTrackIndices()'],['../classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b',1,'ISTLPointContainer::UpdatePointTrackIndices()']]],
-  ['updates_13',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md27',1,'']]],
+  ['updates_13',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md32',1,'']]],
   ['updatetrackindex_14',['UpdateTrackIndex',['../classShipStack.html#a9b519e1e6040b80fcb18fe44ce71bc20',1,'ShipStack']]],
   ['upperironthick_15',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
   ['upstreamtagger_16',['upstreamtagger',['../classUpstreamTagger.html#a63dd607c0d6d84c20955d21d8dd72342',1,'UpstreamTagger::UpstreamTagger(const char *Name, Bool_t Active)'],['../classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57',1,'UpstreamTagger::UpstreamTagger()'],['../classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3',1,'UpstreamTagger::UpstreamTagger(const UpstreamTagger &amp;)=delete'],['../classUpstreamTagger.html',1,'UpstreamTagger']]],
@@ -35,6 +35,6 @@ var searchData=
   ['userandom1_32',['userandom1',['../classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549',1,'Pythia8Generator::UseRandom1()'],['../classHNLPythia8Generator.html#af5c3daa98bc8428d66a7569e3c60c0f9',1,'HNLPythia8Generator::UseRandom1()'],['../classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9',1,'FixedTargetGenerator::UseRandom1()'],['../classDPPythia8Generator.html#ab4c1edc6b0d596bb683bf06696a3cdba',1,'DPPythia8Generator::UseRandom1()']]],
   ['userandom3_33',['userandom3',['../classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458',1,'FixedTargetGenerator::UseRandom3()'],['../classHNLPythia8Generator.html#a10cfa18bf9fcef7c426880b02a6aeb8e',1,'HNLPythia8Generator::UseRandom3()'],['../classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7',1,'Pythia8Generator::UseRandom3()'],['../classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa',1,'DPPythia8Generator::UseRandom3()']]],
   ['usesymmetry_34',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]],
-  ['using_20cvmfs_35',['Build Instructions using CVMFS',['../md_README.html#autotoc_md71',1,'']]],
-  ['utilities_36',['utilities',['../md_CHANGELOG.html#autotoc_md45',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md17',1,'Tools and Utilities']]]
+  ['using_20cvmfs_35',['Build Instructions using CVMFS',['../md_README.html#autotoc_md76',1,'']]],
+  ['utilities_36',['utilities',['../md_CHANGELOG.html#autotoc_md50',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md22',1,'Tools and Utilities']]]
 ];
