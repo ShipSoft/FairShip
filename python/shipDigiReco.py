@@ -7,19 +7,18 @@ from array import array
 
 import acts
 import acts.examples
-from strawReco import runTracking, calculate_sbt_doca
 import global_variables
 import ROOT
 import rootUtils as ut
 import shipPatRec
 import shipunit as u
-import shipVertex
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from strawReco import calculate_sbt_doca, runTracking
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ class ShipDigiReco:
 
         # Create output file and new tree for digi/reco branches only
         self.outputFile = ROOT.TFile.Open(fout, "recreate")
-        #self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
+        # self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
         self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
 
         # Disable GeoTracks branch if present in input
@@ -84,7 +83,7 @@ class ShipDigiReco:
             self.recoSplitcal = self.splitcalDetector.reco
 
         # prepare vertexing
-        #self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
+        # self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
         # setup random number generator
         self.random = ROOT.TRandom()
         ROOT.gRandom.SetSeed(13)
@@ -119,7 +118,7 @@ class ShipDigiReco:
     def reconstruct(self) -> None:
         self.actsTracks()
         if hasattr(self, "digiSBT"):
-           calculate_sbt_doca(self, output_tracks, self.digiSBT.det)
+            calculate_sbt_doca(self, output_tracks, self.digiSBT.det)
 
     def actsTracks(self) -> list:
         self.strawHits.clear()
@@ -144,7 +143,7 @@ class ShipDigiReco:
             z = self.sTree.strawtubesPoint[sm["digiHit"]].GetZ()
             deltaE = self.sTree.strawtubesPoint[sm["digiHit"]].GetEnergyLoss()
 
-            #Structure of hit vector (station, layer, view, straw, track_id, Hx,Hy,Hz,Ht, Px,Py,Pz,E, deltaPx, deltaPy, deltaPz, deltaE )
+            # Structure of hit vector (station, layer, view, straw, track_id, Hx,Hy,Hz,Ht, Px,Py,Pz,E, deltaPx, deltaPy, deltaPz, deltaE )
             iHit = ROOT.std.vector("float")()
             iHit += [station, layer, view, straw, trID, x, y, z, time, px, py, pz, 0, 0, 0, 0, deltaE]
             self.strawHits.push_back(iHit)
@@ -245,18 +244,21 @@ class ShipDigiReco:
 
         track_candidates = []
         for atrack in hitPosLists:
-            if atrack < 0: continue
+            if atrack < 0:
+                continue
 
             posM, momM = self._compute_seed_state(atrack, hitPosLists[atrack], trackParams)
 
             indices = listOfIndices[atrack]
 
-            track_candidates.append({
-                "pos": posM,
-                "mom": momM,
-                "indices": indices,
-                "charge": 1.0 # Assuming muons
-            })
+            track_candidates.append(
+                {
+                    "pos": posM,
+                    "mom": momM,
+                    "indices": indices,
+                    "charge": 1.0,  # Assuming muons
+                }
+            )
 
         return track_candidates
 
