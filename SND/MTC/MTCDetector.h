@@ -116,6 +116,7 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
 
   MTCDetector(const MTCDetector&) = delete;
   MTCDetector& operator=(const MTCDetector&) = delete;
+  ClassDefOverride(MTCDetector, 4)
 };
 
 #endif  // SND_MTC_MTCDETECTOR_H_
