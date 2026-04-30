@@ -14,14 +14,28 @@ it in future.
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+## 26.04 - 2026-04-30
+
+### Added
+
 * Add angular acceptance cut in HNL and DP generators to skip events outside the decay vessel
 * Add FileSummary to run_fixedTarget.py to save all the options for reference (#1140)
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
+* Add GenFit unbiased hit residuals and pulls to tracking benchmark
+* Add type stubs for ROOT, XRootD, acts, and genfit
+* Add CI workflow to publish plots to GitHub Pages and embed in PR comments
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition
 * `nrOfRetries()` in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via `nrOfGeoRejections()`
 * Read vessel end dimensions from veto YAML config instead of hardcoding in `geometry_config.py`
+* Replace uproot with PyROOT in compare_histograms
 
 ### Fixed
 
@@ -30,8 +44,15 @@ it in future.
 * Replace obsolete elliptical acceptance cut with rectangular acceptance in track pattern recognition
 * Fix CI build warnings: add missing `override` specifiers, fix `Print()` and `Init()` virtual hiding, remove unused `FairShipFields` LinkDef entry
 * Remove no-effect statements (unused object creation, bare index accesses) from Python scripts
+* Determine track charge from pattern recognition slope bending and fit both charge hypotheses
+* Skip inconsistent track hypothesis after fit
+* Improve track fitting loop robustness and add convergence check
+* Replace `from ROOT import` with namespace-qualified access
+* Update references to removed muon shield configurations
 
 ### Removed
+
+* Remove fake pattern recognition fallback
 
 ## 26.03 - 2026-03-31
 
