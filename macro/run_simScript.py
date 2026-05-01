@@ -14,6 +14,7 @@ import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
+import validationTools as validation_tools
 
 
 def _fraction_0_1(value: str) -> float:
@@ -1043,253 +1044,20 @@ if options.command == "Genie":
     f_output.Close()
 
 
-def _container_size(container):
-    """Return the number of elements for common ROOT container types."""
-    if container is None:
-        return None
-    for attr in ("size", "GetEntriesFast", "GetEntries"):
-        method = getattr(container, attr, None)
-        if callable(method):
-            try:
-                return int(method())
-            except TypeError:
-                continue
-    try:
-        return len(container)
-    except TypeError:
-        return None
-
-
-def _format_mean_std(count, total, total_sq):
-    if count <= 0:
-        return "n/a"
-    mean = total / count
-    variance = max(0.0, total_sq / count - mean * mean)
-    std = variance**0.5
-    return f"{mean:.4g} +- {std:.4g}"
-
-
-def _safe_fraction(numerator, denominator):
-    if denominator == 0:
-        return "n/a"
-    return f"{100.0 * numerator / denominator:.2f}%"
-
-
-def _print_section(title):
-    print(" ")
-    print(f"[{title}]")
-
-
-def _print_kv(label, value, width=28):
-    print(f"  {label:<{width}} {value}")
-
-
-def _update_numeric_stat(stats, value):
-    stats["count"] += 1
-    stats["sum"] += value
-    stats["sum_sq"] += value * value
-    if stats["min"] is None or value < stats["min"]:
-        stats["min"] = value
-    if stats["max"] is None or value > stats["max"]:
-        stats["max"] = value
-
-
-def _format_stat_summary(stats):
-    return (
-        f"{_format_mean_std(stats['count'], stats['sum'], stats['sum_sq'])}"
-        f"  [min={stats['min']:.4g}, max={stats['max']:.4g}]"
-    )
-
-
-def _print_simulation_output_summary(output_filename, requested_events):
-    generator_stats = []
-    if "P8gen" in globals():
-        if HNL:
-            generator_stats.append(("HNL retries", P8gen.nrOfRetries()))
-            generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
-            generator_stats.append(("HNL candidates", P8gen.GetCounter("hnl_candidates")))
-            generator_stats.append(("Accepted HNL candidates", P8gen.GetCounter("hnl_accepted_candidates")))
-            generator_stats.append(("Multi-HNL tries", P8gen.GetCounter("hnl_multi_candidate_tries")))
-            generator_stats.append(("Stored decay products", P8gen.GetCounter("hnl_stored_decay_products")))
-        elif options.DarkPhoton:
-            generator_stats.append(("DP retries", P8gen.nrOfRetries()))
-            generator_stats.append(("Geometry rejections", P8gen.nrOfGeoRejections()))
-            generator_stats.append(("Total dark photons", P8gen.nrOfDP()))
-        elif options.fixedTarget:
-            generator_stats.append(("Generated events", P8gen.GetCounter("generated_events")))
-            generator_stats.append(("G4-only events", P8gen.GetCounter("g4only_events")))
-            generator_stats.append(("Charm input pairs", P8gen.GetCounter("charm_input_pairs")))
-            generator_stats.append(("Stored tracks", P8gen.GetCounter("stored_tracks")))
-            generator_stats.append(("Tracked final-state particles", P8gen.GetCounter("tracked_final_state_particles")))
-            generator_stats.append(("Skipped final-state particles", P8gen.GetCounter("skipped_final_state_particles")))
-
-    if "MuonBackgen" in globals():
-        generator_stats.append(("Scanned input entries", MuonBackgen.GetCounter("scanned_entries")))
-        generator_stats.append(("Accepted input entries", MuonBackgen.GetCounter("accepted_entries")))
-        generator_stats.append(("Selected muons", MuonBackgen.GetCounter("selected_muons")))
-        generator_stats.append(("Transported tracks", MuonBackgen.GetCounter("transported_tracks")))
-
-    if "Ntuplegen" in globals():
-        generator_stats.append(("Scanned ntuple entries", Ntuplegen.GetCounter("scanned_entries")))
-        generator_stats.append(("Accepted ntuple entries", Ntuplegen.GetCounter("accepted_entries")))
-        generator_stats.append(("Rejected ntuple entries", Ntuplegen.GetCounter("rejected_entries")))
-
-    if "DISgen" in globals():
-        generator_stats.append(("Generated DIS events", DISgen.GetCounter("generated_events")))
-        generator_stats.append(("Interaction sampling trials", DISgen.GetCounter("interaction_sampling_trials")))
-        generator_stats.append(("Stored DIS particles", DISgen.GetCounter("dis_particles_stored")))
-        generator_stats.append(("Stored soft particles", DISgen.GetCounter("soft_particles_stored")))
-        generator_stats.append(("Skipped soft particles", DISgen.GetCounter("soft_particles_skipped")))
-
-    if "Geniegen" in globals():
-        generator_stats.append(("Generated GENIE events", Geniegen.GetCounter("generated_events")))
-        generator_stats.append(("CC events", Geniegen.GetCounter("cc_events")))
-        generator_stats.append(("nu-e elastic events", Geniegen.GetCounter("nue_elastic_events")))
-        generator_stats.append(("Interaction sampling trials", Geniegen.GetCounter("interaction_sampling_trials")))
-        generator_stats.append(("Stored outgoing leptons", Geniegen.GetCounter("outgoing_leptons_stored")))
-        generator_stats.append(("Stored outgoing hadrons", Geniegen.GetCounter("outgoing_hadrons_stored")))
-
-    if generator_stats:
-        _print_section("Generator Validation")
-        for label, value in generator_stats:
-            _print_kv(label, value)
-
-    with ROOT.TFile.Open(output_filename, "READ") as summary_file:
-        if not summary_file or summary_file.IsZombie():
-            print("Could not reopen output file for summary:", output_filename)
-            return
-
-        keys = list(summary_file.GetListOfKeys())
-        class_counts = {}
-        for key in keys:
-            class_name = key.GetClassName()
-            class_counts[class_name] = class_counts.get(class_name, 0) + 1
-
-        _print_section("Tree Validation")
-        _print_kv("Requested events", requested_events)
-
-        tree = summary_file.Get("cbmsim")
-        if not tree:
-            print("No cbmsim tree found in output file.")
-            return
-
-        n_entries = tree.GetEntries()
-        _print_kv("Final cbmsim entries", n_entries)
-        _print_kv("Kept fraction", _safe_fraction(n_entries, requested_events))
-
-        branch_names = [branch.GetName() for branch in tree.GetListOfBranches()]
-        _print_kv("Branches in cbmsim", len(branch_names))
-        _print_kv("ROOT objects", len(keys))
-
-        if n_entries <= 0:
-            print("cbmsim tree is empty.")
-            return
-
-        scalar_stats = {}
-        branch_stats = {}
-        track_stats = {
-            "total_tracks": 0,
-            "primary_tracks": 0,
-            "secondary_tracks": 0,
-            "weight_sum": 0.0,
-            "weight_sq_sum": 0.0,
-            "weight_min": None,
-            "weight_max": None,
-            "p": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
-            "energy": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
-            "start_z": {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None},
-            "pdg_counts": {},
-        }
-
-        for branch_name in branch_names:
-            branch_stats[branch_name] = {
-                "total": 0,
-                "nonzero": 0,
-                "max": 0,
-                "sum_sq": 0.0,
-            }
-
-        for event_index in range(n_entries):
-            tree.GetEntry(event_index)
-            for branch_name in branch_names:
-                container = getattr(tree, branch_name, None)
-                count = _container_size(container)
-                if count is None:
-                    try:
-                        value = float(container)
-                    except (TypeError, ValueError):
-                        continue
-                    if branch_name not in scalar_stats:
-                        scalar_stats[branch_name] = {"count": 0, "sum": 0.0, "sum_sq": 0.0, "min": None, "max": None}
-                    _update_numeric_stat(scalar_stats[branch_name], value)
-                    continue
-
-                stats = branch_stats[branch_name]
-                stats["total"] += count
-                if count > 0:
-                    stats["nonzero"] += 1
-                if count > stats["max"]:
-                    stats["max"] = count
-                stats["sum_sq"] += count * count
-
-                if branch_name == "MCTrack" and count > 0:
-                    for track in container:
-                        track_stats["total_tracks"] += 1
-                        if track.GetMotherId() < 0:
-                            track_stats["primary_tracks"] += 1
-                        else:
-                            track_stats["secondary_tracks"] += 1
-                        weight = float(track.GetWeight())
-                        track_stats["weight_sum"] += weight
-                        track_stats["weight_sq_sum"] += weight * weight
-                        if track_stats["weight_min"] is None or weight < track_stats["weight_min"]:
-                            track_stats["weight_min"] = weight
-                        if track_stats["weight_max"] is None or weight > track_stats["weight_max"]:
-                            track_stats["weight_max"] = weight
-                        _update_numeric_stat(track_stats["p"], float(track.GetP()))
-                        _update_numeric_stat(track_stats["energy"], float(track.GetEnergy()))
-                        _update_numeric_stat(track_stats["start_z"], float(track.GetStartZ()))
-                        pdg = int(track.GetPdgCode())
-                        track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
-
-        countable_branches = [
-            name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0
-        ]
-        _print_kv("Countable branches", len(countable_branches))
-
-        if track_stats["total_tracks"] > 0:
-            _print_section("MCTrack Validation")
-            _print_kv("Total tracks", track_stats["total_tracks"])
-            _print_kv("Primary tracks", track_stats["primary_tracks"])
-            _print_kv("Secondary tracks", track_stats["secondary_tracks"])
-            _print_kv("Tracks per event", f"{track_stats['total_tracks'] / n_entries:.4g}")
-            _print_kv("Track momentum", _format_stat_summary(track_stats["p"]))
-            _print_kv("Track energy", _format_stat_summary(track_stats["energy"]))
-            _print_kv("Track start Z", _format_stat_summary(track_stats["start_z"]))
-            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[
-                :10
-            ]
-            _print_kv("Top PDG counts", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
-
-        if scalar_stats:
-            _print_section("Scalar Branch Validation")
-            for branch_name in sorted(scalar_stats):
-                _print_kv(branch_name, _format_stat_summary(scalar_stats[branch_name]))
-
-        _print_section("Branch Multiplicity")
-        for branch_name in sorted(countable_branches):
-            stats = branch_stats[branch_name]
-            active = 100.0 * stats["nonzero"] / n_entries
-            _print_kv(
-                branch_name,
-                f"total={stats['total']}, mean/event={_format_mean_std(n_entries, stats['total'], stats['sum_sq'])},"
-                f" active={stats['nonzero']}/{n_entries} ({active:5.1f}%), max={stats['max']}",
-                width=22,
-            )
-
-
 if options.validation:
-    _print_simulation_output_summary(outFile, options.nEvents)
+    validation_tools.print_simulation_output_summary(
+        ROOT,
+        outFile,
+        options.nEvents,
+        {"HNL": HNL, "DarkPhoton": options.DarkPhoton, "fixedTarget": options.fixedTarget},
+        {
+            "P8gen": globals().get("P8gen"),
+            "MuonBackgen": globals().get("MuonBackgen"),
+            "Ntuplegen": globals().get("Ntuplegen"),
+            "DISgen": globals().get("DISgen"),
+            "Geniegen": globals().get("Geniegen"),
+        },
+    )
 
 # ------------------------------------------------------------------------
 import checkMagFields

@@ -10,6 +10,7 @@ import rootUtils as ut
 import shipPatRec
 import shipunit as u
 import shipVertex
+import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
@@ -106,146 +107,7 @@ class ShipDigiReco:
 
         # for 'real' PatRec
         shipPatRec.initialize(fgeo)
-        self.validation_stats = {
-            "events_digitized": 0,
-            "events_reconstructed": 0,
-            "events_with_hits": 0,
-            "events_with_candidates": 0,
-            "events_with_fitted_tracks": 0,
-            "events_with_good_tracks": 0,
-            "smeared_hits_total": 0,
-            "track_candidates_total": 0,
-            "track_candidates_rejected_hits": 0,
-            "track_candidates_rejected_stations": 0,
-            "fit_hypotheses_tried": 0,
-            "fit_hypotheses_converged": 0,
-            "tracks_failed_consistency": 0,
-            "tracks_failed_fit": 0,
-            "tracks_failed_state_access": 0,
-            "fitted_tracks_total": 0,
-            "good_tracks_total": 0,
-            "vertexing_calls": 0,
-            "veto_links_total": 0,
-            "event_track_candidates_sum": 0.0,
-            "event_track_candidates_sum_sq": 0.0,
-            "event_fitted_tracks_sum": 0.0,
-            "event_fitted_tracks_sum_sq": 0.0,
-            "event_good_tracks_sum": 0.0,
-            "event_good_tracks_sum_sq": 0.0,
-            "event_veto_links_sum": 0.0,
-            "event_veto_links_sum_sq": 0.0,
-            "chi2_sum": 0.0,
-            "chi2_sum_sq": 0.0,
-            "chi2_count": 0,
-            "ndf_sum": 0.0,
-            "ndf_sum_sq": 0.0,
-            "ndf_count": 0,
-            "candidate_hits_sum": 0.0,
-            "candidate_hits_sum_sq": 0.0,
-            "candidate_hits_count": 0,
-            "candidate_stations_sum": 0.0,
-            "candidate_stations_sum_sq": 0.0,
-            "candidate_stations_count": 0,
-            "veto_link_distance_sum": 0.0,
-            "veto_link_distance_sum_sq": 0.0,
-            "veto_link_distance_count": 0,
-        }
-
-    def _record_event_stat(self, key: str, value: float) -> None:
-        self.validation_stats[f"{key}_sum"] += value
-        self.validation_stats[f"{key}_sum_sq"] += value * value
-
-    def _format_mean_std(self, count: int, total: float, total_sq: float) -> str:
-        if count <= 0:
-            return "n/a"
-        mean = total / count
-        variance = max(0.0, total_sq / count - mean * mean)
-        std = variance**0.5
-        return f"{mean:.4g} +- {std:.4g}"
-
-    def _print_validation_summary(self) -> None:
-        print(" ")
-        print("[Reco Validation]")
-        print(f"  {'events_digitized':<40} : {self.validation_stats['events_digitized']}")
-        print(f"  {'events_reconstructed':<40} : {self.validation_stats['events_reconstructed']}")
-        print(f"  {'events_with_hits':<40} : {self.validation_stats['events_with_hits']}")
-        print(f"  {'events_with_candidates':<40} : {self.validation_stats['events_with_candidates']}")
-        print(f"  {'events_with_fitted_tracks':<40} : {self.validation_stats['events_with_fitted_tracks']}")
-        print(f"  {'events_with_good_tracks':<40} : {self.validation_stats['events_with_good_tracks']}")
-        print(f"  {'smeared_hits_total':<40} : {self.validation_stats['smeared_hits_total']}")
-        print(f"  {'track_candidates_total':<40} : {self.validation_stats['track_candidates_total']}")
-        print(f"  {'track_candidates_rejected_hits':<40} : {self.validation_stats['track_candidates_rejected_hits']}")
-        print(
-            f"  {'track_candidates_rejected_stations':<40} : {self.validation_stats['track_candidates_rejected_stations']}"
-        )
-        print(f"  {'fit_hypotheses_tried':<40} : {self.validation_stats['fit_hypotheses_tried']}")
-        print(f"  {'fit_hypotheses_converged':<40} : {self.validation_stats['fit_hypotheses_converged']}")
-        print(f"  {'tracks_failed_consistency':<40} : {self.validation_stats['tracks_failed_consistency']}")
-        print(f"  {'tracks_failed_fit':<40} : {self.validation_stats['tracks_failed_fit']}")
-        print(f"  {'tracks_failed_state_access':<40} : {self.validation_stats['tracks_failed_state_access']}")
-        print(f"  {'fitted_tracks_total':<40} : {self.validation_stats['fitted_tracks_total']}")
-        print(f"  {'good_tracks_total':<40} : {self.validation_stats['good_tracks_total']}")
-        print(f"  {'vertexing_calls':<40} : {self.validation_stats['vertexing_calls']}")
-        print(f"  {'veto_links_total':<40} : {self.validation_stats['veto_links_total']}")
-        if self.validation_stats["events_reconstructed"] > 0:
-            n_events = self.validation_stats["events_reconstructed"]
-            print(
-                f"  {'track_candidates_per_event':<40} : "
-                f"{self._format_mean_std(n_events, self.validation_stats['event_track_candidates_sum'], self.validation_stats['event_track_candidates_sum_sq'])}"
-            )
-            print(
-                f"  {'fitted_tracks_per_event':<40} : "
-                f"{self._format_mean_std(n_events, self.validation_stats['event_fitted_tracks_sum'], self.validation_stats['event_fitted_tracks_sum_sq'])}"
-            )
-            print(
-                f"  {'good_tracks_per_event':<40} : "
-                f"{self._format_mean_std(n_events, self.validation_stats['event_good_tracks_sum'], self.validation_stats['event_good_tracks_sum_sq'])}"
-            )
-            if hasattr(self, "digiSBT"):
-                print(
-                    f"  {'veto_links_per_event':<40} : "
-                    f"{self._format_mean_std(n_events, self.validation_stats['event_veto_links_sum'], self.validation_stats['event_veto_links_sum_sq'])}"
-                )
-        if self.validation_stats["candidate_hits_count"] > 0:
-            print(
-                f"  {'hits_per_candidate':<40} : "
-                f"{self._format_mean_std(self.validation_stats['candidate_hits_count'], self.validation_stats['candidate_hits_sum'], self.validation_stats['candidate_hits_sum_sq'])}"
-            )
-        if self.validation_stats["candidate_stations_count"] > 0:
-            print(
-                f"  {'stations_per_candidate':<40} : "
-                f"{self._format_mean_std(self.validation_stats['candidate_stations_count'], self.validation_stats['candidate_stations_sum'], self.validation_stats['candidate_stations_sum_sq'])}"
-            )
-        if self.validation_stats["veto_link_distance_count"] > 0:
-            print(
-                f"  {'veto_link_distance':<40} : "
-                f"{self._format_mean_std(self.validation_stats['veto_link_distance_count'], self.validation_stats['veto_link_distance_sum'], self.validation_stats['veto_link_distance_sum_sq'])}"
-            )
-        if self.validation_stats["chi2_count"] > 0:
-            print(
-                f"  {'fit_chi2_over_ndf':<40} : "
-                f"{self._format_mean_std(self.validation_stats['chi2_count'], self.validation_stats['chi2_sum'], self.validation_stats['chi2_sum_sq'])}"
-            )
-        if self.validation_stats["ndf_count"] > 0:
-            print(
-                f"  {'fit_ndf':<40} : "
-                f"{self._format_mean_std(self.validation_stats['ndf_count'], self.validation_stats['ndf_sum'], self.validation_stats['ndf_sum_sq'])}"
-            )
-        if self.validation_stats["fit_hypotheses_tried"] > 0:
-            print(
-                f"  {'fit_convergence_fraction':<40} : "
-                f"{100.0 * self.validation_stats['fit_hypotheses_converged'] / self.validation_stats['fit_hypotheses_tried']:.2f}%"
-            )
-        if self.validation_stats["track_candidates_total"] > 0:
-            print(
-                f"  {'candidate_to_fit_fraction':<40} : "
-                f"{100.0 * self.validation_stats['fitted_tracks_total'] / self.validation_stats['track_candidates_total']:.2f}%"
-            )
-        if self.validation_stats["fitted_tracks_total"] > 0:
-            print(
-                f"  {'good_track_fraction':<40} : "
-                f"{100.0 * self.validation_stats['good_tracks_total'] / self.validation_stats['fitted_tracks_total']:.2f}%"
-            )
+        self.validation_stats = validation_tools.make_reco_validation_stats()
 
     def reconstruct(self) -> None:
         n_tracks = self.findTracks()
@@ -263,10 +125,10 @@ class ShipDigiReco:
             self.validation_stats["events_with_fitted_tracks"] += 1
         if n_good_tracks > 0:
             self.validation_stats["events_with_good_tracks"] += 1
-        self._record_event_stat("event_fitted_tracks", n_tracks)
-        self._record_event_stat("event_good_tracks", n_good_tracks)
+        validation_tools.record_event_stat(self.validation_stats, "event_fitted_tracks", n_tracks)
+        validation_tools.record_event_stat(self.validation_stats, "event_good_tracks", n_good_tracks)
         if hasattr(self, "digiSBT"):
-            self._record_event_stat("event_veto_links", len(self.vetoHitOnTrackArray))
+            validation_tools.record_event_stat(self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray))
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
@@ -314,7 +176,7 @@ class ShipDigiReco:
         self.validation_stats["track_candidates_total"] += len(track_hits)
         if len(track_hits) > 0:
             self.validation_stats["events_with_candidates"] += 1
-        self._record_event_stat("event_track_candidates", len(track_hits))
+        validation_tools.record_event_stat(self.validation_stats, "event_track_candidates", len(track_hits))
         # Create hitPosLists for track fit
         for i_track in track_hits:
             atrack = track_hits[i_track]
@@ -624,7 +486,9 @@ class ShipDigiReco:
     def finish(self) -> None:
         del self.fitter
         if self.validation:
-            self._print_validation_summary()
+            validation_tools.print_reco_validation_summary(
+                self.validation_stats, has_veto_detector=hasattr(self, "digiSBT")
+            )
         print("finished writing tree")
         self.outputFile.cd()
         self.recoTree.Write()
