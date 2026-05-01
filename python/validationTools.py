@@ -178,7 +178,9 @@ def print_reco_validation_summary(stats, has_veto_detector=False):
             width=40,
         )
     if stats["chi2_count"] > 0:
-        print_kv("fit_chi2_over_ndf", format_mean_std(stats["chi2_count"], stats["chi2_sum"], stats["chi2_sum_sq"]), width=40)
+        print_kv(
+            "fit_chi2_over_ndf", format_mean_std(stats["chi2_count"], stats["chi2_sum"], stats["chi2_sum_sq"]), width=40
+        )
     if stats["ndf_count"] > 0:
         print_kv("fit_ndf", format_mean_std(stats["ndf_count"], stats["ndf_sum"], stats["ndf_sum_sq"]), width=40)
     if stats["fit_hypotheses_tried"] > 0:
@@ -347,7 +349,9 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
                         pdg = int(track.GetPdgCode())
                         track_stats["pdg_counts"][pdg] = track_stats["pdg_counts"].get(pdg, 0) + 1
 
-        countable_branches = [name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0]
+        countable_branches = [
+            name for name, stats in branch_stats.items() if stats["total"] > 0 or stats["nonzero"] > 0
+        ]
         print_kv("Countable branches", len(countable_branches))
 
         if track_stats["total_tracks"] > 0:
@@ -359,7 +363,9 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
             print_kv("Track momentum", format_stat_summary(track_stats["p"]))
             print_kv("Track energy", format_stat_summary(track_stats["energy"]))
             print_kv("Track start Z", format_stat_summary(track_stats["start_z"]))
-            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[:10]
+            top_pdgs = sorted(track_stats["pdg_counts"].items(), key=lambda item: (-item[1], abs(item[0]), item[0]))[
+                :10
+            ]
             print_kv("Top PDG counts", ", ".join(f"{pdg}:{count}" for pdg, count in top_pdgs))
 
         if scalar_stats:
