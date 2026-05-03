@@ -269,6 +269,8 @@ run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
+if args.kaon_pion_splits > 0:
+    os.environ["KAON_PION_SPLITS"] = str(args.kaon_pion_splits)
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 

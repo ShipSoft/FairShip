@@ -250,7 +250,7 @@ void exitHadronAbsorber::PreTrack() {
   Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
 
   if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
-      // Force the decay time to 0
+      //  Force the decay time to 0
       gMC->ForceDecayTime(0);
     }
 
