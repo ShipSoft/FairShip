@@ -31,6 +31,7 @@ Physics assumptions:
 
 import argparse
 import logging
+import os
 import sys
 
 import numpy as np
@@ -251,7 +252,7 @@ def main():
     # The per-spill weight lives on the first muon track (|pdg| == 13) in
     # each event.  Sum over all events to get the total interaction rate
     # per spill.  Cache the result to avoid recomputing (~minutes for large files).
-    sumw_cache = args.input_file + ".sumw"
+    sumw_cache = os.path.basename(args.input_file) + ".sumw"
     try:
         with open(sumw_cache) as f:
             sum_weights = float(f.read().strip())
