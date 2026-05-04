@@ -29,7 +29,6 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 GenieGenerator::GenieGenerator() {
-  fGenOption = 0;  // default value, standard Genie Generator
 }
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
