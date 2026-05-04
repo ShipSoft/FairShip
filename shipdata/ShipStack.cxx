@@ -86,6 +86,16 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
   // <<    " " << secondparentID<<" "<<proc<< endl;
 
+  if (parentId >= 0) {
+      if (parentId < fParticles->GetEntriesFast()) {
+          TParticle* parentPart = (TParticle*)fParticles->At(parentId);
+          if (parentPart) {
+              Double_t parentWeight = parentPart->GetWeight();
+              weight = weight * parentWeight;
+          }
+      }
+  }
+
   Int_t trackId = fNParticles;
 
   // --> Get TParticle array
