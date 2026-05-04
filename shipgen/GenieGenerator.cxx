@@ -280,6 +280,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   -1,                                  // Parent
                   false);  // Don't track this particle
 
+  // Add the outgoing lepton and hadrons, if not in nu-only mode
+  if (!fNuOnly) {
     // Add final state lepton to the MCTrack stack:
     int outgoing_lepton_pdg = neu;
     if (cc) outgoing_lepton_pdg = copysign(TMath::Abs(neu) - 1, neu);
@@ -294,7 +296,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       cpg->AddTrack(pdgf[i_hadron], pxf[i_hadron], pyf[i_hadron], pzf[i_hadron],
                     vtxx * meter, vtxy * meter, vtxz * meter, 0, true);
     }
-
+  }
     return kTRUE;
 
   } else {
