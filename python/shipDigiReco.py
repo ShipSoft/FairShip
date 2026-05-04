@@ -476,10 +476,11 @@ class ShipDigiReco:
             veto_link = self.findVetoHitOnTrack(track)
             self.vetoHitOnTrackArray.push_back(veto_link)
             if self.validation:
-                dist = float(veto_link.GetDist())
-                self.validation_stats["veto_link_distance_sum"] += dist
-                self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
-                self.validation_stats["veto_link_distance_count"] += 1
+                if veto_link.GetIndex() >= 0:  # Only record real matches
+                    dist = float(veto_link.GetDist())
+                    self.validation_stats["veto_link_distance_sum"] += dist
+                    self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
+                    self.validation_stats["veto_link_distance_count"] += 1
         if self.validation:
             self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
 
