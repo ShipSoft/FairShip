@@ -59,6 +59,7 @@ class ShipMCTrack : public TObject {
   Double_t GetStartY() const { return fStartY; }
   Double_t GetStartZ() const { return fStartZ; }
   Double_t GetStartT() const { return fStartT; }
+  Int_t GetEventID() const { return fEventID; }
   void SetProcID(Int_t i) { fProcID = i; }
   Int_t GetProcID() const { return fProcID; }
   TString GetProcName() const { return TMCProcessName[fProcID]; }
