@@ -259,6 +259,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
   if (fGenOption == 3) {
     // Use GENIE geometry driver.
 
@@ -275,7 +276,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     // Add the neutrino to the MCTrack stack:
     cpg->AddTrack(neu,                                 // Neutrino PDG
                   pxv, pyv, pzv,                       // Neutrino momentum
-                  vtxx * 100, vtxy * 100, vtxz * 100,  // Event vertex [in cm!]
+                  vtxx * meter, vtxy * meter, vtxz * meter,  // Event vertex [in cm!]
                   -1,                                  // Parent
                   false);  // Don't track this particle
 
@@ -285,13 +286,13 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     if (nuel) outgoing_lepton_pdg = 11;
 
     bool track_outgoing_lepton = (cc || nuel) ? true : false;
-    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * 100, vtxy * 100,
-                  vtxz * 100, 0, track_outgoing_lepton);
+    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * meter, vtxy * meter,
+                  vtxz * meter, 0, track_outgoing_lepton);
 
     // Add final state hadrons to the MCTrack stack
     for (int i_hadron = 0; i_hadron < nf; i_hadron++) {
       cpg->AddTrack(pdgf[i_hadron], pxf[i_hadron], pyf[i_hadron], pzf[i_hadron],
-                    vtxx * 100, vtxy * 100, vtxz * 100, 0, true);
+                    vtxx * meter, vtxy * meter, vtxz * meter, 0, true);
     }
 
     return kTRUE;
