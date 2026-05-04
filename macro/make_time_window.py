@@ -21,8 +21,9 @@ Statistical choices (may be refined later):
   * Consecutive reading avoids random-access I/O and caching overhead.
 
 Physics assumptions:
-- Event weight = expected occurrences of that interaction per spill
-  (i.e. weights already scale to one full spill)
+- Event weight (on the first muon track, |pdg| == 13) gives the expected
+  number of occurrences of that interaction per spill.  Weights already
+  scale to one full spill.
 - Time window duration: 1 microsecond
 - Uniform distribution of interactions in time
 - Number of interactions per window: Poisson distributed
@@ -40,7 +41,6 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 # Physics parameters
-FULL_SPILL_POT = 4e13  # protons on target per spill (for cross-check only)
 SPILL_DURATION = 1.0 * u.second  # 1 second in ns
 TIME_WINDOW = 1.0 * u.microsecond  # 1 microsecond in ns
 
@@ -213,7 +213,6 @@ def main():
         "-o", "--output", default="time_windows.root", help="Output ROOT file (default: time_windows.root)"
     )
     parser.add_argument("--seed", type=int, default=None, help="Random seed for reproducibility")
-    parser.add_argument("--sim-pot", type=float, default=1e11, help="Simulated PoT for cross-check (default: 1e11)")
     args = parser.parse_args()
 
     if args.seed is not None:
@@ -249,21 +248,29 @@ def main():
             log.warning(f"  {branch_name}: could not determine class, skipping")
 
     # --- Determine total interactions per spill (= sum of event weights) ---
-    # Each event's weight (MCTrack[0].GetWeight()) gives the expected number
-    # of times that interaction occurs per spill.  The sum over all events
-    # is the total interaction rate per spill.
-    # Cache the result in a sidecar file to avoid recomputing on subsequent runs.
+    # The per-spill weight lives on the first muon track (|pdg| == 13) in
+    # each event.  Sum over all events to get the total interaction rate
+    # per spill.  Cache the result to avoid recomputing (~minutes for large files).
     sumw_cache = args.input_file + ".sumw"
     try:
         with open(sumw_cache) as f:
             sum_weights = float(f.read().strip())
         log.info(f"Sum of weights (cached): {sum_weights:.6g}")
     except (FileNotFoundError, ValueError):
-        log.info("Computing sum of weights via RDataFrame...")
-        ROOT.gSystem.Load("libShipData")
-        rdf = ROOT.RDataFrame("cbmsim", args.input_file)
-        rdf_w = rdf.Define("w", "MCTrack.empty() ? 0.0 : MCTrack[0].GetWeight()")
-        sum_weights = rdf_w.Sum("w").GetValue()
+        log.info("Computing sum of weights (first muon per event)...")
+        weight_chain = ROOT.TChain("cbmsim")
+        weight_chain.Add(args.input_file)
+        weight_chain.SetBranchStatus("*", 0)
+        weight_chain.SetBranchStatus("MCTrack*", 1)
+        sum_weights = 0.0
+        for i in range(n_events):
+            weight_chain.GetEntry(i)
+            for track in weight_chain.MCTrack:
+                if abs(track.GetPdgCode()) == 13:
+                    sum_weights += track.GetWeight()
+                    break
+            if (i + 1) % 1000000 == 0:
+                log.info(f"  {i + 1}/{n_events} events processed...")
         with open(sumw_cache, "w") as f:
             f.write(f"{sum_weights}\n")
         log.info(f"Sum of weights: {sum_weights:.6g} (saved to {sumw_cache})")
@@ -277,14 +284,7 @@ def main():
     # Fraction of spill in one time window gives the per-window expectation:
     lam = sum_weights * (TIME_WINDOW / SPILL_DURATION)
 
-    # Cross-check: independent lambda estimate from PoT ratio
-    lam_pot = n_events * (FULL_SPILL_POT / args.sim_pot) * (TIME_WINDOW / SPILL_DURATION)
-    avg_weight = sum_weights / n_events
-    expected_avg_weight = FULL_SPILL_POT / args.sim_pot
-
     log.info(f"Expected interactions per window (lambda): {lam:.4f}")
-    log.info(f"  Cross-check from PoT ratio ({args.sim_pot:.0e} sim PoT): {lam_pot:.4f}")
-    log.info(f"  Average weight: {avg_weight:.2f} (expected ~{expected_avg_weight:.0f})")
 
     # --- Pre-generate window sizes and time offsets ---
     window_sizes_np = np.random.poisson(lam, size=args.n_windows).astype(np.int32)
