@@ -130,7 +130,9 @@ class ShipDigiReco:
             validation_tools.record_event_stat(self.validation_stats, "event_fitted_tracks", n_tracks)
             validation_tools.record_event_stat(self.validation_stats, "event_good_tracks", n_good_tracks)
             if hasattr(self, "digiSBT"):
-                validation_tools.record_event_stat(self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray))
+                validation_tools.record_event_stat(
+                    self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray)
+                )
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
