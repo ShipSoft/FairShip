@@ -55,7 +55,7 @@ class GenieGenerator : public SHiP::Generator {
   std::vector<TVector3> m_boxes;
   Bool_t cc, nuel;
   Int_t nf, neu;
-  Int_t fGenOption;
+  Int_t fGenOption = 0; // default value, standard Genie Generator
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
