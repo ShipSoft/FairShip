@@ -78,7 +78,7 @@ class Generator : public FairGenerator {
   Double_t fMaxThetaY = 0;
   bool fUseVesselAcceptance = false;
   Int_t fnGeoRejects = 0;
-  std::unordered_map<std::string, Long64_t> fCounters;
+  std::unordered_map<std::string, int64_t> fCounters;
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_
