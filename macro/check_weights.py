@@ -5,7 +5,7 @@ import sys
 
 import ROOT
 
-ROOT.gInterpreter.Declare('#include "ShipMCTrack.h"')
+ROOT.gSystem.Load("libShipData")
 
 ROOT.gInterpreter.Declare("""
 struct WeightInfo {

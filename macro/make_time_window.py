@@ -260,7 +260,7 @@ def main():
         log.info(f"Sum of weights (cached): {sum_weights:.6g}")
     except (FileNotFoundError, ValueError):
         log.info("Computing sum of weights via RDataFrame...")
-        ROOT.gInterpreter.Declare('#include "ShipMCTrack.h"')
+        ROOT.gSystem.Load("libShipData")
         rdf = ROOT.RDataFrame("cbmsim", args.input_file)
         rdf_w = rdf.Define("w", "MCTrack.empty() ? 0.0 : MCTrack[0].GetWeight()")
         sum_weights = rdf_w.Sum("w").GetValue()
