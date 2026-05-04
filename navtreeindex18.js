@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"namespaceSciFiMapping.html#a88064553cb360b62aa9e06d78245a8ca":[5,0,75,8],
-"namespaceSciFiMapping.html#a952a23c26a5134abc05d3b3eb5925649":[5,0,75,16],
 "namespaceSciFiMapping.html#a9801cba257c688da4ddf8aab3ad62085":[5,0,75,3],
 "namespaceSciFiMapping.html#a981985b124b2c380d205c19f3dc3b5fb":[5,0,75,7],
 "namespaceSciFiMapping.html#aa3746ac9c76720d0de055b43dd1668aa":[5,0,75,11],
@@ -249,5 +247,7 @@ var NAVTREEINDEX18 =
 "namespacecompactingBackgroundProduction.html#a68e9182156087adfdb0fed8323680296":[5,0,10,11],
 "namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0":[5,0,10,9],
 "namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d":[5,0,10,2],
-"namespacecompactingBackgroundProduction.html#a73370f59858a1d62ea78a4686e059006":[5,0,10,1]
+"namespacecompactingBackgroundProduction.html#a73370f59858a1d62ea78a4686e059006":[5,0,10,1],
+"namespacecompactingBackgroundProduction.html#a8a405f84e075ae78adb32c348d65fc90":[5,0,10,4],
+"namespacecompactingBackgroundProduction.html#a986d4b128ad411838daa76aa5c52ce48":[5,0,10,12]
 };

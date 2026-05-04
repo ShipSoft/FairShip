@@ -3,7 +3,6 @@ var classShipMagnet =
     [ "ShipMagnet", "classShipMagnet.html#afc771e59dbad7503a644c8cc41f788f0", null ],
     [ "ShipMagnet", "classShipMagnet.html#a550f388f5bfcdc4d743b0eb34476be16", null ],
     [ "~ShipMagnet", "classShipMagnet.html#a819ce5141475a7b8c483ebe40e9a5fa9", null ],
-    [ "ClassDefOverride", "classShipMagnet.html#a52e0d035f4a157ee27f08f84ec8e1af6", null ],
     [ "ConstructGeometry", "classShipMagnet.html#a5bce708273c4bb9acc9dd9b27ee7f4e5", null ],
     [ "MagnetSupport", "classShipMagnet.html#acb59b103102d2e60cde7fb28a7a2d0e1", null ],
     [ "CoilThick", "classShipMagnet.html#ac73d1bd95af9b753dde2dac5eb4a3ee0", null ],

@@ -1,6 +1,5 @@
 <map id="ShipTAUMagneticSpectrometer" name="ShipTAUMagneticSpectrometer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,229,105"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="244,86,256,93,248,99,230,101,229,96,246,94,251,93,242,91"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,229,104"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="71,5,164,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,45,120,80,115,80,115,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,44,120,79,115,79,115,44"/>
 </map>

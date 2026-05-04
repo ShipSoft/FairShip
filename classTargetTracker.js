@@ -3,7 +3,6 @@ var classTargetTracker =
     [ "TargetTracker", "classTargetTracker.html#a8227ecd370dfb40ea0a30893a7e2616e", null ],
     [ "TargetTracker", "classTargetTracker.html#a87be90dbf77074e13376d51162e950c1", null ],
     [ "TargetTracker", "classTargetTracker.html#a6c537c2cf9eeea49024be95be2770d28", null ],
-    [ "ClassDefOverride", "classTargetTracker.html#a0c90b343c3cb2e0293be9e3eda33608b", null ],
     [ "ConstructGeometry", "classTargetTracker.html#a8de4dd47306a6697b4a933e29293ea60", null ],
     [ "DecodeTTID", "classTargetTracker.html#a4405f954069f85b445d9626ef331acb6", null ],
     [ "operator=", "classTargetTracker.html#a4895025ea25e7376d32c6cecb9b2e91b", null ],

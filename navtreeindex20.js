@@ -1,7 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespacegeomGeant4.html#a724303a4fd9998c82c60471393aa37a0":[5,0,36,5],
-"namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a":[5,0,36,8],
 "namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420":[5,0,36,1],
 "namespacegeomGeant4.html#ab9e46efa9bc333e742210c0da93c42e5":[5,0,36,10],
 "namespacegeomGeant4.html#aba553dcfd77eda82c10886fd0fec4e91":[5,0,36,6],
@@ -249,5 +247,7 @@ var NAVTREEINDEX20 =
 "namespacemakeCascade.html#af0a452fe06c434f6f8c311bc701af0bd":[5,0,46,58],
 "namespacemakeCascade.html#af0b5fb13024e9b4265f851c3c5a6bc3f":[5,0,46,52],
 "namespacemakeCascade.html#af663e1436c48b75c94e9414ec94bad99":[5,0,46,14],
-"namespacemakeCascade.html#aff9dd2d5f680ad23da5ad14070df2639":[5,0,46,12]
+"namespacemakeCascade.html#aff9dd2d5f680ad23da5ad14070df2639":[5,0,46,12],
+"namespacemakeDecay.html":[5,0,47],
+"namespacemakeDecay.html#a01dc90383daffd7d00a441b46189c74c":[5,0,47,36]
 };

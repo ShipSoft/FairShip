@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemake__nTuple__Tr.html#aacaa6c621712bd275bcf9591ae9e624d":[5,0,45,6],
-"namespacemake__nTuple__Tr.html#aad6bdb78e949eeb4d04982ad8a1a55a4":[5,0,45,39],
 "namespacemake__nTuple__Tr.html#ab3838ef387e15ef16309230b82161feb":[5,0,45,35],
 "namespacemake__nTuple__Tr.html#abb5aa6c767fa6bbe0644576fa9452799":[5,0,45,2],
 "namespacemake__nTuple__Tr.html#abb5c3bda5ff8fb19388beeea02969f56":[5,0,45,11],
@@ -249,5 +247,7 @@ var NAVTREEINDEX22 =
 "namespacerunCharmHadProd.html#ad246973bd2723995d27fa06674672800":[5,0,71,15],
 "namespacerunCharmHadProd.html#ad51543c577da88f9b2908d3f206f6a31":[5,0,71,5],
 "namespacerunCharmHadProd.html#ae03908cdbe212aeb9709dd676686466d":[5,0,71,0],
-"namespacerunPythia8.html":[5,0,72]
+"namespacerunPythia8.html":[5,0,72],
+"namespacerunPythia8.html#a02fbc1cb3d81fc14a973a80fe63a5f67":[5,0,72,29],
+"namespacerunPythia8.html#a0773b179ce66354584f56325e5da1bc0":[5,0,72,3]
 };

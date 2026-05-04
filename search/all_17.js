@@ -183,7 +183,7 @@ var searchData=
   ['setweight_180',['SetWeight',['../classShipMCTrack.html#a65915331fb3a53345fe464a92fac6185',1,'ShipMCTrack']]],
   ['setwirethickness_181',['SetWireThickness',['../classstrawtubes.html#ace8539312c83354b381d983c4c8f106f',1,'strawtubes']]],
   ['setxmax_182',['SetXMax',['../classsplitcal.html#a573a24765361012b489d130e3b5b3a7e',1,'splitcal']]],
-  ['setxoffset_183',['setxoffset',['../classFixedTargetGenerator.html#a592c152b2886907c6b2d0a1558a9a629',1,'FixedTargetGenerator::SetXoffset()'],['../classShipBFieldMap.html#a864c88c84e1333f170a6df09cc5de2dd',1,'ShipBFieldMap::SetXOffset()']]],
+  ['setxoffset_183',['setxoffset',['../classShipBFieldMap.html#a864c88c84e1333f170a6df09cc5de2dd',1,'ShipBFieldMap::SetXOffset()'],['../classFixedTargetGenerator.html#a592c152b2886907c6b2d0a1558a9a629',1,'FixedTargetGenerator::SetXoffset()']]],
   ['setxyz_184',['SetXYZ',['../classsplitcalHit.html#aa24601f24d3cbb086597451f0cd3b7f5',1,'splitcalHit']]],
   ['setxyzerrors_185',['SetXYZErrors',['../classsplitcalHit.html#ad0779012f3d0c5e77ab439b6d2ac5c10',1,'splitcalHit']]],
   ['setymax_186',['SetYMax',['../classsplitcal.html#a78674eb3af9e402400fe905726c65f23',1,'splitcal']]],

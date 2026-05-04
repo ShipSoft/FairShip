@@ -3,7 +3,6 @@ var classShipTargetStation =
     [ "ShipTargetStation", "classShipTargetStation.html#a7958cba364a5a890e5554939e111af54", null ],
     [ "ShipTargetStation", "classShipTargetStation.html#a435b11e533b272a65d204f25ab48c93e", null ],
     [ "~ShipTargetStation", "classShipTargetStation.html#a1455c5ae3381aec144ffe1d5852fc17e", null ],
-    [ "ClassDefOverride", "classShipTargetStation.html#a0e75b18fc0b1a49b3ba719bc8f014c93", null ],
     [ "ConstructGeometry", "classShipTargetStation.html#a27b9a06c074203ec75764462804a826e", null ],
     [ "SetLayerPosMat", "classShipTargetStation.html#a3f10bb33c08c56c4a4fbe94b044a6eaf", null ],
     [ "fDiameter", "classShipTargetStation.html#a3538a6ede26033854a2bcabac64796a6", null ],
