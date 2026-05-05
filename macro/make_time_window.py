@@ -249,8 +249,7 @@ def main():
             log.info(f"  {branch_name} -> {class_name}")
         else:
             raise RuntimeError(
-                f"Could not determine Point class for branch '{branch_name}' "
-                f"in chain 'cbmsim'. Cannot proceed."
+                f"Could not determine Point class for branch '{branch_name}' in chain 'cbmsim'. Cannot proceed."
             )
 
     # --- Determine total interactions per spill (= sum of event weights) ---
