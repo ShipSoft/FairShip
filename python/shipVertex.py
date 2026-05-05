@@ -79,7 +79,7 @@ class Task:
 
     def fcn(self, npar, gin, f, par, iflag) -> None:
         res = self.residuals(self.y_data, par, self.z0)
-        self.chi2(res, self.Vy)
+        f.value = self.chi2(res, self.Vy)
         return
 
     def _stepwise_extrapolate_to_z(self, extrapolate_fn, current_z, target_z, max_step=500.0):
