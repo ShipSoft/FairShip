@@ -30,6 +30,8 @@ Physics assumptions:
 """
 
 import argparse
+import hashlib
+import json
 import logging
 import os
 import sys
@@ -246,18 +248,37 @@ def main():
             point_class_names[branch_name] = class_name
             log.info(f"  {branch_name} -> {class_name}")
         else:
-            log.warning(f"  {branch_name}: could not determine class, skipping")
+            raise RuntimeError(
+                f"Could not determine Point class for branch '{branch_name}' "
+                f"in chain 'cbmsim'. Cannot proceed."
+            )
 
     # --- Determine total interactions per spill (= sum of event weights) ---
     # The per-spill weight lives on the first muon track (|pdg| == 13) in
     # each event.  Sum over all events to get the total interaction rate
     # per spill.  Cache the result to avoid recomputing (~minutes for large files).
-    sumw_cache = os.path.basename(args.input_file) + ".sumw"
+    real_path = os.path.realpath(args.input_file)
+    stat = os.stat(real_path)
+    cache_meta = {"path": real_path, "size": stat.st_size, "mtime": stat.st_mtime}
+    sumw_cache = hashlib.md5(real_path.encode()).hexdigest() + ".sumw"
+
+    sum_weights = None
     try:
         with open(sumw_cache) as f:
-            sum_weights = float(f.read().strip())
-        log.info(f"Sum of weights (cached): {sum_weights:.6g}")
-    except (FileNotFoundError, ValueError):
+            cached = json.load(f)
+        if (
+            cached.get("path") == cache_meta["path"]
+            and cached.get("size") == cache_meta["size"]
+            and cached.get("mtime") == cache_meta["mtime"]
+        ):
+            sum_weights = cached["sum_weights"]
+            log.info(f"Sum of weights (cached): {sum_weights:.6g}")
+        else:
+            log.info("Cache stale (file metadata changed), recomputing...")
+    except (FileNotFoundError, ValueError, KeyError):
+        pass
+
+    if sum_weights is None:
         log.info("Computing sum of weights (first muon per event)...")
         weight_chain = ROOT.TChain("cbmsim")
         weight_chain.Add(args.input_file)
@@ -273,7 +294,7 @@ def main():
             if (i + 1) % 1000000 == 0:
                 log.info(f"  {i + 1}/{n_events} events processed...")
         with open(sumw_cache, "w") as f:
-            f.write(f"{sum_weights}\n")
+            json.dump({**cache_meta, "sum_weights": sum_weights}, f)
         log.info(f"Sum of weights: {sum_weights:.6g} (saved to {sumw_cache})")
 
     if sum_weights <= 0:
