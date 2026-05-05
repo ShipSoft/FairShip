@@ -355,6 +355,38 @@ class Task:
                 zFit = values[2]
                 HNLPosFit = ROOT.TVector3(xFit, yFit, zFit)
 
+                # Recompute DOCA at the chi^2-optimal vertex z-plane.
+                # The geometric `doca` from the iterative VertexError above is
+                # evaluated using tangent-line linearisations at the geometric
+                # iteration's converged vertex. For tracks that bend weakly in
+                # the helium decay volume (residual spectrometer-field leakage
+                # plus the Kalman fit's material handling), the line-to-line
+                # distance evaluated at HNLPosFit is closer to truth than the
+                # geometric value, often by a factor of several. Re-extrapolate
+                # the two FitTrack states (already at z = HNLPos[2]) the small
+                # residual dz to HNLPosFit.Z() and read off the perpendicular
+                # distance between the two lines through (pos, dir).
+                try:
+                    self._stepwise_extrapolate_to_z(
+                        st1.extrapolateToPlane, st1.getPos().Z(), HNLPosFit.Z()
+                    )
+                    self._stepwise_extrapolate_to_z(
+                        st2.extrapolateToPlane, st2.getPos().Z(), HNLPosFit.Z()
+                    )
+                except Exception:
+                    ut.reportError("shipVertex: extrapolation to HNLPosFit failed")
+                    continue
+                d1u = st1.getMom().Unit()
+                d2u = st2.getMom().Unit()
+                delta = st2.getPos() - st1.getPos()
+                cross = d1u.Cross(d2u)
+                cross_mag = cross.Mag()
+                if cross_mag > 1e-9:
+                    doca = abs(delta.Dot(cross)) / cross_mag
+                else:
+                    # Nearly parallel tracks — perpendicular component of (p2-p1).
+                    doca = (delta - d1u * delta.Dot(d1u)).Mag()
+
                 # fixme: mass from track reconstraction needed
                 m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()
                 m2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"]).Mass()

@@ -18,6 +18,8 @@ it in future.
 
 ### Fixed
 
+* Recompute the two-track DOCA at the chi^2-optimal vertex (`HNLPosFit`) instead of the iterative geometric one. The geometric DOCA was evaluated with tangent-line linearisations at the geometric iteration's converged z and overestimated the line-to-line distance wherever Migrad shifted the vertex; re-extrapolating the genfit states the small residual dz to `HNLPosFit.Z()` recovers a substantial fraction of signal at the standard DOCA preselection cut on HNL signal MC.
+
 ### Removed
 
 ## 26.04 - 2026-04-30
