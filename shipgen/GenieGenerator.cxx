@@ -28,8 +28,7 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {
-}
+GenieGenerator::GenieGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
@@ -69,7 +68,8 @@ Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
 
   if (fGenOption != 0 && fGenOption != 3) {
     LOG(FATAL) << "Invalid GenieGen Option: " << fGenOption
-               << " Please check the option provided with --GenieOption " << endl;
+               << " Please check the option provided with --GenieOption "
+               << endl;
     return kFALSE;
   }
 
@@ -263,24 +263,25 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
 }
 
 Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
-    // Use GENIE geometry driver.
-    const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
-    // Get event from GENIE TTree. If we reach the end of the file, return
-    // false.
-    if (fTree->GetEntry(fn) == 0) return kFALSE;
+  // Use GENIE geometry driver.
+  const Int_t meter = 100;  // m to cm conversion factor, as in shipunit.py
+  // Get event from GENIE TTree. If we reach the end of the file, return
+  // false.
+  if (fTree->GetEntry(fn) == 0) return kFALSE;
 
-    if (fn % 100 == 0) {
-      cout << "Info GenieGenerator: neutrino event-nr " << fn << endl;
-    }
+  if (fn % 100 == 0) {
+    cout << "Info GenieGenerator: neutrino event-nr " << fn << endl;
+  }
 
-    fn++;
+  fn++;
 
-    // Add the neutrino to the MCTrack stack:
-    cpg->AddTrack(neu,                                 // Neutrino PDG
-                  pxv, pyv, pzv,                       // Neutrino momentum
-                  vtxx * meter, vtxy * meter, vtxz * meter,  // Event vertex [in cm!]
-                  -1,                                  // Parent
-                  false);  // Don't track this particle
+  // Add the neutrino to the MCTrack stack:
+  cpg->AddTrack(neu,            // Neutrino PDG
+                pxv, pyv, pzv,  // Neutrino momentum
+                vtxx * meter, vtxy * meter,
+                vtxz * meter,  // Event vertex [in cm!]
+                -1,            // Parent
+                false);        // Don't track this particle
 
   // Add the outgoing lepton and hadrons, if not in nu-only mode
   if (!fNuOnly) {
@@ -290,8 +291,8 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
     if (nuel) outgoing_lepton_pdg = 11;
 
     bool track_outgoing_lepton = (cc || nuel) ? true : false;
-    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * meter, vtxy * meter,
-                  vtxz * meter, 0, track_outgoing_lepton);
+    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * meter,
+                  vtxy * meter, vtxz * meter, 0, track_outgoing_lepton);
 
     // Add final state hadrons to the MCTrack stack
     for (int i_hadron = 0; i_hadron < nf; i_hadron++) {
@@ -299,16 +300,17 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
                     vtxx * meter, vtxy * meter, vtxz * meter, 0, true);
     }
   }
-    return kTRUE;
+  return kTRUE;
 }
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
-  const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
+  const Int_t meter = 100;  // m to cm conversion factor, as in shipunit.py
   if (fGenOption == 3) {
     return this->ReadEventGeometryDriver(cpg);
   } else if (fGenOption == 0) {
-     // Read simple event format from GENIE. Vertex positions need to be generated here
+    // Read simple event format from GENIE. Vertex positions need to be
+    // generated here
     // some start/end positions in z (emulsion to Tracker 1)
     Double_t start[3] = {0., 0., startZ};
     Double_t end[3] = {0., 0., endZ};
@@ -500,8 +502,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       // cout << "Info GenieGenerator Return from GenieGenerator" << endl;
     }
     return kTRUE;
-  }
-  else return kFALSE;
+  } else
+    return kFALSE;
 }
 // -------------------------------------------------------------------------
 Int_t GenieGenerator::GetNevents() { return fNevents; }
