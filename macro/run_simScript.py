@@ -162,9 +162,9 @@ genie_parser = subparsers.add_parser("Genie", help="Genie for reading and proces
 genie_parser.add_argument(
     "--GenieOption",
     dest="GenieOption",
-    default=1,
-    type=int,
-    help="Genie generation option: (1 standard, 4 GENIE geometry driver)",
+    default="simple_gevgen",
+    choices=["simple_gevgen","genie_geometry"],
+    help="Genie generation option: (simple_gevgen, genie_geometry)",
 )
 genie_parser.add_argument(
     "--z_start_nu",
@@ -716,9 +716,10 @@ if options.command == "Genie":
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.SetGenerationOption(options.GenieOption - 1)  # 0 standard, 3 GENIE geometry driver
+    GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
+    Geniegen.SetGenerationOption(GenieOptions[options.GenieOption])  # 0 standard, 3 GENIE geometry driver
     Geniegen.Init(inputFile, options.firstEvent)
-    if options.GenieOption == 1:
+    if GenieOptions[options.GenieOption] == 0:
         Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
