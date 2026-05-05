@@ -34,6 +34,12 @@ GenieGenerator::GenieGenerator() {}
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
+  if (fGenOption != 0 && fGenOption != 3) {
+    LOG(fatal) << "Invalid GenieGen Option: " << fGenOption
+               << " Please check the option provided with --GenieOption "
+               << endl;
+    return kFALSE;
+  }
   fNuOnly = false;
   fInputFile = TFile::Open(fileName);
   LOG(info) << "Opening input file " << fileName;
@@ -65,13 +71,6 @@ Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
   fTree->SetBranchAddress("pzf", &pzf);
   fTree->SetBranchAddress("nf", &nf);      // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf", &pdgf);  // pdg code of hadron
-
-  if (fGenOption != 0 && fGenOption != 3) {
-    LOG(FATAL) << "Invalid GenieGen Option: " << fGenOption
-               << " Please check the option provided with --GenieOption "
-               << endl;
-    return kFALSE;
-  }
 
   fFirst = kTRUE;
   return kTRUE;
@@ -300,7 +299,6 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
-  const Int_t meter = 100;  // m to cm conversion factor, as in shipunit.py
   if (fGenOption == 3) {
     return this->ReadEventGeometryDriver(cpg);
   } else if (fGenOption == 0) {
