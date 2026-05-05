@@ -69,7 +69,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
 
   if (fGenOption != 0 && fGenOption != 3) {
     LOG(FATAL) << "Invalid GenieGen Option: " << fGenOption
-               << " Please check the option provided with --Genie " << endl;
+               << " Please check the option provided with --GenieOption " << endl;
     return kFALSE;
   }
 
