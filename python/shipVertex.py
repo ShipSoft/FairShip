@@ -276,13 +276,26 @@ class Task:
                 rc = gMinuit.DefineParameter(8, "1/mom2", 1.0 / mom2.Mag(), 0.1, 0, 0)
                 gMinuit.Clear()
                 gMinuit.Migrad()
+                # Check Migrad convergence via mnstat
+                fmin = ctypes.c_double()
+                fedm = ctypes.c_double()
+                errdef = ctypes.c_double()
+                npari = ctypes.c_int()
+                nparx = ctypes.c_int()
+                istat = ctypes.c_int()
+                gMinuit.mnstat(fmin, fedm, errdef, npari, nparx, istat)
+                if istat.value == 0:
+                    ut.reportError(f"shipVertex::Migrad not converged, istat={istat.value}")
+                    continue
                 try:
                     tmp = array("d", [0])
                     err = array("i", [0])
                     gMinuit.mnexcm("HESSE", tmp, -1, err)
-                    # gMinuit.mnexcm( "MINOS", tmp, -1, err )
+                    if err[0] != 0:
+                        ut.reportError(f"shipVertex::HESSE failed, ierflg={err[0]}")
+                        continue
                 except Exception:
-                    ut.reportError("shipVertex::minos does not work")
+                    ut.reportError("shipVertex::HESSE raised exception")
                     continue
                 # get results from TMinuit:
                 emat = array(
