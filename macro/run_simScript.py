@@ -80,7 +80,7 @@ genie_parser.add_argument(
     "--GenieOption",
     dest="GenieOption",
     default="simple_gevgen",
-    choices=["simple_gevgen","genie_geometry"],
+    choices=["simple_gevgen", "genie_geometry"],
     help="Genie generation option: (simple_gevgen, genie_geometry)",
 )
 genie_parser.add_argument(
