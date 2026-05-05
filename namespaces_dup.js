@@ -637,6 +637,18 @@ var namespaces_dup =
       [ "y", "namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332", null ],
       [ "z", "namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0", null ]
     ] ],
+    [ "make_time_window", "namespacemake__time__window.html", [
+      [ "discover_point_branches", "namespacemake__time__window.html#afda1a6f3fb6cb9bc575146730c927cfb", null ],
+      [ "generate_cpp", "namespacemake__time__window.html#a9fd034f68a85ceb24de893405815d202", null ],
+      [ "get_point_class_name", "namespacemake__time__window.html#a129c4ef9f952afeaf50b0fdb0547b5f6", null ],
+      [ "main", "namespacemake__time__window.html#ad9a5f138839e002e69063ec327aa04af", null ],
+      [ "format", "namespacemake__time__window.html#ab5f5741fd60cabe059d21eb03520f61f", null ],
+      [ "INFO", "namespacemake__time__window.html#ad702651157375d054d152e52e2d33ce9", null ],
+      [ "level", "namespacemake__time__window.html#ab4ec26536f5912b0c3e0cda334d34257", null ],
+      [ "log", "namespacemake__time__window.html#a3c39560185ce1e51e4bf65ca65688c56", null ],
+      [ "SPILL_DURATION", "namespacemake__time__window.html#a2505c872521c058e5f45dea6546758a1", null ],
+      [ "TIME_WINDOW", "namespacemake__time__window.html#a602ec35b9c0a894ba898ec31f16d8f29", null ]
+    ] ],
     [ "makeCascade", "namespacemakeCascade.html", [
       [ "fillp1", "namespacemakeCascade.html#a2baa4637c1d3f6bcf49ef9897f86d483", null ],
       [ "LHCb_tune", "namespacemakeCascade.html#ac9baae86629ca4ea344a65f7ff356218", null ],
@@ -1528,7 +1540,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1675,6 +1686,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],

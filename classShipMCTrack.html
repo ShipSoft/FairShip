@@ -152,6 +152,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a16a4aa18815e4671f29d06f62d9d71df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabadd1b889566ce28329c54ab1b3bbd0" id="r_aabadd1b889566ce28329c54ab1b3bbd0"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#aabadd1b889566ce28329c54ab1b3bbd0">GetStartT</a> () const</td></tr>
 <tr class="separator:aabadd1b889566ce28329c54ab1b3bbd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07c1cf7cde171f99dc421e23a5e5fe15" id="r_a07c1cf7cde171f99dc421e23a5e5fe15"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#a07c1cf7cde171f99dc421e23a5e5fe15">GetEventID</a> () const</td></tr>
+<tr class="separator:a07c1cf7cde171f99dc421e23a5e5fe15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbc425fadc1fd37e84a00fa3654e3a05" id="r_abbc425fadc1fd37e84a00fa3654e3a05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#abbc425fadc1fd37e84a00fa3654e3a05">SetProcID</a> (Int_t i)</td></tr>
 <tr class="separator:abbc425fadc1fd37e84a00fa3654e3a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9337ed07e8ed54cd2dabc6bb086b268b" id="r_a9337ed07e8ed54cd2dabc6bb086b268b"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#a9337ed07e8ed54cd2dabc6bb086b268b">GetProcID</a> () const</td></tr>
@@ -186,6 +188,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aed646f8b1bc5dcbebe1f263adc503dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2bd1b0e337f1067465c66a268101b96" id="r_ad2bd1b0e337f1067465c66a268101b96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96">SetNPoints</a> (Int_t iDet, Int_t np)</td></tr>
 <tr class="separator:ad2bd1b0e337f1067465c66a268101b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9595c35d590e2cf191dfcd36783de5b" id="r_af9595c35d590e2cf191dfcd36783de5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#af9595c35d590e2cf191dfcd36783de5b">SetStartT</a> (Double_t t)</td></tr>
+<tr class="separator:af9595c35d590e2cf191dfcd36783de5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6c87f1d8bf97627aff60721afd3fd86" id="r_ab6c87f1d8bf97627aff60721afd3fd86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#ab6c87f1d8bf97627aff60721afd3fd86">SetEventID</a> (const Int_t &amp;eventID)</td></tr>
 <tr class="separator:ab6c87f1d8bf97627aff60721afd3fd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a800226ef95edd8632c964561d971c828" id="r_a800226ef95edd8632c964561d971c828"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipMCTrack.html#a800226ef95edd8632c964561d971c828">SetTrackID</a> (const Int_t &amp;trackID)</td></tr>
@@ -267,21 +271,21 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   30</span>      <a class="code hl_variable" href="classShipMCTrack.html#a34a60e5b3993f16432183b67bf9d0dfa">fNPoints</a>(0),</div>
 <div class="line"><span class="lineno">   31</span>      <a class="code hl_variable" href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">fEventID</a>(0),</div>
 <div class="line"><span class="lineno">   32</span>      <a class="code hl_variable" href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">fTrackID</a>(0) {}</div>
-<div class="ttc" id="aclassShipMCTrack_html_a114a5d4e29259c565c9aedc205f5a65e"><div class="ttname"><a href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">ShipMCTrack::fProcID</a></div><div class="ttdeci">Int_t fProcID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00105">ShipMCTrack.h:105</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a246968245bcba8db4632b4a70d1f7db5"><div class="ttname"><a href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">ShipMCTrack::fPy</a></div><div class="ttdeci">Double32_t fPy</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00096">ShipMCTrack.h:96</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a24af2e872912d8eb9e257500ca6c4950"><div class="ttname"><a href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">ShipMCTrack::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00125">ShipMCTrack.h:125</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a34a60e5b3993f16432183b67bf9d0dfa"><div class="ttname"><a href="classShipMCTrack.html#a34a60e5b3993f16432183b67bf9d0dfa">ShipMCTrack::fNPoints</a></div><div class="ttdeci">Int_t fNPoints</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00122">ShipMCTrack.h:122</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a42a2dc6cfca7d9f1ca600d77e6aa8bb6"><div class="ttname"><a href="classShipMCTrack.html#a42a2dc6cfca7d9f1ca600d77e6aa8bb6">ShipMCTrack::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00090">ShipMCTrack.h:90</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a8e7ecc840188c616acd9ac6da13904b3"><div class="ttname"><a href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">ShipMCTrack::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00128">ShipMCTrack.h:128</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a8e9a775a443f48db3e47ab5dbb96eaab"><div class="ttname"><a href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">ShipMCTrack::fStartX</a></div><div class="ttdeci">Double32_t fStartX</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00099">ShipMCTrack.h:99</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a97300077414765ee8233a65cf5a8ab47"><div class="ttname"><a href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">ShipMCTrack::fW</a></div><div class="ttdeci">Double32_t fW</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00102">ShipMCTrack.h:102</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_aa9a28d7cd9d9572ee8379e6a8d173176"><div class="ttname"><a href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">ShipMCTrack::fStartZ</a></div><div class="ttdeci">Double32_t fStartZ</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00099">ShipMCTrack.h:99</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_aaaf9a08283bf2954a3c4970d14026689"><div class="ttname"><a href="classShipMCTrack.html#aaaf9a08283bf2954a3c4970d14026689">ShipMCTrack::fM</a></div><div class="ttdeci">Double32_t fM</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00096">ShipMCTrack.h:96</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_aab7748567142d33360a6eab4238513ac"><div class="ttname"><a href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">ShipMCTrack::fStartY</a></div><div class="ttdeci">Double32_t fStartY</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00099">ShipMCTrack.h:99</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_ac389707c308b9b548b247f8d7b9c4b6f"><div class="ttname"><a href="classShipMCTrack.html#ac389707c308b9b548b247f8d7b9c4b6f">ShipMCTrack::fStartT</a></div><div class="ttdeci">Double32_t fStartT</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00099">ShipMCTrack.h:99</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_ad7463e52adca1897421b260e1c562595"><div class="ttname"><a href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">ShipMCTrack::fMotherId</a></div><div class="ttdeci">Int_t fMotherId</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00093">ShipMCTrack.h:93</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_ae8b36ccecd131c72aac5ef7938e9b438"><div class="ttname"><a href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">ShipMCTrack::fPz</a></div><div class="ttdeci">Double32_t fPz</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00096">ShipMCTrack.h:96</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_aecc08672823ccbcc4293fe13588dcff1"><div class="ttname"><a href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">ShipMCTrack::fPx</a></div><div class="ttdeci">Double32_t fPx</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00096">ShipMCTrack.h:96</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a114a5d4e29259c565c9aedc205f5a65e"><div class="ttname"><a href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">ShipMCTrack::fProcID</a></div><div class="ttdeci">Int_t fProcID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00107">ShipMCTrack.h:107</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a246968245bcba8db4632b4a70d1f7db5"><div class="ttname"><a href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">ShipMCTrack::fPy</a></div><div class="ttdeci">Double32_t fPy</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00098">ShipMCTrack.h:98</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a24af2e872912d8eb9e257500ca6c4950"><div class="ttname"><a href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">ShipMCTrack::fEventID</a></div><div class="ttdeci">Int_t fEventID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00127">ShipMCTrack.h:127</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a34a60e5b3993f16432183b67bf9d0dfa"><div class="ttname"><a href="classShipMCTrack.html#a34a60e5b3993f16432183b67bf9d0dfa">ShipMCTrack::fNPoints</a></div><div class="ttdeci">Int_t fNPoints</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00124">ShipMCTrack.h:124</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a42a2dc6cfca7d9f1ca600d77e6aa8bb6"><div class="ttname"><a href="classShipMCTrack.html#a42a2dc6cfca7d9f1ca600d77e6aa8bb6">ShipMCTrack::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00092">ShipMCTrack.h:92</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a8e7ecc840188c616acd9ac6da13904b3"><div class="ttname"><a href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">ShipMCTrack::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00130">ShipMCTrack.h:130</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a8e9a775a443f48db3e47ab5dbb96eaab"><div class="ttname"><a href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">ShipMCTrack::fStartX</a></div><div class="ttdeci">Double32_t fStartX</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00101">ShipMCTrack.h:101</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a97300077414765ee8233a65cf5a8ab47"><div class="ttname"><a href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">ShipMCTrack::fW</a></div><div class="ttdeci">Double32_t fW</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00104">ShipMCTrack.h:104</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_aa9a28d7cd9d9572ee8379e6a8d173176"><div class="ttname"><a href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">ShipMCTrack::fStartZ</a></div><div class="ttdeci">Double32_t fStartZ</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00101">ShipMCTrack.h:101</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_aaaf9a08283bf2954a3c4970d14026689"><div class="ttname"><a href="classShipMCTrack.html#aaaf9a08283bf2954a3c4970d14026689">ShipMCTrack::fM</a></div><div class="ttdeci">Double32_t fM</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00098">ShipMCTrack.h:98</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_aab7748567142d33360a6eab4238513ac"><div class="ttname"><a href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">ShipMCTrack::fStartY</a></div><div class="ttdeci">Double32_t fStartY</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00101">ShipMCTrack.h:101</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_ac389707c308b9b548b247f8d7b9c4b6f"><div class="ttname"><a href="classShipMCTrack.html#ac389707c308b9b548b247f8d7b9c4b6f">ShipMCTrack::fStartT</a></div><div class="ttdeci">Double32_t fStartT</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00101">ShipMCTrack.h:101</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_ad7463e52adca1897421b260e1c562595"><div class="ttname"><a href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">ShipMCTrack::fMotherId</a></div><div class="ttdeci">Int_t fMotherId</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00095">ShipMCTrack.h:95</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_ae8b36ccecd131c72aac5ef7938e9b438"><div class="ttname"><a href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">ShipMCTrack::fPz</a></div><div class="ttdeci">Double32_t fPz</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00098">ShipMCTrack.h:98</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_aecc08672823ccbcc4293fe13588dcff1"><div class="ttname"><a href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">ShipMCTrack::fPx</a></div><div class="ttdeci">Double32_t fPx</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00098">ShipMCTrack.h:98</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -449,7 +453,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">fEventID</a>(track.<a class="code hl_variable" href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">fEventID</a>),</div>
 <div class="line"><span class="lineno">   75</span>      <a class="code hl_variable" href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">fTrackID</a>(track.<a class="code hl_variable" href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">fTrackID</a>) {}</div>
 <div class="ttc" id="aclassShipMCTrack_html_a059ad30bfc90c14f4fe8de00f41f0db0"><div class="ttname"><a href="classShipMCTrack.html#a059ad30bfc90c14f4fe8de00f41f0db0">ShipMCTrack::GetWeight</a></div><div class="ttdeci">Double_t GetWeight() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8cxx_source.html#l00151">ShipMCTrack.cxx:151</a></div></div>
-<div class="ttc" id="aclassShipMCTrack_html_a9337ed07e8ed54cd2dabc6bb086b268b"><div class="ttname"><a href="classShipMCTrack.html#a9337ed07e8ed54cd2dabc6bb086b268b">ShipMCTrack::GetProcID</a></div><div class="ttdeci">Int_t GetProcID() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00063">ShipMCTrack.h:63</a></div></div>
+<div class="ttc" id="aclassShipMCTrack_html_a9337ed07e8ed54cd2dabc6bb086b268b"><div class="ttname"><a href="classShipMCTrack.html#a9337ed07e8ed54cd2dabc6bb086b268b">ShipMCTrack::GetProcID</a></div><div class="ttdeci">Int_t GetProcID() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00064">ShipMCTrack.h:64</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -602,10 +606,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00139">139</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  139</span>                                                              {</div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32">momentum</a>.SetXYZT(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>, <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>, <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>, <a class="code hl_function" href="classShipMCTrack.html#ac4b4c0f50b9c27f9bb6f64d37c3eef9f">GetEnergy</a>());</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00141">141</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>                                                              {</div>
+<div class="line"><span class="lineno">  142</span>  <a class="code hl_variable" href="namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32">momentum</a>.SetXYZT(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>, <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>, <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>, <a class="code hl_function" href="classShipMCTrack.html#ac4b4c0f50b9c27f9bb6f64d37c3eef9f">GetEnergy</a>());</div>
+<div class="line"><span class="lineno">  143</span>}</div>
 <div class="ttc" id="aclassShipMCTrack_html_ac4b4c0f50b9c27f9bb6f64d37c3eef9f"><div class="ttname"><a href="classShipMCTrack.html#ac4b4c0f50b9c27f9bb6f64d37c3eef9f">ShipMCTrack::GetEnergy</a></div><div class="ttdeci">Double_t GetEnergy() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8cxx_source.html#l00124">ShipMCTrack.cxx:124</a></div></div>
 <div class="ttc" id="anamespacestudy__GammaConv_html_aab8cdf7e5072c55e440f32b0377eab32"><div class="ttname"><a href="namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32">study_GammaConv.momentum</a></div><div class="ttdeci">dict momentum</div><div class="ttdef"><b>Definition</b> <a href="study__GammaConv_8py_source.html#l00033">study_GammaConv.py:33</a></div></div>
 </div><!-- fragment -->
@@ -638,6 +642,34 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  132</span>}</div>
 <div class="ttc" id="aclassShipMCTrack_html_a4f78386cc84b97d0bb9936d1df4d53df"><div class="ttname"><a href="classShipMCTrack.html#a4f78386cc84b97d0bb9936d1df4d53df">ShipMCTrack::GetMass</a></div><div class="ttdeci">Double_t GetMass() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8cxx_source.html#l00134">ShipMCTrack.cxx:134</a></div></div>
 <div class="ttc" id="anamespacehnl_html_a8da545ce4a1f3fdbb0c5eee151176fec"><div class="ttname"><a href="namespacehnl.html#a8da545ce4a1f3fdbb0c5eee151176fec">hnl.mass</a></div><div class="ttdeci">mass(str|None particle)</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00054">hnl.py:54</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a07c1cf7cde171f99dc421e23a5e5fe15" name="a07c1cf7cde171f99dc421e23a5e5fe15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c1cf7cde171f99dc421e23a5e5fe15">&#9670;&#160;</a></span>GetEventID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Int_t ShipMCTrack::GetEventID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00062">62</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">fEventID</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -698,10 +730,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00135">135</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>                                                       {</div>
-<div class="line"><span class="lineno">  136</span>  <a class="code hl_variable" href="namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32">momentum</a>.SetXYZ(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>, <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>, <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>);</div>
-<div class="line"><span class="lineno">  137</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00137">137</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span>                                                       {</div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="namespacestudy__GammaConv.html#aab8cdf7e5072c55e440f32b0377eab32">momentum</a>.SetXYZ(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>, <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>, <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>);</div>
+<div class="line"><span class="lineno">  139</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -787,10 +819,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00068">68</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>                        {</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">return</span> TMath::Sqrt(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> * <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> + <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> * <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> + <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a> * <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>);</div>
-<div class="line"><span class="lineno">   70</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00069">69</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>                        {</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">return</span> TMath::Sqrt(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> * <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> + <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> * <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> + <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a> * <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>);</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -847,8 +879,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00063">63</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00064">64</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -875,8 +907,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00064">64</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> TMCProcessName[<a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>]; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00065">65</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> TMCProcessName[<a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -903,8 +935,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00067">67</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> TMath::Sqrt(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> * <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> + <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> * <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>); }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00068">68</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> TMath::Sqrt(<a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> * <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> + <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> * <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1069,10 +1101,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00143">143</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>                                                        {</div>
-<div class="line"><span class="lineno">  144</span>  vertex.SetXYZ(<a class="code hl_variable" href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">fStartX</a>, <a class="code hl_variable" href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">fStartY</a>, <a class="code hl_variable" href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">fStartZ</a>);</div>
-<div class="line"><span class="lineno">  145</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00145">145</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>                                                        {</div>
+<div class="line"><span class="lineno">  146</span>  vertex.SetXYZ(<a class="code hl_variable" href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">fStartX</a>, <a class="code hl_variable" href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">fStartY</a>, <a class="code hl_variable" href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">fStartZ</a>);</div>
+<div class="line"><span class="lineno">  147</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1204,8 +1236,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00072">72</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00073">73</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a31069c861ee6564962a537e94c422254"><div class="ttname"><a href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">makeMuonDIS.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00093">makeMuonDIS.py:93</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1287,8 +1319,8 @@ Private Attributes</h2></td></tr>
 <p>Modifiers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00083">83</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a> = <a class="code hl_variable" href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">id</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00084">84</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a> = <a class="code hl_variable" href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">id</a>; }</div>
 <div class="ttc" id="anamespacemakeCascade_html_a55ced533804f50a9850abd7104f12e53"><div class="ttname"><a href="namespacemakeCascade.html#a55ced533804f50a9850abd7104f12e53">makeCascade.id</a></div><div class="ttdeci">int id</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00236">makeCascade.py:236</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1370,9 +1402,39 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00062">62</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a> = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00063">63</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a> = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>; }</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00097">ShipAna.py:97</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af9595c35d590e2cf191dfcd36783de5b" name="af9595c35d590e2cf191dfcd36783de5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9595c35d590e2cf191dfcd36783de5b">&#9670;&#160;</a></span>SetStartT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ShipMCTrack::SetStartT </td>
+          <td>(</td>
+          <td class="paramtype">Double_t&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00086">86</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <a class="code hl_variable" href="classShipMCTrack.html#ac389707c308b9b548b247f8d7b9c4b6f">fStartT</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">t</a>; }</div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a5745239ac3de03e89b0deb73f59bb52f"><div class="ttname"><a href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">run_fixedTarget.t</a></div><div class="ttdeci">t</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00474">run_fixedTarget.py:474</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1421,8 +1483,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00073">73</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00074">74</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1448,7 +1510,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Index of the event </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00125">125</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00127">127</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1472,7 +1534,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00096">96</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00098">98</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1498,7 +1560,7 @@ Private Attributes</h2></td></tr>
 <p>Index of mother track. -1 for primary particles. <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00093">93</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00095">95</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1523,7 +1585,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Bitvector representing the number of MCPoints for this track in each subdetector. The detectors are represented by REF: Bit 0 (1 bit, max. value 1) MVD: Bit 1 - 3 (3 bits, max. value 7) STS: Bit 4 - 8 (5 bits, max. value 31) RICH: Bit 9 (1 bit, max. value 1) MUCH: Bit 10 - 14 (5 bits, max. value 31) TRD: Bit 15 - 19 (5 bits, max. value 31) TOF: Bit 20 - 23 (4 bits, max. value 15) ECAL: Bit 24 (1 bit, max. value 1) ZDC: Bit 25 (1 bit, max. value 1) The respective point numbers can be accessed and modified with the inline functions. Bits 26-31 are spare for potential additional detectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00122">122</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00124">124</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1549,7 +1611,7 @@ Private Attributes</h2></td></tr>
 <p>PDG particle code <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00090">90</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00092">92</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1574,7 +1636,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Geant4 process ID which created the particle </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00105">105</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00107">107</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1600,7 +1662,7 @@ Private Attributes</h2></td></tr>
 <p>Momentum components at start vertex [GeV] <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00096">96</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00098">98</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1624,7 +1686,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00096">96</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00098">98</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1648,7 +1710,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00096">96</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00098">98</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1672,7 +1734,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00099">99</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00101">101</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1698,7 +1760,7 @@ Private Attributes</h2></td></tr>
 <p>Coordinates of start vertex [cm, ns] <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00099">99</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00101">101</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1722,7 +1784,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00099">99</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00101">101</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1808,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00099">99</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00101">101</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1771,7 +1833,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Index of track in the event </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00128">128</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00130">130</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
@@ -1796,7 +1858,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>weight </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00102">102</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00104">104</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
 
 </div>
 </div>
