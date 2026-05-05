@@ -367,12 +367,8 @@ class Task:
                 # residual dz to HNLPosFit.Z() and read off the perpendicular
                 # distance between the two lines through (pos, dir).
                 try:
-                    self._stepwise_extrapolate_to_z(
-                        st1.extrapolateToPlane, st1.getPos().Z(), HNLPosFit.Z()
-                    )
-                    self._stepwise_extrapolate_to_z(
-                        st2.extrapolateToPlane, st2.getPos().Z(), HNLPosFit.Z()
-                    )
+                    self._stepwise_extrapolate_to_z(st1.extrapolateToPlane, st1.getPos().Z(), HNLPosFit.Z())
+                    self._stepwise_extrapolate_to_z(st2.extrapolateToPlane, st2.getPos().Z(), HNLPosFit.Z())
                 except Exception:
                     ut.reportError("shipVertex: extrapolation to HNLPosFit failed")
                     continue
