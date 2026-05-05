@@ -242,7 +242,7 @@ jobs:
   #         python3 .github/scripts/generate_pr_comment.py comparisons/ -o comment.md
   #
   #     - name: Post PR comment
-  #       uses: actions/github-script@v7
+  #       uses: actions/github-script@v9
   #       with:
   #         script: |
   #           const fs = require('fs');
@@ -534,7 +534,7 @@ jobs:
           done
       - name: Post PR comment
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
