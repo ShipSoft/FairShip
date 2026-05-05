@@ -28,6 +28,7 @@ class GenieGenerator : public SHiP::Generator {
   /** public method ReadEvent **/
   using SHiP::Generator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEventGeometryDriver(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;

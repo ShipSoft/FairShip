@@ -262,12 +262,9 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
   return kTRUE;
 }
 
-// -----   Passing the event   ---------------------------------------------
-Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
-  const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
-  if (fGenOption == 3) {
+Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
     // Use GENIE geometry driver.
-
+    const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
     // Get event from GENIE TTree. If we reach the end of the file, return
     // false.
     if (fTree->GetEntry(fn) == 0) return kFALSE;
@@ -303,8 +300,15 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
   }
     return kTRUE;
+}
 
-  } else {
+// -----   Passing the event   ---------------------------------------------
+Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  const Int_t meter = 100; //m to cm conversion factor, as in shipunit.py
+  if (fGenOption == 3) {
+    return this->ReadEventGeometryDriver(cpg);
+  } else if (fGenOption == 0) {
+     // Read simple event format from GENIE. Vertex positions need to be generated here
     // some start/end positions in z (emulsion to Tracker 1)
     Double_t start[3] = {0., 0., startZ};
     Double_t end[3] = {0., 0., endZ};
@@ -495,9 +499,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
       // cout << "Info GenieGenerator Return from GenieGenerator" << endl;
     }
+    return kTRUE;
   }
-
-  return kTRUE;
+  else return kFALSE;
 }
 // -------------------------------------------------------------------------
 Int_t GenieGenerator::GetNevents() { return fNevents; }
