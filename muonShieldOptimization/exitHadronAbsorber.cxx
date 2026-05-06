@@ -185,9 +185,9 @@ void exitHadronAbsorber::PostTrack() {
           break;
       }
     }
-    Int_t track_pid = gMC->TrackPid();
 
-    bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321 || TMath::Abs(track_pid) == 310 || TMath::Abs(track_pid) == 130);
+    Int_t track_pid = gMC->TrackPid();
+    kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321;
 
     if ((isDecay) && (kaon_or_pion)) {
         TParticle* part = gMC->GetStack()->GetCurrentTrack();
@@ -197,12 +197,12 @@ void exitHadronAbsorber::PostTrack() {
         polX = polVector.X();
         polY = polVector.Y();
         polZ = polVector.Z();
-
         TLorentzVector pos, mom;
         gMC->TrackPosition(pos);
         gMC->TrackMomentum(mom);
         Double_t weight = gMC->TrackWeight() / fNsplits;
         Int_t ntr;
+        Int_t trueParentId = part->GetFirstMother();
         for (int i = 0; i < fNsplits; ++i) {
             TrackBuffer clone;
             clone.pdg      = track_pid;
@@ -212,13 +212,14 @@ void exitHadronAbsorber::PostTrack() {
             clone.poly = polY;
             clone.polz = polZ;
             clone.weight   = weight;
-            clone.parentID = currentTrackId;
+            clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
 
         }
         gMC->StopTrack();
     }
   }
+
 }
 
 
@@ -241,6 +242,7 @@ void exitHadronAbsorber::PreTrack() {
         // Clear the buffer so we don't duplicate them for the next track
         fSecondaryBuffer.clear();
   }
+
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
     gMC->StopTrack();
@@ -252,7 +254,7 @@ void exitHadronAbsorber::PreTrack() {
   if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
       //  Force the decay time to 0
       gMC->ForceDecayTime(0);
-    }
+  }
 
   Int_t pdgCode = p->GetPdgCode();
 
