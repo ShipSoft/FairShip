@@ -8,6 +8,7 @@ ship_add_library(
           NtupleGenerator.cxx MuonBackGenerator.cxx CosmicsGenerator.cxx
           MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx
           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
+          ParticleGunGenerator.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
                FairLogger::FairLogger ROOT::EGPythia6
