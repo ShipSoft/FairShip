@@ -380,14 +380,31 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   start[2], -1, kTRUE, -1., 0., 1.);
     return kTRUE;
   } else if (Option == "Primary") {
+    constexpr int kMaxPythiaRetries = 100;
     if (gRandom->Uniform(0., 1.) < ZoverA) {
-      fPythiaP->next();
+      int retries = 0;
+      while (!fPythiaP->next()) {
+        if (++retries >= kMaxPythiaRetries) {
+          LOG(error) << "PythiaP failed to generate an event after "
+                     << kMaxPythiaRetries << " retries";
+          return kFALSE;
+        }
+        LOG(warning) << "PythiaP failed to generate event, retry " << retries;
+      }
       if (withEvtGen) {
         evtgenP->decay();
       }
       fPythia = fPythiaP;
     } else {
-      fPythiaN->next();
+      int retries = 0;
+      while (!fPythiaN->next()) {
+        if (++retries >= kMaxPythiaRetries) {
+          LOG(error) << "PythiaN failed to generate an event after "
+                     << kMaxPythiaRetries << " retries";
+          return kFALSE;
+        }
+        LOG(warning) << "PythiaN failed to generate event, retry " << retries;
+      }
       if (withEvtGen) {
         evtgenN->decay();
       }
