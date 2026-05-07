@@ -875,9 +875,13 @@ if options.mudis:
 if options.command == "Genie":
     # breakpoint()
     # Copy Genie (gst TTree) information to the output file
-    f_input = ROOT.TFile.Open(inputFile[0], "READ")
-    print("check")
+    input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
+    f_input = ROOT.TFile.Open(input_path, "READ")
+    if not f_input or f_input.IsZombie():
+        raise OSError(f"Failed to open GENIE input file: {input_path}")
     gst = f_input["gst"]
+    if not gst:
+        raise KeyError("TTree 'gst' not found in GENIE input file")
 
     selection_string = "(Entry$ >= " + str(options.firstEvent) + ")"
     if (options.firstEvent + options.nEvents) < gst.GetEntries():
