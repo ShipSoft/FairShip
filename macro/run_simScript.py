@@ -221,7 +221,11 @@ parser.add_argument(
 )
 parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")
 parser.add_argument("--check-overlaps", help="Perform geometry overlap checking", action="store_true")
-parser.add_argument("--field_map", default=None, help="Specify spectrometer field map. Default set in geometry_config.py: 2025_02_12_SHiP_SpectrometerField_ECN3_MgB2")
+parser.add_argument(
+    "--field_map",
+    default=None,
+    help="Specify spectrometer field map. Default set in geometry_config.py: 2025_02_12_SHiP_SpectrometerField_ECN3_MgB2",
+)
 parser.add_argument(
     "--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84.0, type=float
 )
