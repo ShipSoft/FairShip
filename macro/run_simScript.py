@@ -881,7 +881,7 @@ if options.command == "Genie":
     # Copy Genie (gst TTree) information to the output file
     f_input = ROOT.TFile.Open(inputFile[0], "READ")
     print("check")
-    gst = f_input.gst
+    gst = f_input["gst"]
 
     selection_string = "(Entry$ >= " + str(options.firstEvent) + ")"
     if (options.firstEvent + options.nEvents) < gst.GetEntries():
