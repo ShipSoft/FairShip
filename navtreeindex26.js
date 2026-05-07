@@ -1,6 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"pythia8__conf__utils_8py.html#af4c096d7b903bbbb76b9828e32e521a0":[7,0,10,21,7],
 "pythia8__conf__utils_8py_source.html":[7,0,10,21],
 "pythia8darkphoton__conf_8py.html":[7,0,10,22],
 "pythia8darkphoton__conf_8py.html#a2d210c1850611efa3f2d94cfed4a549d":[7,0,10,22,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX26 =
 "run__reco_8py.html#a71b16d9c3ceec3674092360818165322":[7,0,8,14,2],
 "run__reco_8py.html#a73cbd0f6d7d8add2128f07b538176260":[7,0,8,14,17],
 "run__reco_8py.html#a7460d2d540a34984cc19de7da821a46c":[7,0,8,14,0],
-"run__reco_8py.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc":[7,0,8,14,21]
+"run__reco_8py.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc":[7,0,8,14,21],
+"run__reco_8py.html#a8553d576110e35b60e61c44b803d35a1":[7,0,8,14,16]
 };
