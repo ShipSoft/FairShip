@@ -5,7 +5,6 @@
 #include "DPPythia8Generator.h"
 
 #include <cmath>
-#include <set>
 #include <vector>
 
 #include "BeamSmearingUtils.h"
@@ -227,8 +226,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       w = TMath::Exp(-LS / (beta * gam * fctau)) *
           ((fLmax / mm - fLmin / mm) / (beta * gam * fctau));
 
-      // store event[0] first, as requested
-      if (fPythia->event.size() > 0) {
+      // store event[1] first
+      if (fPythia->event.size() > 1) {
         zN = fPythia->event[1].zProd();
         xN = fPythia->event[1].xProd();
         yN = fPythia->event[1].yProd();
@@ -349,8 +348,6 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     px = fPythia->event[k].px();
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
-    if (fextFile) {
-      im += 1;
     };
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
                   zS * mm, im, wanttracking, e, tS * mm / c_light, w);
