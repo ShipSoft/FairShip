@@ -58,11 +58,11 @@ class DPPythia8Generator : public SHiP::Generator {
   void SetId(Double_t id) { fId = id; };
   void SetDPId(Int_t id) { fDP = id; };
   Int_t GetDPId() { return fDP; };
-  void SetLmin(Double_t z) { fLmin = z; };              // in cm
-  void SetLmax(Double_t z) { fLmax = z; };              // in cm
-  void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };  // in cm
-  void SetPaintRadius(Double_t r) { fPaintBeam = r; };  // in cm
-  void SetfFDs(Double_t z) { fFDs = z; };               // in cm
+  void SetLmin(Double_t z) { fLmin = z; };              
+  void SetLmax(Double_t z) { fLmax = z; };             
+  void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };  
+  void SetPaintRadius(Double_t r) { fPaintBeam = r; }; 
+  void SetfFDs(Double_t z) { fFDs = z; };              
   void UseRandom1() {
     fUseRandom1 = kTRUE;
     fUseRandom3 = kFALSE;
