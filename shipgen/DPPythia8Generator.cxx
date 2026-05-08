@@ -348,11 +348,11 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     px = fPythia->event[k].px();
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
-    };
-    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
-                  zS * mm, im, wanttracking, e, tS * mm / c_light, w);
-  }
-  return kTRUE;
+  };
+  cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
+                zS * mm, im, wanttracking, e, tS * mm / c_light, w);
+}
+return kTRUE;
 }
 // -------------------------------------------------------------------------
 void DPPythia8Generator::SetParameters(char* par) {
