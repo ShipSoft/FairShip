@@ -325,9 +325,11 @@ Variables</h2></td></tr>
 <tr class="separator:a3ecb79c114e71590f6b25ff34367d900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaefe89450d8f306a2fdac45154ec0fb6" id="r_aaefe89450d8f306a2fdac45154ec0fb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6">mu</a> = muondis_event.InMuon[0]</td></tr>
 <tr class="separator:aaefe89450d8f306a2fdac45154ec0fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a669a7d1996acd05a5ba3f666bf0c0328" id="r_a669a7d1996acd05a5ba3f666bf0c0328"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328">f_input</a> = ROOT.TFile.Open(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>[0], &quot;READ&quot;)</td></tr>
+<tr class="memitem:a2ffceeab5f9a8f1e0a57af53bfac65fd" id="r_a2ffceeab5f9a8f1e0a57af53bfac65fd"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a2ffceeab5f9a8f1e0a57af53bfac65fd">input_path</a> = <a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>[0] if isinstance(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>, (list, tuple)) else <a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a></td></tr>
+<tr class="separator:a2ffceeab5f9a8f1e0a57af53bfac65fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a669a7d1996acd05a5ba3f666bf0c0328" id="r_a669a7d1996acd05a5ba3f666bf0c0328"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328">f_input</a> = ROOT.TFile.Open(<a class="el" href="namespacerun__simScript.html#a2ffceeab5f9a8f1e0a57af53bfac65fd">input_path</a>, &quot;READ&quot;)</td></tr>
 <tr class="separator:a669a7d1996acd05a5ba3f666bf0c0328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3e34199d5fbf0a1ded3a5a739c356da" id="r_aa3e34199d5fbf0a1ded3a5a739c356da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aa3e34199d5fbf0a1ded3a5a739c356da">gst</a> = f_input.gst</td></tr>
+<tr class="memitem:aa3e34199d5fbf0a1ded3a5a739c356da" id="r_aa3e34199d5fbf0a1ded3a5a739c356da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aa3e34199d5fbf0a1ded3a5a739c356da">gst</a> = <a class="el" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328">f_input</a>[&quot;gst&quot;]</td></tr>
 <tr class="separator:aa3e34199d5fbf0a1ded3a5a739c356da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a749a0f8ac4a71bac9bc5125a66b765b4" id="r_a749a0f8ac4a71bac9bc5125a66b765b4"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a749a0f8ac4a71bac9bc5125a66b765b4">selection_string</a> = &quot;(Entry$ &gt;= &quot; + str(options.firstEvent) + &quot;)&quot;</td></tr>
 <tr class="separator:a749a0f8ac4a71bac9bc5125a66b765b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -352,13 +354,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00908">908</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  908</span><span class="keyword">def </span>checkOverlapsWithGeant4() -&gt; None:</div>
-<div class="line"><span class="lineno">  909</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
-<div class="line"><span class="lineno">  910</span>    mygMC = ROOT.TGeant4.GetMC()</div>
-<div class="line"><span class="lineno">  911</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
-<div class="line"><span class="lineno">  912</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
-<div class="line"><span class="lineno">  913</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00912">912</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  912</span><span class="keyword">def </span>checkOverlapsWithGeant4() -&gt; None:</div>
+<div class="line"><span class="lineno">  913</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
+<div class="line"><span class="lineno">  914</span>    mygMC = ROOT.TGeant4.GetMC()</div>
+<div class="line"><span class="lineno">  915</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
+<div class="line"><span class="lineno">  916</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
+<div class="line"><span class="lineno">  917</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -377,11 +379,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00904">904</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  904</span><span class="keyword">def </span>visualizeMagFields() -&gt; None:</div>
-<div class="line"><span class="lineno">  905</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
-<div class="line"><span class="lineno">  906</span> </div>
-<div class="line"><span class="lineno">  907</span> </div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00908">908</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  908</span><span class="keyword">def </span>visualizeMagFields() -&gt; None:</div>
+<div class="line"><span class="lineno">  909</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
+<div class="line"><span class="lineno">  910</span> </div>
+<div class="line"><span class="lineno">  911</span> </div>
 <div class="ttc" id="anamespacecheckMagFields_html_a65e69e17f1b05eb283a8bb6d5d695249"><div class="ttname"><a href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a></div><div class="ttdeci">run()</div><div class="ttdef"><b>Definition</b> <a href="checkMagFields_8py_source.html#l00011">checkMagFields.py:11</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -730,12 +732,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">run_simScript.f_input = ROOT.TFile.Open(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>[0], &quot;READ&quot;)</td>
+          <td class="memname">run_simScript.f_input = ROOT.TFile.Open(<a class="el" href="namespacerun__simScript.html#a2ffceeab5f9a8f1e0a57af53bfac65fd">input_path</a>, &quot;READ&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00882">882</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00883">883</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -751,7 +753,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00891">891</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00895">895</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -986,12 +988,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">run_simScript.gst = f_input.gst</td>
+          <td class="memname">run_simScript.gst = <a class="el" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328">f_input</a>[&quot;gst&quot;]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00884">884</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00886">886</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1009,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00894">894</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00898">898</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1056,6 +1058,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00029">29</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a2ffceeab5f9a8f1e0a57af53bfac65fd" name="a2ffceeab5f9a8f1e0a57af53bfac65fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ffceeab5f9a8f1e0a57af53bfac65fd">&#9670;&#160;</a></span>input_path</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">str run_simScript.input_path = <a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>[0] if isinstance(<a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a>, (list, tuple)) else <a class="el" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">inputFile</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00882">882</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1843,7 +1861,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00886">886</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00890">890</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
