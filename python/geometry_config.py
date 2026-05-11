@@ -317,7 +317,8 @@ def create_config(
         c.TrackStation1 = AttrDict(z=z1)
 
         # positions and lengths of vacuum tube segments (for backward compatibility)
-        c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
+        # Chamber1.z is the downstream end of Tub1, so consumers can take z - Tub1length to get the decay-vessel entrance.
+        c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
     c.Bfield = AttrDict()
