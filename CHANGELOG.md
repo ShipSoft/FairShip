@@ -22,6 +22,7 @@ it in future.
 * Remove deprecated attribute syntax in the GST TTree copy within GENIE run_simScript option
 * Keep FixedTargetGenerator retrying if Pythia fails to generate an event, until a max number of retries is reached
 * Recompute the two-track DOCA at the chi^2-optimal vertex (`HNLPosFit`) instead of the iterative geometric one. The geometric DOCA was evaluated with tangent-line linearisations at the geometric iteration's converged z and overestimated the line-to-line distance wherever Migrad shifted the vertex; re-extrapolating the genfit states the small residual dz to `HNLPosFit.Z()` recovers a substantial fraction of signal at the standard DOCA preselection cut on HNL signal MC.
+* Anchor `Chamber1.z` to the decay vessel geometry so the HNL minimum decay length and the muon-DIS start position track the upstream end of the decay vessel; the legacy formula in `geometry_config.py` left both ~1.8 m too far downstream after the March 2025 coordinate-system change, reducing HNL generation acceptance by about 3.6 % of the decay vessel volume.
 
 ### Removed
 
