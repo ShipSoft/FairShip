@@ -97,6 +97,12 @@ class ShipDigiReco:
         # fitter          = ROOT.genfit.KalmanFitterRefTrack()
         self.fitter = ROOT.genfit.DAF()
         self.fitter.setMaxIterations(50)
+
+        # Pre-resolve drift-isochrone L/R per hit via the Legendre transform
+        # in shipPatRec (Aliev et al., NIM A 592, 456, 2008). Default ON;
+        # opt-out via global_variables.use_legendre_lr = False, which leaves
+        # the L/R weighting to the DAF's iterative annealing.
+        self.use_legendre_lr = getattr(global_variables, "use_legendre_lr", True)
         if global_variables.debug:
             self.fitter.setDebugLvl(1)  # produces lot of printout
         # set to True if "real" pattern recognition is required also
@@ -136,6 +142,7 @@ class ShipDigiReco:
         stationCrossed: dict[int, dict[int, int]] = {}
         listOfIndices: dict[int, list[int]] = {}
         trackParams: dict[int, dict] = {}
+        lrLists: dict[int, list[int]] = {}  # per-hit L/R signs from PatRec Legendre
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
         self.fitTrack2MC.clear()
@@ -177,9 +184,12 @@ class ShipDigiReco:
                     listOfIndices[trID] = []
                     stationCrossed[trID] = {}
                     hit_detector_ids[trID] = ROOT.std.vector("int")()
+                    lrLists[trID] = []
                 hit_detector_ids[trID].push_back(detID)
                 m = array("d", [sm["xtop"], sm["ytop"], sm["z"], sm["xbot"], sm["ybot"], sm["z"], sm["dist"]])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7, m))
+                # Per-hit L/R sign from PatRec Legendre transform (0 = DAF auto)
+                lrLists[trID].append(int(sm.get("lr", 0)))
                 listOfIndices[trID].append(sm["digiHit"])
                 if station not in stationCrossed[trID]:
                     stationCrossed[trID][station] = 0
@@ -203,6 +213,7 @@ class ShipDigiReco:
                 pdg = 13
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
+            lr_list = lrLists.get(atrack, [0] * len(meas))
             nM = len(meas)
             if nM < 13:
                 n_too_few_hits += 1
@@ -240,13 +251,17 @@ class ShipDigiReco:
                 hitCov = ROOT.TMatrixDSym(7)
                 hitCov[6][6] = resolution * resolution
                 hitID = 0
-                for m, detID in zip(meas, detIDs, strict=True):
+                for m, detID, lr_sign in zip(meas, detIDs, lr_list, strict=True):
                     tp = ROOT.genfit.TrackPoint(theTrack)
                     measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)
                     measurement.setMaxDistance(
                         global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
                         - global_variables.ShipGeo.strawtubes_geo.wall_thickness
                     )
+                    # Lock L/R per hit using PatRec's Legendre output (Aliev et al.
+                    # 2008). lr_sign = 0 means the DAF resolves L/R iteratively.
+                    if self.use_legendre_lr and lr_sign != 0:
+                        measurement.setLeftRightResolution(int(lr_sign))
                     tp.addRawMeasurement(measurement)
                     theTrack.insertPoint(tp)
                     hitID += 1
