@@ -181,9 +181,7 @@ def checkForBranch(inFile, branchName) -> bool:
         for _f in fileList:
             test = ROOT.TFile.Open(_f)
             if not test:
-                raise FileNotFoundError(
-                    f"ERROR FileCheck: input file {_f} does not exist. Missing authentication?"
-                )
+                raise FileNotFoundError(f"ERROR FileCheck: input file {_f} does not exist. Missing authentication?")
             try:
                 current_has_branch = bool(test.FindObjectAny("cbmsim") and test["cbmsim"].FindBranch(branchName))
             finally:
