@@ -532,7 +532,7 @@ if options.command == "PG":
     myPgun = ROOT.FairBoxGenerator(options.pID, 1)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 90)  # // Polar angle in lab system range [degree]
+    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
         myPgun.SetBoxXYZ(
