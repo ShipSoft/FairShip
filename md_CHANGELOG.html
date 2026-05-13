@@ -105,6 +105,7 @@ Changed</h2>
 Fixed</h2>
 <ul>
 <li>Remove deprecated attribute syntax in the GST TTree copy within GENIE <a class="el" href="namespacerun__simScript.html">run_simScript</a> option</li>
+<li>Keep <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> retrying if Pythia fails to generate an event, until a max number of retries is reached</li>
 <li>Recompute the two-track DOCA at the chi^2-optimal vertex (<code>HNLPosFit</code>) instead of the iterative geometric one. The geometric DOCA was evaluated with tangent-line linearisations at the geometric iteration's converged z and overestimated the line-to-line distance wherever Migrad shifted the vertex; re-extrapolating the genfit states the small residual dz to <code>HNLPosFit.Z()</code> recovers a substantial fraction of signal at the standard DOCA preselection cut on HNL signal MC.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
