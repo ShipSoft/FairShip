@@ -179,7 +179,7 @@ def checkForBranch(inFile, branchName) -> bool:
     if isinstance(fileList, (list, tuple)):
         hasIt = None
         for _f in fileList:
-            test = ROOT.TFile.Open(_f)
+            with ROOT.TFile.Open(_f) as test:
             if not test:
                 raise FileNotFoundError(f"ERROR FileCheck: input file {_f} does not exist. Missing authentication?")
             try:
