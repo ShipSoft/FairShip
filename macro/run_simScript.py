@@ -351,13 +351,13 @@ shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
 elif options.debug == 1:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 2:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 elif options.debug == 3:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,
@@ -532,7 +532,7 @@ if options.command == "PG":
     myPgun = ROOT.FairBoxGenerator(options.pID, 1)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    myPgun.SetThetaRange(0, 90)  # // Polar angle in lab system range [degree]
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
         myPgun.SetBoxXYZ(
