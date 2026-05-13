@@ -75,8 +75,8 @@ output_tree.Branch("muon_sstPoints", muon_sstPoints)
 muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
 output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 
-#muon_lastBitMsPoints = r.TClonesArray("lastBitMuonShieldPoint")
-#output_tree.Branch("muon_lastBitMuonShieldPoints", muon_lastBitMsPoints)
+muon_lastBitMsPoints = r.TClonesArray("lastBitMuonShieldPoint")
+output_tree.Branch("muon_lastBitMuonShieldPoints", muon_lastBitMsPoints)
 
 if args.generator == "MuonBack":
     reco_file_name = "ship.conical.MuonBack-TGeant4.root"
@@ -216,6 +216,8 @@ def dump(event, pcut=0, print_whole_event=True):
 global_event_nr = 0
 processed_events = {}
 
+process_ms = True
+
 P_threshold = 1
 UBT_dx = 180 #cm
 UBT_dy = 300 #cm
@@ -281,30 +283,44 @@ for inputFolder in dirList:
         muon_ids = []
         #keep track of each detector is hit first: UBT=0, SBT=1
         muon_firstHit = []
-        
-        #Collect track IDs of muons which hit the UBT extended plane
-        for hit in event.UpstreamTaggerPoint:
-            track_id = hit.GetTrackID()
-            pid = hit.PdgCode()
+
+        if (process_ms):
+            for hit in event.lastBitMsPoint:
+                track_id = hit.GetTrackID()
+                pid = hit.PdgCode()
             
-            if (abs(pid) == 13 and abs(hit.GetX()<UBT_dx and abs(hit.GetY())<UBT_dy)):
-                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
-                if track_id not in muon_ids:
-                    muon_ids.append(track_id)
-                    muon_firstHit.append(0)
-                    nmu[particle_name] += 1
+                if (abs(pid) == 13):
+                    particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                    if track_id not in muon_ids:
+                        muon_ids.append(track_id)
+                        muon_firstHit.append(0)
+                        nmu[particle_name] += 1
+
+        else:
+            #Collect track IDs of muons which hit the UBT extended plane
+            for hit in event.UpstreamTaggerPoint:
+                track_id = hit.GetTrackID()
+                pid = hit.PdgCode()
+            
+                if (abs(pid) == 13 and abs(hit.GetX()<UBT_dx and abs(hit.GetY())<UBT_dy)):
+                    particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                    if track_id not in muon_ids:
+                        muon_ids.append(track_id)
+                        muon_firstHit.append(0)
+                        nmu[particle_name] += 1
 
                 
-        # Collect also track IDs of muons which hit the SBT
-        for hit in event.vetoPoint:
-            pid = hit.PdgCode()
-            track_id = hit.GetTrackID()
-            if (abs(pid) == 13):
-                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
-                if track_id not in muon_ids:
-                    muon_ids.append(track_id)
-                    muon_firstHit.append(1)
-                    nmu[particle_name] += 1
+            # Collect also track IDs of muons which hit the SBT
+            for hit in event.vetoPoint:
+                pid = hit.PdgCode()
+                track_id = hit.GetTrackID()
+                if (abs(pid) == 13):
+                    particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                    if track_id not in muon_ids:
+                        muon_ids.append(track_id)
+                        muon_firstHit.append(1)
+                        nmu[particle_name] += 1
+                        
 
         print(f"muon tracks found: {len(muon_ids)}")
                     
@@ -356,20 +372,20 @@ for inputFolder in dirList:
                 ubt_index += 1
 
             #fill hits in last bit of muon shield
-            #muon_lastBitMsPoints.Clear()
-            #lastbitms_index = 0
+            muon_lastBitMsPoints.Clear()
+            lastbitms_index = 0
 
-            #for hit in event.lastBitMsPoint:
-            #    track_id = hit.GetTrackID()
+            for hit in event.lastBitMsPoint:
+                track_id = hit.GetTrackID()
 
-            #    if not (track_id == muon_):
-            #        continue
+                if not (track_id == muon_):
+                    continue
 
-            #    if muon_lastBitMsPoints.GetSize() == lastbitms_index:
-            #        muon_lastBitMsPoints.Expand(lastbitms_index + 1)
-            #    muon_lastBitMsPoints[lastbitms_index] = hit
+                if muon_lastBitMsPoints.GetSize() == lastbitms_index:
+                    muon_lastBitMsPoints.Expand(lastbitms_index + 1)
+                muon_lastBitMsPoints[lastbitms_index] = hit
 
-            #    lastbitms_index += 1
+                lastbitms_index += 1
 
             #fill hist in SST
             muon_sstPoints.Clear()
@@ -396,10 +412,13 @@ for inputFolder in dirList:
 
                 #only save the info of the first UBT or SBT hit
 
-                if (firsthit==0):
-                    hit = muon_UpstreamTaggerPoints[0]
-                else: 
-                    hit = muon_vetoPoints[0]
+                if (process_ms):
+                    hit = muon_lastBitMsPoints[0]
+                else:
+                    if (firsthit==0):
+                        hit = muon_UpstreamTaggerPoints[0]
+                    else: 
+                        hit = muon_vetoPoints[0]
                     
                 #weight = event.MCTrack[muon_].GetWeight()
                 weight = 1.0
@@ -430,7 +449,7 @@ for inputFolder in dirList:
                         len(track_array),
                         len(muon_vetoPoints),
                         len(muon_UpstreamTaggerPoints),
-                        0,#len(muon_lastBitMsPoints),
+                        len(muon_lastBitMsPoints),
                         len(muon_sstPoints),
                         imuondata[7],
                         firsthit
@@ -497,7 +516,7 @@ with r.TFile.Open(args.outputfile, "read") as file:
         num_tracks = len(event.tracks)
         num_sbthits = len(event.muon_vetoPoints)
         num_ubthits = len(event.muon_UpstreamTaggerPoints)
-        num_lastbitmshits = 0 #len(event.muon_lastBitMsPoints)
+        num_lastbitmshits = len(event.muon_lastBitMsPoints)
         num_ssthits = len(event.muon_sstPoints)
 
         P = r.TMath.Sqrt(px**2 + py**2 + pz**2)
