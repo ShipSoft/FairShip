@@ -177,7 +177,7 @@ def checkForBranch(x, branchName) -> bool:
     else:
         tx = x
     if isinstance(tx, (list, tuple)):
-        hasIt = None 
+        hasIt = None
         for _f in tx:
             if _f[0:4] == "/eos":
                 f = ROOT.gSystem.Getenv("EOSSHIP") + _f
@@ -187,17 +187,11 @@ def checkForBranch(x, branchName) -> bool:
             if not test:
                 print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
                 sys.exit(1)
-            current_has_branch = bool(
-                test.FindObjectAny("cbmsim") and test["cbmsim"].FindBranch(branchName)
-            )
+            current_has_branch = bool(test.FindObjectAny("cbmsim") and test["cbmsim"].FindBranch(branchName))
             if hasIt is None:
                 hasIt = current_has_branch
             elif current_has_branch != hasIt:
-                print(
-                    "ERROR CheckForBranch: Mixed input files (some have branch",
-                    branchName,
-                    "and some do not)."
-                )
+                print("ERROR CheckForBranch: Mixed input files (some have branch", branchName, "and some do not).")
                 sys.exit(1)
         return bool(hasIt)
     else:
