@@ -953,6 +953,143 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
     return recognized_tracks_combo
 
 
+def _legendre_peak(z_pts, val_pts, r_pts, z_ref, m_range=(-0.1, 0.1), b_range=(-300.0, 300.0), n_m=200, n_b=400):
+    """Legendre-transform peak finder for circles in a 2D plane.
+
+    Each input is a drift circle at (z, val) with radius r. The tangent
+    lines to the set of circles form a peak in (m, b) space, where the
+    line is parametrised as val = m*(z - z_ref) + b. Each circle maps to
+    two curves b(m) = (val - m*(z - z_ref)) +/- r*sqrt(1 + m^2). Returns
+    (m_star, b_star, peak_count). Implementation ported verbatim from
+    macro/probe_bistability.py.
+    """
+    if len(z_pts) < 2:
+        return None, None, 0
+    m_vals = np.linspace(m_range[0], m_range[1], n_m)
+    sqrt1m2 = np.sqrt(1.0 + m_vals * m_vals)
+    b_lo, b_hi = b_range
+    H = np.zeros((n_m, n_b), dtype=np.int32)
+    db = (b_hi - b_lo) / n_b
+    for z, v, r in zip(z_pts, val_pts, r_pts):
+        zp = z - z_ref
+        b_centre = v - m_vals * zp
+        for sign in (+1, -1):
+            b_curve = b_centre + sign * r * sqrt1m2
+            ib = ((b_curve - b_lo) / db).astype(np.int32)
+            mask = (ib >= 0) & (ib < n_b)
+            for im in range(n_m):
+                if mask[im]:
+                    H[im, ib[im]] += 1
+    flat_idx = int(np.argmax(H))
+    im, ib = np.unravel_index(flat_idx, H.shape)
+    return float(m_vals[im]), float(b_lo + (ib + 0.5) * db), int(H[im, ib])
+
+
+def _legendre_lr_for_half(y_hits, s_hits):
+    """Compute per-hit L/R signs via two-stage Legendre for one track half.
+
+    Augments each hit dict with an 'lr' field in {-1, 0, +1} (0 = DAF auto
+    on failure). y_hits are Y-view hits (vertical projection wires along x,
+    dy = 0). s_hits are stereo hits (tilted wires).
+
+    Falls back to lr=0 for all hits if the y-Legendre cannot find a peak
+    or has fewer than 2 hits.
+    """
+    if len(y_hits) < 2:
+        for h in y_hits + s_hits:
+            h.setdefault("lr", 0)
+        return
+
+    import math as _math
+
+    zs_y = [h["z"] for h in y_hits]
+    ys_y = [h["ytop"] for h in y_hits]
+    rs_y = [h["dist"] for h in y_hits]
+    z_ref = sum(zs_y) / len(zs_y)
+    wy_min, wy_max = min(ys_y), max(ys_y)
+    r_max = max(rs_y) + 0.1
+    b_pad = max(r_max + 1.0, 5.0)
+    m_y, b_y, _peak = _legendre_peak(
+        zs_y, ys_y, rs_y, z_ref, m_range=(-0.05, 0.05), b_range=(wy_min - b_pad, wy_max + b_pad), n_m=200, n_b=400
+    )
+    if m_y is None:
+        for h in y_hits + s_hits:
+            h.setdefault("lr", 0)
+        return
+
+    # Stage 2: stereo Legendre in (z, x) using the y-track
+    m_x, b_x = None, None
+    if len(s_hits) >= 2:
+        zs_s, xs_s, rs_s_eff = [], [], []
+        for h in s_hits:
+            y_track = m_y * (h["z"] - z_ref) + b_y
+            dy_w = h["ybot"] - h["ytop"]
+            dx_w = h["xbot"] - h["xtop"]
+            wlen = _math.sqrt(dx_w * dx_w + dy_w * dy_w)
+            if abs(dy_w) < 1e-6 or wlen < 1e-6:
+                continue
+            x_at_y = h["xtop"] + (y_track - h["ytop"]) / dy_w * dx_w
+            stereo_sin = abs(dy_w) / wlen
+            r_eff = h["dist"] / max(stereo_sin, 1e-3)
+            zs_s.append(h["z"])
+            xs_s.append(x_at_y)
+            rs_s_eff.append(r_eff)
+        if len(zs_s) >= 2:
+            xs_min, xs_max = min(xs_s), max(xs_s)
+            r_pad = max(rs_s_eff) + 1.0
+            m_x, b_x, _peak_x = _legendre_peak(
+                zs_s,
+                xs_s,
+                rs_s_eff,
+                z_ref,
+                m_range=(-0.1, 0.1),
+                b_range=(xs_min - r_pad, xs_max + r_pad),
+                n_m=200,
+                n_b=400,
+            )
+
+    # Apply L/R per Y-view hit (sign of y_track - wy)
+    for h in y_hits:
+        wz = h["z"]
+        y_track = m_y * (wz - z_ref) + b_y
+        d = y_track - h["ytop"]
+        h["lr"] = 1 if d > 0 else -1
+
+    # Apply L/R per stereo hit (sign of perpendicular distance)
+    for h in s_hits:
+        wz = h["z"]
+        y_track = m_y * (wz - z_ref) + b_y
+        if m_x is None:
+            h["lr"] = 0
+            continue
+        x_track = m_x * (wz - z_ref) + b_x
+        dy_w = h["ybot"] - h["ytop"]
+        dx_w = h["xbot"] - h["xtop"]
+        wlen = _math.sqrt(dx_w * dx_w + dy_w * dy_w)
+        if wlen < 1e-6:
+            h["lr"] = 0
+            continue
+        ux = dx_w / wlen
+        uy = dy_w / wlen
+        nx, ny = -uy, ux
+        d_perp = (x_track - h["xtop"]) * nx + (y_track - h["ytop"]) * ny
+        h["lr"] = 1 if d_perp > 0 else -1
+
+
+def _compute_legendre_lr_per_track(atrack):
+    """Augment each hit dict in atrack with an 'lr' field in {-1, 0, +1}.
+
+    Applied to the four hit-list views per track (y12, stereo12, y34, stereo34).
+    Each track half (upstream / downstream of the magnet) is processed
+    independently because the track is straight only within a half.
+    Failure modes (no Legendre peak) leave 'lr' = 0, interpreted downstream
+    as 'DAF auto resolution'.
+    """
+    _legendre_lr_for_half(atrack.get("y12", []), atrack.get("stereo12", []))
+    _legendre_lr_for_half(atrack.get("y34", []), atrack.get("stereo34", []))
+    return atrack
+
+
 def _prepare_output(recognized_tracks_combo, min_hits):
     """Prepare PatRec output, filtering tracks with too few hits and preserving track parameters."""
     recognized_tracks = {}
@@ -980,6 +1117,12 @@ def _prepare_output(recognized_tracks_combo, min_hits):
                 "k_y34": atrack_combo.get("k_y34"),
                 "b_y34": atrack_combo.get("b_y34"),
             }
+            # Per-hit L/R drift-isochrone resolution via the Legendre transform
+            # (Aliev et al., NIM A 592, 456, 2008). Augments each hit dict with
+            # an 'lr' field in {-1, 0, +1} that shipDigiReco passes to
+            # WireMeasurement::setLeftRightResolution. The fall-back lr = 0
+            # means the DAF resolves the side iteratively.
+            _compute_legendre_lr_per_track(atrack)
             recognized_tracks[i_track] = atrack
             i_track += 1
         else:
