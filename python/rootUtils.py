@@ -142,6 +142,7 @@ def errorSummary() -> None:
         print(e, ":", _error_log[e])
 
 
+
 def checkFileExists(x) -> str:
     if isinstance(x, str):
         tx = [x]
@@ -169,3 +170,34 @@ def checkFileExists(x) -> str:
     else:
         print("ERROR FileCheck: File must be either a string or list of files")
         os._exit(1)
+
+def checkForBranch(x, branchName) -> bool:
+    if isinstance(x, str):
+        tx = [x]
+    else:
+        tx = x
+    if isinstance(tx, (list, tuple)):
+        # See what we are looking at and make sure all the files are of the same type
+        hasIt = False
+        for _f in tx:
+            if _f[0:4] == "/eos":
+                f = ROOT.gSystem.Getenv("EOSSHIP") + _f
+            else:
+                f = _f
+            test = ROOT.TFile.Open(f)
+            if not test:
+                print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
+                sys.exit(1)
+            if test.FindObjectAny("cbmsim"):
+                if test["cbmsim"].FindBranch(branchName):
+                    hasIt = True
+                else:
+                    return False
+            else:
+                return False
+        return hasIt
+    else:
+        print("ERROR CheckForBranch: File must be either a string or list of files")
+        os._exit(1)
+
+

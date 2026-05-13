@@ -604,12 +604,13 @@ if options.ntuple:
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
-    fileType = ut.checkFileExists(inputFile)
-    if fileType == "tree":
-        # 2018 background production
-        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
+    isNew = ut.checkForBranch(inputFile, "PlaneHAPoint") # If there is a branch PlaneHAPoint this file is from the new production
+    if isNew:
+        print("INFO: Processing a file from the new production - setting target z offset at 0")
+        primGen.SetTarget(ship_geo.target.z0, 0.0)
     else:
-        primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
+        print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
+        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
