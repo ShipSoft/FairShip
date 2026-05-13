@@ -114,6 +114,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9fad8948a40e9aac00e89f938b0a03af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e338bc5e188e11be1877ab8fd706a3d" id="r_a4e338bc5e188e11be1877ab8fd706a3d"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#a4e338bc5e188e11be1877ab8fd706a3d">checkFileExists</a> (x)</td></tr>
 <tr class="separator:a4e338bc5e188e11be1877ab8fd706a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d1a57fa6c9b71b21004e66bb1fae7c4" id="r_a9d1a57fa6c9b71b21004e66bb1fae7c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerootUtils.html#a9d1a57fa6c9b71b21004e66bb1fae7c4">checkForBranch</a> (inFile, branchName)</td></tr>
+<tr class="separator:a9d1a57fa6c9b71b21004e66bb1fae7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -426,6 +428,60 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  169</span>    <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  170</span>        print(<span class="stringliteral">&quot;ERROR FileCheck: File must be either a string or list of files&quot;</span>)</div>
 <div class="line"><span class="lineno">  171</span>        os._exit(1)</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a9d1a57fa6c9b71b21004e66bb1fae7c4" name="a9d1a57fa6c9b71b21004e66bb1fae7c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d1a57fa6c9b71b21004e66bb1fae7c4">&#9670;&#160;</a></span>checkForBranch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> bool rootUtils.checkForBranch </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>inFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>branchName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00174">174</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span><span class="keyword">def </span>checkForBranch(inFile, branchName) -&gt; bool:</div>
+<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">if</span> isinstance(inFile, str):</div>
+<div class="line"><span class="lineno">  176</span>        fileList = [inFile]</div>
+<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  178</span>        fileList = inFile</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">if</span> isinstance(fileList, (list, tuple)):</div>
+<div class="line"><span class="lineno">  180</span>        hasIt = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> fileList:</div>
+<div class="line"><span class="lineno">  182</span>            <span class="keyword">with</span> ROOT.TFile.Open(_f) <span class="keyword">as</span> test:</div>
+<div class="line"><span class="lineno">  183</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> test:</div>
+<div class="line"><span class="lineno">  184</span>                    <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;ERROR FileCheck: input file {_f} does not exist. Missing authentication?&quot;</span>)</div>
+<div class="line"><span class="lineno">  185</span>                current_has_branch = bool(test.FindObjectAny(<span class="stringliteral">&quot;cbmsim&quot;</span>) <span class="keywordflow">and</span> test[<span class="stringliteral">&quot;cbmsim&quot;</span>].FindBranch(branchName))</div>
+<div class="line"><span class="lineno">  186</span>                <span class="keywordflow">if</span> hasIt <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  187</span>                    hasIt = current_has_branch</div>
+<div class="line"><span class="lineno">  188</span>                <span class="keywordflow">elif</span> current_has_branch != hasIt:</div>
+<div class="line"><span class="lineno">  189</span>                    <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  190</span>                        f<span class="stringliteral">&quot;ERROR CheckForBranch: Mixed input files (some have branch {branchName} and some do not).&quot;</span></div>
+<div class="line"><span class="lineno">  191</span>                    )</div>
+<div class="line"><span class="lineno">  192</span>        <span class="keywordflow">return</span> bool(hasIt)</div>
+<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  194</span>        print(<span class="stringliteral">&quot;ERROR CheckForBranch: File must be either a string or list of files&quot;</span>)</div>
+<div class="line"><span class="lineno">  195</span>        os._exit(1)</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -4,6 +4,7 @@ var rootUtils_8py =
     [ "bookHist", "rootUtils_8py.html#a6558e8446659e2fe282f24dff579b11d", null ],
     [ "bookProf", "rootUtils_8py.html#ae7d21aa6d2c4142e2b2c17659540b018", null ],
     [ "checkFileExists", "rootUtils_8py.html#a4e338bc5e188e11be1877ab8fd706a3d", null ],
+    [ "checkForBranch", "rootUtils_8py.html#a9d1a57fa6c9b71b21004e66bb1fae7c4", null ],
     [ "errorSummary", "rootUtils_8py.html#a9fad8948a40e9aac00e89f938b0a03af", null ],
     [ "readHists", "rootUtils_8py.html#a61db3e66b871a770b6bc264b9e3ac33e", null ],
     [ "reportError", "rootUtils_8py.html#ab807114738eb9dfb5fef001e2fa9bc54", null ],
