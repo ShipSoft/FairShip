@@ -142,7 +142,6 @@ def errorSummary() -> None:
         print(e, ":", _error_log[e])
 
 
-
 def checkFileExists(x) -> str:
     if isinstance(x, str):
         tx = [x]
@@ -170,6 +169,7 @@ def checkFileExists(x) -> str:
     else:
         print("ERROR FileCheck: File must be either a string or list of files")
         os._exit(1)
+
 
 def checkForBranch(x, branchName) -> bool:
     if isinstance(x, str):
@@ -199,5 +199,3 @@ def checkForBranch(x, branchName) -> bool:
     else:
         print("ERROR CheckForBranch: File must be either a string or list of files")
         os._exit(1)
-
-

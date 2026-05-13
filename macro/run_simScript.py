@@ -604,7 +604,9 @@ if options.ntuple:
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
-    isNew = ut.checkForBranch(inputFile, "PlaneHAPoint") # If there is a branch PlaneHAPoint this file is from the new production
+    isNew = ut.checkForBranch(
+        inputFile, "PlaneHAPoint"
+    )  # If there is a branch PlaneHAPoint this file is from the new production
     if isNew:
         print("INFO: Processing a file from the new production - setting target z offset at 0")
         primGen.SetTarget(ship_geo.target.z0, 0.0)
