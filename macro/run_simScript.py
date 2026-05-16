@@ -94,6 +94,7 @@ pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z positio
 pg_parser.add_argument(
     "--smearMode", dest="smearMode", default="exponential", help="Form of the vertex smearing for the particle gun"
 )
+pg_parser.add_argument("--multiplicity", dest="multiplicity", type=int, default=1, help="How many to generate per event")
 pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
 )
@@ -559,7 +560,7 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
-    myPgun = ROOT.ParticleGunGenerator(options.pID, 1)
+    myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
     myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
