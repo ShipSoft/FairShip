@@ -81,8 +81,13 @@ void ParticleGunGenerator::LoadHistoFromFile(
   if (static_cast<int>(varNames.size()) != fDistHistDims)
     LOG(fatal) << "ParticleGunGenerator: " << varNames.size()
                << " variables given for a " << fDistHistDims << "-D histogram";
-  else
+  else {
+    ParticleGunParticle probe;
+    for (const auto& name : varNames) {
+        static_cast<void>(GetVar(probe, name));
+    }
     fHistoVars = std::move(varNames);
+  }
 }
 
 Bool_t ParticleGunGenerator::Init() {
@@ -134,6 +139,9 @@ Bool_t ParticleGunGenerator::Init() {
 }
 
 void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
+  if (flag && (!std::isfinite(fraction) || fraction < 0. || fraction > 1.)) {
+    LOG(fatal) << "ParticleGunGenerator: charge fraction must be finite and in [0, 1]";
+  }
   m_bothCharges = flag;
   m_chargeFraction = flag ? fraction : 1.;
   if (m_bothCharges)
@@ -297,5 +305,10 @@ void ParticleGunGenerator::SetVar(ParticleGunParticle& p,
 }
 
 FairGenerator* ParticleGunGenerator::CloneGenerator() const {
-  return new ParticleGunGenerator(*this);
+  auto* clone = new ParticleGunGenerator(*this);
+  if (clone->fDistHist) {
+    clone->fDistHist.reset(static_cast<TH1*>(clone->fDistHist->Clone()));
+    clone->fDistHist->SetDirectory(nullptr);
+  }
+  return clone;
 }

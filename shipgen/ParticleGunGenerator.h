@@ -113,7 +113,7 @@ class ParticleGunGenerator : public SHiP::Generator {
   Bool_t ReadEvent(FairPrimaryGenerator* primGen) override;
 
   /** Clone this object (used in MT mode only) */
-  virtual FairGenerator* CloneGenerator() const;
+  FairGenerator* CloneGenerator() const override;
 
   void SetSmearMode(const std::string& mode);
 
