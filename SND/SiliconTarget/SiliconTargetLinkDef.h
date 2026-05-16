@@ -7,7 +7,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class SiliconTarget+;
+#pragma link C++ class SiliconTarget-;
 #pragma link C++ class SiliconTargetPoint+;
 #pragma link C++ class SiliconTargetHit+;
 #pragma link C++ class SHiP::Detector<SiliconTargetPoint>-;

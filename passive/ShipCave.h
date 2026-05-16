@@ -21,7 +21,6 @@ class ShipCave : public FairModule {
   Double_t world[3];
 
  public:
-  ClassDefOverride(ShipCave, 1)
 };
 
 #endif  // PASSIVE_SHIPCAVE_H_

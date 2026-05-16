@@ -44,7 +44,6 @@ class SiliconTarget : public SHiP::Detector<SiliconTargetPoint> {
 
   SiliconTarget(const SiliconTarget&) = delete;
   SiliconTarget& operator=(const SiliconTarget&) = delete;
-  ClassDefOverride(SiliconTarget, 1)
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGET_H_

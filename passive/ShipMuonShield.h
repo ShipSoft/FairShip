@@ -68,7 +68,6 @@ class ShipMuonShield : public FairModule {
                     Double_t Z, Bool_t NotMagnet, Bool_t SC_key);
 
  public:
-  ClassDefOverride(ShipMuonShield, 4)
 };
 
 #endif  // PASSIVE_SHIPMUONSHIELD_H_

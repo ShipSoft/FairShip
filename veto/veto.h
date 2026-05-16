@@ -196,8 +196,6 @@ class veto : public SHiP::Detector<vetoPoint> {
                              TGeoMedium* material, Bool_t sens);
 
   TGeoVolume* MakeSegments();
-
-  ClassDefOverride(veto, 3)
 };
 
 #endif  // VETO_VETO_H_

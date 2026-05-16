@@ -52,7 +52,6 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   TFile* fout;               //!
   TClonesArray* fElectrons;  //!
   Int_t index;
-  ClassDefOverride(exitHadronAbsorber, 0)
 };
 
 #endif  // MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_

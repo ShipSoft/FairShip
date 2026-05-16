@@ -9,13 +9,13 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class  ShipMagnet+;
-#pragma link C++ class  ShipCave+;
-#pragma link C++ class  ShipTargetStation+;
-#pragma link C++ class  ShipMuonShield+;
+#pragma link C++ class  ShipMagnet-;
+#pragma link C++ class  ShipCave-;
+#pragma link C++ class  ShipTargetStation-;
+#pragma link C++ class  ShipMuonShield-;
 #pragma link C++ class  ShipGeoCave;
 #pragma link C++ class  ShipPassiveContFact;
-#pragma link C++ class  ShipTAUMagneticSpectrometer+;
+#pragma link C++ class  ShipTAUMagneticSpectrometer-;
 
 
 #endif
