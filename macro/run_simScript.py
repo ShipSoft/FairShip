@@ -65,13 +65,27 @@ pg_parser.add_argument("--histoName", dest="histoName", default=None, help="Hist
 pg_parser.add_argument("--histoX", dest="histoX", default=None, help="The variable of the histogram X axis")
 pg_parser.add_argument("--histoY", dest="histoY", default=None, help="The variable of the histogram Y axis")
 pg_parser.add_argument("--histoZ", dest="histoZ", default=None, help="The variable of the histogram Z axis")
-pg_parser.add_argument("--bothCharges", dest="bothCharges", default=False, action="store_true", help="Generate both charges of given particle ID")
-pg_parser.add_argument("--chargeFraction", dest="chargeFraction", type=float, default=0.5, help="Fraction of chosen charge to generate")
+pg_parser.add_argument(
+    "--bothCharges",
+    dest="bothCharges",
+    default=False,
+    action="store_true",
+    help="Generate both charges of given particle ID",
+)
+pg_parser.add_argument(
+    "--chargeFraction", dest="chargeFraction", type=float, default=0.5, help="Fraction of chosen charge to generate"
+)
 pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
 pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
-pg_parser.add_argument("--smearMode", dest="smearMode", default="exponential", help="Form of the vertex smearing for the particle gun", choices=["exponential", "gaussian", "uniform"])
+pg_parser.add_argument(
+    "--smearMode",
+    dest="smearMode",
+    default="exponential",
+    help="Form of the vertex smearing for the particle gun",
+    choices=["exponential", "gaussian", "uniform"],
+)
 pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
 )
@@ -554,9 +568,9 @@ if options.command == "PG":
         myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
     if options.histoFile:
         if not options.histoName:
-            raise ValueError(f"Histogram name must be specified to load from a file!")
+            raise ValueError("Histogram name must be specified to load from a file!")
         if not options.histoX:
-            raise ValueError(f"Must at least specifiy one histogram variable!")
+            raise ValueError("Must at least specifiy one histogram variable!")
         histoVars = [options.histoX]
         if options.histoY:
             histoVars.append(options.histoY)
