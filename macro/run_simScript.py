@@ -615,7 +615,7 @@ if options.command == "PG":
     if options.histoFile:
         if not len(options.histoFile) == len(options.histoName):
             raise ValueError("Must have the same number of specified histogram files")
-        if not len(options.histoX)==len(options.histoFile):
+        if not len(options.histoX) == len(options.histoFile):
             raise ValueError("Must at least specify one histogram variable X variable per histogram!")
 
         for _hf, _idx in zip(options.histoFile, range(len(options.histoFile))):
