@@ -80,10 +80,7 @@ pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x positio
 pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
 pg_parser.add_argument(
-    "--smearMode",
-    dest="smearMode",
-    default="exponential",
-    help="Form of the vertex smearing for the particle gun"
+    "--smearMode", dest="smearMode", default="exponential", help="Form of the vertex smearing for the particle gun"
 )
 pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
