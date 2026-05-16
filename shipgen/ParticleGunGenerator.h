@@ -140,9 +140,9 @@ class ParticleGunGenerator : public SHiP::Generator {
   Double32_t fYMin{0}, fYMax{0};      // Rapidity range in lab system
   Double32_t fPMin{0}, fPMax{0};      // Momentum range in lab system
   Double32_t fThetaMin{0},
-             fThetaMax{0};  // Polar angle range in lab system [degree]
+      fThetaMax{0};  // Polar angle range in lab system [degree]
   Double32_t fEkinMin{0},
-             fEkinMax{0};  // Kinetic Energy range in lab system [GeV]
+      fEkinMax{0};  // Kinetic Energy range in lab system [GeV]
   Double32_t fVx{0}, fVy{0}, fVz{0};
   Double32_t fVex{0}, fVey{0}, fVez{0};
   Double32_t fPDGMass{0};

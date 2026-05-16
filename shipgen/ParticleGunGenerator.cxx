@@ -243,11 +243,15 @@ void ParticleGunGenerator::SetSmearMode(const std::string& mode) {
   std::string lower = mode;
   std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
-  if (lower == "gaussian") fSmearMode = SmearMode::kGaussian;
-  else if (lower == "uniform") fSmearMode = SmearMode::kUniform;
-  else if (lower == "exponential") fSmearMode = SmearMode::kExponential;
-  else LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
-             << "'. Valid options: exponential, gaussian, uniform";
+  if (lower == "gaussian")
+    fSmearMode = SmearMode::kGaussian;
+  else if (lower == "uniform")
+    fSmearMode = SmearMode::kUniform;
+  else if (lower == "exponential")
+    fSmearMode = SmearMode::kExponential;
+  else
+    LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
+               << "'. Valid options: exponential, gaussian, uniform";
 }
 
 // Apply the requested distribution around `centre` with the given `spread`.
