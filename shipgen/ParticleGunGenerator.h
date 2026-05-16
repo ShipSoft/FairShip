@@ -7,7 +7,7 @@
 #include "TH1.h"
 
 class FairPrimaryGenerator;
-class ParticleGunParticle;
+struct ParticleGunParticle;
 
 enum class SmearMode { kExponential, kGaussian, kUniform };
 
