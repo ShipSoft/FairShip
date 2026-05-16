@@ -3,8 +3,12 @@
 
 #include "Generator.h"
 #include <Rtypes.h>   // for Double32_t, Bool_t, kTRUE, etc
+#include "TH1.h"
 
 class FairPrimaryGenerator;
+class ParticleGunParticle;
+
+enum class SmearMode { kExponential, kGaussian, kUniform };
 
 class ParticleGunGenerator : public SHiP::Generator
 {
@@ -79,10 +83,14 @@ class ParticleGunGenerator : public SHiP::Generator
 
     void SetBoxXYZ(Double32_t x1 = 0, Double32_t y1 = 0, Double32_t x2 = 0, Double32_t y2 = 0, Double32_t z = 0);
 
+    void SetBothCharges(bool flag, Double32_t fraction = 0.5);
+
     void SetPDGType(int pdgid){m_pdgid = pdgid;};
     void SetMultiplicity(int mult){m_mult = mult;};
-    int GetPDGType(){return m_pdgid;};
+    int GetPDGType();
     int GetMultiplicity(){return m_mult;};
+
+    void LoadHistoFromFile(const std::string &inFile, const std::string &inHisto, std::vector<std::string> varNames);
 
     Double32_t GetPDGMass(){return fPDGMass;};
 
@@ -110,40 +118,56 @@ class ParticleGunGenerator : public SHiP::Generator
     /** Clone this object (used in MT mode only) */
     virtual FairGenerator* CloneGenerator() const;
 
+    void SetSmearMode(const std::string& mode);
+
   protected:
     /** Copy constructor. **/
     ParticleGunGenerator(const ParticleGunGenerator&) = default;
     ParticleGunGenerator& operator=(const ParticleGunGenerator&) = default;
 
-    void GenerateEventParameters();
-
   private:
-    Double32_t fPtMin, fPtMax;         // Transverse momentum range [GeV]
-    Double32_t fPhiMin, fPhiMax;       // Azimuth angle range [degree]
-    Double32_t fEtaMin, fEtaMax;       // Pseudorapidity range in lab system
-    Double32_t fYMin, fYMax;           // Rapidity range in lab system
-    Double32_t fPMin, fPMax;           // Momentum range in lab system
-    Double32_t fThetaMin, fThetaMax;   // Polar angle range in lab system [degree]
-    Double32_t fEkinMin, fEkinMax;     // Kinetic Energy range in lab system [GeV]
+
+    SmearMode fSmearMode{SmearMode::kExponential};
+
+    static Double32_t SmearVertex(Double_t centre, Double_t spread, SmearMode mode);
+
+    ParticleGunParticle GenerateKinematics();
+    void OverrideFromHistogram(ParticleGunParticle& p);
+    Double32_t &GetVar(ParticleGunParticle& p, const std::string& name);
+    void SetVar(ParticleGunParticle& p, const std::string& name, Double32_t value);
+
+    Double32_t fPtMin=0, fPtMax=0;         // Transverse momentum range [GeV]
+    Double32_t fPhiMin=0, fPhiMax=0;       // Azimuth angle range [degree]
+    Double32_t fEtaMin=0, fEtaMax=0;       // Pseudorapidity range in lab system
+    Double32_t fYMin=0, fYMax=0;           // Rapidity range in lab system
+    Double32_t fPMin=0, fPMax=0;           // Momentum range in lab system
+    Double32_t fThetaMin=0, fThetaMax=0;   // Polar angle range in lab system [degree]
+    Double32_t fEkinMin=0, fEkinMax=0;     // Kinetic Energy range in lab system [GeV]
     Double32_t fX, fY, fZ;
     Double32_t fVx, fVy, fVz;
     Double32_t fVex, fVey, fVez;
     Double32_t fPDGMass;
 
+    bool m_bothCharges = false;
+    Double32_t m_chargeFraction = 1.;
 
-    Bool_t fEtaRangeIsSet;     // True if eta range is set
-    Bool_t fYRangeIsSet;       // True if rapidity range is set
-    Bool_t fThetaRangeIsSet;   // True if theta range is set
-    Bool_t fCosThetaIsSet;     // True if uniform distribution in
+
+    std::shared_ptr<TH1> fDistHist;    // Some histogram with the variables you want to generate from. Can be up to 3D.
+    std::vector<std::string> fHistoVars;
+    int fDistHistDims = -1;
+
+    Bool_t fEtaRangeIsSet=false;     // True if eta range is set
+    Bool_t fYRangeIsSet=false;       // True if rapidity range is set
+    Bool_t fThetaRangeIsSet=false;   // True if theta range is set
+    Bool_t fCosThetaIsSet=false;     // True if uniform distribution in
     // cos(theta) is set (default -> not set)
-    Bool_t fPtRangeIsSet;     // True if transverse momentum range is set
-    Bool_t fPRangeIsSet;      // True if abs.momentum range is set
-    Bool_t fEkinRangeIsSet;   // True if kinetic energy range is set
+    Bool_t fPtRangeIsSet=false;     // True if transverse momentum range is set
+    Bool_t fPRangeIsSet=false;      // True if abs.momentum range is set
+    Bool_t fEkinRangeIsSet=false;   // True if kinetic energy range is set
 
     int m_mult;
     int m_pdgid;
 
-    ClassDef(ParticleGunGenerator, 5);
 };
 
 #endif

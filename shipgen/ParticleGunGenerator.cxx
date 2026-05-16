@@ -12,56 +12,22 @@
 #include <cmath>    // for cos, acos
 #include <cstdio>   // for printf
 
+#include "TH2.h"
+#include "TH3.h"
+#include "TFile.h"
+
+struct ParticleGunParticle {
+    Double32_t X{0}, Y{0}, Z{0};
+    Double32_t Px{0}, Py{0}, Pz{0};
+};
+
+
 ParticleGunGenerator::ParticleGunGenerator() :
     SHiP::Generator()
-    , fPtMin(0)
-    , fPtMax(0)
-    , fPhiMin(0)
-    , fPhiMax(0)
-    , fEtaMin(0)
-    , fEtaMax(0)
-    , fYMin(0)
-    , fYMax(0)
-    , fPMin(0)
-    , fPMax(0)
-    , fThetaMin(0)
-    , fThetaMax(0)
-    , fEkinMin(0)
-    , fEkinMax(0)
-    , fEtaRangeIsSet(0)
-    , fYRangeIsSet(0)
-    , fThetaRangeIsSet(0)
-    , fCosThetaIsSet(0)
-    , fPtRangeIsSet(0)
-    , fPRangeIsSet(0)
-    , fEkinRangeIsSet(0)
-{
-    // Default constructor
-}
+{}
 
 ParticleGunGenerator::ParticleGunGenerator(Int_t pdgid, Int_t mult) :
     SHiP::Generator()
-    , fPtMin(0)
-    , fPtMax(0)
-    , fPhiMin(0)
-    , fPhiMax(0)
-    , fEtaMin(0)
-    , fEtaMax(0)
-    , fYMin(0)
-    , fYMax(0)
-    , fPMin(0)
-    , fPMax(0)
-    , fThetaMin(0)
-    , fThetaMax(0)
-    , fEkinMin(0)
-    , fEkinMax(0)
-    , fEtaRangeIsSet(0)
-    , fYRangeIsSet(0)
-    , fThetaRangeIsSet(0)
-    , fCosThetaIsSet(0)
-    , fPtRangeIsSet(0)
-    , fPRangeIsSet(0)
-    , fEkinRangeIsSet(0)
 {
     // Constructor. Set default kinematics limits
     SetPDGType(pdgid);
@@ -95,18 +61,39 @@ void ParticleGunGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t x2
     SetVertex(x, y, z, dX, dY, 0);
 }
 
+void ParticleGunGenerator::LoadHistoFromFile(const std::string& inFile, const std::string& inHisto, std::vector<std::string> varNames)
+{
+    TFile loadFile(inFile.c_str());
+    auto* raw = dynamic_cast<TH1*>(loadFile.Get(inHisto.c_str()));
+    if(!raw){
+        LOG(fatal)<<"ParticleGunGenerator: Histogram "<<inHisto<<" not found in file "<<inFile;
+        return;
+    }
+    raw = static_cast<TH1*>(raw->Clone());
+    raw->SetDirectory(nullptr); // detach from ROOT's directory ownership
+    fDistHist.reset(raw); // now safe for shared_ptr to manage
+    loadFile.Close();
+
+    fDistHistDims = fDistHist->GetDimension();
+    if(static_cast<int>(varNames.size()) != fDistHistDims)
+        LOG(fatal) << "ParticleGunGenerator: "<<varNames.size()<<" variables given for a "<<fDistHistDims<<"-D histogram";
+    else
+        fHistoVars = std::move(varNames);
+}
+
 Bool_t ParticleGunGenerator::Init()
 {
     // Check for particle type
     TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-    TParticlePDG* particle = pdgBase->GetParticle(GetPDGType());
-    if (particle != nullptr) {
-        LOG(info) << this->ClassName() << ": particle with PDG =" << GetPDGType() << " Found";
-        fPDGMass = particle->Mass();
-    }
+    TParticlePDG* particle = pdgBase->GetParticle(m_pdgid);
+
     if (!particle) {
         LOG(fatal) << "ParticleGunGenerator: PDG " << GetPDGType() << " not defined";
+        return kFALSE;
     }
+    LOG(info) << this->ClassName() << ": particle with PDG =" << GetPDGType() << " Found";
+    fPDGMass = particle->Mass();
+    
 
     if (fPhiMax - fPhiMin > 360) {
         LOG(fatal) << "ParticleGunGenerator:Init(): phi range is too wide: " << fPhiMin << "<phi<" << fPhiMax;
@@ -116,8 +103,8 @@ Bool_t ParticleGunGenerator::Init()
             LOG(fatal) << "ParticleGunGenerator:Init(): Cannot set P and Ekin ranges simultaneously";
         } else {
             // Transform EkinRange to PRange, calculate momentum in GeV, p = √(K² + 2Kmc²)
-            fPMin = TMath::Sqrt(fEkinMin * fEkinMin + 2 * fEkinMin * GetPDGMass());
-            fPMax = TMath::Sqrt(fEkinMax * fEkinMax + 2 * fEkinMax * GetPDGMass());
+            fPMin = TMath::Sqrt(fEkinMin * (fEkinMin + 2 * fPDGMass));
+            fPMax = TMath::Sqrt(fEkinMax * (fEkinMax + 2 * fPDGMass));
             fPRangeIsSet = kTRUE;
             fEkinRangeIsSet = kFALSE;
         }
@@ -135,85 +122,177 @@ Bool_t ParticleGunGenerator::Init()
     return kTRUE;
 }
 
+void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction){
+    m_bothCharges = flag;
+    m_chargeFraction = flag ? fraction : 1.;
+    if(m_bothCharges)
+        LOG(info) << "ParticleGunGenerator: Setting to generate both charges, with fraction of "<<m_pdgid<<" set to "<<m_chargeFraction;
+    else
+        LOG(info) << "ParticleGunGenerator: Setting to only generate one charge for PDG id"<<m_pdgid;
+}
+
+int ParticleGunGenerator::GetPDGType(){
+    if(m_bothCharges){
+        float tPDG = gRandom->Uniform();
+        return (tPDG>m_chargeFraction)? -m_pdgid : m_pdgid;
+    }
+    else
+        return m_pdgid;
+}
+
 Bool_t ParticleGunGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-    // Generate one event: produce primary particles emitted from one vertex.
-    // Primary particles are distributed uniformly along
-    // those kinematics variables which were limitted by setters.
-    // if SetCosTheta() function is used, the distribution will be uniform in
-    // cos(theta)
 
-    Double32_t pabs = 0, phi, pt = 0, theta = 0, eta, y, mt, px, py, pz = 0;
-    GenerateEventParameters();
-    // Generate particles
+    std::cout<<"this is mega!"<<std::endl;
+    int pdg_type;
     for (Int_t k = 0; k < GetMultiplicity(); k++) {
-        phi = gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
-
-        if (fPRangeIsSet) {
-            pabs = gRandom->Uniform(fPMin, fPMax);
-        } else if (fPtRangeIsSet) {
-            pt = gRandom->Uniform(fPtMin, fPtMax);
-        }
-
-        if (fThetaRangeIsSet) {
-            if (fCosThetaIsSet)
-                theta = acos(gRandom->Uniform(cos(fThetaMin * TMath::DegToRad()), cos(fThetaMax * TMath::DegToRad())));
-            else {
-                theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
-            }
-        } else if (fEtaRangeIsSet) {
-            eta = gRandom->Uniform(fEtaMin, fEtaMax);
-            theta = 2 * TMath::ATan(TMath::Exp(-eta));
-        } else if (fYRangeIsSet) {
-            y = gRandom->Uniform(fYMin, fYMax);
-            mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
-            pz = mt * TMath::SinH(y);
-        }
-
-        if (fThetaRangeIsSet || fEtaRangeIsSet) {
-            if (fPRangeIsSet) {
-                pz = pabs * TMath::Cos(theta);
-                pt = pabs * TMath::Sin(theta);
-            } else if (fPtRangeIsSet) {
-                pz = pt / TMath::Tan(theta);
-            }
-        }
-
-        px = pt * TMath::Cos(phi);
-        py = pt * TMath::Sin(phi);
-
-        LOG(debug) << "FairBoxGen:  " << Form("PDG %i p=(%.2f, %.2f, %.2f) GeV,", GetPDGType(), px, py, pz);
-        primGen->AddTrack(GetPDGType(), px, py, pz, fX, fY, fZ);
+        pdg_type = GetPDGType();
+        ParticleGunParticle p = GenerateKinematics();
+        if(fDistHistDims > 0)
+            OverrideFromHistogram(p);
+        primGen->AddTrack(pdg_type, p.Px, p.Py, p.Pz, p.X, p.Y, p.Z);
     }
     return kTRUE;
 }
 
- void ParticleGunGenerator::GenerateEventParameters()
+ParticleGunParticle ParticleGunGenerator::GenerateKinematics()
 {
+    ParticleGunParticle p;
+    // --- Vertex smearing ---
+    p.X = SmearVertex(fVx, fVex, fSmearMode);
+    p.Y = SmearVertex(fVy, fVey, fSmearMode);
+    p.Z = SmearVertex(fVz, fVez, fSmearMode);
 
-     if (gRandom->Uniform() < 0.5) {
-         fX = fVx + gRandom->Exp(fVex);
-     } else {
-         fX = fVx - gRandom->Exp(fVex);
-     }
-     if (gRandom->Uniform() < 0.5) {
-         fY = fVy + gRandom->Exp(fVey);
-     } else {
-         fY = fVy - gRandom->Exp(fVey);
-     }
-     if (gRandom->Uniform() < 0.5) {
-         fZ = fVz + gRandom->Exp(fVez);
-     } else {
-         fZ = fVz - gRandom->Exp(fVez);
-     }
-
-     LOG(info) << this->ClassName() << ": Event,  vertex = (" << fX << "," << fY << "," << fZ << ") cm,  multiplicity "
+    // Now sort the momentum
+    LOG(info) << this->ClassName() << ": Event,  vertex = (" << p.X << "," << p.Y << "," << p.Z << ") cm,  multiplicity "
                << m_mult;
+
+    Double32_t pabs = 0, pt = 0, theta = 0, eta, y, mt, pz = 0;
+    // Generate particles
+    const Double32_t phi = gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
+
+    if (fPRangeIsSet) {
+        pabs = gRandom->Uniform(fPMin, fPMax);
+    } else if (fPtRangeIsSet) {
+        pt = gRandom->Uniform(fPtMin, fPtMax);
+    }
+
+    if (fThetaRangeIsSet) {
+        if (fCosThetaIsSet)
+            theta = acos(gRandom->Uniform(cos(fThetaMin * TMath::DegToRad()), cos(fThetaMax * TMath::DegToRad())));
+        else{ 
+            theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
+        }
+    } else if (fEtaRangeIsSet) {
+        eta = gRandom->Uniform(fEtaMin, fEtaMax);
+        theta = 2 * TMath::ATan(TMath::Exp(-eta));
+    } else if (fYRangeIsSet) {
+        y = gRandom->Uniform(fYMin, fYMax);
+        mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
+        pz = mt * TMath::SinH(y);
+    }
+
+    if (fThetaRangeIsSet || fEtaRangeIsSet) {
+        if (fPRangeIsSet) {
+            pz = pabs * TMath::Cos(theta);
+            pt = pabs * TMath::Sin(theta);
+        } else if (fPtRangeIsSet) {
+            pz = pt / TMath::Tan(theta);
+        }
+    }
+    p.Px = pt * TMath::Cos(phi);
+    p.Py = pt * TMath::Sin(phi);
+    p.Pz = pz;
+    return p;
  }
+
+void ParticleGunGenerator::OverrideFromHistogram(ParticleGunParticle& p)
+{
+    if (fDistHistDims <= 0) return;
+ 
+    switch (fDistHistDims) {
+        case 1:
+            SetVar(p, fHistoVars[0],
+                   static_cast<TH1*>(fDistHist.get())->GetRandom());
+            break;
+        case 2:
+            static_cast<TH2*>(fDistHist.get())->GetRandom2(
+                GetVar(p, fHistoVars[0]),
+                GetVar(p, fHistoVars[1]));
+            break;
+        case 3:
+            static_cast<TH3*>(fDistHist.get())->GetRandom3(
+                GetVar(p, fHistoVars[0]),
+                GetVar(p, fHistoVars[1]),
+                GetVar(p, fHistoVars[2]));
+            break;
+        default:
+            LOG(error) << "ParticleGunGenerator: unsupported histogram dimension "
+                       << fDistHistDims;
+    }
+}
+
+void ParticleGunGenerator::SetSmearMode(const std::string &mode)
+{
+    // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
+    std::string lower = mode;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+    if (lower == "gaussian")    fSmearMode = SmearMode::kGaussian;
+    if (lower == "uniform")     fSmearMode = SmearMode::kUniform;
+    if (lower == "exponential") fSmearMode = SmearMode::kExponential;
+    LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
+               << "'. Valid options: exponential, gaussian, uniform";
+}
+
+
+// Apply the requested distribution around `centre` with the given `spread`.
+// Spread interpretation:
+//   kExponential  — mean of the exponential (drawn symmetrically ±)
+//   kGaussian     — sigma (σ) of the Gaussian
+//   kUniform      — half-width of the flat distribution  [centre-spread, centre+spread]
+Double32_t ParticleGunGenerator::SmearVertex(
+    Double_t centre, Double_t spread, SmearMode mode)
+{
+    if (spread == 0.) return centre;
+ 
+    switch (mode) {
+        case SmearMode::kGaussian:
+            return centre + gRandom->Gaus(0., spread);
+ 
+        case SmearMode::kUniform:
+            return gRandom->Uniform(centre - spread, centre + spread);
+ 
+        case SmearMode::kExponential:
+        default: {
+            const Double_t sign = (gRandom->Uniform() < 0.5) ? +1. : -1.;
+            return centre + sign * gRandom->Exp(spread);
+        }
+    }
+}
+
+
+
+Double32_t& ParticleGunGenerator::GetVar(ParticleGunParticle& p, const std::string& name)
+{
+    if (name == "X")  return p.X;
+    if (name == "Y")  return p.Y;
+    if (name == "Z")  return p.Z;
+    if (name == "Px") return p.Px;
+    if (name == "Py") return p.Py;
+    if (name == "Pz") return p.Pz;
+    LOG(fatal) << "ParticleGunGenerator: unknown variable name '" << name << "'";
+    return p.X;   // unreachable, silences compiler warning
+}
+ 
+void ParticleGunGenerator::SetVar(
+    ParticleGunParticle& p, const std::string& name, Double32_t value)
+{
+    GetVar(p, name) = value;
+}
+
 
 FairGenerator* ParticleGunGenerator::CloneGenerator() const
 {
-    // Clone for worker (used in MT mode only)
-
     return new ParticleGunGenerator(*this);
 }
