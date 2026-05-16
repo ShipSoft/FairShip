@@ -135,10 +135,10 @@ pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
 pg_parser.add_argument(
-    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with")
+    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
 )
 pg_parser.add_argument(
-    "--modelPar", dest="modelPar", action="append", help="Momentum model parameters. You must specify them all in order")
+    "--modelPar", dest="modelPar", action="append", help="Momentum model parameters. You must specify them all in order", type=float
 )
 # === End of PG commands ===
 # === Genie subcommand ===
@@ -618,6 +618,8 @@ if options.command == "PG":
     else:
         # point source
         myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
+    if options.momentumModel > 0:
+        myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
     if options.histoFile:
         if not len(options.histoFile) == len(options.histoName):
             raise ValueError("Must have the same number of specified histogram files")
