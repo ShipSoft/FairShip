@@ -68,11 +68,12 @@ pg_parser.add_argument("--pID", dest="pID", default=22, type=int, help="id of pa
 pg_parser.add_argument(
     "--Estart", default=10, type=float, help="start of energy range of particle gun (default=10 GeV)"
 )
-pg_parser.add_argument("--histoFile", dest="histoFile", default=None, help="File with a histogram to generate from")
-pg_parser.add_argument("--histoName", dest="histoName", default=None, help="Histogram name to generate from")
-pg_parser.add_argument("--histoX", dest="histoX", default=None, help="The variable of the histogram X axis")
-pg_parser.add_argument("--histoY", dest="histoY", default=None, help="The variable of the histogram Y axis")
-pg_parser.add_argument("--histoZ", dest="histoZ", default=None, help="The variable of the histogram Z axis")
+pg_parser.add_argument("--histoFile", dest="histoFile", default=None, help="File with a histogram to generate from. Repeat for multiple files", action="append")
+pg_parser.add_argument("--histoName", dest="histoName", default=None, help="Histogram name to generate from. Repeat for multiple files", action="append")
+pg_parser.add_argument("--histoX", dest="histoX", default=None, help="The variable of the histogram X axis. Repeat for multiple files", action="append")
+pg_parser.add_argument("--histoY", dest="histoY", default=None, help="The variable of the histogram Y axis. Repeat for multiple files", action="append")
+pg_parser.add_argument("--histoZ", dest="histoZ", default=None, help="The variable of the histogram Z axis. Repeat for multiple files", action="append")
+
 pg_parser.add_argument(
     "--bothCharges",
     dest="bothCharges",
@@ -580,16 +581,18 @@ if options.command == "PG":
         # point source
         myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
     if options.histoFile:
-        if not options.histoName:
-            raise ValueError("Histogram name must be specified to load from a file!")
+        if not len(options.histoFile)==len(options.histoName):
+            raise ValueError("Must have the same number of specified histogram files")
         if not options.histoX:
-            raise ValueError("Must at least specify one histogram variable!")
-        histoVars = [options.histoX]
-        if options.histoY:
-            histoVars.append(options.histoY)
-        if options.histoZ:
-            histoVars.append(options.histoZ)
-        myPgun.LoadHistoFromFile(options.histoFile, options.histoName, histoVars)
+                raise ValueError("Must at least specify one histogram variable!")
+
+        for _hf, _idx in zip(options.histoFile, range(len(options.histoFile))):
+            histoVars = [options.histoX[_idx]]
+            if len(options.histoY) > _idx:
+                histoVars.append(options.histoY[_idx])
+            if len(options.histoZ) > _idx:
+                histoVars.append(options.histoZ[_idx])
+            myPgun.LoadHistoFromFile(_hf, options.histoName[_idx], histoVars)
     primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if options.mudis:

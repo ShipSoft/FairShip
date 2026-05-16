@@ -147,22 +147,24 @@ class ParticleGunGenerator : public SHiP::Generator {
   Double32_t fVex{0}, fVey{0}, fVez{0};
   Double32_t fPDGMass{0};
 
-  bool m_bothCharges = false;
-  Double32_t m_chargeFraction = 1.;
+  bool m_bothCharges{false};
+  Double32_t m_chargeFraction{1.};
 
-  std::shared_ptr<TH1> fDistHist;  // Some histogram with the variables you want
-                                   // to generate from. Can be up to 3D.
-  std::vector<std::string> fHistoVars;
-  int fDistHistDims = -1;
+  struct HistoEntry {
+    std::shared_ptr<TH1>     hist;
+    int                      dims{0};
+    std::vector<std::string> varNames;
+  };
+  std::vector<HistoEntry> fHistoEntries;
 
-  Bool_t fEtaRangeIsSet = false;    // True if eta range is set
-  Bool_t fYRangeIsSet = false;      // True if rapidity range is set
-  Bool_t fThetaRangeIsSet = false;  // True if theta range is set
-  Bool_t fCosThetaIsSet = false;    // True if uniform distribution in
+  Bool_t fEtaRangeIsSet{false};    // True if eta range is set
+  Bool_t fYRangeIsSet{false};      // True if rapidity range is set
+  Bool_t fThetaRangeIsSet{false};  // True if theta range is set
+  Bool_t fCosThetaIsSet{false};    // True if uniform distribution in
   // cos(theta) is set (default -> not set)
-  Bool_t fPtRangeIsSet = false;    // True if transverse momentum range is set
-  Bool_t fPRangeIsSet = false;     // True if abs.momentum range is set
-  Bool_t fEkinRangeIsSet = false;  // True if kinetic energy range is set
+  Bool_t fPtRangeIsSet{false};    // True if transverse momentum range is set
+  Bool_t fPRangeIsSet{false};     // True if abs.momentum range is set
+  Bool_t fEkinRangeIsSet{false};  // True if kinetic energy range is set
 
   int m_mult{1};
   int m_pdgid{0};

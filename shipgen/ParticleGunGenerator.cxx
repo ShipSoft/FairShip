@@ -74,20 +74,37 @@ void ParticleGunGenerator::LoadHistoFromFile(
   }
   raw = static_cast<TH1*>(raw->Clone());
   raw->SetDirectory(nullptr);  // detach from ROOT's directory ownership
-  fDistHist.reset(raw);        // now safe for shared_ptr to manage
   loadFile.Close();
 
-  fDistHistDims = fDistHist->GetDimension();
-  if (static_cast<int>(varNames.size()) != fDistHistDims)
+  const int dims = raw->GetDimension();
+  if (static_cast<int>(varNames.size()) != dims)
     LOG(fatal) << "ParticleGunGenerator: " << varNames.size()
-               << " variables given for a " << fDistHistDims << "-D histogram";
+               << " variables given for a " << dims << "-D histogram";
   else {
     ParticleGunParticle probe;
     for (const auto& name : varNames) {
       static_cast<void>(GetVar(probe, name));
     }
-    fHistoVars = std::move(varNames);
   }
+
+  // Check for variable name conflicts with already-loaded histograms
+  for (const auto& name : varNames) {
+    for (const auto& entry : fHistoEntries) {
+        for (const auto& existing : entry.varNames) {
+            if (existing == name) {
+                LOG(fatal) << "ParticleGunGenerator: variable \"" << name
+                           << "\" is already controlled by a previously loaded histogram";
+                return;
+            }
+        }
+    }
+  }
+ 
+  fHistoEntries.push_back({std::shared_ptr<TH1>(raw), dims, std::move(varNames)});
+ 
+  LOG(info) << "ParticleGunGenerator: loaded " << dims << "-D histogram \""
+            << inHisto << "\" from " << inFile
+            << " (" << fHistoEntries.size() << " total)";
 }
 
 Bool_t ParticleGunGenerator::Init() {
@@ -113,8 +130,6 @@ Bool_t ParticleGunGenerator::Init() {
       LOG(fatal) << "ParticleGunGenerator:Init(): Cannot set P and Ekin ranges "
                     "simultaneously";
     } else {
-      // Transform EkinRange to PRange, calculate momentum in GeV, p = √(K² +
-      // 2Kmc²)
       fPMin = TMath::Sqrt(fEkinMin * (fEkinMin + 2 * fPDGMass));
       fPMax = TMath::Sqrt(fEkinMax * (fEkinMax + 2 * fPDGMass));
       fPRangeIsSet = kTRUE;
@@ -168,7 +183,7 @@ Bool_t ParticleGunGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
   for (Int_t k = 0; k < GetMultiplicity(); k++) {
     pdg_type = GetPDGType();
     ParticleGunParticle p = GenerateKinematics();
-    if (fDistHistDims > 0) OverrideFromHistogram(p);
+    OverrideFromHistogram(p);
     primGen->AddTrack(pdg_type, p.Px, p.Py, p.Pz, p.X, p.Y, p.Z);
   }
   return kTRUE;
@@ -226,24 +241,24 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
 }
 
 void ParticleGunGenerator::OverrideFromHistogram(ParticleGunParticle& p) {
-  if (fDistHistDims <= 0) return;
-
-  switch (fDistHistDims) {
-    case 1:
-      SetVar(p, fHistoVars[0], static_cast<TH1*>(fDistHist.get())->GetRandom());
-      break;
-    case 2:
-      static_cast<TH2*>(fDistHist.get())
-          ->GetRandom2(GetVar(p, fHistoVars[0]), GetVar(p, fHistoVars[1]));
-      break;
-    case 3:
-      static_cast<TH3*>(fDistHist.get())
-          ->GetRandom3(GetVar(p, fHistoVars[0]), GetVar(p, fHistoVars[1]),
-                       GetVar(p, fHistoVars[2]));
-      break;
-    default:
-      LOG(error) << "ParticleGunGenerator: unsupported histogram dimension "
-                 << fDistHistDims;
+  for (const auto& entry : fHistoEntries) {
+    switch (entry.dims) {
+        case 1:
+          SetVar(p, entry.varNames[0], static_cast<TH1*>(entry.hist.get())->GetRandom());
+          break;
+        case 2:
+          static_cast<TH2*>(entry.hist.get())
+              ->GetRandom2(GetVar(p, entry.varNames[0]), GetVar(p, entry.varNames[1]));
+          break;
+        case 3:
+          static_cast<TH3*>(entry.hist.get())
+              ->GetRandom3(GetVar(p, entry.varNames[0]), GetVar(p, entry.varNames[1]),
+                           GetVar(p, entry.varNames[2]));
+          break;
+        default:
+          LOG(error) << "ParticleGunGenerator: unsupported histogram dimension "
+                     << entry.dims;
+      }
   }
 }
 
@@ -306,10 +321,5 @@ void ParticleGunGenerator::SetVar(ParticleGunParticle& p,
 }
 
 FairGenerator* ParticleGunGenerator::CloneGenerator() const {
-  auto* clone = new ParticleGunGenerator(*this);
-  if (clone->fDistHist) {
-    clone->fDistHist.reset(static_cast<TH1*>(clone->fDistHist->Clone()));
-    clone->fDistHist->SetDirectory(nullptr);
-  }
-  return clone;
+  return new ParticleGunGenerator(*this);
 }
