@@ -83,8 +83,7 @@ pg_parser.add_argument(
     "--smearMode",
     dest="smearMode",
     default="exponential",
-    help="Form of the vertex smearing for the particle gun",
-    choices=["exponential", "gaussian", "uniform"],
+    help="Form of the vertex smearing for the particle gun"
 )
 pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
