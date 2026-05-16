@@ -168,4 +168,4 @@ class ParticleGunGenerator : public SHiP::Generator {
   int m_pdgid{0};
 };
 
-#endif // SHIPGEN_PARTICLEGUNGENERATOR_H_
+#endif  // SHIPGEN_PARTICLEGUNGENERATOR_H_
