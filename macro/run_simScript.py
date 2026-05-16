@@ -134,6 +134,12 @@ pg_parser.add_argument(
 pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
+pg_parser.add_argument(
+    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with")
+)
+pg_parser.add_argument(
+    "--modelPar", dest="modelPar", action="append", help="Momentum model parameters. You must specify them all in order")
+)
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")

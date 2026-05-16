@@ -2,14 +2,32 @@
 #define SHIPGEN_PARTICLEGUNGENERATOR_H_
 
 #include <Rtypes.h>  // for Double32_t, Bool_t, kTRUE, etc
-
+#include "TRandom.h"
 #include "Generator.h"
 #include "TH1.h"
 
 class FairPrimaryGenerator;
-struct ParticleGunParticle;
+struct ParticleGunParticle {
+  Double32_t X{0}, Y{0}, Z{0};
+  Double32_t Px{0}, Py{0}, Pz{0};
+};
 
 enum class SmearMode { kExponential, kGaussian, kUniform };
+
+struct MomentumModelSpec {
+    int         expectedPars;
+    const char* description;
+    std::function<void(ParticleGunParticle&, const std::vector<Double32_t>&)> generate;
+};
+
+static const std::map<int, MomentumModelSpec> kMomentumModels = {
+    {1, {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
+         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+             p.Px = gRandom->Gaus  (pars[0], pars[1]);
+             p.Py = gRandom->Gaus  (pars[2], pars[3]);
+             p.Pz = gRandom->Landau(pars[4], pars[5]);
+         }}},
+};
 
 class ParticleGunGenerator : public SHiP::Generator {
  public:
@@ -117,6 +135,10 @@ class ParticleGunGenerator : public SHiP::Generator {
 
   void SetSmearMode(const std::string& mode);
 
+  void SetMomentumModel(const int modelNo, std::vector<Double32_t> pars);
+
+  void PrintMomentumModels();
+
  protected:
   /** Copy constructor. **/
   ParticleGunGenerator(const ParticleGunGenerator&) = default;
@@ -124,6 +146,7 @@ class ParticleGunGenerator : public SHiP::Generator {
 
  private:
   SmearMode fSmearMode{SmearMode::kExponential};
+  void GenMomentumModel(ParticleGunParticle &p);
 
   static Double32_t SmearVertex(Double_t centre, Double_t spread,
                                 SmearMode mode);
@@ -166,6 +189,8 @@ class ParticleGunGenerator : public SHiP::Generator {
   Bool_t fPRangeIsSet{false};     // True if abs.momentum range is set
   Bool_t fEkinRangeIsSet{false};  // True if kinetic energy range is set
 
+  int fMomentumModel{0};
+  std::vector<Double32_t> fMomentumPars;
   int m_mult{1};
   int m_pdgid{0};
 };
