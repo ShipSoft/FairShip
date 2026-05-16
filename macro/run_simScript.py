@@ -578,7 +578,7 @@ if options.command == "PG":
         if not options.histoName:
             raise ValueError("Histogram name must be specified to load from a file!")
         if not options.histoX:
-            raise ValueError("Must at least specifiy one histogram variable!")
+            raise ValueError("Must at least specify one histogram variable!")
         histoVars = [options.histoX]
         if options.histoY:
             histoVars.append(options.histoY)

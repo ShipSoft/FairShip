@@ -1,5 +1,5 @@
-#ifndef SHIPGEN_PARTICLEGUNGENERATOR_H
-#define SHIPGEN_PARTICLEGUNGENERATOR_H
+#ifndef SHIPGEN_PARTICLEGUNGENERATOR_H_
+#define SHIPGEN_PARTICLEGUNGENERATOR_H_
 
 #include <Rtypes.h>  // for Double32_t, Bool_t, kTRUE, etc
 
@@ -20,7 +20,7 @@ class ParticleGunGenerator : public SHiP::Generator {
    **@param pdgid Particle type (PDG encoding)
    **@param mult  Multiplicity (default is 1)
    **/
-  ParticleGunGenerator(Int_t pdgid, Int_t mult = 1);
+  explicit ParticleGunGenerator(Int_t pdgid, Int_t mult = 1);
 
   /** Destructor **/
   ~ParticleGunGenerator() override;
@@ -168,4 +168,4 @@ class ParticleGunGenerator : public SHiP::Generator {
   int m_pdgid{0};
 };
 
-#endif
+#endif // SHIPGEN_PARTICLEGUNGENERATOR_H_
