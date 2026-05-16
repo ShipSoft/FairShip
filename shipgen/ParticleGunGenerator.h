@@ -151,8 +151,8 @@ class ParticleGunGenerator : public SHiP::Generator {
   Double32_t m_chargeFraction{1.};
 
   struct HistoEntry {
-    std::shared_ptr<TH1>     hist;
-    int                      dims{0};
+    std::shared_ptr<TH1> hist;
+    int dims{0};
     std::vector<std::string> varNames;
   };
   std::vector<HistoEntry> fHistoEntries;
