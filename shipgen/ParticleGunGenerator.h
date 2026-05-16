@@ -134,19 +134,18 @@ class ParticleGunGenerator : public SHiP::Generator {
   void SetVar(ParticleGunParticle& p, const std::string& name,
               Double32_t value);
 
-  Double32_t fPtMin = 0, fPtMax = 0;    // Transverse momentum range [GeV]
-  Double32_t fPhiMin = 0, fPhiMax = 0;  // Azimuth angle range [degree]
-  Double32_t fEtaMin = 0, fEtaMax = 0;  // Pseudorapidity range in lab system
-  Double32_t fYMin = 0, fYMax = 0;      // Rapidity range in lab system
-  Double32_t fPMin = 0, fPMax = 0;      // Momentum range in lab system
-  Double32_t fThetaMin = 0,
-             fThetaMax = 0;  // Polar angle range in lab system [degree]
-  Double32_t fEkinMin = 0,
-             fEkinMax = 0;  // Kinetic Energy range in lab system [GeV]
-  Double32_t fX, fY, fZ;
-  Double32_t fVx, fVy, fVz;
-  Double32_t fVex, fVey, fVez;
-  Double32_t fPDGMass;
+  Double32_t fPtMin{0}, fPtMax{0};    // Transverse momentum range [GeV]
+  Double32_t fPhiMin{0}, fPhiMax{0};  // Azimuth angle range [degree]
+  Double32_t fEtaMin{0}, fEtaMax{0};  // Pseudorapidity range in lab system
+  Double32_t fYMin{0}, fYMax{0};      // Rapidity range in lab system
+  Double32_t fPMin{0}, fPMax{0};      // Momentum range in lab system
+  Double32_t fThetaMin{0},
+             fThetaMax{0};  // Polar angle range in lab system [degree]
+  Double32_t fEkinMin{0},
+             fEkinMax{0};  // Kinetic Energy range in lab system [GeV]
+  Double32_t fVx{0}, fVy{0}, fVz{0};
+  Double32_t fVex{0}, fVey{0}, fVez{0};
+  Double32_t fPDGMass{0};
 
   bool m_bothCharges = false;
   Double32_t m_chargeFraction = 1.;
@@ -165,8 +164,8 @@ class ParticleGunGenerator : public SHiP::Generator {
   Bool_t fPRangeIsSet = false;     // True if abs.momentum range is set
   Bool_t fEkinRangeIsSet = false;  // True if kinetic energy range is set
 
-  int m_mult;
-  int m_pdgid;
+  int m_mult{1};
+  int m_pdgid{0};
 };
 
 #endif

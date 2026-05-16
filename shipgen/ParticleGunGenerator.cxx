@@ -155,7 +155,6 @@ int ParticleGunGenerator::GetPDGType() {
 }
 
 Bool_t ParticleGunGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
-  std::cout << "this is mega!" << std::endl;
   int pdg_type;
   for (Int_t k = 0; k < GetMultiplicity(); k++) {
     pdg_type = GetPDGType();
@@ -189,8 +188,8 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
 
   if (fThetaRangeIsSet) {
     if (fCosThetaIsSet)
-      theta = acos(gRandom->Uniform(cos(fThetaMin * TMath::DegToRad()),
-                                    cos(fThetaMax * TMath::DegToRad())));
+      theta = acos(gRandom->Uniform(cos(fThetaMax * TMath::DegToRad()),
+                                    cos(fThetaMin * TMath::DegToRad())));
     else {
       theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
     }
@@ -245,9 +244,9 @@ void ParticleGunGenerator::SetSmearMode(const std::string& mode) {
   std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
   if (lower == "gaussian") fSmearMode = SmearMode::kGaussian;
-  if (lower == "uniform") fSmearMode = SmearMode::kUniform;
-  if (lower == "exponential") fSmearMode = SmearMode::kExponential;
-  LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
+  else if (lower == "uniform") fSmearMode = SmearMode::kUniform;
+  else if (lower == "exponential") fSmearMode = SmearMode::kExponential;
+  else LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
              << "'. Valid options: exponential, gaussian, uniform";
 }
 

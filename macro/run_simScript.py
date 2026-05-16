@@ -15,6 +15,12 @@ import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
 
+def _fraction_0_1(value: str) -> float:
+    v = float(value)
+    if not 0.0 <= v <= 1.0:
+        raise ValueError("--chargeFraction must be between 0 and 1")
+    return v
+
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -73,7 +79,7 @@ pg_parser.add_argument(
     help="Generate both charges of given particle ID",
 )
 pg_parser.add_argument(
-    "--chargeFraction", dest="chargeFraction", type=float, default=0.5, help="Fraction of chosen charge to generate"
+    "--chargeFraction", dest="chargeFraction", type=_fraction_0_1, default=0.5, help="Fraction of chosen charge to generate [0,1]"
 )
 pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
 pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
