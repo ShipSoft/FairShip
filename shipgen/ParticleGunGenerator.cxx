@@ -90,21 +90,23 @@ void ParticleGunGenerator::LoadHistoFromFile(
   // Check for variable name conflicts with already-loaded histograms
   for (const auto& name : varNames) {
     for (const auto& entry : fHistoEntries) {
-        for (const auto& existing : entry.varNames) {
-            if (existing == name) {
-                LOG(fatal) << "ParticleGunGenerator: variable \"" << name
-                           << "\" is already controlled by a previously loaded histogram";
-                return;
-            }
+      for (const auto& existing : entry.varNames) {
+        if (existing == name) {
+          LOG(fatal)
+              << "ParticleGunGenerator: variable \"" << name
+              << "\" is already controlled by a previously loaded histogram";
+          return;
         }
+      }
     }
   }
- 
-  fHistoEntries.push_back({std::shared_ptr<TH1>(raw), dims, std::move(varNames)});
- 
+
+  fHistoEntries.push_back(
+      {std::shared_ptr<TH1>(raw), dims, std::move(varNames)});
+
   LOG(info) << "ParticleGunGenerator: loaded " << dims << "-D histogram \""
-            << inHisto << "\" from " << inFile
-            << " (" << fHistoEntries.size() << " total)";
+            << inHisto << "\" from " << inFile << " (" << fHistoEntries.size()
+            << " total)";
 }
 
 Bool_t ParticleGunGenerator::Init() {
@@ -243,22 +245,25 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
 void ParticleGunGenerator::OverrideFromHistogram(ParticleGunParticle& p) {
   for (const auto& entry : fHistoEntries) {
     switch (entry.dims) {
-        case 1:
-          SetVar(p, entry.varNames[0], static_cast<TH1*>(entry.hist.get())->GetRandom());
-          break;
-        case 2:
-          static_cast<TH2*>(entry.hist.get())
-              ->GetRandom2(GetVar(p, entry.varNames[0]), GetVar(p, entry.varNames[1]));
-          break;
-        case 3:
-          static_cast<TH3*>(entry.hist.get())
-              ->GetRandom3(GetVar(p, entry.varNames[0]), GetVar(p, entry.varNames[1]),
-                           GetVar(p, entry.varNames[2]));
-          break;
-        default:
-          LOG(error) << "ParticleGunGenerator: unsupported histogram dimension "
-                     << entry.dims;
-      }
+      case 1:
+        SetVar(p, entry.varNames[0],
+               static_cast<TH1*>(entry.hist.get())->GetRandom());
+        break;
+      case 2:
+        static_cast<TH2*>(entry.hist.get())
+            ->GetRandom2(GetVar(p, entry.varNames[0]),
+                         GetVar(p, entry.varNames[1]));
+        break;
+      case 3:
+        static_cast<TH3*>(entry.hist.get())
+            ->GetRandom3(GetVar(p, entry.varNames[0]),
+                         GetVar(p, entry.varNames[1]),
+                         GetVar(p, entry.varNames[2]));
+        break;
+      default:
+        LOG(error) << "ParticleGunGenerator: unsupported histogram dimension "
+                   << entry.dims;
+    }
   }
 }
 
