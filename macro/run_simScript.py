@@ -85,7 +85,7 @@ pg_parser.add_argument(
     dest="chargeFraction",
     type=_fraction_0_1,
     default=0.5,
-    help="Fraction of chosen charge to generate [0,1]",
+    help="Fraction of chosen charge from pID to generate [0,1]",
 )
 pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
 pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
