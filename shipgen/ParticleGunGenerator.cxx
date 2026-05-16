@@ -197,46 +197,47 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
   LOG(info) << this->ClassName() << ": Event,  vertex = (" << p.X << "," << p.Y
             << "," << p.Z << ") cm,  multiplicity " << m_mult;
 
-  if(fMomentumModel>0)
-      GenMomentumModel(p);
-  else{
-      Double32_t pabs = 0, pt = 0, theta = 0, eta, y, mt, pz = 0;
-      // Generate particles
-      const Double32_t phi = gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
+  if (fMomentumModel > 0)
+    GenMomentumModel(p);
+  else {
+    Double32_t pabs = 0, pt = 0, theta = 0, eta, y, mt, pz = 0;
+    // Generate particles
+    const Double32_t phi =
+        gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
 
+    if (fPRangeIsSet) {
+      pabs = gRandom->Uniform(fPMin, fPMax);
+    } else if (fPtRangeIsSet) {
+      pt = gRandom->Uniform(fPtMin, fPtMax);
+    }
+
+    if (fThetaRangeIsSet) {
+      if (fCosThetaIsSet)
+        theta = acos(gRandom->Uniform(cos(fThetaMax * TMath::DegToRad()),
+                                      cos(fThetaMin * TMath::DegToRad())));
+      else {
+        theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
+      }
+    } else if (fEtaRangeIsSet) {
+      eta = gRandom->Uniform(fEtaMin, fEtaMax);
+      theta = 2 * TMath::ATan(TMath::Exp(-eta));
+    } else if (fYRangeIsSet) {
+      y = gRandom->Uniform(fYMin, fYMax);
+      mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
+      pz = mt * TMath::SinH(y);
+    }
+
+    if (fThetaRangeIsSet || fEtaRangeIsSet) {
       if (fPRangeIsSet) {
-        pabs = gRandom->Uniform(fPMin, fPMax);
+        pz = pabs * TMath::Cos(theta);
+        pt = pabs * TMath::Sin(theta);
       } else if (fPtRangeIsSet) {
-        pt = gRandom->Uniform(fPtMin, fPtMax);
+        pz = pt / TMath::Tan(theta);
       }
-
-      if (fThetaRangeIsSet) {
-        if (fCosThetaIsSet)
-          theta = acos(gRandom->Uniform(cos(fThetaMax * TMath::DegToRad()),
-                                        cos(fThetaMin * TMath::DegToRad())));
-        else {
-          theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
-        }
-      } else if (fEtaRangeIsSet) {
-        eta = gRandom->Uniform(fEtaMin, fEtaMax);
-        theta = 2 * TMath::ATan(TMath::Exp(-eta));
-      } else if (fYRangeIsSet) {
-        y = gRandom->Uniform(fYMin, fYMax);
-        mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
-        pz = mt * TMath::SinH(y);
-      }
-
-      if (fThetaRangeIsSet || fEtaRangeIsSet) {
-        if (fPRangeIsSet) {
-          pz = pabs * TMath::Cos(theta);
-          pt = pabs * TMath::Sin(theta);
-        } else if (fPtRangeIsSet) {
-          pz = pt / TMath::Tan(theta);
-        }
-      }
-      p.Px = pt * TMath::Cos(phi);
-      p.Py = pt * TMath::Sin(phi);
-      p.Pz = pz;
+    }
+    p.Px = pt * TMath::Cos(phi);
+    p.Py = pt * TMath::Sin(phi);
+    p.Pz = pz;
   }
   return p;
 }
@@ -307,39 +308,37 @@ Double32_t ParticleGunGenerator::SmearVertex(Double_t centre, Double_t spread,
   }
 }
 
-void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t> pars)
-{
-    auto it = kMomentumModels.find(modelNo);
-    if (it == kMomentumModels.end()) {
-        LOG(fatal) << "ParticleGunGenerator: unknown momentum model " << modelNo;
-        return;
-    }
+void ParticleGunGenerator::SetMomentumModel(int modelNo,
+                                            std::vector<Double32_t> pars) {
+  auto it = kMomentumModels.find(modelNo);
+  if (it == kMomentumModels.end()) {
+    LOG(fatal) << "ParticleGunGenerator: unknown momentum model " << modelNo;
+    return;
+  }
 
-    const auto& spec = it->second;
-    if (static_cast<int>(pars.size()) != spec.expectedPars) {
-        LOG(fatal) << "ParticleGunGenerator: momentum model " << modelNo
-                   << " (" << spec.description << ") requires "
-                   << spec.expectedPars << " parameters, got " << pars.size();
-        return;
-    }
+  const auto& spec = it->second;
+  if (static_cast<int>(pars.size()) != spec.expectedPars) {
+    LOG(fatal) << "ParticleGunGenerator: momentum model " << modelNo << " ("
+               << spec.description << ") requires " << spec.expectedPars
+               << " parameters, got " << pars.size();
+    return;
+  }
 
-    fMomentumModel = modelNo;
-    fMomentumPars  = std::move(pars);
-    LOG(info) << "ParticleGunGenerator: momentum model " << modelNo
-              << " (" << spec.description << ")";
+  fMomentumModel = modelNo;
+  fMomentumPars = std::move(pars);
+  LOG(info) << "ParticleGunGenerator: momentum model " << modelNo << " ("
+            << spec.description << ")";
 }
 
-void ParticleGunGenerator::GenMomentumModel(ParticleGunParticle& p)
-{
-    kMomentumModels.at(fMomentumModel).generate(p, fMomentumPars);
+void ParticleGunGenerator::GenMomentumModel(ParticleGunParticle& p) {
+  kMomentumModels.at(fMomentumModel).generate(p, fMomentumPars);
 }
 
-void ParticleGunGenerator::PrintMomentumModels()
-{
-    LOG(info) << "Available momentum models:";
-    for (const auto& [id, spec] : kMomentumModels)
-        LOG(info) << "  Model " << id << " (" << spec.expectedPars
-                  << " pars): " << spec.description;
+void ParticleGunGenerator::PrintMomentumModels() {
+  LOG(info) << "Available momentum models:";
+  for (const auto& [id, spec] : kMomentumModels)
+    LOG(info) << "  Model " << id << " (" << spec.expectedPars
+              << " pars): " << spec.description;
 }
 
 Double32_t& ParticleGunGenerator::GetVar(ParticleGunParticle& p,
