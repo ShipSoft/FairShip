@@ -2,9 +2,10 @@
 #define SHIPGEN_PARTICLEGUNGENERATOR_H_
 
 #include <Rtypes.h>  // for Double32_t, Bool_t, kTRUE, etc
-#include "TRandom.h"
+
 #include "Generator.h"
 #include "TH1.h"
+#include "TRandom.h"
 
 class FairPrimaryGenerator;
 struct ParticleGunParticle {

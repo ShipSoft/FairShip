@@ -181,39 +181,39 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
       // Generate particles
       const Double32_t phi = gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
 
+    if (fPRangeIsSet) {
+      pabs = gRandom->Uniform(fPMin, fPMax);
+    } else if (fPtRangeIsSet) {
+      pt = gRandom->Uniform(fPtMin, fPtMax);
+    }
+
+    if (fThetaRangeIsSet) {
+      if (fCosThetaIsSet)
+        theta = acos(gRandom->Uniform(cos(fThetaMax * TMath::DegToRad()),
+                                      cos(fThetaMin * TMath::DegToRad())));
+      else {
+        theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
+      }
+    } else if (fEtaRangeIsSet) {
+      eta = gRandom->Uniform(fEtaMin, fEtaMax);
+      theta = 2 * TMath::ATan(TMath::Exp(-eta));
+    } else if (fYRangeIsSet) {
+      y = gRandom->Uniform(fYMin, fYMax);
+      mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
+      pz = mt * TMath::SinH(y);
+    }
+
+    if (fThetaRangeIsSet || fEtaRangeIsSet) {
       if (fPRangeIsSet) {
-        pabs = gRandom->Uniform(fPMin, fPMax);
+        pz = pabs * TMath::Cos(theta);
+        pt = pabs * TMath::Sin(theta);
       } else if (fPtRangeIsSet) {
-        pt = gRandom->Uniform(fPtMin, fPtMax);
+        pz = pt / TMath::Tan(theta);
       }
-
-      if (fThetaRangeIsSet) {
-        if (fCosThetaIsSet)
-          theta = acos(gRandom->Uniform(cos(fThetaMax * TMath::DegToRad()),
-                                        cos(fThetaMin * TMath::DegToRad())));
-        else {
-          theta = gRandom->Uniform(fThetaMin, fThetaMax) * TMath::DegToRad();
-        }
-      } else if (fEtaRangeIsSet) {
-        eta = gRandom->Uniform(fEtaMin, fEtaMax);
-        theta = 2 * TMath::ATan(TMath::Exp(-eta));
-      } else if (fYRangeIsSet) {
-        y = gRandom->Uniform(fYMin, fYMax);
-        mt = TMath::Sqrt(GetPDGMass() * GetPDGMass() + pt * pt);
-        pz = mt * TMath::SinH(y);
-      }
-
-      if (fThetaRangeIsSet || fEtaRangeIsSet) {
-        if (fPRangeIsSet) {
-          pz = pabs * TMath::Cos(theta);
-          pt = pabs * TMath::Sin(theta);
-        } else if (fPtRangeIsSet) {
-          pz = pt / TMath::Tan(theta);
-        }
-      }
-      p.Px = pt * TMath::Cos(phi);
-      p.Py = pt * TMath::Sin(phi);
-      p.Pz = pz;
+    }
+    p.Px = pt * TMath::Cos(phi);
+    p.Py = pt * TMath::Sin(phi);
+    p.Pz = pz;
   }
   return p;
 }
@@ -261,10 +261,10 @@ void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t>
                    + std::to_string(spec.expectedPars) + " parameters, got " + std::to_string(pars.size()));
     }
 
-    fMomentumModel = modelNo;
-    fMomentumPars  = std::move(pars);
-    LOG(info) << "ParticleGunGenerator: momentum model " << modelNo
-              << " (" << spec.description << ")";
+  fMomentumModel = modelNo;
+  fMomentumPars = std::move(pars);
+  LOG(info) << "ParticleGunGenerator: momentum model " << modelNo << " ("
+            << spec.description << ")";
 }
 
 void ParticleGunGenerator::SetVertexModel(std::string model, std::vector<Double32_t> pars)

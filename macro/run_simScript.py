@@ -138,7 +138,11 @@ pg_parser.add_argument(
     "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
 )
 pg_parser.add_argument(
-    "--modelPar", dest="modelPar", action="append", help="Momentum model parameters. You must specify them all in order", type=float
+    "--modelPar",
+    dest="modelPar",
+    action="append",
+    help="Momentum model parameters. You must specify them all in order",
+    type=float,
 )
 # === End of PG commands ===
 # === Genie subcommand ===
