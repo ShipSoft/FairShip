@@ -626,18 +626,25 @@ if options.command == "PG":
     if options.momentumModel > 0:
         myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
     if options.histoFile:
-        if not len(options.histoFile) == len(options.histoName):
-            raise ValueError("Must have the same number of specified histogram files")
-        if not len(options.histoX) == len(options.histoFile):
-            raise ValueError("Must at least specify one histogram variable X variable per histogram!")
+        histo_files = options.histoFile or []
+        histo_names = options.histoName or []
+        histo_x = options.histoX or []
+        histo_y = options.histoY or []
+        histo_z = options.histoZ or []
 
-        for _hf, _idx in zip(options.histoFile, range(len(options.histoFile))):
-            histoVars = [options.histoX[_idx]]
-            if len(options.histoY) > _idx:
-                histoVars.append(options.histoY[_idx])
-            if len(options.histoZ) > _idx:
-                histoVars.append(options.histoZ[_idx])
-            myPgun.LoadHistoFromFile(_hf, options.histoName[_idx], histoVars)
+        if len(histo_files) != len(histo_names):
+            raise ValueError("Must specify one --histoName per --histoFile")
+        if len(histo_x) != len(histo_files):
+            raise ValueError("Must specify one --histoX per --histoFile")
+
+        for idx, histo_file in enumerate(histo_files):
+            histo_vars = [histo_x[idx]]
+            if idx < len(histo_y):
+                histo_vars.append(histo_y[idx])
+            if idx < len(histo_z):
+                histo_vars.append(histo_z[idx])
+            myPgun.LoadHistoFromFile(histo_file, histo_names[idx], histo_vars)
+
     primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if options.mudis:

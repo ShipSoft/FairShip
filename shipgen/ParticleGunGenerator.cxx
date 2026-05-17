@@ -17,7 +17,9 @@
 #include "TH2.h"
 #include "TH3.h"
 
-ParticleGunGenerator::ParticleGunGenerator() : SHiP::Generator() {}
+ParticleGunGenerator::ParticleGunGenerator() : SHiP::Generator() {
+  SetPhiRange();
+}
 
 ParticleGunGenerator::ParticleGunGenerator(Int_t pdgid, Int_t mult)
     : SHiP::Generator() {
@@ -142,10 +144,21 @@ void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
   }
   m_bothCharges = flag;
   m_chargeFraction = flag ? fraction : 1.;
-  if (m_bothCharges)
-    LOG(info) << "ParticleGunGenerator: Setting to generate both charges, with "
-                 "fraction of "
-              << m_pdgid << " set to " << m_chargeFraction;
+  if (m_bothCharges){
+    // Check for particle type
+    TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+    TParticlePDG* particle = pdgBase->GetParticle(-m_pdgid);
+    if (!particle) {
+      LOG(warning) << "ParticleGunGenerator: PDG " << -m_pdgid
+               << " not defined. Only generating "<< m_pdgid;
+      m_bothCharges = false;
+      m_chargeFraction = 1.;
+    }
+    else
+        LOG(info) << "ParticleGunGenerator: Setting to generate both charges, with "
+                     "fraction of "
+                  << m_pdgid << " set to " << m_chargeFraction;
+  }
   else
     LOG(info) << "ParticleGunGenerator: Setting to only generate one charge "
                  "for PDG id"
@@ -343,5 +356,10 @@ void ParticleGunGenerator::SetVar(ParticleGunParticle& p,
 }
 
 FairGenerator* ParticleGunGenerator::CloneGenerator() const {
-  return new ParticleGunGenerator(*this);
+  auto* clone = new ParticleGunGenerator(*this);
+  for (auto& entry : clone->fHistoEntries) {
+    entry.hist.reset(static_cast<TH1*>(entry.hist->Clone()));
+    entry.hist->SetDirectory(nullptr);
+  }
+  return clone;
 }
