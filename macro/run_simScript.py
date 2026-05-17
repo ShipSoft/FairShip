@@ -123,7 +123,11 @@ pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x positio
 pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
 pg_parser.add_argument(
-    "--smearMode", dest="smearMode", default="uniform", help="Form of the vertex smearing for the particle gun", type=str
+    "--smearMode",
+    dest="smearMode",
+    default="uniform",
+    help="Form of the vertex smearing for the particle gun",
+    type=str,
 )
 pg_parser.add_argument(
     "--multiplicity", dest="multiplicity", type=int, default=1, help="How many to generate per event"
@@ -607,15 +611,18 @@ if options.command == "PG":
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
     myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
-    myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0., options.Vy * u.cm, 0., options.Vz * u.cm])
+    myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
-        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm])
+        myPgun.SetVertexModel(
+            options.smearMode,
+            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
+        )
     else:
         # point source
-        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0., options.Vy * u.cm, 0., options.Vz * u.cm])
+        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
     if options.momentumModel > 0:
         myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
     if options.histoFile:

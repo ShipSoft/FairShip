@@ -13,41 +13,45 @@ struct ParticleGunParticle {
   Double32_t Px{0}, Py{0}, Pz{0};
 };
 
-
 struct ModelSpec {
-    int         expectedPars;
-    const char* description;
-    std::function<void(ParticleGunParticle&, const std::vector<Double32_t>&)> generate;
+  int expectedPars;
+  const char* description;
+  std::function<void(ParticleGunParticle&, const std::vector<Double32_t>&)>
+      generate;
 };
 
 static const std::map<std::string, ModelSpec> kVertexModels = {
-    {"gaussian", {5, "Gaus(X), Gaus(Y), Point(Z)",
-         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-             p.X = gRandom->Gaus(pars[0], pars[1]);
-             p.Y = gRandom->Gaus(pars[2], pars[3]);
-             p.Z = pars[4];
-         }}},
-    {"exponential", {5, "Exp(X), Exp(Y), Point(Z)",
-         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-             p.X = gRandom->Gaus(pars[0], pars[1]);
-             p.Y = gRandom->Gaus(pars[2], pars[3]);
-             p.Z = pars[4];
-         }}},
-    {"uniform", {5, "Uniform(X), Uniform(Y), Point(Z)",
-         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-             p.X = gRandom->Uniform(pars[0], pars[1]/2.);
-             p.Y = gRandom->Uniform(pars[2], pars[3]/2.);
-             p.Z = pars[4];
-         }}},
+    {"gaussian",
+     {5, "Gaus(X), Gaus(Y), Point(Z)",
+      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+        p.X = gRandom->Gaus(pars[0], pars[1]);
+        p.Y = gRandom->Gaus(pars[2], pars[3]);
+        p.Z = pars[4];
+      }}},
+    {"exponential",
+     {5, "Exp(X), Exp(Y), Point(Z)",
+      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+        p.X = gRandom->Gaus(pars[0], pars[1]);
+        p.Y = gRandom->Gaus(pars[2], pars[3]);
+        p.Z = pars[4];
+      }}},
+    {"uniform",
+     {5, "Uniform(X), Uniform(Y), Point(Z)",
+      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+        p.X = gRandom->Uniform(pars[0], pars[1] / 2.);
+        p.Y = gRandom->Uniform(pars[2], pars[3] / 2.);
+        p.Z = pars[4];
+      }}},
 };
 
 static const std::map<int, ModelSpec> kMomentumModels = {
-    {1, {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
-         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-             p.Px = gRandom->Gaus  (pars[0], pars[1]);
-             p.Py = gRandom->Gaus  (pars[2], pars[3]);
-             p.Pz = gRandom->Landau(pars[4], pars[5]);
-         }}},
+    {1,
+     {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
+      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+        p.Px = gRandom->Gaus(pars[0], pars[1]);
+        p.Py = gRandom->Gaus(pars[2], pars[3]);
+        p.Pz = gRandom->Landau(pars[4], pars[5]);
+      }}},
 };
 
 class ParticleGunGenerator : public SHiP::Generator {
@@ -158,9 +162,8 @@ class ParticleGunGenerator : public SHiP::Generator {
   ParticleGunGenerator& operator=(const ParticleGunGenerator&) = default;
 
  private:
-
-  void GenVertexModel(ParticleGunParticle &p);
-  void GenMomentumModel(ParticleGunParticle &p);
+  void GenVertexModel(ParticleGunParticle& p);
+  void GenMomentumModel(ParticleGunParticle& p);
 
   ParticleGunParticle GenerateKinematics();
   void OverrideFromHistogram(ParticleGunParticle& p);

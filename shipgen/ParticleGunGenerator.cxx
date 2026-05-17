@@ -7,7 +7,6 @@
 #include <TParticlePDG.h>
 #include <TRandom.h>
 
-
 #include <cmath>   // for cos, acos
 #include <cstdio>  // for printf
 #include <stdexcept>
@@ -38,21 +37,21 @@ void ParticleGunGenerator::LoadHistoFromFile(
   if (!raw) {
     LOG(fatal) << "ParticleGunGenerator: Histogram " << inHisto
                << " not found in file " << inFile;
-    throw std::runtime_error("ParticleGunGenerator: Histogram " + inHisto
-               + " not found in file " + inFile);
+    throw std::runtime_error("ParticleGunGenerator: Histogram " + inHisto +
+                             " not found in file " + inFile);
   }
   raw = static_cast<TH1*>(raw->Clone());
   raw->SetDirectory(nullptr);  // detach from ROOT's directory ownership
   loadFile.Close();
 
   const int dims = raw->GetDimension();
-  if (static_cast<int>(varNames.size()) != dims){
+  if (static_cast<int>(varNames.size()) != dims) {
     LOG(fatal) << "ParticleGunGenerator: " << varNames.size()
                << " variables given for a " << dims << "-D histogram";
-    throw std::runtime_error("ParticleGunGenerator: " + std::to_string(varNames.size())
-               + " variables given for a " + std::to_string(dims) + "-D histogram");
-  }
-  else {
+    throw std::runtime_error(
+        "ParticleGunGenerator: " + std::to_string(varNames.size()) +
+        " variables given for a " + std::to_string(dims) + "-D histogram");
+  } else {
     ParticleGunParticle probe;
     for (const auto& name : varNames) {
       static_cast<void>(GetVar(probe, name));
@@ -67,8 +66,9 @@ void ParticleGunGenerator::LoadHistoFromFile(
           LOG(fatal)
               << "ParticleGunGenerator: variable \"" << name
               << "\" is already controlled by a previously loaded histogram";
-          throw std::runtime_error("ParticleGunGenerator: variable \"" + name
-              + "\" is already controlled by a previously loaded histogram");
+          throw std::runtime_error(
+              "ParticleGunGenerator: variable \"" + name +
+              "\" is already controlled by a previously loaded histogram");
         }
       }
     }
@@ -137,7 +137,8 @@ void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
   if (flag && (!std::isfinite(fraction) || fraction < 0. || fraction > 1.)) {
     LOG(fatal)
         << "ParticleGunGenerator: charge fraction must be finite and in [0, 1]";
-    throw std::runtime_error("ParticleGunGenerator: charge fraction must be finite and in [0, 1]");
+    throw std::runtime_error(
+        "ParticleGunGenerator: charge fraction must be finite and in [0, 1]");
   }
   m_bothCharges = flag;
   m_chargeFraction = flag ? fraction : 1.;
@@ -174,12 +175,13 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
   ParticleGunParticle p;
   // --- Vertex smearing ---
   GenVertexModel(p);
-  if(fMomentumModel>0)
-      GenMomentumModel(p);
-  else{
-      Double32_t pabs = 0, pt = 0, theta = 0, eta, y, mt, pz = 0;
-      // Generate particles
-      const Double32_t phi = gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
+  if (fMomentumModel > 0)
+    GenMomentumModel(p);
+  else {
+    Double32_t pabs = 0, pt = 0, theta = 0, eta, y, mt, pz = 0;
+    // Generate particles
+    const Double32_t phi =
+        gRandom->Uniform(fPhiMin, fPhiMax) * TMath::DegToRad();
 
     if (fPRangeIsSet) {
       pabs = gRandom->Uniform(fPMin, fPMax);
@@ -243,23 +245,25 @@ void ParticleGunGenerator::OverrideFromHistogram(ParticleGunParticle& p) {
   }
 }
 
-void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t> pars)
-{
-    auto it = kMomentumModels.find(modelNo);
-    if (it == kMomentumModels.end()) {
-        LOG(fatal) << "ParticleGunGenerator: unknown momentum model " << modelNo;
-        throw std::runtime_error("ParticleGunGenerator: unknown momentum model " + std::to_string(modelNo));
-    }
+void ParticleGunGenerator::SetMomentumModel(int modelNo,
+                                            std::vector<Double32_t> pars) {
+  auto it = kMomentumModels.find(modelNo);
+  if (it == kMomentumModels.end()) {
+    LOG(fatal) << "ParticleGunGenerator: unknown momentum model " << modelNo;
+    throw std::runtime_error("ParticleGunGenerator: unknown momentum model " +
+                             std::to_string(modelNo));
+  }
 
-    const auto& spec = it->second;
-    if (static_cast<int>(pars.size()) != spec.expectedPars) {
-        LOG(fatal) << "ParticleGunGenerator: momentum model " << modelNo
-                   << " (" << spec.description << ") requires "
-                   << spec.expectedPars << " parameters, got " << pars.size();
-        throw std::runtime_error( "ParticleGunGenerator: momentum model " + std::to_string(modelNo)
-                   + " (" + spec.description + ") requires "
-                   + std::to_string(spec.expectedPars) + " parameters, got " + std::to_string(pars.size()));
-    }
+  const auto& spec = it->second;
+  if (static_cast<int>(pars.size()) != spec.expectedPars) {
+    LOG(fatal) << "ParticleGunGenerator: momentum model " << modelNo << " ("
+               << spec.description << ") requires " << spec.expectedPars
+               << " parameters, got " << pars.size();
+    throw std::runtime_error("ParticleGunGenerator: momentum model " +
+                             std::to_string(modelNo) + " (" + spec.description +
+                             ") requires " + std::to_string(spec.expectedPars) +
+                             " parameters, got " + std::to_string(pars.size()));
+  }
 
   fMomentumModel = modelNo;
   fMomentumPars = std::move(pars);
@@ -267,61 +271,56 @@ void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t>
             << spec.description << ")";
 }
 
-void ParticleGunGenerator::SetVertexModel(std::string model, std::vector<Double32_t> pars)
-{
-    // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
-    std::string lower = model;
-    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+void ParticleGunGenerator::SetVertexModel(std::string model,
+                                          std::vector<Double32_t> pars) {
+  // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
+  std::string lower = model;
+  std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
-    auto it = kVertexModels.find(lower);
-    if (it == kVertexModels.end()) {
-        LOG(fatal) << "ParticleGunGenerator: unknown vertex model " << model;
-        throw std::runtime_error("ParticleGunGenerator: unknown vertex model " + model);
-    }
+  auto it = kVertexModels.find(lower);
+  if (it == kVertexModels.end()) {
+    LOG(fatal) << "ParticleGunGenerator: unknown vertex model " << model;
+    throw std::runtime_error("ParticleGunGenerator: unknown vertex model " +
+                             model);
+  }
 
-    const auto& spec = it->second;
-    if (static_cast<int>(pars.size()) != spec.expectedPars) {
-        LOG(fatal) << "ParticleGunGenerator: vertex model " << model
-                   << " (" << spec.description << ") requires "
-                   << spec.expectedPars << " parameters, got " << pars.size();
-        throw std::runtime_error("ParticleGunGenerator: vertex model " + model
-                   + " (" + spec.description + ") requires "
-                   + std::to_string(spec.expectedPars) + " parameters, got " + std::to_string(pars.size()));
-    }
+  const auto& spec = it->second;
+  if (static_cast<int>(pars.size()) != spec.expectedPars) {
+    LOG(fatal) << "ParticleGunGenerator: vertex model " << model << " ("
+               << spec.description << ") requires " << spec.expectedPars
+               << " parameters, got " << pars.size();
+    throw std::runtime_error("ParticleGunGenerator: vertex model " + model +
+                             " (" + spec.description + ") requires " +
+                             std::to_string(spec.expectedPars) +
+                             " parameters, got " + std::to_string(pars.size()));
+  }
 
-    fVertexModel = lower;
-    fVertexPars  = std::move(pars);
-    LOG(info) << "ParticleGunGenerator: vertex model " << lower
-              << " (" << spec.description << ")";
+  fVertexModel = lower;
+  fVertexPars = std::move(pars);
+  LOG(info) << "ParticleGunGenerator: vertex model " << lower << " ("
+            << spec.description << ")";
 }
 
-
-
-void ParticleGunGenerator::GenVertexModel(ParticleGunParticle& p)
-{
-    kVertexModels.at(fVertexModel).generate(p, fVertexPars);
+void ParticleGunGenerator::GenVertexModel(ParticleGunParticle& p) {
+  kVertexModels.at(fVertexModel).generate(p, fVertexPars);
 }
 
-void ParticleGunGenerator::GenMomentumModel(ParticleGunParticle& p)
-{
-    kMomentumModels.at(fMomentumModel).generate(p, fMomentumPars);
+void ParticleGunGenerator::GenMomentumModel(ParticleGunParticle& p) {
+  kMomentumModels.at(fMomentumModel).generate(p, fMomentumPars);
 }
 
-void ParticleGunGenerator::PrintVertexModels()
-{
-    LOG(info) << "Available vertex models:";
-    for (const auto& [id, spec] : kVertexModels)
-        LOG(info) << "  Model " << id << " (" << spec.expectedPars
-                  << " pars): " << spec.description;
+void ParticleGunGenerator::PrintVertexModels() {
+  LOG(info) << "Available vertex models:";
+  for (const auto& [id, spec] : kVertexModels)
+    LOG(info) << "  Model " << id << " (" << spec.expectedPars
+              << " pars): " << spec.description;
 }
 
-
-void ParticleGunGenerator::PrintMomentumModels()
-{
-    LOG(info) << "Available momentum models:";
-    for (const auto& [id, spec] : kMomentumModels)
-        LOG(info) << "  Model " << id << " (" << spec.expectedPars
-                  << " pars): " << spec.description;
+void ParticleGunGenerator::PrintMomentumModels() {
+  LOG(info) << "Available momentum models:";
+  for (const auto& [id, spec] : kMomentumModels)
+    LOG(info) << "  Model " << id << " (" << spec.expectedPars
+              << " pars): " << spec.description;
 }
 
 Double32_t& ParticleGunGenerator::GetVar(ParticleGunParticle& p,
@@ -333,7 +332,8 @@ Double32_t& ParticleGunGenerator::GetVar(ParticleGunParticle& p,
   if (name == "Py") return p.Py;
   if (name == "Pz") return p.Pz;
   LOG(fatal) << "ParticleGunGenerator: unknown variable name '" << name << "'";
-  throw std::runtime_error("ParticleGunGenerator: unknown variable name '" + name + "'");
+  throw std::runtime_error("ParticleGunGenerator: unknown variable name '" +
+                           name + "'");
   return p.X;  // unreachable, silences compiler warning
 }
 
