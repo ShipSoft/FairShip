@@ -35,6 +35,7 @@
 using std::cout;
 using std::endl;
 
+
 Double_t cm = 1;         // cm
 Double_t m = 100 * cm;   //  m
 Double_t mm = 0.1 * cm;  //  mm
@@ -90,6 +91,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   }
   return kTRUE;
 }
+
 
 void exitHadronAbsorber::Initialize() {
   FairDetector::Initialize();
@@ -163,67 +165,153 @@ void exitHadronAbsorber::Initialize() {
 
 void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
+  fContinuationTracks.clear();
 }
-
 
 
 void exitHadronAbsorber::PostTrack() {
   Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
-  if (fCloneTracks.count(currentTrackId)) {
-      return; 
+  if (fCloneTracks.count(currentTrackId) > 0 || fContinuationTracks.count(currentTrackId) > 0) {
+      return;
   }
 
-  if (fNsplits > 0) {
+  Int_t track_pid = gMC->TrackPid();
+  bool kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321);
+
+  if (fNsplits > 0 && kaon_or_pion) {
+    bool isNaturalDecay = false;
     TArrayI processes;
     gMC->StepProcesses(processes);
-
-    bool isDecay = false;
     for (int i = 0; i < processes.GetSize(); i++) {
        if (processes[i] == kPDecay) {
-          isDecay = true;
+          isNaturalDecay = true;
           break;
+       }
+    }
+
+    TParticle* part = gMC->GetStack()->GetCurrentTrack();
+    if (!part) return;
+
+    TLorentzVector finalPos, finalMom;
+    gMC->TrackPosition(finalPos);
+    gMC->TrackMomentum(finalMom);
+
+    TVector3 pos_start(part->Vx(), part->Vy(), part->Vz());
+    TVector3 pos_end(finalPos.X(), finalPos.Y(), finalPos.Z());
+    TVector3 flightPath = pos_end - pos_start;
+    Double_t total_dist = flightPath.Mag();
+
+    Double_t t_start = part->T();
+    Double_t delta_t = finalPos.T() - t_start;
+
+    TVector3 mom_start(part->Px(), part->Py(), part->Pz());
+    TVector3 mom_end(finalMom.Px(), finalMom.Py(), finalMom.Pz());
+
+    Double_t mass = gMC->TrackMass();
+    Double_t c_tau = gMC->ParticleLifeTime(track_pid);
+
+    if (total_dist > 0.0 && mass > 0.0 && c_tau > 0.0) {
+      Double_t rawTrackWeight = gMC->TrackWeight();
+      Double_t survivalFactor = 1.0;
+
+      double polX = 0, polY = 0, polZ = 0;
+      TVector3 polVector;
+      part->GetPolarisation(polVector);
+      polX = polVector.X(); polY = polVector.Y(); polZ = polVector.Z();
+      Int_t trueParentId = part->GetFirstMother();
+
+      ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+      Int_t stackSizeBefore = stack ? stack->GetNtrack() : 0;
+
+      if (!fSplitOnce) {
+        const int nSteps = 5;
+        Double_t delta_s = total_dist / nSteps;
+        int stepsToRun = isNaturalDecay ? (nSteps - 1) : nSteps;
+
+        // splitting for intermediate segments -- note that for now extrapolation assumes momentum/position smoothly (but interactions with matter etc mean that this might not be the case)
+        for (int step = 0; step < stepsToRun; ++step) {
+            Double_t fraction = (step + 0.5) / nSteps;
+
+            TVector3 instantMomV3 = mom_start + (mom_end - mom_start) * fraction;
+            Double_t instantP = instantMomV3.Mag();
+            Double_t instantE = TMath::Sqrt(instantP*instantP + mass*mass);
+
+            Double_t lambda_decay = (instantP / mass) * c_tau;
+            Double_t P_decay = 1.0 - TMath::Exp(-delta_s / lambda_decay);
+            // std::cout << "P_DECAY" << " " << P_decay " " << step << std::endl;
+            if (P_decay > 0.0) {
+                Double_t decayBranchWeight = (rawTrackWeight * survivalFactor) * P_decay;
+                Double_t cloneWeight = decayBranchWeight / fNsplits;
+
+                TVector3 instantPosV3 = pos_start + flightPath * fraction;
+                Double_t instantTime  = t_start + (delta_t * fraction);
+
+                for (int i = 0; i < fNsplits; ++i) {
+                    TrackBuffer clone;
+                    clone.pdg      = track_pid;
+                    clone.px       = instantMomV3.X(); clone.py = instantMomV3.Y(); clone.pz = instantMomV3.Z(); clone.e = instantE;
+                    clone.x        = instantPosV3.X();  clone.y  = instantPosV3.Y();  clone.z  = instantPosV3.Z();  clone.t = instantTime;
+                    clone.polx     = polX;              clone.poly = polY;            clone.polz = polZ;
+                    clone.weight   = cloneWeight; 
+                    clone.parentID = trueParentId;
+                    fSecondaryBuffer.push_back(clone);
+                }
+                survivalFactor *= (1.0 - P_decay);
+          }
+        }
+      }
+
+      // All remaining weight used if cloning happens at point where original particle decays
+      if (isNaturalDecay) {
+          Double_t finalEndpointWeight = (rawTrackWeight * survivalFactor) / fNsplits;
+
+          for (int i = 0; i < fNsplits; ++i) {
+              TrackBuffer clone;
+              clone.pdg      = track_pid;
+              clone.px       = finalMom.Px();    clone.py = finalMom.Py();    clone.pz = finalMom.Pz();    clone.e = finalMom.E();
+              clone.x        = finalPos.X();     clone.y  = finalPos.Y();     clone.z  = finalPos.Z();     clone.t = finalPos.T();
+              clone.polx     = polX;             clone.poly = polY;           clone.polz = polZ;
+              clone.weight   = finalEndpointWeight;
+              clone.parentID = trueParentId;
+              fSecondaryBuffer.push_back(clone);
+          }
+          survivalFactor = 0.0;
+      }
+
+      // tracks which do not decay are stopped with stoptrack and added back with a given weight
+      if (!isNaturalDecay && stack) {
+          Int_t ntr;
+          stack->PushTrack(
+              1, trueParentId, track_pid,
+              finalMom.Px(), finalMom.Py(), finalMom.Pz(), finalMom.E(),
+              finalPos.X(), finalPos.Y(), finalPos.Z(), finalPos.T(),
+              polX, polY, polZ,
+              kPNoProcess, ntr, rawTrackWeight * survivalFactor, 999
+          );
+          fContinuationTracks.insert(ntr);
+      }
+
+      gMC->StopTrack();
+      if (isNaturalDecay && stack) {
+          Int_t currentStackSize = stack->GetNtrack();
+          if (currentStackSize > stackSizeBefore) {
+              // Loop through the newly added natural secondaries
+              for (Int_t i = stackSizeBefore; i < currentStackSize; ++i) {
+                  TParticle* secPart = stack->GetParticle(i);
+                  if (secPart) {
+                      secPart->SetStatusCode(-1); // Convention flag indicating a dead/discarded track
+                  }
+              }
+          }
       }
     }
-
-    Int_t track_pid = gMC->TrackPid();
-    kaon_or_pion = (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321;
-
-    if ((isDecay) && (kaon_or_pion)) {
-        TParticle* part = gMC->GetStack()->GetCurrentTrack();
-        double polX = 0, polY = 0, polZ = 0;
-        TVector3 polVector;
-        part->GetPolarisation(polVector);
-        polX = polVector.X();
-        polY = polVector.Y();
-        polZ = polVector.Z();
-        TLorentzVector pos, mom;
-        gMC->TrackPosition(pos);
-        gMC->TrackMomentum(mom);
-        Double_t weight = gMC->TrackWeight() / fNsplits;
-        Int_t ntr;
-        Int_t trueParentId = part->GetFirstMother();
-        for (int i = 0; i < fNsplits; ++i) {
-            TrackBuffer clone;
-            clone.pdg      = track_pid;
-            clone.px       = mom.Px(); clone.py = mom.Py(); clone.pz = mom.Pz(); clone.e = mom.E();
-            clone.x        = pos.X();  clone.y  = pos.Y();  clone.z  = pos.Z();  clone.t = pos.T();
-            clone.polx = polX;
-            clone.poly = polY;
-            clone.polz = polZ;
-            clone.weight   = weight;
-            clone.parentID = trueParentId;
-            fSecondaryBuffer.push_back(clone);
-
-        }
-        gMC->StopTrack();
-    }
   }
-
 }
 
 
 void exitHadronAbsorber::PreTrack() {
+
   bool stackbufferisnotempty = !fSecondaryBuffer.empty();
   if (stackbufferisnotempty) {
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
@@ -237,11 +325,13 @@ void exitHadronAbsorber::PreTrack() {
                 kPNoProcess, ntr, trk.weight, 999
             );
             fCloneTracks.insert(ntr);
-
         }
         // Clear the buffer so we don't duplicate them for the next track
         fSecondaryBuffer.clear();
   }
+
+  // Reset relative survival factor to 1.0
+  fCurrentSurvivalFactor = 1.0;
 
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
@@ -254,6 +344,7 @@ void exitHadronAbsorber::PreTrack() {
   if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
       //  Force the decay time to 0
       gMC->ForceDecayTime(0);
+      // std::cout << "Clone track forced to 0" << std::endl;
   }
 
   Int_t pdgCode = p->GetPdgCode();

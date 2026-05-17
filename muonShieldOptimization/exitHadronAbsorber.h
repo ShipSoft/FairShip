@@ -41,6 +41,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   virtual void BeginEvent();
 
   void SetNSplits(int32_t n) { fNsplits = n; }
+  void SetSplitMultipleTimes() {fSplitOnce = kFALSE ; }
 
   inline void SetEnergyCut(Float_t emax) { EMax = emax; }
   inline void SetOnlyMuons() { fOnlyMuons = kTRUE; }
@@ -64,9 +65,12 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   Bool_t fUseCaveCoordinates;  //! set position from cave
 
   int32_t fNsplits;
+  Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we choose to split at every step
+  Bool_t fSplitOnce = kTRUE;  // determine if we want to split once (when the particle decays) or at every step (taking decay probabilities into account)
+
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
-
+  std::set<Int_t> fContinuationTracks;
 
   TFile* fout;               //!
   TClonesArray* fElectrons;  //!

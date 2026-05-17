@@ -80,6 +80,8 @@ ap.add_argument(
     default=0,
     help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
 )
+ap.add_argument("-kpimult", "--multiple-kpi-splits", action=argparse.BooleanOptionalAction, default=False, 
+                help="split kaons and pions multiple times along the track path")
 
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
@@ -338,6 +340,8 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetNSplits(args.kaon_pion_splits)
+if args.multiple_kpi_splits:
+    sensPlaneHA.SetSplitMultipleTimes()
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
