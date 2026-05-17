@@ -144,22 +144,21 @@ void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
   }
   m_bothCharges = flag;
   m_chargeFraction = flag ? fraction : 1.;
-  if (m_bothCharges){
+  if (m_bothCharges) {
     // Check for particle type
     TDatabasePDG* pdgBase = TDatabasePDG::Instance();
     TParticlePDG* particle = pdgBase->GetParticle(-m_pdgid);
     if (!particle) {
       LOG(warning) << "ParticleGunGenerator: PDG " << -m_pdgid
-               << " not defined. Only generating "<< m_pdgid;
+                   << " not defined. Only generating " << m_pdgid;
       m_bothCharges = false;
       m_chargeFraction = 1.;
-    }
-    else
-        LOG(info) << "ParticleGunGenerator: Setting to generate both charges, with "
-                     "fraction of "
-                  << m_pdgid << " set to " << m_chargeFraction;
-  }
-  else
+    } else
+      LOG(info)
+          << "ParticleGunGenerator: Setting to generate both charges, with "
+             "fraction of "
+          << m_pdgid << " set to " << m_chargeFraction;
+  } else
     LOG(info) << "ParticleGunGenerator: Setting to only generate one charge "
                  "for PDG id"
               << m_pdgid;
