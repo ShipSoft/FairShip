@@ -12,15 +12,35 @@ struct ParticleGunParticle {
   Double32_t Px{0}, Py{0}, Pz{0};
 };
 
-enum class SmearMode { kExponential, kGaussian, kUniform };
 
-struct MomentumModelSpec {
+struct ModelSpec {
     int         expectedPars;
     const char* description;
     std::function<void(ParticleGunParticle&, const std::vector<Double32_t>&)> generate;
 };
 
-static const std::map<int, MomentumModelSpec> kMomentumModels = {
+static const std::map<std::string, ModelSpec> kVertexModels = {
+    {"gaussian", {5, "Gaus(X), Gaus(Y), Point(Z)",
+         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+             p.X = gRandom->Gaus(pars[0], pars[1]);
+             p.Y = gRandom->Gaus(pars[2], pars[3]);
+             p.Z = pars[4];
+         }}},
+    {"exponential", {5, "Exp(X), Exp(Y), Point(Z)",
+         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+             p.X = gRandom->Gaus(pars[0], pars[1]);
+             p.Y = gRandom->Gaus(pars[2], pars[3]);
+             p.Z = pars[4];
+         }}},
+    {"uniform", {5, "Uniform(X), Uniform(Y), Point(Z)",
+         [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
+             p.X = gRandom->Uniform(pars[0], pars[1]/2.);
+             p.Y = gRandom->Uniform(pars[2], pars[3]/2.);
+             p.Z = pars[4];
+         }}},
+};
+
+static const std::map<int, ModelSpec> kMomentumModels = {
     {1, {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
          [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
              p.Px = gRandom->Gaus  (pars[0], pars[1]);
@@ -88,14 +108,6 @@ class ParticleGunGenerator : public SHiP::Generator {
 
   void SetCosTheta() { fCosThetaIsSet = kTRUE; }
 
-  void SetXYZ(Double32_t x = 0, Double32_t y = 0, Double32_t z = 0);
-
-  void SetVertex(Double32_t x = 0, Double32_t y = 0, Double32_t z = 0,
-                 Double32_t ex = 0, Double32_t ey = 0, Double32_t ez = 0);
-
-  void SetBoxXYZ(Double32_t x1 = 0, Double32_t y1 = 0, Double32_t x2 = 0,
-                 Double32_t y2 = 0, Double32_t z = 0);
-
   void SetBothCharges(bool flag, Double32_t fraction = 0.5);
 
   void SetPDGType(int pdgid) { m_pdgid = pdgid; };
@@ -133,11 +145,11 @@ class ParticleGunGenerator : public SHiP::Generator {
   /** Clone this object (used in MT mode only) */
   FairGenerator* CloneGenerator() const override;
 
-  void SetSmearMode(const std::string& mode);
-
+  void SetVertexModel(std::string model, std::vector<Double32_t> pars);
   void SetMomentumModel(const int modelNo, std::vector<Double32_t> pars);
 
   void PrintMomentumModels();
+  void PrintVertexModels();
 
  protected:
   /** Copy constructor. **/
@@ -145,11 +157,9 @@ class ParticleGunGenerator : public SHiP::Generator {
   ParticleGunGenerator& operator=(const ParticleGunGenerator&) = default;
 
  private:
-  SmearMode fSmearMode{SmearMode::kExponential};
-  void GenMomentumModel(ParticleGunParticle &p);
 
-  static Double32_t SmearVertex(Double_t centre, Double_t spread,
-                                SmearMode mode);
+  void GenVertexModel(ParticleGunParticle &p);
+  void GenMomentumModel(ParticleGunParticle &p);
 
   ParticleGunParticle GenerateKinematics();
   void OverrideFromHistogram(ParticleGunParticle& p);
@@ -190,7 +200,9 @@ class ParticleGunGenerator : public SHiP::Generator {
   Bool_t fEkinRangeIsSet{false};  // True if kinetic energy range is set
 
   int fMomentumModel{0};
+  std::string fVertexModel = "gaussian";
   std::vector<Double32_t> fMomentumPars;
+  std::vector<Double32_t> fVertexPars;
   int m_mult{1};
   int m_pdgid{0};
 };

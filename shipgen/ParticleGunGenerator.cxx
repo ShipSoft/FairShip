@@ -7,8 +7,10 @@
 #include <TParticlePDG.h>
 #include <TRandom.h>
 
+
 #include <cmath>   // for cos, acos
 #include <cstdio>  // for printf
+#include <stdexcept>
 
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
@@ -28,35 +30,6 @@ ParticleGunGenerator::ParticleGunGenerator(Int_t pdgid, Int_t mult)
 
 ParticleGunGenerator::~ParticleGunGenerator() = default;
 
-void ParticleGunGenerator::SetXYZ(Double32_t x, Double32_t y, Double32_t z) {
-  SetVertex(x, y, z, 0, 0, 0);
-}
-
-void ParticleGunGenerator::SetVertex(Double32_t x, Double32_t y, Double32_t z,
-                                     Double32_t ex, Double32_t ey,
-                                     Double32_t ez) {
-  fVx = x;
-  fVy = y;
-  fVz = z;
-  fVex = ex;
-  fVey = ey;
-  fVez = ez;
-}
-
-void ParticleGunGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1,
-                                     Double32_t x2, Double32_t y2,
-                                     Double32_t z) {
-  Double_t X1 = TMath::Min(x1, x2);
-  Double_t X2 = TMath::Max(x1, x2);
-  Double_t Y1 = TMath::Min(y1, y2);
-  Double_t Y2 = TMath::Max(y1, y2);
-  Double_t dX = 0.5 * (X2 - X1);
-  Double_t dY = 0.5 * (Y2 - Y1);
-  Double_t x = 0.5 * (X1 + X2);
-  Double_t y = 0.5 * (Y1 + Y2);
-  SetVertex(x, y, z, dX, dY, 0);
-}
-
 void ParticleGunGenerator::LoadHistoFromFile(
     const std::string& inFile, const std::string& inHisto,
     std::vector<std::string> varNames) {
@@ -65,16 +38,20 @@ void ParticleGunGenerator::LoadHistoFromFile(
   if (!raw) {
     LOG(fatal) << "ParticleGunGenerator: Histogram " << inHisto
                << " not found in file " << inFile;
-    return;
+    throw std::runtime_error("ParticleGunGenerator: Histogram " + inHisto
+               + " not found in file " + inFile);
   }
   raw = static_cast<TH1*>(raw->Clone());
   raw->SetDirectory(nullptr);  // detach from ROOT's directory ownership
   loadFile.Close();
 
   const int dims = raw->GetDimension();
-  if (static_cast<int>(varNames.size()) != dims)
+  if (static_cast<int>(varNames.size()) != dims){
     LOG(fatal) << "ParticleGunGenerator: " << varNames.size()
                << " variables given for a " << dims << "-D histogram";
+    throw std::runtime_error("ParticleGunGenerator: " + std::to_string(varNames.size())
+               + " variables given for a " + std::to_string(dims) + "-D histogram");
+  }
   else {
     ParticleGunParticle probe;
     for (const auto& name : varNames) {
@@ -90,7 +67,8 @@ void ParticleGunGenerator::LoadHistoFromFile(
           LOG(fatal)
               << "ParticleGunGenerator: variable \"" << name
               << "\" is already controlled by a previously loaded histogram";
-          return;
+          throw std::runtime_error("ParticleGunGenerator: variable \"" + name
+              + "\" is already controlled by a previously loaded histogram");
         }
       }
     }
@@ -121,11 +99,13 @@ Bool_t ParticleGunGenerator::Init() {
   if (fPhiMax - fPhiMin > 360) {
     LOG(fatal) << "ParticleGunGenerator:Init(): phi range is too wide: "
                << fPhiMin << "<phi<" << fPhiMax;
+    return kFALSE;
   }
   if (fEkinRangeIsSet) {
     if (fPRangeIsSet) {
       LOG(fatal) << "ParticleGunGenerator:Init(): Cannot set P and Ekin ranges "
                     "simultaneously";
+      return kFALSE;
     } else {
       fPMin = TMath::Sqrt(fEkinMin * (fEkinMin + 2 * fPDGMass));
       fPMax = TMath::Sqrt(fEkinMax * (fEkinMax + 2 * fPDGMass));
@@ -136,16 +116,19 @@ Bool_t ParticleGunGenerator::Init() {
   if (fPRangeIsSet && fPtRangeIsSet) {
     LOG(fatal) << "ParticleGunGenerator:Init():  Cannot set P and Pt ranges "
                   "simultaneously";
+    return kFALSE;
   }
   if (fPRangeIsSet && fYRangeIsSet) {
     LOG(fatal) << "ParticleGunGenerator:Init():  Cannot set P and Y ranges "
                   "simultaneously";
+    return kFALSE;
   }
   if ((fThetaRangeIsSet && fYRangeIsSet) ||
       (fThetaRangeIsSet && fEtaRangeIsSet) ||
       (fYRangeIsSet && fEtaRangeIsSet)) {
     LOG(fatal) << "ParticleGunGenerator:Init():  Cannot set Y, Theta or Eta "
                   "ranges simultaneously";
+    return kFALSE;
   }
   return kTRUE;
 }
@@ -154,6 +137,7 @@ void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
   if (flag && (!std::isfinite(fraction) || fraction < 0. || fraction > 1.)) {
     LOG(fatal)
         << "ParticleGunGenerator: charge fraction must be finite and in [0, 1]";
+    throw std::runtime_error("ParticleGunGenerator: charge fraction must be finite and in [0, 1]");
   }
   m_bothCharges = flag;
   m_chargeFraction = flag ? fraction : 1.;
@@ -189,14 +173,7 @@ Bool_t ParticleGunGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
   ParticleGunParticle p;
   // --- Vertex smearing ---
-  p.X = SmearVertex(fVx, fVex, fSmearMode);
-  p.Y = SmearVertex(fVy, fVey, fSmearMode);
-  p.Z = SmearVertex(fVz, fVez, fSmearMode);
-
-  // Now sort the momentum
-  LOG(info) << this->ClassName() << ": Event,  vertex = (" << p.X << "," << p.Y
-            << "," << p.Z << ") cm,  multiplicity " << m_mult;
-
+  GenVertexModel(p);
   if(fMomentumModel>0)
       GenMomentumModel(p);
   else{
@@ -266,53 +243,12 @@ void ParticleGunGenerator::OverrideFromHistogram(ParticleGunParticle& p) {
   }
 }
 
-void ParticleGunGenerator::SetSmearMode(const std::string& mode) {
-  // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
-  std::string lower = mode;
-  std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-
-  if (lower == "gaussian")
-    fSmearMode = SmearMode::kGaussian;
-  else if (lower == "uniform")
-    fSmearMode = SmearMode::kUniform;
-  else if (lower == "exponential")
-    fSmearMode = SmearMode::kExponential;
-  else
-    LOG(fatal) << "ParticleGunGenerator: unknown smear mode '" << mode
-               << "'. Valid options: exponential, gaussian, uniform";
-}
-
-// Apply the requested distribution around `centre` with the given `spread`.
-// Spread interpretation:
-//   kExponential  — mean of the exponential (drawn symmetrically ±)
-//   kGaussian     — sigma (σ) of the Gaussian
-//   kUniform      — half-width of the flat distribution  [centre-spread,
-//   centre+spread]
-Double32_t ParticleGunGenerator::SmearVertex(Double_t centre, Double_t spread,
-                                             SmearMode mode) {
-  if (spread == 0.) return centre;
-
-  switch (mode) {
-    case SmearMode::kGaussian:
-      return centre + gRandom->Gaus(0., spread);
-
-    case SmearMode::kUniform:
-      return gRandom->Uniform(centre - spread, centre + spread);
-
-    case SmearMode::kExponential:
-    default: {
-      const Double_t sign = (gRandom->Uniform() < 0.5) ? +1. : -1.;
-      return centre + sign * gRandom->Exp(spread);
-    }
-  }
-}
-
 void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t> pars)
 {
     auto it = kMomentumModels.find(modelNo);
     if (it == kMomentumModels.end()) {
         LOG(fatal) << "ParticleGunGenerator: unknown momentum model " << modelNo;
-        return;
+        throw std::runtime_error("ParticleGunGenerator: unknown momentum model " + std::to_string(modelNo));
     }
 
     const auto& spec = it->second;
@@ -320,7 +256,9 @@ void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t>
         LOG(fatal) << "ParticleGunGenerator: momentum model " << modelNo
                    << " (" << spec.description << ") requires "
                    << spec.expectedPars << " parameters, got " << pars.size();
-        return;
+        throw std::runtime_error( "ParticleGunGenerator: momentum model " + std::to_string(modelNo)
+                   + " (" + spec.description + ") requires "
+                   + std::to_string(spec.expectedPars) + " parameters, got " + std::to_string(pars.size()));
     }
 
     fMomentumModel = modelNo;
@@ -329,10 +267,54 @@ void ParticleGunGenerator::SetMomentumModel(int modelNo, std::vector<Double32_t>
               << " (" << spec.description << ")";
 }
 
+void ParticleGunGenerator::SetVertexModel(std::string model, std::vector<Double32_t> pars)
+{
+    // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
+    std::string lower = model;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+    auto it = kVertexModels.find(lower);
+    if (it == kVertexModels.end()) {
+        LOG(fatal) << "ParticleGunGenerator: unknown vertex model " << model;
+        throw std::runtime_error("ParticleGunGenerator: unknown vertex model " + model);
+    }
+
+    const auto& spec = it->second;
+    if (static_cast<int>(pars.size()) != spec.expectedPars) {
+        LOG(fatal) << "ParticleGunGenerator: vertex model " << model
+                   << " (" << spec.description << ") requires "
+                   << spec.expectedPars << " parameters, got " << pars.size();
+        throw std::runtime_error("ParticleGunGenerator: vertex model " + model
+                   + " (" + spec.description + ") requires "
+                   + std::to_string(spec.expectedPars) + " parameters, got " + std::to_string(pars.size()));
+    }
+
+    fVertexModel = lower;
+    fVertexPars  = std::move(pars);
+    LOG(info) << "ParticleGunGenerator: vertex model " << lower
+              << " (" << spec.description << ")";
+}
+
+
+
+void ParticleGunGenerator::GenVertexModel(ParticleGunParticle& p)
+{
+    kVertexModels.at(fVertexModel).generate(p, fVertexPars);
+}
+
 void ParticleGunGenerator::GenMomentumModel(ParticleGunParticle& p)
 {
     kMomentumModels.at(fMomentumModel).generate(p, fMomentumPars);
 }
+
+void ParticleGunGenerator::PrintVertexModels()
+{
+    LOG(info) << "Available vertex models:";
+    for (const auto& [id, spec] : kVertexModels)
+        LOG(info) << "  Model " << id << " (" << spec.expectedPars
+                  << " pars): " << spec.description;
+}
+
 
 void ParticleGunGenerator::PrintMomentumModels()
 {
@@ -351,6 +333,7 @@ Double32_t& ParticleGunGenerator::GetVar(ParticleGunParticle& p,
   if (name == "Py") return p.Py;
   if (name == "Pz") return p.Pz;
   LOG(fatal) << "ParticleGunGenerator: unknown variable name '" << name << "'";
+  throw std::runtime_error("ParticleGunGenerator: unknown variable name '" + name + "'");
   return p.X;  // unreachable, silences compiler warning
 }
 
