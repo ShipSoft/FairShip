@@ -45,6 +45,7 @@ it in future.
 
 ### Fixed
 
+* Add missing SetPaintRadius method and proper beam smearing in DPPythia8Generator class.
 * Fix vertex finding for upstream vertices by using stepwise extrapolation
 * Derive track fit seed from pattern recognition and first hit position instead of hard-coded coordinate (#763)
 * Replace obsolete elliptical acceptance cut with rectangular acceptance in track pattern recognition

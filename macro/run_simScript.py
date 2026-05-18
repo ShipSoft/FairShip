@@ -88,7 +88,11 @@ genie_parser.add_argument(
     help="Genie neutrino end z position (default=3180.4350 cm)",
 )
 # === End of Genie subcommand ===
-parser.add_argument("-A", help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", default="c")
+parser.add_argument(
+    "-A",
+    help="b: signal from b, c: from c (default), bc: from Bc, inclusive, or for dark photon: meson,pbrem,qcd",
+    default="c",
+)
 parser.add_argument(
     "--NuRadio",
     dest="nuradio",
@@ -461,8 +465,8 @@ if options.pythia8:
     if HNL or options.RPVSUSY or options.DarkPhoton:
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
-        P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
-        P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
+        P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
+        P8gen.SetLmax((ship_geo.decayVolume.z0 - ship_geo.target.z0) + ship_geo.decayVolume.length)
         margin = 10 * u.cm  # covers beam smearing + non-projectivity of vessel
         z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length  # vessel exit z from target
         # xEndInner/yEndInner are full inner widths; divide by 2 for half-aperture.
