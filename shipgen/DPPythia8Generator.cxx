@@ -126,6 +126,10 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
 
   int iDP =
       0;  // index of the chosen DP, also ensures that at least 1 DP is produced
+  // Pythia indices of the particles stored on the FairShip MCTrack stack.
+  // In this implementation the exported chain is:
+  //   [Pythia event[1] beam particle, mother meson, dark photon, daughters...]
+  // Pythia event[0] is the internal system entry and is not exported.
   std::vector<int>
       dec_chain;  // pythia indices of the particles to be stored on the stack
   std::vector<int> dpvec;  // pythia indices of DP particles
@@ -242,7 +246,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
                       tN * mm / c_light,
                       w);  // event[0] is the root of the exported chain
 
-        dec_chain.push_back(0);
+        dec_chain.push_back(1);
 
         if (debug > 1)
           std::cout << std::endl
@@ -348,7 +352,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     px = fPythia->event[k].px();
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
-  };
+  }
   cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
                 zS * mm, im, wanttracking, e, tS * mm / c_light, w);
 }
