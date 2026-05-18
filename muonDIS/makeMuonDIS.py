@@ -13,6 +13,9 @@ from array import array
 import ROOT as r
 from tabulate import tabulate
 
+r.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
+r.basiclibs()
+
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
 PDG.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
