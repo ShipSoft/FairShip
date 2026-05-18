@@ -150,8 +150,6 @@ class Target : public SHiP::Detector<TargetPoint> {
   Double_t fHpTDistance;
   Double_t fHpTDZ;
   Int_t fnHpT;
-
-  ClassDefOverride(Target, 5)
 };
 
 #endif  // SND_EMULSIONTARGET_TARGET_H_

@@ -59,6 +59,7 @@ class ShipMCTrack : public TObject {
   Double_t GetStartY() const { return fStartY; }
   Double_t GetStartZ() const { return fStartZ; }
   Double_t GetStartT() const { return fStartT; }
+  Int_t GetEventID() const { return fEventID; }
   void SetProcID(Int_t i) { fProcID = i; }
   Int_t GetProcID() const { return fProcID; }
   TString GetProcName() const { return TMCProcessName[fProcID]; }
@@ -82,6 +83,7 @@ class ShipMCTrack : public TObject {
   /**  Modifiers  **/
   void SetMotherId(Int_t id) { fMotherId = id; }
   void SetNPoints(Int_t iDet, Int_t np);
+  void SetStartT(Double_t t) { fStartT = t; }
   void SetEventID(const Int_t& eventID);
   void SetTrackID(const Int_t& trackID);
 

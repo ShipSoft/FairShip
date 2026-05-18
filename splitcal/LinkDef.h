@@ -9,7 +9,7 @@
 
 #pragma link C++ class splitcalContFact;
 #pragma link C++ class SHiP::Detector<splitcalPoint>-;
-#pragma link C++ class splitcal+;
+#pragma link C++ class splitcal-;
 #pragma link C++ class splitcalPoint+;
 #pragma link C++ class std::vector<splitcalPoint>+;
 #pragma link C++ class splitcalHit+;

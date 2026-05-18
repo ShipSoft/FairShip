@@ -87,8 +87,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
 
   UpstreamTagger(const UpstreamTagger&) = delete;
   UpstreamTagger& operator=(const UpstreamTagger&) = delete;
-
-  ClassDefOverride(UpstreamTagger, 3)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

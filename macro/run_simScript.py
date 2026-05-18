@@ -225,7 +225,11 @@ parser.add_argument(
 )
 parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")
 parser.add_argument("--check-overlaps", help="Perform geometry overlap checking", action="store_true")
-parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
+parser.add_argument(
+    "--field_map",
+    default=None,
+    help="Specify spectrometer field map as files/<name>.root. Default set in geometry_config.py: files/2025_02_12_SHiP_SpectrometerField_ECN3_MgB2.root",
+)
 parser.add_argument(
     "--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84.0, type=float
 )
@@ -604,12 +608,15 @@ if options.ntuple:
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
-    fileType = ut.checkFileExists(inputFile)
-    if fileType == "tree":
-        # 2018 background production
-        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
+    isNew = ut.checkForBranch(
+        inputFile, "PlaneHAPoint"
+    )  # If there is a branch PlaneHAPoint this file is from the new production
+    if isNew:
+        print("INFO: Processing a file from the new production - setting target z offset at 0")
+        primGen.SetTarget(ship_geo.target.z0, 0.0)
     else:
-        primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
+        print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
+        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
@@ -879,9 +886,13 @@ if options.mudis:
 if options.command == "Genie":
     # breakpoint()
     # Copy Genie (gst TTree) information to the output file
-    f_input = ROOT.TFile.Open(inputFile[0], "READ")
-    print("check")
-    gst = f_input.gst
+    input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
+    f_input = ROOT.TFile.Open(input_path, "READ")
+    if not f_input or f_input.IsZombie():
+        raise OSError(f"Failed to open GENIE input file: {input_path}")
+    gst = f_input["gst"]
+    if not gst:
+        raise KeyError("TTree 'gst' not found in GENIE input file")
 
     selection_string = "(Entry$ >= " + str(options.firstEvent) + ")"
     if (options.firstEvent + options.nEvents) < gst.GetEntries():

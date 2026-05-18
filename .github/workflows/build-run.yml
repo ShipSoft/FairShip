@@ -10,6 +10,9 @@ on:
       - v*
   workflow_dispatch:
   merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo 'matrix={"version":["26.02","26.03"],"vessel_option":["vacuums","helium"],"SND_option":["all"],"muon_shield":["TRY_2025"],"target":["Jun25"]}' >> "$GITHUB_OUTPUT"
+        run: echo 'matrix={"version":["26.02","26.03","26.04"],"vessel_option":["vacuums","helium"],"SND_option":["all"],"muon_shield":["TRY_2025"],"target":["Jun25"]}' >> "$GITHUB_OUTPUT"
   build:
     runs-on: self-hosted
     needs: generate-matrix
@@ -242,7 +245,7 @@ jobs:
   #         python3 .github/scripts/generate_pr_comment.py comparisons/ -o comment.md
   #
   #     - name: Post PR comment
-  #       uses: actions/github-script@v7
+  #       uses: actions/github-script@v9
   #       with:
   #         script: |
   #           const fs = require('fs');
@@ -534,7 +537,7 @@ jobs:
           done
       - name: Post PR comment
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');

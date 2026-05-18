@@ -21,12 +21,11 @@ class ShipTAUMagneticSpectrometer : public FairModule {
   ~ShipTAUMagneticSpectrometer() override;
   void ConstructGeometry() override;
   void Initialize();
- ClassDefOverride(ShipTAUMagneticSpectrometer, 1)
 
-     protected
-     : Double_t
-       zLastSlab;  // z distance of the center of the last Fe slab of the second
-                   // spectrometer in cm from the center of the vacuum tube
+ protected:
+  Double_t
+      zLastSlab;  // z distance of the center of the last Fe slab of the second
+                  // spectrometer in cm from the center of the vacuum tube
   Double_t IronLenght;
   Double_t AirLenght;  // distance between the center of 2 iron slabs
   Double_t SpectrometerLenght;
