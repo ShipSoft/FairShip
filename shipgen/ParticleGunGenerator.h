@@ -31,8 +31,8 @@ static const std::map<std::string, ModelSpec> kVertexModels = {
     {"exponential",
      {5, "Exp(X), Exp(Y), Point(Z)",
       [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = gRandom->Gaus(pars[0], pars[1]);
-        p.Y = gRandom->Gaus(pars[2], pars[3]);
+        p.X = (gRandom->Uniform()>0.5) ? gRandom->Exp(pars[1]) + pars[0] : -gRandom->Exp(pars[1]) + pars[0]; // Make this symmetric about a specified point
+        p.Y = (gRandom->Uniform()>0.5) ? gRandom->Exp(pars[3]) + pars[2] : -gRandom->Exp(pars[3]) + pars[2];
         p.Z = pars[4];
       }}},
     {"uniform",

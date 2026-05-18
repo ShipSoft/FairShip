@@ -85,6 +85,15 @@ void ParticleGunGenerator::LoadHistoFromFile(
 }
 
 Bool_t ParticleGunGenerator::Init() {
+
+const auto& vertexSpec = kVertexModels.at(fVertexModel);
+
+  if (static_cast<int>(fVertexPars.size()) != vertexSpec.expectedPars) {
+    throw std::runtime_error( "ParticleGunGenerator: vertex model " + fVertexModel
+               + " requires " + std::to_string(vertexSpec.expectedPars) + " parameters, got "
+               + std::to_string(fVertexPars.size()));
+  }
+
   // Check for particle type
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   TParticlePDG* particle = pdgBase->GetParticle(m_pdgid);
@@ -224,6 +233,8 @@ ParticleGunParticle ParticleGunGenerator::GenerateKinematics() {
       } else if (fPtRangeIsSet) {
         pz = pt / TMath::Tan(theta);
       }
+    } else if (fPRangeIsSet){
+        pz = pabs;
     }
     p.Px = pt * TMath::Cos(phi);
     p.Py = pt * TMath::Sin(phi);
