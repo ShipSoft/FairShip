@@ -26,8 +26,7 @@ var NAVTREEINDEX0 =
 "CosmicsGenerator_8h.html":[7,0,12,4],
 "CosmicsGenerator_8h_source.html":[7,0,12,4],
 "DPPythia8Generator_8cxx.html":[7,0,12,5],
-"DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e":[7,0,12,5,2],
-"DPPythia8Generator_8cxx.html#a20066c2dc15c8a3bac6f429aacdb4c30":[7,0,12,5,1],
+"DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e":[7,0,12,5,1],
 "DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d":[7,0,12,5,0],
 "DPPythia8Generator_8cxx_source.html":[7,0,12,5],
 "DPPythia8Generator_8h.html":[7,0,12,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca":[7,0,11,2,0,21],
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a61497344932b214083d15169b4f06e26":[7,0,11,2,0,3],
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a62cf4a744fec236a91e51893814a99df":[7,0,11,2,0,19],
-"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd":[7,0,11,2,0,8]
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd":[7,0,11,2,0,8],
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2":[7,0,11,2,0,0]
 };

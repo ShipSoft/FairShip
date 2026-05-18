@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"make__nTuple__Tr_8py.html#aa4bebd5442f05116d51c18b70eaaf780":[7,0,7,2,13],
 "make__nTuple__Tr_8py.html#aa76b68134d0197ce34ac5e09789371e2":[7,0,7,2,44],
 "make__nTuple__Tr_8py.html#aacaa6c621712bd275bcf9591ae9e624d":[7,0,7,2,6],
 "make__nTuple__Tr_8py.html#aad6bdb78e949eeb4d04982ad8a1a55a4":[7,0,7,2,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "namespaceMTCDetector.html":[5,0,54],
 "namespacePythia8.html":[5,0,57],
 "namespacePythiaList.html":[5,0,61],
-"namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[5,0,61,2],
-"namespacePythiaList.html#a405f77fe1f708bdae18e23a84469b962":[5,0,61,1]
+"namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[5,0,61,2]
 };

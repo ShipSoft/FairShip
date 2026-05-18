@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespacegenie__interface.html#a5ecc8aa0bf0813750c080fec4ad356f6":[5,0,34,9],
 "namespacegenie__interface.html#a68539ce63930ec8fb7cd576ae839bb04":[5,0,34,13],
 "namespacegenie__interface.html#a888fcbec131bfb61f76de8a7188c313c":[5,0,34,3],
 "namespacegenie__interface.html#a8f17cbbaa6408171e262ba75a09c86a9":[5,0,34,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "namespacemakeCascade.html#aaca8cd428bb8f24194c1f2f60f0e8c0d":[5,0,47,42],
 "namespacemakeCascade.html#aaedc732c0285df1e8b79a496179804d8":[5,0,47,9],
 "namespacemakeCascade.html#abe2ac1ea6f108cc248cb30301ed79642":[5,0,47,48],
-"namespacemakeCascade.html#ac348ab0e5d95802be181708385eb5153":[5,0,47,28],
-"namespacemakeCascade.html#ac9326d7820f8728327838bf30bf1b32c":[5,0,47,22]
+"namespacemakeCascade.html#ac348ab0e5d95802be181708385eb5153":[5,0,47,28]
 };

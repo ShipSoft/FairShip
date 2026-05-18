@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classMTCDetHit.html#acc685970068c767f786875786b03c793":[6,0,34,16],
 "classMTCDetHit.html#acdd5e17375bf8edd338c3854271b9ac8":[6,0,34,4],
 "classMTCDetHit.html#ad03ffca6b808d429de707303fedf268f":[6,0,34,6],
 "classMTCDetHit.html#ade88908ae8d4bded7c05bfb9107ddb2d":[6,0,34,10],
@@ -76,14 +77,14 @@ var NAVTREEINDEX4 =
 "classMTCDetector.html#af9dc50dcea3a6a580ab5345a6e373f50":[6,0,33,21],
 "classMTCDetector.html#afa87dfe0b28157190f0c7267c3a6c3fb":[6,0,33,48],
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[6,0,33,11],
-"classMTCDetector_1_1MTCDetector.html":[5,0,54,0],
 "classMTCDetector_1_1MTCDetector.html":[6,0,7,0],
+"classMTCDetector_1_1MTCDetector.html":[5,0,54,0],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[5,0,54,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[6,0,7,0,2],
-"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[6,0,7,0,1],
 "classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[5,0,54,0,1],
-"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[5,0,54,0,0],
+"classMTCDetector_1_1MTCDetector.html#ad5ec895e4f4d4e64aad5e9c3f7d02e43":[6,0,7,0,1],
 "classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[6,0,7,0,0],
+"classMTCDetector_1_1MTCDetector.html#ae32ebaee7612743e9fc980c8dda59ee1":[5,0,54,0,0],
 "classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[6,0,7,0,3],
 "classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31":[5,0,54,0,3],
 "classMuDISGenerator.html":[6,0,36],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classPythia8Generator.html#ae467de193738d31ecfb6818e72f1e678":[6,0,41,31],
 "classPythia8Generator.html#aecd1eb517519f22228741b6ed62d1a43":[6,0,41,26],
 "classPythia8Generator.html#aed38a129f74f309a9ab4d1724118e1d4":[6,0,41,43],
-"classPythia8Generator.html#af1ea2ee6353fb2081a745c5e8dbdf3ce":[6,0,41,18],
-"classPythia8Generator.html#af56b43879aa68df1f93d3fa5d7309244":[6,0,41,28]
+"classPythia8Generator.html#af1ea2ee6353fb2081a745c5e8dbdf3ce":[6,0,41,18]
 };

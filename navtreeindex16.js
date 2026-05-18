@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"inspect__tree__branches_8py.html":[7,0,6,12],
 "inspect__tree__branches_8py.html#a4e5ce9f3ca2717af9297073670999454":[7,0,6,12,1],
 "inspect__tree__branches_8py.html#a521ae0ff73061ec00ffcdcbaeb201295":[7,0,6,12,0],
 "inspect__tree__branches_8py_source.html":[7,0,6,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "make__nTuple__Tr_8py.html#a7e0d944435ba5492111f37dc3e562f1c":[7,0,7,2,21],
 "make__nTuple__Tr_8py.html#a8b0f38e998bb3267edbb3711b598a3b8":[7,0,7,2,18],
 "make__nTuple__Tr_8py.html#a94650c2baa4067061a712be8c710de58":[7,0,7,2,28],
-"make__nTuple__Tr_8py.html#a977d97a0d5c52944c53f90fbe59e679f":[7,0,7,2,43],
-"make__nTuple__Tr_8py.html#aa4bebd5442f05116d51c18b70eaaf780":[7,0,7,2,13]
+"make__nTuple__Tr_8py.html#a977d97a0d5c52944c53f90fbe59e679f":[7,0,7,2,43]
 };
