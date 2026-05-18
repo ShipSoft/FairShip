@@ -497,9 +497,9 @@ def loopEvents(
       ROOT.snd.Configuration.Option.test_beam_2024
     else:
       print("Going for default setup TI18")
-    configuration = ROOT.snd.Configuration(run_conf, geo.modules['Scifi'], geo.modules['MuFilter'])
+    configuration = ROOT.snd.Configuration(run_conf, geo.modules['Scifi'], geo.modules['MuFilter'], mc)
     scifi_planes = ROOT.snd.analysis_tools.FillScifi(configuration, scifi_digis, geo.modules['Scifi'])
-    us_planes = ROOT.snd.analysis_tools.FillUS(configuration, event.Digi_MuFilterHits, geo.modules['MuFilter'], mc)
+    us_planes = ROOT.snd.analysis_tools.FillUS(configuration, event.Digi_MuFilterHits, geo.modules['MuFilter'])
     if event.FindBranch("Digi_MuFilterHits"): digis.append(event.Digi_MuFilterHits)
     if event.FindBranch("Digi_MuFilterHit"): digis.append(event.Digi_MuFilterHit)
     empty = True
