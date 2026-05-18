@@ -341,8 +341,9 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     std::vector<int>::iterator itm =
         std::find(dec_chain.begin(), dec_chain.end(), impy);
     im = -1;  // safety
-    if (itm != dec_chain.end())
-      im = itm - dec_chain.begin();  // convert iterator into sequence number
+    if (itm != dec_chain.end()){
+      im = itm - dec_chain.begin();// convert iterator into sequence number
+    }
 
     Bool_t wanttracking = false;
     if (fPythia->event[k].isFinal()) {
@@ -352,11 +353,15 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     px = fPythia->event[k].px();
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
-  }
-  cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
-                zS * mm, im, wanttracking, e, tS * mm / c_light, w);
-}
-return kTRUE;
+
+    if (fextFile) {
+      im += 1;
+    }
+  
+    cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
+                  zS * mm, im, wanttracking, e, tS * mm / c_light, w);
+  }  
+  return kTRUE;
 }
 // -------------------------------------------------------------------------
 void DPPythia8Generator::SetParameters(char* par) {
