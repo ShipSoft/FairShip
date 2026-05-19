@@ -73,7 +73,7 @@ Bool_t DPPythia8Generator::Init() {
   } else {
     if (!fpbremPDF) {
       LOG(fatal) << "Failed in retrieving dark photon PDF for production by "
-                 << "proton bremstrahlung!";
+                    "proton bremstrahlung!";
       return kFALSE;
     }
   }
@@ -353,10 +353,6 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     px = fPythia->event[k].px();
     py = fPythia->event[k].py();
     e = fPythia->event[k].e();
-
-    if (fextFile) {
-      im += 1;
-    }
 
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS * mm, yS * mm,
                   zS * mm, im, wanttracking, e, tS * mm / c_light, w);
