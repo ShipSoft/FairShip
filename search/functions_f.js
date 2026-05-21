@@ -46,7 +46,7 @@ var searchData=
   ['printwf_43',['printWF',['../namespacegeomGeant4.html#a8cfc0857eacf293ed0d9c8b83e9f226a',1,'geomGeant4']]],
   ['process_44',['process',['../classBaseDetector_1_1BaseDetector.html#ae6b443140a2e90b05c1421b29ad6fd16',1,'BaseDetector::BaseDetector']]],
   ['processfile_45',['processfile',['../namespaceextractMuonsAndUpdateWeight.html#aabe80f39b29e261cb965455cf6b6882e',1,'extractMuonsAndUpdateWeight.processFile()'],['../namespaceextractNeutrinosAndUpdateWeight.html#ad16dffb65fa314ca691c505a2983b244',1,'extractNeutrinosAndUpdateWeight.processFile()']]],
-  ['processhits_46',['processhits',['../classUpstreamTagger.html#a50e84425f21f58a52a73fc5474eb1641',1,'UpstreamTagger::ProcessHits()'],['../classTargetTracker.html#ad770cfa6a9c8bb1718439e97da469cbd',1,'TargetTracker::ProcessHits()'],['../classstrawtubes.html#a44fa2198579595fa773a1c0cd279ada3',1,'strawtubes::ProcessHits()'],['../classTimeDet.html#ab5c3493e2450059a1795c392f674fa24',1,'TimeDet::ProcessHits()'],['../classveto.html#a89ff835c540dc9b4a1c403ae6e59ddf6',1,'veto::ProcessHits()'],['../classsplitcal.html#a01d0bffd33969207b2da5b610f1847a3',1,'splitcal::ProcessHits()'],['../classSiliconTarget.html#a1f70999d37f0b8de06160f8e7e670aa1',1,'SiliconTarget::ProcessHits()'],['../classMTCDetector.html#aa18fafe1629ec58b39857a699da6051b',1,'MTCDetector::ProcessHits()'],['../classTarget.html#a646e212ba5378103ae10a534ed1395c8',1,'Target::ProcessHits()'],['../classexitHadronAbsorber.html#a742f5adf2aeebb40be0a01f402edfa2f',1,'exitHadronAbsorber::ProcessHits()']]],
+  ['processhits_46',['processhits',['../classTimeDet.html#ab5c3493e2450059a1795c392f674fa24',1,'TimeDet::ProcessHits()'],['../classTargetTracker.html#ad770cfa6a9c8bb1718439e97da469cbd',1,'TargetTracker::ProcessHits()'],['../classstrawtubes.html#a44fa2198579595fa773a1c0cd279ada3',1,'strawtubes::ProcessHits()'],['../classUpstreamTagger.html#a50e84425f21f58a52a73fc5474eb1641',1,'UpstreamTagger::ProcessHits()'],['../classveto.html#a89ff835c540dc9b4a1c403ae6e59ddf6',1,'veto::ProcessHits()'],['../classsplitcal.html#a01d0bffd33969207b2da5b610f1847a3',1,'splitcal::ProcessHits()'],['../classSiliconTarget.html#a1f70999d37f0b8de06160f8e7e670aa1',1,'SiliconTarget::ProcessHits()'],['../classMTCDetector.html#aa18fafe1629ec58b39857a699da6051b',1,'MTCDetector::ProcessHits()'],['../classTarget.html#a646e212ba5378103ae10a534ed1395c8',1,'Target::ProcessHits()'],['../classexitHadronAbsorber.html#a742f5adf2aeebb40be0a01f402edfa2f',1,'exitHadronAbsorber::ProcessHits()']]],
   ['prodrate_47',['prodRate',['../namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc',1,'proton_bremsstrahlung']]],
   ['productionvertex_48',['ProductionVertex',['../classShipParticle.html#a932be14ce5e63b6c9726a0a38843c8b5',1,'ShipParticle']]],
   ['projection_49',['projection',['../namespaceeventDisplay.html#a9a959c9a60a2f0b87f24aa8bb161dcef',1,'eventDisplay']]],
@@ -59,11 +59,10 @@ var searchData=
   ['putparams_56',['putParams',['../classShipFieldPar.html#a7649f379bb10eb95fde485298f459e4b',1,'ShipFieldPar']]],
   ['px_57',['Px',['../classShipParticle.html#a6f2fec47a59f91ec66cf93643e1c0d73',1,'ShipParticle']]],
   ['py_58',['Py',['../classShipParticle.html#a25b5b48ac48840b82e3b0dc8a9cf53f6',1,'ShipParticle']]],
-  ['pyexit_59',['pyExit',['../namespaceshipRoot__conf.html#a5e5d2200a27772b5ef5cba873d91fee1',1,'shipRoot_conf']]],
-  ['pyfairmodule_60',['pyFairModule',['../classpyFairModule.html#afa7e3a718ebb87efbe13ded62e9fc97b',1,'pyFairModule']]],
-  ['pythia6generator_61',['pythia6generator',['../classPythia6Generator.html#aaa5b0c478d05410a778a29845e318144',1,'Pythia6Generator::Pythia6Generator()'],['../classPythia6Generator.html#ab58bde8b6a45bd79ebecf0129eeac58f',1,'Pythia6Generator::Pythia6Generator(const char *fileName)']]],
-  ['pythia8generator_62',['Pythia8Generator',['../classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4',1,'Pythia8Generator']]],
-  ['pytr1rng_63',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
-  ['pytr3rng_64',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
-  ['pz_65',['Pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle']]]
+  ['pyfairmodule_59',['pyFairModule',['../classpyFairModule.html#afa7e3a718ebb87efbe13ded62e9fc97b',1,'pyFairModule']]],
+  ['pythia6generator_60',['pythia6generator',['../classPythia6Generator.html#aaa5b0c478d05410a778a29845e318144',1,'Pythia6Generator::Pythia6Generator()'],['../classPythia6Generator.html#ab58bde8b6a45bd79ebecf0129eeac58f',1,'Pythia6Generator::Pythia6Generator(const char *fileName)']]],
+  ['pythia8generator_61',['Pythia8Generator',['../classPythia8Generator.html#a0e02d13911bdc97f07817b0e5435fba4',1,'Pythia8Generator']]],
+  ['pytr1rng_62',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
+  ['pytr3rng_63',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
+  ['pz_64',['Pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle']]]
 ];

@@ -102,6 +102,7 @@ var run__simScript_8py =
     [ "seed", "run__simScript_8py.html#a7d8472b792e7e39ff6b5ee3f54e39b8d", null ],
     [ "selection_string", "run__simScript_8py.html#a749a0f8ac4a71bac9bc5125a66b765b4", null ],
     [ "ship_geo", "run__simScript_8py.html#a151c419ab07f58189111d09a490975f5", null ],
+    [ "sink", "run__simScript_8py.html#ab28fa4e0bc561176e536feeece39e2d5", null ],
     [ "SND_design", "run__simScript_8py.html#abfc0d3d48b6d07dad5d8363b594beef6", null ],
     [ "sTree", "run__simScript_8py.html#ab849a0cc2206716284b2e90fbd3fa3ed", null ],
     [ "subparsers", "run__simScript_8py.html#ae7ab5ab47fdc0841c3b3bd17bc4df157", null ],

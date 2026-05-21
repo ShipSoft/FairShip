@@ -1259,6 +1259,7 @@ var namespaces_dup =
       [ "seed", "namespacerun__simScript.html#a7d8472b792e7e39ff6b5ee3f54e39b8d", null ],
       [ "selection_string", "namespacerun__simScript.html#a749a0f8ac4a71bac9bc5125a66b765b4", null ],
       [ "ship_geo", "namespacerun__simScript.html#a151c419ab07f58189111d09a490975f5", null ],
+      [ "sink", "namespacerun__simScript.html#ab28fa4e0bc561176e536feeece39e2d5", null ],
       [ "SND_design", "namespacerun__simScript.html#abfc0d3d48b6d07dad5d8363b594beef6", null ],
       [ "sTree", "namespacerun__simScript.html#ab849a0cc2206716284b2e90fbd3fa3ed", null ],
       [ "subparsers", "namespacerun__simScript.html#ae7ab5ab47fdc0841c3b3bd17bc4df157", null ],
@@ -1527,7 +1528,6 @@ var namespaces_dup =
     [ "shipRoot_conf", "namespaceshipRoot__conf.html", [
       [ "configure", "namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6", null ],
       [ "forReadingOldFile", "namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad", null ],
-      [ "pyExit", "namespaceshipRoot__conf.html#a5e5d2200a27772b5ef5cba873d91fee1", null ],
       [ "genfit_root", "namespaceshipRoot__conf.html#abe7f64e661e45192074d6aff22e9fa75", null ]
     ] ],
     [ "shipStrawTracking", "namespaceshipStrawTracking.html", [
