@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Added ParticleGunGenerator #1183
+
 ### Changed
 
 ### Fixed
