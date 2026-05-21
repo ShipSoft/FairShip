@@ -675,7 +675,11 @@ void Floor::ConstructGeometry()
     Boolean = new TGeoUnion(Cut_010,Add_003,0,trans_16);
     TGeoShape *Solid_UJ18_shape = new TGeoCompositeShape("Solid_UJ18_shape", Boolean);
 
-  auto total = new TGeoCompositeShape("Stotal","(UJ18_shape:new_translation_for_UJ18+TI18_1_union+TI18_2_union+TI18_3_union)-vetoPit:VetoPit_transl");
+  std::string tunnel_shape_name = "(UJ18_shape:new_translation_for_UJ18+TI18_1_union+TI18_2_union+TI18_3_union)";
+  if (conf_floats["Floor/VetoPitXdim"]!=0) {
+	  tunnel_shape_name+="-vetoPit:VetoPit_transl";
+  }
+  auto total = new TGeoCompositeShape("Stotal",tunnel_shape_name.c_str());
   auto volT = new TGeoVolume("VTI18",total,concrete);
   volT->SetTransparency(0);
   volT->SetLineColor(kGray);
