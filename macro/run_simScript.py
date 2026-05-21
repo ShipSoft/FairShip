@@ -400,7 +400,9 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
@@ -494,6 +496,7 @@ if options.pythia8:
     # P8gen.SetMom(500.*u.GeV)
     # P8gen.SetId(-211)
     primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 if options.fixedTarget:
     HNL = False
     P8gen = ROOT.FixedTargetGenerator()
@@ -507,6 +510,7 @@ if options.fixedTarget:
     P8gen.SetHeartBeat(100000)
     P8gen.SetG4only()
     primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 if options.pythia6:
     # set muon interaction close to decay volume
     primGen.SetTarget(ship_geo.target.z0 + ship_geo.muShield.length, 0.0)
@@ -516,6 +520,7 @@ if options.pythia6:
     P6gen.SetMom(50.0 * u.GeV)
     P6gen.SetTarget("gamma/mu+", "n0")  # default "gamma/mu-","p+"
     primGen.AddGenerator(P6gen)
+    ROOT.SetOwnership(P6gen, False)  # C++ FairPrimaryGenerator takes ownership
 
 # -----EvtCalc--------------------------------------
 if options.evtcalc:
@@ -526,6 +531,7 @@ if options.evtcalc:
     EvtCalcGen.Init(inputFile, options.firstEvent)
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
+    ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = (
         EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
     )
@@ -550,6 +556,7 @@ if options.command == "PG":
         # point source
         myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
     primGen.AddGenerator(myPgun)
+    ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
 if options.mudis:
     ut.checkFileExists(inputFile)
@@ -564,6 +571,7 @@ if options.mudis:
     DISgen.SetPositions(mu_start, mu_end)
     DISgen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(DISgen)
+    ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
     print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
 # -----Neutrino Background------------------------
@@ -575,6 +583,7 @@ if options.command == "Genie":
     Geniegen.Init(inputFile, options.firstEvent)
     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
     run.SetPythiaDecayer("DecayConfigNuAge.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
@@ -587,6 +596,7 @@ if options.nuradio:
     Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
     Geniegen.NuOnly()
     primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     print("Generate ", options.nEvents, " for nuRadiography", " first event", options.firstEvent)
     #  add tungsten to PDG
     pdg = ROOT.TDatabasePDG.Instance()
@@ -603,6 +613,7 @@ if options.ntuple:
     Ntuplegen = ROOT.NtupleGenerator()
     Ntuplegen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(Ntuplegen)
+    ROOT.SetOwnership(Ntuplegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
     print("Process ", options.nEvents, " from input file")
 #
@@ -633,6 +644,7 @@ if options.muonback:
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
+    ROOT.SetOwnership(MuonBackgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = (
         MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
     )
@@ -667,10 +679,12 @@ if options.cosmics:
         sys.exit(0)
     Cosmicsgen.n_EVENTS = options.nEvents
     primGen.AddGenerator(Cosmicsgen)
+    ROOT.SetOwnership(Cosmicsgen, False)  # C++ FairPrimaryGenerator takes ownership
     print("Process ", options.nEvents, " Cosmic events with option ", Opt_high)
 
 #
 run.SetGenerator(primGen)
+ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
 # ------------------------------------------------------------------------
 
 # ---Store the visualiztion info of the tracks, this make the output file very large!!
@@ -750,6 +764,7 @@ kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 parOut.open(parFile)
 rtdb.setOutput(parOut)
+ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
 rtdb.saveOutput()
 rtdb.printParamContexts()
 rtdb.print()

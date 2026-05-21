@@ -210,6 +210,7 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
         geom = ROOT.TG4GeometryManager.Instance()
         # Let the geometry know about the fieldMaker object
         geom.SetUserPostDetConstruction(fieldMaker)
+        ROOT.SetOwnership(fieldMaker, False)  # C++ TG4GeometryManager takes ownership
         # Update the fields via the overridden ShipFieldMaker::Construct() function
         geom.ConstructSDandField()
 
