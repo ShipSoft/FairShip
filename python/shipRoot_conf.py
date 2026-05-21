@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-import atexit
 import os
-import sys
 
 import ROOT
 from pythia8_conf_utils import addHNLtoROOT
@@ -48,28 +46,6 @@ def forReadingOldFile() -> None:
     ROOT.gInterpreter.ProcessLine("typedef double Double32_t")
 
 
-# -----prepare python exit-----------------------------------------------
-
-
-def pyExit() -> None:
-    for module in sys.modules:
-        if "ROOT.genfit" in module:
-            x = sys.modules["__main__"]
-            if hasattr(x, "run"):
-                del x.run
-                print("make suicid, until better solution found to ROOT/genfit interference")
-                for f in ROOT.gROOT.GetListOfFiles():
-                    if f.IsWritable() and f.IsOpen():
-                        f.Close()
-                os.system("kill " + str(os.getpid()))
-            if hasattr(x, "fMan"):
-                del x.fMan
-            if hasattr(x, "fRun"):
-                del x.fRun
-            return
-    print("Exit normally")
-
-
 def configure(darkphoton=None) -> None:
     ROOT.gROOT.ProcessLine('#include "' + os.environ["FAIRSHIP"] + '/shipdata/ShipGlobals.h"')
     pdg = ROOT.TDatabasePDG.Instance()
@@ -94,7 +70,6 @@ def configure(darkphoton=None) -> None:
     pdg.AddParticle("chi_2c[3S1(8)]", "chi_2c[3S1(8)]", 3.75620, False, 0.0, 0, "Meson", 9940005)
     pdg.AddParticle("Upsilon[3S1(8)]", "Upsilon[3S1(8)]", 9.66030, False, 0.0, 0, "Meson", 9950003)
 
-    atexit.register(pyExit)
     if darkphoton == 0:
         return  # will be added by pythia8_conf
     if darkphoton:

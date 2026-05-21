@@ -456,6 +456,7 @@ def configure(run, ship_geo):
                 ship_geo.Yheight / 2.0 * u.m,
             )
         run.SetField(fMagField)
+        ROOT.SetOwnership(fMagField, False)  # C++ FairRunSim takes ownership
 
     exclusionList = []
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
@@ -465,6 +466,7 @@ def configure(run, ship_geo):
         if x.GetName() in exclusionList:
             continue
         run.AddModule(x)
+        ROOT.SetOwnership(x, False)  # C++ FairRunSim takes ownership
     # return list of detector elements
     detElements = {}
     for x in run.GetListOfModules():
