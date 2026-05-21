@@ -17,13 +17,12 @@
 #include "TH2.h"
 #include "TH3.h"
 
-
 static const std::map<std::string, ModelSpec> kVertexModels = {
     {"gaussian",
      {5, "Gaus(X), Gaus(Y), Point(Z)",
       [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = (pars[1]>0)? gRandom->Gaus(pars[0], pars[1]) : pars[0];
-        p.Y = (pars[3]>0)? gRandom->Gaus(pars[2], pars[3]) : pars[2];
+        p.X = (pars[1] > 0) ? gRandom->Gaus(pars[0], pars[1]) : pars[0];
+        p.Y = (pars[3] > 0) ? gRandom->Gaus(pars[2], pars[3]) : pars[2];
         p.Z = pars[4];
       }}},
     {"exponential",
@@ -40,8 +39,12 @@ static const std::map<std::string, ModelSpec> kVertexModels = {
     {"uniform",
      {5, "Uniform(X), Uniform(Y), Point(Z)",
       [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = (pars[1]>0)? gRandom->Uniform(pars[0] - pars[1]/2., pars[0] + pars[1]/2.) : pars[1];
-        p.Y = (pars[3]>0)? gRandom->Uniform(pars[2] - pars[3]/2., pars[2] + pars[3]/2.) : pars[2];
+        p.X = (pars[1] > 0) ? gRandom->Uniform(pars[0] - pars[1] / 2.,
+                                               pars[0] + pars[1] / 2.)
+                            : pars[1];
+        p.Y = (pars[3] > 0) ? gRandom->Uniform(pars[2] - pars[3] / 2.,
+                                               pars[2] + pars[3] / 2.)
+                            : pars[2];
         p.Z = pars[4];
       }}},
 };
@@ -50,9 +53,9 @@ static const std::map<int, ModelSpec> kMomentumModels = {
     {1,
      {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
       [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.Px = (pars[1]>0)? gRandom->Gaus(pars[0], pars[1]) : pars[0];
-        p.Py = (pars[3]>0)? gRandom->Gaus(pars[2], pars[3]) : pars[2];
-        p.Pz = (pars[5]>0)? gRandom->Landau(pars[4], pars[5]) : pars[4];
+        p.Px = (pars[1] > 0) ? gRandom->Gaus(pars[0], pars[1]) : pars[0];
+        p.Py = (pars[3] > 0) ? gRandom->Gaus(pars[2], pars[3]) : pars[2];
+        p.Pz = (pars[5] > 0) ? gRandom->Landau(pars[4], pars[5]) : pars[4];
       }}},
 };
 
@@ -138,8 +141,7 @@ Bool_t ParticleGunGenerator::Init() {
   TParticlePDG* particle = pdgBase->GetParticle(m_pdgid);
 
   if (!particle) {
-    LOG(fatal) << "ParticleGunGenerator: PDG " << m_pdgid
-               << " not defined";
+    LOG(fatal) << "ParticleGunGenerator: PDG " << m_pdgid << " not defined";
     return kFALSE;
   }
   LOG(info) << this->ClassName() << ": particle with PDG =" << m_pdgid
@@ -212,7 +214,7 @@ void ParticleGunGenerator::SetBothCharges(bool flag, Double32_t fraction) {
               << m_pdgid;
 }
 
-int ParticleGunGenerator::GenPDGType() const{
+int ParticleGunGenerator::GenPDGType() const {
   if (m_bothCharges) {
     float tPDG = gRandom->Uniform();
     return (tPDG > m_chargeFraction) ? -m_pdgid : m_pdgid;

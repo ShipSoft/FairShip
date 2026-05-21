@@ -153,7 +153,8 @@ pg_parser.add_argument(
     dest="showPGModels",
     action="store_true",
     default=False,
-    help="Print out the PG models that are available")
+    help="Print out the PG models that are available",
+)
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
