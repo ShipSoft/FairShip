@@ -148,6 +148,12 @@ pg_parser.add_argument(
     help="Momentum model parameters. You must specify them all in order",
     type=float,
 )
+pg_parser.add_argument(
+    "--showPGModels",
+    dest="showPGModels",
+    action="store_true",
+    default=False,
+    help="Print out the PG models that are available")
 # === End of PG commands ===
 # === Genie subcommand ===
 genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
@@ -614,6 +620,9 @@ if options.command == "PG":
     myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
+    if options.showPGModels:
+        myPgun.PrintVertexModels()
+        myPgun.PrintMomentumModels()
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
         myPgun.SetVertexModel(

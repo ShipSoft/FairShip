@@ -20,44 +20,6 @@ struct ModelSpec {
       generate;
 };
 
-static const std::map<std::string, ModelSpec> kVertexModels = {
-    {"gaussian",
-     {5, "Gaus(X), Gaus(Y), Point(Z)",
-      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = gRandom->Gaus(pars[0], pars[1]);
-        p.Y = gRandom->Gaus(pars[2], pars[3]);
-        p.Z = pars[4];
-      }}},
-    {"exponential",
-     {5, "Exp(X), Exp(Y), Point(Z)",
-      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = (gRandom->Uniform() > 0.5)
-                  ? gRandom->Exp(pars[1]) + pars[0]
-                  : -gRandom->Exp(pars[1]) +
-                        pars[0];  // Make this symmetric about a specified point
-        p.Y = (gRandom->Uniform() > 0.5) ? gRandom->Exp(pars[3]) + pars[2]
-                                         : -gRandom->Exp(pars[3]) + pars[2];
-        p.Z = pars[4];
-      }}},
-    {"uniform",
-     {5, "Uniform(X), Uniform(Y), Point(Z)",
-      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.X = gRandom->Uniform(pars[0], pars[1] / 2.);
-        p.Y = gRandom->Uniform(pars[2], pars[3] / 2.);
-        p.Z = pars[4];
-      }}},
-};
-
-static const std::map<int, ModelSpec> kMomentumModels = {
-    {1,
-     {6, "Gaus(Px), Gaus(Py), Landau(Pz)",
-      [](ParticleGunParticle& p, const std::vector<Double32_t>& pars) {
-        p.Px = gRandom->Gaus(pars[0], pars[1]);
-        p.Py = gRandom->Gaus(pars[2], pars[3]);
-        p.Pz = gRandom->Landau(pars[4], pars[5]);
-      }}},
-};
-
 class ParticleGunGenerator : public SHiP::Generator {
  public:
   /** Default constructor. **/
@@ -121,7 +83,7 @@ class ParticleGunGenerator : public SHiP::Generator {
 
   void SetPDGType(int pdgid) { m_pdgid = pdgid; };
   void SetMultiplicity(int mult) { m_mult = mult; };
-  int GetPDGType();
+  int GenPDGType() const;
   int GetMultiplicity() { return m_mult; };
 
   void LoadHistoFromFile(const std::string& inFile, const std::string& inHisto,
