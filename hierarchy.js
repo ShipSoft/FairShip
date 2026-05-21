@@ -72,6 +72,7 @@ var hierarchy =
         [ "MuDISGenerator", "classMuDISGenerator.html", null ],
         [ "MuonBackGenerator", "classMuonBackGenerator.html", null ],
         [ "NtupleGenerator", "classNtupleGenerator.html", null ],
+        [ "ParticleGunGenerator", "classParticleGunGenerator.html", null ],
         [ "Pythia6Generator", "classPythia6Generator.html", null ],
         [ "Pythia8Generator", "classPythia8Generator.html", null ],
         [ "tPythia6Generator", "classtPythia6Generator.html", null ]
@@ -114,6 +115,7 @@ var hierarchy =
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
     ] ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
+    [ "ParticleGunGenerator::HistoEntry", "structParticleGunGenerator_1_1HistoEntry.html", null ],
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
@@ -131,6 +133,8 @@ var hierarchy =
       [ "SHiP::Detector< PointType >", "classSHiP_1_1Detector.html", null ]
     ] ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
+    [ "ModelSpec", "structModelSpec.html", null ],
+    [ "ParticleGunParticle", "structParticleGunParticle.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],

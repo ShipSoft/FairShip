@@ -13,7 +13,8 @@ var searchData=
   ['list_10',['list',['../classHNLPythia8Generator.html#a2156924efe22e41bda7fc3a39d922856',1,'HNLPythia8Generator::List()'],['../classDPPythia8Generator.html#aaf5583d052a6739dc78e1a76dce564bb',1,'DPPythia8Generator::List()']]],
   ['load_11',['load',['../classShipGeoConfig_1_1Config.html#aa36885fca85b2ea273ad191e3508df8f',1,'ShipGeoConfig.Config.load()'],['../namespacereadDecayTable.html#accb3ca4d591c8a297fc406190aa012d1',1,'readDecayTable.load()']]],
   ['load_5ffrom_5froot_5ffile_12',['load_from_root_file',['../namespaceShipGeoConfig.html#ad0ba78745e1c9d354b0a8cafed88a784',1,'ShipGeoConfig']]],
-  ['loads_13',['loads',['../classShipGeoConfig_1_1Config.html#ab05b5555a5b2565d7bdbced03cb99843',1,'ShipGeoConfig::Config']]],
-  ['loads_5fjson_14',['loads_json',['../classShipGeoConfig_1_1Config.html#a86cc9ef6b9103346ae0e57f47af6b0db',1,'ShipGeoConfig::Config']]],
-  ['local2global_15',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]]
+  ['loadhistofromfile_13',['LoadHistoFromFile',['../classParticleGunGenerator.html#adb4adb35544eec6ca34ce7f224d43dc6',1,'ParticleGunGenerator']]],
+  ['loads_14',['loads',['../classShipGeoConfig_1_1Config.html#ab05b5555a5b2565d7bdbced03cb99843',1,'ShipGeoConfig::Config']]],
+  ['loads_5fjson_15',['loads_json',['../classShipGeoConfig_1_1Config.html#a86cc9ef6b9103346ae0e57f47af6b0db',1,'ShipGeoConfig::Config']]],
+  ['local2global_16',['local2Global',['../namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556',1,'getGeoInformation']]]
 ];

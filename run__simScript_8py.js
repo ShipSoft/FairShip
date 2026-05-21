@@ -1,5 +1,6 @@
 var run__simScript_8py =
 [
+    [ "_fraction_0_1", "run__simScript_8py.html#afedbc79013bdd48d4a872216aa4c6cb4", null ],
     [ "checkOverlapsWithGeant4", "run__simScript_8py.html#a0ba5fb603df27a98103959b42c5cdd8f", null ],
     [ "visualizeMagFields", "run__simScript_8py.html#a0d8a3c689350819a350b633286a36197", null ],
     [ "action", "run__simScript_8py.html#a6056f7d17a9444f227c9edf13d243928", null ],
@@ -41,6 +42,12 @@ var run__simScript_8py =
     [ "gst", "run__simScript_8py.html#aa3e34199d5fbf0a1ded3a5a739c356da", null ],
     [ "gst_copy", "run__simScript_8py.html#a7d8ddabaf399fe627d86b2c91119fb14", null ],
     [ "help", "run__simScript_8py.html#ab658890547af5e0465901c28dbaf5199", null ],
+    [ "histo_files", "run__simScript_8py.html#acab2f81658cb96bd5076575a88e7a512", null ],
+    [ "histo_names", "run__simScript_8py.html#a1a20f54743be73320a5210128d1da3af", null ],
+    [ "histo_vars", "run__simScript_8py.html#a29d6ab12ab59ce84dcb46dd3381d0389", null ],
+    [ "histo_x", "run__simScript_8py.html#a0bcbe79063b6424f479928d19844bf8b", null ],
+    [ "histo_y", "run__simScript_8py.html#aa3221d609d5556de59ed9a83f349d65f", null ],
+    [ "histo_z", "run__simScript_8py.html#a02e8eba17c633aef79dffe14bb5b5f9a", null ],
     [ "HNL", "run__simScript_8py.html#a1dac2c9d322e66f5d1bcb8374999423b", null ],
     [ "inclusive", "run__simScript_8py.html#a4483c0f1750d35b90b961b115d1a77a7", null ],
     [ "input_path", "run__simScript_8py.html#a2ffceeab5f9a8f1e0a57af53bfac65fd", null ],

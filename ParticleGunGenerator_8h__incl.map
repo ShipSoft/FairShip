@@ -1,0 +1,23 @@
+<map id="shipgen/ParticleGunGenerator.h" name="shipgen/ParticleGunGenerator.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="202,5,429,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="111,79,189,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,33,191,76,188,71,288,28"/>
+<area shape="rect" id="Node000003" href="$Generator_8h.html" title=" " alt="" coords="214,79,313,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="309,33,282,69,278,66,305,29"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="337,79,397,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="326,29,353,66,349,69,322,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="422,79,518,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="341,28,433,70,431,75,339,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,152,68,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="228,107,82,152,80,147,226,101"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="93,152,167,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="243,106,165,148,163,143,241,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="191,152,250,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="259,106,237,142,232,139,254,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="275,152,337,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="273,103,294,139,290,142,268,106"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="361,152,483,177"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="290,102,385,144,383,149,288,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="507,152,607,177"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="311,101,497,146,495,151,310,107"/>
+</map>

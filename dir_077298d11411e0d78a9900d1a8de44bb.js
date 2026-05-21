@@ -26,6 +26,8 @@ var dir_077298d11411e0d78a9900d1a8de44bb =
     [ "MuonBackGenerator.h", "MuonBackGenerator_8h.html", "MuonBackGenerator_8h" ],
     [ "NtupleGenerator.cxx", "NtupleGenerator_8cxx.html", null ],
     [ "NtupleGenerator.h", "NtupleGenerator_8h.html", "NtupleGenerator_8h" ],
+    [ "ParticleGunGenerator.cxx", "ParticleGunGenerator_8cxx.html", null ],
+    [ "ParticleGunGenerator.h", "ParticleGunGenerator_8h.html", "ParticleGunGenerator_8h" ],
     [ "Pythia6Generator.cxx", "Pythia6Generator_8cxx.html", null ],
     [ "Pythia6Generator.h", "Pythia6Generator_8h.html", "Pythia6Generator_8h" ],
     [ "Pythia8Generator.cxx", "Pythia8Generator_8cxx.html", "Pythia8Generator_8cxx" ],
