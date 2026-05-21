@@ -619,15 +619,15 @@ if options.evtcalc:
 # -----Particle Gun-----------------------
 if options.command == "PG":
     myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
+    if options.showPGModels:
+        myPgun.PrintVertexModels()
+        myPgun.PrintMomentumModels(
+        sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
     myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
-    myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
-    if options.showPGModels:
-        myPgun.PrintVertexModels()
-        myPgun.PrintMomentumModels()
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
         myPgun.SetVertexModel(
