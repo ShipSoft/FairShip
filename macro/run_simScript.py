@@ -15,6 +15,14 @@ import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
 
+
+def _fraction_0_1(value: str) -> float:
+    v = float(value)
+    if not 0.0 <= v <= 1.0:
+        raise ValueError("--chargeFraction must be between 0 and 1")
+    return v
+
+
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -60,15 +68,92 @@ pg_parser.add_argument("--pID", dest="pID", default=22, type=int, help="id of pa
 pg_parser.add_argument(
     "--Estart", default=10, type=float, help="start of energy range of particle gun (default=10 GeV)"
 )
+pg_parser.add_argument(
+    "--histoFile",
+    dest="histoFile",
+    default=None,
+    help="File with a histogram to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoName",
+    dest="histoName",
+    default=None,
+    help="Histogram name to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoX",
+    dest="histoX",
+    default=None,
+    help="The variable of the histogram X axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoY",
+    dest="histoY",
+    default=None,
+    help="The variable of the histogram Y axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoZ",
+    dest="histoZ",
+    default=None,
+    help="The variable of the histogram Z axis. Repeat for multiple files",
+    action="append",
+)
+
+pg_parser.add_argument(
+    "--bothCharges",
+    dest="bothCharges",
+    default=False,
+    action="store_true",
+    help="Generate both charges of given particle ID",
+)
+pg_parser.add_argument(
+    "--chargeFraction",
+    dest="chargeFraction",
+    type=_fraction_0_1,
+    default=0.5,
+    help="Fraction of chosen charge from pID to generate [0,1]",
+)
 pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
 pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
 pg_parser.add_argument(
+    "--smearMode",
+    dest="smearMode",
+    default="uniform",
+    help="Form of the vertex smearing for the particle gun",
+    type=str,
+)
+pg_parser.add_argument(
+    "--multiplicity", dest="multiplicity", type=int, default=1, help="How many to generate per event"
+)
+pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
 )
 pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
+)
+pg_parser.add_argument(
+    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
+)
+pg_parser.add_argument(
+    "--modelPar",
+    dest="modelPar",
+    action="append",
+    help="Momentum model parameters. You must specify them all in order",
+    type=float,
+)
+pg_parser.add_argument(
+    "--showPGModels",
+    dest="showPGModels",
+    action="store_true",
+    default=False,
+    help="Print out the PG models that are available",
 )
 # === End of PG commands ===
 # === Genie subcommand ===
@@ -533,22 +618,47 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
-    myPgun = ROOT.FairBoxGenerator(options.pID, 1)
+    myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
+    if options.showPGModels:
+        myPgun.PrintVertexModels()
+        myPgun.PrintMomentumModels()
+        sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
     myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    if options.bothCharges:
+        myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
-        myPgun.SetBoxXYZ(
-            (options.Vx - options.Dx / 2) * u.cm,
-            (options.Vy - options.Dy / 2) * u.cm,
-            (options.Vx + options.Dx / 2) * u.cm,
-            (options.Vy + options.Dy / 2) * u.cm,
-            options.Vz * u.cm,
+        myPgun.SetVertexModel(
+            options.smearMode,
+            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
         )
     else:
         # point source
-        myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
+        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
+    if options.momentumModel > 0:
+        myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
+    if options.histoFile:
+        histo_files = options.histoFile or []
+        histo_names = options.histoName or []
+        histo_x = options.histoX or []
+        histo_y = options.histoY or []
+        histo_z = options.histoZ or []
+
+        if len(histo_files) != len(histo_names):
+            raise ValueError("Must specify one --histoName per --histoFile")
+        if len(histo_x) != len(histo_files):
+            raise ValueError("Must specify one --histoX per --histoFile")
+
+        for idx, histo_file in enumerate(histo_files):
+            histo_vars = [histo_x[idx]]
+            if idx < len(histo_y):
+                histo_vars.append(histo_y[idx])
+            if idx < len(histo_z):
+                histo_vars.append(histo_z[idx])
+            myPgun.LoadHistoFromFile(histo_file, histo_names[idx], histo_vars)
+
     primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if options.mudis:

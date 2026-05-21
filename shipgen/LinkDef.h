@@ -20,6 +20,7 @@
 #pragma link C++ class CosmicsGenerator - ;
 #pragma link C++ class MuDISGenerator - ;
 #pragma link C++ class FixedTargetGenerator - ;
+#pragma link C++ class ParticleGunGenerator - ;
 #pragma link C++ class EvtCalcGenerator - ;
 #pragma link C++ class TEvtGenDecayer - ;
 #endif
