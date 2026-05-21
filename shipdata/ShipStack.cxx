@@ -438,6 +438,11 @@ void ShipStack::SelectTracks()
     thisPart->Momentum(p);
     Double_t energy = p.E();
     Double_t mass   = p.M();
+    if (std::isnan(mass)) mass == thisPart->GetMass();
+    if (std::isnan(mass)){
+       LOG(WARNING) << "ShipStack: NaN particle mass detected => setting to zero for "
+                    << thisPart->GetPdgCode();
+    }
 //    Double_t mass   = thisPart->GetMass();
     Double_t eKin = energy - mass;
 

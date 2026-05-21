@@ -139,8 +139,16 @@ Double_t ShipMCTrack::GetMass() const
     if ( particle ) { return particle->Mass(); }
     else { return 0.; }
    }
+  }else{
+   if (!std::isnan(fM)) { return fM; }
+   else{
+    if ( TDatabasePDG::Instance() ) {
+     TParticlePDG* particle = TDatabasePDG::Instance()->GetParticle(fPdgCode);
+     if ( particle && std::isnan(particle->Mass()) ) { return particle->Mass(); }
+     else { return 0.; }
+    }
+   }
   }
-  return fM;
 }
 // -------------------------------------------------------------------------
 
