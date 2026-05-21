@@ -621,7 +621,7 @@ if options.command == "PG":
     myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
     if options.showPGModels:
         myPgun.PrintVertexModels()
-        myPgun.PrintMomentumModels(
+        myPgun.PrintMomentumModels()
         sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
