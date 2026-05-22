@@ -67,29 +67,30 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
 
-  if ((volName.Contains("exitHadronAbsorber")) && (gMC->IsTrackEntering())) {
-    fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-    fEventID = gMC->CurrentEvent();
-    TParticle* p = gMC->GetStack()->GetCurrentTrack();
-    fUniqueID = p->GetUniqueID();
-    Int_t pdgCode = p->GetPdgCode();
-    Int_t motherId = p->GetFirstMother();
-    gMC->TrackMomentum(fMom);
-    if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
-      fTime = gMC->TrackTime() * 1.0e09;
-      fLength = gMC->TrackLength();
-      gMC->TrackPosition(fPos);
-      if (((fMom.E() - fMom.M()) > EMax) && (fDecayedParentIDs.count(motherId) == 0)) {
-        AddHit(fEventID, fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
+  if (volName.Contains("exitHadronAbsorber")) {
+    if (gMC->IsTrackEntering()) {
+      fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
+      fEventID = gMC->CurrentEvent();
+      TParticle* p = gMC->GetStack()->GetCurrentTrack();
+      fUniqueID = p->GetUniqueID();
+      Int_t pdgCode = p->GetPdgCode();
+      Int_t motherId = p->GetFirstMother();
+      gMC->TrackMomentum(fMom);
+      if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
+        fTime = gMC->TrackTime() * 1.0e09;
+        fLength = gMC->TrackLength();
+        gMC->TrackPosition(fPos);
+        if (((fMom.E() - fMom.M()) > EMax) && (fDecayedParentIDs.count(motherId) == 0)) {
+          AddHit(fEventID, fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
                pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
                TVector3(p->Px(), p->Py(), p->Pz()));
-        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-        stack->AddPoint(kVETO);
+          ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+          stack->AddPoint(kVETO);
+        }
       }
     }
-  }
-  if (volName.Contains("exitHadronAbsorber")) {
+
     if ((!fCylindricalPlane) && fzPos > 1E8) {
       gMC->StopTrack();
     }
@@ -109,35 +110,31 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
        TParticle* part = gMC->GetStack()->GetCurrentTrack();
        if (!part) return kTRUE;
 
-       TLorentzVector pos, mom;
-       gMC->TrackPosition(pos);
-       gMC->TrackMomentum(mom);
-
-       Double_t mass = gMC->TrackMass();
-       Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
-       static const Double_t c_light = 29.9792458; // in cm/ns
-       Double_t c_tau = tau * c_light;
        Double_t delta_s = gMC->TrackStep();
 
-       if (delta_s > 0 && mass > 0.0 && c_tau > 0.0) {
-         Double_t rawTrackWeight = gMC->TrackWeight();
-         double polX = 0, polY = 0, polZ = 0;
-         TVector3 polVector;
-         part->GetPolarisation(polVector);
-         polX = polVector.X(); polY = polVector.Y(); polZ = polVector.Z();
-         Int_t trueParentId = part->GetFirstMother();
+       if (delta_s > 0) {
+         TLorentzVector pos, mom;
+         gMC->TrackPosition(pos);
+         gMC->TrackMomentum(mom);
 
-         // splitting for intermediate steps
-         TVector3 momv3(mom.Px(), mom.Py(), mom.Pz());
-         Double_t instantP = momv3.Mag();
+         Double_t mass = gMC->TrackMass();
+         Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
+         Double_t c_tau = tau * 29.9792458; // in cm/ns
+
+         Double_t instantP = mom.P();
 
          Double_t lambda_decay = (instantP / mass) * c_tau;
          Double_t P_decay = 1.0 - TMath::Exp(-delta_s / lambda_decay);
-         Double_t betaGamma = TMath::Sqrt(mom.E()*mom.E() - mass*mass) / mass;
+         if ((P_decay > 0.0) && ((mom.E() - mom.M()) > EMax)) {
+             double polX = 0, polY = 0, polZ = 0;
+             TVector3 polVector;
+             part->GetPolarisation(polVector);
+             polX = polVector.X(); polY = polVector.Y(); polZ = polVector.Z();
+             Int_t trueParentId = part->GetFirstMother();
 
-         Double_t decayBranchWeight = (rawTrackWeight * fCurrentSurvivalFactor) * P_decay;
-         Double_t cloneWeight = decayBranchWeight / fNsplits;
-         if (P_decay > 0.0) {
+             Double_t rawTrackWeight = gMC->TrackWeight();
+             Double_t decayBranchWeight = (rawTrackWeight * fCurrentSurvivalFactor) * P_decay;
+             Double_t cloneWeight = decayBranchWeight / fNsplits;
              for (int i = 0; i < fNsplits; ++i) {
                  TrackBuffer clone;
                  clone.pdg      = track_pid;
@@ -231,6 +228,7 @@ void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
   fContinuationTracks.clear();
   fDecayedParentIDs.clear();
+  fSecondaryBuffer.clear();
 }
 
 
