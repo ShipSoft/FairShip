@@ -73,12 +73,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     fUniqueID = p->GetUniqueID();
     Int_t pdgCode = p->GetPdgCode();
+    Int_t motherId = p->GetFirstMother();
     gMC->TrackMomentum(fMom);
     if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
       fTime = gMC->TrackTime() * 1.0e09;
       fLength = gMC->TrackLength();
       gMC->TrackPosition(fPos);
-      if ((fMom.E() - fMom.M()) > EMax) {
+      if (((fMom.E() - fMom.M()) > EMax) && (fDecayedParentIDs.count(motherId) == 0)) {
         AddHit(fEventID, fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
                pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
@@ -229,6 +230,7 @@ void exitHadronAbsorber::Initialize() {
 void exitHadronAbsorber::BeginEvent() {
   fCloneTracks.clear();
   fContinuationTracks.clear();
+  fDecayedParentIDs.clear();
 }
 
 
@@ -268,7 +270,6 @@ void exitHadronAbsorber::PostTrack() {
     Int_t trueParentId = part->GetFirstMother();
 
     ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-    Int_t stackSizeBefore = stack ? stack->GetNtrack() : 0;
 
     // All remaining weight used if cloning happens at point where original particle decays
     if (isNaturalDecay) {
@@ -284,6 +285,7 @@ void exitHadronAbsorber::PostTrack() {
             fSecondaryBuffer.push_back(clone);
         }
         fCurrentSurvivalFactor = 0.0;
+        fDecayedParentIDs.insert(currentTrackId);
     }
 
     // tracks which do not decay are stopped with stoptrack and added back with a given weight
@@ -300,20 +302,7 @@ void exitHadronAbsorber::PostTrack() {
     }
 
     gMC->StopTrack();
-    if (isNaturalDecay && stack) {
-        Int_t currentStackSize = stack->GetNtrack();
-        if (currentStackSize > stackSizeBefore) {
-            // Loop through the newly added natural secondaries
-            for (Int_t i = stackSizeBefore; i < currentStackSize; ++i) {
-                TParticle* secPart = stack->GetParticle(i);
-                if (secPart) {
-                    secPart->SetStatusCode(-1); // Convention flag indicating a dead/discarded track
-                }
-            }
-        }
-    }
   }
-
 }
 
 
@@ -398,6 +387,7 @@ void exitHadronAbsorber::PreTrack() {
   }
 }
 
+
 void exitHadronAbsorber::FinishRun() {
   for (Int_t idnu = 11; idnu < 23; idnu += 1) {
     // nu or anti-nu
@@ -446,7 +436,6 @@ void exitHadronAbsorber::FinishRun() {
     fNtuple->Write();
   }
 }
-
 
 
 void RegisterDaughtersRecursively(TGeoVolume* volume, exitHadronAbsorber* detector) {
@@ -561,6 +550,7 @@ void exitHadronAbsorber::ConstructGeometry() {
     }
   }
 }
+
 
 void exitHadronAbsorber::Register() {
   fDetPoints = new std::vector<vetoPoint>();

@@ -39,6 +39,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   void PreTrack() override;
   virtual void PostTrack();
   virtual void BeginEvent();
+  // void FinishEvent();
 
   void SetNSplits(int32_t n) { fNsplits = n; }
   void SetSplitMultipleTimes() {fSplitOnce = kFALSE ; }
@@ -71,6 +72,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   std::vector<TrackBuffer> fSecondaryBuffer;
   std::set<Int_t> fCloneTracks;
   std::set<Int_t> fContinuationTracks;
+  std::set<Int_t> fDecayedParentIDs; 
 
   TFile* fout;               //!
   TClonesArray* fElectrons;  //!
