@@ -67,7 +67,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   TString volName = gMC->CurrentVolName();
 
-  if ((volName != "target_vacuum_box") && (gMC->IsTrackEntering())) {
+  if ((volName.Contains("exitHadronAbsorber")) && (gMC->IsTrackEntering())) {
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
     fEventID = gMC->CurrentEvent();
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
@@ -88,13 +88,13 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
       }
     }
   }
-  if (volName != "target_vacuum_box") {
+  if (volName.Contains("exitHadronAbsorber")) {
     if ((!fCylindricalPlane) && fzPos > 1E8) {
       gMC->StopTrack();
     }
   }
 
-  if (fNsplits > 0 && (!fSplitOnce)) { 
+  if (fNsplits > 0 && (!fSplitOnce)) {
      Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
 
      if (fCloneTracks.count(currentTrackId) > 0 || fContinuationTracks.count(currentTrackId) > 0) {
@@ -115,10 +115,10 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
        Double_t mass = gMC->TrackMass();
        Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
        static const Double_t c_light = 29.9792458; // in cm/ns
-       Double_t c_tau = tau * c_light; 
-       Double_t total_dist = gMC->TrackLength();
+       Double_t c_tau = tau * c_light;
+       Double_t delta_s = gMC->TrackStep();
 
-       if (total_dist > 0 && mass > 0.0 && c_tau > 0.0) {
+       if (delta_s > 0 && mass > 0.0 && c_tau > 0.0) {
          Double_t rawTrackWeight = gMC->TrackWeight();
          double polX = 0, polY = 0, polZ = 0;
          TVector3 polVector;
@@ -129,21 +129,14 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
          // splitting for intermediate steps
          TVector3 momv3(mom.Px(), mom.Py(), mom.Pz());
          Double_t instantP = momv3.Mag();
-         Double_t delta_s = gMC->TrackStep();
 
          Double_t lambda_decay = (instantP / mass) * c_tau;
          Double_t P_decay = 1.0 - TMath::Exp(-delta_s / lambda_decay);
-
          Double_t betaGamma = TMath::Sqrt(mom.E()*mom.E() - mass*mass) / mass;
-
-         Double_t lambda_decay2 = betaGamma * c_tau;
 
          Double_t decayBranchWeight = (rawTrackWeight * fCurrentSurvivalFactor) * P_decay;
          Double_t cloneWeight = decayBranchWeight / fNsplits;
-         // std::cout << "step = " << gMC->TrackStep() << " " << track_pid << " " << gMC->CurrentEvent() << std::endl;
-         // std::cout << "P_DECAY" << " " << P_decay * 1000000 << "lambda " << lambda_decay << " " << c_tau << " "  << instantP << std::endl;
          if (P_decay > 0.0) {
-             // std::cout << "X " << pos.X() << " y " << pos.Y() << " z " << pos.Z() << std::endl;
              for (int i = 0; i < fNsplits; ++i) {
                  TrackBuffer clone;
                  clone.pdg      = track_pid;
@@ -290,9 +283,6 @@ void exitHadronAbsorber::PostTrack() {
             clone.parentID = trueParentId;
             fSecondaryBuffer.push_back(clone);
         }
-
-        std::cout << "posttrack decay " << finalPos.X() << " " << finalPos.Y() << " " << finalPos.Z() << std::endl;
-
         fCurrentSurvivalFactor = 0.0;
     }
 
@@ -457,6 +447,27 @@ void exitHadronAbsorber::FinishRun() {
   }
 }
 
+
+
+void RegisterDaughtersRecursively(TGeoVolume* volume, exitHadronAbsorber* detector) {
+    if (!volume) return;
+    Int_t nDaughters = volume->GetNdaughters();
+    for (Int_t i = 0; i < nDaughters; ++i) {
+        TGeoNode* daughterNode = volume->GetNode(i);
+        if (daughterNode) {
+            TGeoVolume* daughterVol = daughterNode->GetVolume();
+            if (daughterVol) {
+                // register daughter volume
+                detector->AddSensitiveVolume(daughterVol);
+                std::cout << "[exitHadronAbsorber] Registered subvolume: " << daughterVol->GetName() << std::endl;
+                // call function recursively
+                RegisterDaughtersRecursively(daughterVol, detector);
+            }
+        }
+    }
+}
+
+
 void exitHadronAbsorber::ConstructGeometry() {
   static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
   static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
@@ -535,9 +546,19 @@ void exitHadronAbsorber::ConstructGeometry() {
     AddSensitiveVolume(sensPlaneCyl);
   }
   if ((fNsplits > 0) && (!fSplitOnce))  {
-    nav->cd("/target_vacuum_box_1");
+    TString parentVolumeName = "/target_vacuum_box_1";
+    // int32_t nDaughters = gMC->NofVolDaughters(parentVolumeName.Data());
+    nav->cd(parentVolumeName.Data());
     TGeoVolume* vol = nav->GetCurrentNode()->GetVolume();
     AddSensitiveVolume(vol);
+    int32_t nDaughters = vol->GetNdaughters();
+    std::cout << "[exitHadronAbsorber] Found " << nDaughters  << " nested nodes inside target_vacuum_box via ROOT TGeo." << std::endl;
+
+      // 3. Loop through and register each unique daughter volume
+    for (Int_t i = 0; i < nDaughters; ++i) {
+      std::cout << "[exitHadronAbsorber] Initiating deep recursive registration..." << std::endl;
+      RegisterDaughtersRecursively(vol, this);
+    }
   }
 }
 
