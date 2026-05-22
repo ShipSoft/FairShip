@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E'],['../namespacemakeMuonDIS.html#ad916c51f2653b60d746cf521ef14f685',1,'makeMuonDIS.E']]],
+  ['e_0',['E',['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM']]],
   ['e13_1',['e13',['../namespacerun__fixedTarget.html#a05d4d5d811ac982fb950c0e77dff935b',1,'run_fixedTarget']]],
   ['e_5fsi_2',['e_si',['../namespaceshipunit.html#aa4f540f7dedc6234c8b6620bc2c1fb07',1,'shipunit.e_SI'],['../namespacehepunit.html#af875140c15decb3950dea5e4b73f9212',1,'hepunit.e_SI']]],
   ['e_5fsquared_3',['e_squared',['../namespaceshipunit.html#a4674e521cd11cd1285bd45539a4a5322',1,'shipunit.e_squared'],['../namespacehepunit.html#acd336a10b0bd5eb9bb2286a9534c3a49',1,'hepunit.e_squared']]],
@@ -22,7 +22,7 @@ var searchData=
   ['emulsiony_19',['EmulsionY',['../classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457',1,'Target']]],
   ['end_20',['end',['../classFixedTargetGenerator.html#a59ae4f1dfb442d58254275e5a83692ce',1,'FixedTargetGenerator::end'],['../classPythia8Generator.html#accaba94561242bc1e06134f27a30bb0d',1,'Pythia8Generator::end']]],
   ['endofhadronabsorber_21',['endOfHadronAbsorber',['../namespacemergeMbias.html#ac1ba9c5e18f9a604f0c372e588cc6a67',1,'mergeMbias']]],
-  ['endz_22',['endz',['../classPythia8Generator.html#a3f7b61dbce42df88afc6859845bc0540',1,'Pythia8Generator::endZ'],['../classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc',1,'GenieGenerator::endZ'],['../classFixedTargetGenerator.html#a6e276b38f39dac3a7b26dd4eac990c95',1,'FixedTargetGenerator::endZ'],['../classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7',1,'MuDISGenerator::endZ']]],
+  ['endz_22',['endz',['../classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7',1,'MuDISGenerator::endZ'],['../classFixedTargetGenerator.html#a6e276b38f39dac3a7b26dd4eac990c95',1,'FixedTargetGenerator::endZ'],['../classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc',1,'GenieGenerator::endZ'],['../classPythia8Generator.html#a3f7b61dbce42df88afc6859845bc0540',1,'Pythia8Generator::endZ']]],
   ['energycut_23',['EnergyCut',['../namespacerun__simScript.html#a25a12c56a31e27776669952116892e5d',1,'run_simScript']]],
   ['eospath_24',['eospath',['../namespacemergeMbias.html#a1243a109cb5cb7d4aed6fb2d7117cbd9',1,'mergeMbias']]],
   ['eplus_25',['eplus',['../namespacehepunit.html#a2059067430f3e0328dedb2dff0feaf60',1,'hepunit.eplus'],['../namespaceshipunit.html#ace91ca0177771d2bd46de7eecea1a684',1,'shipunit.eplus']]],
@@ -34,7 +34,7 @@ var searchData=
   ['event_5fdata_31',['event_data',['../namespacemake__nTuple__Tr.html#acde6f1b368186db401b2b7ca1089fd37',1,'make_nTuple_Tr.event_data'],['../namespacemake__nTuple__SBT.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0',1,'make_nTuple_SBT.event_data']]],
   ['eventheader_32',['eventHeader',['../classshipDigiReco_1_1ShipDigiReco.html#a8e5e31ba378ecc05524cf6e44bfd57e3',1,'shipDigiReco::ShipDigiReco']]],
   ['events_5f_33',['events_',['../namespacemake__nTuple__Tr.html#a5ddcb3b840ba7d740bc64e9c5f2fa7f4',1,'make_nTuple_Tr']]],
-  ['evscene_34',['evscene',['../classeventDisplay_1_1DrawTracks.html#ad1a49ac6da4d70269fec368a1c5b54a6',1,'eventDisplay.DrawTracks.evscene'],['../classeventDisplay_1_1DrawVetoDigi.html#a8559a32d4b5a1c9a4f0792a1f40dba39',1,'eventDisplay.DrawVetoDigi.evscene']]],
+  ['evscene_34',['evscene',['../classeventDisplay_1_1DrawVetoDigi.html#a8559a32d4b5a1c9a4f0792a1f40dba39',1,'eventDisplay.DrawVetoDigi.evscene'],['../classeventDisplay_1_1DrawTracks.html#ad1a49ac6da4d70269fec368a1c5b54a6',1,'eventDisplay.DrawTracks.evscene']]],
   ['evtcalcgen_35',['EvtCalcGen',['../namespacerun__simScript.html#a985c7f9cdec3fe87f40f8e765625a822',1,'run_simScript']]],
   ['evtgenn_36',['evtgenN',['../classFixedTargetGenerator.html#ac91569df5a1c7106332667b2cc03c943',1,'FixedTargetGenerator']]],
   ['evtgenp_37',['evtgenP',['../classFixedTargetGenerator.html#aeec5ade00ef00598d968b593a9c5dec5',1,'FixedTargetGenerator']]],

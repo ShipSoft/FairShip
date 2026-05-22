@@ -456,7 +456,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>  TVector3 end(<a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[0], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[1], <a class="code hl_variable" href="classsplitcalCluster.html#a630b0e91cbd94e715426299b61af956c">_end</a>[2]);</div>
 <div class="line"><span class="lineno">   84</span>  TVector3 direction = end - start;</div>
 <div class="line"><span class="lineno">   85</span>  <span class="keywordtype">double</span> eta = direction.Eta();</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = direction.Phi();</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordtype">double</span> phi = direction.Phi();</div>
 <div class="line"><span class="lineno">   87</span>  <a class="code hl_function" href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">SetEtaPhiE</a>(eta, phi, energy);</div>
 <div class="line"><span class="lineno">   88</span>}</div>
 <div class="ttc" id="aclasssplitcalCluster_html_a16365bbe7ce6158b6cef17c7d760b4cf"><div class="ttname"><a href="classsplitcalCluster.html#a16365bbe7ce6158b6cef17c7d760b4cf">splitcalCluster::SetStartPoint</a></div><div class="ttdeci">void SetStartPoint(const double &amp;x, const double &amp;y, const double &amp;z)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00036">splitcalCluster.h:36</a></div></div>
@@ -465,7 +465,6 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclasssplitcalCluster_html_a8fc5b99da7985dd0c670c55409706170"><div class="ttname"><a href="classsplitcalCluster.html#a8fc5b99da7985dd0c670c55409706170">splitcalCluster::SetEtaPhiE</a></div><div class="ttdeci">void SetEtaPhiE(double &amp;eta, double &amp;phi, double &amp;e)</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00027">splitcalCluster.h:27</a></div></div>
 <div class="ttc" id="aclasssplitcalCluster_html_ac338c112622c66ee0c755d16ebeae63f"><div class="ttname"><a href="classsplitcalCluster.html#ac338c112622c66ee0c755d16ebeae63f">splitcalCluster::_start</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; _start</div><div class="ttdef"><b>Definition</b> <a href="splitcalCluster_8h_source.html#l00078">splitcalCluster.h:78</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00097">ShipAna.py:97</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00098">makeMuonDIS.py:98</a></div></div>
 <div class="ttc" id="anamespaceproton__bremsstrahlung_html_a346de5637f6811443ef313e5b10ef9bc"><div class="ttname"><a href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">proton_bremsstrahlung.energy</a></div><div class="ttdeci">energy(p, m)</div><div class="ttdef"><b>Definition</b> <a href="proton__bremsstrahlung_8py_source.html#l00038">proton_bremsstrahlung.py:38</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1088,7 +1087,7 @@ Private Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="splitcalCluster_8h_source.html#l00027">27</a> of file <a class="el" href="splitcalCluster_8h_source.html">splitcalCluster.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>                                                       {</div>
 <div class="line"><span class="lineno">   28</span>    <a class="code hl_variable" href="classsplitcalCluster.html#a992707d157643b796a9ed78c8abb2fd4">_eta</a> = eta;</div>
-<div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>;</div>
+<div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> = phi;</div>
 <div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classsplitcalCluster.html#ae35a37e3f94112eb200dc7c36ccad70f">_energy</a> = e;</div>
 <div class="line"><span class="lineno">   31</span>  }</div>
 </div><!-- fragment -->
@@ -1178,7 +1177,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="splitcalCluster_8h_source.html#l00033">33</a> of file <a class="el" href="splitcalCluster_8h_source.html">splitcalCluster.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <a class="code hl_variable" href="classsplitcalCluster.html#a093f86a61b9053b85a4f3559bcadd1c4">_phi</a> = phi; }</div>
 </div><!-- fragment -->
 </div>
 </div>

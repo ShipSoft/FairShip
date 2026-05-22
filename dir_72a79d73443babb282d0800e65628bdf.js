@@ -7,7 +7,6 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "extractMuonsAndUpdateWeight.py", "extractMuonsAndUpdateWeight_8py.html", "extractMuonsAndUpdateWeight_8py" ],
     [ "extractNeutrinosAndUpdateWeight.py", "extractNeutrinosAndUpdateWeight_8py.html", "extractNeutrinosAndUpdateWeight_8py" ],
     [ "LinkDef.h", "muonShieldOptimization_2LinkDef_8h.html", null ],
-    [ "makeMuonDIS.py", "muonShieldOptimization_2makeMuonDIS_8py.html", "muonShieldOptimization_2makeMuonDIS_8py" ],
     [ "makeMuonEM.py", "makeMuonEM_8py.html", "makeMuonEM_8py" ],
     [ "muDIS_mergeFiles.py", "muDIS__mergeFiles_8py.html", "muDIS__mergeFiles_8py" ],
     [ "pyFairModule.cxx", "pyFairModule_8cxx.html", "pyFairModule_8cxx" ],

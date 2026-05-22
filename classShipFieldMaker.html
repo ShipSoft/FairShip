@@ -1256,7 +1256,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  358</span>    <span class="keyword">const</span> TString mapFileName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  359</span> </div>
 <div class="line"><span class="lineno">  360</span>    Double_t x0(0.0), y0(0.0), z0(0.0);</div>
-<div class="line"><span class="lineno">  361</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0);</div>
+<div class="line"><span class="lineno">  361</span>    Double_t phi(0.0), theta(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  362</span> </div>
 <div class="line"><span class="lineno">  363</span>    <span class="keywordflow">if</span> (nWords &gt; 5) {</div>
 <div class="line"><span class="lineno">  364</span>      x0 = std::atof(inputLine[3].c_str());</div>
@@ -1265,8 +1265,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  367</span>    }</div>
 <div class="line"><span class="lineno">  368</span> </div>
 <div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
-<div class="line"><span class="lineno">  370</span>      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  371</span>      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = std::atof(inputLine[7].c_str());</div>
+<div class="line"><span class="lineno">  370</span>      phi = std::atof(inputLine[6].c_str());</div>
+<div class="line"><span class="lineno">  371</span>      theta = std::atof(inputLine[7].c_str());</div>
 <div class="line"><span class="lineno">  372</span>      psi = std::atof(inputLine[8].c_str());</div>
 <div class="line"><span class="lineno">  373</span>    }</div>
 <div class="line"><span class="lineno">  374</span> </div>
@@ -1284,8 +1284,6 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  386</span>  }</div>
 <div class="line"><span class="lineno">  387</span>}</div>
 <div class="ttc" id="aclassShipFieldMaker_html_a0a845f73b3c26e2b5c660bcce4dbef4e"><div class="ttname"><a href="classShipFieldMaker.html#a0a845f73b3c26e2b5c660bcce4dbef4e">ShipFieldMaker::defineFieldMap</a></div><div class="ttdeci">void defineFieldMap(const TString &amp;name, const TString &amp;mapFileName, const TVector3 &amp;localCentre=TVector3(0.0, 0.0, 0.0), const TVector3 &amp;localAngles=TVector3(0.0, 0.0, 0.0), Bool_t useSymmetry=kFALSE)</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00389">ShipFieldMaker.cxx:389</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a46fd07d81c633221657121b3f0589fb3"><div class="ttname"><a href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">makeMuonDIS.phi</a></div><div class="ttdeci">phi</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00098">makeMuonDIS.py:98</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a6deb68dc080ef810c34fcffdd94b6a57"><div class="ttname"><a href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">makeMuonDIS.theta</a></div><div class="ttdeci">theta</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00097">makeMuonDIS.py:97</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1373,8 +1371,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  419</span>    Float_t y0 = localCentre.Y();</div>
 <div class="line"><span class="lineno">  420</span>    Float_t z0 = localCentre.Z();</div>
 <div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>    Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = localAngles.X();</div>
-<div class="line"><span class="lineno">  423</span>    Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = localAngles.Y();</div>
+<div class="line"><span class="lineno">  422</span>    Float_t phi = localAngles.X();</div>
+<div class="line"><span class="lineno">  423</span>    Float_t theta = localAngles.Y();</div>
 <div class="line"><span class="lineno">  424</span>    Float_t psi = localAngles.Z();</div>
 <div class="line"><span class="lineno">  425</span> </div>
 <div class="line"><span class="lineno">  426</span>    Float_t scale(1.0);</div>
@@ -1444,11 +1442,11 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  456</span>    Double_t y0 = std::atof(inputLine[4].c_str());</div>
 <div class="line"><span class="lineno">  457</span>    Double_t z0 = std::atof(inputLine[5].c_str());</div>
 <div class="line"><span class="lineno">  458</span> </div>
-<div class="line"><span class="lineno">  459</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0);</div>
+<div class="line"><span class="lineno">  459</span>    Double_t phi(0.0), theta(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  460</span> </div>
 <div class="line"><span class="lineno">  461</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
-<div class="line"><span class="lineno">  462</span>      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  463</span>      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = std::atof(inputLine[7].c_str());</div>
+<div class="line"><span class="lineno">  462</span>      phi = std::atof(inputLine[6].c_str());</div>
+<div class="line"><span class="lineno">  463</span>      theta = std::atof(inputLine[7].c_str());</div>
 <div class="line"><span class="lineno">  464</span>      psi = std::atof(inputLine[8].c_str());</div>
 <div class="line"><span class="lineno">  465</span>    }</div>
 <div class="line"><span class="lineno">  466</span> </div>
@@ -1534,8 +1532,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  497</span>      Float_t y0 = translation.Y();</div>
 <div class="line"><span class="lineno">  498</span>      Float_t z0 = translation.Z();</div>
 <div class="line"><span class="lineno">  499</span> </div>
-<div class="line"><span class="lineno">  500</span>      Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = eulerAngles.X();</div>
-<div class="line"><span class="lineno">  501</span>      Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = eulerAngles.Y();</div>
+<div class="line"><span class="lineno">  500</span>      Float_t phi = eulerAngles.X();</div>
+<div class="line"><span class="lineno">  501</span>      Float_t theta = eulerAngles.Y();</div>
 <div class="line"><span class="lineno">  502</span>      Float_t psi = eulerAngles.Z();</div>
 <div class="line"><span class="lineno">  503</span> </div>
 <div class="line"><span class="lineno">  504</span>      Float_t scale(1.0);</div>

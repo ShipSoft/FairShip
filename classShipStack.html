@@ -894,19 +894,19 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  166</span> </div>
 <div class="line"><span class="lineno">  167</span>  <span class="comment">// Return the iPrim-th TParticle from the fParticle array. This should be</span></div>
 <div class="line"><span class="lineno">  168</span>  <span class="comment">// a primary.</span></div>
-<div class="line"><span class="lineno">  169</span>  TParticle* <a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a> = <span class="keyword">dynamic_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(iPrim));</div>
+<div class="line"><span class="lineno">  169</span>  TParticle* <a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a> = <span class="keyword">dynamic_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(iPrim));</div>
 <div class="line"><span class="lineno">  170</span>  <span class="comment">/* do not understand the logic behind this !!! TR July 2014</span></div>
 <div class="line"><span class="lineno">  171</span><span class="comment">    if ( ! (part-&gt;GetMother(0) &lt; 0) ) {</span></div>
 <div class="line"><span class="lineno">  172</span><span class="comment">    fLogger-&gt;Fatal(MESSAGE_ORIGIN, &quot;ShipStack:: Not a primary track! %i</span></div>
 <div class="line"><span class="lineno">  173</span><span class="comment">  &quot;,iPrim); Fatal(&quot;ShipStack::PopPrimaryForTracking&quot;, &quot;Not a primary track&quot;);</span></div>
 <div class="line"><span class="lineno">  174</span><span class="comment">  }*/</span></div>
-<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;TestBit(<a class="code hl_enumvalue" href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>))</div>
+<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;TestBit(<a class="code hl_enumvalue" href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>))</div>
 <div class="line"><span class="lineno">  176</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  177</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>;</div>
+<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>;</div>
 <div class="line"><span class="lineno">  179</span>}</div>
 <div class="ttc" id="aShipStack_8h_html_a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb"><div class="ttname"><a href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a></div><div class="ttdeci">@ kDoneBit</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:46</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_af53ab65dcde57682f1b0355504e714c7"><div class="ttname"><a href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">makeMuonDIS.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00121">makeMuonDIS.py:121</a></div></div>
+<div class="ttc" id="anamespacemakeMuonEM_html_ade078eb3a164b74694c2f6d5e568565e"><div class="ttname"><a href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">makeMuonEM.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00058">makeMuonEM.py:58</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -485,11 +485,11 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ShipMCTrack_8cxx_source.html#l00079">79</a> of file <a class="el" href="ShipMCTrack_8cxx_source.html">ShipMCTrack.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   80</span>    : TObject(),</div>
-<div class="line"><span class="lineno">   81</span>      <a class="code hl_variable" href="classShipMCTrack.html#a42a2dc6cfca7d9f1ca600d77e6aa8bb6">fPdgCode</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;GetPdgCode()),</div>
-<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;GetMother(0)),</div>
-<div class="line"><span class="lineno">   83</span>      <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Px()),</div>
-<div class="line"><span class="lineno">   84</span>      <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Py()),</div>
-<div class="line"><span class="lineno">   85</span>      <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Pz()),</div>
+<div class="line"><span class="lineno">   81</span>      <a class="code hl_variable" href="classShipMCTrack.html#a42a2dc6cfca7d9f1ca600d77e6aa8bb6">fPdgCode</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;GetPdgCode()),</div>
+<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;GetMother(0)),</div>
+<div class="line"><span class="lineno">   83</span>      <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Px()),</div>
+<div class="line"><span class="lineno">   84</span>      <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Py()),</div>
+<div class="line"><span class="lineno">   85</span>      <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Pz()),</div>
 <div class="line"><span class="lineno">   86</span>      <a class="code hl_variable" href="classShipMCTrack.html#aaaf9a08283bf2954a3c4970d14026689">fM</a>([](<span class="keyword">const</span> TParticle* p) {</div>
 <div class="line"><span class="lineno">   87</span>        Double_t <a class="code hl_variable" href="namespacehepunit.html#af26e93903ffa36a310c86d6e54d36c26">m2</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Energy() * <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;Energy() - <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;P() * <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;P();</div>
 <div class="line"><span class="lineno">   88</span>        <span class="keywordflow">if</span> (m2 &gt;= 0.) <span class="keywordflow">return</span> TMath::Sqrt(m2);</div>
@@ -499,19 +499,19 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>        <span class="comment">// Genuinely spacelike (virtual photon): store negative mass (ROOT</span></div>
 <div class="line"><span class="lineno">   93</span>        <span class="comment">// convention)</span></div>
 <div class="line"><span class="lineno">   94</span>        <span class="keywordflow">return</span> -TMath::Sqrt(-m2);</div>
-<div class="line"><span class="lineno">   95</span>      }(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>)),</div>
-<div class="line"><span class="lineno">   96</span>      <a class="code hl_variable" href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">fStartX</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Vx()),</div>
-<div class="line"><span class="lineno">   97</span>      <a class="code hl_variable" href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">fStartY</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Vy()),</div>
-<div class="line"><span class="lineno">   98</span>      <a class="code hl_variable" href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">fStartZ</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;Vz()),</div>
-<div class="line"><span class="lineno">   99</span>      <a class="code hl_variable" href="classShipMCTrack.html#ac389707c308b9b548b247f8d7b9c4b6f">fStartT</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;T() * 1e09),</div>
-<div class="line"><span class="lineno">  100</span>      <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;GetWeight()),</div>
-<div class="line"><span class="lineno">  101</span>      <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>(<a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;GetUniqueID()),</div>
+<div class="line"><span class="lineno">   95</span>      }(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>)),</div>
+<div class="line"><span class="lineno">   96</span>      <a class="code hl_variable" href="classShipMCTrack.html#a8e9a775a443f48db3e47ab5dbb96eaab">fStartX</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Vx()),</div>
+<div class="line"><span class="lineno">   97</span>      <a class="code hl_variable" href="classShipMCTrack.html#aab7748567142d33360a6eab4238513ac">fStartY</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Vy()),</div>
+<div class="line"><span class="lineno">   98</span>      <a class="code hl_variable" href="classShipMCTrack.html#aa9a28d7cd9d9572ee8379e6a8d173176">fStartZ</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;Vz()),</div>
+<div class="line"><span class="lineno">   99</span>      <a class="code hl_variable" href="classShipMCTrack.html#ac389707c308b9b548b247f8d7b9c4b6f">fStartT</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;T() * 1e09),</div>
+<div class="line"><span class="lineno">  100</span>      <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;GetWeight()),</div>
+<div class="line"><span class="lineno">  101</span>      <a class="code hl_variable" href="classShipMCTrack.html#a114a5d4e29259c565c9aedc205f5a65e">fProcID</a>(<a class="code hl_variable" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">part</a>-&gt;GetUniqueID()),</div>
 <div class="line"><span class="lineno">  102</span>      <a class="code hl_variable" href="classShipMCTrack.html#a34a60e5b3993f16432183b67bf9d0dfa">fNPoints</a>(0),</div>
 <div class="line"><span class="lineno">  103</span>      <a class="code hl_variable" href="classShipMCTrack.html#a24af2e872912d8eb9e257500ca6c4950">fEventID</a>(0),</div>
 <div class="line"><span class="lineno">  104</span>      <a class="code hl_variable" href="classShipMCTrack.html#a8e7ecc840188c616acd9ac6da13904b3">fTrackID</a>(0) {}</div>
 <div class="ttc" id="anamespacehepunit_html_af26e93903ffa36a310c86d6e54d36c26"><div class="ttname"><a href="namespacehepunit.html#af26e93903ffa36a310c86d6e54d36c26">hepunit.m2</a></div><div class="ttdeci">float m2</div><div class="ttdef"><b>Definition</b> <a href="hepunit_8py_source.html#l00058">hepunit.py:58</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00076">makeDecay.py:76</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_af53ab65dcde57682f1b0355504e714c7"><div class="ttname"><a href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">makeMuonDIS.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00121">makeMuonDIS.py:121</a></div></div>
+<div class="ttc" id="anamespacemakeMuonEM_html_ade078eb3a164b74694c2f6d5e568565e"><div class="ttname"><a href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">makeMuonEM.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00058">makeMuonEM.py:58</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1237,8 +1237,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00073">73</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> * <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a31069c861ee6564962a537e94c422254"><div class="ttname"><a href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">makeMuonDIS.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00093">makeMuonDIS.py:93</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> * <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>; }</div>
+<div class="ttc" id="anamespacemakeMuonEM_html_a04298ed1d5fc7dbec7e764537bfec5d5"><div class="ttname"><a href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">makeMuonEM.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="makeMuonEM_8py_source.html#l00046">makeMuonEM.py:46</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1484,7 +1484,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ShipMCTrack_8h_source.html#l00074">74</a> of file <a class="el" href="ShipMCTrack_8h_source.html">ShipMCTrack.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{ <a class="code hl_variable" href="classShipMCTrack.html#a97300077414765ee8233a65cf5a8ab47">fW</a> = <a class="code hl_variable" href="namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5">w</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

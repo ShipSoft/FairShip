@@ -6,7 +6,7 @@ var searchData=
   ['makecascade_2epy_3',['makeCascade.py',['../makeCascade_8py.html',1,'']]],
   ['makedecay_2epy_4',['makeDecay.py',['../makeDecay_8py.html',1,'']]],
   ['makegenieevents_2epy_5',['makeGenieEvents.py',['../makeGenieEvents_8py.html',1,'']]],
-  ['makemuondis_2epy_6',['makemuondis.py',['../muonDIS_2makeMuonDIS_8py.html',1,'(Global Namespace)'],['../muonShieldOptimization_2makeMuonDIS_8py.html',1,'(Global Namespace)']]],
+  ['makemuondis_2epy_6',['makeMuonDIS.py',['../makeMuonDIS_8py.html',1,'']]],
   ['makemuonem_2epy_7',['makeMuonEM.py',['../makeMuonEM_8py.html',1,'']]],
   ['meanmaterialbudget_2ecxx_8',['MeanMaterialBudget.cxx',['../MeanMaterialBudget_8cxx.html',1,'']]],
   ['meanmaterialbudget_2eh_9',['MeanMaterialBudget.h',['../MeanMaterialBudget_8h.html',1,'']]],
