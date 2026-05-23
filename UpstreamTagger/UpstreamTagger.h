@@ -48,7 +48,7 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
    *               kFALSE for inactive detectors
    */
   UpstreamTagger(const char* Name, Bool_t Active);
-
+  UpstreamTagger(std::string medium);
   /** default constructor */
   UpstreamTagger();
 
@@ -59,31 +59,50 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
 
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
-  void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
-    xbox_fulldet = x;
-    ybox_fulldet = y;
-    zbox_fulldet = z;
-  }
 
+  void SetzPositions(Double_t z1);
+  void SetApertureArea(Double_t width, Double_t height, Double_t length);
+  void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness);
+  void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset);
+  void SetDeltazLayer(Double_t delta_z_layer);
+  void SetStereoAngle(Double_t stereo_angle);
+  void SetWireThickness(Double_t wire_thickness);
+  void SetFrameMaterial(TString frame_material);
+  void SetDeltazView(Double_t delta_z_view);
+  static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
+  static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
   /**  Create the detector geometry */
+
   void ConstructGeometry() override;
 
   Double_t module[11][3];  // x,y,z centre positions for each module
-  // TODO Avoid 1-indexed array!
+                           // TODO Avoid 1-indexed array!
 
   /** Detector parameters.*/
 
+  Double_t f_aperture_width;
+  Double_t f_aperture_height;
+  Double_t f_station_length;
+  Double_t f_straw_pitch;
+  Double_t f_view_angle;
+  Double_t f_offset_layer;
+  Double_t f_inner_straw_diameter;
+  Double_t f_outer_straw_diameter;
+  Double_t f_wire_thickness;
+  Double_t f_T1_z;
+  Double_t f_delta_z_view;
+  Double_t f_delta_z_layer;
+  TString f_frame_material;
+  std::string fMedium;
+  /** Detector parameters.*/
+
   Double_t det_zPos;  //!  z-position of detector (set via SetZposition)
-  // Detector box dimensions (set via SetBoxDimensions, defaults provided below)
-  Double_t xbox_fulldet = 4.4 * m;  //!  X dimension (default: 4.4 m)
-  Double_t ybox_fulldet = 6.4 * m;  //!  Y dimension (default: 6.4 m)
-  Double_t zbox_fulldet =
-      16.0 * cm;  //!  Z dimension/thickness (default: 16 cm)
 
  private:
-  TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
-  TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
+
+  TGeoVolume* UpstreamTagger_plastic;
+  TGeoVolume* UpstreamTagger_fulldet;
 
   UpstreamTagger(const UpstreamTagger&) = delete;
   UpstreamTagger& operator=(const UpstreamTagger&) = delete;

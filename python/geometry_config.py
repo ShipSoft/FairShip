@@ -321,6 +321,8 @@ def create_config(
         c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
+    c.UBTStation1 = AttrDict(z=c.decayVolume.z0 - 50 * u.cm)
+
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
@@ -421,8 +423,13 @@ def create_config(
     c.UpstreamTagger = AttrDict()
     c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
     c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
-    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    # <<<<<<< HEAD
+    c.UpstreamTagger.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
     c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    # =======
+    #    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    #    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    # >>>>>>> mymaster
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
 

@@ -52,10 +52,11 @@ class UpstreamTaggerHit : public SHiP::DetectorHit {
   void Print() const;
 
  private:
-  Double_t fX;     ///< Smeared x position (cm)
-  Double_t fY;     ///< Smeared y position (cm)
-  Double_t fZ;     ///< Smeared z position (cm)
-  Double_t fTime;  ///< Smeared time (ns)
+  Double_t fX;      ///< Smeared x position (cm)
+  Double_t fY;      ///< Smeared y position (cm)
+  Double_t fZ;      ///< Smeared z position (cm)
+  Double_t fTime;   ///< Smeared time (ns)
+  Int_t fSubDetID;  ///< Which layer of the UBT is this
 
   ClassDefOverride(UpstreamTaggerHit, 2);
 };
