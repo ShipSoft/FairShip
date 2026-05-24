@@ -34,6 +34,7 @@ var study__muMSC_8py =
     [ "sensPlane", "study__muMSC_8py.html#a4edc64763c72d83f106ebe374b13ad87", null ],
     [ "setup", "study__muMSC_8py.html#a77cbcf86b14e327d2a99157a38e82781", null ],
     [ "ship_geo", "study__muMSC_8py.html#af0df7e72c2ff14a27f8bc691a412c5d2", null ],
+    [ "sink", "study__muMSC_8py.html#a535f7fbb11079adb194c20c44dea6507", null ],
     [ "storeOnlyMuons", "study__muMSC_8py.html#a3f170ac334e8290592953deb3f124812", null ],
     [ "sTree", "study__muMSC_8py.html#ab875895aaac12abebdb76811de0cbbf6", null ],
     [ "target", "study__muMSC_8py.html#a2af1a2254649d30dec2bb025fed9360e", null ],

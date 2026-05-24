@@ -36,6 +36,7 @@ var namespacestudy__thinTarget =
     [ "sensPlane", "namespacestudy__thinTarget.html#a06c433ab3997c7a35450cc7cc95ffa3f", null ],
     [ "setup", "namespacestudy__thinTarget.html#a6a7080d5efc0216311756b1d79e043c5", null ],
     [ "ship_geo", "namespacestudy__thinTarget.html#a033878c5a0d6d8cdded748c6d3b40c96", null ],
+    [ "sink", "namespacestudy__thinTarget.html#afc9ee3c67a762b80aa1948e39f7c5c8a", null ],
     [ "sTree", "namespacestudy__thinTarget.html#ae8e129f6411b6c394a018646bebe96f1", null ],
     [ "target", "namespacestudy__thinTarget.html#addda8330794870435600f0683fa69589", null ],
     [ "tc", "namespacestudy__thinTarget.html#a6251d6d1043367f9b14e723bf107a329", null ],

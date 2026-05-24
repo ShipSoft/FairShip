@@ -32,6 +32,7 @@ var namespacestudy__GammaConv =
     [ "sensPlane", "namespacestudy__GammaConv.html#a3e1144f0a516f56c4b359927d9e3fe9c", null ],
     [ "setup", "namespacestudy__GammaConv.html#a80f95a5eefe6bb23071734370e2c5231", null ],
     [ "ship_geo", "namespacestudy__GammaConv.html#a10d1123a69a99bcd399ae95a19c5b21f", null ],
+    [ "sink", "namespacestudy__GammaConv.html#ad069da84b41a0c9816a1840c4440477f", null ],
     [ "sTree", "namespacestudy__GammaConv.html#aab74fbaeb036251f4214e8418b60f7ea", null ],
     [ "target", "namespacestudy__GammaConv.html#a815b73364618f833b7caf3a1dc44ea68", null ],
     [ "theSeed", "namespacestudy__GammaConv.html#a33f4f04fbb1ded78516a43928bc2e25d", null ],

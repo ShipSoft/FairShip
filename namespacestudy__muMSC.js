@@ -34,6 +34,7 @@ var namespacestudy__muMSC =
     [ "sensPlane", "namespacestudy__muMSC.html#a4edc64763c72d83f106ebe374b13ad87", null ],
     [ "setup", "namespacestudy__muMSC.html#a77cbcf86b14e327d2a99157a38e82781", null ],
     [ "ship_geo", "namespacestudy__muMSC.html#af0df7e72c2ff14a27f8bc691a412c5d2", null ],
+    [ "sink", "namespacestudy__muMSC.html#a535f7fbb11079adb194c20c44dea6507", null ],
     [ "storeOnlyMuons", "namespacestudy__muMSC.html#a3f170ac334e8290592953deb3f124812", null ],
     [ "sTree", "namespacestudy__muMSC.html#ab875895aaac12abebdb76811de0cbbf6", null ],
     [ "target", "namespacestudy__muMSC.html#a2af1a2254649d30dec2bb025fed9360e", null ],

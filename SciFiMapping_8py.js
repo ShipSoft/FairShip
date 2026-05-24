@@ -17,6 +17,7 @@ var SciFiMapping_8py =
     [ "run", "SciFiMapping_8py.html#acea6f06d4bf32a21bafbb9ebf00f2d51", null ],
     [ "sGeo", "SciFiMapping_8py.html#afd115a916bc26005c27a865d524cd352", null ],
     [ "ship_geo", "SciFiMapping_8py.html#a952a23c26a5134abc05d3b3eb5925649", null ],
+    [ "sink", "SciFiMapping_8py.html#a95d99f10990a300f568d41cad1c95af9", null ],
     [ "test_channel", "SciFiMapping_8py.html#a7794d3077a21ad41f4b616b3331cd53c", null ],
     [ "top", "SciFiMapping_8py.html#ae7b45f62289f6f7a88b886ce3111eaea", null ],
     [ "type", "SciFiMapping_8py.html#a18b78e92f4a74b5f4e586e08ec6252dc", null ]

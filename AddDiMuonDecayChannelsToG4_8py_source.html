@@ -128,8 +128,10 @@ $(document).ready(function(){initNavTree('AddDiMuonDecayChannelsToG4_8py_source.
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                    dl.append(ROOT.G4String(<span class="stringliteral">&quot;&quot;</span>))</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            mode = ROOT.G4PhaseSpaceDecayChannel(particleG4.GetParticleName(), bR, mul, dl[0], dl[1], dl[2], dl[3])</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            decayTable.Insert(mode)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        particleG4.SetDecayTable(decayTable)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        particleG4.DumpTable()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            ROOT.SetOwnership(mode, <span class="keyword">False</span>)  <span class="comment"># G4DecayTable takes ownership</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        particleG4.SetDecayTable(decayTable)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        ROOT.SetOwnership(decayTable, <span class="keyword">False</span>)  <span class="comment"># G4ParticleDefinition takes ownership</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        particleG4.DumpTable()</div>
 </div>
 <div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a3fdf0d174d3eccaaa0e4daa18e8c8119"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">Initialize(p8)</div><div class="ttdef"><b>Definition</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00011">AddDiMuonDecayChannelsToG4.py:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

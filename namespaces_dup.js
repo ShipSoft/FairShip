@@ -523,7 +523,8 @@ var namespaces_dup =
       [ "modules", "namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372", null ],
       [ "run", "namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c", null ],
       [ "sGeo", "namespaceinspectGeant4Geo.html#ad3a4209be563bb7349a917104d413925", null ],
-      [ "ShipGeo", "namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2", null ]
+      [ "ShipGeo", "namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2", null ],
+      [ "sink", "namespaceinspectGeant4Geo.html#aa418b4d0b9c4f4cb2f6d3b548d2b8252", null ]
     ] ],
     [ "make_nTuple_SBT", "namespacemake__nTuple__SBT.html", [
       [ "dump", "namespacemake__nTuple__SBT.html#aed56147df0f74251810d381fcf68e266", null ],
@@ -1061,6 +1062,7 @@ var namespaces_dup =
       [ "ship_geo", "namespacerun__fixedTarget.html#a3e3246d1e1694b94a0e038535d2baed0", null ],
       [ "ship_geo_kwargs", "namespacerun__fixedTarget.html#a6da492a6b2ce007f57e5a1b618fb40e2", null ],
       [ "simEngine", "namespacerun__fixedTarget.html#a563b28a8253682d6cb4581954d84da5b", null ],
+      [ "sink", "namespacerun__fixedTarget.html#a60ef0017045966c045e13d04288ad621", null ],
       [ "str", "namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305", null ],
       [ "sTree", "namespacerun__fixedTarget.html#a121ee77eefea42758a993374b2aa16ad", null ],
       [ "t", "namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f", null ],
@@ -1382,6 +1384,7 @@ var namespaces_dup =
       [ "run", "namespaceShipAna.html#a164c6bbaf1b338b10d8f411701e4acfb", null ],
       [ "sGeo", "namespaceShipAna.html#a7c6176c9bd251d2e60a14b3cfd89b883", null ],
       [ "ShipGeo", "namespaceShipAna.html#a67771fc1158b28ea30e895d26a00dfdd", null ],
+      [ "sink", "namespaceShipAna.html#adf732d3a7d976350db84d3f570d68830", null ],
       [ "sTree", "namespaceShipAna.html#aa4c23cfad61e9ccae6f79cbe3a4952e4", null ],
       [ "tmp", "namespaceShipAna.html#ab3d6f30f52033bf7b1555d56d728b925", null ],
       [ "type", "namespaceShipAna.html#a26546101b50872dc842fdba6bd3ca6f8", null ],
@@ -1465,8 +1468,10 @@ var namespaces_dup =
       [ "required", "namespaceShipReco.html#a32e56e9a25dc0bc56652844ee7f9ee9b", null ],
       [ "rtdb", "namespaceShipReco.html#a44987cb8249b92984200ef8843b0fed1", null ],
       [ "run", "namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1", null ],
+      [ "sGeo", "namespaceShipReco.html#acfee5ea8a044017a72eaf414bf4eb99c", null ],
       [ "SHiP", "namespaceShipReco.html#af29bc13f95d9544b1f56ece16b06a4c6", null ],
       [ "ShipGeo", "namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb", null ],
+      [ "sink", "namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81", null ],
       [ "tmp", "namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9", null ],
       [ "type", "namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a", null ],
       [ "vertexing", "namespaceShipReco.html#a49d6219219d01a1d3260df48c2a40c09", null ],

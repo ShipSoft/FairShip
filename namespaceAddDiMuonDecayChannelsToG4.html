@@ -138,8 +138,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   28</span>                    dl.append(ROOT.G4String(<span class="stringliteral">&quot;&quot;</span>))</div>
 <div class="line"><span class="lineno">   29</span>            mode = ROOT.G4PhaseSpaceDecayChannel(particleG4.GetParticleName(), bR, mul, dl[0], dl[1], dl[2], dl[3])</div>
 <div class="line"><span class="lineno">   30</span>            decayTable.Insert(mode)</div>
-<div class="line"><span class="lineno">   31</span>        particleG4.SetDecayTable(decayTable)</div>
-<div class="line"><span class="lineno">   32</span>        particleG4.DumpTable()</div>
+<div class="line"><span class="lineno">   31</span>            ROOT.SetOwnership(mode, <span class="keyword">False</span>)  <span class="comment"># G4DecayTable takes ownership</span></div>
+<div class="line"><span class="lineno">   32</span>        particleG4.SetDecayTable(decayTable)</div>
+<div class="line"><span class="lineno">   33</span>        ROOT.SetOwnership(decayTable, <span class="keyword">False</span>)  <span class="comment"># G4ParticleDefinition takes ownership</span></div>
+<div class="line"><span class="lineno">   34</span>        particleG4.DumpTable()</div>
 </div><!-- fragment -->
 </div>
 </div>

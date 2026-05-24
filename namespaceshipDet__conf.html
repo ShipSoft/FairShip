@@ -344,16 +344,14 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  462</span>    <span class="comment"># exclusionList = [&quot;strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,\</span></div>
 <div class="line"><span class="lineno">  463</span>    <span class="comment">#                 &quot;SiliconTarget&quot;,&quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
 <div class="line"><span class="lineno">  464</span> </div>
-<div class="line"><span class="lineno">  465</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
-<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
-<div class="line"><span class="lineno">  467</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  468</span>        run.AddModule(x)</div>
-<div class="line"><span class="lineno">  469</span>        ROOT.SetOwnership(x, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
-<div class="line"><span class="lineno">  470</span>    <span class="comment"># return list of detector elements</span></div>
-<div class="line"><span class="lineno">  471</span>    detElements = {}</div>
-<div class="line"><span class="lineno">  472</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules():</div>
-<div class="line"><span class="lineno">  473</span>        detElements[x.GetName()] = x</div>
-<div class="line"><span class="lineno">  474</span>    <span class="keywordflow">return</span> detElements</div>
+<div class="line"><span class="lineno">  465</span>    detElements = {}</div>
+<div class="line"><span class="lineno">  466</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
+<div class="line"><span class="lineno">  467</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
+<div class="line"><span class="lineno">  468</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  469</span>        run.AddModule(x)</div>
+<div class="line"><span class="lineno">  470</span>        ROOT.SetOwnership(x, <span class="keyword">False</span>)  <span class="comment"># C++ FairRunSim takes ownership</span></div>
+<div class="line"><span class="lineno">  471</span>        detElements[x.GetName()] = x</div>
+<div class="line"><span class="lineno">  472</span>    <span class="keywordflow">return</span> detElements</div>
 </div><!-- fragment -->
 </div>
 </div>

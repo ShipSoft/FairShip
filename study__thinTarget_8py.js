@@ -36,6 +36,7 @@ var study__thinTarget_8py =
     [ "sensPlane", "study__thinTarget_8py.html#a06c433ab3997c7a35450cc7cc95ffa3f", null ],
     [ "setup", "study__thinTarget_8py.html#a6a7080d5efc0216311756b1d79e043c5", null ],
     [ "ship_geo", "study__thinTarget_8py.html#a033878c5a0d6d8cdded748c6d3b40c96", null ],
+    [ "sink", "study__thinTarget_8py.html#afc9ee3c67a762b80aa1948e39f7c5c8a", null ],
     [ "sTree", "study__thinTarget_8py.html#ae8e129f6411b6c394a018646bebe96f1", null ],
     [ "target", "study__thinTarget_8py.html#addda8330794870435600f0683fa69589", null ],
     [ "tc", "study__thinTarget_8py.html#a6251d6d1043367f9b14e723bf107a329", null ],

@@ -49,6 +49,7 @@ var ShipAna_8py =
     [ "run", "ShipAna_8py.html#a164c6bbaf1b338b10d8f411701e4acfb", null ],
     [ "sGeo", "ShipAna_8py.html#a7c6176c9bd251d2e60a14b3cfd89b883", null ],
     [ "ShipGeo", "ShipAna_8py.html#a67771fc1158b28ea30e895d26a00dfdd", null ],
+    [ "sink", "ShipAna_8py.html#adf732d3a7d976350db84d3f570d68830", null ],
     [ "sTree", "ShipAna_8py.html#aa4c23cfad61e9ccae6f79cbe3a4952e4", null ],
     [ "tmp", "ShipAna_8py.html#ab3d6f30f52033bf7b1555d56d728b925", null ],
     [ "type", "ShipAna_8py.html#a26546101b50872dc842fdba6bd3ca6f8", null ],
