@@ -462,13 +462,11 @@ def configure(run, ship_geo):
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
+    detElements = {}
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue
         run.AddModule(x)
         ROOT.SetOwnership(x, False)  # C++ FairRunSim takes ownership
-    # return list of detector elements
-    detElements = {}
-    for x in run.GetListOfModules():
         detElements[x.GetName()] = x
     return detElements

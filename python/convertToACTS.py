@@ -29,7 +29,11 @@ def main():
     ShipGeo = load_from_root_file(fgeo, "ShipGeo")
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Dummy output file
+    import tempfile
+
+    sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+    run.SetSink(sink)
+    ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for creating VMC field
     run.GetRuntimeDb()
     shipDet_conf.configure(run, ShipGeo)
