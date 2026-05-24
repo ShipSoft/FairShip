@@ -72,7 +72,11 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     run.SetName("TGeant4")  # Transport engine
     # Create dummy output file as the  input file is updated directly and
     # histograms are written to output file (hists.root by default)
-    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
+    import tempfile
+
+    sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+    run.SetSink(sink)
+    ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for the mag field
     run.GetRuntimeDb()
 

@@ -90,7 +90,9 @@ class ShipDigiReco:
         self.bfield.setField(global_variables.fieldMaker.getGlobalField())
         self.fM = ROOT.genfit.FieldManager.getInstance()
         self.fM.init(self.bfield)
+        ROOT.SetOwnership(self.bfield, False)  # genfit::FieldManager singleton takes ownership
         ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
+        ROOT.SetOwnership(self.geoMat, False)  # genfit::MaterialEffects singleton takes ownership
 
         # init fitter, to be done before importing shipPatRec
         # fitter          = ROOT.genfit.KalmanFitter()
@@ -237,6 +239,7 @@ class ShipDigiReco:
                 seedCov = ROOT.TMatrixDSym(6)
                 rep.get6DStateCov(stateSmeared, seedState, seedCov)
                 theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+                ROOT.SetOwnership(rep, False)  # genfit::Track takes ownership
                 hitCov = ROOT.TMatrixDSym(7)
                 hitCov[6][6] = resolution * resolution
                 hitID = 0
@@ -248,7 +251,9 @@ class ShipDigiReco:
                         - global_variables.ShipGeo.strawtubes_geo.wall_thickness
                     )
                     tp.addRawMeasurement(measurement)
+                    ROOT.SetOwnership(measurement, False)  # TrackPoint takes ownership
                     theTrack.insertPoint(tp)
+                    ROOT.SetOwnership(tp, False)  # genfit::Track takes ownership
                     hitID += 1
                 # Fit this hypothesis
                 try:
