@@ -257,7 +257,9 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
@@ -271,6 +273,7 @@ cave = ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("caveWithAir.geo")
 
 run.AddModule(cave)
+ROOT.SetOwnership(cave, False)  # C++ FairRunSim takes ownership
 
 TargetStation = ROOT.ShipTargetStation(
     name="TargetStation",
@@ -286,6 +289,7 @@ TargetStation.SetLayerPosMat(
     M=ship_geo.target.slices_material,
 )
 run.AddModule(TargetStation)
+ROOT.SetOwnership(TargetStation, False)  # C++ FairRunSim takes ownership
 
 
 if args.AddPostTargetSensPlane:
@@ -306,6 +310,7 @@ if args.AddPostTargetSensPlane:
     if args.FourDP:
         sensPlanePostT.SetOpt4DP()
     run.AddModule(sensPlanePostT)
+    ROOT.SetOwnership(sensPlanePostT, False)  # C++ FairRunSim takes ownership
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
@@ -324,6 +329,7 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield)  # needs to be added because of magn hadron shield.
+    ROOT.SetOwnership(MuonShield, False)  # C++ FairRunSim takes ownership
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
@@ -353,9 +359,11 @@ if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
         sensPlaneT.SetOpt4DP()
 
 run.AddModule(sensPlaneHA)
+ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
 
 if args.AddCylindricalSensPlane:
     run.AddModule(sensPlaneT)
+    ROOT.SetOwnership(sensPlaneT, False)  # C++ FairRunSim takes ownership
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -392,8 +400,10 @@ if args.charm or args.beauty:
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
+ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 #
 run.SetGenerator(primGen)
+ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
 
 # -----Initialize simulation run------------------------------------
 run.Init()

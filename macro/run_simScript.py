@@ -15,6 +15,14 @@ import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
 
+
+def _fraction_0_1(value: str) -> float:
+    v = float(value)
+    if not 0.0 <= v <= 1.0:
+        raise ValueError("--chargeFraction must be between 0 and 1")
+    return v
+
+
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -60,15 +68,92 @@ pg_parser.add_argument("--pID", dest="pID", default=22, type=int, help="id of pa
 pg_parser.add_argument(
     "--Estart", default=10, type=float, help="start of energy range of particle gun (default=10 GeV)"
 )
+pg_parser.add_argument(
+    "--histoFile",
+    dest="histoFile",
+    default=None,
+    help="File with a histogram to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoName",
+    dest="histoName",
+    default=None,
+    help="Histogram name to generate from. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoX",
+    dest="histoX",
+    default=None,
+    help="The variable of the histogram X axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoY",
+    dest="histoY",
+    default=None,
+    help="The variable of the histogram Y axis. Repeat for multiple files",
+    action="append",
+)
+pg_parser.add_argument(
+    "--histoZ",
+    dest="histoZ",
+    default=None,
+    help="The variable of the histogram Z axis. Repeat for multiple files",
+    action="append",
+)
+
+pg_parser.add_argument(
+    "--bothCharges",
+    dest="bothCharges",
+    default=False,
+    action="store_true",
+    help="Generate both charges of given particle ID",
+)
+pg_parser.add_argument(
+    "--chargeFraction",
+    dest="chargeFraction",
+    type=_fraction_0_1,
+    default=0.5,
+    help="Fraction of chosen charge from pID to generate [0,1]",
+)
 pg_parser.add_argument("--Eend", default=10, type=float, help="end of energy range of particle gun (default=10 GeV)")
 pg_parser.add_argument("--Vx", dest="Vx", default=0, type=float, help="x position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vy", dest="Vy", default=0, type=float, help="y position of particle gun (default=0 cm)")
 pg_parser.add_argument("--Vz", dest="Vz", default=0, type=float, help="z position of particle gun (default=0 cm)")
 pg_parser.add_argument(
+    "--smearMode",
+    dest="smearMode",
+    default="uniform",
+    help="Form of the vertex smearing for the particle gun",
+    type=str,
+)
+pg_parser.add_argument(
+    "--multiplicity", dest="multiplicity", type=int, default=1, help="How many to generate per event"
+)
+pg_parser.add_argument(
     "--Dx", dest="Dx", type=float, help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)"
 )
 pg_parser.add_argument(
     "--Dy", dest="Dy", type=float, help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
+)
+pg_parser.add_argument(
+    "--momentumModel", dest="momentumModel", default=0, type=int, help="Select a model to generate the momentum with"
+)
+pg_parser.add_argument(
+    "--modelPar",
+    dest="modelPar",
+    action="append",
+    help="Momentum model parameters. You must specify them all in order",
+    type=float,
+)
+pg_parser.add_argument(
+    "--showPGModels",
+    dest="showPGModels",
+    action="store_true",
+    default=False,
+    help="Print out the PG models that are available",
 )
 # === End of PG commands ===
 # === Genie subcommand ===
@@ -88,7 +173,11 @@ genie_parser.add_argument(
     help="Genie neutrino end z position (default=3180.4350 cm)",
 )
 # === End of Genie subcommand ===
-parser.add_argument("-A", help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", default="c")
+parser.add_argument(
+    "-A",
+    help="b: signal from b, c: from c (default), bc: from Bc, inclusive, or for dark photon: meson,pbrem,qcd",
+    default="c",
+)
 parser.add_argument(
     "--NuRadio",
     dest="nuradio",
@@ -396,7 +485,9 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
@@ -461,8 +552,8 @@ if options.pythia8:
     if HNL or options.RPVSUSY or options.DarkPhoton:
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
-        P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)
-        P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0)
+        P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
+        P8gen.SetLmax((ship_geo.decayVolume.z0 - ship_geo.target.z0) + ship_geo.decayVolume.length)
         margin = 10 * u.cm  # covers beam smearing + non-projectivity of vessel
         z_end = ship_geo.decayVolume.z0 + ship_geo.decayVolume.length  # vessel exit z from target
         # xEndInner/yEndInner are full inner widths; divide by 2 for half-aperture.
@@ -490,6 +581,7 @@ if options.pythia8:
     # P8gen.SetMom(500.*u.GeV)
     # P8gen.SetId(-211)
     primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 if options.fixedTarget:
     HNL = False
     P8gen = ROOT.FixedTargetGenerator()
@@ -503,6 +595,7 @@ if options.fixedTarget:
     P8gen.SetHeartBeat(100000)
     P8gen.SetG4only()
     primGen.AddGenerator(P8gen)
+    ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 if options.pythia6:
     # set muon interaction close to decay volume
     primGen.SetTarget(ship_geo.target.z0 + ship_geo.muShield.length, 0.0)
@@ -512,6 +605,7 @@ if options.pythia6:
     P6gen.SetMom(50.0 * u.GeV)
     P6gen.SetTarget("gamma/mu+", "n0")  # default "gamma/mu-","p+"
     primGen.AddGenerator(P6gen)
+    ROOT.SetOwnership(P6gen, False)  # C++ FairPrimaryGenerator takes ownership
 
 # -----EvtCalc--------------------------------------
 if options.evtcalc:
@@ -522,6 +616,7 @@ if options.evtcalc:
     EvtCalcGen.Init(inputFile, options.firstEvent)
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
+    ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = (
         EvtCalcGen.GetNevents() if options.nEvents == -1 else min(options.nEvents, EvtCalcGen.GetNevents())
     )
@@ -529,23 +624,49 @@ if options.evtcalc:
 
 # -----Particle Gun-----------------------
 if options.command == "PG":
-    myPgun = ROOT.FairBoxGenerator(options.pID, 1)
+    myPgun = ROOT.ParticleGunGenerator(options.pID, options.multiplicity)
+    if options.showPGModels:
+        myPgun.PrintVertexModels()
+        myPgun.PrintMomentumModels()
+        sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
     myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    if options.bothCharges:
+        myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
         # multiple PG sources in the x-y plane; z is always the same!
-        myPgun.SetBoxXYZ(
-            (options.Vx - options.Dx / 2) * u.cm,
-            (options.Vy - options.Dy / 2) * u.cm,
-            (options.Vx + options.Dx / 2) * u.cm,
-            (options.Vy + options.Dy / 2) * u.cm,
-            options.Vz * u.cm,
+        myPgun.SetVertexModel(
+            options.smearMode,
+            [options.Vx * u.cm, options.Dx * u.cm, options.Vy * u.cm, options.Dy * u.cm, options.Vz * u.cm],
         )
     else:
         # point source
-        myPgun.SetXYZ(options.Vx * u.cm, options.Vy * u.cm, options.Vz * u.cm)
+        myPgun.SetVertexModel(options.smearMode, [options.Vx * u.cm, 0.0, options.Vy * u.cm, 0.0, options.Vz * u.cm])
+    if options.momentumModel > 0:
+        myPgun.SetMomentumModel(options.momentumModel, options.modelPar)
+    if options.histoFile:
+        histo_files = options.histoFile or []
+        histo_names = options.histoName or []
+        histo_x = options.histoX or []
+        histo_y = options.histoY or []
+        histo_z = options.histoZ or []
+
+        if len(histo_files) != len(histo_names):
+            raise ValueError("Must specify one --histoName per --histoFile")
+        if len(histo_x) != len(histo_files):
+            raise ValueError("Must specify one --histoX per --histoFile")
+
+        for idx, histo_file in enumerate(histo_files):
+            histo_vars = [histo_x[idx]]
+            if idx < len(histo_y):
+                histo_vars.append(histo_y[idx])
+            if idx < len(histo_z):
+                histo_vars.append(histo_z[idx])
+            myPgun.LoadHistoFromFile(histo_file, histo_names[idx], histo_vars)
+
     primGen.AddGenerator(myPgun)
+    ROOT.SetOwnership(myPgun, False)  # C++ FairPrimaryGenerator takes ownership
 # -----muon DIS Background------------------------
 if options.mudis:
     ut.checkFileExists(inputFile)
@@ -560,6 +681,7 @@ if options.mudis:
     DISgen.SetPositions(mu_start, mu_end)
     DISgen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(DISgen)
+    ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
     print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
 # -----Neutrino Background------------------------
@@ -571,6 +693,7 @@ if options.command == "Genie":
     Geniegen.Init(inputFile, options.firstEvent)
     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Geniegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Geniegen.GetNevents())
     run.SetPythiaDecayer("DecayConfigNuAge.C")
     print("Generate ", options.nEvents, " with Genie input", " first event", options.firstEvent)
@@ -583,6 +706,7 @@ if options.nuradio:
     Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
     Geniegen.NuOnly()
     primGen.AddGenerator(Geniegen)
+    ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
     print("Generate ", options.nEvents, " for nuRadiography", " first event", options.firstEvent)
     #  add tungsten to PDG
     pdg = ROOT.TDatabasePDG.Instance()
@@ -599,17 +723,21 @@ if options.ntuple:
     Ntuplegen = ROOT.NtupleGenerator()
     Ntuplegen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(Ntuplegen)
+    ROOT.SetOwnership(Ntuplegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
     print("Process ", options.nEvents, " from input file")
 #
 if options.muonback:
     # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
-    fileType = ut.checkFileExists(inputFile)
-    if fileType == "tree":
-        # 2018 background production
-        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
+    isNew = ut.checkForBranch(
+        inputFile, "PlaneHAPoint"
+    )  # If there is a branch PlaneHAPoint this file is from the new production
+    if isNew:
+        print("INFO: Processing a file from the new production - setting target z offset at 0")
+        primGen.SetTarget(ship_geo.target.z0, 0.0)
     else:
-        primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
+        print("INFO: Processing a file from the old production - setting target z offset to 70.845m")
+        primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
@@ -626,6 +754,7 @@ if options.muonback:
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)
+    ROOT.SetOwnership(MuonBackgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = (
         MuonBackgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, MuonBackgen.GetNevents())
     )
@@ -660,10 +789,12 @@ if options.cosmics:
         sys.exit(0)
     Cosmicsgen.n_EVENTS = options.nEvents
     primGen.AddGenerator(Cosmicsgen)
+    ROOT.SetOwnership(Cosmicsgen, False)  # C++ FairPrimaryGenerator takes ownership
     print("Process ", options.nEvents, " Cosmic events with option ", Opt_high)
 
 #
 run.SetGenerator(primGen)
+ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
 # ------------------------------------------------------------------------
 
 # ---Store the visualiztion info of the tracks, this make the output file very large!!
@@ -743,6 +874,7 @@ kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 parOut.open(parFile)
 rtdb.setOutput(parOut)
+ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
 rtdb.saveOutput()
 rtdb.printParamContexts()
 rtdb.print()

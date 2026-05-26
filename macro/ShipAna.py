@@ -72,7 +72,11 @@ import shipDet_conf
 
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Dummy output file
+import tempfile
+
+sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for the mag field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
@@ -88,10 +92,12 @@ else:
 sGeo = fgeo["FAIRGeom"]
 geoMat = ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+ROOT.SetOwnership(geoMat, False)  # genfit::MaterialEffects singleton takes ownership
 bfield = ROOT.genfit.FairShipFields()
 bfield.setField(fieldMaker.getGlobalField())
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
+ROOT.SetOwnership(bfield, False)  # genfit::FieldManager singleton takes ownership
 
 volDict = {}
 i = 0
@@ -424,7 +430,8 @@ def fitSingleGauss(x: str, ba: float | None = None, be: float | None = None) -> 
         myGauss.SetParName(1, "Mean")
         myGauss.SetParName(2, "Sigma")
         myGauss.SetParName(3, "bckgr")
-    h[x].Fit(myGauss, "", "", ba, be)
+    if h[x].GetEntries() > 0:
+        h[x].Fit(myGauss, "", "", ba, be)
 
 
 def match2HNL(p) -> bool:
@@ -465,7 +472,8 @@ def makePlots() -> None:
     h["delPOverPz_proj"] = h["delPOverPz"].ProjectionY()
     ROOT.gStyle.SetOptFit(11111)
     h["delPOverPz_proj"].Draw()
-    h["delPOverPz_proj"].Fit("gaus")
+    if h["delPOverPz_proj"].GetEntries() > 0:
+        h["delPOverPz_proj"].Fit("gaus")
     cv = h["fitresults"].cd(4)
     h["delPOverP2z_proj"] = h["delPOverP2z"].ProjectionY()
     h["delPOverP2z_proj"].Draw()
@@ -482,7 +490,8 @@ def makePlots() -> None:
             h["pi0Mass"].SetXTitle("#gamma #gamma invariant mass   [GeV/c^{2}]")
             h["pi0Mass"].SetYTitle("N/" + str(int(h["pi0Mass"].GetBinWidth(1) * 1000)) + "MeV")
             h["pi0Mass"].Draw()
-            h["pi0Mass"].Fit("gaus", "S", "", 0.08, 0.19)
+            if h["pi0Mass"].GetEntries() > 0:
+                h["pi0Mass"].Fit("gaus", "S", "", 0.08, 0.19)
         cv = h["fitresults2" + x].cd(2)
         h["IP0" + x].SetXTitle("impact parameter to p-target   [cm]")
         h["IP0" + x].SetYTitle("N/1cm")

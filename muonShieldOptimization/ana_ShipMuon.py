@@ -1509,7 +1509,7 @@ def readAndMergeHistos(prods) -> None:
 # python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 910 911 912 913 914 915 916 917 918 919 1012 1013 1014 1015 1016 1017 1018 1019
 # python -i $HNL/ana_ShipMuon.py 820 821 822 823 824 825 826 827 828 829 920 921 922 923 924 925 926 927 928 929 1022 1023 1024 1025 1026 1027 1028 1029
 # make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
-#                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
-#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root
+#                      second step python $FAIRSHIP/muonDIS/makeMuonDIS.py -f muDISVetoCounter.root -n 10 -nDISPerMuon 10000
+#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis.root
 # for concrete
 # analyzeConcrete() -> muConcrete.root
