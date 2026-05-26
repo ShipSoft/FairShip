@@ -73,7 +73,13 @@ parser.add_argument(
 )
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
-
+parser.add_argument(
+    "--validation",
+    dest="validation",
+    help="Print reconstruction validation summary after finishing",
+    required=False,
+    action="store_true",
+)
 options = parser.parse_args()
 vertexing = not options.noVertexing
 
@@ -167,7 +173,7 @@ global_variables.iEvent = 0
 # import reco tasks
 import shipDigiReco
 
-SHiP = shipDigiReco.ShipDigiReco(options.inputFile, outFile, fgeo)
+SHiP = shipDigiReco.ShipDigiReco(options.inputFile, outFile, fgeo, validation=options.validation)
 options.nEvents = min(SHiP.sTree.GetEntries(), options.nEvents)
 # main loop
 for global_variables.iEvent in range(options.firstEvent, options.nEvents):

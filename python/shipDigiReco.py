@@ -10,6 +10,7 @@ import rootUtils as ut
 import shipPatRec
 import shipunit as u
 import shipVertex
+import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
 from detectors.splitcalDetector import splitcalDetector
@@ -23,7 +24,9 @@ logger = logging.getLogger(__name__)
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
 
-    def __init__(self, finput, fout, fgeo) -> None:
+    def __init__(self, finput, fout, fgeo, validation: bool = False) -> None:
+        self.validation = validation
+        self.validation_stats = validation_tools.make_reco_validation_stats() if self.validation else None
         # Open input file (read-only) and get the MC tree
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
@@ -107,13 +110,29 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
     def reconstruct(self) -> None:
-        self.findTracks()
-        self.findGoodTracks()
+        n_tracks = self.findTracks()
+        n_good_tracks = self.findGoodTracks()
         if hasattr(self, "digiSBT"):
             self.linkVetoOnTracks()
         if global_variables.vertexing:
             # now go for 2-track combinations
+            if self.validation:
+                self.validation_stats["vertexing_calls"] += 1
             self.Vertexing.execute()
+        if self.validation:
+            self.validation_stats["events_reconstructed"] += 1
+            self.validation_stats["fitted_tracks_total"] += n_tracks
+            self.validation_stats["good_tracks_total"] += n_good_tracks
+            if n_tracks > 0:
+                self.validation_stats["events_with_fitted_tracks"] += 1
+            if n_good_tracks > 0:
+                self.validation_stats["events_with_good_tracks"] += 1
+            validation_tools.record_event_stat(self.validation_stats, "event_fitted_tracks", n_tracks)
+            validation_tools.record_event_stat(self.validation_stats, "event_good_tracks", n_good_tracks)
+            if hasattr(self, "digiSBT"):
+                validation_tools.record_event_stat(
+                    self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray)
+                )
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
@@ -131,6 +150,8 @@ class ShipDigiReco:
             self.digiMTC.process()
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
+        if self.validation:
+            self.validation_stats["events_digitized"] += 1
 
     def findTracks(self) -> int:
         hitPosLists = {}
@@ -148,12 +169,21 @@ class ShipDigiReco:
         # old procedure, not including estimation of t0
         else:
             self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
+        if self.validation:
+            self.validation_stats["smeared_hits_total"] += len(self.SmearedHits)
+            if len(self.SmearedHits) > 0:
+                self.validation_stats["events_with_hits"] += 1
 
         trackCandidates = []
 
         # Do pattern recognition
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
         logger.debug("PatRec returned %d track candidates", len(track_hits))
+        if self.validation:
+            self.validation_stats["track_candidates_total"] += len(track_hits)
+            if len(track_hits) > 0:
+                self.validation_stats["events_with_candidates"] += 1
+            validation_tools.record_event_stat(self.validation_stats, "event_track_candidates", len(track_hits))
         # Create hitPosLists for track fit
         for i_track in track_hits:
             atrack = track_hits[i_track]
@@ -206,10 +236,18 @@ class ShipDigiReco:
             meas = hitPosLists[atrack]
             detIDs = hit_detector_ids[atrack]
             nM = len(meas)
+            n_stations_crossed = len(stationCrossed[atrack])
+            if self.validation:
+                self.validation_stats["candidate_hits_sum"] += nM
+                self.validation_stats["candidate_hits_sum_sq"] += nM * nM
+                self.validation_stats["candidate_hits_count"] += 1
+                self.validation_stats["candidate_stations_sum"] += n_stations_crossed
+                self.validation_stats["candidate_stations_sum_sq"] += n_stations_crossed * n_stations_crossed
+                self.validation_stats["candidate_stations_count"] += 1
             if nM < 13:
                 n_too_few_hits += 1
                 continue  # not enough hits to make a good trackfit
-            if len(stationCrossed[atrack]) < 3:
+            if n_stations_crossed < 3:
                 n_too_few_stations += 1
                 continue  # not enough stations crossed to make a good trackfit
             if global_variables.debug:
@@ -222,6 +260,8 @@ class ShipDigiReco:
             best_track = None
             best_chi2ndf = float("inf")
             for try_pdg in [pdg, -pdg]:
+                if self.validation:
+                    self.validation_stats["fit_hypotheses_tried"] += 1
                 # approximate covariance
                 covM = ROOT.TMatrixDSym(6)
                 resolution = self.sigma_spatial
@@ -259,26 +299,36 @@ class ShipDigiReco:
                 try:
                     theTrack.checkConsistency()
                 except ROOT.genfit.Exception:
+                    if self.validation:
+                        self.validation_stats["tracks_failed_consistency"] += 1
                     continue
                 try:
                     self.fitter.processTrack(theTrack)
                 except Exception as e:
                     logger.debug("Failed to processTrack for hypothesis %d: %s", try_pdg, e)
+                    if self.validation:
+                        self.validation_stats["tracks_failed_fit"] += 1
                     continue
                 try:
                     theTrack.checkConsistency()
                 except ROOT.genfit.Exception:
                     logger.debug("Track inconsistent after fit for hypothesis %d", try_pdg)
+                    if self.validation:
+                        self.validation_stats["tracks_failed_consistency"] += 1
                     continue
                 try:
                     fittedState = theTrack.getFittedState()
                     fittedState.getMomMag()
                 except Exception as e:
                     logger.debug("Failed to getFittedState/getMomMag for hypothesis %d: %s", try_pdg, e)
+                    if self.validation:
+                        self.validation_stats["tracks_failed_state_access"] += 1
                     continue
                 fitStatus = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged():
                     continue
+                if self.validation:
+                    self.validation_stats["fit_hypotheses_converged"] += 1
                 nmeas = fitStatus.getNdf()
                 if nmeas <= 0:
                     continue
@@ -295,6 +345,13 @@ class ShipDigiReco:
             nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
             global_variables.h["nmeas"].Fill(nmeas)
             chi2 = fitStatus.getChi2() / nmeas
+            if self.validation:
+                self.validation_stats["chi2_sum"] += chi2
+                self.validation_stats["chi2_sum_sq"] += chi2 * chi2
+                self.validation_stats["chi2_count"] += 1
+                self.validation_stats["ndf_sum"] += nmeas
+                self.validation_stats["ndf_sum_sq"] += nmeas * nmeas
+                self.validation_stats["ndf_count"] += 1
             global_variables.h["chi2"].Fill(chi2)
             # make track persistent
             # Store pointer - make a copy and let ROOT manage lifetime
@@ -324,6 +381,9 @@ class ShipDigiReco:
             n_too_few_stations,
             len(self.fGenFitArray),
         )
+        if self.validation:
+            self.validation_stats["track_candidates_rejected_hits"] += n_too_few_hits
+            self.validation_stats["track_candidates_rejected_stations"] += n_too_few_stations
 
         # debug
         if global_variables.debug:
@@ -413,7 +473,16 @@ class ShipDigiReco:
         self.vetoHitOnTrackArray.clear()
         for good_track in self.goodTracksVect:
             track = self.fGenFitArray[good_track]
-            self.vetoHitOnTrackArray.push_back(self.findVetoHitOnTrack(track))
+            veto_link = self.findVetoHitOnTrack(track)
+            self.vetoHitOnTrackArray.push_back(veto_link)
+            if self.validation:
+                if veto_link.GetIndex() >= 0:  # Only record real matches
+                    dist = float(veto_link.GetDist())
+                    self.validation_stats["veto_link_distance_sum"] += dist
+                    self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
+                    self.validation_stats["veto_link_distance_count"] += 1
+        if self.validation:
+            self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
 
     def fracMCsame(self, trackids):
         track = {}
@@ -435,6 +504,10 @@ class ShipDigiReco:
 
     def finish(self) -> None:
         del self.fitter
+        if self.validation:
+            validation_tools.print_reco_validation_summary(
+                self.validation_stats, has_veto_detector=hasattr(self, "digiSBT")
+            )
         print("finished writing tree")
         self.outputFile.cd()
         self.recoTree.Write()
