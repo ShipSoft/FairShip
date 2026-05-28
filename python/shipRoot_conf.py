@@ -11,6 +11,7 @@ if os.environ.get("FAIRSHIP_ROOT", "") == "":
     print("FairShip environment not found, quitting.")
     quit()
 
+ROOT.gSystem.Load("libEGPythia6")
 ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
 
