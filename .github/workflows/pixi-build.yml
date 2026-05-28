@@ -1,0 +1,28 @@
+name: Pixi Build
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+concurrency:
+  group: pixi-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: prefix-dev/setup-pixi@v0.8.1
+      - name: Build
+        run: |
+          pixi run --locked configure
+          pixi run --locked build
+      - name: Test
+        run: pixi run --locked test
+      - name: Simulation test
+        run: pixi run --locked python macro/run_simScript.py --test
+        env:
+          QT_QPA_PLATFORM: offscreen
