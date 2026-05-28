@@ -52,43 +52,47 @@ even if you already know Git, as it explains how development is done on GitHub.
 
 ## Using pixi
 
-[Pixi](https://pixi.sh) provides pre-built FairShip packages from the [ship](https://prefix.dev/channels/ship) channel, so there is no need to compile anything. This is the quickest way to get started.
+[Pixi](https://pixi.sh) manages all dependencies via the `pixi.toml` and
+`activate.sh` already included in this repository. The activation script sets
+`FAIRSHIP` and `GEOMPATH` (among others) to `PIXI_PROJECT_ROOT`, so the pixi
+project root **must** be the FairShip clone itself — it contains the required
+`geometry/` and `files/` directories.
+
+### Build from source (recommended)
 
 1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
 
-2. Clone the FairShip repository (needed for macros and Python scripts):
+2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
+    pixi run build
     ```
 
-3. Add the `ship` channel and install `fairship` into a pixi project:
+3. Run commands inside the environment:
     ```bash
-    pixi init my-analysis -c https://prefix.dev/ship -c conda-forge
-    cd my-analysis
-    pixi add fairship
+    pixi run python macro/run_simScript.py --tag my-simulation
     ```
 
-4. Run commands inside the environment:
-    ```bash
-    pixi run python ../macro/run_simScript.py --tag my-simulation
-    ```
-
-    Or start a shell with FairShip loaded:
+    Or start a shell:
     ```bash
     pixi shell
-    python ../macro/run_simScript.py --tag my-simulation
+    python macro/run_simScript.py --tag my-simulation
     ```
 
-You can also use pixi in an existing project by adding the channel and dependency to your `pixi.toml`:
+### Using the pre-built package
 
-```toml
-[workspace]
-channels = ["https://prefix.dev/ship", "conda-forge"]
-platforms = ["linux-64"]
+Pre-built FairShip packages are available from the
+[ship](https://prefix.dev/channels/ship) channel. Because `activate.sh`
+expects `geometry/`, `files/`, and other data directories at
+`PIXI_PROJECT_ROOT`, the simplest approach is to add `fairship` directly to
+the clone:
 
-[dependencies]
-fairship = "*"
+```bash
+git clone https://github.com/ShipSoft/FairShip.git
+cd FairShip
+pixi add fairship
+pixi run python macro/run_simScript.py --tag my-simulation
 ```
 
 ## Build Instructions using CVMFS
