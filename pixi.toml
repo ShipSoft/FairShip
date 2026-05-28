@@ -1,0 +1,62 @@
+[workspace]
+name = "fairship"
+description = "SHiP experiment simulation framework"
+channels = ["https://prefix.dev/ship", "conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+# Core HEP packages (conda-forge)
+root = ">=6.38"
+geant4 = ">=11.3"
+pythia8 = ">=8.312"
+evtgen = ">=2.2"
+fmt = "*"
+gsl = "*"
+
+# Python (conda-forge)
+python = "3.12.*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+pandas = "*"
+awkward = "*"
+uproot = "*"
+pytest = "*"
+pytest-xdist = "*"
+pyyaml = "*"
+tabulate = "*"
+
+# SHiP custom packages (prefix.dev/ship channel)
+vmc = ">=2.2"
+vgm = ">=5.4"
+geant3 = ">=4.5"
+geant4-vmc = "==6.7.1"
+faircmakemodules = ">=1.0"
+fairlogger = ">=2.3"
+fairroot = ">=19.0"
+genfit = ">=2.3"
+pythia6 = ">=6.4"
+rootegpythia6 = "*"
+# tauolapp and photospp are runtime-only (not needed for build)
+# They will be added to a runtime environment later
+
+# Build tools
+cmake = ">=3.27"
+ninja = "*"
+cxx-compiler = "*"
+
+[activation]
+scripts = ["activate.sh"]
+env = { FAIRROOTPATH = "$CONDA_PREFIX", ROOT_INCLUDE_PATH = "$CONDA_PREFIX/include:$CONDA_PREFIX/include/geant4vmc:$CONDA_PREFIX/include/Geant4:$CONDA_PREFIX/include/vmc" }
+
+[tasks]
+configure = { cmd = """cmake -S . -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+    -DGeant4VMC_DIR=$CONDA_PREFIX/lib/Geant4VMC-6.7.1 \
+    "-DCMAKE_CXX_FLAGS=-isystem $CONDA_PREFIX/include/geant4vmc -isystem $CONDA_PREFIX/include/Geant4" """ }
+build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
+install = { cmd = "cmake --install build", depends-on = ["build"] }
+test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }

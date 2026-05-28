@@ -24,6 +24,7 @@ ignore = [
 
 
 [tool.codespell]
+skip = "pixi.lock"
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'
 
 [tool.pyrefly]
