@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acf0a18d2499fc4a2ac943a628cdf20f6" id="r_acf0a18d2499fc4a2ac943a628cdf20f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#acf0a18d2499fc4a2ac943a628cdf20f6">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() project(FairShip VERSION 0.0.0 LANGUAGES CXX) include(GNUInstallDirs) include(GNUInstallDirs) set(CMAKE_INSTALL_LIBDIR lib) set(CMAKE_CXX_STANDARD 20) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
-<tr class="separator:acf0a18d2499fc4a2ac943a628cdf20f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa857ad2ec76af42fa679cf658dec4643" id="r_aa857ad2ec76af42fa679cf658dec4643"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#aa857ad2ec76af42fa679cf658dec4643">cmake_minimum_required</a> (VERSION 3.20.0 FATAL_ERROR) cmake_policy(SET CMP0118 NEW) if(POLICY CMP0144) cmake_policy(SET CMP0144 NEW) endif() <a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>(Git QUIET) if(Git_FOUND) execute_process(COMMAND $</td></tr>
+<tr class="separator:aa857ad2ec76af42fa679cf658dec4643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="acf0a18d2499fc4a2ac943a628cdf20f6" name="acf0a18d2499fc4a2ac943a628cdf20f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf0a18d2499fc4a2ac943a628cdf20f6">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
+<a id="aa857ad2ec76af42fa679cf658dec4643" name="aa857ad2ec76af42fa679cf658dec4643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa857ad2ec76af42fa679cf658dec4643">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,23 +125,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   18</span>    cmake_policy(SET CMP0144 NEW)</div>
 <div class="line"><span class="lineno">   19</span>endif()</div>
 <div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span>project(FairShip VERSION 0.0.0 LANGUAGES CXX)</div>
-<div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>include(GNUInstallDirs)</div>
-<div class="line"><span class="lineno">   24</span> </div>
-<div class="line"><span class="lineno">   25</span>include(GNUInstallDirs)</div>
-<div class="line"><span class="lineno">   26</span><span class="preprocessor"># aliBuild modulefile expects libraries in lib/, not lib64/</span></div>
-<div class="line"><span class="lineno">   27</span>set(CMAKE_INSTALL_LIBDIR lib)</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span><span class="preprocessor"># C++20 required; ROOT 6.36 requires at least C++17</span></div>
-<div class="line"><span class="lineno">   30</span>set(CMAKE_CXX_STANDARD 20)</div>
-<div class="line"><span class="lineno">   31</span>set(CMAKE_CXX_STANDARD_REQUIRED ON)</div>
-<div class="line"><span class="lineno">   32</span>set(CMAKE_CXX_EXTENSIONS OFF)</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>find_path(</div>
-<div class="line"><span class="lineno">   35</span>    FAIRBASE</div>
-<div class="line"><span class="lineno">   36</span>    NAMES FairRun.h</div>
-<div class="line"><span class="lineno">   37</span>    PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
+<div class="line"><span class="lineno">   21</span><span class="preprocessor"># Determine version from git tags (CalVer: year.month[.patch])</span></div>
+<div class="line"><span class="lineno">   22</span><a class="code hl_function" href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a>(Git QUIET)</div>
+<div class="line"><span class="lineno">   23</span><span class="keywordflow">if</span>(Git_FOUND)</div>
+<div class="line"><span class="lineno">   24</span>    execute_process(</div>
+<div class="line"><span class="lineno">   25</span>        COMMAND ${GIT_EXECUTABLE} describe --tags --match <span class="stringliteral">&quot;[0-9]*&quot;</span></div>
+<div class="ttc" id="amuonShieldOptimization_2CMakeLists_8txt_html_a83f3cb6f06cde493fe4290d12778da37"><div class="ttname"><a href="muonShieldOptimization_2CMakeLists_8txt.html#a83f3cb6f06cde493fe4290d12778da37">find_package</a></div><div class="ttdeci">find_package(Python3 COMPONENTS Development REQUIRED) ship_add_library(NAME ShipMuonShieldBackground SOURCES exitHadronAbsorber.cxx pyFairModule.cxx LINKDEF LinkDef.h EXTRA_DICT_HEADERS $</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00004">CMakeLists.txt:4</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
