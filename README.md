@@ -8,6 +8,7 @@
 - [FairShip](#fairship)
     - [Introduction](#introduction)
         - [Branches](#branches)
+    - [Using pixi](#using-pixi)
     - [Build instructions using CVMFS](#build-instructions-using-cvmfs)
     - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
     - [Run instructions](#run-instructions)
@@ -48,6 +49,47 @@ FairRoot. The dependencies of FairShip are tracked and installed using
 All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
+
+## Using pixi
+
+[Pixi](https://pixi.sh) provides pre-built FairShip packages from the [ship](https://prefix.dev/channels/ship) channel, so there is no need to compile anything. This is the quickest way to get started.
+
+1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
+
+2. Clone the FairShip repository (needed for macros and Python scripts):
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    ```
+
+3. Add the `ship` channel and install `fairship` into a pixi project:
+    ```bash
+    pixi init my-analysis -c https://prefix.dev/ship -c conda-forge
+    cd my-analysis
+    pixi add fairship
+    ```
+
+4. Run commands inside the environment:
+    ```bash
+    pixi run python ../macro/run_simScript.py --tag my-simulation
+    ```
+
+    Or start a shell with FairShip loaded:
+    ```bash
+    pixi shell
+    python ../macro/run_simScript.py --tag my-simulation
+    ```
+
+You can also use pixi in an existing project by adding the channel and dependency to your `pixi.toml`:
+
+```toml
+[workspace]
+channels = ["https://prefix.dev/ship", "conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+fairship = "*"
+```
 
 ## Build Instructions using CVMFS
 
