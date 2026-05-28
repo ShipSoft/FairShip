@@ -18,7 +18,45 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-project(FairShip VERSION 0.0.0 LANGUAGES CXX)
+# Determine version from git tags (CalVer: year.month[.patch])
+find_package(Git QUIET)
+if(Git_FOUND)
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} describe --tags --match "[0-9]*"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE FAIRSHIP_GIT_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+        RESULT_VARIABLE GIT_DESCRIBE_RESULT
+    )
+endif()
+
+if(GIT_DESCRIBE_RESULT EQUAL 0)
+    # Parse: "26.05", "26.05.1", "26.05-12-gabcdef", or "26.05.1-3-gabcdef"
+    string(
+        REGEX MATCH "^[0-9]+\\.[0-9]+(\\.[0-9]+)?"
+        FAIRSHIP_VERSION
+        "${FAIRSHIP_GIT_VERSION}"
+    )
+    if(FAIRSHIP_GIT_VERSION MATCHES "^[0-9.]+-([0-9]+)-g")
+        set(FAIRSHIP_VERSION_TWEAK "${CMAKE_MATCH_1}")
+    endif()
+else()
+    set(FAIRSHIP_VERSION "0.0.0")
+    message(
+        WARNING
+        "Git not found or no tags — using fallback version ${FAIRSHIP_VERSION}"
+    )
+endif()
+
+project(FairShip VERSION ${FAIRSHIP_VERSION} LANGUAGES CXX)
+
+if(FAIRSHIP_VERSION_TWEAK)
+    set(PROJECT_VERSION_TWEAK ${FAIRSHIP_VERSION_TWEAK})
+    set(PROJECT_VERSION "${PROJECT_VERSION}.${PROJECT_VERSION_TWEAK}")
+endif()
+
+message(STATUS "FairShip version: ${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
 
