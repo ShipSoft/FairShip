@@ -125,37 +125,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00049">49</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span><span class="keyword">def </span>configure(darkphoton=None) -&gt; None:</div>
-<div class="line"><span class="lineno">   50</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;&#39;</span> + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&#39;/shipdata/ShipGlobals.h&quot;&#39;</span>)</div>
-<div class="line"><span class="lineno">   51</span>    pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><span class="lineno">   52</span>    <span class="comment"># pythia stuff not known to ROOT</span></div>
-<div class="line"><span class="lineno">   53</span>    pdg.AddParticle(<span class="stringliteral">&quot;system&quot;</span>, <span class="stringliteral">&quot;system&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 90)</div>
-<div class="line"><span class="lineno">   54</span>    pdg.AddParticle(<span class="stringliteral">&quot;Pomeron&quot;</span>, <span class="stringliteral">&quot;Pomeron&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Pomeron&quot;</span>, 990)</div>
-<div class="line"><span class="lineno">   55</span>    pdg.AddParticle(<span class="stringliteral">&quot;p_diffr+&quot;</span>, <span class="stringliteral">&quot;p_diffr+&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 9902210)</div>
-<div class="line"><span class="lineno">   56</span>    pdg.AddParticle(<span class="stringliteral">&quot;n_diffr0&quot;</span>, <span class="stringliteral">&quot;n_diffr0&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 9902110)</div>
-<div class="line"><span class="lineno">   57</span>    pdg.AddParticle(<span class="stringliteral">&quot;C12&quot;</span>, <span class="stringliteral">&quot;Carbon-12&quot;</span>, 12.0, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060120)</div>
-<div class="line"><span class="lineno">   58</span>    pdg.AddParticle(<span class="stringliteral">&quot;C13&quot;</span>, <span class="stringliteral">&quot;Carbon-13&quot;</span>, 13.003355, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060130)</div>
-<div class="line"><span class="lineno">   59</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[3PJ(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942003)</div>
-<div class="line"><span class="lineno">   60</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[1S0(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[1S0(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9941003)</div>
-<div class="line"><span class="lineno">   61</span>    pdg.AddParticle(<span class="stringliteral">&quot;f0(980)&quot;</span>, <span class="stringliteral">&quot;f0(980)&quot;</span>, 1.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9010221)</div>
-<div class="line"><span class="lineno">   62</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(3770)&quot;</span>, <span class="stringliteral">&quot;psi(3770)&quot;</span>, 3.77315, <span class="keyword">False</span>, 0.02720, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 30443)</div>
-<div class="line"><span class="lineno">   63</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(3770)[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;psi(3770)[3PJ(8)]&quot;</span>, 3.97315, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942033)</div>
-<div class="line"><span class="lineno">   64</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[3S1(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940003)</div>
-<div class="line"><span class="lineno">   65</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_0c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_0c[3S1(8)]&quot;</span>, 3.61475, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940011)</div>
-<div class="line"><span class="lineno">   66</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[1S0(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[1S0(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9941103)</div>
-<div class="line"><span class="lineno">   67</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[3S1(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940103)</div>
-<div class="line"><span class="lineno">   68</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[3PJ(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942103)</div>
-<div class="line"><span class="lineno">   69</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_1c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_1c[3S1(8)]&quot;</span>, 3.71066, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940023)</div>
-<div class="line"><span class="lineno">   70</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_2c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_2c[3S1(8)]&quot;</span>, 3.75620, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940005)</div>
-<div class="line"><span class="lineno">   71</span>    pdg.AddParticle(<span class="stringliteral">&quot;Upsilon[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;Upsilon[3S1(8)]&quot;</span>, 9.66030, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9950003)</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> darkphoton == 0:</div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">return</span>  <span class="comment"># will be added by pythia8_conf</span></div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> darkphoton:</div>
-<div class="line"><span class="lineno">   76</span>        addDPtoROOT()</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   78</span>        addHNLtoROOT()</div>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00048">48</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>configure(darkphoton=None) -&gt; None:</div>
+<div class="line"><span class="lineno">   49</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;&#39;</span> + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&#39;/shipdata/ShipGlobals.h&quot;&#39;</span>)</div>
+<div class="line"><span class="lineno">   50</span>    pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><span class="lineno">   51</span>    <span class="comment"># pythia stuff not known to ROOT</span></div>
+<div class="line"><span class="lineno">   52</span>    pdg.AddParticle(<span class="stringliteral">&quot;system&quot;</span>, <span class="stringliteral">&quot;system&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 90)</div>
+<div class="line"><span class="lineno">   53</span>    pdg.AddParticle(<span class="stringliteral">&quot;Pomeron&quot;</span>, <span class="stringliteral">&quot;Pomeron&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Pomeron&quot;</span>, 990)</div>
+<div class="line"><span class="lineno">   54</span>    pdg.AddParticle(<span class="stringliteral">&quot;p_diffr+&quot;</span>, <span class="stringliteral">&quot;p_diffr+&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 9902210)</div>
+<div class="line"><span class="lineno">   55</span>    pdg.AddParticle(<span class="stringliteral">&quot;n_diffr0&quot;</span>, <span class="stringliteral">&quot;n_diffr0&quot;</span>, 0.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;XXX&quot;</span>, 9902110)</div>
+<div class="line"><span class="lineno">   56</span>    pdg.AddParticle(<span class="stringliteral">&quot;C12&quot;</span>, <span class="stringliteral">&quot;Carbon-12&quot;</span>, 12.0, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060120)</div>
+<div class="line"><span class="lineno">   57</span>    pdg.AddParticle(<span class="stringliteral">&quot;C13&quot;</span>, <span class="stringliteral">&quot;Carbon-13&quot;</span>, 13.003355, <span class="keyword">True</span>, 0, 6.0, <span class="stringliteral">&quot;nucleus&quot;</span>, 1000060130)</div>
+<div class="line"><span class="lineno">   58</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[3PJ(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942003)</div>
+<div class="line"><span class="lineno">   59</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[1S0(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[1S0(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9941003)</div>
+<div class="line"><span class="lineno">   60</span>    pdg.AddParticle(<span class="stringliteral">&quot;f0(980)&quot;</span>, <span class="stringliteral">&quot;f0(980)&quot;</span>, 1.0, <span class="keyword">False</span>, 0.0, 0.0, <span class="stringliteral">&quot;Meson&quot;</span>, 9010221)</div>
+<div class="line"><span class="lineno">   61</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(3770)&quot;</span>, <span class="stringliteral">&quot;psi(3770)&quot;</span>, 3.77315, <span class="keyword">False</span>, 0.02720, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 30443)</div>
+<div class="line"><span class="lineno">   62</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(3770)[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;psi(3770)[3PJ(8)]&quot;</span>, 3.97315, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942033)</div>
+<div class="line"><span class="lineno">   63</span>    pdg.AddParticle(<span class="stringliteral">&quot;J/psi[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;J/psi[3S1(8)]&quot;</span>, 3.29692, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940003)</div>
+<div class="line"><span class="lineno">   64</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_0c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_0c[3S1(8)]&quot;</span>, 3.61475, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940011)</div>
+<div class="line"><span class="lineno">   65</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[1S0(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[1S0(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9941103)</div>
+<div class="line"><span class="lineno">   66</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[3S1(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940103)</div>
+<div class="line"><span class="lineno">   67</span>    pdg.AddParticle(<span class="stringliteral">&quot;psi(2S)[3PJ(8)]&quot;</span>, <span class="stringliteral">&quot;psi(2S)[3PJ(8)]&quot;</span>, 3.88611, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9942103)</div>
+<div class="line"><span class="lineno">   68</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_1c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_1c[3S1(8)]&quot;</span>, 3.71066, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940023)</div>
+<div class="line"><span class="lineno">   69</span>    pdg.AddParticle(<span class="stringliteral">&quot;chi_2c[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;chi_2c[3S1(8)]&quot;</span>, 3.75620, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9940005)</div>
+<div class="line"><span class="lineno">   70</span>    pdg.AddParticle(<span class="stringliteral">&quot;Upsilon[3S1(8)]&quot;</span>, <span class="stringliteral">&quot;Upsilon[3S1(8)]&quot;</span>, 9.66030, <span class="keyword">False</span>, 0.0, 0, <span class="stringliteral">&quot;Meson&quot;</span>, 9950003)</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> darkphoton == 0:</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">return</span>  <span class="comment"># will be added by pythia8_conf</span></div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> darkphoton:</div>
+<div class="line"><span class="lineno">   75</span>        addDPtoROOT()</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   77</span>        addHNLtoROOT()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -174,11 +174,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00045">45</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span><span class="keyword">def </span>forReadingOldFile() -&gt; None:</div>
-<div class="line"><span class="lineno">   46</span>    ROOT.gInterpreter.ProcessLine(<span class="stringliteral">&quot;typedef double Double32_t&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00044">44</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span><span class="keyword">def </span>forReadingOldFile() -&gt; None:</div>
+<div class="line"><span class="lineno">   45</span>    ROOT.gInterpreter.ProcessLine(<span class="stringliteral">&quot;typedef double Double32_t&quot;</span>)</div>
+<div class="line"><span class="lineno">   46</span> </div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -195,7 +195,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00021">21</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipRoot__conf_8py_source.html#l00020">20</a> of file <a class="el" href="shipRoot__conf_8py_source.html">shipRoot_conf.py</a>.</p>
 
 </div>
 </div>
