@@ -11,9 +11,9 @@ if os.environ.get("FAIRSHIP_ROOT", "") == "":
     print("FairShip environment not found, quitting.")
     quit()
 
+ROOT.gSystem.Load("libEGPythia6")
 ROOT.gSystem.Load("libPythia6")
 ROOT.gSystem.Load("libpythia8")
-ROOT.gSystem.Load("libG4clhep")
 
 # GenFit 02-03-00 no longer ships rootmap or unified PCM files, so ROOT's
 # autoloading cannot discover genfit classes.  Load the library, point Cling

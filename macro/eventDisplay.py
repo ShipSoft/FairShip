@@ -1249,7 +1249,6 @@ gEve = ROOT.gEve
 
 if hasattr(ShipGeo, "Bfield"):
     if hasattr(ShipGeo.Bfield, "fieldMap"):
-        ROOT.gSystem.Load("libG4clhep.so")
         ROOT.gSystem.Load("libgeant4vmc.so")
         import geomGeant4
 
