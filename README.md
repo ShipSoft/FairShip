@@ -8,6 +8,7 @@
 - [FairShip](#fairship)
     - [Introduction](#introduction)
         - [Branches](#branches)
+    - [Using pixi](#using-pixi)
     - [Build instructions using CVMFS](#build-instructions-using-cvmfs)
     - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
     - [Run instructions](#run-instructions)
@@ -48,6 +49,51 @@ FairRoot. The dependencies of FairShip are tracked and installed using
 All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
+
+## Using pixi
+
+[Pixi](https://pixi.sh) manages all dependencies via the `pixi.toml` and
+`activate.sh` already included in this repository. The activation script sets
+`FAIRSHIP` and `GEOMPATH` (among others) to `PIXI_PROJECT_ROOT`, so the pixi
+project root **must** be the FairShip clone itself — it contains the required
+`geometry/` and `files/` directories.
+
+### Build from source (recommended)
+
+1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
+
+2. Clone and build:
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    pixi run build
+    ```
+
+3. Run commands inside the environment:
+    ```bash
+    pixi run python macro/run_simScript.py --tag my-simulation
+    ```
+
+    Or start a shell:
+    ```bash
+    pixi shell
+    python macro/run_simScript.py --tag my-simulation
+    ```
+
+### Using the pre-built package
+
+Pre-built FairShip packages are available from the
+[ship](https://prefix.dev/channels/ship) channel. Because `activate.sh`
+expects `geometry/`, `files/`, and other data directories at
+`PIXI_PROJECT_ROOT`, the simplest approach is to add `fairship` directly to
+the clone:
+
+```bash
+git clone https://github.com/ShipSoft/FairShip.git
+cd FairShip
+pixi add fairship
+pixi run python macro/run_simScript.py --tag my-simulation
+```
 
 ## Build Instructions using CVMFS
 

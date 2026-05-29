@@ -39,6 +39,7 @@ jobs:
         with:
           path: FairShip
           lfs: true
+          fetch-depth: 0
       - name: Build
         run: |
           set -o pipefail
