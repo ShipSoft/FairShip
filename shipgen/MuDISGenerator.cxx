@@ -209,16 +209,20 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
 
   // Soft interaction tracks
+  bool lfirst = true;//will skip propagating the first track which is the input muon that gave the incoming muon
+  
   for (auto&& softParticle : *dPartSoft) {
     TVectorD* SoftPart = dynamic_cast<TVectorD*>(softParticle);
     if ((*SoftPart)[7] > zmu) {
+      lfirst=false;
       continue;
     }  // Soft interactions after the DIS point are not saved
     Double_t t_soft = (*SoftPart)[8] / 1e9;  // Time in seconds
     cpg->AddTrack(static_cast<int>((*SoftPart)[0]), (*SoftPart)[1],
                   (*SoftPart)[2], (*SoftPart)[3], (*SoftPart)[5],
-                  (*SoftPart)[6], (*SoftPart)[7], 0, true, (*SoftPart)[4],
+                  (*SoftPart)[6], (*SoftPart)[7], lfirst?-1:0, lfirst?false:true, (*SoftPart)[4],
                   t_soft, w);
+    lfirst=false;
   }
 
   return kTRUE;

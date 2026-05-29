@@ -6,9 +6,25 @@ import logging
 import os
 import time
 from array import array
+import sys
 
 import ROOT as r
 from tabulate import tabulate
+
+
+import cppyy
+# Load library
+#cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
+cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/pythia6/latest/lib/libPythia6.so")
+# Include header
+cppyy.include("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/include/TPythia6.h")
+# Create object
+myPythia = cppyy.gbl.TPythia6()
+print("Pythia6 created")
+
+
+#r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
+r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libEGPythia6.so")
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
@@ -33,7 +49,7 @@ parser.add_argument(
     dest="n_events",
     help="Number of muons to generate DIS for",
     required=False,
-    default=10,
+    default=-1,
     type=int,
 )
 parser.add_argument(
@@ -68,7 +84,7 @@ def update_file(filename, final_xsec):
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
 
-    original_tree = file.DIS
+    original_tree = file["DIS"]
 
     temp_filename = filename + ".tmp"
     temp_file = r.TFile.Open(temp_filename, "recreate")
@@ -93,10 +109,9 @@ headers = [
     "DIS_index",
     "Fix_Target",
     "nParticles in event",
-    "nSoftTracks_iMuon",
-    "nSBThits_iMuon",
-    "nUBThits_iMuon",
-    "nLastBitMuonShieldHits_iMuon",
+    "first pz",
+    "nSoftTracks",
+    "first pz",
     "cross_sec",
 ]
 Fixtarget = {1: "p+", 0: "n0"}
@@ -105,7 +120,7 @@ Fixtarget = {1: "p+", 0: "n0"}
 def inspect_file(filename):
     """Inspect the contents of muonDis file."""
     file = r.TFile.Open(filename, "READ")
-    tree = file.DIS
+    tree = file["DIS"]
 
     table_rows = []
 
@@ -117,12 +132,14 @@ def inspect_file(filename):
 
         nParticles = event.DISParticles.GetEntries()
         nSoftTracks = event.SoftParticles.GetEntries()
-        nSBThits = event.muon_vetoPoints.GetEntries()
-        nUBThits = event.muon_UpstreamTaggerPoints.GetEntries()
-        nLastBitMuonShieldHits = event.muon_lastBitMuonShieldPoints.GetEntries()
 
+        firstDIS = event.DISParticles[0]
+        partPz = float(firstDIS[3])
+        firstSoft = event.SoftParticles[0]
+        softpartPz = float(firstSoft[3])
+        
         table_rows.append(
-            [i, fix_target, nParticles, nSoftTracks, nSBThits, nUBThits, nLastBitMuonShieldHits, cross_sec]
+            [i, fix_target, nParticles, partPz, nSoftTracks, softpartPz, cross_sec]
         )
 
     file.Close()
@@ -137,16 +154,19 @@ def makeMuonDIS():
     muonFile = r.TFile.Open(args.inputFile, "read")
 
     try:
-        muon_tree = muonFile.MuonAndSoftInteractions
+        muon_tree = muonFile["MuonAndSoftInteractions"]
     except Exception as e:
         logging.error(e)
         muonFile.Close()
         exit(1)
 
     logging.debug(f"Total entries in the tree: {muon_tree.GetEntries()}")
-    last_mu_event = min(muon_tree.GetEntries(), first_mu_event + n_events)
+    if (n_events>0):
+        last_mu_event = min(muon_tree.GetEntries(), first_mu_event + n_events)
+    else:
+        last_mu_event = muon_tree.GetEntries()
 
-    logging.info("Creating output file: ", args.outputFile)
+    logging.info(f"Creating output file: {args.outputFile}")
 
     outputFile = r.TFile.Open(args.outputFile, "recreate")
     output_tree = r.TTree("DIS", "muon DIS")
@@ -160,20 +180,7 @@ def makeMuonDIS():
     dPartSoft = r.TClonesArray("TVectorD")
     output_tree.Branch("SoftParticles", dPartSoft, 32000, -1)
 
-    muon_vetoPoints = r.TClonesArray("vetoPoint")
-    output_tree.Branch("muon_vetoPoints", muon_vetoPoints, 32000, -1)
 
-    muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
-    output_tree.Branch(
-        "muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints, 32000, -1
-    )
-
-    muon_lastBitMuonShieldPoints = r.TClonesArray("lastBitMuonShieldPoint")
-    output_tree.Branch(
-	"muon_lastBitMuonShieldPoints", muon_lastBitMuonShieldPoints, 32000, -1
-    )
-
-    myPythia = r.TPythia6()
     #set process 1=QCD, 2=DY/others
     myPythia.SetMSEL(2)
     #set min hard scale: 2 GeV --->try 1.5 for soft muons ?
@@ -244,8 +251,9 @@ def makeMuonDIS():
                 nmuons,
             ],
         )
-        muPart = r.TVectorD(14, mu)
+
         myPythia.Initialize("FIXT", mutype[pid], "p+", p)  # target = "p+"
+        
         #print summary of initialisation params
         myPythia.Pylist(1)
 
@@ -256,20 +264,28 @@ def makeMuonDIS():
                 isProton = 0
                 # logging.debug("Switching to neutron interaction")
 
-            dPartDIS.Clear()
-            iMuon.Clear()
-            muPart[9] = isProton
-            iMuon[0] = muPart
-
+ 
             myPythia.GenerateEvent()
             #clean all but final stable particles
             myPythia.Pyedit(1)
 
             xsec = myPythia.GetPARI(1) #in mb
-            muPart[10] = xsec
 
+            mu[9] = isProton
+            mu[10] = xsec
+
+            #copy again input muon
+            iMuon.Clear()
+            
+            vec = iMuon.ConstructedAt(0)
+            vec.ResizeTo(14)
+            for i in range(len(mu)):
+                vec[i] = mu[i]
+
+            #print("initial muon z",mu[7],vec[7])
+            
             ndaugh =  myPythia.GetN()
-            dPartDIS.Expand(ndaugh)
+            dPartDIS.Clear()
             
             #loop over daughters and rotate in muon input direction
             for itrk in range(1, ndaugh + 1):
@@ -285,14 +301,17 @@ def makeMuonDIS():
                 masssq = PDG.GetParticle(did).Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
-                part = r.TVectorD(5, m)
-                # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
-                dPartDIS[itrk-1] = part
+                
+                dvec = dPartDIS.ConstructedAt(itrk-1)
+                dvec.ResizeTo(5)
+
+                for i in range(len(m)):
+                    dvec[i] = m[i]
+                #print("DIS particle",itrk-1,"pz",m[3],dvec[3])
 
             cross_sections.append(xsec)
 
             dPartSoft.Clear()
-            dPartSoft.Expand(muon_tree.tracks.GetSize())
 
             for isft, softTrack in enumerate(muon_tree.tracks):
                 did = softTrack.GetPdgCode()
@@ -310,40 +329,15 @@ def makeMuonDIS():
                 time_ = softTrack.GetStartT()
 
                 m = array("d", [did, dpx, dpy, dpz, E, softx, softy, softz, time_])
+                svec = dPartSoft.ConstructedAt(isft)
+                svec.ResizeTo(9)
 
-                part = r.TVectorD(9, m)
-                # dPartSoft.ConstructedAt(isft).Use(part) #to be adapted later
-                dPartSoft[isft] = part
+                for i in range(len(m)):
+                    svec[i] = m[i]
 
-            muon_vetoPoints.Clear()
+                #print("Soft particle",isft,"pz",m[3],svec[3])
 
-            index = 0
-            for hit in muon_tree.muon_vetoPoints:
-                if muon_vetoPoints.GetSize() == index:
-                    muon_vetoPoints.Expand(index + 1)
-                hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_vetoPoints[index] = hit
-                index += 1
 
-            muon_UpstreamTaggerPoints.Clear()
-
-            ubt_index = 0
-            for hit in muon_tree.muon_UpstreamTaggerPoints:
-                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
-                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_UpstreamTaggerPoints[ubt_index] = hit
-                ubt_index += 1
-
-            muon_lastBitMuonShieldPoints.Clear()
-
-            lastBitMuonShieldPoints_index = 0
-            for hit in muon_tree.muon_lastBitMuonShieldPoints:
-                if muon_lastBitMuonShieldPoints.GetSize() == lastBitMuonShieldPoints_index:
-                    muon_lastBitMuonShieldPoints.Expand(lastBitMuonShieldPoints_index + 1)
-                hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_lastBitMuonShieldPoints[lastBitMuonShieldPoints_index] = hit
-                lastBitMuonShieldPoints_index += 1
 
             output_tree.Fill()
             DIS_table.append(
@@ -352,14 +346,11 @@ def makeMuonDIS():
                     Fixtarget[isProton],
                     myPythia.GetN(),
                     len(dPartSoft),
-                    len(muon_vetoPoints),
-                    len(muon_UpstreamTaggerPoints),
-                    len(muon_lastBitMuonShieldPoints),
                     xsec,
                 ]
             )
 
-        # --> why take the last one ? Why not the average of all nDIS ?? Using cross_sections array 
+        # --> last one because it converges.
         final_xsec[k] = xsec
 
         nMade += 1
@@ -378,10 +369,10 @@ def makeMuonDIS():
     outputFile.Close()
     muonFile.Close()
 
-    #set the same xs for all DIS events of the same muon... why ?
+    #set the same xs for all DIS events of the same muon
     update_file(args.outputFile, final_xsec)
 
 
 if __name__ == "__main__":
     makeMuonDIS()
-    inspect_file(args.outputFile)
+    #inspect_file(args.outputFile)
