@@ -24,7 +24,7 @@ print("Pythia6 created")
 
 
 #r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
-r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libEGPythia6.so")
+#r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libEGPythia6.so")
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()

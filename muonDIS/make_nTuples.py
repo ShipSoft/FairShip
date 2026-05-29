@@ -86,7 +86,7 @@ output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 if args.generator == "MuonBack":
     reco_file_name = "ship.conical.MuonBack-TGeant4.root"
 elif args.generator == "PG":
-    reco_file_name = "sim_4fbc058c-ae74-41c0-865e-216a7b4ba5b6.root" #"ship.conical.PG_13-TGeant4_rec.root"
+    reco_file_name = "sim_7d76496d-e1b8-4dcd-906c-e95970c63615.root" #"ship.conical.PG_13-TGeant4_rec.root"
 
 print(reco_file_name)
     
@@ -311,7 +311,7 @@ for inputFolder in dirList:
                 track_id = hit.GetTrackID()
                 pid = hit.PdgCode()
 
-                if (abs(pid) == 13 and abs(hit.GetX()<UBT_dx and abs(hit.GetY())<UBT_dy)):
+                if (abs(pid) == 13 and abs(hit.GetX())<UBT_dx and abs(hit.GetY())<UBT_dy):
                     particle_name = pdg.GetParticle(pid).GetName()
                     if track_id not in muon_ids:
                         muon_ids.append(track_id)
