@@ -121,20 +121,24 @@ var NAVTREE =
       [ "Introduction", "md_README.html#autotoc_md79", [
         [ "Branches", "md_README.html#autotoc_md80", null ]
       ] ],
-      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md81", null ],
-      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md82", null ],
-      [ "Run instructions", "md_README.html#autotoc_md83", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md84", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md85", null ],
-      [ "Documentation", "md_README.html#autotoc_md86", null ],
-      [ "License", "md_README.html#autotoc_md87", null ],
-      [ "Contributing code", "md_README.html#autotoc_md88", null ]
+      [ "Using pixi", "md_README.html#autotoc_md81", [
+        [ "Build from source (recommended)", "md_README.html#autotoc_md82", null ],
+        [ "Using the pre-built package", "md_README.html#autotoc_md83", null ]
+      ] ],
+      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md84", null ],
+      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md85", null ],
+      [ "Run instructions", "md_README.html#autotoc_md86", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md87", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md88", null ],
+      [ "Documentation", "md_README.html#autotoc_md89", null ],
+      [ "License", "md_README.html#autotoc_md90", null ],
+      [ "Contributing code", "md_README.html#autotoc_md91", null ]
     ] ],
     [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
-      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md90", null ],
-      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md91", null ],
-      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md92", null ],
-      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md93", null ]
+      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md93", null ],
+      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md94", null ],
+      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md95", null ],
+      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md96", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -192,18 +196,18 @@ var NAVTREEINDEX =
 "extractNeutrinosAndUpdateWeight_8py.html",
 "hepunit_8py.html#a8e9124e1faaf4bd746e28fe5c1cc7365",
 "makeMuonEM_8py.html#a7db9802d8622bb7355470e66fc770be2",
-"mergeMbias_8py.html#a9a94ea0085e090e0c8254d8a9ff77483",
-"namespaceana__ShipMuon.html#acb40a6edc5bacb4b331e0118328b97e4",
-"namespaceextractMuonsAndUpdateWeight.html#a3f79ff95efd1d3efedf51ce041ba3275",
-"namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e",
-"namespacemake__nTuple__Tr.html#a7e0d944435ba5492111f37dc3e562f1c",
-"namespacerunCharmHadProd.html#a16db67855df2ed994a23b656d4eeaddb",
-"namespacerun__simScript.html#a558a49c862c7066d134596e3047c3cf5",
-"namespaceshipunit.html#a8f2defd4984fcc30864b0582d4fd44de",
-"pythia8__conf__utils_8py.html#a9e848ced4855607fcf8b26f17a24daad",
-"run__reco_8py.html#a2cd24bf2999c328b3874d12ed65f1560",
-"shipunit_8py.html",
-"study__GammaConv_8py.html#ade4e48b9a86cfadba1da8efe7fe47452"
+"mergeMbias_8py.html#a80ba3e6e28a4b92b65d779e31c6ed424",
+"namespaceana__ShipMuon.html#ac655f36910fb63a8965bcc5578340fa6",
+"namespaceextractMuonsAndUpdateWeight.html#a34812acc3cdb30f7c9a2d5c5963d5d20",
+"namespacemakeCascade.html#a057828da937f33cac59ee2ea7e48b953",
+"namespacemake__nTuple__Tr.html#a6f91ef1ca239a73a37e691c04b2e36e0",
+"namespacerpvsusy.html#ac884dc3219ae13b9dda6c048615e929d",
+"namespacerun__simScript.html#a510e4268b2f7e9ab7d72a49d8495aed1",
+"namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3",
+"pythia8__conf__utils_8py.html#a7bec05780607ee21023f773202ab1cd7",
+"run__reco_8py.html",
+"shipdata_2LinkDef_8h_source.html",
+"study__GammaConv_8py.html#ad6d92779a6dbcb89ea8862d0185a8982"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

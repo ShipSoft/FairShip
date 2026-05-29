@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"namespaceana__ShipMuon.html#ac655f36910fb63a8965bcc5578340fa6":[5,0,4,49],
+"namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce":[5,0,4,41],
+"namespaceana__ShipMuon.html#acb13dce4e89f5685da7b6a05363b33cd":[5,0,4,63],
 "namespaceana__ShipMuon.html#acb40a6edc5bacb4b331e0118328b97e4":[5,0,4,5],
 "namespaceana__ShipMuon.html#accbb5f08f4f48522834e2454ec3c0422":[5,0,4,67],
 "namespaceana__ShipMuon.html#acd174bdc52961dc55d9eb064df953e5b":[5,0,4,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceexperimental_1_1compare__histograms.html#abaf9794f1df3dd1e9710576ca8a1e0cd":[5,0,30,2,6],
 "namespaceexperimental_1_1compare__histograms.html#ae67891535b68161e792983dba1f912c7":[5,0,30,2,1],
 "namespaceexperimental_1_1compare__histograms.html#af21aa23c8a8ae248277f3dedbd6918b2":[5,0,30,2,5],
-"namespaceextractMuonsAndUpdateWeight.html":[5,0,31],
-"namespaceextractMuonsAndUpdateWeight.html#a34812acc3cdb30f7c9a2d5c5963d5d20":[5,0,31,2],
-"namespaceextractMuonsAndUpdateWeight.html#a3540e4762b6a0339d1c923d86bd5314a":[5,0,31,11],
-"namespaceextractMuonsAndUpdateWeight.html#a3ee737d91956d07c94601d0781b01ba5":[5,0,31,10]
+"namespaceextractMuonsAndUpdateWeight.html":[5,0,31]
 };
