@@ -68,7 +68,7 @@ PS: no need to source the environment from cvmfs with this...
    ```bash
    curl -fsSL https://pixi.sh/install.sh | sh
    ```
-   Check the location of .pixi and .cache files that it has enough space, about 
+   Check the location of .pixi and .cache files that it has enough space, about 12 GB required!
    ```bash
    pixi info
    ```
