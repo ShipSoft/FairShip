@@ -58,10 +58,27 @@ even if you already know Git, as it explains how development is done on GitHub.
 project root **must** be the FairShip clone itself — it contains the required
 `geometry/` and `files/` directories.
 
+PS: no need to source the environment from cvmfs with this...
+
 ### Build from source (recommended)
 
 1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
 
+   Note on lxplus: execute this command from an area in which you have enough disk space
+   ```bash
+   curl -fsSL https://pixi.sh/install.sh | sh
+   ```
+   Check the location of .pixi and .cache files that it has enough space, about 
+   ```bash
+   pixi info
+   ```
+   And if required, set the environment variables in .bashrc:
+   ```bash
+   export PATH="<your_path>/.pixi/bin:$PATH"
+   export PIXI_HOME=<your_path>/.pixi
+   export PIXI_CACHE_DIR=<your_path>/.cache
+   ```
+   
 2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
@@ -70,14 +87,16 @@ project root **must** be the FairShip clone itself — it contains the required
     ```
 
 3. Run commands inside the environment:
-    ```bash
+   The following requires to be inside FairShip/
+   ```bash
     pixi run python macro/run_simScript.py --tag my-simulation
     ```
 
-    Or start a shell:
+    Or start a shell, within FairShip/, from which you can "cd" into any workdir of your choice:
     ```bash
     pixi shell
-    python macro/run_simScript.py --tag my-simulation
+    cd <../your_workdir>
+    python ../FairShip/macro/run_simScript.py --tag my-simulation
     ```
 
 ### Using the pre-built package
