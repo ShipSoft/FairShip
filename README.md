@@ -78,7 +78,7 @@ PS: no need to source the environment from cvmfs with this...
    export PIXI_HOME=<your_path>/.pixi
    export PIXI_CACHE_DIR=<your_path>/.cache
    ```
-   
+
 2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
