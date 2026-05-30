@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import contextlib
 import os
 import subprocess
 
@@ -9,27 +10,17 @@ from ShipGeoConfig import AttrDict
 
 
 def retrieveGitTags(o):
-    # record some basic information about version of software:
     if "FAIRSHIP_HASH" in os.environ:
         o.FairShip = os.environ["FAIRSHIP_HASH"]
         o.FairRoot = os.environ["FAIRROOT_HASH"]
     else:
-        tmp = os.environ["FAIRSHIP"] + "/.git/refs/remotes/origin/master"
-        if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairShip = AttrDict(origin=x)
-            tmp = os.environ["FAIRSHIP"] + "/.git/refs/heads/master"
-        if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairShip = AttrDict(local=x)
-            tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/dev"
-        if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairRoot = AttrDict(dev=x)
-            tmp = os.environ["FAIRROOTPATH"] + "/../FairRoot/.git/refs/heads/master"
-        if os.path.isfile(tmp):
-            x = subprocess.check_output(["more", tmp]).replace("\n", "")
-            o.FairRoot = AttrDict(master=x)
+        source_dir = os.environ.get("FAIRSHIP", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        with contextlib.suppress(subprocess.CalledProcessError, FileNotFoundError):
+            o.FairShip = subprocess.check_output(
+                ["git", "-C", source_dir, "rev-parse", "HEAD"],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
     return o
 
 
