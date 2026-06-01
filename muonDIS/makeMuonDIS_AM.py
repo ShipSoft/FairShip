@@ -190,7 +190,8 @@ def makeMuonDIS():
         kc = myPythia.Pycomp(kf)
         myPythia.SetMDCY(kc, 1, 0)
 
-    seed = int(time.time() % 900000000)
+    seed = 880161889
+    #seed = int(time.time() % 900000000)
     myPythia.SetMRPY(1, seed)
     #dictionary: pythia beam definition to enable gamma radiations
     mutype = {-13: "gamma/mu+", 13: "gamma/mu-"}

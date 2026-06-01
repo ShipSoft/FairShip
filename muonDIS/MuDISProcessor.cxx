@@ -87,9 +87,11 @@ void MuDISProcessor::process_file(const std::string& input,
   fouttree = new TTree("MuonDIS", "Muon information, DIS products and soft interaction tracks");
   foutEv.InitTree(fouttree);
 
+  initPythia6();
   
   Long64_t n = ftree->GetEntries();
   LOG(info) << " tree with " << n << " entries" << std::endl;  
+
   ProcessMuons();
   
   outfile->cd();
@@ -176,6 +178,7 @@ void MuDISProcessor::ProcessMuons()
   
   for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent)
     {
+      if (iEvent%100==0) LOG(info) << "- Processing event " << iEvent << std::endl;
       ftree->GetEntry(iEvent);
 
       if (finEv.MCTrack==nullptr) continue;
@@ -209,12 +212,12 @@ void MuDISProcessor::ProcessMuons()
       fillSBTHits(muIdx);
       fillSSTHits(muIdx);
 
-      LOG(info) << " -- size of hits collections: " << std::endl
+      /*LOG(info) << " -- size of hits collections: " << std::endl
 		<< " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
 		<< " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
 		<< " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
 		<< " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
-
+      */
       
       std::string targetType;
       if (pid==13) targetType="gamma/mu+";
@@ -262,6 +265,14 @@ void MuDISProcessor::ProcessMuons()
 	      foutEv.DISparticles.push_back(adau);
 	    }//loop on daughters
 	}//loop on DIS events
+
+      /*LOG(info) << " -- size of DISparticles collections: " << std::endl
+		<< " ---- particles: " << foutEv.DISparticles.size() << std::endl
+		<< " ---- nDIS events: " << foutEv.nDISevts << std::endl
+		<< " ---- xsec: " << foutEv.DISxsec.size() << std::endl
+		<< " ---- target type: " << foutEv.DIStarget.size() << std::endl;
+      */
+
       fouttree->Fill();
       
 
