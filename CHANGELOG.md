@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
+
 ### Changed
 
 ### Fixed

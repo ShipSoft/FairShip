@@ -28,9 +28,11 @@ class GenieGenerator : public SHiP::Generator {
   /** public method ReadEvent **/
   using SHiP::Generator::Init;
   Bool_t OldReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEventGeometryDriver(FairPrimaryGenerator*);
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
+  void SetGenerationOption(Int_t GenOption) { fGenOption = GenOption; }
   Int_t GetNevents();
   void NuOnly() { fNuOnly = true; }
   void SetPositions(Double_t zTa, Double_t zS = -3400., Double_t zE = 2650.) {
@@ -54,7 +56,8 @@ class GenieGenerator : public SHiP::Generator {
   std::vector<TVector3> m_boxes;
   Bool_t cc, nuel;
   Int_t nf, neu;
-  FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
+  Int_t fGenOption = 0;  // default value, standard Genie Generator
+  FairLogger* fLogger;   //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
   int fNevents;
