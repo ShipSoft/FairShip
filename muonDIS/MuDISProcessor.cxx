@@ -18,7 +18,7 @@
 MuDISProcessor::MuDISProcessor() {
   ftree=0;
   fouttree=0;
-
+  
   fLogger = FairLogger::GetLogger();
   fnEvts=-1;
   fPythia = TPythia6::Instance();
@@ -26,6 +26,7 @@ MuDISProcessor::MuDISProcessor() {
 
   fnDIS = 10;
   fP6seed = 0;
+
 }
 
 void MuDISProcessor::init(const int & aEvts, const int & aDIS, const int & aSeed){
@@ -109,16 +110,11 @@ void MuDISProcessor::initEvent(){
   foutEv.sbtPt.reserve(30);
   foutEv.sstPt.clear();
   foutEv.sstPt.reserve(32);
-  foutEv.nDISevts = 0;
-  foutEv.DISxsec.clear();
-  foutEv.DISxsec.reserve(fnDIS);
-  foutEv.DIStarget.clear();
-  foutEv.DIStarget.reserve(fnDIS);
-  foutEv.nDISdau.clear();
-  foutEv.nDISdau.reserve(fnDIS);
-  foutEv.DISparticles.clear();
-  foutEv.DISparticles.reserve(10*fnDIS);
-
+  foutEv.brMS.initEvent(fnDIS);
+  foutEv.brUBT.initEvent(fnDIS);
+  foutEv.brSBT.initEvent(fnDIS);
+  foutEv.brSST.initEvent(fnDIS);
+  foutEv.brREST.initEvent(fnDIS);
 }
 
 void  MuDISProcessor::fillMCTracks(const Int_t aIdx)
@@ -166,6 +162,80 @@ void  MuDISProcessor::fillSSTHits(const Int_t aIdx)
     }
 }
 
+
+void MuDISProcessor::generateDISevents(const std::string & tType,
+				       const std::string & aLabel,
+				       const Path & aPath,
+				       MuonDISBranches & aDISBr)
+{
+
+  fPythia->Initialize("FIXT", tType.c_str(), "p+", aPath.P);  // target = "p+"
+  bool isProton = true;
+  //print summary of initialisation params
+  fPythia->Pylist(1);
+
+  double theta = TMath::ACos(aPath.pz / aPath.P);
+  //returns phi between -pi and pi
+  double phi = TMath::ATan2(aPath.py,aPath.px);
+
+
+  for (int ia(0); ia < fnDIS; ++ia)
+    {
+      //half-way through, we change to neutron target with 50-50 : ---> update to real material ??
+      if (ia == static_cast<int>(fnDIS / 2)){
+	fPythia->Initialize("FIXT", tType.c_str(), "n0", aPath.P);  // target = "n0"
+	isProton = false;
+      }
+      
+      fPythia->GenerateEvent();
+      aDISBr.nDISevts++;
+      //clean all but final stable particles
+      fPythia->Pyedit(1);
+	  
+      aDISBr.DISxsec.push_back(fPythia->GetPARI(1)); //in mb
+      aDISBr.DIStarget.push_back(isProton);
+      // choose a random vertex position to set to all daughters
+      double vtx_z = gRandom->Uniform(aPath.startZ, aPath.endZ);
+      aDISBr.DISvz.push_back(vtx_z);
+      aDISBr.DISvx.push_back(aPath.GetX(vtx_z));
+      aDISBr.DISvy.push_back(aPath.GetY(vtx_z));
+      aDISBr.DISvt.push_back(aPath.GetTimeNs(vtx_z));
+
+      unsigned ndaugh = fPythia->GetN();
+      aDISBr.nDISdau.push_back(ndaugh);
+	  
+      //loop over daughters and rotate in muon input direction
+      for (unsigned itrk(1); itrk<ndaugh + 1; ++itrk)
+	{
+	  DISparticle adau;
+	  adau.pid = fPythia->GetK(itrk, 2);
+	  TVector3 dauP(0,0,0);
+	  TVector3 indauP(fPythia->GetP(itrk, 1),
+			  fPythia->GetP(itrk, 2),
+			  fPythia->GetP(itrk, 3));
+	  rotate(indauP,theta,phi,dauP);
+	  adau.px = dauP.X();
+	  adau.py = dauP.Y();
+	  adau.pz = dauP.Z();
+	  double psq = dauP.Mag2();
+	  double masssq = pow(fPDG->GetParticle(adau.pid)->Mass(),2);
+	  adau.E = TMath::Sqrt(masssq + psq);
+	  aDISBr.DISparticles.push_back(adau);
+	}//loop on daughters
+
+      //	  
+    }//loop on DIS events
+  
+  LOG(info) << " -- path " << aLabel
+	    << " -- size of DISparticles collections: " << std::endl
+    << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
+    << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
+    << " ---- xsec: " << aDISBr.DISxsec.size() << std::endl
+    << " ---- target type: " << aDISBr.DIStarget.size() << std::endl;
+  
+}
+
+
 void MuDISProcessor::ProcessMuons()
 {
   LOG(info) << "Start of event loop" << std::endl;
@@ -188,14 +258,12 @@ void MuDISProcessor::ProcessMuons()
       
       //interested in the first muon track - for PG setting
       //@FIXME AMM adapt also to MuonBack input, take all muons?
+      //for now take MCTrack[0]
       Int_t muIdx = 0;
       
       ShipMCTrack & track = (*finEv.MCTrack)[static_cast<unsigned>(muIdx)];
       int pid = track.GetPdgCode();
-      double theta = TMath::ACos(track.GetPz() / track.GetP());
-      //returns phi between -pi and pi
-      double phi = TMath::ATan2(track.GetPy(), track.GetPx());
-
+      
       if (pid==13) nplus++;
       else if (pid==-13) nminus++;
       else {
@@ -211,73 +279,39 @@ void MuDISProcessor::ProcessMuons()
       fillUBTHits(muIdx);
       fillSBTHits(muIdx);
       fillSSTHits(muIdx);
-
-      /*LOG(info) << " -- size of hits collections: " << std::endl
+      
+      LOG(info) << " -- size of hits collections: " << std::endl
 		<< " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
 		<< " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
 		<< " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
 		<< " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
-      */
+      
       
       std::string targetType;
       if (pid==13) targetType="gamma/mu+";
       else targetType="gamma/mu-";
-      fPythia->Initialize("FIXT", targetType.c_str(), "p+", track.GetP());  // target = "p+"
-      bool isProton = true;
-      //print summary of initialisation params
-      fPythia->Pylist(1);
 
-      for (int ia(0); ia < fnDIS; ++ia)
-	{
-	  //half-way through, we change to neutron target with 50-50 : ---> update to real material ??
-	  if (ia == static_cast<int>(fnDIS / 2)){
-	    fPythia->Initialize("FIXT", targetType.c_str(), "n0", track.GetP());  // target = "n0"
-	    isProton = false;
-	  }
-	  
-	  fPythia->GenerateEvent();
-	  foutEv.nDISevts++;
-	  //clean all but final stable particles
-	  fPythia->Pyedit(1);
-	  
-	  foutEv.DISxsec.push_back(fPythia->GetPARI(1)); //in mb
-	  foutEv.DIStarget.push_back(isProton);
+      //retrieve a map of material label, with same density, and lengths, and [zin,zout] ranges
+      fGeoProcessor.initialise(foutEv);
+      std::map<std::string,Path> & lPathMap = fGeoProcessor.FillMuonPath();
 
-	  unsigned ndaugh = fPythia->GetN();
-	  foutEv.nDISdau.push_back(ndaugh);
-	  
-	  //loop over daughters and rotate in muon input direction
-	  for (unsigned itrk(1); itrk<ndaugh + 1; ++itrk)
-	    {
-	      DISparticle adau;
-	      adau.pid = fPythia->GetK(itrk, 2);
-	      TVector3 dauP(0,0,0);
-	      TVector3 indauP(fPythia->GetP(itrk, 1),
-			      fPythia->GetP(itrk, 2),
-			      fPythia->GetP(itrk, 3));
-	      rotate(indauP,theta,phi,dauP);
-	      adau.px = dauP.X();
-	      adau.py = dauP.Y();
-	      adau.pz = dauP.Z();
-	      double psq = dauP.Mag2();
-	      double masssq = pow(fPDG->GetParticle(adau.pid)->Mass(),2);
-	      adau.E = TMath::Sqrt(masssq + psq);
-	      foutEv.DISparticles.push_back(adau);
-	    }//loop on daughters
-	}//loop on DIS events
-
-      /*LOG(info) << " -- size of DISparticles collections: " << std::endl
-		<< " ---- particles: " << foutEv.DISparticles.size() << std::endl
-		<< " ---- nDIS events: " << foutEv.nDISevts << std::endl
-		<< " ---- xsec: " << foutEv.DISxsec.size() << std::endl
-		<< " ---- target type: " << foutEv.DIStarget.size() << std::endl;
-      */
-
+      if (lPathMap.size()==0){
+	LOG(error) << " -- No elements in path... Not doing anything...";
+	continue;
+      }
+      
+      //loop over the map, and do nDIS event in each element, with weight length*density. That way, do only once the calculation of the path, and plenty of DIS in each material.
+      //fill a branch with weight = path length*density.
+      generateDISevents(targetType,"MS",lPathMap.find("MS")->second,foutEv.brMS);
+      generateDISevents(targetType,"UBT",lPathMap.find("UBT")->second,foutEv.brUBT);
+      generateDISevents(targetType,"SBT",lPathMap.find("SBT")->second,foutEv.brSBT);
+      generateDISevents(targetType,"SST",lPathMap.find("SST")->second,foutEv.brSST);
+      generateDISevents(targetType,"REST",lPathMap.find("REST")->second,foutEv.brREST);
+      
       fouttree->Fill();
       
-
     }//loop on events
-
+  
   LOG(info) << "Found " << nplus << " mu+ and "
 	    << nminus << " mu-."
 	    << std::endl;

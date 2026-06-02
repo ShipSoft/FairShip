@@ -10,6 +10,8 @@ import ROOT as r
 import shipunit as u
 from tabulate import tabulate
 import time
+import geometry_config
+
 
 pdg = r.TDatabasePDG.Instance()
 
@@ -26,7 +28,7 @@ parser.add_argument("-n", "--n_events", type=int, default=-1)
 #                    required=False,default=0,type=int)
 parser.add_argument("-d","--nDIS",help="Number of DIS per muon to generate",
                     required=False,default=1000,type=int)
-
+parser.add_argument("-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True)
 
 args = parser.parse_args()
 
@@ -35,6 +37,16 @@ logging.info(f"Path to MuonBackground : {args.inputfile}")
 
 theseed=int(time.time())
 print(theseed)
+
+
+#fgeo = ROOT.TFile.Open(args.geoFile)
+#geoMat = ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
+
+#from ShipGeoConfig import load_from_root_file
+
+# load Shipgeo dictionary
+#ShipGeo = load_from_root_file(fgeo, "ShipGeo")
+
 
 muDis = r.MuDISProcessor()
 muDis.init(args.n_events,args.nDIS,theseed)

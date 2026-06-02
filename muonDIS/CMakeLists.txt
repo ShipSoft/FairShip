@@ -3,7 +3,7 @@
 
 ship_add_library(
   NAME ShipMuDIS
-  SOURCES MuDISProcessor.cxx
+  SOURCES MuDISProcessor.cxx MuGeoProcessor.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData veto UpstreamTagger strawtubes EvtGen::EvtGen EvtGen::EvtGenExternal FairLogger::FairLogger pythia6::pythia6 pythia6::Pythia6
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}

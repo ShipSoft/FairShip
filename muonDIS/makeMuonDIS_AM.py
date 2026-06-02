@@ -135,7 +135,7 @@ def inspect_file(filename):
 
         firstDIS = event.DISParticles[0]
         partPz = float(firstDIS[3])
-        firstSoft = event.SoftParticles[0]
+        firstSoft = event.SoftParticles[1]
         softpartPz = float(firstSoft[3])
         
         table_rows.append(
@@ -376,4 +376,4 @@ def makeMuonDIS():
 
 if __name__ == "__main__":
     makeMuonDIS()
-    #inspect_file(args.outputFile)
+    inspect_file(args.outputFile)
