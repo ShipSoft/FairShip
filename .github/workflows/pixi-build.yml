@@ -10,19 +10,9 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          lfs: true
-      - uses: prefix-dev/setup-pixi@v0.9.6
-      - name: Build
-        run: |
-          pixi run --locked configure
-          pixi run --locked build
-      - name: Test
-        run: pixi run --locked test
-      - name: Simulation test
-        run: pixi run --locked python macro/run_simScript.py --test
-        env:
-          QT_QPA_PLATFORM: offscreen
+    uses: ShipSoft/.github/.github/workflows/pixi-cmake-build.yml@main
+    with:
+      lfs: true
+      tasks: '["configure", "build", "test", "ci-sim"]'
+      env-vars: |
+        QT_QPA_PLATFORM=offscreen
