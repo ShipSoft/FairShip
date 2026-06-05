@@ -60,3 +60,39 @@ configure = { cmd = """cmake -S . -B build -G Ninja \
 build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
 install = { cmd = "cmake --install build", depends-on = ["build"] }
 test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }
+
+# --- CI sim-chain tasks ---
+# Mirror the per-step commands in .github/workflows/build-run.yml so the
+# whole sim/reco/ana/benchmark chain is reproducible locally via `pixi run`.
+# Each task is standalone; the CI workflow invokes them in order. Files are
+# tagged `ci-test` (sim chain) and `ci-benchmark` (tracking) so successive
+# steps can find each other's outputs.
+
+[tasks.ci-sim]
+args = [
+  { arg = "vessel", default = "vacuums" },
+  { arg = "snd_design", default = "all" },
+  { arg = "muon_shield", default = "TRY_2025" },
+]
+cmd = "python macro/run_simScript.py --test --debug 2 --{{ vessel }} --SND --SND_design={{ snd_design }} --shieldName {{ muon_shield }} --EvtGenDecayer --tag ci-test"
+
+[tasks.ci-overlap-check]
+cmd = "python python/experimental/check_overlaps.py --geofile geo_ci-test.root | tee overlap.log && ! grep -q Overlap overlap.log"
+
+[tasks.ci-geo-info]
+cmd = "python macro/getGeoInformation.py --geometry geo_ci-test.root --level 2"
+
+[tasks.ci-reco]
+cmd = "python macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --patRec AR --Debug"
+
+[tasks.ci-ana]
+cmd = "python macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
+
+[tasks.ci-analysis-example]
+cmd = "python examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
+
+[tasks.ci-tracking-benchmark]
+cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmark --output-json tracking_metrics.json"
+
+[tasks.ci-fixed-target]
+cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
