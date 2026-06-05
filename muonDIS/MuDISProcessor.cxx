@@ -228,10 +228,19 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
   
   LOG(info) << " -- path " << aLabel
 	    << " -- size of DISparticles collections: " << std::endl
-    << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
-    << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
-    << " ---- xsec: " << aDISBr.DISxsec.size() << std::endl
-    << " ---- target type: " << aDISBr.DIStarget.size() << std::endl;
+	    << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
+	    << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
+	    << " ---- xsec: " ;
+  for (int i(0);i<aDISBr.nDISevts;++i){
+    LOG(info) << aDISBr.DISxsec[i] << " " ;
+  }
+  LOG(info) << " ---- vertex: " ;
+  for (int i(0);i<aDISBr.nDISevts;++i){
+    LOG(info) << "(" << aDISBr.DISvx[i] << ","
+	      << aDISBr.DISvy[i] << ","
+	      << aDISBr.DISvz[i] << ","
+	      << aDISBr.DISvt[i] << ") ";
+  }
   
 }
 
@@ -302,11 +311,16 @@ void MuDISProcessor::ProcessMuons()
       
       //loop over the map, and do nDIS event in each element, with weight length*density. That way, do only once the calculation of the path, and plenty of DIS in each material.
       //fill a branch with weight = path length*density.
-      generateDISevents(targetType,"MS",lPathMap.find("MS")->second,foutEv.brMS);
-      generateDISevents(targetType,"UBT",lPathMap.find("UBT")->second,foutEv.brUBT);
-      generateDISevents(targetType,"SBT",lPathMap.find("SBT")->second,foutEv.brSBT);
-      generateDISevents(targetType,"SST",lPathMap.find("SST")->second,foutEv.brSST);
-      generateDISevents(targetType,"REST",lPathMap.find("REST")->second,foutEv.brREST);
+      if (lPathMap.find("MS")!=lPathMap.end())
+	generateDISevents(targetType,"MS",lPathMap.find("MS")->second,foutEv.brMS);
+      if (lPathMap.find("UBT")!=lPathMap.end())
+	generateDISevents(targetType,"UBT",lPathMap.find("UBT")->second,foutEv.brUBT);
+      if (lPathMap.find("SBT")!=lPathMap.end())
+	generateDISevents(targetType,"SBT",lPathMap.find("SBT")->second,foutEv.brSBT);
+      if (lPathMap.find("SST")!=lPathMap.end())
+	generateDISevents(targetType,"SST",lPathMap.find("SST")->second,foutEv.brSST);
+      if (lPathMap.find("REST")!=lPathMap.end())
+	generateDISevents(targetType,"REST",lPathMap.find("REST")->second,foutEv.brREST);
       
       fouttree->Fill();
       

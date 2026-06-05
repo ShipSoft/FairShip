@@ -38,15 +38,15 @@ logging.info(f"Path to MuonBackground : {args.inputfile}")
 theseed=int(time.time())
 print(theseed)
 
+fgeo = r.TFile.Open(args.geoFile)
+# Read geometry
+geo = fgeo.Get("FAIRGeom")
 
-#fgeo = ROOT.TFile.Open(args.geoFile)
-#geoMat = ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
+# Make it the global geometry manager
+r.gGeoManager = geo
 
-#from ShipGeoConfig import load_from_root_file
-
-# load Shipgeo dictionary
-#ShipGeo = load_from_root_file(fgeo, "ShipGeo")
-
+# Check
+r.gGeoManager.Print()# Read geometry
 
 muDis = r.MuDISProcessor()
 muDis.init(args.n_events,args.nDIS,theseed)

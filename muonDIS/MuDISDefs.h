@@ -18,16 +18,6 @@
 const Double_t c_light = 29.9792458;             // speed of light in cm/ns
 const Double_t muon_mass = 0.10565999895334244;  // muon mass in GeV
 
-enum flag {
-  MS=0,
-  UBT=1,
-  SBT=2,
-  SST=3,
-  AIR=4,
-  HE=5,
-  ALL=6
-};
-
 struct Path {
   std::string volName;
   std::string label;
@@ -47,8 +37,19 @@ struct Path {
   double length;
   double v;
   std::vector<std::pair<double,double>> addZ;
+
+  void SetStartInfo(const TVector3 & vecpos, const TVector3 vecp, const double & time){
+    startX = vecpos.X();
+    startY = vecpos.Y();
+    startT = time;
+    P = vecp.Mag();
+    px = vecp.X();
+    py = vecp.Y();
+    pz = vecp.Z();
+  }
   
   void init(){
+    label = GetLabel(volName,material);
     tx = px/pz;
     ty = py/pz;
     length = GetLength(endZ);
@@ -56,18 +57,31 @@ struct Path {
       TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
   }
 
-  double GetX(const double aZ) const{
+  std::string GetLabel(const std::string & aVol,const std::string & aMat){
+    if (aVol.find("Magn")!=aVol.npos) return "MS";
+    else if (aVol.find("Upstream")!=aVol.npos) return "UBT";
+    else if (aVol.find("Decay")!=aVol.npos && aMat.find("helium")!=aMat.npos) return "He";
+    else if (aMat.find("air")!=aMat.npos) return "Air";
+    else if (aVol.find("straw")!=aVol.npos) return "SST";
+    else if (aVol.find("gas")!=aVol.npos && aMat.find("STT")!=aMat.npos) return "SST";
+    else return "REST";
+
+    //else if (aVol.find("")!=aVol.npos && aMat.find("")!=aMat.npos) return "";
+    //else if (aVol.find("")!=aVol.npos) return "";
+  }
+  
+  double GetX(const double & aZ) const{
     return startX + (aZ-startZ)*tx;
   }
-  double GetY(const double aZ) const{
+  double GetY(const double & aZ) const{
     return startY + (aZ-startZ)*ty;
   }
-  double GetLength(const double aZ) const{
+  double GetLength(const double & aZ) const{
     return TMath::Sqrt(TMath::Power(GetX(aZ) - startX, 2) +
 		       TMath::Power(GetY(aZ) - startY, 2) +
 		       TMath::Power(aZ - startZ, 2));  // in cm
   }
-  double GetTimeNs(const double aZ) const{
+  double GetTimeNs(const double & aZ) const{
     return startT + GetLength(aZ)/v;
   }
 

@@ -42,6 +42,9 @@ class MuGeoProcessor {
   double fUBTT;
   double fSBTT;
   double fSSTT;
+  bool fhasUBThit;
+  bool fhasSBThit;
+  bool fhasSSThit;
   
   std::map<std::string,Path> fPathMap;
 
