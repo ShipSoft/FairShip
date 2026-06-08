@@ -28,6 +28,10 @@ weightCharm1GeV = 4895.24
 # for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+# Active weight, set by the per-source entry points before they call
+# the neutrino histogram fillers.
+weight: float = weightMbias
+
 
 h = {}
 PDG = ROOT.TDatabasePDG.Instance()

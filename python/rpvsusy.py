@@ -398,7 +398,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino decay width
         """
         declist = self.decays[self.bench]
-        hadlist = [re.search(r"->\ (.+?)\ ", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist if (m := re.search(r"->\ (.+?)\ ", dec))]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         print(leplist, hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
@@ -409,7 +409,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino production width
         """
         declist = self.prods[self.bench]
-        hadlist = [re.search(r"(.+?)\ ->", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist if (m := re.search(r"(.+?)\ ->", dec))]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
         return totalwidth
