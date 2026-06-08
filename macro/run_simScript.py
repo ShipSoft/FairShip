@@ -957,19 +957,25 @@ if options.muonback:
 
     branches = ROOT.TList()
     branches.SetName("BranchList")
-    branches.Add(ROOT.TObjString("MCTrack"))
-    branches.Add(ROOT.TObjString("vetoPoint"))
-    branches.Add(ROOT.TObjString("ShipRpcPoint"))
-    branches.Add(ROOT.TObjString("TargetPoint"))
-    branches.Add(ROOT.TObjString("TTPoint"))
-    branches.Add(ROOT.TObjString("ScoringPoint"))
-    branches.Add(ROOT.TObjString("strawtubesPoint"))
-    branches.Add(ROOT.TObjString("TimeDetPoint"))
-    branches.Add(ROOT.TObjString("MCEventHeader"))
-    branches.Add(ROOT.TObjString("UpstreamTaggerPoint"))
-    branches.Add(ROOT.TObjString("MTCdetPoint"))
-    branches.Add(ROOT.TObjString("SiliconTargetPoint"))
-    branches.Add(ROOT.TObjString("sGeoTracks"))
+    branches.SetOwner(True)
+    for name in (
+        "MCTrack",
+        "vetoPoint",
+        "ShipRpcPoint",
+        "TargetPoint",
+        "TTPoint",
+        "ScoringPoint",
+        "strawtubesPoint",
+        "TimeDetPoint",
+        "MCEventHeader",
+        "UpstreamTaggerPoint",
+        "MTCdetPoint",
+        "SiliconTargetPoint",
+        "sGeoTracks",
+    ):
+        obj = ROOT.TObjString(name)
+        ROOT.SetOwnership(obj, False)  # C++ TList takes ownership
+        branches.Add(obj)
 
     sTree.AutoSave()
     fSink.WriteObject(branches, "BranchList", ROOT.TObject.kSingleKey)
