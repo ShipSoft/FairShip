@@ -63,7 +63,7 @@ output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
 output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 
-h = {}
+h: dict[str, "r.TH1"] = {}
 h["PvPt_muon"] = r.TH2F(
     "PvPt_muon",
     "The momentum of the muons hitting the SBT(unweighted);P(GeV/c);Pt(GeV/c)",

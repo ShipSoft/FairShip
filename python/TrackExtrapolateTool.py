@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from typing import Any
+
 import ROOT
 import shipunit as u
 
@@ -19,8 +21,9 @@ else:
     z_ecal = 100 * u.m
 
 
-def extrapolateToPlane(fT, z):
-    # etrapolate to a plane perpendicular to beam direction (z)
+def extrapolateToPlane(fT, z) -> tuple[bool, Any, Any]:
+    # extrapolate to a plane perpendicular to beam direction (z).
+    # When rc is False, pos and mom are None — callers must check rc first.
     rc, pos, mom = False, None, None
     fst = fT.getFitStatus()
     if fst.isFitConverged() and fst.getNdf() > minNdf:

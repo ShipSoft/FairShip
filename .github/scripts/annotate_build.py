@@ -120,7 +120,7 @@ def create_annotation(parsed, repo_dir="FairShip") -> str:
 
 def main() -> None:
     """Parse stdin and output annotations."""
-    annotation_count = {"error": 0, "warning": 0, "notice": 0}
+    annotation_count: dict[str, int] = {"error": 0, "warning": 0, "notice": 0}
 
     for line in sys.stdin:
         # Print original line for logging
