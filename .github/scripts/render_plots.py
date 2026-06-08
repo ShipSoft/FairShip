@@ -119,6 +119,14 @@ def main() -> int:
         all_rendered.extend(rendered)
         root_file.Close()
 
+    if not all_rendered:
+        print(
+            f"ERROR: rendered 0 plots from inputs {args.inputs}; "
+            f"refusing to write empty manifest at {output_dir / 'manifest.json'}",
+            file=sys.stderr,
+        )
+        return 1
+
     manifest = {
         "job": args.job,
         "config": args.config,
