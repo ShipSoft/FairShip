@@ -45,6 +45,12 @@ cmake = ">=3.27"
 ninja = "*"
 cxx-compiler = "*"
 
+# Static analysis
+clang-tools = "*"  # provides clang-tidy
+
+[pypi-dependencies]
+pyrefly = "*"
+
 [activation]
 scripts = ["activate.sh"]
 env = { FAIRROOTPATH = "$CONDA_PREFIX", ROOT_INCLUDE_PATH = "$CONDA_PREFIX/include:$CONDA_PREFIX/include/geant4vmc:$CONDA_PREFIX/include/Geant4:$CONDA_PREFIX/include/vmc" }
@@ -54,6 +60,7 @@ configure = { cmd = """cmake -S . -B build -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
     -DGeant4VMC_DIR=$CONDA_PREFIX/lib/Geant4VMC-6.7.1 \
     "-DCMAKE_CXX_FLAGS=-isystem $CONDA_PREFIX/include/geant4vmc -isystem $CONDA_PREFIX/include/Geant4" """ }
@@ -96,3 +103,29 @@ cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmar
 
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
+
+# --- CI plot rendering tasks ---
+# Wrap .github/scripts/render_plots.py for each per-job output set. The
+# CI workflow invokes these after the corresponding sim/reco step. The
+# `config` arg gives the per-matrix subdirectory under plots/.
+
+[tasks.ci-render-plots-sim-chain]
+args = [{ arg = "config", default = "pixi-default" }]
+cmd = "python .github/scripts/render_plots.py recohists.root sim_ci-test_ana.root --output-dir plots/sim-chain/{{ config }} --job sim-chain --config {{ config }}"
+
+[tasks.ci-render-plots-tracking-benchmark]
+cmd = "python .github/scripts/render_plots.py tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/pixi --job tracking-benchmark --config pixi"
+
+[tasks.ci-render-plots-fixed-target]
+cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
+
+# --- CI static analysis tasks ---
+# clang-tidy and pyrefly take file lists via the CPP_FILES / PY_FILES env vars
+# so the workflow can pass them in without fighting pixi's positional-args
+# expansion.
+
+[tasks.ci-clang-tidy]
+cmd = "echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py"
+
+[tasks.ci-pyrefly]
+cmd = "pyrefly check --output-format=github $PY_FILES"
