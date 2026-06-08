@@ -5,8 +5,6 @@ MuGeoProcessor::MuGeoProcessor(){
     fhasUBThit=false;
     fhasSBThit=false;
     fhasSSThit=false;
-
-
 }
   
   /** destructor **/
@@ -122,7 +120,7 @@ std::map<std::string,Path> & MuGeoProcessor::FillMuonPath(){
     currentnode = gGeoManager->FindNextBoundaryAndStep();
     snext = gGeoManager->GetStep();
     lInfo << " step " << snext;
-    LOG(info) << lInfo.str();
+    LOG(debug) << lInfo.str();
   
     lpath.endZ = lpath.startZ+snext;
     lpath.init();

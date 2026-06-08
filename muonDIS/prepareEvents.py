@@ -15,7 +15,8 @@ import geometry_config
 
 pdg = r.TDatabasePDG.Instance()
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 r.gSystem.Load("libShipMuDIS.so")
 

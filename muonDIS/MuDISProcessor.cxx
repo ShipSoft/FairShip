@@ -52,9 +52,12 @@ void MuDISProcessor::initPythia6(){
   }
 
   int seed = static_cast<int>(fP6seed % 900000000);
-  LOG(info) << "Pythia6 seed set to " << fP6seed << " wrapped to " << seed << std::endl;
+  LOG(info) << " * Pythia6 seed set to " << fP6seed << " wrapped to " << seed << std::endl;
   fPythia->SetMRPY(1, seed);
+  // To direct specific verbose Pythia6 output to a special file.
   fPythia->SetMSTU(11, 11);
+  // For standard output stream it would be:
+  //fPythia->SetMSTU(11, 6);
 }
 
 void MuDISProcessor::rotate(const TVector3 & pvec,
@@ -91,7 +94,7 @@ void MuDISProcessor::process_file(const std::string& input,
   initPythia6();
   
   Long64_t n = ftree->GetEntries();
-  LOG(info) << " tree with " << n << " entries" << std::endl;  
+  LOG(info) << " * input tree with " << n << " entries" << std::endl;  
 
   ProcessMuons();
   
@@ -102,18 +105,25 @@ void MuDISProcessor::process_file(const std::string& input,
 }
 
 void MuDISProcessor::initEvent(){
+  // soft particles
   foutEv.mcTrks.clear();
   foutEv.mcTrks.reserve(20);
+  // At the moment only one hit, @TODO AMM-adapt for future real detector
   foutEv.ubtPt.clear();
   foutEv.ubtPt.reserve(1);
+  // SBT hits, could be more for muons travelling through aligned with vessel.
   foutEv.sbtPt.clear();
   foutEv.sbtPt.reserve(30);
+  // 8 straws per tracker station, 4 TS.
   foutEv.sstPt.clear();
   foutEv.sstPt.reserve(32);
+  //Number of DIS events generated per volume.
   foutEv.brMS.initEvent(fnDIS);
   foutEv.brUBT.initEvent(fnDIS);
   foutEv.brSBT.initEvent(fnDIS);
   foutEv.brSST.initEvent(fnDIS);
+  foutEv.brHE.initEvent(fnDIS);
+  foutEv.brAIR.initEvent(fnDIS);
   foutEv.brREST.initEvent(fnDIS);
 }
 
@@ -178,7 +188,7 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
   //returns phi between -pi and pi
   double phi = TMath::ATan2(aPath.py,aPath.px);
 
-
+  double lastxs = 0;
   for (int ia(0); ia < fnDIS; ++ia)
     {
       //half-way through, we change to neutron target with 50-50 : ---> update to real material ??
@@ -191,15 +201,20 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
       aDISBr.nDISevts++;
       //clean all but final stable particles
       fPythia->Pyedit(1);
-	  
-      aDISBr.DISxsec.push_back(fPythia->GetPARI(1)); //in mb
+
+      lastxs = fPythia->GetPARI(1); //in mb
+      aDISBr.DISxsec.push_back(lastxs); //in mb
       aDISBr.DIStarget.push_back(isProton);
+
       // choose a random vertex position to set to all daughters
-      double vtx_z = gRandom->Uniform(aPath.startZ, aPath.endZ);
-      aDISBr.DISvz.push_back(vtx_z);
-      aDISBr.DISvx.push_back(aPath.GetX(vtx_z));
-      aDISBr.DISvy.push_back(aPath.GetY(vtx_z));
-      aDISBr.DISvt.push_back(aPath.GetTimeNs(vtx_z));
+      // Take into account "broken" paths with different slices in z.
+      double vtx_z = gRandom->Uniform(aPath.startZ, aPath.startZ+aPath.zlength);
+      // put back to real Z position for paths with different slices in z.
+      double realz = aPath.GetZ(vtx_z);
+      aDISBr.DISvz.push_back(realz);
+      aDISBr.DISvx.push_back(aPath.GetX(realz));
+      aDISBr.DISvy.push_back(aPath.GetY(realz));
+      aDISBr.DISvt.push_back(aPath.GetTimeNs(realz));
 
       unsigned ndaugh = fPythia->GetN();
       aDISBr.nDISdau.push_back(ndaugh);
@@ -225,21 +240,27 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
 
       //	  
     }//loop on DIS events
+
+  //calculate weight
+  //@FIXME AMM propagate input muon weight too
+  //times length divided by length, length cancels out...
+  aDISBr.wDIS = lastxs/fnDIS*aPath.wdensity;
   
-  LOG(info) << " -- path " << aLabel
-	    << " -- size of DISparticles collections: " << std::endl
-	    << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
-	    << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
-	    << " ---- xsec: " ;
+  LOG(debug) << " -- path " << aLabel
+	     << " -- size of DISparticles collections: " << std::endl
+	     << " ---- particles: " << aDISBr.DISparticles.size() << std::endl
+	     << " ---- nDIS events: " << aDISBr.nDISevts << std::endl
+	     << " ---- weightDIS: " << aDISBr.wDIS << std::endl
+	     << " ---- xsec: " ;
   for (int i(0);i<aDISBr.nDISevts;++i){
-    LOG(info) << aDISBr.DISxsec[i] << " " ;
+    LOG(debug) << aDISBr.DISxsec[i] << " " ;
   }
-  LOG(info) << " ---- vertex: " ;
+  LOG(debug) << " ---- vertex: " ;
   for (int i(0);i<aDISBr.nDISevts;++i){
-    LOG(info) << "(" << aDISBr.DISvx[i] << ","
-	      << aDISBr.DISvy[i] << ","
-	      << aDISBr.DISvz[i] << ","
-	      << aDISBr.DISvt[i] << ") ";
+    LOG(debug) << "(" << aDISBr.DISvx[i] << ","
+	       << aDISBr.DISvy[i] << ","
+	       << aDISBr.DISvz[i] << ","
+	       << aDISBr.DISvt[i] << ") ";
   }
   
 }
@@ -247,17 +268,17 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
 
 void MuDISProcessor::ProcessMuons()
 {
-  LOG(info) << "Start of event loop" << std::endl;
+  LOG(info) << " * Start of event loop" << std::endl;
   
   const Long64_t nEntries = fnEvts>0 ? std::min(static_cast<Long64_t>(fnEvts),ftree->GetEntries()) : ftree->GetEntries();
-  LOG(info) << "- Processing " << nEntries << " events" << std::endl;
+  LOG(info) << " - Processing " << nEntries << " events" << std::endl;
 
   unsigned nplus=0;
   unsigned nminus=0;
   
   for (Long64_t iEvent = 0; iEvent < nEntries; ++iEvent)
     {
-      if (iEvent%100==0) LOG(info) << "- Processing event " << iEvent << std::endl;
+      if (iEvent%100==0) LOG(info) << " --- Processing event " << iEvent << std::endl;
       ftree->GetEntry(iEvent);
 
       if (finEv.MCTrack==nullptr) continue;
@@ -289,11 +310,11 @@ void MuDISProcessor::ProcessMuons()
       fillSBTHits(muIdx);
       fillSSTHits(muIdx);
       
-      LOG(info) << " -- size of hits collections: " << std::endl
-		<< " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
-		<< " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
-		<< " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
-		<< " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
+      LOG(debug) << " -- size of hits collections: " << std::endl
+		 << " ---- mcTracks: " << foutEv.mcTrks.size() << std::endl
+		 << " ---- UBT Hits: " << foutEv.ubtPt.size() << std::endl
+		 << " ---- SBT Hits: " << foutEv.sbtPt.size() << std::endl
+		 << " ---- SST Hits: " << foutEv.sstPt.size() << std::endl;
       
       
       std::string targetType;
@@ -319,6 +340,10 @@ void MuDISProcessor::ProcessMuons()
 	generateDISevents(targetType,"SBT",lPathMap.find("SBT")->second,foutEv.brSBT);
       if (lPathMap.find("SST")!=lPathMap.end())
 	generateDISevents(targetType,"SST",lPathMap.find("SST")->second,foutEv.brSST);
+      if (lPathMap.find("HE")!=lPathMap.end())
+	generateDISevents(targetType,"HE",lPathMap.find("HE")->second,foutEv.brHE);
+      if (lPathMap.find("AIR")!=lPathMap.end())
+	generateDISevents(targetType,"AIR",lPathMap.find("AIR")->second,foutEv.brAIR);
       if (lPathMap.find("REST")!=lPathMap.end())
 	generateDISevents(targetType,"REST",lPathMap.find("REST")->second,foutEv.brREST);
       
@@ -329,8 +354,4 @@ void MuDISProcessor::ProcessMuons()
   LOG(info) << "Found " << nplus << " mu+ and "
 	    << nminus << " mu-."
 	    << std::endl;
-  // fPythia->SetMSTU(11, 6)
-  // logging.info(
-  //    f"DIS generated for muons (index {first_mu_event} - {last_mu_event - 1}) , output saved in {args.outputFile}, nDISPerMuon = {args.nDIS}"
-  // )
 }
