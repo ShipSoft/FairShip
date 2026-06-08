@@ -22,7 +22,7 @@ class PyTr1Rng : public Pythia8::RndmEngine {
   PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
   ~PyTr1Rng() override {};
 
-  Double_t flat() { return rng->Rndm(); };
+  Double_t flat() override { return rng->Rndm(); };
 
  private:
   TRandom1* rng;  //!
@@ -33,7 +33,7 @@ class PyTr3Rng : public Pythia8::RndmEngine {
   PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
   ~PyTr3Rng() override {};
 
-  Double_t flat() { return rng->Rndm(); };
+  Double_t flat() override { return rng->Rndm(); };
 
  private:
   TRandom3* rng;  //!

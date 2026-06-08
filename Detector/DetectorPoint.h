@@ -14,7 +14,7 @@ namespace SHiP {
 class DetectorPoint : public FairMCPoint {
  public:
   DetectorPoint() = default;
-  ~DetectorPoint() = default;
+  ~DetectorPoint() override = default;
 
   DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
                 TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
