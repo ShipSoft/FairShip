@@ -8,6 +8,7 @@ import random
 import sys
 import time
 from array import array
+from typing import Any
 
 import ROOT
 import rootUtils as ut
@@ -323,7 +324,9 @@ for kf in idsig:
     kc = myPythia.Pycomp(kf)
     myPythia.SetMDCY(kc, 1, 0)
 
-stack = 1000 * [0]  # declare the stack for the cascade particles
+# Heterogeneous cascade-particle stack: each slot is replaced with a list
+# `[pid, px, py, pz, depth, history, ...]` once populated.
+stack: list[Any] = 1000 * [0]
 for iev in range(args.nevgen):
     if iev % 1000 == 0:
         print("Generate event ", iev)

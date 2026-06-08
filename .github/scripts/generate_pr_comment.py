@@ -12,9 +12,10 @@ generates a concise summary for posting as a PR comment.
 import argparse
 import sys
 from pathlib import Path
+from typing import Any
 
 
-def parse_comparison_file(comparison_file: Path):
+def parse_comparison_file(comparison_file: Path) -> dict[str, Any]:
     """
     Parse a comparison result file and extract summary.
 
