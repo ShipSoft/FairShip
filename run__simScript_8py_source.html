@@ -1058,99 +1058,105 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span> </div>
 <div class="line"><a id="l00958" name="l00958"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">  958</a></span>    branches = ROOT.TList()</div>
 <div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    branches.SetName(<span class="stringliteral">&quot;BranchList&quot;</span>)</div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;MCTrack&quot;</span>))</div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;vetoPoint&quot;</span>))</div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;ShipRpcPoint&quot;</span>))</div>
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;TargetPoint&quot;</span>))</div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;TTPoint&quot;</span>))</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;ScoringPoint&quot;</span>))</div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;strawtubesPoint&quot;</span>))</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;TimeDetPoint&quot;</span>))</div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;MCEventHeader&quot;</span>))</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>))</div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;MTCdetPoint&quot;</span>))</div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>))</div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>    branches.Add(ROOT.TObjString(<span class="stringliteral">&quot;sGeoTracks&quot;</span>))</div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span> </div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>    sTree.AutoSave()</div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    fSink.WriteObject(branches, <span class="stringliteral">&quot;BranchList&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    fSink.SetOutTree(sTree)</div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> </div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>    fout.Close()</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>    print(<span class="stringliteral">&quot;removed empty events, left with:&quot;</span>, nEvents)</div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1">  980</a></span>    rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5">  981</a></span>    rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    fin.SetWritable(<span class="keyword">False</span>)  <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    branches.SetOwner(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    <span class="keywordflow">for</span> name <span class="keywordflow">in</span> (</div>
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>        <span class="stringliteral">&quot;MCTrack&quot;</span>,</div>
+<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>        <span class="stringliteral">&quot;vetoPoint&quot;</span>,</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>        <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>,</div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>        <span class="stringliteral">&quot;TargetPoint&quot;</span>,</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>        <span class="stringliteral">&quot;TTPoint&quot;</span>,</div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>        <span class="stringliteral">&quot;ScoringPoint&quot;</span>,</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>        <span class="stringliteral">&quot;strawtubesPoint&quot;</span>,</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        <span class="stringliteral">&quot;TimeDetPoint&quot;</span>,</div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>        <span class="stringliteral">&quot;MCEventHeader&quot;</span>,</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>        <span class="stringliteral">&quot;UpstreamTaggerPoint&quot;</span>,</div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>        <span class="stringliteral">&quot;MTCdetPoint&quot;</span>,</div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>        <span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>,</div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>        <span class="stringliteral">&quot;sGeoTracks&quot;</span>,</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    ):</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#ad89392286feabdc2ca66e8ed78ce0972">  976</a></span>        obj = ROOT.TObjString(name)</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>        ROOT.SetOwnership(obj, <span class="keyword">False</span>)  <span class="comment"># C++ TList takes ownership</span></div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>        branches.Add(obj)</div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span> </div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>    sTree.AutoSave()</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>    fSink.WriteObject(branches, <span class="stringliteral">&quot;BranchList&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    fSink.SetOutTree(sTree)</div>
 <div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span> </div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span><span class="keywordflow">if</span> options.mudis:</div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40">  985</a></span>    temp_filename = outFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_tmp.root&quot;</span>)</div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span> </div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>    <span class="keyword">with</span> (</div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>        ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_outputfile,</div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>        ROOT.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>) <span class="keyword">as</span> f_temp,</div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>    ):</div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a13d134b8428e3abc45861c286b2e251e">  991</a></span>        output_tree = f_outputfile[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af">  992</a></span>        muondis_tree = ROOT.TChain(<span class="stringliteral">&quot;DIS&quot;</span>)</div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> inputFile:</div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>            muondis_tree.Add(_f)</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span> </div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113">  996</a></span>        new_tree = output_tree.CloneTree(0)</div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1cfbffb329c1aafd6e1a04bbf6b9ad41">  998</a></span>        cross_section = array(<span class="stringliteral">&quot;f&quot;</span>, [0.0])</div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a3ecb79c114e71590f6b25ff34367d900">  999</a></span>        cross_section_leaf = new_tree.Branch(<span class="stringliteral">&quot;CrossSection&quot;</span>, cross_section, <span class="stringliteral">&quot;CrossSection/F&quot;</span>)</div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span> </div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>        <span class="keywordflow">for</span> output_event, muondis_event <span class="keywordflow">in</span> zip(output_tree, muondis_tree):</div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6"> 1002</a></span>            mu = muondis_event.InMuon[0]</div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>            cross_section[0] = mu[10]</div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>            new_tree.Fill()</div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span> </div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>        new_tree.Write(<span class="stringliteral">&quot;&quot;</span>, ROOT.TObject.kOverwrite)</div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span> </div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>    os.replace(temp_filename, outFile)</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>    print(<span class="stringliteral">&quot;Successfully added DISCrossSection to the output file:&quot;</span>, outFile)</div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span> </div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span><span class="keywordflow">if</span> options.command == <span class="stringliteral">&quot;Genie&quot;</span>:</div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    <span class="comment"># breakpoint()</span></div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <span class="comment"># Copy Genie (gst TTree) information to the output file</span></div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a2ffceeab5f9a8f1e0a57af53bfac65fd"> 1014</a></span>    input_path = inputFile[0] <span class="keywordflow">if</span> isinstance(inputFile, (list, tuple)) <span class="keywordflow">else</span> inputFile</div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328"> 1015</a></span>    f_input = ROOT.TFile.Open(input_path, <span class="stringliteral">&quot;READ&quot;</span>)</div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> f_input <span class="keywordflow">or</span> f_input.IsZombie():</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>        <span class="keywordflow">raise</span> OSError(f<span class="stringliteral">&quot;Failed to open GENIE input file: {input_path}&quot;</span>)</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa3e34199d5fbf0a1ded3a5a739c356da"> 1018</a></span>    gst = f_input[<span class="stringliteral">&quot;gst&quot;</span>]</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> gst:</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>        <span class="keywordflow">raise</span> KeyError(<span class="stringliteral">&quot;TTree &#39;gst&#39; not found in GENIE input file&quot;</span>)</div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span> </div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a749a0f8ac4a71bac9bc5125a66b765b4"> 1022</a></span>    selection_string = <span class="stringliteral">&quot;(Entry$ &gt;= &quot;</span> + str(options.firstEvent) + <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>    <span class="keywordflow">if</span> (options.firstEvent + options.nEvents) &lt; gst.GetEntries():</div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>        selection_string += <span class="stringliteral">&quot;&amp;&amp;(Entry$ &lt; &quot;</span> + str(options.firstEvent + options.nEvents) + <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span> </div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>    <span class="comment"># Reopen output file</span></div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a37d092a02a87e1aaa9cb2b0bb154437c"> 1027</a></span>    f_output = ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span> </div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>    <span class="comment"># Copy only the events used in this run</span></div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7d8ddabaf399fe627d86b2c91119fb14"> 1030</a></span>    gst_copy = gst.CopyTree(selection_string)</div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>    gst_copy.Write()</div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span> </div>
-<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span>    f_input.Close()</div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>    f_output.Close()</div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span> </div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span><span class="comment"># ------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span><span class="keyword">import</span> checkMagFields</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    fout.Close()</div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>    print(<span class="stringliteral">&quot;removed empty events, left with:&quot;</span>, nEvents)</div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1">  986</a></span>    rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5">  987</a></span>    rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>    fin.SetWritable(<span class="keyword">False</span>)  <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span> </div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span><span class="keywordflow">if</span> options.mudis:</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40">  991</a></span>    temp_filename = outFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_tmp.root&quot;</span>)</div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span> </div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>    <span class="keyword">with</span> (</div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>        ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_outputfile,</div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>        ROOT.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>) <span class="keyword">as</span> f_temp,</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>    ):</div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a13d134b8428e3abc45861c286b2e251e">  997</a></span>        output_tree = f_outputfile[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af">  998</a></span>        muondis_tree = ROOT.TChain(<span class="stringliteral">&quot;DIS&quot;</span>)</div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>        <span class="keywordflow">for</span> _f <span class="keywordflow">in</span> inputFile:</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>            muondis_tree.Add(_f)</div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span> </div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113"> 1002</a></span>        new_tree = output_tree.CloneTree(0)</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span> </div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1cfbffb329c1aafd6e1a04bbf6b9ad41"> 1004</a></span>        cross_section = array(<span class="stringliteral">&quot;f&quot;</span>, [0.0])</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a3ecb79c114e71590f6b25ff34367d900"> 1005</a></span>        cross_section_leaf = new_tree.Branch(<span class="stringliteral">&quot;CrossSection&quot;</span>, cross_section, <span class="stringliteral">&quot;CrossSection/F&quot;</span>)</div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span> </div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>        <span class="keywordflow">for</span> output_event, muondis_event <span class="keywordflow">in</span> zip(output_tree, muondis_tree):</div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6"> 1008</a></span>            mu = muondis_event.InMuon[0]</div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>            cross_section[0] = mu[10]</div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>            new_tree.Fill()</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span> </div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>        new_tree.Write(<span class="stringliteral">&quot;&quot;</span>, ROOT.TObject.kOverwrite)</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span> </div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    os.replace(temp_filename, outFile)</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>    print(<span class="stringliteral">&quot;Successfully added DISCrossSection to the output file:&quot;</span>, outFile)</div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span> </div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span><span class="keywordflow">if</span> options.command == <span class="stringliteral">&quot;Genie&quot;</span>:</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>    <span class="comment"># breakpoint()</span></div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>    <span class="comment"># Copy Genie (gst TTree) information to the output file</span></div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a2ffceeab5f9a8f1e0a57af53bfac65fd"> 1020</a></span>    input_path = inputFile[0] <span class="keywordflow">if</span> isinstance(inputFile, (list, tuple)) <span class="keywordflow">else</span> inputFile</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a669a7d1996acd05a5ba3f666bf0c0328"> 1021</a></span>    f_input = ROOT.TFile.Open(input_path, <span class="stringliteral">&quot;READ&quot;</span>)</div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> f_input <span class="keywordflow">or</span> f_input.IsZombie():</div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>        <span class="keywordflow">raise</span> OSError(f<span class="stringliteral">&quot;Failed to open GENIE input file: {input_path}&quot;</span>)</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa3e34199d5fbf0a1ded3a5a739c356da"> 1024</a></span>    gst = f_input[<span class="stringliteral">&quot;gst&quot;</span>]</div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> gst:</div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>        <span class="keywordflow">raise</span> KeyError(<span class="stringliteral">&quot;TTree &#39;gst&#39; not found in GENIE input file&quot;</span>)</div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span> </div>
+<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a749a0f8ac4a71bac9bc5125a66b765b4"> 1028</a></span>    selection_string = <span class="stringliteral">&quot;(Entry$ &gt;= &quot;</span> + str(options.firstEvent) + <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>    <span class="keywordflow">if</span> (options.firstEvent + options.nEvents) &lt; gst.GetEntries():</div>
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>        selection_string += <span class="stringliteral">&quot;&amp;&amp;(Entry$ &lt; &quot;</span> + str(options.firstEvent + options.nEvents) + <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span> </div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>    <span class="comment"># Reopen output file</span></div>
+<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a37d092a02a87e1aaa9cb2b0bb154437c"> 1033</a></span>    f_output = ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;UPDATE&quot;</span>)</div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span> </div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>    <span class="comment"># Copy only the events used in this run</span></div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7d8ddabaf399fe627d86b2c91119fb14"> 1036</a></span>    gst_copy = gst.CopyTree(selection_string)</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    gst_copy.Write()</div>
 <div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span> </div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span> </div>
-<div class="foldopen" id="foldopen01040" data-start="" data-end="">
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197"> 1040</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197">visualizeMagFields</a>() -&gt; None:</div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span> </div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span> </div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>    f_input.Close()</div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>    f_output.Close()</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span> </div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span><span class="comment"># ------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span><span class="keyword">import</span> checkMagFields</div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span> </div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span> </div>
+<div class="foldopen" id="foldopen01046" data-start="" data-end="">
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197"> 1046</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197">visualizeMagFields</a>() -&gt; None:</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>    <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span> </div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span> </div>
 </div>
-<div class="foldopen" id="foldopen01044" data-start="" data-end="">
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f"> 1044</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f">checkOverlapsWithGeant4</a>() -&gt; None:</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>    mygMC = ROOT.TGeant4.GetMC()</div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
+<div class="foldopen" id="foldopen01050" data-start="" data-end="">
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f"> 1050</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f">checkOverlapsWithGeant4</a>() -&gt; None:</div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span>    <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span>    mygMC = ROOT.TGeant4.GetMC()</div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span>    mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
 </div>
 <div class="ttc" id="anamespaceCMBG__conf_html_ad95691e78742115af94d2ddc4c3aeecc"><div class="ttname"><a href="namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc">CMBG_conf.configure</a></div><div class="ttdeci">configure(CMBG, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="CMBG__conf_8py_source.html#l00005">CMBG_conf.py:5</a></div></div>
 <div class="ttc" id="anamespacecheckMagFields_html_a65e69e17f1b05eb283a8bb6d5d695249"><div class="ttname"><a href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a></div><div class="ttdeci">run()</div><div class="ttdef"><b>Definition</b> <a href="checkMagFields_8py_source.html#l00011">checkMagFields.py:11</a></div></div>
@@ -1161,8 +1167,8 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="ttc" id="anamespacepythia8__conf_html_a7ee1fed6e3aa8984a5f3e1e0f92e492a"><div class="ttname"><a href="namespacepythia8__conf.html#a7ee1fed6e3aa8984a5f3e1e0f92e492a">pythia8_conf.configurerpvsusy</a></div><div class="ttdeci">None configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, bool deepCopy=False, bool debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8__conf_8py_source.html#l00032">pythia8_conf.py:34</a></div></div>
 <div class="ttc" id="anamespacepythia8__conf_html_afbe9bd6344e6a6a4920207fc7c3101c8"><div class="ttname"><a href="namespacepythia8__conf.html#afbe9bd6344e6a6a4920207fc7c3101c8">pythia8_conf.configure</a></div><div class="ttdeci">None configure(P8gen, mass, production_couplings, decay_couplings, process_selection, bool deepCopy=False, bool debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8__conf_8py_source.html#l00168">pythia8_conf.py:170</a></div></div>
 <div class="ttc" id="anamespacepythia8darkphoton__conf_html_acd520394960a5dfa80c744de77b559f4"><div class="ttname"><a href="namespacepythia8darkphoton__conf.html#acd520394960a5dfa80c744de77b559f4">pythia8darkphoton_conf.configure</a></div><div class="ttdeci">configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8darkphoton__conf_8py_source.html#l00094">pythia8darkphoton_conf.py:94</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a0ba5fb603df27a98103959b42c5cdd8f"><div class="ttname"><a href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f">run_simScript.checkOverlapsWithGeant4</a></div><div class="ttdeci">None checkOverlapsWithGeant4()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01044">run_simScript.py:1044</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a0d8a3c689350819a350b633286a36197"><div class="ttname"><a href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197">run_simScript.visualizeMagFields</a></div><div class="ttdeci">None visualizeMagFields()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01040">run_simScript.py:1040</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a0ba5fb603df27a98103959b42c5cdd8f"><div class="ttname"><a href="namespacerun__simScript.html#a0ba5fb603df27a98103959b42c5cdd8f">run_simScript.checkOverlapsWithGeant4</a></div><div class="ttdeci">None checkOverlapsWithGeant4()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01050">run_simScript.py:1050</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a0d8a3c689350819a350b633286a36197"><div class="ttname"><a href="namespacerun__simScript.html#a0d8a3c689350819a350b633286a36197">run_simScript.visualizeMagFields</a></div><div class="ttdeci">None visualizeMagFields()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01046">run_simScript.py:1046</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a961362661e51487d9f3bb5a388d7175b"><div class="ttname"><a href="namespacerun__simScript.html#a961362661e51487d9f3bb5a388d7175b">run_simScript.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00067">run_simScript.py:67</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_ae49febd49d327dfcdf13f395786856a3"><div class="ttname"><a href="namespacerun__simScript.html#ae49febd49d327dfcdf13f395786856a3">run_simScript.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00069">run_simScript.py:69</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_afedbc79013bdd48d4a872216aa4c6cb4"><div class="ttname"><a href="namespacerun__simScript.html#afedbc79013bdd48d4a872216aa4c6cb4">run_simScript._fraction_0_1</a></div><div class="ttdeci">float _fraction_0_1(str value)</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00019">run_simScript.py:19</a></div></div>
