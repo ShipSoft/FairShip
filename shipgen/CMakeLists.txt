@@ -14,6 +14,5 @@ ship_add_library(
                FairLogger::FairLogger ROOT::EGPythia6
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
-                             ${HEPMC_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}
-                             ${EVTGEN_INCLUDE_DIR}/..
+                             ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
 )
