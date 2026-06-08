@@ -68,7 +68,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction {
   };
 
   //! Set-up all local and regional fields and assign them to volumes
-  virtual void Construct();
+  void Construct() override;
 
   //! Read an input file to define fields and associated volumes
   /*!

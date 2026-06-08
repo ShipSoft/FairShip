@@ -21,7 +21,7 @@ class ShipFieldPar : public FairParGenericSet {
   ShipFieldPar();
 
   /** Destructor **/
-  ~ShipFieldPar();
+  ~ShipFieldPar() override;
 
   /** Put parameters **/
   void putParams(FairParamList* list) override;

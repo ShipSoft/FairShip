@@ -20,12 +20,12 @@ class ShipGeoCave : public FairGeoSet {
 
  public:
   ShipGeoCave();
-  ~ShipGeoCave() {}
-  const char* getModuleName(Int_t) { return name.Data(); }
-  Bool_t read(std::fstream&, FairGeoMedia*);
-  void addRefNodes();
-  void write(std::fstream&);
-  void print();
+  ~ShipGeoCave() override = default;
+  const char* getModuleName(Int_t) override { return name.Data(); }
+  Bool_t read(std::fstream&, FairGeoMedia*) override;
+  void addRefNodes() override;
+  void write(std::fstream&) override;
+  void print() override;
   ClassDefOverride(ShipGeoCave, 0)  // Class for the geometry of CAVE
 };
 
