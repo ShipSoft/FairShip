@@ -147,12 +147,12 @@ def YandexProd(startDate, endDate) -> None:
         + endDate.__str__().split(" ")[0]
         + ".pkl"
     )
-    with open(pName, "w") as fpi:
+    with open(pName, "wb") as fpi:
         database = {}
         database["goodruns"] = goodRuns
         database["badRuns"] = badRuns
         pickle.dump(database, fpi)
-    with open(pName) as fpi:
+    with open(pName, "rb") as fpi:
         database = pickle.load(fpi)
     addRuns(database["goodruns"], 20000)  # next cycle
 
@@ -421,16 +421,16 @@ def check4DoubleRuns() -> None:
     ]
     Nruns = 0
     for x in allRuns:
-        with open(x) as fn:
+        with open(x, "rb") as fn:
             dn = pickle.load(fn)
         Nruns += len(dn["goodruns"])
     print("Total number of runs:", Nruns)
 
     for n in range(len(allRuns) - 1):
-        with open(allRuns[n]) as fn:
+        with open(allRuns[n], "rb") as fn:
             dn = pickle.load(fn)
         for m in range(n + 1, len(allRuns)):
-            with open(allRuns[m]) as fm:
+            with open(allRuns[m], "rb") as fm:
                 dm = pickle.load(fm)
             for rn in dn["goodruns"]:
                 for rm in dm["goodruns"]:
