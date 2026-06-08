@@ -1,7 +1,7 @@
 var classSHiP_1_1DetectorPoint =
 [
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#a9787d2b778966f27201cfd8d388c867b", null ],
-    [ "~DetectorPoint", "classSHiP_1_1DetectorPoint.html#afde518ec306f9f0cb01fc29dacc8ffb9", null ],
+    [ "~DetectorPoint", "classSHiP_1_1DetectorPoint.html#a23f59c157b029148f3c108af74600cc7", null ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#a7dda1db551da77ae9b8d6504ae96306c", null ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#af02402e7503c1aa62d13bc896c52fdc7", null ],
     [ "DetectorPoint", "classSHiP_1_1DetectorPoint.html#a421cd1b15a15aa6c5f3e8d7d69deac5e", null ],

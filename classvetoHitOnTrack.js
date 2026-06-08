@@ -6,7 +6,7 @@ var classvetoHitOnTrack =
     [ "ClassDefOverride", "classvetoHitOnTrack.html#ae9b91aeb8b18cc3ac20a34b3cf7e2cfd", null ],
     [ "GetDist", "classvetoHitOnTrack.html#a03b6392aa730388480b7a0b04bfd5f55", null ],
     [ "GetHitID", "classvetoHitOnTrack.html#ae5e83607bd7942db08c7442b9346c1d2", null ],
-    [ "Print", "classvetoHitOnTrack.html#a37d31f07b1868d30d61d865889a65c15", null ],
+    [ "Print", "classvetoHitOnTrack.html#a51a914d469cb01bf992a0d02a57d561e", null ],
     [ "SetDist", "classvetoHitOnTrack.html#a3944dd2c249c64aa9da0eb4fd70d9b72", null ],
     [ "SetHitID", "classvetoHitOnTrack.html#a92d33831d3c62dd579fcf5a25e6c1b70", null ],
     [ "fDist", "classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb", null ],

@@ -111,10 +111,10 @@ var NAVTREEINDEX12 =
 "classsplitcalCluster.html#aea6c92ca6788bba81ba1d52036301294":[6,0,68,8],
 "classsplitcalCluster.html#afd9b1460e2d6e0c31086e7944191f47b":[6,0,68,11],
 "classsplitcalContFact.html":[6,0,69],
-"classsplitcalContFact.html#a4574cf7835fe6160eed159c0deaf117e":[6,0,69,1],
+"classsplitcalContFact.html#a2270fc86c4d39fb6e0859e816ce4cb63":[6,0,69,2],
+"classsplitcalContFact.html#a3b2b78e8a92ec92c3fe18e07aaedc079":[6,0,69,1],
 "classsplitcalContFact.html#a48a61653ebe0a3cb71545af5bc37cf22":[6,0,69,3],
 "classsplitcalContFact.html#a81071b0a1f5ac1a16045dc8ede11dc38":[6,0,69,0],
-"classsplitcalContFact.html#ad2f1f4db36b766c5fb6b68d8e4349b4b":[6,0,69,2],
 "classsplitcalDetector_1_1splitcalDetector.html":[6,0,16,0],
 "classsplitcalDetector_1_1splitcalDetector.html":[5,0,92,0],
 "classsplitcalDetector_1_1splitcalDetector.html#a3a0a419ac749a2d7ebc840bc010b8faf":[6,0,16,0,4],
@@ -249,5 +249,5 @@ var NAVTREEINDEX12 =
 "classstrawtubes.html#afd76b6aa474f6257df2257ce618b68c5":[6,0,72,35],
 "classstrawtubes.html#afdeccc886ea2fb425f453e37d2ba7dba":[6,0,72,22],
 "classstrawtubesContFact.html":[6,0,73],
-"classstrawtubesContFact.html#a2b7cec020614ee861312a4de08cb1a93":[6,0,73,3]
+"classstrawtubesContFact.html#a24c4ab92837e0e9bf702ec7822577a74":[6,0,73,2]
 };

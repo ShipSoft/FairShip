@@ -8,7 +8,7 @@ var classShipFieldMaker =
     [ "~ShipFieldMaker", "classShipFieldMaker.html#a8d010c61a8f2ade28562b7d1aad7dec2", null ],
     [ "checkLocalFieldMap", "classShipFieldMaker.html#aea890712c5e87cf4a778197ae31e165c", null ],
     [ "ClassDef", "classShipFieldMaker.html#a241645b78a1a57f8f33b5f09024174bc", null ],
-    [ "Construct", "classShipFieldMaker.html#abf937564fc0ec2b7acc56f01d0865b59", null ],
+    [ "Construct", "classShipFieldMaker.html#a31fbffd21f890385616f60939ba812b8", null ],
     [ "defineBell", "classShipFieldMaker.html#a9ff3dcbc4d8b9f5ec3082940c94cc6fa", null ],
     [ "defineBell", "classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e", null ],
     [ "defineComposite", "classShipFieldMaker.html#a9cfbe7d555af8b29e81e58674bf768c1", null ],
