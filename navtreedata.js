@@ -125,20 +125,22 @@ var NAVTREE =
         [ "Build from source (recommended)", "md_README.html#autotoc_md82", null ],
         [ "Using the pre-built package", "md_README.html#autotoc_md83", null ]
       ] ],
-      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md84", null ],
-      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md85", null ],
-      [ "Run instructions", "md_README.html#autotoc_md86", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md87", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md88", null ],
-      [ "Documentation", "md_README.html#autotoc_md89", null ],
-      [ "License", "md_README.html#autotoc_md90", null ],
-      [ "Contributing code", "md_README.html#autotoc_md91", null ]
+      [ "Run instructions", "md_README.html#autotoc_md84", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md85", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md86", null ],
+      [ "Documentation", "md_README.html#autotoc_md87", null ],
+      [ "License", "md_README.html#autotoc_md88", null ],
+      [ "Contributing code", "md_README.html#autotoc_md89", null ],
+      [ "Legacy releases (CVMFS + aliBuild, ≤26.04)", "md_README.html#autotoc_md90", [
+        [ "With CVMFS (lxplus and similar)", "md_README.html#autotoc_md91", null ],
+        [ "Without CVMFS", "md_README.html#autotoc_md92", null ]
+      ] ]
     ] ],
     [ "Configuration files for GENIE simulations", "md_shipgen_2genie__config_2README.html", [
-      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md93", null ],
-      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md94", null ],
-      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md95", null ],
-      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md96", null ]
+      [ "Introduction", "md_shipgen_2genie__config_2README.html#autotoc_md94", null ],
+      [ "Details", "md_shipgen_2genie__config_2README.html#autotoc_md95", null ],
+      [ "History", "md_shipgen_2genie__config_2README.html#autotoc_md96", null ],
+      [ "Notes on particle decays", "md_shipgen_2genie__config_2README.html#autotoc_md97", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -196,18 +198,18 @@ var NAVTREEINDEX =
 "extractNeutrinosAndUpdateWeight_8py.html",
 "hepunit_8py.html#a8e9124e1faaf4bd746e28fe5c1cc7365",
 "makeMuonEM_8py.html#a7db9802d8622bb7355470e66fc770be2",
-"mergeMbias_8py.html#a80ba3e6e28a4b92b65d779e31c6ed424",
-"namespaceana__ShipMuon.html#ac655f36910fb63a8965bcc5578340fa6",
-"namespaceextractMuonsAndUpdateWeight.html#a34812acc3cdb30f7c9a2d5c5963d5d20",
-"namespacemakeCascade.html#a057828da937f33cac59ee2ea7e48b953",
-"namespacemake__nTuple__Tr.html#a6f91ef1ca239a73a37e691c04b2e36e0",
-"namespacerpvsusy.html#ac884dc3219ae13b9dda6c048615e929d",
-"namespacerun__simScript.html#a510e4268b2f7e9ab7d72a49d8495aed1",
-"namespaceshipunit.html#a88313992d4bc77dad5624da8a5b6a63d",
-"pythia8__conf__utils_8py.html#a7b1961632256d57d115a2e4de4805ce6",
-"run__prod_8py_source.html",
-"shipVeto_8py_source.html",
-"study__GammaConv_8py.html#ad069da84b41a0c9816a1840c4440477f"
+"mergeMbias_8py.html#a80871c00ceb9b82d45566f3b00b15e2a",
+"namespaceana__ShipMuon.html#ab54b0884f0d0e9af5430d755b0f116b8",
+"namespaceextractMuonsAndUpdateWeight.html",
+"namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109",
+"namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0",
+"namespacerpvsusy.html#abd73aa2c17e9d3ad238d506eda8a9b03",
+"namespacerun__simScript.html#a4483c0f1750d35b90b961b115d1a77a7",
+"namespaceshipunit.html#a87fd5b2db5e2548f7089becbe9817cc3",
+"pythia8__conf__utils_8py.html#a6a47cb7861e4155b59d826ed6e40d730",
+"run__prod_8py.html#ae16e18cc884309b7de0271ef39a944d0",
+"shipVeto_8py.html",
+"study__GammaConv_8py.html#aab8cdf7e5072c55e440f32b0377eab32"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -101,31 +101,30 @@ $(document).ready(function(){initNavTree('md_README.html',''); initResizable(); 
 </ul>
 </li>
 <li>Using pixi</li>
-<li>Build instructions using CVMFS</li>
-<li>Local build, without access to CVMFS</li>
 <li>Run instructions</li>
 <li>Docker instructions</li>
 <li>Troubleshooting information</li>
 <li>Documentation</li>
 <li>License</li>
 <li>Contributing code</li>
+<li>Legacy releases (CVMFS + aliBuild, ≤26.04)</li>
 </ul>
 </li>
 </ul>
 <h1><a class="anchor" id="autotoc_md79"></a>
 Introduction</h1>
-<p>FairShip is the software framework for the <a class="el" href="namespaceSHiP.html">SHiP</a> experiment which is based on FairRoot. The dependencies of FairShip are tracked and installed using <a href="https://alisw.github.io/alibuild/">alibuild</a>. A wiki can be found <a href="https://github.com/ShipSoft/FairShip/wiki">here</a></p>
+<p>FairShip is the software framework for the <a class="el" href="namespaceSHiP.html">SHiP</a> experiment which is based on FairRoot. Its dependencies are managed with <a href="https://pixi.sh">pixi</a> — see Using pixi below. See the <a href="https://github.com/ShipSoft/FairShip/wiki">FairShip wiki</a> for additional documentation.</p>
 <h2><a class="anchor" id="autotoc_md80"></a>
 Branches</h2>
 <dl>
 <dt><code>master</code> </dt>
-<dd>Main development branch. All python code is <b>required to be python 3</b>. Python 2 is no longer supported. Requires aliBuild default <code>release</code>. </dd>
+<dd>Main development branch. All python code is <b>required to be python 3</b>. Python 2 is no longer supported. </dd>
 <dt><code>charmdet</code> </dt>
 <dd>Branch for the charm cross-section measurement. Kept as reference for potential future studies. </dd>
 <dt><code>SHiP-2018</code> </dt>
-<dd>Frozen branch for the CDS, kept for backward compatibility. Python 2 only. Requires aliBuild default <code>fairship-2018</code>. </dd>
+<dd>Frozen branch for the CDS, kept for backward compatibility. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only. </dd>
 <dt><code>muflux</code> </dt>
-<dd>Branch for the muon flux analysis. Python 2 only. Requires aliBuild default <code>fairship-2018</code>. </dd>
+<dd>Branch for the muon flux analysis. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only. </dd>
 </dl>
 <p>All packages are managed in Git and GitHub. Please read <a href="https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP">the Git tutorial for SHiP</a> first, even if you already know Git, as it explains how development is done on GitHub.</p>
 <h1><a class="anchor" id="autotoc_md81"></a>
@@ -152,53 +151,10 @@ Using the pre-built package</h2>
 <div class="line">pixi add fairship</div>
 <div class="line">pixi run python macro/run_simScript.py --tag my-simulation</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md84"></a>
-Build Instructions using CVMFS</h1>
-<p>On <code>lxplus</code> this is the recommended way to use <code>FairShip</code>. CVMFS can also be setup on your own machine (please see the <a href="https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html">CVMFS documentation</a>)</p>
-<ol type="1">
-<li>Download the FairShip software <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
-</div><!-- fragment --> As we are using <a href="https://git-lfs.com/"><code>git-lfs</code></a> to deal with large files for field maps etc., you might have to run <div class="fragment"><div class="line">git lfs install</div>
-</div><!-- fragment --> if you have never used <code>git-lfs</code> on your account before.</li>
-<li>Make sure you can access the <a class="el" href="namespaceSHiP.html">SHiP</a> CVMFS Repository <div class="fragment"><div class="line">ls /cvmfs/ship.cern.ch</div>
-</div><!-- fragment --></li>
-<li>Source the <code>setUp.sh</code> script from the CVMFS release you want to use (replace <code>$SHIP_RELEASE</code> with the release you want to use): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
-</div><!-- fragment --> Info about different releases can be found in a <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a>. Please report issues with particular releases or the setup script there.</li>
-<li>Build the software using aliBuild <div class="fragment"><div class="line">aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release</div>
-</div><!-- fragment --> If you are not building <code>master</code>, you will need to select the appropriate default (see Branches).</li>
-</ol>
-<p>If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.</p>
-<p>To load the FairShip environment, after you build the software you can simply use:</p>
-<ol type="1">
-<li>Load the environment <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
-</div><!-- fragment --></li>
-</ol>
-<p>However, this won't work if you are using HTCondor. In such case you can do:</p>
-<div class="fragment"><div class="line">eval $(alienv load FairShip/latest --no-refresh)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md85"></a>
-Local build, without access to CVMFS</h1>
-<p>Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.</p>
-<ol type="1">
-<li>Install <code>alibuild</code> using <code>pipx</code> (recommended) or <code>pip</code>.</li>
-<li>Clone the FairShip repository: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
-</div><!-- fragment --> As we are using <a href="https://git-lfs.com/"><code>git-lfs</code></a> to deal with large files for field maps etc., you might have to run <div class="fragment"><div class="line">git lfs install</div>
-</div><!-- fragment --> if you have never used <code>git-lfs</code> on your account before.</li>
-</ol>
-<ol type="1">
-<li>Clone the shipdist repository, which contains the recipes to build the software stack: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/shipdist.git</div>
-</div><!-- fragment --></li>
-</ol>
-<ol type="1">
-<li>Build the software using aliBuild: <div class="fragment"><div class="line">aliBuild build FairShip --config-dir $SHIPDIST --defaults release</div>
-</div><!-- fragment --> NB: Depending on the platform you might have to pass the <code>--always-prefer-system</code> or <code>--force-unknown-architecture</code> flags to aliBuild. For debugging, <code>aliDoctor</code> is very useful!</li>
-<li>Load the environment <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
-</div><!-- fragment --> </li>
-</ol>
-<h1><a class="anchor" id="autotoc_md86"></a>
 Run instructions</h1>
-<p>Set up the bulk of the environment from CVMFS (see the <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a> for information about the available releases):</p>
-<div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
-</div><!-- fragment --><p>Load your local FairShip environment.</p>
-<div class="fragment"><div class="line">alienv enter FairShip/latest</div>
-</div><!-- fragment --><p>Now you can for example simulate some events, run reconstruction and analysis:</p>
+<p>Start a shell with the FairShip environment activated:</p>
+<div class="fragment"><div class="line">pixi shell</div>
+</div><!-- fragment --><p>(Or prefix individual commands with <code>pixi run</code>.) Then you can simulate some events, run reconstruction and analysis:</p>
 <div class="fragment"><div class="line">python $FAIRSHIP/macro/run_simScript.py --tag my-simulation</div>
 <div class="line">&gt;&gt; [...]</div>
 <div class="line">&gt;&gt; Macro finished successfully.</div>
@@ -225,7 +181,7 @@ Run instructions</h1>
 <div class="fragment"><div class="line">python -i $FAIRSHIP/macro/eventDisplay.py -f sim_my-simulation.root -r sim_my-simulation_rec.root -g geo_my-simulation.root</div>
 <div class="line">// use SHiP Event Display GUI</div>
 <div class="line">Use quit() or Ctrl-D (i.e. EOF) to exit</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md85"></a>
 Docker instructions</h1>
 <p>Docker is <b>not</b> the recommended way to run <code>FairShip</code> locally. It is ideal for reproducing reproducible, stateless environments for debugging, HTCondor and cluster use, or when a strict separation between <code>FairShip</code> and the host is desirable.</p>
 <ol type="1">
@@ -241,24 +197,54 @@ Docker instructions</h1>
 <div class="line">fairship /bin/bash</div>
 </div><!-- fragment --> The option <code>-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix</code> forwards graphics from the docker to your local system (similar to <code>ssh -X</code>). The option <code>-v /local_workdir:/image_workdir</code> mounts <code>/local_workdir</code> on the local system as <code>/image_workdir</code> within docker.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md88"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 Troubleshooting information</h1>
 <p>Please see the wiki for <a href="https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#faq">FAQ</a>s and <a href="https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#common-issues">common issues</a>.</p>
-<h1><a class="anchor" id="autotoc_md89"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 Documentation</h1>
 <p>An <a href="https://shipsoft.github.io/FairShip/">automatic class reference</a> is built using Doxygen from comments in the C++ code. Improving the comments will improve this documentation.</p>
-<h1><a class="anchor" id="autotoc_md90"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 License</h1>
 <p>FairShip is distributed under the GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later). See the [LICENSE](LICENSE) file for details.</p>
 <p>Copyright is held by CERN for the benefit of the <a class="el" href="namespaceSHiP.html">SHiP</a> Collaboration. Some components are distributed under different licenses and copyrights - see the individual file headers and the <a href="LICENSES/">LICENSES</a> directory for details. This project follows the <a href="https://reuse.software/">REUSE specification</a> for licensing information.</p>
-<h1><a class="anchor" id="autotoc_md91"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 Contributing code</h1>
 <ul>
 <li>Any and all contributions are welcome!</li>
 <li>Contributions via pull requests are preferred, but if you require help with git, don't hesitate to write reach out to us.</li>
 <li>Please split your work into small commits with self-contained changes to make them easy to review and check.</li>
-<li>To help us consistently improve the quality of our code, please try to follow the <a href="https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines">C++</a> and <a href="https://github.com/ShipSoft/FairShip/wiki/Python-guidelines">Python</a> guidelines. </li>
+<li>To help us consistently improve the quality of our code, please try to follow the <a href="https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines">C++</a> and <a href="https://github.com/ShipSoft/FairShip/wiki/Python-guidelines">Python</a> guidelines.</li>
 </ul>
+<h1><a class="anchor" id="autotoc_md90"></a>
+Legacy releases (CVMFS + aliBuild, ≤26.04)</h1>
+<p>These instructions are kept for users running existing CVMFS releases up to <b>26.04</b> and for legacy branches (<code>SHiP-2018</code>, <code>muflux</code>). New work should use Using pixi instead; the <a href="https://github.com/ShipSoft/shipdist">shipdist</a> repository (aliBuild recipes) is no longer maintained.</p>
+<h2><a class="anchor" id="autotoc_md91"></a>
+With CVMFS (lxplus and similar)</h2>
+<ol type="1">
+<li>Clone the FairShip software (initialise <code>git-lfs</code> first if you've never used it): <div class="fragment"><div class="line">git lfs install</div>
+<div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
+</div><!-- fragment --></li>
+<li>Make sure CVMFS is mounted: <div class="fragment"><div class="line">ls /cvmfs/ship.cern.ch</div>
+</div><!-- fragment --></li>
+<li>Source the chosen release (≤ 26.04; see the <a href="https://github.com/ShipSoft/cvmfs_release">cvmfs_release</a> repo for the list): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
+</div><!-- fragment --></li>
+<li>Build with aliBuild: <div class="fragment"><div class="line">aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release</div>
+</div><!-- fragment --> For legacy branches, swap <code>--defaults release</code> for <code>--defaults fairship-2018</code>.</li>
+<li>Load the environment: <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
+</div><!-- fragment --> Or, in non-interactive contexts (e.g. HTCondor): <div class="fragment"><div class="line">eval $(alienv load FairShip/latest --no-refresh)</div>
+</div><!-- fragment --></li>
+</ol>
+<h2><a class="anchor" id="autotoc_md92"></a>
+Without CVMFS</h2>
+<ol type="1">
+<li>Install <a href="https://alisw.github.io/alibuild/">aliBuild</a> via <code>pipx</code> or <code>pip</code>.</li>
+<li>Clone <a href="https://github.com/ShipSoft/shipdist">shipdist</a> alongside FairShip: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/shipdist.git</div>
+</div><!-- fragment --></li>
+<li>Build: <div class="fragment"><div class="line">aliBuild build FairShip --config-dir ./shipdist --defaults release</div>
+</div><!-- fragment --> Pass <code>--always-prefer-system</code> or <code>--force-unknown-architecture</code> if needed; <code>aliDoctor</code> helps when something doesn't resolve.</li>
+<li>Load the environment: <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
+</div><!-- fragment --> </li>
+</ol>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

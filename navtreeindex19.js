@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"namespaceana__ShipMuon.html#ab54b0884f0d0e9af5430d755b0f116b8":[5,0,4,75],
 "namespaceana__ShipMuon.html#ac655f36910fb63a8965bcc5578340fa6":[5,0,4,49],
 "namespaceana__ShipMuon.html#aca3f5e85758a67e98544d3bd0d4cb8ce":[5,0,4,41],
 "namespaceana__ShipMuon.html#acb13dce4e89f5685da7b6a05363b33cd":[5,0,4,63],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "namespaceexperimental_1_1compare__histograms.html#aa62b2d0a16f870914fa42a905426fa08":[5,0,30,2,3],
 "namespaceexperimental_1_1compare__histograms.html#abaf9794f1df3dd1e9710576ca8a1e0cd":[5,0,30,2,6],
 "namespaceexperimental_1_1compare__histograms.html#ae67891535b68161e792983dba1f912c7":[5,0,30,2,1],
-"namespaceexperimental_1_1compare__histograms.html#af21aa23c8a8ae248277f3dedbd6918b2":[5,0,30,2,5],
-"namespaceextractMuonsAndUpdateWeight.html":[5,0,31]
+"namespaceexperimental_1_1compare__histograms.html#af21aa23c8a8ae248277f3dedbd6918b2":[5,0,30,2,5]
 };

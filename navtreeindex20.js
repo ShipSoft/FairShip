@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespaceextractMuonsAndUpdateWeight.html":[5,0,31],
 "namespaceextractMuonsAndUpdateWeight.html#a34812acc3cdb30f7c9a2d5c5963d5d20":[5,0,31,2],
 "namespaceextractMuonsAndUpdateWeight.html#a3540e4762b6a0339d1c923d86bd5314a":[5,0,31,11],
 "namespaceextractMuonsAndUpdateWeight.html#a3ee737d91956d07c94601d0781b01ba5":[5,0,31,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "namespaceinspect__tree__branches.html":[5,0,42],
 "namespaceinspect__tree__branches.html#a4e5ce9f3ca2717af9297073670999454":[5,0,42,1],
 "namespaceinspect__tree__branches.html#a521ae0ff73061ec00ffcdcbaeb201295":[5,0,42,0],
-"namespacemakeCascade.html":[5,0,47],
-"namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109":[5,0,47,32]
+"namespacemakeCascade.html":[5,0,47]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX28 =
 {
+"shipVeto_8py.html":[7,0,10,37],
 "shipVeto_8py_source.html":[7,0,10,37],
 "shipdata_2LinkDef_8h.html":[7,0,11,1],
 "shipdata_2LinkDef_8h_source.html":[7,0,11,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX28 =
 "study__GammaConv_8py.html#a9f1e7a36fb26b74b912450315ae6935d":[7,0,8,15,18],
 "study__GammaConv_8py.html#aa3fb5dea5c4b64fd422444715321fdeb":[7,0,8,15,19],
 "study__GammaConv_8py.html#aaa9e1a6c47e55c6a638ffd566ee5f0ff":[7,0,8,15,36],
-"study__GammaConv_8py.html#aab74fbaeb036251f4214e8418b60f7ea":[7,0,8,15,33],
-"study__GammaConv_8py.html#aab8cdf7e5072c55e440f32b0377eab32":[7,0,8,15,14]
+"study__GammaConv_8py.html#aab74fbaeb036251f4214e8418b60f7ea":[7,0,8,15,33]
 };
