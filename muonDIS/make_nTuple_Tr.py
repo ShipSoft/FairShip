@@ -95,7 +95,9 @@ def printMCTrack(n: int, MCTrack) -> None:
     RESET = "\033[0m"  # ANSI code Reset to default
 
     try:
-        particle_name = pdg.GetParticle(mcp.GetPdgCode()).GetName()
+        _p = pdg.GetParticle(mcp.GetPdgCode())
+        assert _p is not None, f"Unknown PDG: {mcp.GetPdgCode()}"
+        particle_name = _p.GetName()
 
         if particle_name == "mu+" or particle_name == "mu-":
             particle_name = f"{RED}{particle_name}{RESET}       "  # Highlight muons in red
@@ -243,7 +245,9 @@ for inputFolder in os.listdir(path):
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
             if abs(pid) == 13 and trackingstation_id == 1 and P_threshold / u.GeV < P:
                 track_id = hit.GetTrackID()
-                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                _p = pdg.GetParticle(hit.PdgCode())
+                assert _p is not None, f"Unknown PDG: {hit.PdgCode()}"
+                particle_name = _p.GetName()
                 if track_id not in muon_ids:
                     muon_ids.append(track_id)
 
@@ -317,7 +321,9 @@ for inputFolder in os.listdir(path):
                     if track_id not in processed_events[global_event_nr]:  # only save the info of first SBT hit
                         processed_events[global_event_nr].append(track_id)
 
-                        particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                        _p = pdg.GetParticle(hit.PdgCode())
+                        assert _p is not None, f"Unknown PDG: {hit.PdgCode()}"
+                        particle_name = _p.GetName()
 
                         nmu[particle_name] += 1
 

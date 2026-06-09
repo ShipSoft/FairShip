@@ -498,7 +498,9 @@ def main():
                 pz.push_back(-part.GetPx())
                 pp.push_back(part.GetP())
                 m.push_back(part.GetMass())
-                charge = PDG.GetParticle(part.GetPdgCode()).Charge()
+                pdg_particle = PDG.GetParticle(part.GetPdgCode())
+                assert pdg_particle is not None, f"Unknown PDG: {part.GetPdgCode()}"
+                charge = pdg_particle.Charge()
                 q.push_back(np.sign(charge))
                 eta.push_back(fourVec.Eta())
                 phi.push_back(fourVec.Phi())

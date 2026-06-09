@@ -69,7 +69,9 @@ def mesonBRtoPhoton(mumPdg, doprint=False):
 
 
 def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
-    mMeson = PDG.GetParticle(mumPdg).Mass()
+    mum = PDG.GetParticle(mumPdg)
+    assert mum is not None, f"Unknown PDG: {mumPdg}"
+    mMeson = mum.Mass()
     if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
     if mass < mMeson:
@@ -82,8 +84,12 @@ def brMesonToGammaDP(mass, epsilon, mumPdg, doprint=False):
 
 
 def brMesonToMesonDP(mass, epsilon, mumPdg, dauPdg, doprint=False):
-    mMeson = PDG.GetParticle(mumPdg).Mass()
-    mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
+    mum = PDG.GetParticle(mumPdg)
+    dau = PDG.GetParticle(dauPdg)
+    assert mum is not None, f"Unknown PDG: {mumPdg}"
+    assert dau is not None, f"Unknown PDG: {dauPdg}"
+    mMeson = mum.Mass()
+    mDaughterMeson = dau.Mass()
     if doprint:
         print("Mass of mother %d meson is %3.3f" % (mumPdg, mMeson))
     if doprint:

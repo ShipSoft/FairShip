@@ -97,7 +97,9 @@ for idnu in range(12, 18, 2):
         if idadd == -1:
             idhnu += 1000
             idw = -idnu
-        name = PDG.GetParticle(idw).GetName()
+        _p = PDG.GetParticle(idw)
+        assert _p is not None, f"Unknown PDG: {idw}"
+        name = _p.GetName()
         ut.bookHist(h, str(idhnu), name + " momentum (GeV)", 400, 0.0, 400.0)
         ut.bookHist(h, str(idhnu + 100), name + " log10-p vs log10-pt", 100, -0.3, 1.7, 100, -2.0, 0.5)
         ut.bookHist(h, str(idhnu + 200), name + " log10-p vs log10-pt", 25, -0.3, 1.7, 100, -2.0, 0.5)
