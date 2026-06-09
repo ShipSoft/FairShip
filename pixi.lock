@@ -3222,8 +3222,7 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls:
-  - pkg:pypi/pyside6?source=hash-mapping
-  - pkg:pypi/shiboken6?source=hash-mapping
+  - pkg:pypi/pyside6?source=compressed-mapping
   size: 13797566
   timestamp: 1778933891067
 - conda: https://conda.anaconda.org/conda-forge/linux-64/pythia8-8.312-py312hd50de4e_105.conda
