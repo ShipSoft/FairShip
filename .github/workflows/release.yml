@@ -1,0 +1,51 @@
+name: Release conda package
+# Build the FairShip conda package via `pixi build` and publish it to the
+# prefix.dev/ship channel. Triggered by CalVer release tags (e.g. v26.05.7).
+#
+# This workflow supersedes the hand-written rattler-build recipe that used to
+# live in ship-conda-recipes/recipes/fairship/. The package contents and
+# upload destination remain unchanged from the rattler-build pipeline so
+# downstream consumers see no difference.
+on:
+  push:
+    tags: ['v[0-9]*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build only, skip upload'
+        type: boolean
+        default: true
+permissions:
+  contents: read
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@v0.9.6
+        with:
+          locked: true
+      - name: Build conda package
+        run: pixi build --output-dir output
+      - name: Show built artifacts
+        run: ls -la output/
+      - name: Upload to prefix.dev/ship
+        if: github.event_name == 'push' || inputs.dry_run == false
+        env:
+          PREFIX_DEV_API_KEY: ${{ secrets.PREFIX_DEV_API_KEY }}
+        run: |
+          for pkg in output/*.conda; do
+            [ -f "$pkg" ] || continue
+            pixi exec --spec rattler-build -- \
+              rattler-build upload prefix \
+                --api-key "$PREFIX_DEV_API_KEY" \
+                -c ship --skip-existing "$pkg"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fairship-conda
+          path: output/*.conda
+          if-no-files-found: error

@@ -3,6 +3,7 @@ name = "fairship"
 description = "SHiP experiment simulation framework"
 channels = ["https://prefix.dev/ship", "conda-forge"]
 platforms = ["linux-64"]
+preview = ["pixi-build"]
 
 [dependencies]
 # Core HEP packages (conda-forge)
@@ -50,6 +51,73 @@ clang-tools = "*"  # provides clang-tidy
 
 [pypi-dependencies]
 pyrefly = "*"
+
+# --- Conda package definition (consumed by `pixi build`) ---
+# Replaces the hand-written rattler-build recipe formerly in
+# ship-conda-recipes/recipes/fairship/. `pixi build` here emits the
+# same `fairship` .conda for prefix.dev/ship.
+
+[package]
+name = "fairship"
+version = "26.05.7"
+
+[package.build.backend]
+name = "pixi-build-cmake"
+version = "0.*"
+channels = [
+    "https://prefix.dev/pixi-build-backends",
+    "https://prefix.dev/ship",
+    "https://prefix.dev/conda-forge",
+]
+
+[package.build.config]
+# pixi-build-cmake already supplies -GNinja, -DCMAKE_BUILD_TYPE=Release,
+# -DCMAKE_INSTALL_PREFIX=$PREFIX, -DCMAKE_EXPORT_COMPILE_COMMANDS=ON,
+# -DBUILD_SHARED_LIBS=ON. Everything below is FairShip-specific.
+# extra-args are spliced verbatim into a bash command line, so values
+# containing whitespace need embedded shell quotes.
+extra-args = [
+    "-DCMAKE_INSTALL_LIBDIR=lib",
+    "-DCMAKE_CXX_STANDARD=20",
+    "-DGeant4VMC_DIR=$PREFIX/lib/Geant4VMC-6.7.1",
+    '-DCMAKE_CXX_FLAGS="-isystem $PREFIX/include/geant4vmc -isystem $PREFIX/include/Geant4"',
+]
+env = { FAIRROOTPATH = "$PREFIX", ROOT_INCLUDE_PATH = "$PREFIX/include:$PREFIX/include/geant4vmc:$PREFIX/include/Geant4:$PREFIX/include/vmc" }
+
+[package.host-dependencies]
+root = ">=6.38"
+geant4 = ">=11.3"
+geant4-vmc = "==6.7.1"
+geant3 = ">=4.5"
+vmc = ">=2.2"
+fairroot = ">=19.0"
+faircmakemodules = ">=1.0"
+fairlogger = ">=2.3"
+genfit = ">=2.3"
+rootegpythia6 = "*"
+pythia6 = ">=6.4"
+pythia8 = ">=8.312"
+evtgen = ">=2.2"
+fmt = "*"
+gsl = "*"
+xerces-c = "*"
+
+[package.run-dependencies]
+root = ">=6.38"
+geant4 = ">=11.3"
+geant4-vmc = "==6.7.1"
+geant3 = ">=4.5"
+vmc = ">=2.2"
+fairroot = ">=19.0"
+fairlogger = ">=2.3"
+genfit = ">=2.3"
+rootegpythia6 = "*"
+pythia6 = ">=6.4"
+pythia8 = ">=8.312"
+evtgen = ">=2.2"
+fmt = "*"
+gsl = "*"
+xerces-c = "*"
 
 [activation]
 scripts = ["activate.sh"]
