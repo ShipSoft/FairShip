@@ -62,7 +62,6 @@ configure = { cmd = """cmake -S . -B build -G Ninja \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
-    -DGeant4VMC_DIR=$CONDA_PREFIX/lib/Geant4VMC-6.7.1 \
     "-DCMAKE_CXX_FLAGS=-isystem $CONDA_PREFIX/include/geant4vmc -isystem $CONDA_PREFIX/include/Geant4" """ }
 build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
 install = { cmd = "cmake --install build", depends-on = ["build"] }
