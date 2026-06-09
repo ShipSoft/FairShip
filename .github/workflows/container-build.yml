@@ -8,7 +8,7 @@ on:
         description: 'Git ref to build'
         default: 'master'
 concurrency:
-  group: container-${{ github.ref }}
+  group: container-${{ inputs.ref || github.ref }}
   cancel-in-progress: false
 permissions:
   contents: read
@@ -35,6 +35,9 @@ jobs:
           images: ghcr.io/shipsoft/fairship
           # FairShip uses CalVer (e.g. v26.05, v26.05.1) — semver rules would
           # silently drop these (strict semver rejects leading-zero ".05").
+          # The two type=match patterns are intentionally overlapping so a
+          # tag like v26.05.1 also updates :26.05, mirroring the moving
+          # minor-line pointer that type=semver/{{major}}.{{minor}} produces.
           tags: |
             type=ref,event=tag
             type=match,pattern=v(\d+\.\d+\.\d+),group=1
@@ -52,3 +55,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
