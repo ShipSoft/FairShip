@@ -127,12 +127,10 @@ myPythia = ROOT.TPythia6()
 tp = ROOT.tPythia6Generator()
 
 # Pythia6 can only accept names below in pyinit, hence reset PDG table:
-PDG.GetParticle(2212).SetName("p+")
-PDG.GetParticle(-2212).SetName("pbar-")
-PDG.GetParticle(2112).SetName("n0")
-PDG.GetParticle(-2112).SetName("nbar0")
-PDG.GetParticle(130).SetName("KL0")
-PDG.GetParticle(310).SetName("KS0")
+for _pdg_code, _name in [(2212, "p+"), (-2212, "pbar-"), (2112, "n0"), (-2112, "nbar0"), (130, "KL0"), (310, "KS0")]:
+    _p = PDG.GetParticle(_pdg_code)
+    assert _p is not None, f"Standard PDG code missing: {_pdg_code}"
+    _p.SetName(_name)
 # lower lowest sqrt(s) allowed for generating events
 myPythia.SetPARP(2, 2.0)
 
@@ -242,8 +240,9 @@ print("Get chi vs momentum for all beam+target particles")
 for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
         idw = idbeam[idp] * idpm
-        if PDG.GetParticle(idw) is not None:  # if particle exists, book hists etc.
-            name = PDG.GetParticle(idw).GetName()
+        _p = PDG.GetParticle(idw)
+        if _p is not None:  # if particle exists, book hists etc.
+            name = _p.GetName()
             id = id + 1
             for idnp in range(2):
                 idb = id * 10 + idnp * 4
@@ -354,7 +353,9 @@ for iev in range(args.nevgen):
                 myPythia.SetP(2, k, 0.0)
             # new particle/momentum, init again: signal run.
             myPythia.SetMSEL(args.mselcb)  # set forced ccbar or bbbar generation
-            myPythia.Initialize("3MOM", PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.0)
+            _beam = PDG.GetParticle(stack[nstack][0])
+            assert _beam is not None, f"Unknown PDG: {stack[nstack][0]}"
+            myPythia.Initialize("3MOM", _beam.GetName(), target[idpn], 0.0)
             myPythia.GenerateEvent()
             # look for the signal particles
             charmFound = []
@@ -428,7 +429,9 @@ for iev in range(args.nevgen):
         idpn = 0
         if random.random() > fracp:
             idpn = 1
-        myPythia.Initialize("3MOM", PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.0)
+        _beam = PDG.GetParticle(stack[nstack][0])
+        assert _beam is not None, f"Unknown PDG: {stack[nstack][0]}"
+        myPythia.Initialize("3MOM", _beam.GetName(), target[idpn], 0.0)
         myPythia.GenerateEvent()
         # remove used particle from the stack, before adding new
         # first store its history: cascade depth and ancestors-list

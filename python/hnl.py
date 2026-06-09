@@ -57,6 +57,7 @@ def mass(particle: str | None):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Mass()
 
 
@@ -66,6 +67,7 @@ def lifetime(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Lifetime()
 
 

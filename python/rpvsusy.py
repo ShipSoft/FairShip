@@ -79,6 +79,7 @@ def PDGcode(particle: str) -> int:
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return int(tPart.PdgCode())
 
 
@@ -88,6 +89,7 @@ def mass(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Mass()
 
 
@@ -97,6 +99,7 @@ def width(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Width()
 
 
@@ -117,6 +120,7 @@ def lifetime(particle):
     elif particle == "B+" or particle == "B-":
         return 1.6e-12
 
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Lifetime()
 
 

@@ -591,10 +591,8 @@ class TMatrixDSym:  # Partial stub
 class TDatabasePDG:  # Partial stub
     @staticmethod
     def Instance() -> TDatabasePDG: ...
-    # NOTE: at runtime this returns None for unknown PDG codes; the FairShip
-    # code base assumes a known PDG and accesses attributes directly, so the
-    # stub matches that assumption rather than the formal signature.
-    def GetParticle(self, pdg: int | str) -> TParticlePDG: ...
+    # Returns None for unknown PDG codes — callers must guard.
+    def GetParticle(self, pdg: int | str) -> TParticlePDG | None: ...
     def AddParticle(
         self,
         name: str,

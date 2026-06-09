@@ -906,7 +906,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                _p = PDG.GetParticle(temp)
+                assert _p is not None, f"Unknown PDG: {temp}"
+                nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         hid = h[histlist[i] + "_mu_id"]
         for k in range(hid.GetNbinsX()):
@@ -914,7 +916,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                _p = PDG.GetParticle(temp)
+                assert _p is not None, f"Unknown PDG: {temp}"
+                nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         #
         tc = h["ResultsV"].cd(1)
@@ -1348,6 +1352,7 @@ def depEnergy(sTree) -> None:
             dE = ahit.GetEnergyLoss() / u.keV
             ahit.Momentum(mom)
             pa = PDG.GetParticle(ahit.PdgCode())
+            assert pa is not None, f"Unknown PDG: {ahit.PdgCode()}"
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2() + mpa**2)
             ekin = E - mpa
