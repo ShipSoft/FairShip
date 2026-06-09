@@ -309,160 +309,166 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        nmuons = imuondata[9]  <span class="comment"># number of muons in the original MuBack event</span></div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        p = r.TMath.Sqrt(px**2 + py**2 + pz**2)</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        mass = PDG.GetParticle(abs(int(pid))).Mass()</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        E = r.TMath.Sqrt(mass**2 + p**2)</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        theta = r.TMath.ACos(pz / p)</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        phi = r.TMath.ATan2(py, px)</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        isProton = 1</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        xsec = 0</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        mu = array(</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="stringliteral">&quot;d&quot;</span>,</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            [</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                pid,</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                px,</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                py,</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                pz,</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                E,</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                x,</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                y,</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                z,</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                w,</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                isProton,</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                xsec,</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                time_muon,</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                args.nDIS,</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                nmuons,</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            ],</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        )</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        muPart = r.TVectorD(14, mu)</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        myPythia.Initialize(<span class="stringliteral">&quot;FIXT&quot;</span>, mutype[pid], <span class="stringliteral">&quot;p+&quot;</span>, p)  <span class="comment"># target = &quot;p+&quot;</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        myPythia.Pylist(1)</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="keywordflow">for</span> a <span class="keywordflow">in</span> range(args.nDIS):</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="keywordflow">if</span> a == args.nDIS // 2:</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                myPythia.Initialize(<span class="stringliteral">&quot;FIXT&quot;</span>, mutype[pid], <span class="stringliteral">&quot;n0&quot;</span>, p)  <span class="comment"># target = &quot;n0&quot;</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                isProton = 0</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                <span class="comment"># logging.debug(&quot;Switching to neutron interaction&quot;)</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            dPartDIS.Clear()</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            iMuon.Clear()</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            muPart[9] = isProton</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            iMuon[0] = muPart</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            myPythia.GenerateEvent()</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            myPythia.Pyedit(1)</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            <span class="keywordflow">for</span> itrk <span class="keywordflow">in</span> range(1, myPythia.GetN() + 1):</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                xsec = myPythia.GetPARI(1)</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                muPart[10] = xsec</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                did = myPythia.GetK(itrk, 2)</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                dpx, dpy, dpz = <a class="code hl_function" href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">rotate</a>(</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                    myPythia.GetP(itrk, 1),</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                    myPythia.GetP(itrk, 2),</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                    myPythia.GetP(itrk, 3),</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    theta,</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                    phi,</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                )</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                psq = dpx**2 + dpy**2 + dpz**2</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                masssq = PDG.GetParticle(did).Mass() ** 2</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                E = r.TMath.Sqrt(masssq + psq)</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E])</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                part = r.TVectorD(5, m)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                nPart = len(dPartDIS)</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                <span class="keywordflow">if</span> dPartDIS.GetSize() == nPart:</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                    dPartDIS.Expand(nPart + 10)</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                <span class="comment"># dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                dPartDIS[nPart] = part</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            cross_sections.append(xsec)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            dPartSoft.Clear()</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        _p_pdg = PDG.GetParticle(abs(int(pid)))</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keyword">assert</span> _p_pdg <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {pid}&quot;</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        mass = _p_pdg.Mass()</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        E = r.TMath.Sqrt(mass**2 + p**2)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        theta = r.TMath.ACos(pz / p)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        phi = r.TMath.ATan2(py, px)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        isProton = 1</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        xsec = 0</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        mu = array(</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            <span class="stringliteral">&quot;d&quot;</span>,</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            [</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                pid,</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                px,</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                py,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                pz,</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                E,</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                x,</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                y,</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                z,</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                w,</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                isProton,</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                xsec,</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                time_muon,</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                args.nDIS,</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                nmuons,</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            ],</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        )</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        muPart = r.TVectorD(14, mu)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        myPythia.Initialize(<span class="stringliteral">&quot;FIXT&quot;</span>, mutype[pid], <span class="stringliteral">&quot;p+&quot;</span>, p)  <span class="comment"># target = &quot;p+&quot;</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        myPythia.Pylist(1)</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">for</span> a <span class="keywordflow">in</span> range(args.nDIS):</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="keywordflow">if</span> a == args.nDIS // 2:</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                myPythia.Initialize(<span class="stringliteral">&quot;FIXT&quot;</span>, mutype[pid], <span class="stringliteral">&quot;n0&quot;</span>, p)  <span class="comment"># target = &quot;n0&quot;</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                isProton = 0</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                <span class="comment"># logging.debug(&quot;Switching to neutron interaction&quot;)</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            dPartDIS.Clear()</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            iMuon.Clear()</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            muPart[9] = isProton</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            iMuon[0] = muPart</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>            myPythia.GenerateEvent()</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            myPythia.Pyedit(1)</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keywordflow">for</span> itrk <span class="keywordflow">in</span> range(1, myPythia.GetN() + 1):</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                xsec = myPythia.GetPARI(1)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                muPart[10] = xsec</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                did = myPythia.GetK(itrk, 2)</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                dpx, dpy, dpz = <a class="code hl_function" href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">rotate</a>(</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                    myPythia.GetP(itrk, 1),</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    myPythia.GetP(itrk, 2),</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                    myPythia.GetP(itrk, 3),</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                    theta,</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    phi,</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                )</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                psq = dpx**2 + dpy**2 + dpz**2</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                _dau = PDG.GetParticle(did)</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                <span class="keyword">assert</span> _dau <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {did}&quot;</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                masssq = _dau.Mass() ** 2</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                E = r.TMath.Sqrt(masssq + psq)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E])</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                part = r.TVectorD(5, m)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                nPart = len(dPartDIS)</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                <span class="keywordflow">if</span> dPartDIS.GetSize() == nPart:</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                    dPartDIS.Expand(nPart + 10)</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                <span class="comment"># dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                dPartDIS[nPart] = part</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            <span class="keywordflow">for</span> softTrack <span class="keywordflow">in</span> muon_tree.tracks:</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                did = softTrack.GetPdgCode()</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                dpx = softTrack.GetPx()</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                dpy = softTrack.GetPy()</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                dpz = softTrack.GetPz()</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                psq = dpx**2 + dpy**2 + dpz**2</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                masssq = PDG.GetParticle(did).Mass() ** 2</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                E = r.TMath.Sqrt(masssq + psq)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            cross_sections.append(xsec)</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            dPartSoft.Clear()</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            <span class="keywordflow">for</span> softTrack <span class="keywordflow">in</span> muon_tree.tracks:</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                did = softTrack.GetPdgCode()</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                dpx = softTrack.GetPx()</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                dpy = softTrack.GetPy()</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                dpz = softTrack.GetPz()</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                softx = softTrack.GetStartX()</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                softy = softTrack.GetStartY()</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                softz = softTrack.GetStartZ()</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                time_ = softTrack.GetStartT()</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E, softx, softy, softz, time_])</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                part = r.TVectorD(9, m)</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                nPart = len(dPartSoft)</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                <span class="keywordflow">if</span> dPartSoft.GetSize() == nPart:</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                    dPartSoft.Expand(nPart + 10)</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                <span class="comment"># dPartSoft.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>                dPartSoft[nPart] = part</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>            muon_vetoPoints.Clear()</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            index = 0</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_tree.muon_vetoPoints:</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                <span class="keywordflow">if</span> muon_vetoPoints.GetSize() == index:</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                    muon_vetoPoints.Expand(index + 1)</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                hit.SetTrackID(0)  <span class="comment"># Set TrackID to match for muon ID for new simulation</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                muon_vetoPoints[index] = hit</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                index += 1</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>            muon_UpstreamTaggerPoints.Clear()</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>            ubt_index = 0</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_tree.muon_UpstreamTaggerPoints:</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                <span class="keywordflow">if</span> muon_UpstreamTaggerPoints.GetSize() == ubt_index:</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                hit.SetTrackID(0)  <span class="comment"># Set TrackID to match for muon ID for new simulation</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                muon_UpstreamTaggerPoints[ubt_index] = hit</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                ubt_index += 1</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>            output_tree.Fill()</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>            DIS_table.append(</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                [</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                    a,</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                    Fixtarget[isProton],</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                    myPythia.GetN(),</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                    len(dPartSoft),</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                    len(muon_vetoPoints),</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                    len(muon_UpstreamTaggerPoints),</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                    xsec,</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                ]</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            )</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        final_xsec[k] = xsec</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        nMade += 1</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        logging.debug(</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            f<span class="stringliteral">&quot;\nMuon index:{k} \n\tPID = {pid}, weight = {w}, converged_cross_section= {final_xsec[k]}\n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n\n\tDIS Events Summary\n{tabulate(DIS_table, headers=headers, tablefmt=&#39;grid&#39;)}&quot;</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        )</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        <span class="keywordflow">if</span> nMade % 10 == 0:</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>            logging.info(f<span class="stringliteral">&quot;Muons processed: {nMade}&quot;</span>)</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    outputFile.cd()</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    output_tree.Write()</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    myPythia.SetMSTU(11, 6)</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    logging.info(</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        f<span class="stringliteral">&quot;DIS generated for muons (index {first_mu_event} - {last_mu_event - 1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}&quot;</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    )</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    outputFile.Close()</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    muonFile.Close()</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">update_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>, final_xsec)</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                psq = dpx**2 + dpy**2 + dpz**2</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                _soft = PDG.GetParticle(did)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                <span class="keyword">assert</span> _soft <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {did}&quot;</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                masssq = _soft.Mass() ** 2</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                E = r.TMath.Sqrt(masssq + psq)</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                softx = softTrack.GetStartX()</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                softy = softTrack.GetStartY()</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                softz = softTrack.GetStartZ()</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                time_ = softTrack.GetStartT()</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>                m = array(<span class="stringliteral">&quot;d&quot;</span>, [did, dpx, dpy, dpz, E, softx, softy, softz, time_])</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                part = r.TVectorD(9, m)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                nPart = len(dPartSoft)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                <span class="keywordflow">if</span> dPartSoft.GetSize() == nPart:</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                    dPartSoft.Expand(nPart + 10)</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                <span class="comment"># dPartSoft.ConstructedAt(nPart).Use(part) #to be adapted later</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                dPartSoft[nPart] = part</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            muon_vetoPoints.Clear()</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            index = 0</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_tree.muon_vetoPoints:</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                <span class="keywordflow">if</span> muon_vetoPoints.GetSize() == index:</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                    muon_vetoPoints.Expand(index + 1)</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                hit.SetTrackID(0)  <span class="comment"># Set TrackID to match for muon ID for new simulation</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                muon_vetoPoints[index] = hit</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                index += 1</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>            muon_UpstreamTaggerPoints.Clear()</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            ubt_index = 0</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>            <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> muon_tree.muon_UpstreamTaggerPoints:</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                <span class="keywordflow">if</span> muon_UpstreamTaggerPoints.GetSize() == ubt_index:</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                hit.SetTrackID(0)  <span class="comment"># Set TrackID to match for muon ID for new simulation</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                muon_UpstreamTaggerPoints[ubt_index] = hit</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                ubt_index += 1</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>            output_tree.Fill()</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>            DIS_table.append(</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                [</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                    a,</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                    Fixtarget[isProton],</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>                    myPythia.GetN(),</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                    len(dPartSoft),</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>                    len(muon_vetoPoints),</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                    len(muon_UpstreamTaggerPoints),</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                    xsec,</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                ]</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            )</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        final_xsec[k] = xsec</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        nMade += 1</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        logging.debug(</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            f<span class="stringliteral">&quot;\nMuon index:{k} \n\tPID = {pid}, weight = {w}, converged_cross_section= {final_xsec[k]}\n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n\n\tDIS Events Summary\n{tabulate(DIS_table, headers=headers, tablefmt=&#39;grid&#39;)}&quot;</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        )</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        <span class="keywordflow">if</span> nMade % 10 == 0:</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            logging.info(f<span class="stringliteral">&quot;Muons processed: {nMade}&quot;</span>)</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    outputFile.cd()</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    output_tree.Write()</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    myPythia.SetMSTU(11, 6)</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    logging.info(</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        f<span class="stringliteral">&quot;DIS generated for muons (index {first_mu_event} - {last_mu_event - 1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}&quot;</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    )</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    outputFile.Close()</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    muonFile.Close()</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">update_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>, final_xsec)</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
 </div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <a class="code hl_namespace" href="namespacemakeMuonDIS.html">makeMuonDIS</a>()</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">inspect_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>)</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <a class="code hl_namespace" href="namespacemakeMuonDIS.html">makeMuonDIS</a>()</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    <a class="code hl_function" href="namespacemakeMuonDIS.html#ae1d6f2611a2fe1f9173d83ad133a0be6">inspect_file</a>(<span class="stringliteral">&quot;muonDis.root&quot;</span>)</div>
 <div class="ttc" id="anamespacemakeMuonDIS_html"><div class="ttname"><a href="namespacemakeMuonDIS.html">makeMuonDIS</a></div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00001">makeMuonDIS.py:1</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_a29557c520b9f73e475e2bd0c9ae79e23"><div class="ttname"><a href="namespacemakeMuonDIS.html#a29557c520b9f73e475e2bd0c9ae79e23">makeMuonDIS.makeMuonDIS</a></div><div class="ttdeci">None makeMuonDIS()</div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00133">makeMuonDIS.py:133</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_acda8ed87a2a7dae5198cd1b5d0f1f1b5"><div class="ttname"><a href="namespacemakeMuonDIS.html#acda8ed87a2a7dae5198cd1b5d0f1f1b5">makeMuonDIS.update_file</a></div><div class="ttdeci">None update_file(str filename, final_xsec)</div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00072">makeMuonDIS.py:72</a></div></div>

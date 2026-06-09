@@ -172,27 +172,28 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle lifetime from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00103">103</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>lifetime(particle):</div>
-<div class="line"><span class="lineno">  104</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  105</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
-<div class="line"><span class="lineno">  106</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  107</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">  108</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">if</span> particle == <span class="stringliteral">&quot;D0&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D0bar&quot;</span>:</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> 4.1e-13</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;D+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D-&quot;</span>:</div>
-<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> 1.0e-12</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;D_s+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D_s-&quot;</span>:</div>
-<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">return</span> 5.0e-13</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;B0&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;B0bar&quot;</span>:</div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">return</span> 1.5e-12</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;B+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;B-&quot;</span>:</div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">return</span> 1.6e-12</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
-<div class="line"><span class="lineno">  121</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00106">106</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span><span class="keyword">def </span>lifetime(particle):</div>
+<div class="line"><span class="lineno">  107</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  108</span><span class="stringliteral">    Read particle lifetime from PDG database</span></div>
+<div class="line"><span class="lineno">  109</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  110</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">  111</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> particle == <span class="stringliteral">&quot;D0&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D0bar&quot;</span>:</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">return</span> 4.1e-13</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;D+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D-&quot;</span>:</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> 1.0e-12</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;D_s+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;D_s-&quot;</span>:</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">return</span> 5.0e-13</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;B0&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;B0bar&quot;</span>:</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">return</span> 1.5e-12</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">elif</span> particle == <span class="stringliteral">&quot;B+&quot;</span> <span class="keywordflow">or</span> particle == <span class="stringliteral">&quot;B-&quot;</span>:</div>
+<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">return</span> 1.6e-12</div>
 <div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>    <span class="keyword">assert</span> tPart <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown particle: {particle}&quot;</span></div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span> tPart.Lifetime()</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,16 +214,17 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle mass from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00085">85</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span><span class="keyword">def </span>mass(particle):</div>
-<div class="line"><span class="lineno">   86</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   87</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
-<div class="line"><span class="lineno">   88</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   89</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   90</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00086">86</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span><span class="keyword">def </span>mass(particle):</div>
+<div class="line"><span class="lineno">   87</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   88</span><span class="stringliteral">    Read particle mass from PDG database</span></div>
+<div class="line"><span class="lineno">   89</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   90</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">   91</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keyword">assert</span> tPart <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown particle: {particle}&quot;</span></div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span> tPart.Mass()</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -250,9 +252,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   79</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   80</span>    particle = PDGname(particle)</div>
 <div class="line"><span class="lineno">   81</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
-<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">assert</span> tPart <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown particle: {particle}&quot;</span></div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> int(tPart.PdgCode())</div>
 <div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -326,16 +329,17 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Read particle width from PDG database
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00094">94</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span><span class="keyword">def </span>width(particle):</div>
-<div class="line"><span class="lineno">   95</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   96</span><span class="stringliteral">    Read particle width from PDG database</span></div>
-<div class="line"><span class="lineno">   97</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   98</span>    particle = PDGname(particle)</div>
-<div class="line"><span class="lineno">   99</span>    tPart = pdg.GetParticle(particle)</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> tPart.Width()</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00096">96</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span><span class="keyword">def </span>width(particle):</div>
+<div class="line"><span class="lineno">   97</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   98</span><span class="stringliteral">    Read particle width from PDG database</span></div>
+<div class="line"><span class="lineno">   99</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  100</span>    particle = PDGname(particle)</div>
+<div class="line"><span class="lineno">  101</span>    tPart = pdg.GetParticle(particle)</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keyword">assert</span> tPart <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown particle: {particle}&quot;</span></div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> tPart.Width()</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -352,7 +356,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00175">175</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00179">179</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 
 </div>
 </div>

@@ -209,17 +209,17 @@ var namespaces_dup =
     [ "darkphoton", "namespacedarkphoton.html", "namespacedarkphoton" ],
     [ "decorators", "namespacedecorators.html", [
       [ "apply_decorators", "namespacedecorators.html#a84f73e13d24535f8700bc2e298683b43", null ],
-      [ "Dump", "namespacedecorators.html#ab54cda783306aab2521f3322edc84015", null ],
-      [ "FitTrackPrintOut", "namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07", null ],
-      [ "MCPointPrintOut", "namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba", null ],
-      [ "MCTrackPrintOut", "namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774", null ],
-      [ "ShipParticlePrintOut", "namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26", null ],
-      [ "TEvePointSetPrintOut", "namespacedecorators.html#a7523195a1670db25dd02931fc7f529ab", null ],
-      [ "TimeDetHitPrintOut", "namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30", null ],
-      [ "TLorentzVectorPrintOut", "namespacedecorators.html#a2f086628bb4a523d36f60f44819c53d7", null ],
-      [ "TParticlePrintOut", "namespacedecorators.html#a6ce8d83fa3198fa3991daeba6adb1b39", null ],
-      [ "TVector3PrintOut", "namespacedecorators.html#acd2b75a9f363f67bc62aa8bcb41e6eea", null ],
-      [ "vetoHitPrintOut", "namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf", null ]
+      [ "Dump", "namespacedecorators.html#a68c5429c133ff0104e1c7d6a369712ac", null ],
+      [ "FitTrackPrintOut", "namespacedecorators.html#ae9bddfe14bd67abe9c85f81e768e6c1b", null ],
+      [ "MCPointPrintOut", "namespacedecorators.html#adff2b51af9d78d15de1b33c2eb817113", null ],
+      [ "MCTrackPrintOut", "namespacedecorators.html#aa5a0b3096ac1ab4720c3d8f76daba3f9", null ],
+      [ "ShipParticlePrintOut", "namespacedecorators.html#a21a6b220ff0b18d1b67c52f822a5aec5", null ],
+      [ "TEvePointSetPrintOut", "namespacedecorators.html#a589100a350a4396095139dc158047d1d", null ],
+      [ "TimeDetHitPrintOut", "namespacedecorators.html#a65624ed40a51283179ead8c7eaaea9e6", null ],
+      [ "TLorentzVectorPrintOut", "namespacedecorators.html#a384f6d4d903851c43135330210e63b3a", null ],
+      [ "TParticlePrintOut", "namespacedecorators.html#a78bcbbcef5051ce92b471cef64fb1413", null ],
+      [ "TVector3PrintOut", "namespacedecorators.html#a1df8da2cd98ca2092730bcaf3b2838c6", null ],
+      [ "vetoHitPrintOut", "namespacedecorators.html#a996b3858de5f3d3b6995e0d18c77c030", null ]
     ] ],
     [ "dpProductionRates", "namespacedpProductionRates.html", [
       [ "brMesonToDP", "namespacedpProductionRates.html#a4af6a641de251cc7f5e016751954a39d", null ],
@@ -285,6 +285,7 @@ var namespaces_dup =
       [ "charmExtern", "namespaceextractMuonsAndUpdateWeight.html#a3ee737d91956d07c94601d0781b01ba5", null ],
       [ "muSources", "namespaceextractMuonsAndUpdateWeight.html#a3540e4762b6a0339d1c923d86bd5314a", null ],
       [ "path", "namespaceextractMuonsAndUpdateWeight.html#a78c024da4bd6482a82d5fdd95cd8fe7b", null ],
+      [ "weight", "namespaceextractMuonsAndUpdateWeight.html#ab67d73adf091feb460bcbabaae730de3", null ],
       [ "weightBeauty", "namespaceextractMuonsAndUpdateWeight.html#adfec8af16ddc9104b3a740bc14d0759f", null ],
       [ "weightCharm", "namespaceextractMuonsAndUpdateWeight.html#a6931ea78c2f6638c3581e970e932c7cd", null ],
       [ "weightMbias", "namespaceextractMuonsAndUpdateWeight.html#aa62f94d168950261430ef026b2b30db5", null ]
@@ -297,6 +298,7 @@ var namespaces_dup =
       [ "run4beauty", "namespaceextractNeutrinosAndUpdateWeight.html#af7e96fcc0ed95760bbd1c692e634b12d", null ],
       [ "run4Charm", "namespaceextractNeutrinosAndUpdateWeight.html#ad0934631f9f43998aa7d2f046885b735", null ],
       [ "run4Charm1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#a2cc5a49e49291b2d6d78f3fbdf9af7a4", null ],
+      [ "_p", "namespaceextractNeutrinosAndUpdateWeight.html#a98591d40cb689eb698b3bca45590dec6", null ],
       [ "charmExtern", "namespaceextractNeutrinosAndUpdateWeight.html#aeee9358256fe96e5c6483243deb0d884", null ],
       [ "h", "namespaceextractNeutrinosAndUpdateWeight.html#aa22cf8b258555ac08bce727fa28fb2d1", null ],
       [ "idhnu", "namespaceextractNeutrinosAndUpdateWeight.html#ac400864a3817612dd667b12b5a93fffe", null ],
@@ -307,6 +309,7 @@ var namespaces_dup =
       [ "path", "namespaceextractNeutrinosAndUpdateWeight.html#ae15dab9f41491fe6870152c83af6e443", null ],
       [ "PDG", "namespaceextractNeutrinosAndUpdateWeight.html#a9b19cf3892e51b57f018a5562f771578", null ],
       [ "title", "namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d", null ],
+      [ "weight", "namespaceextractNeutrinosAndUpdateWeight.html#ab1c4c085cb09bdb2f2bfff978ea4273d", null ],
       [ "weightBeauty", "namespaceextractNeutrinosAndUpdateWeight.html#a219530ce37f64738a48b1c1f4f1c30e7", null ],
       [ "weightCharm", "namespaceextractNeutrinosAndUpdateWeight.html#aef3a69a66e9465622a1a4762e9d207cf", null ],
       [ "weightCharm1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#ab760c708e24b90544e4fbd8e02fbf40c", null ],
@@ -529,6 +532,7 @@ var namespaces_dup =
     [ "make_nTuple_SBT", "namespacemake__nTuple__SBT.html", [
       [ "dump", "namespacemake__nTuple__SBT.html#aed56147df0f74251810d381fcf68e266", null ],
       [ "printMCTrack", "namespacemake__nTuple__SBT.html#a12289a50c5d522f1a2220d504497a514", null ],
+      [ "_p", "namespacemake__nTuple__SBT.html#a66c4f51ed7c88d8a4a2c520ffad8812d", null ],
       [ "action", "namespacemake__nTuple__SBT.html#a80292fc543265e29da6ffcaf406c308c", null ],
       [ "args", "namespacemake__nTuple__SBT.html#ae2208ddc7075376e9b26686adda2083f", null ],
       [ "csvwriter", "namespacemake__nTuple__SBT.html#a8085b4408d7f1f99caaa19421309ce0a", null ],
@@ -585,6 +589,7 @@ var namespaces_dup =
     [ "make_nTuple_Tr", "namespacemake__nTuple__Tr.html", [
       [ "dump", "namespacemake__nTuple__Tr.html#ad0971c549712ce49ad8342e8943e66a8", null ],
       [ "printMCTrack", "namespacemake__nTuple__Tr.html#a751d0fd3ecdc76654872a606e7607eaf", null ],
+      [ "_p", "namespacemake__nTuple__Tr.html#a18c29e6323ee92c5527a1ff494bb1887", null ],
       [ "action", "namespacemake__nTuple__Tr.html#abb5aa6c767fa6bbe0644576fa9452799", null ],
       [ "args", "namespacemake__nTuple__Tr.html#a330b5a34bed6a1b5fae36bf1ea628719", null ],
       [ "csvwriter", "namespacemake__nTuple__Tr.html#a73baec60d7ae266c3945eb59bccb281a", null ],
@@ -654,6 +659,8 @@ var namespaces_dup =
       [ "fillp1", "namespacemakeCascade.html#a2baa4637c1d3f6bcf49ef9897f86d483", null ],
       [ "LHCb_tune", "namespacemakeCascade.html#ac9baae86629ca4ea344a65f7ff356218", null ],
       [ "PoorE791_tune", "namespacemakeCascade.html#a3895fb5c4acb0b8f50b36593a1e1fd02", null ],
+      [ "_beam", "namespacemakeCascade.html#a185f04bf3f6df30b3eb94f037f4d7fa0", null ],
+      [ "_p", "namespacemakeCascade.html#a69a35626b02127147108cb83b4b89402", null ],
       [ "action", "namespacemakeCascade.html#a596fbf87482d55148af7d015e9cae35f", null ],
       [ "anclist", "namespacemakeCascade.html#a46b36a061df3565eba3013b58138f218", null ],
       [ "ap", "namespacemakeCascade.html#a4e8a729976ca09e90c3d5afe6590d37f", null ],
@@ -701,7 +708,7 @@ var namespaces_dup =
       [ "pt2", "namespacemakeCascade.html#a5ce3d0605060ad1f4cf61d6cdd6d4a37", null ],
       [ "ptot", "namespacemakeCascade.html#abe2ac1ea6f108cc248cb30301ed79642", null ],
       [ "rtime", "namespacemakeCascade.html#a2845a7c4488f4e6b4e96da1a5bcc61f6", null ],
-      [ "stack", "namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e", null ],
+      [ "stack", "namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e", null ],
       [ "stmp", "namespacemakeCascade.html#a0bd201bb56785c651d094dbe02417ac2", null ],
       [ "sublist", "namespacemakeCascade.html#af0b5fb13024e9b4265f851c3c5a6bc3f", null ],
       [ "t0", "namespacemakeCascade.html#ad45038a272d420fb8f07f6a7a4bb95eb", null ],
@@ -714,6 +721,7 @@ var namespaces_dup =
       [ "xf", "namespacemakeCascade.html#a70c92707038e355071f4b1a753e1055e", null ]
     ] ],
     [ "makeDecay", "namespacemakeDecay.html", [
+      [ "_p", "namespacemakeDecay.html#abedc5f025804cceb779464a42daaac34", null ],
       [ "args", "namespacemakeDecay.html#a1d9afd01a598d83d61bf13f290b9787c", null ],
       [ "chibb", "namespacemakeDecay.html#a6fe8eaf948b1566b26ae99e59d1f9f16", null ],
       [ "chicc", "namespacemakeDecay.html#a91f378399593c38f355c60a387985f2e", null ],
@@ -1660,7 +1668,7 @@ var namespaces_dup =
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],
-      [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a", null ],
+      [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#ac357e10f3671079a5b9c5706b564b421", null ],
       [ "minNdf", "namespaceTrackExtrapolateTool.html#a88649c5e9feda4744213d5c7a41a94ad", null ],
       [ "parallelToZ", "namespaceTrackExtrapolateTool.html#a1104e7a5752dd65cba8fc8bdb76a5ce5", null ],
       [ "top", "namespaceTrackExtrapolateTool.html#ad1aa89145b6188edd90c6266aebaa095", null ],

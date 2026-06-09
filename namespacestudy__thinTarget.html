@@ -167,7 +167,9 @@ Variables</h2></td></tr>
 <tr class="separator:a39aa964b0e7234068dd84e1db8e82ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad42514fa94c85147992a2838f87d2465" id="r_ad42514fa94c85147992a2838f87d2465"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestudy__thinTarget.html#ad42514fa94c85147992a2838f87d2465">oTrack</a> = sTree.MCTrack[aHit.GetTrackID()]</td></tr>
 <tr class="separator:ad42514fa94c85147992a2838f87d2465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affb86d37468067d55d1131cfc854169d" id="r_affb86d37468067d55d1131cfc854169d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">M</a> = pdg.GetParticle(oTrack.GetPdgCode()).Mass()</td></tr>
+<tr class="memitem:a46a2c36f58cdfbc3bcad456445df083d" id="r_a46a2c36f58cdfbc3bcad456445df083d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestudy__thinTarget.html#a46a2c36f58cdfbc3bcad456445df083d">_p</a> = pdg.GetParticle(oTrack.GetPdgCode())</td></tr>
+<tr class="separator:a46a2c36f58cdfbc3bcad456445df083d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb86d37468067d55d1131cfc854169d" id="r_affb86d37468067d55d1131cfc854169d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">M</a> = _p.Mass()</td></tr>
 <tr class="separator:affb86d37468067d55d1131cfc854169d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf343d15ac513f7c099b042aa8b8910d" id="r_abf343d15ac513f7c099b042aa8b8910d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestudy__thinTarget.html#abf343d15ac513f7c099b042aa8b8910d">Ekin</a> = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2 + aHit.GetPz() ** 2 + <a class="el" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">M</a>**2) - <a class="el" href="namespacestudy__thinTarget.html#affb86d37468067d55d1131cfc854169d">M</a></td></tr>
 <tr class="separator:abf343d15ac513f7c099b042aa8b8910d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,6 +193,30 @@ Variables</h2></td></tr>
 <tr class="separator:a7bd06a17bb8831e6dabcf07c3e09402e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a46a2c36f58cdfbc3bcad456445df083d" name="a46a2c36f58cdfbc3bcad456445df083d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a2c36f58cdfbc3bcad456445df083d">&#9670;&#160;</a></span>_p</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">study_thinTarget._p = pdg.GetParticle(oTrack.GetPdgCode())</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00142">142</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+
+</div>
+</div>
 <a id="a7c10cd1069ea56556ce9cde4d6a2c272" name="a7c10cd1069ea56556ce9cde4d6a2c272"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c10cd1069ea56556ce9cde4d6a2c272">&#9670;&#160;</a></span>cave</h2>
 
@@ -235,7 +261,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00157">157</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00159">159</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -251,7 +277,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -267,7 +293,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -299,7 +325,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00143">143</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00145">145</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -395,7 +421,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -406,12 +432,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">study_thinTarget.M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()</td>
+          <td class="memname">study_thinTarget.M = _p.Mass()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00142">142</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00144">144</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -523,7 +549,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -539,7 +565,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -651,7 +677,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00156">156</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00158">158</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -811,7 +837,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00147">147</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00149">149</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>
@@ -875,7 +901,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00146">146</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__thinTarget_8py_source.html#l00148">148</a> of file <a class="el" href="study__thinTarget_8py_source.html">study_thinTarget.py</a>.</p>
 
 </div>
 </div>

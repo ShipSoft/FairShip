@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('add__noise__to__field_8py_source.html'
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    plotData = datum[datum[<span class="stringliteral">&quot;y&quot;</span>] == 0]</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    H, _xedges, _yedges = np.histogram2d(plotData[<span class="stringliteral">&quot;x&quot;</span>], plotData[<span class="stringliteral">&quot;z&quot;</span>], bins=[50, 500], weights=plotData[<span class="stringliteral">&quot;by&quot;</span>])</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    plt.figure(figsize=[20, 10])</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    plt.imshow(H, interpolation=<span class="stringliteral">&quot;nearest&quot;</span>, origin=<span class="stringliteral">&quot;low&quot;</span>)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    plt.imshow(H, interpolation=<span class="stringliteral">&quot;nearest&quot;</span>, origin=<span class="stringliteral">&quot;lower&quot;</span>)</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="comment"># plt.colorbar()</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    plt.show()</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>

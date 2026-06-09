@@ -398,7 +398,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno"> 1308</span>            <span class="keywordflow">continue</span></div>
 <div class="line"><span class="lineno"> 1309</span>        <span class="keywordflow">if</span> aTrack.GetMotherId() == 1:</div>
 <div class="line"><span class="lineno"> 1310</span>            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())</div>
-<div class="line"><span class="lineno"> 1311</span>            <span class="keywordflow">if</span> pa.Lifetime() &gt; 1.0e-12:</div>
+<div class="line"><span class="lineno"> 1311</span>            <span class="keywordflow">if</span> pa <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> pa.Lifetime() &gt; 1.0e-12:</div>
 <div class="line"><span class="lineno"> 1312</span>                print(sTree.MCTrack[i])</div>
 <div class="line"><span class="lineno"> 1313</span>                SHiPDisplay.tracks.DrawMCTrack(i)</div>
 <div class="line"><span class="lineno"> 1314</span> </div>

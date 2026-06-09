@@ -251,12 +251,12 @@ $(document).ready(function(){initNavTree('compactingBackgroundProduction_8py_sou
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        + endDate.__str__().split(<span class="stringliteral">&quot; &quot;</span>)[0]</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        + <span class="stringliteral">&quot;.pkl&quot;</span></div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    )</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keyword">with</span> open(pName, <span class="stringliteral">&quot;w&quot;</span>) <span class="keyword">as</span> fpi:</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keyword">with</span> open(pName, <span class="stringliteral">&quot;wb&quot;</span>) <span class="keyword">as</span> fpi:</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        database = {}</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        database[<span class="stringliteral">&quot;goodruns&quot;</span>] = goodRuns</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        database[<span class="stringliteral">&quot;badRuns&quot;</span>] = badRuns</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        pickle.dump(database, fpi)</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keyword">with</span> open(pName) <span class="keyword">as</span> fpi:</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keyword">with</span> open(pName, <span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> fpi:</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        database = pickle.load(fpi)</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a73370f59858a1d62ea78a4686e059006">addRuns</a>(database[<span class="stringliteral">&quot;goodruns&quot;</span>], 20000)  <span class="comment"># next cycle</span></div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
@@ -421,145 +421,149 @@ $(document).ready(function(){initNavTree('compactingBackgroundProduction_8py_sou
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                mother = t.GetMotherId()</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> mother &lt; 0:</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                    moPid = sTree.MCTrack[mother].GetPdgCode()</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                    name = pdg.GetParticle(moPid).GetName()</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                    name = procID + <span class="stringliteral">&quot; &quot;</span> + name</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                    <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                        h[name] = h[<span class="stringliteral">&quot;test&quot;</span>].Clone(name)</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    h[name].Fill(t.GetP(), t.GetPt())</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                <span class="keywordflow">if</span> procID <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                    h[procID] = h[<span class="stringliteral">&quot;test&quot;</span>].Clone(procID)</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                h[procID].Fill(t.GetP(), t.GetPt())</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        h[x].Scale(1.0 / nTot)</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    tmp = rfile.split(<span class="stringliteral">&quot;/&quot;</span>)</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    hname = tmp[len(tmp) - 1].replace(<span class="stringliteral">&quot;pythia8_Geant4&quot;</span>, <span class="stringliteral">&quot;Histos&quot;</span>)</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    ut.writeHists(h, hname)</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                    _mo = pdg.GetParticle(moPid)</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                    <span class="keyword">assert</span> _mo <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {moPid}&quot;</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                    name = _mo.GetName()</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                    name = procID + <span class="stringliteral">&quot; &quot;</span> + name</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                        h[name] = h[<span class="stringliteral">&quot;test&quot;</span>].Clone(name)</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                    h[name].Fill(t.GetP(), t.GetPt())</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                <span class="keywordflow">if</span> procID <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                    h[procID] = h[<span class="stringliteral">&quot;test&quot;</span>].Clone(procID)</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                h[procID].Fill(t.GetP(), t.GetPt())</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        h[x].Scale(1.0 / nTot)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    tmp = rfile.split(<span class="stringliteral">&quot;/&quot;</span>)</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    hname = tmp[len(tmp) - 1].replace(<span class="stringliteral">&quot;pythia8_Geant4&quot;</span>, <span class="stringliteral">&quot;Histos&quot;</span>)</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    ut.writeHists(h, hname)</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
 </div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a340e6f8564a893fe2b07d16082562074">  327</a></span>hunbiased = {}</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a6004adc38b74f8c151d721181206d2b7">  328</a></span>hbiased = {}</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="keyword">import</span> operator</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="foldopen" id="foldopen00332" data-start="" data-end="">
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">  332</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">makePrintout</a>() -&gt; None:</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="comment"># Histos_2000000-2001500_10.0.root</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    ut.readHists(hunbiased, <span class="stringliteral">&quot;/media/microdisk/HNL/muonBackground/Histos_1000000-1000600_10.0.root&quot;</span>)</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    ut.readHists(hbiased, <span class="stringliteral">&quot;hadded_Histos_1_10.0.root&quot;</span>)</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    unbiased = {}</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    biased = {}</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hunbiased:</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        unbiased[key] = hunbiased[key].GetSumOfWeights()</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hbiased:</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        <span class="keywordflow">if</span> key.find(<span class="stringliteral">&quot;proj&quot;</span>) &lt; 0 <span class="keywordflow">and</span> key.find(<span class="stringliteral">&quot;test&quot;</span>) &lt; 0 <span class="keywordflow">and</span> key.find(<span class="stringliteral">&quot;pids&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>            biased[key] = hbiased[key].GetSumOfWeights()</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    p = {}</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetNbinsX() + 1):</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        c = hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetBinContent(i)</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        <span class="keywordflow">if</span> c &gt; 0:</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            p[int(hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetBinCenter(i))] = c</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    sorted_p = sorted(p.items(), key=operator.itemgetter(1))</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_p:</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        print(<span class="stringliteral">&quot;%25s : %5.2G&quot;</span> % (pdg.GetParticle(p[0]).GetName(), float(p[1])))</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    print(<span class="stringliteral">&quot;origin of muons&quot;</span>)</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_pr:</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> p[0].find(<span class="stringliteral">&quot;Hadronic inelastic&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>            <span class="keywordflow">if</span> len(p[0]) &gt; len(<span class="stringliteral">&quot;Hadronic inelastic&quot;</span>):</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        denom = 0</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keywordflow">if</span> p[0] <span class="keywordflow">in</span> unbiased:</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            denom = unbiased[p[0]]</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>        <span class="keywordflow">if</span> denom &gt; 0:</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>            fac = float(p[1]) / denom</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>            print(<span class="stringliteral">&quot;%40s : %5.2G %5.1F&quot;</span> % (p[0], float(p[1]), fac))</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>            print(<span class="stringliteral">&quot;%40s : %5.2G &quot;</span> % (p[0], float(p[1])))</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a340e6f8564a893fe2b07d16082562074">  329</a></span>hunbiased = {}</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a6004adc38b74f8c151d721181206d2b7">  330</a></span>hbiased = {}</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="keyword">import</span> operator</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="foldopen" id="foldopen00334" data-start="" data-end="">
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">  334</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">makePrintout</a>() -&gt; None:</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="comment"># Histos_2000000-2001500_10.0.root</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    ut.readHists(hunbiased, <span class="stringliteral">&quot;/media/microdisk/HNL/muonBackground/Histos_1000000-1000600_10.0.root&quot;</span>)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    ut.readHists(hbiased, <span class="stringliteral">&quot;hadded_Histos_1_10.0.root&quot;</span>)</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    unbiased = {}</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    biased = {}</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hunbiased:</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        unbiased[key] = hunbiased[key].GetSumOfWeights()</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> hbiased:</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        <span class="keywordflow">if</span> key.find(<span class="stringliteral">&quot;proj&quot;</span>) &lt; 0 <span class="keywordflow">and</span> key.find(<span class="stringliteral">&quot;test&quot;</span>) &lt; 0 <span class="keywordflow">and</span> key.find(<span class="stringliteral">&quot;pids&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            biased[key] = hbiased[key].GetSumOfWeights()</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    p = {}</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetNbinsX() + 1):</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        c = hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetBinContent(i)</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        <span class="keywordflow">if</span> c &gt; 0:</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>            p[int(hbiased[<span class="stringliteral">&quot;pids&quot;</span>].GetBinCenter(i))] = c</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    sorted_p = sorted(p.items(), key=operator.itemgetter(1))</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_p:</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        _p_pdg = pdg.GetParticle(p[0])</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        <span class="keyword">assert</span> _p_pdg <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {p[0]}&quot;</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        print(<span class="stringliteral">&quot;%25s : %5.2G&quot;</span> % (_p_pdg.GetName(), float(p[1])))</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    print(<span class="stringliteral">&quot;origin of muons&quot;</span>)</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> sorted_pr:</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> p[0].find(<span class="stringliteral">&quot;Hadronic inelastic&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            <span class="keywordflow">if</span> len(p[0]) &gt; len(<span class="stringliteral">&quot;Hadronic inelastic&quot;</span>):</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        denom = 0</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        <span class="keywordflow">if</span> p[0] <span class="keywordflow">in</span> unbiased:</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            denom = unbiased[p[0]]</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        <span class="keywordflow">if</span> denom &gt; 0:</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>            fac = float(p[1]) / denom</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>            print(<span class="stringliteral">&quot;%40s : %5.2G %5.1F&quot;</span> % (p[0], float(p[1]), fac))</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>            print(<span class="stringliteral">&quot;%40s : %5.2G &quot;</span> % (p[0], float(p[1])))</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
 </div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="keywordflow">if</span> len(sys.argv) &gt; 1:</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#aa6082a7261161978eab69db8ac1cecf7">  370</a></span>    runMin = sys.argv[1]</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a08970bcc75606f5d25c558e0e4c709f8">  371</a></span>    runMax = sys.argv[2]</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="keywordflow">if</span> len(sys.argv) &gt; 3:</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        charm = sys.argv[3]</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a15735f3c727ee462f3a7b9b9adeee972">compactify</a>(charm)</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="comment"># production without boost factor</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <span class="comment"># runMin = 1000000</span></div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="comment"># runMax = 1000600</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment"># production with boost factor 100</span></div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="comment"># runMin = 2001001</span></div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="comment"># runMax = 2001500 # more does not work, maybe limit of hadd? 2001359</span></div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="comment"># charm run_fixedTarget_9000119/pythia8_Geant4_9000219_10.0.root</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    print(<span class="stringliteral">&quot;methods to run: makeHistos(rfile),makePrintout()&quot;</span>)</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span><span class="comment"># yandex compactification, Feb 8</span></div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span><span class="comment"># ...  startDate = datetime.datetime(2018, 1, 1, 0, 0)</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="comment"># ...  endDate   = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="comment"># ...  goodAndBadRuns_2018-01-01_2018-02-01.pkl</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="comment"># hadd Source file 339: root://eospublic.cern.ch//eos/experiment/ship/skygrid/background-prod-2018/424121/80eefea19104_run_fixedTarget_1/pythia8_Geant4_1_10.0.root</span></div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span><span class="comment"># hadd Target path: pythia8_Geant4_10.0_c22000.root:/</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="comment"># len(database[&#39;goodruns&#39;])  .22339</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="comment"># database[&#39;goodruns&#39;][22338] &#39;/eos/experiment/ship/skygrid/background-prod-2018/424121/80eefea19104_run_fixedTarget_1/pythia8_Geant4_1_10.0.root&#39;</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="comment"># ...  startDate = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span><span class="comment"># ...  endDate   = datetime.datetime(2018, 2, 6, 0, 0)</span></div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="comment"># for charm</span></div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="comment"># chicc=1.7e-3;     //prob to produce primary ccbar pair/pot</span></div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span><span class="comment"># 20*2000000 are equal to 23.5E9</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="comment"># for beauty</span></div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span><span class="comment"># chibb=1.6e-7;</span></div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="comment"># something went wrong Yandex2018Prod-23000.root onwards up to 43000, only have of yield, 44000 ok !!!</span></div>
-<div class="foldopen" id="foldopen00404" data-start="" data-end="">
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">  404</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">removeStupidFiles</a>() -&gt; None:</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    path = <span class="stringliteral">&quot;/eos/experiment/ship/data/Mbias/background-prod-2018&quot;</span></div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(path):</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>        ff = path + <span class="stringliteral">&quot;/&quot;</span> + f</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        x = os.path.getsize(ff)</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        <span class="keywordflow">if</span> x &lt; 500:</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>            os.remove(ff)</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="keywordflow">if</span> len(sys.argv) &gt; 1:</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#aa6082a7261161978eab69db8ac1cecf7">  374</a></span>    runMin = sys.argv[1]</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a08970bcc75606f5d25c558e0e4c709f8">  375</a></span>    runMax = sys.argv[2]</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordflow">if</span> len(sys.argv) &gt; 3:</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        charm = sys.argv[3]</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a15735f3c727ee462f3a7b9b9adeee972">compactify</a>(charm)</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="comment"># production without boost factor</span></div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="comment"># runMin = 1000000</span></div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="comment"># runMax = 1000600</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <span class="comment"># production with boost factor 100</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="comment"># runMin = 2001001</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="comment"># runMax = 2001500 # more does not work, maybe limit of hadd? 2001359</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    <span class="comment"># charm run_fixedTarget_9000119/pythia8_Geant4_9000219_10.0.root</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    print(<span class="stringliteral">&quot;methods to run: makeHistos(rfile),makePrintout()&quot;</span>)</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="comment"># yandex compactification, Feb 8</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span><span class="comment"># ...  startDate = datetime.datetime(2018, 1, 1, 0, 0)</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="comment"># ...  endDate   = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="comment"># ...  goodAndBadRuns_2018-01-01_2018-02-01.pkl</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="comment"># hadd Source file 339: root://eospublic.cern.ch//eos/experiment/ship/skygrid/background-prod-2018/424121/80eefea19104_run_fixedTarget_1/pythia8_Geant4_1_10.0.root</span></div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span><span class="comment"># hadd Target path: pythia8_Geant4_10.0_c22000.root:/</span></div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span><span class="comment"># len(database[&#39;goodruns&#39;])  .22339</span></div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="comment"># database[&#39;goodruns&#39;][22338] &#39;/eos/experiment/ship/skygrid/background-prod-2018/424121/80eefea19104_run_fixedTarget_1/pythia8_Geant4_1_10.0.root&#39;</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="comment"># ...  startDate = datetime.datetime(2018, 2, 1, 0, 0)</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span><span class="comment"># ...  endDate   = datetime.datetime(2018, 2, 6, 0, 0)</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span><span class="comment"># for charm</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="comment"># chicc=1.7e-3;     //prob to produce primary ccbar pair/pot</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="comment"># 20*2000000 are equal to 23.5E9</span></div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="comment"># for beauty</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span><span class="comment"># chibb=1.6e-7;</span></div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="comment"># something went wrong Yandex2018Prod-23000.root onwards up to 43000, only have of yield, 44000 ok !!!</span></div>
+<div class="foldopen" id="foldopen00408" data-start="" data-end="">
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">  408</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">removeStupidFiles</a>() -&gt; None:</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    path = <span class="stringliteral">&quot;/eos/experiment/ship/data/Mbias/background-prod-2018&quot;</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    <span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(path):</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        ff = path + <span class="stringliteral">&quot;/&quot;</span> + f</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>        x = os.path.getsize(ff)</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>        <span class="keywordflow">if</span> x &lt; 500:</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>            os.remove(ff)</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span> </div>
 </div>
-<div class="foldopen" id="foldopen00413" data-start="" data-end="">
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">  413</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">check4DoubleRuns</a>() -&gt; None:</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    allRuns = [</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-01-01_2018-02-01.pkl&quot;</span>,</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-01_2018-02-06.pkl&quot;</span>,</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-06_2018-02-12.pkl&quot;</span>,</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-12_2018-02-15.pkl&quot;</span>,</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-15_2018-02-21.pkl&quot;</span>,</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-21_2018-02-26.pkl&quot;</span>,</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    ]</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>    Nruns = 0</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allRuns:</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>        <span class="keyword">with</span> open(x) <span class="keyword">as</span> fn:</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>            dn = pickle.load(fn)</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>        Nruns += len(dn[<span class="stringliteral">&quot;goodruns&quot;</span>])</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    print(<span class="stringliteral">&quot;Total number of runs:&quot;</span>, Nruns)</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span> </div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(allRuns) - 1):</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        <span class="keyword">with</span> open(allRuns[n]) <span class="keyword">as</span> fn:</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>            dn = pickle.load(fn)</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> range(n + 1, len(allRuns)):</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>            <span class="keyword">with</span> open(allRuns[m]) <span class="keyword">as</span> fm:</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                dm = pickle.load(fm)</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>            <span class="keywordflow">for</span> rn <span class="keywordflow">in</span> dn[<span class="stringliteral">&quot;goodruns&quot;</span>]:</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>                <span class="keywordflow">for</span> rm <span class="keywordflow">in</span> dm[<span class="stringliteral">&quot;goodruns&quot;</span>]:</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>                    <span class="keywordflow">if</span> rn == rm:</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>                        print(<span class="stringliteral">&quot;double entry found&quot;</span>, rn, allRuns[n], allRuns[m])</div>
+<div class="foldopen" id="foldopen00417" data-start="" data-end="">
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno"><a class="line" href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">  417</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">check4DoubleRuns</a>() -&gt; None:</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    allRuns = [</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-01-01_2018-02-01.pkl&quot;</span>,</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-01_2018-02-06.pkl&quot;</span>,</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-06_2018-02-12.pkl&quot;</span>,</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-12_2018-02-15.pkl&quot;</span>,</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-15_2018-02-21.pkl&quot;</span>,</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>        <span class="stringliteral">&quot;goodAndBadRuns_2018-02-21_2018-02-26.pkl&quot;</span>,</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    ]</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    Nruns = 0</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allRuns:</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>        <span class="keyword">with</span> open(x, <span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> fn:</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>            dn = pickle.load(fn)</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        Nruns += len(dn[<span class="stringliteral">&quot;goodruns&quot;</span>])</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    print(<span class="stringliteral">&quot;Total number of runs:&quot;</span>, Nruns)</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span> </div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(allRuns) - 1):</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        <span class="keyword">with</span> open(allRuns[n], <span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> fn:</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>            dn = pickle.load(fn)</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>        <span class="keywordflow">for</span> m <span class="keywordflow">in</span> range(n + 1, len(allRuns)):</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>            <span class="keyword">with</span> open(allRuns[m], <span class="stringliteral">&quot;rb&quot;</span>) <span class="keyword">as</span> fm:</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>                dm = pickle.load(fm)</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>            <span class="keywordflow">for</span> rn <span class="keywordflow">in</span> dn[<span class="stringliteral">&quot;goodruns&quot;</span>]:</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>                <span class="keywordflow">for</span> rm <span class="keywordflow">in</span> dm[<span class="stringliteral">&quot;goodruns&quot;</span>]:</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>                    <span class="keywordflow">if</span> rn == rm:</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>                        print(<span class="stringliteral">&quot;double entry found&quot;</span>, rn, allRuns[n], allRuns[m])</div>
 </div>
 <div class="ttc" id="anamespacecompactingBackgroundProduction_html_a15735f3c727ee462f3a7b9b9adeee972"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a15735f3c727ee462f3a7b9b9adeee972">compactingBackgroundProduction.compactify</a></div><div class="ttdeci">None compactify(bool|str charm, runMin=0, runMax=0, checkOnly=False)</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00210">compactingBackgroundProduction.py:210</a></div></div>
-<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a2ef4dfa3747c8b70bb5fa33fb5285056"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">compactingBackgroundProduction.removeStupidFiles</a></div><div class="ttdeci">None removeStupidFiles()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00404">compactingBackgroundProduction.py:404</a></div></div>
-<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a44f50e507aa7624414498ebce7cab133"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">compactingBackgroundProduction.makePrintout</a></div><div class="ttdeci">None makePrintout()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00332">compactingBackgroundProduction.py:332</a></div></div>
+<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a2ef4dfa3747c8b70bb5fa33fb5285056"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a2ef4dfa3747c8b70bb5fa33fb5285056">compactingBackgroundProduction.removeStupidFiles</a></div><div class="ttdeci">None removeStupidFiles()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00408">compactingBackgroundProduction.py:408</a></div></div>
+<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a44f50e507aa7624414498ebce7cab133"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a44f50e507aa7624414498ebce7cab133">compactingBackgroundProduction.makePrintout</a></div><div class="ttdeci">None makePrintout()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00334">compactingBackgroundProduction.py:334</a></div></div>
 <div class="ttc" id="anamespacecompactingBackgroundProduction_html_a708e024acb290e4040ca0976c1be15f0"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a708e024acb290e4040ca0976c1be15f0">compactingBackgroundProduction.YandexProd</a></div><div class="ttdeci">None YandexProd(startDate, endDate)</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00121">compactingBackgroundProduction.py:121</a></div></div>
-<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a731bd3d1fed13341ef5ed209657eee2d"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">compactingBackgroundProduction.check4DoubleRuns</a></div><div class="ttdeci">None check4DoubleRuns()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00413">compactingBackgroundProduction.py:413</a></div></div>
+<div class="ttc" id="anamespacecompactingBackgroundProduction_html_a731bd3d1fed13341ef5ed209657eee2d"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a731bd3d1fed13341ef5ed209657eee2d">compactingBackgroundProduction.check4DoubleRuns</a></div><div class="ttdeci">None check4DoubleRuns()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00417">compactingBackgroundProduction.py:417</a></div></div>
 <div class="ttc" id="anamespacecompactingBackgroundProduction_html_a73370f59858a1d62ea78a4686e059006"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a73370f59858a1d62ea78a4686e059006">compactingBackgroundProduction.addRuns</a></div><div class="ttdeci">None addRuns(goodRuns, int Nstart=0)</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00100">compactingBackgroundProduction.py:100</a></div></div>
 <div class="ttc" id="anamespacecompactingBackgroundProduction_html_a8a405f84e075ae78adb32c348d65fc90"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#a8a405f84e075ae78adb32c348d65fc90">compactingBackgroundProduction.compactifyCascade</a></div><div class="ttdeci">None compactifyCascade(cycle)</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00178">compactingBackgroundProduction.py:178</a></div></div>
 <div class="ttc" id="anamespacecompactingBackgroundProduction_html_ae7aa9a926baeca8aeeb82a3797c8617e"><div class="ttname"><a href="namespacecompactingBackgroundProduction.html#ae7aa9a926baeca8aeeb82a3797c8617e">compactingBackgroundProduction.addAllHistograms</a></div><div class="ttdeci">None addAllHistograms()</div><div class="ttdef"><b>Definition</b> <a href="compactingBackgroundProduction_8py_source.html#l00160">compactingBackgroundProduction.py:160</a></div></div>

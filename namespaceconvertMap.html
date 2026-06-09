@@ -319,45 +319,51 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  201</span>    xMin = 0.0</div>
 <div class="line"><span class="lineno">  202</span>    xMax = 0.0</div>
 <div class="line"><span class="lineno">  203</span>    dx = 0.0</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>    <span class="keywordflow">if</span> Nx &gt; 0:</div>
-<div class="line"><span class="lineno">  206</span>        xMin = xArray[0]</div>
-<div class="line"><span class="lineno">  207</span>        Nx1 = Nx - 1</div>
-<div class="line"><span class="lineno">  208</span>        xMax = xArray[Nx1]</div>
-<div class="line"><span class="lineno">  209</span>        dx = (xMax - xMin) / (Nx1 * 1.0)</div>
+<div class="line"><span class="lineno">  204</span>    yMin = 0.0</div>
+<div class="line"><span class="lineno">  205</span>    yMax = 0.0</div>
+<div class="line"><span class="lineno">  206</span>    dy = 0.0</div>
+<div class="line"><span class="lineno">  207</span>    zMin = 0.0</div>
+<div class="line"><span class="lineno">  208</span>    zMax = 0.0</div>
+<div class="line"><span class="lineno">  209</span>    dz = 0.0</div>
 <div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">if</span> Ny &gt; 0:</div>
-<div class="line"><span class="lineno">  212</span>        yMin = yArray[0]</div>
-<div class="line"><span class="lineno">  213</span>        Ny1 = Ny - 1</div>
-<div class="line"><span class="lineno">  214</span>        yMax = yArray[Ny1]</div>
-<div class="line"><span class="lineno">  215</span>        dy = (yMax - yMin) / (Ny1 * 1.0)</div>
+<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">if</span> Nx &gt; 0:</div>
+<div class="line"><span class="lineno">  212</span>        xMin = xArray[0]</div>
+<div class="line"><span class="lineno">  213</span>        Nx1 = Nx - 1</div>
+<div class="line"><span class="lineno">  214</span>        xMax = xArray[Nx1]</div>
+<div class="line"><span class="lineno">  215</span>        dx = (xMax - xMin) / (Nx1 * 1.0)</div>
 <div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">if</span> Nz &gt; 0:</div>
-<div class="line"><span class="lineno">  218</span>        zMin = zArray[0]</div>
-<div class="line"><span class="lineno">  219</span>        Nz1 = Nz - 1</div>
-<div class="line"><span class="lineno">  220</span>        zMax = zArray[Nz1]</div>
-<div class="line"><span class="lineno">  221</span>        dz = (zMax - zMin) / (Nz1 * 1.0)</div>
+<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">if</span> Ny &gt; 0:</div>
+<div class="line"><span class="lineno">  218</span>        yMin = yArray[0]</div>
+<div class="line"><span class="lineno">  219</span>        Ny1 = Ny - 1</div>
+<div class="line"><span class="lineno">  220</span>        yMax = yArray[Ny1]</div>
+<div class="line"><span class="lineno">  221</span>        dy = (yMax - yMin) / (Ny1 * 1.0)</div>
 <div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>    rangeInfo = {</div>
-<div class="line"><span class="lineno">  224</span>        <span class="stringliteral">&quot;Nx&quot;</span>: Nx,</div>
-<div class="line"><span class="lineno">  225</span>        <span class="stringliteral">&quot;xMin&quot;</span>: xMin,</div>
-<div class="line"><span class="lineno">  226</span>        <span class="stringliteral">&quot;xMax&quot;</span>: xMax,</div>
-<div class="line"><span class="lineno">  227</span>        <span class="stringliteral">&quot;dx&quot;</span>: dx,</div>
-<div class="line"><span class="lineno">  228</span>        <span class="stringliteral">&quot;Ny&quot;</span>: Ny,</div>
-<div class="line"><span class="lineno">  229</span>        <span class="stringliteral">&quot;yMin&quot;</span>: yMin,</div>
-<div class="line"><span class="lineno">  230</span>        <span class="stringliteral">&quot;yMax&quot;</span>: yMax,</div>
-<div class="line"><span class="lineno">  231</span>        <span class="stringliteral">&quot;dy&quot;</span>: dy,</div>
-<div class="line"><span class="lineno">  232</span>        <span class="stringliteral">&quot;Nz&quot;</span>: Nz,</div>
-<div class="line"><span class="lineno">  233</span>        <span class="stringliteral">&quot;zMin&quot;</span>: zMin,</div>
-<div class="line"><span class="lineno">  234</span>        <span class="stringliteral">&quot;zMax&quot;</span>: zMax,</div>
-<div class="line"><span class="lineno">  235</span>        <span class="stringliteral">&quot;dz&quot;</span>: dz,</div>
-<div class="line"><span class="lineno">  236</span>    }</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>    <span class="comment"># print &#39;rangeInfo = {0}&#39;.format(rangeInfo)</span></div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">return</span> rangeInfo</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  223</span>    <span class="keywordflow">if</span> Nz &gt; 0:</div>
+<div class="line"><span class="lineno">  224</span>        zMin = zArray[0]</div>
+<div class="line"><span class="lineno">  225</span>        Nz1 = Nz - 1</div>
+<div class="line"><span class="lineno">  226</span>        zMax = zArray[Nz1]</div>
+<div class="line"><span class="lineno">  227</span>        dz = (zMax - zMin) / (Nz1 * 1.0)</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>    rangeInfo = {</div>
+<div class="line"><span class="lineno">  230</span>        <span class="stringliteral">&quot;Nx&quot;</span>: Nx,</div>
+<div class="line"><span class="lineno">  231</span>        <span class="stringliteral">&quot;xMin&quot;</span>: xMin,</div>
+<div class="line"><span class="lineno">  232</span>        <span class="stringliteral">&quot;xMax&quot;</span>: xMax,</div>
+<div class="line"><span class="lineno">  233</span>        <span class="stringliteral">&quot;dx&quot;</span>: dx,</div>
+<div class="line"><span class="lineno">  234</span>        <span class="stringliteral">&quot;Ny&quot;</span>: Ny,</div>
+<div class="line"><span class="lineno">  235</span>        <span class="stringliteral">&quot;yMin&quot;</span>: yMin,</div>
+<div class="line"><span class="lineno">  236</span>        <span class="stringliteral">&quot;yMax&quot;</span>: yMax,</div>
+<div class="line"><span class="lineno">  237</span>        <span class="stringliteral">&quot;dy&quot;</span>: dy,</div>
+<div class="line"><span class="lineno">  238</span>        <span class="stringliteral">&quot;Nz&quot;</span>: Nz,</div>
+<div class="line"><span class="lineno">  239</span>        <span class="stringliteral">&quot;zMin&quot;</span>: zMin,</div>
+<div class="line"><span class="lineno">  240</span>        <span class="stringliteral">&quot;zMax&quot;</span>: zMax,</div>
+<div class="line"><span class="lineno">  241</span>        <span class="stringliteral">&quot;dz&quot;</span>: dz,</div>
+<div class="line"><span class="lineno">  242</span>    }</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>    <span class="comment"># print &#39;rangeInfo = {0}&#39;.format(rangeInfo)</span></div>
+<div class="line"><span class="lineno">  245</span> </div>
+<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">return</span> rangeInfo</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

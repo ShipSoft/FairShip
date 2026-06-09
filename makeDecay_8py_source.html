@@ -196,109 +196,111 @@ $(document).ready(function(){initNavTree('makeDecay_8py_source.html',''); initRe
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">if</span> idadd == -1:</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            idhnu += 1000</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            idw = -idnu</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#af521f9274001e1b14ae2563a4b38578c">  100</a></span>        name = PDG.GetParticle(idw).GetName()</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        ut.bookHist(h, str(idhnu), name + <span class="stringliteral">&quot; momentum (GeV)&quot;</span>, 400, 0.0, 400.0)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        ut.bookHist(h, str(idhnu + 100), name + <span class="stringliteral">&quot; log10-p vs log10-pt&quot;</span>, 100, -0.3, 1.7, 100, -2.0, 0.5)</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        ut.bookHist(h, str(idhnu + 200), name + <span class="stringliteral">&quot; log10-p vs log10-pt&quot;</span>, 25, -0.3, 1.7, 100, -2.0, 0.5)</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ac13e532fdfc611691b7600f70035118e">  105</a></span>pot = 0.0</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment"># Determine fDs on this file for primaries</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad982d83e907e8531920183500c345a9d">  107</a></span>nDsprim = 0</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b">  108</a></span>ntotprim = 0</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">  111</a></span>    rc = sTree.GetEvent(n)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="comment"># check if we deal with charm or beauty:</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> n == 0:</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> setByHand <span class="keywordflow">and</span> sTree.M &gt; 5:</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            chicc = chibb</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            print(<span class="stringliteral">&quot;automatic detection of beauty, configured for beauty&quot;</span>)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            print(<span class="stringliteral">&quot;bb cross section / mbias &quot;</span>, chicc)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            print(<span class="stringliteral">&quot;cc cross section / mbias &quot;</span>, chicc)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="comment"># convert pot to weight corresponding to one spill of 5e13 pot</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        print(<span class="stringliteral">&quot;weights: &quot;</span>, nrpotspill, <span class="stringliteral">&quot; p.o.t. per spill&quot;</span>)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        print(<span class="stringliteral">&quot;    &quot;</span>)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7">  123</a></span>        wspill = nrpotspill * chicc / nrcpot</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment"># sanity check, count number of p.o.t. on input file.</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">  125</a></span>    pt = ROOT.TMath.Sqrt(sTree.mpx**2 + sTree.mpy**2)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment"># every event appears twice, i.e.</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> pt &lt; 1.0e-5 <span class="keywordflow">and</span> int(sTree.mid) == 2212:</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        pot = pot + 0.5</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        ntotprim += 1</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#add06ac2e6371819c0cf24dca326d4964">  130</a></span>        idabs = int(abs(sTree.id))</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">if</span> idabs == 431:</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            nDsprim += 1</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    P8.event.reset()</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    next(P8)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="comment"># P8.event.list()</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(P8.event)):</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="comment"># ask for stable particles</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">if</span> P8.event[n].isFinal():</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            <span class="comment"># select neutrinos and mu</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>            idabs = int(abs(P8.event[n].id()))</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordflow">if</span> idabs &gt; 11 <span class="keywordflow">and</span> idabs &lt; 17:</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">  143</a></span>                par = P8.event[n]</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a01dc90383daffd7d00a441b46189c74c">  144</a></span>                ptGM = ROOT.TMath.Sqrt(sTree.mpx * sTree.mpx + sTree.mpy * sTree.mpy)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                Ntup.Fill(</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                    par.id(),</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                    par.px(),</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                    par.py(),</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    par.pz(),</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                    par.e(),</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                    par.m(),</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                    wspill,</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                    sTree.id,</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                    sTree.px,</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    sTree.py,</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                    sTree.pz,</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                    sTree.E,</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                    sTree.M,</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                    ptGM,</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                    sTree.mpz,</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                )</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                <span class="comment"># count total muons from charm/spill, and within some angular range..</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                <span class="keywordflow">if</span> idabs == 16 <span class="keywordflow">or</span> idabs == 14 <span class="keywordflow">or</span> idabs == 12:</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                    idhnu = idabs + 1000</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                    <span class="keywordflow">if</span> par.id() &lt; 0:</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                        idhnu += 1000</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a799db5ebd88d664f8f7075e2a4313c0e">  167</a></span>                    pt2 = par.px() ** 2 + par.py() ** 2</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b">  168</a></span>                    ptot = ROOT.TMath.Sqrt(pt2 + par.pz() ** 2)</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad0633cff194d9c5881ba54524a76e89b">  169</a></span>                    l10ptot = min(max(ROOT.TMath.Log10(ptot), -0.3), 1.69999)</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2">  170</a></span>                    l10pt = min(max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)), -2.0), 0.4999)</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                    h[str(idhnu)].Fill(ptot, wspill)</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                    h[str(idhnu + 100)].Fill(l10ptot, l10pt, wspill)</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    h[str(idhnu + 200)].Fill(l10ptot, l10pt, wspill)</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>print(<span class="stringliteral">&quot;Now at Ntup.Write() for pot=&quot;</span>, pot, nrcpot)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keywordflow">if</span> (1.0 - pot / nrcpot) &lt; 1.0e-2:</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    print(<span class="stringliteral">&quot;write ntuple, weight/event=&quot;</span>, nrpotspill, <span class="stringliteral">&quot;x&quot;</span>, chicc, <span class="stringliteral">&quot;/&quot;</span>, nrcpot, <span class="stringliteral">&quot;=&quot;</span>, wspill)</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    Ntup.Write()</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        h[akey].Write()</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    ftup.Close()</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    print(<span class="stringliteral">&quot;Neutrino statistics/spill of 5.e15 pot:&quot;</span>)</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> range(12, 18, 2):</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="comment"># nu or anti-nu</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="keywordflow">for</span> idadd <span class="keywordflow">in</span> range(-1, 3, 2):</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>            idhnu = 1000 + idnu</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            idw = idnu</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keywordflow">if</span> idadd == -1:</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                idhnu += 1000</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                idw = -idnu</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            print(idhnu, h[str(idhnu)].GetTitle(), (<span class="stringliteral">&quot;%8.3E &quot;</span> % (h[str(idhnu)].Integral())))</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a7ec12e88da32853a5e27cbbf8bcd8899">  193</a></span>    fDsP6 = 1.0 * nDsprim / ntotprim</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a38fd23c688b9219d3ed576e6c835f61f">  194</a></span>    fDs = 0.077  <span class="comment"># Used in TP..</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    print(<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    print(<span class="stringliteral">&quot;fDs of primary proton interactions in P6=&quot;</span>, fDsP6, <span class="stringliteral">&quot; should be &quot;</span>, fDs)</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    print(<span class="stringliteral">&quot;*********** WARNING ***********&quot;</span>)</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    print(<span class="stringliteral">&quot;number of POT does not agree between ntuple and hists, i.e.:&quot;</span>, pot, <span class="stringliteral">&quot;&lt;&gt;&quot;</span>, nrcpot)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    print(<span class="stringliteral">&quot;mu/neutrino ntuple has NOT been written&quot;</span>)</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">#</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#abedc5f025804cceb779464a42daaac34">  100</a></span>        _p = PDG.GetParticle(idw)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">assert</span> _p <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {idw}&quot;</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#af521f9274001e1b14ae2563a4b38578c">  102</a></span>        name = _p.GetName()</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        ut.bookHist(h, str(idhnu), name + <span class="stringliteral">&quot; momentum (GeV)&quot;</span>, 400, 0.0, 400.0)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        ut.bookHist(h, str(idhnu + 100), name + <span class="stringliteral">&quot; log10-p vs log10-pt&quot;</span>, 100, -0.3, 1.7, 100, -2.0, 0.5)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        ut.bookHist(h, str(idhnu + 200), name + <span class="stringliteral">&quot; log10-p vs log10-pt&quot;</span>, 25, -0.3, 1.7, 100, -2.0, 0.5)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ac13e532fdfc611691b7600f70035118e">  107</a></span>pot = 0.0</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"># Determine fDs on this file for primaries</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad982d83e907e8531920183500c345a9d">  109</a></span>nDsprim = 0</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b">  110</a></span>ntotprim = 0</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">  113</a></span>    rc = sTree.GetEvent(n)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="comment"># check if we deal with charm or beauty:</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">if</span> n == 0:</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> setByHand <span class="keywordflow">and</span> sTree.M &gt; 5:</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            chicc = chibb</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            print(<span class="stringliteral">&quot;automatic detection of beauty, configured for beauty&quot;</span>)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            print(<span class="stringliteral">&quot;bb cross section / mbias &quot;</span>, chicc)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            print(<span class="stringliteral">&quot;cc cross section / mbias &quot;</span>, chicc)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="comment"># convert pot to weight corresponding to one spill of 5e13 pot</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        print(<span class="stringliteral">&quot;weights: &quot;</span>, nrpotspill, <span class="stringliteral">&quot; p.o.t. per spill&quot;</span>)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        print(<span class="stringliteral">&quot;    &quot;</span>)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7">  125</a></span>        wspill = nrpotspill * chicc / nrcpot</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment"># sanity check, count number of p.o.t. on input file.</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">  127</a></span>    pt = ROOT.TMath.Sqrt(sTree.mpx**2 + sTree.mpy**2)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment"># every event appears twice, i.e.</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> pt &lt; 1.0e-5 <span class="keywordflow">and</span> int(sTree.mid) == 2212:</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        pot = pot + 0.5</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        ntotprim += 1</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#add06ac2e6371819c0cf24dca326d4964">  132</a></span>        idabs = int(abs(sTree.id))</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">if</span> idabs == 431:</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            nDsprim += 1</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    P8.event.reset()</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    next(P8)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment"># P8.event.list()</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(len(P8.event)):</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="comment"># ask for stable particles</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="keywordflow">if</span> P8.event[n].isFinal():</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="comment"># select neutrinos and mu</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            idabs = int(abs(P8.event[n].id()))</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="keywordflow">if</span> idabs &gt; 11 <span class="keywordflow">and</span> idabs &lt; 17:</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">  145</a></span>                par = P8.event[n]</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a01dc90383daffd7d00a441b46189c74c">  146</a></span>                ptGM = ROOT.TMath.Sqrt(sTree.mpx * sTree.mpx + sTree.mpy * sTree.mpy)</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                Ntup.Fill(</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                    par.id(),</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    par.px(),</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                    par.py(),</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                    par.pz(),</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                    par.e(),</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                    par.m(),</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                    wspill,</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    sTree.id,</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                    sTree.px,</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                    sTree.py,</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                    sTree.pz,</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                    sTree.E,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                    sTree.M,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                    ptGM,</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                    sTree.mpz,</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                )</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                <span class="comment"># count total muons from charm/spill, and within some angular range..</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                <span class="keywordflow">if</span> idabs == 16 <span class="keywordflow">or</span> idabs == 14 <span class="keywordflow">or</span> idabs == 12:</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                    idhnu = idabs + 1000</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                    <span class="keywordflow">if</span> par.id() &lt; 0:</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                        idhnu += 1000</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a799db5ebd88d664f8f7075e2a4313c0e">  169</a></span>                    pt2 = par.px() ** 2 + par.py() ** 2</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b">  170</a></span>                    ptot = ROOT.TMath.Sqrt(pt2 + par.pz() ** 2)</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad0633cff194d9c5881ba54524a76e89b">  171</a></span>                    l10ptot = min(max(ROOT.TMath.Log10(ptot), -0.3), 1.69999)</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2">  172</a></span>                    l10pt = min(max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)), -2.0), 0.4999)</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    h[str(idhnu)].Fill(ptot, wspill)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                    h[str(idhnu + 100)].Fill(l10ptot, l10pt, wspill)</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                    h[str(idhnu + 200)].Fill(l10ptot, l10pt, wspill)</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>print(<span class="stringliteral">&quot;Now at Ntup.Write() for pot=&quot;</span>, pot, nrcpot)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="keywordflow">if</span> (1.0 - pot / nrcpot) &lt; 1.0e-2:</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    print(<span class="stringliteral">&quot;write ntuple, weight/event=&quot;</span>, nrpotspill, <span class="stringliteral">&quot;x&quot;</span>, chicc, <span class="stringliteral">&quot;/&quot;</span>, nrcpot, <span class="stringliteral">&quot;=&quot;</span>, wspill)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    Ntup.Write()</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">for</span> akey <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        h[akey].Write()</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    ftup.Close()</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    print(<span class="stringliteral">&quot;Neutrino statistics/spill of 5.e15 pot:&quot;</span>)</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> range(12, 18, 2):</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="comment"># nu or anti-nu</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">for</span> idadd <span class="keywordflow">in</span> range(-1, 3, 2):</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            idhnu = 1000 + idnu</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            idw = idnu</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            <span class="keywordflow">if</span> idadd == -1:</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                idhnu += 1000</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                idw = -idnu</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            print(idhnu, h[str(idhnu)].GetTitle(), (<span class="stringliteral">&quot;%8.3E &quot;</span> % (h[str(idhnu)].Integral())))</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a7ec12e88da32853a5e27cbbf8bcd8899">  195</a></span>    fDsP6 = 1.0 * nDsprim / ntotprim</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a38fd23c688b9219d3ed576e6c835f61f">  196</a></span>    fDs = 0.077  <span class="comment"># Used in TP..</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    print(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    print(<span class="stringliteral">&quot;fDs of primary proton interactions in P6=&quot;</span>, fDsP6, <span class="stringliteral">&quot; should be &quot;</span>, fDs)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    print(<span class="stringliteral">&quot;*********** WARNING ***********&quot;</span>)</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    print(<span class="stringliteral">&quot;number of POT does not agree between ntuple and hists, i.e.:&quot;</span>, pot, <span class="stringliteral">&quot;&lt;&gt;&quot;</span>, nrcpot)</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    print(<span class="stringliteral">&quot;mu/neutrino ntuple has NOT been written&quot;</span>)</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">#</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

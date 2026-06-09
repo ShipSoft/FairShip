@@ -173,7 +173,9 @@ Variables</h2></td></tr>
 <tr class="separator:a92d987b66b625d497c33250f33e47755"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab94108ec7dc822703c4e63fad2c6c371" id="r_ab94108ec7dc822703c4e63fad2c6c371"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemake__nTuple__SBT.html#ab94108ec7dc822703c4e63fad2c6c371">P</a> = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)</td></tr>
 <tr class="separator:ab94108ec7dc822703c4e63fad2c6c371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24d7444a55c68cafe6380898cf90d711" id="r_a24d7444a55c68cafe6380898cf90d711"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemake__nTuple__SBT.html#a24d7444a55c68cafe6380898cf90d711">particle_name</a> = pdg.GetParticle(hit.PdgCode()).GetName()</td></tr>
+<tr class="memitem:a66c4f51ed7c88d8a4a2c520ffad8812d" id="r_a66c4f51ed7c88d8a4a2c520ffad8812d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemake__nTuple__SBT.html#a66c4f51ed7c88d8a4a2c520ffad8812d">_p</a> = pdg.GetParticle(hit.PdgCode())</td></tr>
+<tr class="separator:a66c4f51ed7c88d8a4a2c520ffad8812d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24d7444a55c68cafe6380898cf90d711" id="r_a24d7444a55c68cafe6380898cf90d711"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemake__nTuple__SBT.html#a24d7444a55c68cafe6380898cf90d711">particle_name</a> = _p.GetName()</td></tr>
 <tr class="separator:a24d7444a55c68cafe6380898cf90d711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3aba4113b46e386af9f00743ef6059a" id="r_ab3aba4113b46e386af9f00743ef6059a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemake__nTuple__SBT.html#ab3aba4113b46e386af9f00743ef6059a">ubt_index</a> = 0</td></tr>
 <tr class="separator:ab3aba4113b46e386af9f00743ef6059a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,55 +246,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Dump the whole event.</pre> 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00141">141</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span><span class="keyword">def </span>dump(event, pcut: float = 0, print_whole_event: bool = <span class="keyword">True</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  142</span>    <span class="stringliteral">&quot;&quot;&quot;Dump the whole event.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">if</span> print_whole_event:</div>
-<div class="line"><span class="lineno">  144</span>        print(</div>
-<div class="line"><span class="lineno">  145</span>            <span class="stringliteral">&quot;\n %6s %-10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s&quot;</span></div>
-<div class="line"><span class="lineno">  146</span>            % (</div>
-<div class="line"><span class="lineno">  147</span>                <span class="stringliteral">&quot;#&quot;</span>,</div>
-<div class="line"><span class="lineno">  148</span>                <span class="stringliteral">&quot;particle&quot;</span>,</div>
-<div class="line"><span class="lineno">  149</span>                <span class="stringliteral">&quot;pid&quot;</span>,</div>
-<div class="line"><span class="lineno">  150</span>                <span class="stringliteral">&quot;px&quot;</span>,</div>
-<div class="line"><span class="lineno">  151</span>                <span class="stringliteral">&quot;py&quot;</span>,</div>
-<div class="line"><span class="lineno">  152</span>                <span class="stringliteral">&quot;pz&quot;</span>,</div>
-<div class="line"><span class="lineno">  153</span>                <span class="stringliteral">&quot;vx&quot;</span>,</div>
-<div class="line"><span class="lineno">  154</span>                <span class="stringliteral">&quot;vy&quot;</span>,</div>
-<div class="line"><span class="lineno">  155</span>                <span class="stringliteral">&quot;vz&quot;</span>,</div>
-<div class="line"><span class="lineno">  156</span>                <span class="stringliteral">&quot;mid&quot;</span>,</div>
-<div class="line"><span class="lineno">  157</span>                <span class="stringliteral">&quot;w&quot;</span>,</div>
-<div class="line"><span class="lineno">  158</span>                <span class="stringliteral">&quot;Process&quot;</span>,</div>
-<div class="line"><span class="lineno">  159</span>            )</div>
-<div class="line"><span class="lineno">  160</span>        )</div>
-<div class="line"><span class="lineno">  161</span>        print(</div>
-<div class="line"><span class="lineno">  162</span>            <span class="stringliteral">&quot; %6s %10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s\n &quot;</span></div>
-<div class="line"><span class="lineno">  163</span>            % (</div>
-<div class="line"><span class="lineno">  164</span>                <span class="stringliteral">&quot; &quot;</span>,</div>
-<div class="line"><span class="lineno">  165</span>                <span class="stringliteral">&quot;--------&quot;</span>,</div>
-<div class="line"><span class="lineno">  166</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
-<div class="line"><span class="lineno">  167</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
-<div class="line"><span class="lineno">  168</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00143">143</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span><span class="keyword">def </span>dump(event, pcut: float = 0, print_whole_event: bool = <span class="keyword">True</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  144</span>    <span class="stringliteral">&quot;&quot;&quot;Dump the whole event.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">if</span> print_whole_event:</div>
+<div class="line"><span class="lineno">  146</span>        print(</div>
+<div class="line"><span class="lineno">  147</span>            <span class="stringliteral">&quot;\n %6s %-10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s&quot;</span></div>
+<div class="line"><span class="lineno">  148</span>            % (</div>
+<div class="line"><span class="lineno">  149</span>                <span class="stringliteral">&quot;#&quot;</span>,</div>
+<div class="line"><span class="lineno">  150</span>                <span class="stringliteral">&quot;particle&quot;</span>,</div>
+<div class="line"><span class="lineno">  151</span>                <span class="stringliteral">&quot;pid&quot;</span>,</div>
+<div class="line"><span class="lineno">  152</span>                <span class="stringliteral">&quot;px&quot;</span>,</div>
+<div class="line"><span class="lineno">  153</span>                <span class="stringliteral">&quot;py&quot;</span>,</div>
+<div class="line"><span class="lineno">  154</span>                <span class="stringliteral">&quot;pz&quot;</span>,</div>
+<div class="line"><span class="lineno">  155</span>                <span class="stringliteral">&quot;vx&quot;</span>,</div>
+<div class="line"><span class="lineno">  156</span>                <span class="stringliteral">&quot;vy&quot;</span>,</div>
+<div class="line"><span class="lineno">  157</span>                <span class="stringliteral">&quot;vz&quot;</span>,</div>
+<div class="line"><span class="lineno">  158</span>                <span class="stringliteral">&quot;mid&quot;</span>,</div>
+<div class="line"><span class="lineno">  159</span>                <span class="stringliteral">&quot;w&quot;</span>,</div>
+<div class="line"><span class="lineno">  160</span>                <span class="stringliteral">&quot;Process&quot;</span>,</div>
+<div class="line"><span class="lineno">  161</span>            )</div>
+<div class="line"><span class="lineno">  162</span>        )</div>
+<div class="line"><span class="lineno">  163</span>        print(</div>
+<div class="line"><span class="lineno">  164</span>            <span class="stringliteral">&quot; %6s %10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s\n &quot;</span></div>
+<div class="line"><span class="lineno">  165</span>            % (</div>
+<div class="line"><span class="lineno">  166</span>                <span class="stringliteral">&quot; &quot;</span>,</div>
+<div class="line"><span class="lineno">  167</span>                <span class="stringliteral">&quot;--------&quot;</span>,</div>
+<div class="line"><span class="lineno">  168</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
 <div class="line"><span class="lineno">  169</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
 <div class="line"><span class="lineno">  170</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
 <div class="line"><span class="lineno">  171</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
 <div class="line"><span class="lineno">  172</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
-<div class="line"><span class="lineno">  173</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
-<div class="line"><span class="lineno">  174</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
-<div class="line"><span class="lineno">  175</span>                <span class="stringliteral">&quot;-------&quot;</span>,</div>
-<div class="line"><span class="lineno">  176</span>            )</div>
-<div class="line"><span class="lineno">  177</span>        )</div>
-<div class="line"><span class="lineno">  178</span>    n = -1</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">for</span> mcp <span class="keywordflow">in</span> event.MCTrack:</div>
-<div class="line"><span class="lineno">  180</span>        n += 1</div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> mcp.GetP() / u.GeV &lt; pcut:</div>
-<div class="line"><span class="lineno">  182</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">if</span> print_whole_event:</div>
-<div class="line"><span class="lineno">  184</span>            printMCTrack(n, event.MCTrack)</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  173</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
+<div class="line"><span class="lineno">  174</span>                <span class="stringliteral">&quot;--&quot;</span>,</div>
+<div class="line"><span class="lineno">  175</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
+<div class="line"><span class="lineno">  176</span>                <span class="stringliteral">&quot;---&quot;</span>,</div>
+<div class="line"><span class="lineno">  177</span>                <span class="stringliteral">&quot;-------&quot;</span>,</div>
+<div class="line"><span class="lineno">  178</span>            )</div>
+<div class="line"><span class="lineno">  179</span>        )</div>
+<div class="line"><span class="lineno">  180</span>    n = -1</div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">for</span> mcp <span class="keywordflow">in</span> event.MCTrack:</div>
+<div class="line"><span class="lineno">  182</span>        n += 1</div>
+<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">if</span> mcp.GetP() / u.GeV &lt; pcut:</div>
+<div class="line"><span class="lineno">  184</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">if</span> print_whole_event:</div>
+<div class="line"><span class="lineno">  186</span>            printMCTrack(n, event.MCTrack)</div>
 <div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,52 +333,78 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>    RESET = <span class="stringliteral">&quot;\033[0m&quot;</span>  <span class="comment"># ANSI code Reset to default</span></div>
 <div class="line"><span class="lineno">   97</span> </div>
 <div class="line"><span class="lineno">   98</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   99</span>        particle_name = pdg.GetParticle(mcp.GetPdgCode()).GetName()</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">if</span> particle_name == <span class="stringliteral">&quot;mu+&quot;</span> <span class="keywordflow">or</span> particle_name == <span class="stringliteral">&quot;mu-&quot;</span>:</div>
-<div class="line"><span class="lineno">  102</span>            particle_name = f<span class="stringliteral">&quot;{RED}{particle_name}{RESET}       &quot;</span>  <span class="comment"># Highlight muons in red</span></div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>        print(</div>
-<div class="line"><span class="lineno">  105</span>            <span class="stringliteral">&quot; %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s&quot;</span></div>
-<div class="line"><span class="lineno">  106</span>            % (</div>
-<div class="line"><span class="lineno">  107</span>                n,</div>
-<div class="line"><span class="lineno">  108</span>                particle_name,</div>
-<div class="line"><span class="lineno">  109</span>                mcp.GetPdgCode(),</div>
-<div class="line"><span class="lineno">  110</span>                mcp.GetPx() / u.GeV,</div>
-<div class="line"><span class="lineno">  111</span>                mcp.GetPy() / u.GeV,</div>
-<div class="line"><span class="lineno">  112</span>                mcp.GetPz() / u.GeV,</div>
-<div class="line"><span class="lineno">  113</span>                mcp.GetStartX() / u.m,</div>
-<div class="line"><span class="lineno">  114</span>                mcp.GetStartY() / u.m,</div>
-<div class="line"><span class="lineno">  115</span>                mcp.GetStartZ() / u.m,</div>
-<div class="line"><span class="lineno">  116</span>                mcp.GetMotherId(),</div>
-<div class="line"><span class="lineno">  117</span>                mcp.GetWeight(),</div>
-<div class="line"><span class="lineno">  118</span>                mcp.GetProcName().Data(),</div>
-<div class="line"><span class="lineno">  119</span>            )</div>
-<div class="line"><span class="lineno">  120</span>        )</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">except</span> Exception:</div>
-<div class="line"><span class="lineno">  122</span>        print(</div>
-<div class="line"><span class="lineno">  123</span>            <span class="stringliteral">&quot; %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s&quot;</span></div>
-<div class="line"><span class="lineno">  124</span>            % (</div>
-<div class="line"><span class="lineno">  125</span>                n,</div>
-<div class="line"><span class="lineno">  126</span>                <span class="stringliteral">&quot;----&quot;</span>,</div>
-<div class="line"><span class="lineno">  127</span>                mcp.GetPdgCode(),</div>
-<div class="line"><span class="lineno">  128</span>                mcp.GetPx() / u.GeV,</div>
-<div class="line"><span class="lineno">  129</span>                mcp.GetPy() / u.GeV,</div>
-<div class="line"><span class="lineno">  130</span>                mcp.GetPz() / u.GeV,</div>
-<div class="line"><span class="lineno">  131</span>                mcp.GetStartX() / u.m,</div>
-<div class="line"><span class="lineno">  132</span>                mcp.GetStartY() / u.m,</div>
-<div class="line"><span class="lineno">  133</span>                mcp.GetStartZ() / u.m,</div>
-<div class="line"><span class="lineno">  134</span>                mcp.GetMotherId(),</div>
-<div class="line"><span class="lineno">  135</span>                mcp.GetWeight(),</div>
-<div class="line"><span class="lineno">  136</span>                mcp.GetProcName().Data(),</div>
-<div class="line"><span class="lineno">  137</span>            )</div>
-<div class="line"><span class="lineno">  138</span>        )</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">   99</span>        _p = pdg.GetParticle(mcp.GetPdgCode())</div>
+<div class="line"><span class="lineno">  100</span>        <span class="keyword">assert</span> _p <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, f<span class="stringliteral">&quot;Unknown PDG: {mcp.GetPdgCode()}&quot;</span></div>
+<div class="line"><span class="lineno">  101</span>        particle_name = _p.GetName()</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">if</span> particle_name == <span class="stringliteral">&quot;mu+&quot;</span> <span class="keywordflow">or</span> particle_name == <span class="stringliteral">&quot;mu-&quot;</span>:</div>
+<div class="line"><span class="lineno">  104</span>            particle_name = f<span class="stringliteral">&quot;{RED}{particle_name}{RESET}       &quot;</span>  <span class="comment"># Highlight muons in red</span></div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>        print(</div>
+<div class="line"><span class="lineno">  107</span>            <span class="stringliteral">&quot; %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s&quot;</span></div>
+<div class="line"><span class="lineno">  108</span>            % (</div>
+<div class="line"><span class="lineno">  109</span>                n,</div>
+<div class="line"><span class="lineno">  110</span>                particle_name,</div>
+<div class="line"><span class="lineno">  111</span>                mcp.GetPdgCode(),</div>
+<div class="line"><span class="lineno">  112</span>                mcp.GetPx() / u.GeV,</div>
+<div class="line"><span class="lineno">  113</span>                mcp.GetPy() / u.GeV,</div>
+<div class="line"><span class="lineno">  114</span>                mcp.GetPz() / u.GeV,</div>
+<div class="line"><span class="lineno">  115</span>                mcp.GetStartX() / u.m,</div>
+<div class="line"><span class="lineno">  116</span>                mcp.GetStartY() / u.m,</div>
+<div class="line"><span class="lineno">  117</span>                mcp.GetStartZ() / u.m,</div>
+<div class="line"><span class="lineno">  118</span>                mcp.GetMotherId(),</div>
+<div class="line"><span class="lineno">  119</span>                mcp.GetWeight(),</div>
+<div class="line"><span class="lineno">  120</span>                mcp.GetProcName().Data(),</div>
+<div class="line"><span class="lineno">  121</span>            )</div>
+<div class="line"><span class="lineno">  122</span>        )</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">except</span> Exception:</div>
+<div class="line"><span class="lineno">  124</span>        print(</div>
+<div class="line"><span class="lineno">  125</span>            <span class="stringliteral">&quot; %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s&quot;</span></div>
+<div class="line"><span class="lineno">  126</span>            % (</div>
+<div class="line"><span class="lineno">  127</span>                n,</div>
+<div class="line"><span class="lineno">  128</span>                <span class="stringliteral">&quot;----&quot;</span>,</div>
+<div class="line"><span class="lineno">  129</span>                mcp.GetPdgCode(),</div>
+<div class="line"><span class="lineno">  130</span>                mcp.GetPx() / u.GeV,</div>
+<div class="line"><span class="lineno">  131</span>                mcp.GetPy() / u.GeV,</div>
+<div class="line"><span class="lineno">  132</span>                mcp.GetPz() / u.GeV,</div>
+<div class="line"><span class="lineno">  133</span>                mcp.GetStartX() / u.m,</div>
+<div class="line"><span class="lineno">  134</span>                mcp.GetStartY() / u.m,</div>
+<div class="line"><span class="lineno">  135</span>                mcp.GetStartZ() / u.m,</div>
+<div class="line"><span class="lineno">  136</span>                mcp.GetMotherId(),</div>
+<div class="line"><span class="lineno">  137</span>                mcp.GetWeight(),</div>
+<div class="line"><span class="lineno">  138</span>                mcp.GetProcName().Data(),</div>
+<div class="line"><span class="lineno">  139</span>            )</div>
+<div class="line"><span class="lineno">  140</span>        )</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a66c4f51ed7c88d8a4a2c520ffad8812d" name="a66c4f51ed7c88d8a4a2c520ffad8812d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66c4f51ed7c88d8a4a2c520ffad8812d">&#9670;&#160;</a></span>_p</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">make_nTuple_SBT._p = pdg.GetParticle(hit.PdgCode())</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00251">251</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+
+</div>
+</div>
 <a id="a80292fc543265e29da6ffcaf406c308c" name="a80292fc543265e29da6ffcaf406c308c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a80292fc543265e29da6ffcaf406c308c">&#9670;&#160;</a></span>action</h2>
 
@@ -469,7 +497,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00243">243</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00245">245</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -485,7 +513,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00377">377</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00381">381</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -501,7 +529,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00218">218</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00220">220</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -533,7 +561,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00189">189</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00191">191</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -578,7 +606,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   12</span>    <span class="stringliteral">&quot;Weight_muon&quot;</span>,</div>
 <div class="line"><span class="lineno">   13</span>]</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00193">193</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00195">195</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -626,7 +654,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00290">290</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00294">294</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -658,7 +686,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00240">240</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00242">242</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -674,7 +702,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00239">239</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00241">241</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -690,7 +718,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00235">235</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00237">237</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -738,7 +766,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00237">237</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00239">239</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -754,7 +782,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00400">400</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00404">404</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -770,7 +798,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00403">403</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00407">407</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -786,7 +814,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00402">402</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00406">406</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -802,7 +830,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00404">404</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00408">408</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -866,7 +894,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00246">246</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00248">248</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -882,7 +910,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00191">191</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00193">193</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -909,12 +937,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">make_nTuple_SBT.particle_name = pdg.GetParticle(hit.PdgCode()).GetName()</td>
+          <td class="memname">make_nTuple_SBT.particle_name = _p.GetName()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00249">249</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00253">253</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -962,7 +990,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00244">244</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00246">246</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -978,7 +1006,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00190">190</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00192">192</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -994,7 +1022,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00300">300</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00304">304</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1038,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00391">391</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00395">395</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1026,7 +1054,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00392">392</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00396">396</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1070,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00393">393</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00397">397</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1102,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00399">399</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00403">403</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1090,7 +1118,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00361">361</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00365">365</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1122,7 +1150,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00245">245</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00247">247</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1138,7 +1166,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00224">224</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00226">226</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1182,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00276">276</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00280">280</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1198,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00312">312</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00316">316</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1186,7 +1214,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00394">394</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00398">398</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1230,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00395">395</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00399">399</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>
@@ -1218,7 +1246,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00396">396</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="make__nTuple__SBT_8py_source.html#l00400">400</a> of file <a class="el" href="make__nTuple__SBT_8py_source.html">make_nTuple_SBT.py</a>.</p>
 
 </div>
 </div>

@@ -13,6 +13,7 @@ var extractMuonsAndUpdateWeight_8py =
     [ "charmExtern", "extractMuonsAndUpdateWeight_8py.html#a3ee737d91956d07c94601d0781b01ba5", null ],
     [ "muSources", "extractMuonsAndUpdateWeight_8py.html#a3540e4762b6a0339d1c923d86bd5314a", null ],
     [ "path", "extractMuonsAndUpdateWeight_8py.html#a78c024da4bd6482a82d5fdd95cd8fe7b", null ],
+    [ "weight", "extractMuonsAndUpdateWeight_8py.html#ab67d73adf091feb460bcbabaae730de3", null ],
     [ "weightBeauty", "extractMuonsAndUpdateWeight_8py.html#adfec8af16ddc9104b3a740bc14d0759f", null ],
     [ "weightCharm", "extractMuonsAndUpdateWeight_8py.html#a6931ea78c2f6638c3581e970e932c7cd", null ],
     [ "weightMbias", "extractMuonsAndUpdateWeight_8py.html#aa62f94d168950261430ef026b2b30db5", null ]
