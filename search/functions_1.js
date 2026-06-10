@@ -26,8 +26,9 @@ var searchData=
   ['allowedchannels_23',['allowedchannels',['../classdarkphoton_1_1DarkPhoton.html#aa255bf3288ab56e0229c35f147c4621b',1,'darkphoton.DarkPhoton.allowedChannels()'],['../classhnl_1_1HNLbranchings.html#a0a5975e144a9c7ed1755fa61e0825f1b',1,'hnl.HNLbranchings.allowedChannels()']]],
   ['anaeventloop_24',['AnaEventLoop',['../namespaceana__ShipMuon.html#a72502c6a6e4f8b31655aed2aa2528f10',1,'ana_ShipMuon']]],
   ['analyzeconcrete_25',['analyzeConcrete',['../namespaceana__ShipMuon.html#acd174bdc52961dc55d9eb064df953e5b',1,'ana_ShipMuon']]],
-  ['apply_5fdecorators_26',['apply_decorators',['../namespacedecorators.html#a84f73e13d24535f8700bc2e298683b43',1,'decorators']]],
-  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_27',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpat_5frec_5fy_5fview_28',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#ae82fd2980482d81f8bfd7ee7af91308b',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpattern_5frecognition_29',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]]
+  ['apply_5fcolumn_5ftransformation_26',['apply_column_transformation',['../namespaceexperimental_1_1eminem__importer.html#af7456d3ff54c262cbabfe77b4cb91ada',1,'experimental::eminem_importer']]],
+  ['apply_5fdecorators_27',['apply_decorators',['../namespacedecorators.html#a84f73e13d24535f8700bc2e298683b43',1,'decorators']]],
+  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_28',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a7bd6836b680505a30ee0d503878636cb',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpat_5frec_5fy_5fview_29',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#ae82fd2980482d81f8bfd7ee7af91308b',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpattern_5frecognition_30',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]]
 ];

@@ -75,6 +75,7 @@ var hierarchy =
         [ "ParticleGunGenerator", "classParticleGunGenerator.html", null ],
         [ "Pythia6Generator", "classPythia6Generator.html", null ],
         [ "Pythia8Generator", "classPythia8Generator.html", null ],
+        [ "SHiP::TTreeGenerator", "classSHiP_1_1TTreeGenerator.html", null ],
         [ "tPythia6Generator", "classtPythia6Generator.html", null ]
       ] ]
     ] ],

@@ -57,10 +57,11 @@ var searchData=
   ['_7etrackinfo_54',['~TrackInfo',['../classTrackInfo.html#a53a3f946e07f0e7af266dde21d8991eb',1,'TrackInfo']]],
   ['_7etracklet_55',['~Tracklet',['../classTracklet.html#a3b58f59bc692e9324c62c7dbd397c185',1,'Tracklet']]],
   ['_7ettpoint_56',['~TTPoint',['../classTTPoint.html#afc7e2f56df18c21540391318d34990d1',1,'TTPoint']]],
-  ['_7eupstreamtaggerhit_57',['~UpstreamTaggerHit',['../classUpstreamTaggerHit.html#a4ac78d61179ebce9b658e1da8f340731',1,'UpstreamTaggerHit']]],
-  ['_7eupstreamtaggerpoint_58',['~UpstreamTaggerPoint',['../classUpstreamTaggerPoint.html#a8994f0dbb27905c8e96e369db3950352',1,'UpstreamTaggerPoint']]],
-  ['_7evetocontfact_59',['~vetoContFact',['../classvetoContFact.html#afea1ad9e87f4b3bc79b52d587c2b2bbb',1,'vetoContFact']]],
-  ['_7evetohit_60',['~vetoHit',['../classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3',1,'vetoHit']]],
-  ['_7evetohitontrack_61',['~vetoHitOnTrack',['../classvetoHitOnTrack.html#a07895455585d3864d5ef096792237a91',1,'vetoHitOnTrack']]],
-  ['_7evetopoint_62',['~vetoPoint',['../classvetoPoint.html#a459c3518715febac7e00298ed886f50c',1,'vetoPoint']]]
+  ['_7ettreegenerator_57',['~TTreeGenerator',['../classSHiP_1_1TTreeGenerator.html#acbbae97a7e64bfc7209e23f1242f986b',1,'SHiP::TTreeGenerator']]],
+  ['_7eupstreamtaggerhit_58',['~UpstreamTaggerHit',['../classUpstreamTaggerHit.html#a4ac78d61179ebce9b658e1da8f340731',1,'UpstreamTaggerHit']]],
+  ['_7eupstreamtaggerpoint_59',['~UpstreamTaggerPoint',['../classUpstreamTaggerPoint.html#a8994f0dbb27905c8e96e369db3950352',1,'UpstreamTaggerPoint']]],
+  ['_7evetocontfact_60',['~vetoContFact',['../classvetoContFact.html#afea1ad9e87f4b3bc79b52d587c2b2bbb',1,'vetoContFact']]],
+  ['_7evetohit_61',['~vetoHit',['../classvetoHit.html#a828ea536942cb85ffa5718eeba44b5c3',1,'vetoHit']]],
+  ['_7evetohitontrack_62',['~vetoHitOnTrack',['../classvetoHitOnTrack.html#a07895455585d3864d5ef096792237a91',1,'vetoHitOnTrack']]],
+  ['_7evetopoint_63',['~vetoPoint',['../classvetoPoint.html#a459c3518715febac7e00298ed886f50c',1,'vetoPoint']]]
 ];
