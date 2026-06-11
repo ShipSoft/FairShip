@@ -76,9 +76,18 @@ ParticleGunGenerator::~ParticleGunGenerator() = default;
 void ParticleGunGenerator::LoadHistoFromFile(
     const std::string& inFile, const std::string& inHisto,
     std::vector<std::string> varNames) {
-  TFile loadFile(inFile.c_str());
-  auto* raw = dynamic_cast<TH1*>(loadFile.Get(inHisto.c_str()));
+  TFile* loadFile = TFile::Open(inFile.c_str(), "READ");
+  if (!loadFile || loadFile->IsZombie()) {
+    delete loadFile;
+    LOG(fatal) << "ParticleGunGenerator: Cannot open file " << inFile;
+    throw std::runtime_error("ParticleGunGenerator: Cannot open file " +
+                             inFile);
+  }
+
+  auto* raw = dynamic_cast<TH1*>(loadFile->Get(inHisto.c_str()));
   if (!raw) {
+    loadFile->Close();
+    delete loadFile;
     LOG(fatal) << "ParticleGunGenerator: Histogram " << inHisto
                << " not found in file " << inFile;
     throw std::runtime_error("ParticleGunGenerator: Histogram " + inHisto +
@@ -86,7 +95,8 @@ void ParticleGunGenerator::LoadHistoFromFile(
   }
   raw = static_cast<TH1*>(raw->Clone());
   raw->SetDirectory(nullptr);  // detach from ROOT's directory ownership
-  loadFile.Close();
+  loadFile->Close();
+  delete loadFile;
 
   const int dims = raw->GetDimension();
   if (static_cast<int>(varNames.size()) != dims) {

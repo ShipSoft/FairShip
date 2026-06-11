@@ -34,32 +34,65 @@ MuDISGenerator::MuDISGenerator() {}
 Bool_t MuDISGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
   LOGF(info, "Opening input file %s", fileName);
+  if (startEvent < 0) {
+    LOG(error) << "MuDISGenerator: startEvent must be >= 0, got " << startEvent;
+    return kFALSE;
+  }
 
   iMuon = 0;
   dPart = 0;
   dPartSoft = 0;
-  fInputFile = TFile::Open(fileName);
-  if (!fInputFile) {
-    LOG(fatal) << "Error opening input file";
+  fInputFile = TFile::Open(fileName, "READ");
+  if (!fInputFile || fInputFile->IsZombie()) {
+    LOG(error) << "MuDISGenerator: error opening input file " << fileName;
+    delete fInputFile;
+    fInputFile = nullptr;
     return kFALSE;
   }
   fTree = fInputFile->Get<TTree>("DIS");
+  if (!fTree) {
+    LOG(error) << "MuDISGenerator: cannot find tree DIS in file " << fileName;
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    return kFALSE;
+  }
   fNevents = fTree->GetEntries();
+  if (startEvent >= fNevents) {
+    LOG(error) << "MuDISGenerator: startEvent " << startEvent
+               << " is out of range for " << fNevents << " entries";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
   fn = startEvent;
 
-  fTree->SetBranchAddress("InMuon", &iMuon);  // incoming muon
-  fTree->SetBranchAddress("DISParticles", &dPart);
-  fTree->SetBranchAddress("SoftParticles",
-                          &dPartSoft);  // Soft interaction particles
+  bool ok = true;
+  ok &= (fTree->SetBranchAddress("InMuon", &iMuon) >= 0);
+  ok &= (fTree->SetBranchAddress("DISParticles", &dPart) >= 0);
+  ok &= (fTree->SetBranchAddress("SoftParticles", &dPartSoft) >= 0);
+  if (!ok) {
+    LOG(error)
+        << "MuDISGenerator: failed to bind one or more required branches";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
   LOG(info) << "MuDISGenerator: Initialization successful.";
   return kTRUE;
 }
 
 // -----   Destructor   ----------------------------------------------------
 MuDISGenerator::~MuDISGenerator() {
-  fInputFile->Close();
-  fInputFile->Delete();
-  delete fInputFile;
+  if (fInputFile) {
+    fInputFile->Close();
+    fInputFile->Delete();
+    delete fInputFile;
+  }
 }
 // -----   Passing the event   ---------------------------------------------
 Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {

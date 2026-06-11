@@ -12,44 +12,85 @@
 #include "TMath.h"  // for Sqrt
 #include "TROOT.h"
 
-using std::cout;
-using std::endl;
 // read events from ntuples produced
 
 // -----   Default constructor   -------------------------------------------
-NtupleGenerator::NtupleGenerator() {}
+NtupleGenerator::NtupleGenerator()
+    : fInputFile(nullptr),
+      fTree(nullptr),
+      fLogger(nullptr),
+      fNevents(0),
+      fn(0) {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t NtupleGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
 Bool_t NtupleGenerator::Init(const char* fileName, const int startEvent) {
-  cout << "Info NtupleGenerator: Opening input file " << fileName << endl;
-  fInputFile = new TFile(fileName);
-  if (fInputFile->IsZombie()) {
-    cout << "-E NtupleGenerator: Error opening the Signal file" << fileName
-         << endl;
+  if (startEvent < 0) {
+    LOG(error) << "NtupleGenerator: startEvent must be >= 0, got "
+               << startEvent;
+    return kFALSE;
   }
+
+  LOG(info) << "NtupleGenerator: Opening input file " << fileName;
+  fInputFile = TFile::Open(fileName, "READ");
+  if (!fInputFile || fInputFile->IsZombie()) {
+    LOG(error) << "NtupleGenerator: Error opening input file " << fileName;
+    delete fInputFile;
+    fInputFile = nullptr;
+    return kFALSE;
+  }
+
   fTree = dynamic_cast<TTree*>(fInputFile->Get("ntuple"));
+  if (!fTree) {
+    LOG(error) << "NtupleGenerator: Cannot find tree ntuple in file "
+               << fileName;
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    return kFALSE;
+  }
+
   fNevents = fTree->GetEntries();
+  if (startEvent >= fNevents) {
+    LOG(error) << "NtupleGenerator: startEvent " << startEvent
+               << " is out of range for " << fNevents << " entries";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
+
   fn = startEvent;
-  fTree->SetBranchAddress("id", &id);  // particle id
+  bool ok = true;
+  ok &= (fTree->SetBranchAddress("id", &id) >= 0);
   if (fTree->FindBranch("parentid")) {
-    fTree->SetBranchAddress("parentid", &parentid);
+    ok &= (fTree->SetBranchAddress("parentid", &parentid) >= 0);
   }  // parent id
   if (fTree->FindBranch("tof")) {
-    fTree->SetBranchAddress("tof", &tof);
+    ok &= (fTree->SetBranchAddress("tof", &tof) >= 0);
   }  // time of flight
-  fTree->SetBranchAddress("Nmeas", &Nmeas);  // number of Geant4 points
-  fTree->SetBranchAddress("Ezero", &Ezero);  // incoming muon energy
-  fTree->SetBranchAddress("w", &w);          // weight of event
-  fTree->SetBranchAddress("x", &vx);         // position
-  fTree->SetBranchAddress("y", &vy);
-  fTree->SetBranchAddress("z", &vz);
-  fTree->SetBranchAddress("px", &px);  // momentum
-  fTree->SetBranchAddress("py", &py);
-  fTree->SetBranchAddress("pz", &pz);
-  fTree->SetBranchAddress("volid", &volid);    // which volume
-  fTree->SetBranchAddress("procid", &procid);  // which process
+  ok &= (fTree->SetBranchAddress("Nmeas", &Nmeas) >= 0);
+  ok &= (fTree->SetBranchAddress("Ezero", &Ezero) >= 0);
+  ok &= (fTree->SetBranchAddress("w", &w) >= 0);
+  ok &= (fTree->SetBranchAddress("x", &vx) >= 0);
+  ok &= (fTree->SetBranchAddress("y", &vy) >= 0);
+  ok &= (fTree->SetBranchAddress("z", &vz) >= 0);
+  ok &= (fTree->SetBranchAddress("px", &px) >= 0);
+  ok &= (fTree->SetBranchAddress("py", &py) >= 0);
+  ok &= (fTree->SetBranchAddress("pz", &pz) >= 0);
+  ok &= (fTree->SetBranchAddress("volid", &volid) >= 0);
+  ok &= (fTree->SetBranchAddress("procid", &procid) >= 0);
+  if (!ok) {
+    LOG(error)
+        << "NtupleGenerator: failed to bind one or more required branches";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -57,9 +98,11 @@ Bool_t NtupleGenerator::Init(const char* fileName, const int startEvent) {
 // -----   Destructor   ----------------------------------------------------
 NtupleGenerator::~NtupleGenerator() {
   // cout << "destroy Ntuple" << endl;
-  fInputFile->Close();
-  fInputFile->Delete();
-  delete fInputFile;
+  if (fInputFile) {
+    fInputFile->Close();
+    fInputFile->Delete();
+    delete fInputFile;
+  }
 }
 // -------------------------------------------------------------------------
 
@@ -69,7 +112,7 @@ Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     fTree->GetEntry(fn);
     fn++;
     if (fn % 10000 == 0) {
-      cout << "reading event " << fn << endl;
+      LOG(info) << "NtupleGenerator: reading event " << fn;
     }
     // test if muon survives:
     Int_t i = Nmeas - 3;
@@ -79,7 +122,7 @@ Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
   }
   if (fn == fNevents) {
-    cout << "No more input events" << endl;
+    LOG(info) << "NtupleGenerator: no more input events";
     return kFALSE;
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();

@@ -11,6 +11,7 @@
 #ifndef SHIPGEN_COSMICSGENERATOR_H_
 #define SHIPGEN_COSMICSGENERATOR_H_
 
+#include "FairLogger.h"
 #include "Generator.h"
 #include "TF1.h"
 #include "TH1.h"

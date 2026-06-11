@@ -22,22 +22,69 @@ Bool_t EvtCalcGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t EvtCalcGenerator::Init(const char* fileName, const int startEvent) {
+  if (startEvent < 0) {
+    LOG(error) << "EvtCalcGenerator: startEvent must be >= 0, got "
+               << startEvent;
+    return kFALSE;
+  }
   fInputFile = std::unique_ptr<TFile>(TFile::Open(fileName, "read"));
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
+  if (!fInputFile || fInputFile->IsZombie()) {
+    LOG(error) << "EvtCalcGenerator: error opening input file " << fileName;
+    fInputFile.reset();
+    return kFALSE;
+  }
 
   fTree =
       std::unique_ptr<TTree>(dynamic_cast<TTree*>(fInputFile->Get("LLP_tree")));
+  if (!fTree) {
+    LOG(error) << "EvtCalcGenerator: cannot find tree LLP_tree in file "
+               << fileName;
+    fInputFile.reset();
+    return kFALSE;
+  }
   fNevents = fTree->GetEntries();
+  if (startEvent >= fNevents) {
+    LOG(error) << "EvtCalcGenerator: startEvent " << startEvent
+               << " is out of range for " << fNevents << " entries";
+    fTree.reset();
+    fInputFile.reset();
+    return kFALSE;
+  }
   fn = startEvent;
 
   auto* branches = fTree->GetListOfBranches();
+  if (!branches) {
+    LOG(error) << "EvtCalcGenerator: failed to access tree branches";
+    fTree.reset();
+    fInputFile.reset();
+    return kFALSE;
+  }
   nBranches = branches->GetEntries();
+  if (nBranches <= 0) {
+    LOG(error) << "EvtCalcGenerator: tree LLP_tree has no branches";
+    fTree.reset();
+    fInputFile.reset();
+    return kFALSE;
+  }
   branchVars.resize(nBranches);
 
   for (int i = 0; i < nBranches; ++i) {
     auto* branch = dynamic_cast<TBranch*>(branches->At(i));
+    if (!branch) {
+      LOG(error) << "EvtCalcGenerator: encountered an invalid branch entry";
+      fTree.reset();
+      fInputFile.reset();
+      return kFALSE;
+    }
     if (fTree->FindBranch(branch->GetName())) {
-      fTree->SetBranchAddress(branch->GetName(), &branchVars[i]);
+      if (fTree->SetBranchAddress(branch->GetName(), &branchVars[i]) < 0) {
+        LOG(error) << "EvtCalcGenerator: failed to bind branch "
+                   << branch->GetName();
+        fTree.reset();
+        fInputFile.reset();
+        return kFALSE;
+      }
     }
   }
 

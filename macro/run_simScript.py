@@ -273,6 +273,12 @@ parser.add_argument(
     help="Input file (repeat -f for multiple files)",
     default=None,
 )
+parser.add_argument(
+    "--remote-input",
+    dest="remoteInput",
+    help="Treat -f/--inputFile values as remote ROOT paths/URLs and skip local glob expansion",
+    action="store_true",
+)
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
@@ -386,8 +392,11 @@ if options.inputFile:
         options.inputFile = None
     inputFile = []
     for _f in options.inputFile:
-        inputFile.extend(glob.glob(_f))
-    inputFile = list(set(inputFile))
+        if options.remoteInput:
+            inputFile.append(os.path.expandvars(_f))
+        else:
+            inputFile.extend(glob.glob(_f))
+    inputFile = list(dict.fromkeys(inputFile))
     if options.nFiles > 0:
         inputFile = inputFile[: options.nFiles]
     defaultInputFile = False
@@ -625,7 +634,8 @@ if options.evtcalc:
     print(f"Opening input file for EvtCalc generator: {inputFile}")
     ut.checkFileExists(inputFile)
     EvtCalcGen = ROOT.EvtCalcGenerator()
-    EvtCalcGen.Init(inputFile, options.firstEvent)
+    if not EvtCalcGen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
     ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -691,7 +701,8 @@ if options.mudis:
     mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
     print("MuDIS position info input=", mu_start, mu_end)
     DISgen.SetPositions(mu_start, mu_end)
-    DISgen.Init(inputFile, options.firstEvent)
+    if not DISgen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize MuDISGenerator from input: {inputFile}")
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
@@ -702,7 +713,8 @@ if options.command == "Genie":
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.Init(inputFile, options.firstEvent)
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -713,7 +725,8 @@ if options.nuradio:
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.Init(inputFile, options.firstEvent)
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
     # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
     Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
     Geniegen.NuOnly()
@@ -745,7 +758,8 @@ if options.ntuple:
     ut.checkFileExists(inputFile)
     primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
     Ntuplegen = ROOT.NtupleGenerator()
-    Ntuplegen.Init(inputFile, options.firstEvent)
+    if not Ntuplegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize NtupleGenerator from input: {inputFile}")
     primGen.AddGenerator(Ntuplegen)
     ROOT.SetOwnership(Ntuplegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
@@ -765,7 +779,8 @@ if options.muonback:
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
-    MuonBackgen.Init(inputFile, options.firstEvent)
+    if not MuonBackgen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize MuonBackGenerator from input: {inputFile}")
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
