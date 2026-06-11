@@ -46,19 +46,46 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames) {
 
 Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
                                const int startEvent) {
-  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
-  TFile testFile(fileNames.at(0).c_str());
-  auto testKeys = testFile.GetListOfKeys();
-  if (testKeys == nullptr) {
-    LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
+  if (fileNames.empty()) {
+    LOG(error) << "MuonBackGenerator: no input files provided. "
+               << "Check the -f/--inputFile argument or input file glob.";
+    return kFALSE;
   }
+  for (const auto& fileName : fileNames) {
+    if (fileName.empty()) {
+      LOG(error) << "MuonBackGenerator: received an empty input file name. "
+                 << "Check the -f/--inputFile argument.";
+      return kFALSE;
+    }
+  }
+  if (startEvent < 0) {
+    LOG(error) << "MuonBackGenerator: startEvent must be >= 0, got "
+               << startEvent;
+    return kFALSE;
+  }
+
+  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
+  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
+  if (testKeys == nullptr) {
+    delete testFile;
+    LOG(error) << "MuonBackGenerator: Error opening input file "
+               << fileNames.at(0)
+               << ". Check that the path is correct and the file is a readable "
+                  "ROOT file.";
+    return kFALSE;
+  }
+  const bool hasPythia8Geant4 =
+      testKeys->FindObject("pythia8-Geant4") != nullptr;
+  testFile->Close();
+  delete testFile;
   fn = startEvent;
   fPaintBeam = 5 * cm;  // default value for painting beam
   fSameSeed = 0;
   fPhiRandomize = false;      // default value for phi randomization
   fsmearBeam = 8 * mm;        // default value for smearing beam
   fdownScaleDiMuon = kFALSE;  // only needed for muflux simulation
-  if (testKeys->FindObject("pythia8-Geant4")) {
+  if (hasPythia8Geant4) {
     fTree = new TChain("pythia8-Geant4");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
@@ -66,31 +93,38 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
+    if (startEvent >= fNevents) {
+      LOG(error) << "MuonBackGenerator: startEvent " << startEvent
+                 << " is out of range for " << fNevents << " entries";
+      return kFALSE;
+    }
     // count only events with muons
-    fTree->SetBranchAddress("id", &id);  // particle id
-    fTree->SetBranchAddress("parentid",
-                            &parentid);  // parent id, could be different
-    fTree->SetBranchAddress("pythiaid",
-                            &pythiaid);      // pythiaid original particle
-    fTree->SetBranchAddress("ecut", &ecut);  // energy cut used in simulation
-    fTree->SetBranchAddress("w", &w);        // weight of event
+    bool ok = true;
+    ok &= (fTree->SetBranchAddress("id", &id) >= 0);
+    ok &= (fTree->SetBranchAddress("parentid", &parentid) >= 0);
+    ok &= (fTree->SetBranchAddress("pythiaid", &pythiaid) >= 0);
+    ok &= (fTree->SetBranchAddress("ecut", &ecut) >= 0);
+    ok &= (fTree->SetBranchAddress("w", &w) >= 0);
     //  check if ntuple has information of momentum at origin
     if (fTree->GetListOfLeaves()->GetSize() < 17) {
-      fTree->SetBranchAddress(
-          "x", &vx);  // position with respect to startOfTarget at -89.27m
-      fTree->SetBranchAddress("y", &vy);
-      fTree->SetBranchAddress("z", &vz);
-      fTree->SetBranchAddress("px", &px);  // momentum
-      fTree->SetBranchAddress("py", &py);
-      fTree->SetBranchAddress("pz", &pz);
+      ok &= (fTree->SetBranchAddress("x", &vx) >= 0);
+      ok &= (fTree->SetBranchAddress("y", &vy) >= 0);
+      ok &= (fTree->SetBranchAddress("z", &vz) >= 0);
+      ok &= (fTree->SetBranchAddress("px", &px) >= 0);
+      ok &= (fTree->SetBranchAddress("py", &py) >= 0);
+      ok &= (fTree->SetBranchAddress("pz", &pz) >= 0);
     } else {
-      fTree->SetBranchAddress(
-          "ox", &vx);  // position with respect to startOfTarget at -50m
-      fTree->SetBranchAddress("oy", &vy);
-      fTree->SetBranchAddress("oz", &vz);
-      fTree->SetBranchAddress("opx", &px);  // momentum
-      fTree->SetBranchAddress("opy", &py);
-      fTree->SetBranchAddress("opz", &pz);
+      ok &= (fTree->SetBranchAddress("ox", &vx) >= 0);
+      ok &= (fTree->SetBranchAddress("oy", &vy) >= 0);
+      ok &= (fTree->SetBranchAddress("oz", &vz) >= 0);
+      ok &= (fTree->SetBranchAddress("opx", &px) >= 0);
+      ok &= (fTree->SetBranchAddress("opy", &py) >= 0);
+      ok &= (fTree->SetBranchAddress("opz", &pz) >= 0);
+    }
+    if (!ok) {
+      LOG(error) << "MuonBackGenerator: failed to bind one or more required "
+                    "branches for pythia8-Geant4 input";
+      return kFALSE;
     }
   } else {
     id = -1;
@@ -101,11 +135,17 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
+    if (startEvent >= fNevents) {
+      LOG(error) << "MuonBackGenerator: startEvent " << startEvent
+                 << " is out of range for " << fNevents << " entries";
+      return kFALSE;
+    }
     // Detect format by checking branch name:
     // STL format uses PlaneHAPoint, TClonesArray uses vetoPoint
     TBranch* mcBranch = fTree->GetBranch("MCTrack");
     if (!mcBranch) {
-      LOG(fatal) << "MCTrack branch not found in input file";
+      LOG(error) << "MuonBackGenerator: MCTrack branch not found in input file";
+      return kFALSE;
     }
 
     if (fTree->GetBranch("PlaneHAPoint")) {
@@ -117,7 +157,9 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
       auto vetoStatus =
           fTree->SetBranchAddress("PlaneHAPoint", &vetoPoints_vec);
       if (mcStatus < 0 || vetoStatus < 0) {
-        LOG(fatal) << "Failed to set branch addresses for STL vector format";
+        LOG(error) << "MuonBackGenerator: Failed to set branch addresses for "
+                      "STL vector format";
+        return kFALSE;
       }
       LOG(info) << "Using STL vector format (PlaneHAPoint)";
     } else if (fTree->GetBranch("vetoPoint")) {
@@ -128,12 +170,15 @@ Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
       auto mcStatus = fTree->SetBranchAddress("MCTrack", &MCTrack);
       auto vetoStatus = fTree->SetBranchAddress("vetoPoint", &vetoPoints);
       if (mcStatus < 0 || vetoStatus < 0) {
-        LOG(fatal) << "Failed to set branch addresses for TClonesArray format";
+        LOG(error) << "MuonBackGenerator: Failed to set branch addresses for "
+                      "TClonesArray format";
+        return kFALSE;
       }
       LOG(info) << "Using TClonesArray format (vetoPoint)";
     } else {
-      LOG(fatal)
-          << "Neither PlaneHAPoint nor vetoPoint branch found in input file";
+      LOG(error) << "MuonBackGenerator: Neither PlaneHAPoint nor vetoPoint "
+                    "branch found in input file";
+      return kFALSE;
     }
   }
   return kTRUE;

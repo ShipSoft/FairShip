@@ -44,27 +44,61 @@ Bool_t Pythia8Generator::Init() {
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
   if (fextFile) {
-    fInputFile = TFile::Open(fextFile->c_str());
+    if (firstEvent < 0) {
+      LOG(error) << "Pythia8Generator: firstEvent must be >= 0, got "
+                 << firstEvent;
+      return kFALSE;
+    }
+    fInputFile = TFile::Open(fextFile->c_str(), "READ");
     LOG(info) << "Open external file with charm or beauty hadrons: "
               << *fextFile;
-    if (!fInputFile) {
-      LOG(fatal) << "Error opening input file.";
+    if (!fInputFile || fInputFile->IsZombie()) {
+      LOG(error) << "Pythia8Generator: error opening input file " << *fextFile;
+      delete fInputFile;
+      fInputFile = nullptr;
       return kFALSE;
     }
     fTree = fInputFile->Get<TTree>("pythia6");
+    if (!fTree) {
+      LOG(error) << "Pythia8Generator: cannot find tree pythia6 in file "
+                 << *fextFile;
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      return kFALSE;
+    }
     fNevents = fTree->GetEntries();
+    if (firstEvent >= fNevents) {
+      LOG(error) << "Pythia8Generator: firstEvent " << firstEvent
+                 << " is out of range for " << fNevents << " entries";
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      fTree = nullptr;
+      return kFALSE;
+    }
     fn = firstEvent;
-    fTree->SetBranchAddress("id", &hid);  // particle id
-    fTree->SetBranchAddress("px", &hpx);  // momentum
-    fTree->SetBranchAddress("py", &hpy);
-    fTree->SetBranchAddress("pz", &hpz);
-    fTree->SetBranchAddress("E", &hE);
-    fTree->SetBranchAddress("M", &hM);
-    fTree->SetBranchAddress("mid", &mid);  // mother
-    fTree->SetBranchAddress("mpx", &mpx);  // momentum
-    fTree->SetBranchAddress("mpy", &mpy);
-    fTree->SetBranchAddress("mpz", &mpz);
-    fTree->SetBranchAddress("mE", &mE);
+    bool ok = true;
+    ok &= (fTree->SetBranchAddress("id", &hid) >= 0);
+    ok &= (fTree->SetBranchAddress("px", &hpx) >= 0);
+    ok &= (fTree->SetBranchAddress("py", &hpy) >= 0);
+    ok &= (fTree->SetBranchAddress("pz", &hpz) >= 0);
+    ok &= (fTree->SetBranchAddress("E", &hE) >= 0);
+    ok &= (fTree->SetBranchAddress("M", &hM) >= 0);
+    ok &= (fTree->SetBranchAddress("mid", &mid) >= 0);
+    ok &= (fTree->SetBranchAddress("mpx", &mpx) >= 0);
+    ok &= (fTree->SetBranchAddress("mpy", &mpy) >= 0);
+    ok &= (fTree->SetBranchAddress("mpz", &mpz) >= 0);
+    ok &= (fTree->SetBranchAddress("mE", &mE) >= 0);
+    if (!ok) {
+      LOG(error)
+          << "Pythia8Generator: failed to bind one or more required branches";
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      fTree = nullptr;
+      return kFALSE;
+    }
     if (fTree->GetBranch("k")) {
       fTree->SetBranchAddress("k", &ck);
       if (fTree->GetBranch("a0")) {

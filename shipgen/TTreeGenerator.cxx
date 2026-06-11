@@ -35,33 +35,60 @@ Bool_t TTreeGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 
 Bool_t TTreeGenerator::Init(const char* fileName, int startEvent) {
   if (startEvent < 0) {
-    LOG(ERROR) << "TTreeGenerator: startEvent must be >= 0, got " << startEvent;
+    LOG(error) << "TTreeGenerator: startEvent must be >= 0, got " << startEvent;
     return kFALSE;
   }
+
+  if (fInputFile) {
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+  }
+  fInputTree = nullptr;
+  fNEvents = 0;
+  fCurrentEvent = 0;
+
   fInputFile = TFile::Open(fileName, "READ");
   if (!fInputFile || fInputFile->IsZombie()) {
-    LOG(ERROR) << "TTreeGenerator: Cannot open file " << fileName;
+    LOG(error) << "TTreeGenerator: Cannot open file " << fileName;
+    delete fInputFile;
+    fInputFile = nullptr;
     return kFALSE;
   }
 
   fInputTree = dynamic_cast<TTree*>(fInputFile->Get(fTreeName.Data()));
   if (!fInputTree) {
-    LOG(ERROR) << "TTreeGenerator: Cannot find tree " << fTreeName.Data()
+    LOG(error) << "TTreeGenerator: Cannot find tree " << fTreeName.Data()
                << " in file " << fileName;
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fInputTree = nullptr;
     return kFALSE;
   }
 
   fNEvents = fInputTree->GetEntries();
   if (startEvent >= fNEvents) {
-    LOG(ERROR) << "TTreeGenerator: startEvent " << startEvent
+    LOG(error) << "TTreeGenerator: startEvent " << startEvent
                << " is out of range for " << fNEvents << " entries";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fInputTree = nullptr;
+    fNEvents = 0;
     return kFALSE;
   }
   fCurrentEvent = startEvent;
-  LOG(INFO) << "TTreeGenerator: Found " << fNEvents
+  LOG(info) << "TTreeGenerator: Found " << fNEvents
             << " events in tree, starting at " << startEvent;
 
   if (!InitBranches()) {
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fInputTree = nullptr;
+    fNEvents = 0;
+    fCurrentEvent = 0;
     return kFALSE;
   }
 
@@ -73,7 +100,7 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     return kFALSE;
   }
   if (fInputTree->GetEntry(fCurrentEvent) <= 0) {
-    LOG(ERROR) << "TTreeGenerator: Failed to read entry " << fCurrentEvent;
+    LOG(error) << "TTreeGenerator: Failed to read entry " << fCurrentEvent;
     return kFALSE;
   }
 
@@ -103,7 +130,7 @@ Bool_t TTreeGenerator::InitBranches() {
   ok &= (fInputTree->SetBranchAddress("w", &fWeight) >= 0);
 
   if (!ok) {
-    LOG(ERROR) << "TTreeGenerator: failed to bind one or more branches";
+    LOG(error) << "TTreeGenerator: failed to bind one or more branches";
   }
 
   return ok ? kTRUE : kFALSE;
