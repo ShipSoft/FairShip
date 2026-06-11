@@ -281,7 +281,9 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
                 vtxz * meter,  // Event vertex [in cm!]
                 -1,            // Parent
                 false);        // Don't track this particle
-
+  IncrementCounter("generated_events");
+  if (cc) IncrementCounter("cc_events");
+  if (nuel) IncrementCounter("nue_elastic_events");
   // Add the outgoing lepton and hadrons, if not in nu-only mode
   if (!fNuOnly) {
     // Add final state lepton to the MCTrack stack:
@@ -292,11 +294,13 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
     bool track_outgoing_lepton = (cc || nuel) ? true : false;
     cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * meter,
                   vtxy * meter, vtxz * meter, 0, track_outgoing_lepton);
+    IncrementCounter("outgoing_leptons_stored");
 
     // Add final state hadrons to the MCTrack stack
     for (int i_hadron = 0; i_hadron < nf; i_hadron++) {
       cpg->AddTrack(pdgf[i_hadron], pxf[i_hadron], pyf[i_hadron], pzf[i_hadron],
                     vtxx * meter, vtxy * meter, vtxz * meter, 0, true);
+      IncrementCounter("outgoing_hadrons_stored");
     }
   }
   return kTRUE;
@@ -438,6 +442,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t y = 0.;
     Double_t z = 0.;
     while (prob2int < gRandom->Uniform(0., 1.)) {
+      IncrementCounter("interaction_sampling_trials");
       // place x,y,z uniform along path
       z = gRandom->Uniform(start[2], end[2]);
       x = txnu * (z - ztarget);
@@ -478,6 +483,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         neu, pout[0], pout[1], pout[2], x, y, z, -1, false,
         TMath::Sqrt(pout[0] * pout[0] + pout[1] * pout[1] + pout[2] * pout[2]),
         tof, mparam[0] * mparam[4]);
+    IncrementCounter("generated_events");
+    if (cc) IncrementCounter("cc_events");
+    if (nuel) IncrementCounter("nue_elastic_events");
     if (!fNuOnly) {
       // second, outgoing lepton
       std::vector<double> pp = Rotate(x, y, zrelative, pxl, pyl, pzl);
@@ -490,11 +498,13 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
       cpg->AddTrack(oLPdgCode, pp[0], pp[1], pp[2], x, y, z, 0, true, El, tof,
                     mparam[0] * mparam[4]);
+      IncrementCounter("outgoing_leptons_stored");
       // last, all others
       for (int i = 0; i < nf; i++) {
         pp = Rotate(x, y, zrelative, pxf[i], pyf[i], pzf[i]);
         cpg->AddTrack(pdgf[i], pp[0], pp[1], pp[2], x, y, z, 0, true, Ef[i],
                       tof, mparam[0] * mparam[4]);
+        IncrementCounter("outgoing_hadrons_stored");
         // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
       }
       // cout << "Info GenieGenerator Return from GenieGenerator" << endl;
