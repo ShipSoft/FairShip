@@ -1,6 +1,6 @@
 var classshipDigiReco_1_1ShipDigiReco =
 [
-    [ "__init__", "classshipDigiReco_1_1ShipDigiReco.html#af3eba756365a33fe6498b13d04577f20", null ],
+    [ "__init__", "classshipDigiReco_1_1ShipDigiReco.html#a6478031fc70d5599ec2a11f87899ebe9", null ],
     [ "_compute_seed_state", "classshipDigiReco_1_1ShipDigiReco.html#ac564a7d329df8511cd4987a36d6455a0", null ],
     [ "digitize", "classshipDigiReco_1_1ShipDigiReco.html#ad5784402bac7294d364aa95047a86c76", null ],
     [ "findGoodTracks", "classshipDigiReco_1_1ShipDigiReco.html#a04f488c41f82467b97c1c91eedfd01f5", null ],
@@ -41,6 +41,8 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "Tracklets", "classshipDigiReco_1_1ShipDigiReco.html#a2b61741c8e142e08bb64b7288fe79e36", null ],
     [ "upstreamTaggerDetector", "classshipDigiReco_1_1ShipDigiReco.html#a730348eb662b22ed5b755ae782a92bcf", null ],
     [ "v_drift", "classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab", null ],
+    [ "validation", "classshipDigiReco_1_1ShipDigiReco.html#ae700a52f7333e3894dcced3b1ae4929d", null ],
+    [ "validation_stats", "classshipDigiReco_1_1ShipDigiReco.html#a598627d4dc8cf15bc8a6f70d15d1139f", null ],
     [ "Vertexing", "classshipDigiReco_1_1ShipDigiReco.html#a6d1eda59c9098b43bb73cf17cc0877c1", null ],
     [ "vetoHitOnTrackArray", "classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f", null ],
     [ "vetoHitOnTrackBranch", "classshipDigiReco_1_1ShipDigiReco.html#ac2183ffb516c391bcd688c91b35f1177", null ]

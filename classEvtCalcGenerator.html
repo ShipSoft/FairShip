@@ -186,6 +186,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9942a10f24a155627b316f1ab486c4ce inherit pub_methods_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86124aa380a3b973a4ac328d2e86cfc6 inherit pub_methods_classSHiP_1_1Generator" id="r_a86124aa380a3b973a4ac328d2e86cfc6"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#a86124aa380a3b973a4ac328d2e86cfc6">nrOfGeoRejections</a> () const</td></tr>
 <tr class="separator:a86124aa380a3b973a4ac328d2e86cfc6 inherit pub_methods_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ed5b1f3c508e18c7365298d8f3c74f inherit pub_methods_classSHiP_1_1Generator" id="r_ad5ed5b1f3c508e18c7365298d8f3c74f"><td class="memItemLeft" align="right" valign="top">Long64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#ad5ed5b1f3c508e18c7365298d8f3c74f">GetCounter</a> (const std::string &amp;name) const</td></tr>
+<tr class="separator:ad5ed5b1f3c508e18c7365298d8f3c74f inherit pub_methods_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7093fe1eefb95d4ca85febc8feb534c6 inherit pub_methods_classSHiP_1_1Generator" id="r_a7093fe1eefb95d4ca85febc8feb534c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#a7093fe1eefb95d4ca85febc8feb534c6">SetCounter</a> (const std::string &amp;name, Long64_t value)</td></tr>
+<tr class="separator:a7093fe1eefb95d4ca85febc8feb534c6 inherit pub_methods_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225ef62e734c3b42f9ddc1ce9c44538a inherit pub_methods_classSHiP_1_1Generator" id="r_a225ef62e734c3b42f9ddc1ce9c44538a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#a225ef62e734c3b42f9ddc1ce9c44538a">IncrementCounter</a> (const std::string &amp;name, Long64_t delta=1)</td></tr>
+<tr class="separator:a225ef62e734c3b42f9ddc1ce9c44538a inherit pub_methods_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
@@ -246,6 +252,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:aede7e0e4f6382bcef92e077c3c604c55 inherit pro_attribs_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b0ff652a8c474c9609d2560d91e6ba inherit pro_attribs_classSHiP_1_1Generator" id="r_a66b0ff652a8c474c9609d2560d91e6ba"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#a66b0ff652a8c474c9609d2560d91e6ba">fnGeoRejects</a> = 0</td></tr>
 <tr class="separator:a66b0ff652a8c474c9609d2560d91e6ba inherit pro_attribs_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb4be405fddadb2ec463a2ac6335bab8 inherit pro_attribs_classSHiP_1_1Generator" id="r_abb4be405fddadb2ec463a2ac6335bab8"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSHiP_1_1Generator.html#abb4be405fddadb2ec463a2ac6335bab8">fCounters</a></td></tr>
+<tr class="separator:abb4be405fddadb2ec463a2ac6335bab8 inherit pro_attribs_classSHiP_1_1Generator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -951,7 +959,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a045c84129f2b91a90cc62b53e14236d2"><div class="ttname"><a href="classEvtCalcGenerator.html#a045c84129f2b91a90cc62b53e14236d2">EvtCalcGenerator::fn</a></div><div class="ttdeci">int fn</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00077">EvtCalcGenerator.h:77</a></div></div>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a42158fc710adf68bf7654057de726de3"><div class="ttname"><a href="classEvtCalcGenerator.html#a42158fc710adf68bf7654057de726de3">EvtCalcGenerator::fTree</a></div><div class="ttdeci">std::unique_ptr&lt; TTree &gt; fTree</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00062">EvtCalcGenerator.h:62</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00103">ShipAna.py:103</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00982">run_simScript.py:982</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00990">run_simScript.py:990</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1088,8 +1096,8 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>    <a class="code hl_variable" href="classEvtCalcGenerator.html#a816e91b68269f2f4da0198913703a474">ztarget</a> = <a class="code hl_variable" href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">zTa</a>;       <span class="comment">// units cm (midpoint)</span></div>
 <div class="line"><span class="lineno">   33</span>    <a class="code hl_variable" href="classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78">zDecayVolume</a> = <a class="code hl_variable" href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">zDV</a>;  <span class="comment">// units cm (midpoint)</span></div>
 <div class="line"><span class="lineno">   34</span>  }</div>
-<div class="ttc" id="anamespacerun__simScript_html_aa52a3b35fc9639050ea8dcf392b88abe"><div class="ttname"><a href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">run_simScript.zDV</a></div><div class="ttdeci">zDV</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00629">run_simScript.py:629</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_afce74e2bd8c0a67df6486c301366a253"><div class="ttname"><a href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">run_simScript.zTa</a></div><div class="ttdeci">zTa</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00629">run_simScript.py:629</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_aa52a3b35fc9639050ea8dcf392b88abe"><div class="ttname"><a href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">run_simScript.zDV</a></div><div class="ttdeci">zDV</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00636">run_simScript.py:636</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_afce74e2bd8c0a67df6486c301366a253"><div class="ttname"><a href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">run_simScript.zTa</a></div><div class="ttdeci">zTa</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00636">run_simScript.py:636</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -33,12 +33,14 @@ var searchData=
   ['fitsinglegauss_30',['fitsinglegauss',['../namespaceShipAna.html#af2b1b0465b21916bcb304588534dca3f',1,'ShipAna.fitSingleGauss()'],['../namespaceana__ShipMuon.html#a3e768c35214212fdf6fc9d7213a5e5a0',1,'ana_ShipMuon.fitSingleGauss()'],['../namespacerun__reco.html#aeb64b43ab3c678d2c1a20f6f427deb3b',1,'run_reco.fitSingleGauss()']]],
   ['fittrackprintout_31',['FitTrackPrintOut',['../namespacedecorators.html#ae9bddfe14bd67abe9c85f81e768e6c1b',1,'decorators']]],
   ['fixedtargetgenerator_32',['FixedTargetGenerator',['../classFixedTargetGenerator.html#ac5ec4cf6867c0a414e9c5ca30a9121e0',1,'FixedTargetGenerator']]],
-  ['flat_33',['flat',['../classPyTr1Rng.html#a522823fac1fce39bc616d1232f649596',1,'PyTr1Rng::flat()'],['../classPyTr3Rng.html#a12375a162b40ec87345c7f1ed3f98054',1,'PyTr3Rng::flat()']]],
+  ['flat_33',['flat',['../classPyTr3Rng.html#a12375a162b40ec87345c7f1ed3f98054',1,'PyTr3Rng::flat()'],['../classPyTr1Rng.html#a522823fac1fce39bc616d1232f649596',1,'PyTr1Rng::flat()']]],
   ['followallparticles_34',['FollowAllParticles',['../classMuonBackGenerator.html#a4574131346a114a05b6ea600ba579908',1,'MuonBackGenerator']]],
   ['forcedecay_35',['ForceDecay',['../classTEvtGenDecayer.html#a999f726140ff6ebae67b717983116712',1,'TEvtGenDecayer']]],
-  ['formatnumber_36',['formatNumber',['../namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36',1,'convertRALMap']]],
-  ['forreadingoldfile_37',['forReadingOldFile',['../namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad',1,'shipRoot_conf']]],
-  ['fracmcsame_38',['fracmcsame',['../classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad',1,'shipDigiReco.ShipDigiReco.fracMCsame()'],['../namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13',1,'shipStrawTracking.fracMCsame()']]],
-  ['frontview_39',['frontView',['../classeventDisplay_1_1EventLoop.html#a3db62c40a0d6b400c56187a64750d948',1,'eventDisplay::EventLoop']]],
-  ['fspectruml_40',['fSpectrumL',['../classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d',1,'Co3Rng']]]
+  ['format_5fmean_5fstd_36',['format_mean_std',['../namespacevalidationTools.html#a91e349526672a4da7a7d81a9d74e0081',1,'validationTools']]],
+  ['format_5fstat_5fsummary_37',['format_stat_summary',['../namespacevalidationTools.html#ab1e3a10d6f62999ea06535aee5e6db9c',1,'validationTools']]],
+  ['formatnumber_38',['formatNumber',['../namespaceconvertRALMap.html#a6ccc94556d4744636a48f5e3e967cd36',1,'convertRALMap']]],
+  ['forreadingoldfile_39',['forReadingOldFile',['../namespaceshipRoot__conf.html#afe7a5abdf5ac74baa52b7d271a6b18ad',1,'shipRoot_conf']]],
+  ['fracmcsame_40',['fracmcsame',['../classshipDigiReco_1_1ShipDigiReco.html#a06ef79c2d32574a4e9dda71d56fde1ad',1,'shipDigiReco.ShipDigiReco.fracMCsame()'],['../namespaceshipStrawTracking.html#a005e72c92291692e5a0b39ae98d0ab13',1,'shipStrawTracking.fracMCsame()']]],
+  ['frontview_41',['frontView',['../classeventDisplay_1_1EventLoop.html#a3db62c40a0d6b400c56187a64750d948',1,'eventDisplay::EventLoop']]],
+  ['fspectruml_42',['fSpectrumL',['../classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d',1,'Co3Rng']]]
 ];
