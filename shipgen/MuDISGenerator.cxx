@@ -127,6 +127,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
              << mparam[7] << ", " << mparam[7] * 1.e8;
 
   while (prob2int < gRandom->Uniform(0., 1.)) {
+    IncrementCounter("interaction_sampling_trials");
     zmu = gRandom->Uniform(start[2], end[2]);
     xmu = x - (z - zmu) * txmu;
     ymu = y - (z - zmu) * tymu;
@@ -205,6 +206,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       cpg->AddTrack(static_cast<int>((*Part)[0]), (*Part)[1], (*Part)[2],
                     (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
     }
+    IncrementCounter("dis_particles_stored");
     index += 1;
   }
 
@@ -212,6 +214,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   for (auto&& softParticle : *dPartSoft) {
     TVectorD* SoftPart = dynamic_cast<TVectorD*>(softParticle);
     if ((*SoftPart)[7] > zmu) {
+      IncrementCounter("soft_particles_skipped");
       continue;
     }  // Soft interactions after the DIS point are not saved
     Double_t t_soft = (*SoftPart)[8] / 1e9;  // Time in seconds
@@ -219,7 +222,10 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
                   (*SoftPart)[2], (*SoftPart)[3], (*SoftPart)[5],
                   (*SoftPart)[6], (*SoftPart)[7], 0, true, (*SoftPart)[4],
                   t_soft, w);
+    IncrementCounter("soft_particles_stored");
   }
+
+  IncrementCounter("generated_events");
 
   return kTRUE;
 }
