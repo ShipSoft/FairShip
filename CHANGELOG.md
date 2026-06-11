@@ -16,7 +16,7 @@ it in future.
 
 * Add experimental script to import Muons and Matter pkl files
 * Add TTreeGenerator to read M&M ntuples
-* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal) 
+* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
 
 ### Changed
 
