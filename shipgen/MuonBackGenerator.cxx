@@ -31,7 +31,12 @@ using ShipUnit::mm;
 
 // -----   Default constructor   -------------------------------------------
 MuonBackGenerator::MuonBackGenerator()
-    : MCTrack_vec(nullptr), vetoPoints_vec(nullptr), fUseSTL(false) {
+    : MCTrack(nullptr),
+      vetoPoints(nullptr),
+      MCTrack_vec(nullptr),
+      vetoPoints_vec(nullptr),
+      fUseSTL(false),
+      fTree(nullptr) {
   followMuons = true;
 }
 // -------------------------------------------------------------------------
@@ -191,10 +196,12 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int startEvent) {
 }
 // -----   Destructor   ----------------------------------------------------
 MuonBackGenerator::~MuonBackGenerator() {
-  if (!fUseSTL) {
-    delete MCTrack;
-    delete vetoPoints;
-  }
+  delete MCTrack;
+  MCTrack = nullptr;
+  delete vetoPoints;
+  vetoPoints = nullptr;
+  delete fTree;
+  fTree = nullptr;
 }
 // -------------------------------------------------------------------------
 Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex) {
@@ -382,8 +389,3 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 
 // -------------------------------------------------------------------------
 Int_t MuonBackGenerator::GetNevents() { return fNevents; }
-void MuonBackGenerator::CloseFile() {
-  fInputFile->Close();
-  fInputFile->Delete();
-  delete fInputFile;
-}
