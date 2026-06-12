@@ -103,6 +103,9 @@ cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmar
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 
+[tasks.ci-sim-muonback]
+cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
+
 # --- CI plot rendering tasks ---
 # Wrap .github/scripts/render_plots.py for each per-job output set. The
 # CI workflow invokes these after the corresponding sim/reco step. The
