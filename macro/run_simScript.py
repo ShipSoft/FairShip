@@ -979,6 +979,7 @@ if options.muonback:
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
     fSink = ROOT.FairRootFileSink(fout)
+    ROOT.SetOwnership(fout, False)  # FairRootFileSink's unique_ptr now owns fout
 
     sTree = t.CloneTree(0)
     nEvents = 0
