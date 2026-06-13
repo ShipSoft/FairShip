@@ -124,7 +124,7 @@ cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --outpu
 # expansion.
 
 [tasks.ci-clang-tidy]
-cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py'"
+cmd = "bash -c 'set -o pipefail; GCC_INC=$(x86_64-conda-linux-gnu-gcc -print-file-name=include); echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ --extra-arg-before=-isystem$GCC_INC 2>&1 | python .github/scripts/annotate_build.py'"
 
 [tasks.ci-pyrefly]
 cmd = "pyrefly check --output-format=github $PY_FILES"
