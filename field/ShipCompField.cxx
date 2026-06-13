@@ -29,7 +29,8 @@ ShipCompField::ShipCompField(const std::string& label,
                              const std::vector<TVirtualMagField*>& theFields)
     : TVirtualMagField(label.c_str()), theFields_(theFields) {}
 
-// Default destructor: the TVirtualMagField pointers are not owned by this class.
+// Default destructor: the TVirtualMagField pointers are not owned by this
+// class.
 ShipCompField::~ShipCompField() = default;
 
 void ShipCompField::Field(const Double_t* position, Double_t* B) {

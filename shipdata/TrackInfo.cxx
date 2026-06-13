@@ -32,8 +32,7 @@ TrackInfo::TrackInfo(const genfit::Track* tr) {
 }
 
 // -----   Copy constructor   ----------------------------------------------
-TrackInfo::TrackInfo(const TrackInfo& ti)
-     = default;
+TrackInfo::TrackInfo(const TrackInfo& ti) = default;
 // -----   Destructor   ----------------------------------------------------
 TrackInfo::~TrackInfo() = default;
 // -------------------------------------------------------------------------
