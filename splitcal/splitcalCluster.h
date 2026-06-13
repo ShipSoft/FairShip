@@ -80,7 +80,7 @@ class splitcalCluster : public TObject {
   std::vector<int> _hitIndices;
   std::vector<double> _hitWeights;
 
-  ClassDef(splitcalCluster, 4);
+  ClassDefOverride(splitcalCluster, 4);
 };
 
 #endif  // SPLITCAL_SPLITCALCLUSTER_H_
