@@ -11,7 +11,6 @@ geant4 = ">=11.3"
 pythia8 = ">=8.312"
 evtgen = ">=2.2"
 fmt = "*"
-gsl = "*"
 
 # Python (conda-forge)
 python = "3.12.*"
@@ -19,8 +18,6 @@ numpy = "*"
 scipy = "*"
 matplotlib = "*"
 pandas = "*"
-awkward = "*"
-uproot = "*"
 pytest = "*"
 pytest-xdist = "*"
 pyyaml = "*"
@@ -28,14 +25,11 @@ tabulate = "*"
 
 # SHiP custom packages (prefix.dev/ship channel)
 vmc = ">=2.2"
-vgm = ">=5.4"
-geant3 = ">=4.5"
 geant4-vmc = "==6.7.1"
 faircmakemodules = ">=1.0"
 fairlogger = ">=2.3"
 fairroot = ">=19.0"
 genfit = ">=2.3"
-pythia6 = ">=6.4"
 rootegpythia6 = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
 # They will be added to a runtime environment later
