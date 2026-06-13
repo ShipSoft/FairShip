@@ -39,7 +39,7 @@ class ShipMuonShield : public FairModule {
   Bool_t snd_hole{false};
   Double_t snd_hole_dx = 0., snd_hole_dy = 0.;
 
-  void CreateArb8(TString arbName, TGeoMedium* medium, Double_t dZ,
+  void CreateArb8(const TString& arbName, TGeoMedium* medium, Double_t dZ,
                   std::array<Double_t, 16> corners, Int_t color,
                   TGeoUniformMagField* magField, TGeoVolume* top,
                   Double_t x_translation, Double_t y_translation,
@@ -58,7 +58,7 @@ class ShipMuonShield : public FairModule {
                   std::vector<Double_t>& Bgoal, std::vector<Double_t>& gapIn,
                   std::vector<Double_t>& gapOut, std::vector<Double_t>& Z);
 
-  void CreateMagnet(TString magnetName, TGeoMedium* medium, TGeoVolume* tShield,
+  void CreateMagnet(const TString& magnetName, TGeoMedium* medium, TGeoVolume* tShield,
                     TGeoUniformMagField* fields[4],
                     FieldDirection fieldDirection, Double_t dX, Double_t dY,
                     Double_t dX2, Double_t dY2, Double_t ratio_yoke_1,

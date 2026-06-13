@@ -11,6 +11,7 @@
 #include <array>
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -45,7 +46,7 @@ strawtubes::strawtubes()
     : Detector("strawtubes", kTRUE, kStraw), fMedium("air") {}
 
 strawtubes::strawtubes(std::string medium)
-    : Detector("strawtubes", kTRUE, kStraw), fMedium(medium) {}
+    : Detector("strawtubes", kTRUE, kStraw), fMedium(std::move(medium)) {}
 
 strawtubes::strawtubes(const char* name, Bool_t active)
     : Detector(name, active, kStraw) {}
@@ -172,7 +173,7 @@ void strawtubes::SetDeltazView(Double_t delta_z_view) {
 }
 
 void strawtubes::SetFrameMaterial(TString frame_material) {
-  f_frame_material = frame_material;  //!  Structure frame material
+  f_frame_material = std::move(frame_material);  //!  Structure frame material
 }
 
 void strawtubes::SetStationEnvelope(Double_t x, Double_t y, Double_t z) {

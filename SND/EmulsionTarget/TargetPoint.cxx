@@ -25,7 +25,7 @@ fEmCESBot(emCESBot),fTT(tt), fNPlate(nPlate),fNColumn(nColumn),
 fNRow(nRow),fNWall(nWall) {  }
 */
 
-TargetPoint::TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+TargetPoint::TargetPoint(Int_t trackID, Int_t detID, const TVector3& pos, const TVector3& mom,
                          Double_t tof, Double_t length, Double_t eLoss,
                          Int_t pdgcode)
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
