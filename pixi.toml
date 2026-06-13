@@ -25,7 +25,7 @@ tabulate = "*"
 
 # SHiP custom packages (prefix.dev/ship channel)
 vmc = ">=2.2"
-geant4-vmc = "==6.7.1"
+geant4-vmc = ">=6.7"
 faircmakemodules = ">=1.0"
 fairlogger = ">=2.3"
 fairroot = ">=19.0"
