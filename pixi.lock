@@ -274,6 +274,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.3.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/execnet-2.1.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/executing-2.2.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-source-code-pro-2.038-h77eed37_0.tar.bz2
@@ -397,7 +398,6 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_4.conda
       - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_5.conda
-      - conda: https://prefix.dev/ship/noarch/faircmakemodules-1.0.0-h4616a5c_0.conda
       - pypi: https://files.pythonhosted.org/packages/61/16/cfa2d61a4aa1e1f7bca48bb37acd01c6a09db4864b16a54f9587092765ff/pyrefly-1.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -4258,6 +4258,16 @@ packages:
   - pkg:pypi/executing?source=hash-mapping
   size: 30753
   timestamp: 1756729456476
+- conda: https://conda.anaconda.org/conda-forge/noarch/faircmakemodules-1.0.0-h98f672e_0.conda
+  sha256: 2634b440823429b61cde095e1b0135aace6302238ab783049cac92c6922e4bcb
+  md5: a0719b28c2a63aa871a65bfc7091ff7c
+  depends:
+  - __unix
+  license: LGPL-3.0-only
+  license_family: LGPL
+  purls: []
+  size: 18123
+  timestamp: 1780676604349
 - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
   sha256: 58d7f40d2940dd0a8aa28651239adbf5613254df0f75789919c4e6762054403b
   md5: 0c96522c6bdaed4b1566d11387caaf45
@@ -5856,12 +5866,6 @@ packages:
     - root_cxx_standard
   size: 77685
   timestamp: 1781207956160
-- conda: https://prefix.dev/ship/noarch/faircmakemodules-1.0.0-h4616a5c_0.conda
-  sha256: 885858b2a4b36b214b509db6099b161b57cebdbc925279eba345734ca3532289
-  md5: 46942ec121ddc44c9f869123ea2be698
-  run_exports: {}
-  size: 14942
-  timestamp: 1779705091548
 - pypi: https://files.pythonhosted.org/packages/61/16/cfa2d61a4aa1e1f7bca48bb37acd01c6a09db4864b16a54f9587092765ff/pyrefly-1.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   name: pyrefly
   version: 1.0.0
