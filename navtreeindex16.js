@@ -1,6 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"getInteractionAndRadiationLength_8py_source.html":[7,0,6,11],
 "global__variables_8py.html":[7,0,10,15],
 "global__variables_8py.html#aeff20c2fdb82cfc512c8c1fcd4dceb81":[7,0,10,15,0],
 "global__variables_8py_source.html":[7,0,10,15],
@@ -249,5 +248,6 @@ var NAVTREEINDEX16 =
 "makeDecay_8py.html#a093ea6eb39711c567e9e0085f9bb52a9":[7,0,6,16,31],
 "makeDecay_8py.html#a1d9afd01a598d83d61bf13f290b9787c":[7,0,6,16,1],
 "makeDecay_8py.html#a38fd23c688b9219d3ed576e6c835f61f":[7,0,6,16,5],
-"makeDecay_8py.html#a47cef8e71e3ddbf835235b84b995c2dd":[7,0,6,16,24]
+"makeDecay_8py.html#a47cef8e71e3ddbf835235b84b995c2dd":[7,0,6,16,24],
+"makeDecay_8py.html#a522dc5811162059c19d2c67a581f9cef":[7,0,6,16,17]
 };

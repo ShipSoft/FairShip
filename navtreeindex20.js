@@ -1,6 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20":[5,0,27,0],
 "namespaceeveGlobal.html":[5,0,28],
 "namespaceeveGlobal.html#af384e4f875e85dd37b0398e54a393298":[5,0,28,0],
 "namespaceeventDisplay.html":[5,0,29],
@@ -249,5 +248,6 @@ var NAVTREEINDEX20 =
 "namespacehepunit.html#a6406f2471788e2223287ee1f97583611":[5,0,40,34],
 "namespacehepunit.html#a64aa666f791f1d274edc1b7dd7f34e1d":[5,0,40,94],
 "namespacehepunit.html#a64ba526a08b82610627ba96ef1aa554e":[5,0,40,98],
-"namespacehepunit.html#a655f1c7803b5b7dee40ce02514a9d238":[5,0,40,63]
+"namespacehepunit.html#a655f1c7803b5b7dee40ce02514a9d238":[5,0,40,63],
+"namespacehepunit.html#a665bef8baedb80e2ad10ea8b981fb099":[5,0,40,13]
 };

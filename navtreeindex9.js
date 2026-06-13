@@ -1,7 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47":[6,0,76,72],
-"classTarget.html#a0c75620f3301ea63ea0c2c4b4840bdfa":[6,0,76,30],
 "classTarget.html#a0d490ed3b14199318773c974216a3fbc":[6,0,76,55],
 "classTarget.html#a10300065b8275b5fb309f97c56797aa5":[6,0,76,33],
 "classTarget.html#a130b8baee2ff9b81b8269a19fcb0387e":[6,0,76,49],
@@ -214,12 +212,12 @@ var NAVTREEINDEX9 =
 "classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57":[6,0,87,1],
 "classUpstreamTagger.html#ace5dfc966f197ffd412ca998dac78ec1":[6,0,87,11],
 "classUpstreamTagger.html#af263cdbdaff47711d2d41790b6f3e43e":[6,0,87,14],
-"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html":[5,0,100,0],
 "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html":[6,0,23,0],
-"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a0435e267926d60c3a4972397e44b783a":[5,0,100,0,1],
+"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html":[5,0,101,0],
 "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a0435e267926d60c3a4972397e44b783a":[6,0,23,0,1],
-"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#ad59be6a6bb72e728fc32e717301b31d2":[5,0,100,0,0],
+"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a0435e267926d60c3a4972397e44b783a":[5,0,101,0,1],
 "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#ad59be6a6bb72e728fc32e717301b31d2":[6,0,23,0,0],
+"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#ad59be6a6bb72e728fc32e717301b31d2":[5,0,101,0,0],
 "classUpstreamTaggerHit.html":[6,0,88],
 "classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed":[6,0,88,12],
 "classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c":[6,0,88,14],
@@ -249,5 +247,7 @@ var NAVTREEINDEX9 =
 "classVectorMCPointSource.html#a7b58f2ac39c509b250c8cc447cb44f00":[6,0,90,3],
 "classVectorMCPointSource.html#a9fe13c72bc8dcd5c5fe9c5cb39ab46db":[6,0,90,1],
 "classVectorMCPointSource.html#abc1700f0bd26c2e4fca12366cf7b26fe":[6,0,90,5],
-"classVectorMCPointSource.html#ac820ed3b032acb97bb2bfe0a0970cba5":[6,0,90,4]
+"classVectorMCPointSource.html#ac820ed3b032acb97bb2bfe0a0970cba5":[6,0,90,4],
+"classVeto.html":[6,0,92],
+"classdarkphoton_1_1DarkPhoton.html":[6,0,1,0]
 };

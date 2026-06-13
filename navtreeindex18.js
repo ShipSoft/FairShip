@@ -1,6 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"md_CHANGELOG.html#autotoc_md23":[1,4,0,0],
 "md_CHANGELOG.html#autotoc_md24":[1,4,0,1],
 "md_CHANGELOG.html#autotoc_md25":[1,4,0,2],
 "md_CHANGELOG.html#autotoc_md26":[1,4,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX18 =
 "namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1":[5,0,85,27],
 "namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a":[5,0,85,33],
 "namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7":[5,0,85,14],
-"namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186":[5,0,85,3]
+"namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186":[5,0,85,3],
+"namespaceShipReco.html#abef5d8b1901b0297e8a03041a63b8d7d":[5,0,85,0]
 };
