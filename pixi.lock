@@ -395,9 +395,9 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/fairroot-19.0.1-hb0f4dca_9.conda
       - conda: https://prefix.dev/ship/linux-64/geant3-4.5-hb0f4dca_4.conda
       - conda: https://prefix.dev/ship/linux-64/geant4-vmc-6.8-hb0f4dca_4.conda
-      - conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_6.conda
-      - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_4.conda
-      - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_5.conda
+      - conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_7.conda
+      - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_5.conda
+      - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_6.conda
       - pypi: https://files.pythonhosted.org/packages/61/16/cfa2d61a4aa1e1f7bca48bb37acd01c6a09db4864b16a54f9587092765ff/pyrefly-1.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -998,7 +998,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/fonttools?source=hash-mapping
+  - pkg:pypi/fonttools?source=compressed-mapping
   size: 3007892
   timestamp: 1778770568019
 - conda: https://conda.anaconda.org/conda-forge/linux-64/freetype-2.14.3-ha770c72_0.conda
@@ -4078,7 +4078,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/beautifulsoup4?source=compressed-mapping
+  - pkg:pypi/beautifulsoup4?source=hash-mapping
   size: 92704
   timestamp: 1780853175566
 - conda: https://conda.anaconda.org/conda-forge/noarch/bleach-6.4.0-pyhcf101f3_0.conda
@@ -4574,7 +4574,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/ipykernel?source=hash-mapping
+  - pkg:pypi/ipykernel?source=compressed-mapping
   size: 138635
   timestamp: 1781101665847
 - conda: https://conda.anaconda.org/conda-forge/noarch/ipyparallel-9.2.0-pyhcf101f3_0.conda
@@ -5096,7 +5096,7 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/notebook?source=compressed-mapping
+  - pkg:pypi/notebook?source=hash-mapping
   size: 10118664
   timestamp: 1780599271871
 - conda: https://conda.anaconda.org/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
@@ -5366,7 +5366,7 @@ packages:
   license: BSD-2-Clause
   license_family: BSD
   purls:
-  - pkg:pypi/python-json-logger?source=compressed-mapping
+  - pkg:pypi/python-json-logger?source=hash-mapping
   size: 19249
   timestamp: 1781036004580
 - conda: https://conda.anaconda.org/conda-forge/noarch/python-tzdata-2026.2-pyhd8ed1ab_0.conda
@@ -5816,56 +5816,53 @@ packages:
     - geant4-vmc >=6.8,<6.9.0a0
   size: 5254016
   timestamp: 1781386926209
-- conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_6.conda
-  sha256: de05132c9d055327730e565c5799eaca0166d30ba17061c3f988e146fe082e98
-  md5: 541c75b503631dd7de3489e241bf893d
+- conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_7.conda
+  sha256: 9c1033490fc3ddb172cb5b5c19bd73a3dbc40ea498b047e0f7558e97ce555945
+  md5: c40aa231c26c820fba888564c45bccd7
   depends:
-  - root_base 6.40.*
-  - root_cxx_standard
   - libstdcxx >=15
   - libgcc >=15
   - __glibc >=2.17,<3.0.a0
   - root_cxx_standard ==20
-  - gtest >=1.17.0,<1.17.1.0a0
   - root_base >=6.40.0,<6.40.1.0a0
+  - gtest >=1.17.0,<1.17.1.0a0
   license: LGPL-3.0-or-later
   run_exports:
     weak:
-    - root_base 6.40.*
-    - root_cxx_standard
+    - genfit >=2.3.0,<2.4.0a0
   size: 774836
-  timestamp: 1781207956153
-- conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_4.conda
-  sha256: 7cb2ae41a822d183d98301fa65d2757d9d691a92287fa8b28099ec6ea152c8b3
-  md5: abcf4187a0ef3b589f608a6d80b6a67b
+  timestamp: 1781393517541
+- conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_5.conda
+  sha256: 7d210996c882eebeec3393e79fba4f05d14ba1e850eb39266893007801df24ea
+  md5: ebad593e6d3ede19c8df23ddb6189a42
   depends:
+  - libstdcxx >=15
+  - libgcc >=15
   - libgfortran5 >=15.2.0
   - libgfortran
-  - libgcc >=15
-  - libstdcxx >=15
   - __glibc >=2.17,<3.0.a0
-  run_exports: {}
-  size: 1070572
-  timestamp: 1781105218480
-- conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_5.conda
-  sha256: f619b25de5099c5058bda6a64908200d192ec1752cf70a4d21d57b82e740b8c8
-  md5: 6beaa6337ebe614f57236e865c15b8ed
+  license: GPL-2.0-or-later
+  run_exports:
+    weak:
+    - pythia6 >=6.4.28,<6.5.0a0
+  size: 1072190
+  timestamp: 1781393517553
+- conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_6.conda
+  sha256: d7069262c71a0c25ecc1aba535279bb525ba1f91c41151da32eceb47744e91a8
+  md5: 048e9e5e58011e3a05b7f4411f659b81
   depends:
-  - root_base 6.40.*
-  - root_cxx_standard
-  - pythia6
-  - __glibc >=2.17,<3.0.a0
   - libstdcxx >=15
   - libgcc >=15
+  - __glibc >=2.17,<3.0.a0
   - root_base >=6.40.0,<6.40.1.0a0
   - root_cxx_standard ==20
+  - pythia6 >=6.4.28,<6.5.0a0
   license: GPL-3.0-or-later
   run_exports:
     weak:
-    - root_base 6.40.*
-    - root_cxx_standard
-  size: 77685
-  timestamp: 1781207956160
+    - rootegpythia6 >=0.1,<0.2.0a0
+  size: 77771
+  timestamp: 1781393517555
 - pypi: https://files.pythonhosted.org/packages/61/16/cfa2d61a4aa1e1f7bca48bb37acd01c6a09db4864b16a54f9587092765ff/pyrefly-1.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   name: pyrefly
   version: 1.0.0
