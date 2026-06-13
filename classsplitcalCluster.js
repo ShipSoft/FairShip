@@ -4,7 +4,7 @@ var classsplitcalCluster =
     [ "~splitcalCluster", "classsplitcalCluster.html#a57b84c72f67f3c3d17cbba2154f4557a", null ],
     [ "splitcalCluster", "classsplitcalCluster.html#a799502f6e7b07473199f1432a1be77f9", null ],
     [ "AddHit", "classsplitcalCluster.html#a66e71fbd6bed3bb43d6494965b3ea5d4", null ],
-    [ "ClassDef", "classsplitcalCluster.html#aaf24ae2ca1d5f0270fa4d88e3431333f", null ],
+    [ "ClassDefOverride", "classsplitcalCluster.html#a70ba8584762d5d8d3a8d042f9df7f0f4", null ],
     [ "ComputeEtaPhiE", "classsplitcalCluster.html#a34d6ee9805ed84525f389bf181f9572b", null ],
     [ "GetEndPoint", "classsplitcalCluster.html#ad437593c27a69df05d60d5d986a09a79", null ],
     [ "GetEnergy", "classsplitcalCluster.html#a00267e3064e4462b0d566a98ddf80c21", null ],
