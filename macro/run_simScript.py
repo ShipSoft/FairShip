@@ -283,6 +283,20 @@ parser.add_argument(
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
+parser.add_argument(
+    "-r",
+    "--run-number",
+    dest="run_number",
+    help="Numeric simulation ID to reuse instead of generating a new UUID",
+    default=None,
+    type=int,
+)
+parser.add_argument(
+    "--reproducible",
+    dest="reproducible",
+    help="Reduce nondeterministic log output for reproducibility/testing",
+    action="store_true",
+)
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
@@ -453,6 +467,8 @@ if seed > 900000000:
     seed = seed % 900000000
 ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
+if options.reproducible and options.debug == 0:
+    ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
@@ -494,8 +510,12 @@ if not options.command:
         options.pythia8 = True  # Ensure Pythia8 is enabled by default
 
 # Output file name
-# Use custom tag if provided, otherwise use random UUID version 4
-run_identifier = options.output_tag if options.output_tag else str(uuid.uuid4())
+# Use custom tag if provided, otherwise reuse the requested run number or generate a UUID4
+run_identifier = (
+    options.output_tag
+    if options.output_tag
+    else str(options.run_number if options.run_number is not None else uuid.uuid4())
+)
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
@@ -513,6 +533,8 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
+if options.run_number is not None and hasattr(run, "SetRunId"):
+    run.SetRunId(options.run_number)
 sink = ROOT.FairRootFileSink(outFile)
 run.SetSink(sink)
 ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
@@ -918,12 +940,13 @@ run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
+if os.path.exists(parFile):
+    os.remove(parFile)
 parOut.open(parFile)
 rtdb.setOutput(parOut)
 ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
 rtdb.saveOutput()
-rtdb.printParamContexts()
-rtdb.print()
+
 # ------------------------------------------------------------------------
 geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
 run.CreateGeometryFile(geofile_name)
@@ -961,7 +984,8 @@ if "P8gen" in globals():
 print("Output file is ", outFile)
 print("Parameter file is ", parFile)
 print("Geometry file is ", geofile_name)
-print("Real time ", rtime, " s, CPU time ", ctime, "s")
+if not options.reproducible:
+    print("Real time ", rtime, " s, CPU time ", ctime, "s")
 
 
 # remove empty events
@@ -1086,6 +1110,15 @@ if options.command == "Genie":
 
     f_input.Close()
     f_output.Close()
+
+if options.run_number is not None:
+    with ROOT.TFile.Open(outFile, "UPDATE") as f_output:
+        file_header = f_output.Get("FileHeader")
+        if file_header:
+            file_header.SetRunId(options.run_number)
+            file_header.Write("FileHeader", ROOT.TObject.kSingleKey)
+        else:
+            print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
 
 print("=" * 72)
 print("Simulation finished successfully")

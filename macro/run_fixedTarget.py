@@ -52,6 +52,11 @@ ap.add_argument("-d", "--debug", action="store_true")
 ap.add_argument("-f", "--force", action="store_true", help="force overwriting output directory")
 ap.add_argument("-r", "--run-number", type=int, dest="runnr", default=1)
 ap.add_argument(
+    "--reproducible",
+    action="store_true",
+    help="Reduce nondeterministic log output for reproducibility/testing",
+)
+ap.add_argument(
     "-e", "--ecut", type=float, help="energy cut", default=0.5
 )  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
 ap.add_argument("-n", "--num-events", type=int, help="number of events to generate", dest="nev", default=100)
@@ -236,6 +241,8 @@ if seed > 900000000:
     seed = seed % 900000000
 ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
+if args.reproducible and not args.debug:
+    ROOT.gErrorIgnoreLevel = ROOT.kWarning
 ship_geo_kwargs = {
     "Yheight": dy,
     "DecayVolumeMedium": args.DecayVolumeMedium,
@@ -257,6 +264,8 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
+if hasattr(run, "SetRunId"):
+    run.SetRunId(args.runnr)
 sink = ROOT.FairRootFileSink(outFile)
 run.SetSink(sink)
 ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
@@ -438,15 +447,19 @@ ctime = timer.CpuTime()
 print(" ")
 print("Macro finished successfully.")
 print(f"Output file is {outFile}")
-print(f"Real time {rtime} s, CPU time {ctime} s")
+if not args.reproducible:
+    print(f"Real time {rtime} s, CPU time {ctime} s")
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile + "tmp"
 if ROOT.gROOT.GetListOfFiles().GetEntries() > 0:
     fin = ROOT.gROOT.GetListOfFiles()[0]
 else:
     fin = ROOT.TFile.Open(outFile)
-fHeader = fin["FileHeader"]
-fHeader.SetRunId(args.runnr)
+fHeader = fin.Get("FileHeader")
+if fHeader:
+    fHeader.SetRunId(args.runnr)
+else:
+    print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
 if args.charm or args.beauty:
     # normalization for charm
     poteq = P8gen.GetPotForCharm()
@@ -467,8 +480,11 @@ if args.boostFactor > 1:
     conditions += " X" + str(args.boostFactor)
 
 info += conditions
-fHeader.SetTitle(info)
-print(f"Data generated {fHeader.GetTitle()}")
+if fHeader:
+    fHeader.SetTitle(info)
+    print(f"Data generated {fHeader.GetTitle()}")
+else:
+    print(f"Data generated {info}")
 
 nt = fin.Get("4DP")
 if nt:
@@ -502,9 +518,10 @@ for k in fin.GetListOfKeys():
         xcopy = x.Clone()
         rc = xcopy.Write()
 sTree.AutoSave()
-ff = fin["FileHeader"].Clone(fout.GetName())
-fout.cd()
-ff.Write("FileHeader", ROOT.TObject.kSingleKey)
+if fHeader:
+    ff = fHeader.Clone(fout.GetName())
+    fout.cd()
+    ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
 
