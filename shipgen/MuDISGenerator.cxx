@@ -28,7 +28,7 @@ const Double_t c_light = 29.9792458;             // speed of light in cm/ns
 const Double_t muon_mass = 0.10565999895334244;  // muon mass in GeV
 
 // -----   Default constructor   -------------------------------------------
-MuDISGenerator::MuDISGenerator() {}
+MuDISGenerator::MuDISGenerator() = default;
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t MuDISGenerator::Init(const char* fileName) { return Init(fileName, 0); }

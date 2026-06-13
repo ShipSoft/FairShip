@@ -18,7 +18,7 @@ namespace SHiP {
 class Generator : public FairGenerator {
  public:
   using FairGenerator::Init;
-  Generator() {};
+  Generator() = default;
   ~Generator() override;
 
   virtual Bool_t Init(const char*, int) = 0;

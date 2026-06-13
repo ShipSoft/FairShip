@@ -48,7 +48,7 @@ class Co3Rng {
 class CosmicsGenerator : public SHiP::Generator {
  public:
   /** constructor,destructor **/
-  CosmicsGenerator() {};
+  CosmicsGenerator() = default;
   ~CosmicsGenerator() override {
     delete fRandomEngine;
     std::cout << nInside << " events have been generated." << std::endl;

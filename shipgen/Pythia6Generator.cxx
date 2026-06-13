@@ -19,7 +19,7 @@ using std::endl;
 using std::max;
 
 // -----   Default constructor   ------------------------------------------
-Pythia6Generator::Pythia6Generator() {}
+Pythia6Generator::Pythia6Generator() = default;
 // ------------------------------------------------------------------------
 
 // -----   Standard constructor   -----------------------------------------

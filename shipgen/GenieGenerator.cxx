@@ -28,7 +28,7 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {}
+GenieGenerator::GenieGenerator() = default;
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
