@@ -19,10 +19,6 @@
 using std::cout;
 using std::endl;
 
-namespace {
-constexpr Double_t speedOfLight = 29.9792458;  // TMath::C() * 100 / 1e9, cm/ns
-}  // namespace
-
 // -----   Default constructor   --------------
 TimeDetHit::TimeDetHit() : SHiP::DetectorHit() {}
 
