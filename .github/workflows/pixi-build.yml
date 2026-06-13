@@ -200,8 +200,14 @@ jobs:
       - name: Find C++ files
         id: files
         run: |
-          CPP_FILES=$(find . -not -path './cmake/*' -not -path './build/*' \
-            \( -name '*.cxx' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.hxx' -o -name '*.hpp' \) | tr '\n' ' ')
+          CPP_FILES=$(find . \
+            -path ./.git -prune -o \
+            -path ./.pixi -prune -o \
+            -path ./.direnv -prune -o \
+            -path ./.github -prune -o \
+            -path ./build -prune -o \
+            -path ./cmake -prune -o \
+            -type f \( -name '*.cxx' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.hxx' -o -name '*.hpp' \) -print | tr '\n' ' ')
           echo "cpp=$CPP_FILES" >> "$GITHUB_OUTPUT"
       - name: clang-tidy
         if: steps.files.outputs.cpp != ''
@@ -211,7 +217,7 @@ jobs:
         run: pixi run --locked ci-clang-tidy
       - name: pyrefly
         continue-on-error: true
-        run: pixi run --locked -- pyrefly check --output-format=github
+        run: pixi run --locked -- pyrefly check --output-format=github python macro
   deploy-plots:
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
