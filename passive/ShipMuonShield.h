@@ -58,8 +58,8 @@ class ShipMuonShield : public FairModule {
                   std::vector<Double_t>& Bgoal, std::vector<Double_t>& gapIn,
                   std::vector<Double_t>& gapOut, std::vector<Double_t>& Z);
 
-  void CreateMagnet(const TString& magnetName, TGeoMedium* medium, TGeoVolume* tShield,
-                    TGeoUniformMagField* fields[4],
+  void CreateMagnet(const TString& magnetName, TGeoMedium* medium,
+                    TGeoVolume* tShield, TGeoUniformMagField* fields[4],
                     FieldDirection fieldDirection, Double_t dX, Double_t dY,
                     Double_t dX2, Double_t dY2, Double_t ratio_yoke_1,
                     Double_t ratio_yoke_2, Double_t dY_yoke_1,

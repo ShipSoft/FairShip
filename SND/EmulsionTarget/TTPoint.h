@@ -29,8 +29,8 @@ class TTPoint : public FairMCPoint {
               Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot,
      Bool_t tt, Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
 
-  TTPoint(Int_t trackID, Int_t detID, const TVector3& pos, const TVector3& mom, Double_t tof,
-          Double_t length, Double_t eLoss, Int_t pdgCode);
+  TTPoint(Int_t trackID, Int_t detID, const TVector3& pos, const TVector3& mom,
+          Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
   /** Destructor **/
   ~TTPoint() override;
