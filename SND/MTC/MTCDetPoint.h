@@ -24,8 +24,9 @@ class MTCDetPoint : public FairMCPoint {
    *@param eLoss    Energy deposit [GeV]
    **/
 
-  MTCDetPoint(Int_t trackID, Int_t detID, const TVector3& pos, const TVector3& mom,
-              Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode);
+  MTCDetPoint(Int_t trackID, Int_t detID, const TVector3& pos,
+              const TVector3& mom, Double_t tof, Double_t length,
+              Double_t eLoss, Int_t pdgcode);
 
   /** Destructor **/
   ~MTCDetPoint() override;

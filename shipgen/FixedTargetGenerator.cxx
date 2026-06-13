@@ -63,8 +63,9 @@ FixedTargetGenerator::FixedTargetGenerator() {
   wspill = 1.;  // event weight == 1 for primary events
   heartbeat = 1000;
 }
-Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName, Int_t nev,
-                                                  Double_t npot, Int_t nStart) {
+Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
+                                                  Int_t nev, Double_t npot,
+                                                  Int_t nStart) {
   Option = "charm";
   nEntry = nStart;
   // open input file with charm or beauty

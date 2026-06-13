@@ -168,9 +168,9 @@ double veto::wy(double z) {  // calculate y thickness at z
   return (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
-TGeoVolume* veto::GeoSideObj(const TString& xname, double dz, double a1, double b1,
-                             double a2, double b2, double dA, double dB,
-                             Int_t color, TGeoMedium* material,
+TGeoVolume* veto::GeoSideObj(const TString& xname, double dz, double a1,
+                             double b1, double a2, double b2, double dA,
+                             double dB, Int_t color, TGeoMedium* material,
                              Bool_t sens = kFALSE) {
   // a1- width in X, at the beginning
   // b1- width in Y, at the beginning
@@ -197,10 +197,11 @@ TGeoVolume* veto::GeoSideObj(const TString& xname, double dz, double a1, double 
   return T;
 }
 
-TGeoVolume* veto::GeoCornerLiSc1(const TString& xname, double dz, bool isClockwise,
-                                 double a1, double a2, double b1, double b2,
-                                 double dA, double dB, Int_t color,
-                                 TGeoMedium* material, Bool_t sens = kFALSE) {
+TGeoVolume* veto::GeoCornerLiSc1(const TString& xname, double dz,
+                                 bool isClockwise, double a1, double a2,
+                                 double b1, double b2, double dA, double dB,
+                                 Int_t color, TGeoMedium* material,
+                                 Bool_t sens = kFALSE) {
   TGeoArb8* T1 = new TGeoArb8(dz);
 
   if (isClockwise) {
@@ -234,10 +235,11 @@ TGeoVolume* veto::GeoCornerLiSc1(const TString& xname, double dz, bool isClockwi
   return T;
 }
 
-TGeoVolume* veto::GeoCornerLiSc2(const TString& xname, double dz, bool isClockwise,
-                                 double a1, double a2, double b1, double b2,
-                                 double dA, double dB, Int_t color,
-                                 TGeoMedium* material, Bool_t sens = kFALSE) {
+TGeoVolume* veto::GeoCornerLiSc2(const TString& xname, double dz,
+                                 bool isClockwise, double a1, double a2,
+                                 double b1, double b2, double dA, double dB,
+                                 Int_t color, TGeoMedium* material,
+                                 Bool_t sens = kFALSE) {
   TGeoArb8* T1 = new TGeoArb8(dz);
 
   if (isClockwise) {
@@ -334,8 +336,8 @@ int veto::makeId(double z, double x, double y) {
          static_cast<int>(phi);
 }
 
-int veto::liscId(const TString& ShapeTypeName, int blockNr, int Zlayer, int number,
-                 int position) {
+int veto::liscId(const TString& ShapeTypeName, int blockNr, int Zlayer,
+                 int number, int position) {
   int id = 999999;
   int ShapeType = -1;
 
