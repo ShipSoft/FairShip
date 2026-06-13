@@ -12,7 +12,7 @@ var searchData=
   ['generatedynamics_9',['GenerateDynamics',['../classCosmicsGenerator.html#aa917ee4c24f40eddc2ce3dacb88ee318',1,'CosmicsGenerator']]],
   ['generatefieldmap_10',['generateFieldMap',['../classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe',1,'ShipFieldMaker']]],
   ['generatekinematics_11',['GenerateKinematics',['../classParticleGunGenerator.html#aa84bf1f3a7a8dde0098f0b4cc94088dd',1,'ParticleGunGenerator']]],
-  ['generator_12',['generator',['../classSHiP_1_1Generator.html#a6518a343dcee76030eb90501b740c8ed',1,'SHiP::Generator::Generator()'],['../classSHiP_1_1Generator.html',1,'SHiP::Generator'],['../namespacerun__simScript.html#a02102a7960adc8fef03efc124ebd545d',1,'run_simScript.generator']]],
+  ['generator_12',['generator',['../classSHiP_1_1Generator.html#afaac592c8183f083023950cc6ecb3120',1,'SHiP::Generator::Generator()'],['../classSHiP_1_1Generator.html',1,'SHiP::Generator'],['../namespacerun__simScript.html#a02102a7960adc8fef03efc124ebd545d',1,'run_simScript.generator']]],
   ['generator_2ecxx_13',['Generator.cxx',['../Generator_8cxx.html',1,'']]],
   ['generator_2eh_14',['Generator.h',['../Generator_8h.html',1,'']]],
   ['generators_15',['generators',['../namespacerunPythia8.html#a446af4b3cadb9f3d0a9d03e41763e89d',1,'runPythia8.generators'],['../md_CHANGELOG.html#autotoc_md40',1,'Generators'],['../md_CHANGELOG.html#autotoc_md47',1,'Simulation and Generators']]],

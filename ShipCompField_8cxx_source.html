@@ -129,44 +129,41 @@ $(document).ready(function(){initNavTree('ShipCompField_8cxx_source.html',''); i
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    : TVirtualMagField(label.c_str()), theFields_(theFields) {}</div>
 </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classShipCompField.html#aa543ebd5b55aa7a9dc6930536ffcfdd6">   32</a></span><a class="code hl_function" href="classShipCompField.html#aa543ebd5b55aa7a9dc6930536ffcfdd6">ShipCompField::~ShipCompField</a>() {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// The destructor does nothing since this class does not own</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// the various TVirtualMagField pointers</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
-</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">   37</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">ShipCompField::Field</a>(<span class="keyword">const</span> Double_t* position, Double_t* B) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// Loop over the fields and do a simple linear superposition</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// First initialise the field components to zero</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  B[0] = 0.0, B[1] = 0.0, B[2] = 0.0;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>* theField : <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>) {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (theField) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="comment">// std::cout&lt;&lt;&quot;Finding field for &quot;&lt;&lt;theField-&gt;GetName()&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="comment">// Find the magnetic field components for this part</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      Double_t BVect[3] = {0.0, 0.0, 0.0};</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      theField-&gt;Field(position, BVect);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="comment">// Simple linear superposition of the B field components</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      B[0] += BVect[0];</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      B[1] += BVect[1];</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      B[2] += BVect[2];</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="comment">// std::cout&lt;&lt;&quot;B = &quot;&lt;&lt;BVect[0]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[1]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[2]&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="comment">// std::cout&lt;&lt;&quot;BSum = &quot;&lt;&lt;B[0]&lt;&lt;&quot;, &quot;&lt;&lt;B[1]&lt;&lt;&quot;, &quot;&lt;&lt;B[2]&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// Default destructor: the TVirtualMagField pointers are not owned by this</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// class.</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><a class="code hl_function" href="classShipCompField.html#aa543ebd5b55aa7a9dc6930536ffcfdd6">ShipCompField::~ShipCompField</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">ShipCompField::Field</a>(<span class="keyword">const</span> Double_t* position, Double_t* B) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// Loop over the fields and do a simple linear superposition</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// First initialise the field components to zero</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  B[0] = 0.0, B[1] = 0.0, B[2] = 0.0;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span>* theField : <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> (theField) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="comment">// std::cout&lt;&lt;&quot;Finding field for &quot;&lt;&lt;theField-&gt;GetName()&lt;&lt;std::endl;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="comment">// Find the magnetic field components for this part</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      Double_t BVect[3] = {0.0, 0.0, 0.0};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      theField-&gt;Field(position, BVect);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="comment">// Simple linear superposition of the B field components</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      B[0] += BVect[0];</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      B[1] += BVect[1];</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      B[2] += BVect[2];</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="comment">// std::cout&lt;&lt;&quot;B = &quot;&lt;&lt;BVect[0]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[1]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[2]&lt;&lt;std::endl;</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="comment">// std::cout&lt;&lt;&quot;BSum = &quot;&lt;&lt;B[0]&lt;&lt;&quot;, &quot;&lt;&lt;B[1]&lt;&lt;&quot;, &quot;&lt;&lt;B[2]&lt;&lt;std::endl;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
 </div>
 <div class="ttc" id="aShipCompField_8h_html"><div class="ttname"><a href="ShipCompField_8h.html">ShipCompField.h</a></div></div>
 <div class="ttc" id="aclassShipCompField_html_a07e70f5114530588489df779a47bc18b"><div class="ttname"><a href="classShipCompField.html#a07e70f5114530588489df779a47bc18b">ShipCompField::ShipCompField</a></div><div class="ttdeci">ShipCompField(const std::string &amp;label, TVirtualMagField *firstField)</div><div class="ttdoc">Main constructor.</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00014">ShipCompField.cxx:14</a></div></div>
 <div class="ttc" id="aclassShipCompField_html_a68334005610ba6bfd5ae8f8a1b8956f5"><div class="ttname"><a href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">ShipCompField::theFields_</a></div><div class="ttdeci">std::vector&lt; TVirtualMagField * &gt; theFields_</div><div class="ttdoc">The vector of the various magnetic field pointers comprising the composite.</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8h_source.html#l00080">ShipCompField.h:80</a></div></div>
-<div class="ttc" id="aclassShipCompField_html_aa543ebd5b55aa7a9dc6930536ffcfdd6"><div class="ttname"><a href="classShipCompField.html#aa543ebd5b55aa7a9dc6930536ffcfdd6">ShipCompField::~ShipCompField</a></div><div class="ttdeci">~ShipCompField() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00032">ShipCompField.cxx:32</a></div></div>
-<div class="ttc" id="aclassShipCompField_html_aeba8bafd6d805b8666cb072c463fba6b"><div class="ttname"><a href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">ShipCompField::Field</a></div><div class="ttdeci">void Field(const Double_t *position, Double_t *B) override</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00037">ShipCompField.cxx:37</a></div></div>
+<div class="ttc" id="aclassShipCompField_html_aa543ebd5b55aa7a9dc6930536ffcfdd6"><div class="ttname"><a href="classShipCompField.html#aa543ebd5b55aa7a9dc6930536ffcfdd6">ShipCompField::~ShipCompField</a></div><div class="ttdeci">~ShipCompField() override</div><div class="ttdoc">Destructor.</div></div>
+<div class="ttc" id="aclassShipCompField_html_aeba8bafd6d805b8666cb072c463fba6b"><div class="ttname"><a href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">ShipCompField::Field</a></div><div class="ttdeci">void Field(const Double_t *position, Double_t *B) override</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00036">ShipCompField.cxx:36</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

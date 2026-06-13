@@ -1,6 +1,6 @@
 var classCosmicsGenerator =
 [
-    [ "CosmicsGenerator", "classCosmicsGenerator.html#aeb3d6622a8afc1c3c5048fda0d99dbd1", null ],
+    [ "CosmicsGenerator", "classCosmicsGenerator.html#ae21e5a53cf739e1caccb9f18384fadfb", null ],
     [ "~CosmicsGenerator", "classCosmicsGenerator.html#a96ac11d200ec0fc2e06051d3581c22c3", null ],
     [ "DetectorBox", "classCosmicsGenerator.html#af4ba75dd2c9db32945463ab232a7af9a", null ],
     [ "GenerateDynamics", "classCosmicsGenerator.html#aa917ee4c24f40eddc2ce3dacb88ee318", null ],

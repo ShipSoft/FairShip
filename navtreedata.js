@@ -186,7 +186,7 @@ var NAVTREEINDEX =
 "classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46afc7bafdd8919de21bdc9c27648d6659b",
 "classMTCDetHit.html#a64c40a4143c5fe2b59571b8325d2a12c",
 "classParticleGunGenerator.html#ae49d546689a9c16db82c0a1fc6a576cb",
-"classSHiP_1_1Generator.html#aede7e0e4f6382bcef92e077c3c604c55",
+"classSHiP_1_1Generator.html#af1d3876ffff4fad3004a73025d609569",
 "classShipConstField.html#a302627229a135620f4dd078cf06b339c",
 "classShipMuonShield.html#a7bbec66dfe6198b6507880fb2bd8696a",
 "classTarget.html#a0d490ed3b14199318773c974216a3fbc",
