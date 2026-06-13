@@ -24,9 +24,10 @@ pyyaml = "*"
 tabulate = "*"
 
 # SHiP custom packages (prefix.dev/ship channel)
-vmc = ">=2.2"
 geant4-vmc = ">=6.7"
 faircmakemodules = ">=1.0"
+# fairlogger is on conda-forge but is not in fairroot's runtime deps —
+# keep it explicit so CMake's find_package(FairLogger) resolves.
 fairlogger = ">=2.3"
 fairroot = ">=19.0"
 genfit = ">=2.3"
