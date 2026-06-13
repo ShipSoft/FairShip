@@ -6,7 +6,7 @@ COPY pixi.toml pixi.lock /FairShip/
 RUN pixi install --locked
 
 COPY . /FairShip
-RUN pixi run --locked configure && pixi run --locked build
+RUN pixi run --locked build
 
 RUN pixi shell-hook -s bash > /entrypoint.sh \
     && echo 'exec "$@"' >> /entrypoint.sh \
