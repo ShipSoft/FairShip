@@ -35,7 +35,7 @@ TargetPoint::TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 
 //,  EmTop, EmBot, EmCESTop,EmCESBot,TT,NPlate,NColumn,NRow,NWall
 // -----   Destructor   ----------------------------------------------------
-TargetPoint::~TargetPoint() {}
+TargetPoint::~TargetPoint() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

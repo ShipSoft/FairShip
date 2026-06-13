@@ -361,7 +361,7 @@ Bool_t FixedTargetGenerator::Init() {
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-FixedTargetGenerator::~FixedTargetGenerator() {}
+FixedTargetGenerator::~FixedTargetGenerator() = default;
 // -------------------------------------------------------------------------
 
 // -----   Passing the event   ---------------------------------------------

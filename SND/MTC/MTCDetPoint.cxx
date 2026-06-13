@@ -21,7 +21,7 @@ MTCDetPoint::MTCDetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-MTCDetPoint::~MTCDetPoint() {}
+MTCDetPoint::~MTCDetPoint() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

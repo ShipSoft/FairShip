@@ -14,7 +14,7 @@
 #include "TMath.h"
 
 // -----   Default constructor   -------------------------------------------
-EvtCalcGenerator::EvtCalcGenerator() {}
+EvtCalcGenerator::EvtCalcGenerator() = default;
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t EvtCalcGenerator::Init(const char* fileName) {
@@ -91,7 +91,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int startEvent) {
   return kTRUE;
 }
 // -----   Destructor   ----------------------------------------------------
-EvtCalcGenerator::~EvtCalcGenerator() {}
+EvtCalcGenerator::~EvtCalcGenerator() = default;
 
 // -- Generalized branch access --------------------------------------------
 Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree,

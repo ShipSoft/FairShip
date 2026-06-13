@@ -22,7 +22,7 @@ SiliconTargetPoint::SiliconTargetPoint(Int_t trackID, Int_t detID, TVector3 pos,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-SiliconTargetPoint::~SiliconTargetPoint() {}
+SiliconTargetPoint::~SiliconTargetPoint() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

@@ -24,7 +24,7 @@ strawtubesPoint::strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-strawtubesPoint::~strawtubesPoint() {}
+strawtubesPoint::~strawtubesPoint() = default;
 // -------------------------------------------------------------------------
 
 void strawtubesPoint::extraPrintInfo() const {
