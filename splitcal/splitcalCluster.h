@@ -22,6 +22,7 @@ class splitcalCluster : public TObject {
   ~splitcalCluster() override;
 
   /** Methods **/
+  using TObject::Print;
   virtual void Print() const;
 
   void SetEtaPhiE(double& eta, double& phi, double& e) {

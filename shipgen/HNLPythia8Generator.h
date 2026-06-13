@@ -50,6 +50,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
+  using TObject::Print;
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
 

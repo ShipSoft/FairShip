@@ -34,6 +34,7 @@ class ShipParticle : public TObject {
   ShipParticle& operator=(const ShipParticle& particle) = default;
 
   /**  Output to screen  **/
+  using TObject::Print;
   void Print(Int_t iTrack = 0) const;
 
   /**  Accessors - particle properties  **/
