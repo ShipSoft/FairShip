@@ -243,8 +243,8 @@ void ShipMuonShield::CreateMagnet(
   std::ranges::transform(cornersCLBA, cornersCRTA.begin(), std::negate{});
   std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});
   // Need to change order as corners need to be defined clockwise
-  for (int i = 0; i < 8; ++i) {
-    int j = (11 - i) % 8;
+  for (std::size_t i = 0; i < 8; ++i) {
+    const std::size_t j = (11 - i) % 8;
     cornersCLTA[2 * j] = cornersCLBA[2 * i];
     cornersCLTA[2 * j + 1] = -cornersCLBA[2 * i + 1];
     cornersTR[2 * j] = -cornersTL[2 * i];
