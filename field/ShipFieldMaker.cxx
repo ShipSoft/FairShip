@@ -1287,7 +1287,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
   }
 }
 
-void ShipFieldMaker::generateFieldMap(TString fileName, const float step,
+void ShipFieldMaker::generateFieldMap(const TString& fileName, const float step,
                                       const float xRange, const float yRange,
                                       const float zRange, const float zShift) {
   std::ofstream myfile;

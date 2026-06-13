@@ -133,7 +133,7 @@ class veto : public SHiP::Detector<vetoPoint> {
    * dimensions of wX_start * wY_start and end cross-section dimensions of
    * wX_end *wY_end
    */
-  TGeoVolume* GeoTrapezoid(TString xname, Double_t wz, Double_t wX_start,
+  TGeoVolume* GeoTrapezoid(const TString& xname, Double_t wz, Double_t wX_start,
                            Double_t wX_end, Double_t wY_start, Double_t wY_end,
                            Int_t color, TGeoMedium* material, Bool_t sens);
 
@@ -161,7 +161,7 @@ class veto : public SHiP::Detector<vetoPoint> {
                 double liscThick1, double liscThick2, double ribThick);
   /**Definition of a Corner Rib Support Structure.
    */
-  TGeoVolumeAssembly* GeoCornerRib(TString xname, double ribThick, double lt1,
+  TGeoVolumeAssembly* GeoCornerRib(const TString& xname, double ribThick, double lt1,
                                    double lt2, double dz, double slopeX,
                                    double slopeY, Int_t color,
                                    TGeoMedium* material, Bool_t sens);
@@ -171,7 +171,7 @@ class veto : public SHiP::Detector<vetoPoint> {
   int makeId(double z, double x, double y);
   /**Detector ID implementation for the SBT
    */
-  int liscId(TString ShapeTypeName, int blockNr, int Zlayer, int number,
+  int liscId(const TString& ShapeTypeName, int blockNr, int Zlayer, int number,
              int position);
   //! slope along the width (x)
   double wx(double z);
@@ -179,18 +179,18 @@ class veto : public SHiP::Detector<vetoPoint> {
   double wy(double z);
   /**Definition of a Rib Support Structure.
    */
-  TGeoVolume* GeoSideObj(TString xname, double dz, double a1, double b1,
+  TGeoVolume* GeoSideObj(const TString& xname, double dz, double a1, double b1,
                          double a2, double b2, double dA, double dB,
                          Int_t color, TGeoMedium* material, Bool_t sens);
   /**Definition of a LiSc cell (Type 1)
    */
-  TGeoVolume* GeoCornerLiSc1(TString xname, double dz, bool isClockwise,
+  TGeoVolume* GeoCornerLiSc1(const TString& xname, double dz, bool isClockwise,
                              double a1, double a2, double b1, double b2,
                              double dA, double dB, Int_t color,
                              TGeoMedium* material, Bool_t sens);
   /**Definition of a LiSc cell (Type 2)
    */
-  TGeoVolume* GeoCornerLiSc2(TString xname, double dz, bool isClockwise,
+  TGeoVolume* GeoCornerLiSc2(const TString& xname, double dz, bool isClockwise,
                              double a1, double a2, double b1, double b2,
                              double dA, double dB, Int_t color,
                              TGeoMedium* material, Bool_t sens);

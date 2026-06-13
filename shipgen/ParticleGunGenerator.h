@@ -116,7 +116,7 @@ class ParticleGunGenerator : public SHiP::Generator {
   /** Clone this object (used in MT mode only) */
   FairGenerator* CloneGenerator() const override;
 
-  void SetVertexModel(std::string model, std::vector<Double32_t> pars);
+  void SetVertexModel(const std::string& model, std::vector<Double32_t> pars);
   void SetMomentumModel(const int modelNo, std::vector<Double32_t> pars);
 
   void PrintMomentumModels();

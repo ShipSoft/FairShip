@@ -131,7 +131,7 @@ GenieGenerator::~GenieGenerator() {
   }
 }
 // -------------------------------------------------------------------------
-void GenieGenerator::AddBox(TVector3 dVec, TVector3 box) {
+void GenieGenerator::AddBox(const TVector3& dVec, const TVector3& box) {
   dVecs.push_back(dVec);
   m_boxes.push_back(box);
   cout << "Debug GenieGenerator: " << dVec.X() << " " << box.Z() << endl;

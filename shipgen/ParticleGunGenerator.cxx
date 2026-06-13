@@ -345,7 +345,7 @@ void ParticleGunGenerator::SetMomentumModel(int modelNo,
             << spec.description << ")";
 }
 
-void ParticleGunGenerator::SetVertexModel(std::string model,
+void ParticleGunGenerator::SetVertexModel(const std::string& model,
                                           std::vector<Double32_t> pars) {
   // Normalise to lowercase so "Gaussian", "GAUSSIAN" etc. all work
   std::string lower = model;
