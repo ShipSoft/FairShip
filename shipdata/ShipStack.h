@@ -145,6 +145,7 @@ class ShipStack : public FairGenericStack {
   /** Output to screen
    **@param iVerbose: 0=events summary, 1=track info
    **/
+  using TObject::Print;
   virtual void Print(Int_t iVerbose = 0) const;
 
   /** Modifiers  **/
