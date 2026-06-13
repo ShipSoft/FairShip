@@ -39,9 +39,9 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
     return kFALSE;
   }
 
-  iMuon = 0;
-  dPart = 0;
-  dPartSoft = 0;
+  iMuon = nullptr;
+  dPart = nullptr;
+  dPartSoft = nullptr;
   fInputFile = TFile::Open(fileName, "READ");
   if (!fInputFile || fInputFile->IsZombie()) {
     LOG(error) << "MuDISGenerator: error opening input file " << fileName;

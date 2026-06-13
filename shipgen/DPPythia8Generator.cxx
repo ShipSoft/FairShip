@@ -32,7 +32,7 @@ DPPythia8Generator::DPPythia8Generator() {
   fLmax = 12000. * cm;  // mm maximum decay position z
   fFDs = 7.7 / 10.4;  // correction for Pythia6 to match measured Ds production
   fpbrem = kFALSE;
-  fpbremPDF = 0;
+  fpbremPDF = nullptr;
   fsmearBeam = 8 * mm;  // default value for smearing beam (8 mm)
   fPaintBeam = 5 * cm;  // default value for painting beam (5 cm)
   fdy = kFALSE;

@@ -725,7 +725,7 @@ void ShipFieldMaker::setAllRegionFields() {
     Double_t scale = theInfo.scale_;
 
     // Find the volume
-    TGeoVolume* theVol(0);
+    TGeoVolume* theVol(nullptr);
     if (gGeoManager) {
       theVol = gGeoManager->FindVolumeFast(volName.Data());
     }
@@ -844,7 +844,7 @@ void ShipFieldMaker::setAllLocalFields() {
     TString fieldName = theInfo.fieldName_;
     Double_t scale = theInfo.scale_;
 
-    TGeoVolume* theVol(0);
+    TGeoVolume* theVol(nullptr);
     if (gGeoManager) {
       theVol = gGeoManager->FindVolumeFast(volName.Data());
     }
@@ -993,7 +993,7 @@ void ShipFieldMaker::getTransformation(const TString& volName,
   theInfo.theta_ = 0.0;
   theInfo.psi_ = 0.0;
 
-  TGeoMatrix* theMatrix(0);
+  TGeoMatrix* theMatrix(nullptr);
 
   TGeoVolume* topVolume = gGeoManager->GetTopVolume();
   if (!topVolume) {
@@ -1008,7 +1008,7 @@ void ShipFieldMaker::getTransformation(const TString& volName,
   }
 
   // Find the geometry node that matches the required name
-  theNode_ = 0;
+  theNode_ = nullptr;
   gotNode_ = kFALSE;
   this->findNode(topVolume, volName);
 
@@ -1080,8 +1080,8 @@ void ShipFieldMaker::findNode(TGeoVolume* aVolume, const TString& volName) {
 }
 
 TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const {
-  TVirtualMagField* theField(0);
-  TGeoVolume* theVol(0);
+  TVirtualMagField* theField(nullptr);
+  TGeoVolume* theVol(nullptr);
   if (gGeoManager) {
     theVol = gGeoManager->FindVolumeFast(volName.Data());
   }
@@ -1114,7 +1114,7 @@ Bool_t ShipFieldMaker::gotField(const TString& name) const {
 }
 
 TVirtualMagField* ShipFieldMaker::getField(const TString& name) const {
-  TVirtualMagField* theField(0);
+  TVirtualMagField* theField(nullptr);
 
   // Iterate over the internal map and see if we have a match
   SFMap::const_iterator iter;
@@ -1179,7 +1179,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
     theHist[icomponent] =
         TH2D(Form("theHist[%i]", icomponent), titles[icomponent].data(), Nx,
              xMin, xMax, Ny, yMin, yMax);
-    theHist[icomponent].SetDirectory(0);
+    theHist[icomponent].SetDirectory(nullptr);
     if (type == 0) {
       // x-y
       theHist[icomponent].SetXTitle("x (cm)");
