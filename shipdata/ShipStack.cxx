@@ -268,7 +268,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
     track.SetMotherId((*fIndexIter).second);
   }
 
-  if (fDetList == 0) {
+  if (fDetList == nullptr) {
     // Now iterate through all active detectors
     fDetIter = detList->MakeIterator();
     fDetIter->Reset();
