@@ -482,7 +482,10 @@ void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
       GeoCornerRib(name, ribThick, liscThick1, liscThick2, dZ, slY, slX,
                    ribColor, supportMedIn);
 
-  for (double zi = z1; zi < z2; zi += cell_thickness_z) {
+  const int nZSteps = static_cast<int>(std::floor((z2 - z1) / cell_thickness_z)) + 1;
+  for (int iz = 0; iz < nZSteps; ++iz) {
+    const double zi = z1 + iz * cell_thickness_z;
+    if (zi >= z2) break;
     int Zlayer = static_cast<int>(zi) / cell_thickness_z + 1;
 
     /// define & place vertical ribs
