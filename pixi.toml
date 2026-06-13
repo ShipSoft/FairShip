@@ -11,6 +11,12 @@ geant4 = ">=11.3"
 pythia8 = ">=8.312"
 evtgen = ">=2.2"
 fmt = "*"
+# Available on both channels — pin to conda-forge so a future SHiP-channel
+# garbage collection cannot break the lock.
+faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
+# fairlogger is on conda-forge but is not in fairroot's runtime deps —
+# keep it explicit so CMake's find_package(FairLogger) resolves.
+fairlogger = ">=2.3"
 
 # Python (conda-forge)
 python = "3.12.*"
@@ -25,10 +31,6 @@ tabulate = "*"
 
 # SHiP custom packages (prefix.dev/ship channel)
 geant4-vmc = ">=6.7"
-faircmakemodules = ">=1.0"
-# fairlogger is on conda-forge but is not in fairroot's runtime deps —
-# keep it explicit so CMake's find_package(FairLogger) resolves.
-fairlogger = ">=2.3"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
