@@ -2347,7 +2347,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 
 <p class="definition">Definition at line <a class="el" href="ShipFieldMaker_8cxx_source.html#l01116">1116</a> of file <a class="el" href="ShipFieldMaker_8cxx_source.html">ShipFieldMaker.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1116</span>                                                                    {</div>
-<div class="line"><span class="lineno"> 1117</span>  TVirtualMagField* theField(0);</div>
+<div class="line"><span class="lineno"> 1117</span>  TVirtualMagField* theField(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1118</span> </div>
 <div class="line"><span class="lineno"> 1119</span>  <span class="comment">// Iterate over the internal map and see if we have a match</span></div>
 <div class="line"><span class="lineno"> 1120</span>  SFMap::const_iterator iter;</div>
@@ -2455,7 +2455,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  993</span>  theInfo.theta_ = 0.0;</div>
 <div class="line"><span class="lineno">  994</span>  theInfo.psi_ = 0.0;</div>
 <div class="line"><span class="lineno">  995</span> </div>
-<div class="line"><span class="lineno">  996</span>  TGeoMatrix* theMatrix(0);</div>
+<div class="line"><span class="lineno">  996</span>  TGeoMatrix* theMatrix(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  997</span> </div>
 <div class="line"><span class="lineno">  998</span>  TGeoVolume* topVolume = gGeoManager-&gt;GetTopVolume();</div>
 <div class="line"><span class="lineno">  999</span>  <span class="keywordflow">if</span> (!topVolume) {</div>
@@ -2470,7 +2470,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1008</span>  }</div>
 <div class="line"><span class="lineno"> 1009</span> </div>
 <div class="line"><span class="lineno"> 1010</span>  <span class="comment">// Find the geometry node that matches the required name</span></div>
-<div class="line"><span class="lineno"> 1011</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a7216f114250b997e81bea9b25f7c93c4">theNode_</a> = 0;</div>
+<div class="line"><span class="lineno"> 1011</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a7216f114250b997e81bea9b25f7c93c4">theNode_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno"> 1012</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a3e87ea764b4ee5b75c44f3fb60a643e6">gotNode_</a> = kFALSE;</div>
 <div class="line"><span class="lineno"> 1013</span>  this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#a1d779389098e85a4055b5f2da7ed02e9">findNode</a>(topVolume, volName);</div>
 <div class="line"><span class="lineno"> 1014</span> </div>
@@ -2535,8 +2535,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 
 <p class="definition">Definition at line <a class="el" href="ShipFieldMaker_8cxx_source.html#l01082">1082</a> of file <a class="el" href="ShipFieldMaker_8cxx_source.html">ShipFieldMaker.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1082</span>                                                                             {</div>
-<div class="line"><span class="lineno"> 1083</span>  TVirtualMagField* theField(0);</div>
-<div class="line"><span class="lineno"> 1084</span>  TGeoVolume* theVol(0);</div>
+<div class="line"><span class="lineno"> 1083</span>  TVirtualMagField* theField(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1084</span>  TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1085</span>  <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><span class="lineno"> 1086</span>    theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><span class="lineno"> 1087</span>  }</div>
@@ -2678,7 +2678,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1179</span>    theHist[icomponent] =</div>
 <div class="line"><span class="lineno"> 1180</span>        TH2D(Form(<span class="stringliteral">&quot;theHist[%i]&quot;</span>, icomponent), titles[icomponent].data(), Nx,</div>
 <div class="line"><span class="lineno"> 1181</span>             xMin, xMax, Ny, yMin, yMax);</div>
-<div class="line"><span class="lineno"> 1182</span>    theHist[icomponent].SetDirectory(0);</div>
+<div class="line"><span class="lineno"> 1182</span>    theHist[icomponent].SetDirectory(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1183</span>    <span class="keywordflow">if</span> (type == 0) {</div>
 <div class="line"><span class="lineno"> 1184</span>      <span class="comment">// x-y</span></div>
 <div class="line"><span class="lineno"> 1185</span>      theHist[icomponent].SetXTitle(<span class="stringliteral">&quot;x (cm)&quot;</span>);</div>
@@ -3116,7 +3116,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  844</span>    TString fieldName = theInfo.fieldName_;</div>
 <div class="line"><span class="lineno">  845</span>    Double_t scale = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  846</span> </div>
-<div class="line"><span class="lineno">  847</span>    TGeoVolume* theVol(0);</div>
+<div class="line"><span class="lineno">  847</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  848</span>    <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><span class="lineno">  849</span>      theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><span class="lineno">  850</span>    }</div>
@@ -3185,7 +3185,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  725</span>    Double_t scale = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  726</span> </div>
 <div class="line"><span class="lineno">  727</span>    <span class="comment">// Find the volume</span></div>
-<div class="line"><span class="lineno">  728</span>    TGeoVolume* theVol(0);</div>
+<div class="line"><span class="lineno">  728</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  729</span>    <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><span class="lineno">  730</span>      theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><span class="lineno">  731</span>    }</div>

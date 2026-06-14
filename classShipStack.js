@@ -28,7 +28,7 @@ var classShipStack =
     [ "SetMinPoints", "classShipStack.html#ad2ad7a62a452b9eec68dd32e729479b7", null ],
     [ "StoreMothers", "classShipStack.html#a73a85c05c1693667e28c591665de0b89", null ],
     [ "StoreSecondaries", "classShipStack.html#a5c50e960fb20579bb8f220220610ec77", null ],
-    [ "UpdateTrackIndex", "classShipStack.html#a9b519e1e6040b80fcb18fe44ce71bc20", null ],
+    [ "UpdateTrackIndex", "classShipStack.html#afbe9564e96a068a1be591663b1c5f248", null ],
     [ "fCurrentTrack", "classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782", null ],
     [ "fEnergyCut", "classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d", null ],
     [ "fIndex", "classShipStack.html#a7a9f0917d52861207a590dea00aeff9d", null ],

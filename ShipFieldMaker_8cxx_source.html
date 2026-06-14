@@ -857,7 +857,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>    Double_t scale = theInfo.<a class="code hl_variable" href="structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6">scale_</a>;</div>
 <div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span> </div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>    <span class="comment">// Find the volume</span></div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>    TGeoVolume* theVol(0);</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>    <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>      theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>    }</div>
@@ -982,7 +982,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    TString fieldName = theInfo.<a class="code hl_variable" href="structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036">fieldName_</a>;</div>
 <div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>    Double_t scale = theInfo.<a class="code hl_variable" href="structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6">scale_</a>;</div>
 <div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span> </div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    TGeoVolume* theVol(0);</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>    <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>      theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    }</div>
@@ -1135,7 +1135,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>  theInfo.<a class="code hl_variable" href="structShipFieldMaker_1_1transformInfo.html#a1fceff836a1b6dd65a67207c5ac1bbbf">theta_</a> = 0.0;</div>
 <div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>  theInfo.<a class="code hl_variable" href="structShipFieldMaker_1_1transformInfo.html#ac4409f8bd4673dfba8013147941676ba">psi_</a> = 0.0;</div>
 <div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span> </div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>  TGeoMatrix* theMatrix(0);</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>  TGeoMatrix* theMatrix(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
 <div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>  TGeoVolume* topVolume = gGeoManager-&gt;GetTopVolume();</div>
 <div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>  <span class="keywordflow">if</span> (!topVolume) {</div>
@@ -1150,7 +1150,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>  }</div>
 <div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
 <div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>  <span class="comment">// Find the geometry node that matches the required name</span></div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a7216f114250b997e81bea9b25f7c93c4">theNode_</a> = 0;</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a7216f114250b997e81bea9b25f7c93c4">theNode_</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>  <a class="code hl_variable" href="classShipFieldMaker.html#a3e87ea764b4ee5b75c44f3fb60a643e6">gotNode_</a> = kFALSE;</div>
 <div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>  this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#a1d779389098e85a4055b5f2da7ed02e9">findNode</a>(topVolume, volName);</div>
 <div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span> </div>
@@ -1226,8 +1226,8 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span> </div>
 <div class="foldopen" id="foldopen01082" data-start="{" data-end="}">
 <div class="line"><a id="l01082" name="l01082"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#a899a97b15a3d1fd31046b37894ff2ea2"> 1082</a></span>TVirtualMagField* <a class="code hl_function" href="classShipFieldMaker.html#a899a97b15a3d1fd31046b37894ff2ea2">ShipFieldMaker::getVolumeField</a>(<span class="keyword">const</span> TString&amp; volName)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>  TVirtualMagField* theField(0);</div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>  TGeoVolume* theVol(0);</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>  TVirtualMagField* theField(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>  TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>  <span class="keywordflow">if</span> (gGeoManager) {</div>
 <div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>    theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());</div>
 <div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>  }</div>
@@ -1264,7 +1264,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span> </div>
 <div class="foldopen" id="foldopen01116" data-start="{" data-end="}">
 <div class="line"><a id="l01116" name="l01116"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#a536ddce150f887c5434c788216bf00cd"> 1116</a></span>TVirtualMagField* <a class="code hl_function" href="classShipFieldMaker.html#a536ddce150f887c5434c788216bf00cd">ShipFieldMaker::getField</a>(<span class="keyword">const</span> TString&amp; name)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>  TVirtualMagField* theField(0);</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>  TVirtualMagField* theField(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span> </div>
 <div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>  <span class="comment">// Iterate over the internal map and see if we have a match</span></div>
 <div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>  SFMap::const_iterator iter;</div>
@@ -1337,7 +1337,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>    theHist[icomponent] =</div>
 <div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>        TH2D(Form(<span class="stringliteral">&quot;theHist[%i]&quot;</span>, icomponent), titles[icomponent].data(), Nx,</div>
 <div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>             xMin, xMax, Ny, yMin, yMax);</div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>    theHist[icomponent].SetDirectory(0);</div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>    theHist[icomponent].SetDirectory(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>    <span class="keywordflow">if</span> (type == 0) {</div>
 <div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>      <span class="comment">// x-y</span></div>
 <div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>      theHist[icomponent].SetXTitle(<span class="stringliteral">&quot;x (cm)&quot;</span>);</div>

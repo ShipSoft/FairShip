@@ -153,13 +153,13 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="pyFairModule_8cxx_source.html#l00010">10</a> of file <a class="el" href="pyFairModule_8cxx_source.html">pyFairModule.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   10</span>                                                            {</div>
 <div class="line"><span class="lineno">   11</span>  <span class="comment">// check arguments</span></div>
-<div class="line"><span class="lineno">   12</span>  <span class="keywordflow">if</span> (0 == self || 0 == method) {</div>
+<div class="line"><span class="lineno">   12</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == self || <span class="keyword">nullptr</span> == method) {</div>
 <div class="line"><span class="lineno">   13</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Python object and method&quot;</span>);</div>
 <div class="line"><span class="lineno">   14</span>  }</div>
 <div class="line"><span class="lineno">   15</span>  <span class="comment">// call Python</span></div>
 <div class="line"><span class="lineno">   16</span>  <a class="code hl_typedef" href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a>* r = PyObject_CallMethod(self, <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(method),</div>
 <div class="line"><span class="lineno">   17</span>                                    <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<span class="stringliteral">&quot;&quot;</span>));</div>
-<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> (0 == r) {</div>
+<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == r) {</div>
 <div class="line"><span class="lineno">   19</span>    PyErr_Print();</div>
 <div class="line"><span class="lineno">   20</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   21</span>  }</div>

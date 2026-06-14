@@ -374,9 +374,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">   40</span>  }</div>
 <div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="classMuDISGenerator.html#ac3ed57fb1dc35b1f018cdb2e1e2d0324">iMuon</a> = 0;</div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37">dPart</a> = 0;</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classMuDISGenerator.html#a40d9a237ef48fea62a09f84c5ff5cf47">dPartSoft</a> = 0;</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="classMuDISGenerator.html#ac3ed57fb1dc35b1f018cdb2e1e2d0324">iMuon</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37">dPart</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classMuDISGenerator.html#a40d9a237ef48fea62a09f84c5ff5cf47">dPartSoft</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">fInputFile</a> = TFile::Open(fileName, <span class="stringliteral">&quot;READ&quot;</span>);</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">fInputFile</a> || <a class="code hl_variable" href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">fInputFile</a>-&gt;IsZombie()) {</div>
 <div class="line"><span class="lineno">   47</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;MuDISGenerator: error opening input file &quot;</span> &lt;&lt; fileName;</div>

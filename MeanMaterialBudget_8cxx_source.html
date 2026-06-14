@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('MeanMaterialBudget_8cxx_source.html','
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  dir[2] = (end[2] - start[2]) * invlen;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// Initialise start point and direction</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  TGeoNode* currentnode = 0;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  TGeoNode* currentnode = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  TGeoNode* startnode = gGeoManager-&gt;InitTrack(start.data(), dir);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">if</span> (!startnode) {</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;MeanMaterialBudget: start point out of geometry: x &quot;</span></div>

@@ -109,13 +109,13 @@ $(document).ready(function(){initNavTree('pyFairModule_8cxx_source.html',''); in
 <div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="pyFairModule_8cxx.html#a4890f669326884bda5880d3fd27e9a76">   10</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="pyFairModule_8cxx.html#a4890f669326884bda5880d3fd27e9a76">call_python_method</a>(<a class="code hl_typedef" href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a>* self, <span class="keyword">const</span> <span class="keywordtype">char</span>* method) {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="comment">// check arguments</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordflow">if</span> (0 == self || 0 == method) {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == self || <span class="keyword">nullptr</span> == method) {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Python object and method&quot;</span>);</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  }</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="comment">// call Python</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <a class="code hl_typedef" href="pyFairModule_8h.html#ae19630c1f4ca6d5236b30719d9140013">PyObject</a>* r = PyObject_CallMethod(self, <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(method),</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                    <span class="keyword">const_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(<span class="stringliteral">&quot;&quot;</span>));</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">if</span> (0 == r) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == r) {</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    PyErr_Print();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  }</div>
