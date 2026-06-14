@@ -813,8 +813,8 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  243</span>  std::ranges::transform(cornersCLBA, cornersCRTA.begin(), std::negate{});</div>
 <div class="line"><span class="lineno">  244</span>  std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});</div>
 <div class="line"><span class="lineno">  245</span>  <span class="comment">// Need to change order as corners need to be defined clockwise</span></div>
-<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 8; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
-<div class="line"><span class="lineno">  247</span>    <span class="keywordtype">int</span> j = (11 - <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) % 8;</div>
+<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">for</span> (std::size_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; 8; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keyword">const</span> std::size_t j = (11 - <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) % 8;</div>
 <div class="line"><span class="lineno">  248</span>    cornersCLTA[2 * j] = cornersCLBA[2 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
 <div class="line"><span class="lineno">  249</span>    cornersCLTA[2 * j + 1] = -cornersCLBA[2 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> + 1];</div>
 <div class="line"><span class="lineno">  250</span>    cornersTR[2 * j] = -cornersTL[2 * <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
