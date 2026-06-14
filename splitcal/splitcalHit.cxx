@@ -133,19 +133,19 @@ void splitcalHit::Decoder(const std::string& encodedID, int& isPrecision,
   std::string substring;
 
   substring = encodedID.substr(0, 1);
-  isPrecision = atoi(substring.c_str());
+  isPrecision = std::stoi(substring);
 
   substring = encodedID.substr(1, 3);
-  nLayer = atoi(substring.c_str());
+  nLayer = std::stoi(substring);
 
   substring = encodedID.substr(4, 1);
-  nModuleX = atoi(substring.c_str());
+  nModuleX = std::stoi(substring);
 
   substring = encodedID.substr(5, 1);
-  nModuleY = atoi(substring.c_str());
+  nModuleY = std::stoi(substring);
 
   substring = encodedID.substr(6, 3);
-  nStrip = atoi(substring.c_str());
+  nStrip = std::stoi(substring);
 }
 
 void splitcalHit::Decoder(int id, int& isPrecision, int& nLayer, int& nModuleX,
