@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+from typing import Any
+
 import os
 
 import ROOT
@@ -9,7 +11,9 @@ import shipunit as u
 import yaml
 from ShipGeoConfig import AttrDict
 
-detectorList = []
+# Holds heterogeneous FairModule subclasses (Target, MTC, ShipCave, …); annotate
+# as list[Any] so pyrefly doesn't lock the element type to the first append.
+detectorList: list[Any] = []
 
 
 def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuonShield) -> None:
@@ -462,7 +466,10 @@ def configure(run, ship_geo):
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
-    detElements = {}
+    # Heterogeneous module dict: keys are GetName() strings, values are
+    # FairModule subclasses (Target/MTC/strawtubes/...). Annotate as Any to
+    # match the heterogeneous detectorList type.
+    detElements: dict[str, Any] = {}
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue
