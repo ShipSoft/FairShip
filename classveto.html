@@ -638,181 +638,185 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  482</span>      <a class="code hl_function" href="classveto.html#a7820d734e9112f85ad579e7f70ac7a98">GeoCornerRib</a>(name, ribThick, liscThick1, liscThick2, dZ, slY, slX,</div>
 <div class="line"><span class="lineno">  483</span>                   ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
 <div class="line"><span class="lineno">  484</span> </div>
-<div class="line"><span class="lineno">  485</span>  <span class="keywordflow">for</span> (<span class="keywordtype">double</span> zi = z1; zi &lt; z2; zi += cell_thickness_z) {</div>
-<div class="line"><span class="lineno">  486</span>    <span class="keywordtype">int</span> Zlayer = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi) / cell_thickness_z + 1;</div>
-<div class="line"><span class="lineno">  487</span> </div>
-<div class="line"><span class="lineno">  489</span>    TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">  490</span>    nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
-<div class="line"><span class="lineno">  491</span>    TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(</div>
-<div class="line"><span class="lineno">  492</span>        nameVR, liscThick1, ribThick, <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi) + 2 * wallThick,</div>
-<div class="line"><span class="lineno">  493</span>        <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * wallThick, <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi) + 2 * wallThick,</div>
-<div class="line"><span class="lineno">  494</span>        <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick, ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
-<div class="line"><span class="lineno">  495</span>    tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>    tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
-<div class="line"><span class="lineno">  498</span> </div>
-<div class="line"><span class="lineno">  499</span>    <span class="keywordflow">if</span> (z2 - zi &lt; cell_thickness_z) <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  485</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> nZSteps =</div>
+<div class="line"><span class="lineno">  486</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor((z2 - z1) / cell_thickness_z)) + 1;</div>
+<div class="line"><span class="lineno">  487</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> iz = 0; iz &lt; nZSteps; ++iz) {</div>
+<div class="line"><span class="lineno">  488</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zi = z1 + iz * cell_thickness_z;</div>
+<div class="line"><span class="lineno">  489</span>    <span class="keywordflow">if</span> (zi &gt;= z2) <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  490</span>    <span class="keywordtype">int</span> Zlayer = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi) / cell_thickness_z + 1;</div>
+<div class="line"><span class="lineno">  491</span> </div>
+<div class="line"><span class="lineno">  493</span>    TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  494</span>    nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
+<div class="line"><span class="lineno">  495</span>    TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(</div>
+<div class="line"><span class="lineno">  496</span>        nameVR, liscThick1, ribThick, <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi) + 2 * wallThick,</div>
+<div class="line"><span class="lineno">  497</span>        <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * wallThick, <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi) + 2 * wallThick,</div>
+<div class="line"><span class="lineno">  498</span>        <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick, ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
+<div class="line"><span class="lineno">  499</span>    tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
 <div class="line"><span class="lineno">  500</span> </div>
-<div class="line"><span class="lineno">  501</span>    tX = <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) / 2 + wallThick;</div>
-<div class="line"><span class="lineno">  502</span>    tY = <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) / 2 + wallThick;</div>
-<div class="line"><span class="lineno">  503</span>    tZ = tZ + cell_thickness_z / 2;</div>
+<div class="line"><span class="lineno">  501</span>    tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
+<div class="line"><span class="lineno">  502</span> </div>
+<div class="line"><span class="lineno">  503</span>    <span class="keywordflow">if</span> (z2 - zi &lt; cell_thickness_z) <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  504</span> </div>
-<div class="line"><span class="lineno">  506</span>    tLongitRib-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  507</span>        CornerRib_L, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, tX, tY),</div>
-<div class="line"><span class="lineno">  508</span>        <span class="keyword">new</span> TGeoCombiTrans(tX, tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  509</span>    tLongitRib-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  510</span>        CornerRib_L, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -tX, -tY),</div>
-<div class="line"><span class="lineno">  511</span>        <span class="keyword">new</span> TGeoCombiTrans(-tX, -tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  512</span>    tLongitRib-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  513</span>        CornerRib_R, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -tX, tY),</div>
-<div class="line"><span class="lineno">  514</span>        <span class="keyword">new</span> TGeoCombiTrans(-tX, tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 90)));</div>
-<div class="line"><span class="lineno">  515</span>    tLongitRib-&gt;AddNode(</div>
-<div class="line"><span class="lineno">  516</span>        CornerRib_R, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, tX, -tY),</div>
-<div class="line"><span class="lineno">  517</span>        <span class="keyword">new</span> TGeoCombiTrans(tX, -tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 270)));</div>
-<div class="line"><span class="lineno">  518</span> </div>
-<div class="line"><span class="lineno">  519</span>    <span class="keywordtype">double</span> zi_x_thickness_1 = <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * (wallThick + liscThick1);</div>
-<div class="line"><span class="lineno">  520</span>    <span class="keywordtype">double</span> zi_x_thickness_2 =</div>
-<div class="line"><span class="lineno">  521</span>        <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + cell_thickness_z) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  505</span>    tX = <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) / 2 + wallThick;</div>
+<div class="line"><span class="lineno">  506</span>    tY = <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) / 2 + wallThick;</div>
+<div class="line"><span class="lineno">  507</span>    tZ = tZ + cell_thickness_z / 2;</div>
+<div class="line"><span class="lineno">  508</span> </div>
+<div class="line"><span class="lineno">  510</span>    tLongitRib-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  511</span>        CornerRib_L, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, tX, tY),</div>
+<div class="line"><span class="lineno">  512</span>        <span class="keyword">new</span> TGeoCombiTrans(tX, tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  513</span>    tLongitRib-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  514</span>        CornerRib_L, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -tX, -tY),</div>
+<div class="line"><span class="lineno">  515</span>        <span class="keyword">new</span> TGeoCombiTrans(-tX, -tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  516</span>    tLongitRib-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  517</span>        CornerRib_R, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -tX, tY),</div>
+<div class="line"><span class="lineno">  518</span>        <span class="keyword">new</span> TGeoCombiTrans(-tX, tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 90)));</div>
+<div class="line"><span class="lineno">  519</span>    tLongitRib-&gt;AddNode(</div>
+<div class="line"><span class="lineno">  520</span>        CornerRib_R, <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, tX, -tY),</div>
+<div class="line"><span class="lineno">  521</span>        <span class="keyword">new</span> TGeoCombiTrans(tX, -tY, tZ, <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 270)));</div>
 <div class="line"><span class="lineno">  522</span> </div>
-<div class="line"><span class="lineno">  523</span>    <span class="keywordtype">double</span> zi_x1_Step = (zi_x_thickness_1 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> * ribThick) / (nx + 1);</div>
-<div class="line"><span class="lineno">  524</span>    <span class="keywordtype">double</span> zi_x2_Step = (zi_x_thickness_2 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> * ribThick) / (nx + 1);</div>
-<div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>    <span class="keywordtype">double</span> zi_y_thickness_1 = <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * (wallThick + liscThick1);</div>
-<div class="line"><span class="lineno">  527</span>    <span class="keywordtype">double</span> zi_y_thickness_2 =</div>
-<div class="line"><span class="lineno">  528</span>        <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + cell_thickness_z) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  523</span>    <span class="keywordtype">double</span> zi_x_thickness_1 = <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  524</span>    <span class="keywordtype">double</span> zi_x_thickness_2 =</div>
+<div class="line"><span class="lineno">  525</span>        <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + cell_thickness_z) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  526</span> </div>
+<div class="line"><span class="lineno">  527</span>    <span class="keywordtype">double</span> zi_x1_Step = (zi_x_thickness_1 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> * ribThick) / (nx + 1);</div>
+<div class="line"><span class="lineno">  528</span>    <span class="keywordtype">double</span> zi_x2_Step = (zi_x_thickness_2 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> * ribThick) / (nx + 1);</div>
 <div class="line"><span class="lineno">  529</span> </div>
-<div class="line"><span class="lineno">  530</span>    <span class="keywordtype">double</span> zi_y1_Step = (zi_y_thickness_1 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> * ribThick) / (ny + 1);</div>
-<div class="line"><span class="lineno">  531</span>    <span class="keywordtype">double</span> zi_y2_Step = (zi_y_thickness_2 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> * ribThick) / (ny + 1);</div>
-<div class="line"><span class="lineno">  532</span> </div>
-<div class="line"><span class="lineno">  533</span>    <span class="keywordtype">double</span> zi_x1, zi_x2, zi_y1, zi_y2;</div>
-<div class="line"><span class="lineno">  534</span> </div>
-<div class="line"><span class="lineno">  535</span>    zi_x1 = zi_x_thickness_1 / 2 - liscThick1;</div>
-<div class="line"><span class="lineno">  536</span>    zi_x2 = zi_x_thickness_2 / 2 - liscThick1;</div>
-<div class="line"><span class="lineno">  537</span> </div>
-<div class="line"><span class="lineno">  538</span>    zi_y1 = zi_y_thickness_1 / 2;</div>
-<div class="line"><span class="lineno">  539</span>    zi_y2 = zi_y_thickness_2 / 2;</div>
-<div class="line"><span class="lineno">  540</span> </div>
-<div class="line"><span class="lineno">  541</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  542</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S4_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 0));</div>
-<div class="line"><span class="lineno">  543</span>    TGeoVolume* LiSc_S4 = <a class="code hl_function" href="classveto.html#a5a07e040b0f2f5273891b058d69b65e7">GeoCornerLiSc2</a>(</div>
-<div class="line"><span class="lineno">  544</span>        name, dZ, 0, zi_y1_Step - liscThick1, zi_y2_Step - liscThick2,</div>
-<div class="line"><span class="lineno">  545</span>        liscThick1, liscThick2, zi_y2_Step - zi_y1_Step, zi_x2 - zi_x1,</div>
-<div class="line"><span class="lineno">  546</span>        kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  547</span>    ttLiSc-&gt;AddNode(LiSc_S4, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 1),</div>
-<div class="line"><span class="lineno">  548</span>                    <span class="keyword">new</span> TGeoCombiTrans(zi_x1, -(zi_y1 - zi_y1_Step), tZ,</div>
-<div class="line"><span class="lineno">  549</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  550</span>    ttLiSc-&gt;AddNode(LiSc_S4, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 2),</div>
-<div class="line"><span class="lineno">  551</span>                    <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, (zi_y1 - zi_y1_Step), tZ,</div>
-<div class="line"><span class="lineno">  552</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  553</span> </div>
-<div class="line"><span class="lineno">  554</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  555</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S6_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 0));</div>
-<div class="line"><span class="lineno">  556</span>    TGeoVolume* LiSc_S6 = <a class="code hl_function" href="classveto.html#a5a07e040b0f2f5273891b058d69b65e7">GeoCornerLiSc2</a>(</div>
-<div class="line"><span class="lineno">  557</span>        name, dZ, 1, zi_y1_Step - liscThick1, zi_y2_Step - liscThick2,</div>
-<div class="line"><span class="lineno">  558</span>        liscThick1, liscThick2, zi_y2_Step - zi_y1_Step, zi_x2 - zi_x1,</div>
-<div class="line"><span class="lineno">  559</span>        kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  560</span>    ttLiSc-&gt;AddNode(LiSc_S6, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 1),</div>
-<div class="line"><span class="lineno">  561</span>                    <span class="keyword">new</span> TGeoCombiTrans(zi_x1, (zi_y1 - zi_y1_Step), tZ,</div>
-<div class="line"><span class="lineno">  562</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  563</span>    ttLiSc-&gt;AddNode(LiSc_S6, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 2),</div>
-<div class="line"><span class="lineno">  564</span>                    <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -(zi_y1 - zi_y1_Step), tZ,</div>
-<div class="line"><span class="lineno">  565</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  566</span> </div>
-<div class="line"><span class="lineno">  567</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  568</span>      zi_y1 = zi_y1 - zi_y1_Step;</div>
-<div class="line"><span class="lineno">  569</span>      zi_y2 = zi_y2 - zi_y2_Step;</div>
+<div class="line"><span class="lineno">  530</span>    <span class="keywordtype">double</span> zi_y_thickness_1 = <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  531</span>    <span class="keywordtype">double</span> zi_y_thickness_2 =</div>
+<div class="line"><span class="lineno">  532</span>        <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + cell_thickness_z) + 2 * (wallThick + liscThick1);</div>
+<div class="line"><span class="lineno">  533</span> </div>
+<div class="line"><span class="lineno">  534</span>    <span class="keywordtype">double</span> zi_y1_Step = (zi_y_thickness_1 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> * ribThick) / (ny + 1);</div>
+<div class="line"><span class="lineno">  535</span>    <span class="keywordtype">double</span> zi_y2_Step = (zi_y_thickness_2 - <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> * ribThick) / (ny + 1);</div>
+<div class="line"><span class="lineno">  536</span> </div>
+<div class="line"><span class="lineno">  537</span>    <span class="keywordtype">double</span> zi_x1, zi_x2, zi_y1, zi_y2;</div>
+<div class="line"><span class="lineno">  538</span> </div>
+<div class="line"><span class="lineno">  539</span>    zi_x1 = zi_x_thickness_1 / 2 - liscThick1;</div>
+<div class="line"><span class="lineno">  540</span>    zi_x2 = zi_x_thickness_2 / 2 - liscThick1;</div>
+<div class="line"><span class="lineno">  541</span> </div>
+<div class="line"><span class="lineno">  542</span>    zi_y1 = zi_y_thickness_1 / 2;</div>
+<div class="line"><span class="lineno">  543</span>    zi_y2 = zi_y_thickness_2 / 2;</div>
+<div class="line"><span class="lineno">  544</span> </div>
+<div class="line"><span class="lineno">  545</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  546</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S4_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 0));</div>
+<div class="line"><span class="lineno">  547</span>    TGeoVolume* LiSc_S4 = <a class="code hl_function" href="classveto.html#a5a07e040b0f2f5273891b058d69b65e7">GeoCornerLiSc2</a>(</div>
+<div class="line"><span class="lineno">  548</span>        name, dZ, 0, zi_y1_Step - liscThick1, zi_y2_Step - liscThick2,</div>
+<div class="line"><span class="lineno">  549</span>        liscThick1, liscThick2, zi_y2_Step - zi_y1_Step, zi_x2 - zi_x1,</div>
+<div class="line"><span class="lineno">  550</span>        kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  551</span>    ttLiSc-&gt;AddNode(LiSc_S4, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 1),</div>
+<div class="line"><span class="lineno">  552</span>                    <span class="keyword">new</span> TGeoCombiTrans(zi_x1, -(zi_y1 - zi_y1_Step), tZ,</div>
+<div class="line"><span class="lineno">  553</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  554</span>    ttLiSc-&gt;AddNode(LiSc_S4, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S4&quot;</span>, blockNr, Zlayer, 0, 2),</div>
+<div class="line"><span class="lineno">  555</span>                    <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, (zi_y1 - zi_y1_Step), tZ,</div>
+<div class="line"><span class="lineno">  556</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  557</span> </div>
+<div class="line"><span class="lineno">  558</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  559</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S6_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 0));</div>
+<div class="line"><span class="lineno">  560</span>    TGeoVolume* LiSc_S6 = <a class="code hl_function" href="classveto.html#a5a07e040b0f2f5273891b058d69b65e7">GeoCornerLiSc2</a>(</div>
+<div class="line"><span class="lineno">  561</span>        name, dZ, 1, zi_y1_Step - liscThick1, zi_y2_Step - liscThick2,</div>
+<div class="line"><span class="lineno">  562</span>        liscThick1, liscThick2, zi_y2_Step - zi_y1_Step, zi_x2 - zi_x1,</div>
+<div class="line"><span class="lineno">  563</span>        kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  564</span>    ttLiSc-&gt;AddNode(LiSc_S6, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 1),</div>
+<div class="line"><span class="lineno">  565</span>                    <span class="keyword">new</span> TGeoCombiTrans(zi_x1, (zi_y1 - zi_y1_Step), tZ,</div>
+<div class="line"><span class="lineno">  566</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  567</span>    ttLiSc-&gt;AddNode(LiSc_S6, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S6&quot;</span>, blockNr, Zlayer, ny, 2),</div>
+<div class="line"><span class="lineno">  568</span>                    <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -(zi_y1 - zi_y1_Step), tZ,</div>
+<div class="line"><span class="lineno">  569</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  570</span> </div>
-<div class="line"><span class="lineno">  571</span>      tLongitRib-&gt;AddNode(vLongitRibY.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, zi_x1, zi_y1),</div>
-<div class="line"><span class="lineno">  572</span>                          <span class="keyword">new</span> TGeoCombiTrans(zi_x1, (zi_y1 - ribThick), tZ,</div>
-<div class="line"><span class="lineno">  573</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  574</span>      tLongitRib-&gt;AddNode(vLongitRibY.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -zi_x1, -zi_y1),</div>
-<div class="line"><span class="lineno">  575</span>                          <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -(zi_y1 - ribThick), tZ,</div>
-<div class="line"><span class="lineno">  576</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  577</span> </div>
-<div class="line"><span class="lineno">  578</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
-<div class="line"><span class="lineno">  579</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  580</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScY_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 0));</div>
-<div class="line"><span class="lineno">  581</span>        TGeoVolume* LiScY = <a class="code hl_function" href="classveto.html#a7516f2891bea10bd8259bbc88c73cddc">GeoSideObj</a>(</div>
-<div class="line"><span class="lineno">  582</span>            name, dZ, liscThick1, zi_y1_Step, liscThick2, zi_y2_Step,</div>
-<div class="line"><span class="lineno">  583</span>            zi_x2 - zi_x1, zi_y2 - zi_y1, kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  584</span>        ttLiSc-&gt;AddNode(LiScY, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 1),</div>
-<div class="line"><span class="lineno">  585</span>                        <span class="keyword">new</span> TGeoCombiTrans(zi_x1, zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  586</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  587</span>        ttLiSc-&gt;AddNode(LiScY, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 2),</div>
-<div class="line"><span class="lineno">  588</span>                        <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  589</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  590</span>      }</div>
-<div class="line"><span class="lineno">  591</span> </div>
-<div class="line"><span class="lineno">  592</span>      zi_y1 = zi_y1 - ribThick;</div>
-<div class="line"><span class="lineno">  593</span>      zi_y2 = zi_y2 - ribThick;</div>
-<div class="line"><span class="lineno">  594</span>    }</div>
+<div class="line"><span class="lineno">  571</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  572</span>      zi_y1 = zi_y1 - zi_y1_Step;</div>
+<div class="line"><span class="lineno">  573</span>      zi_y2 = zi_y2 - zi_y2_Step;</div>
+<div class="line"><span class="lineno">  574</span> </div>
+<div class="line"><span class="lineno">  575</span>      tLongitRib-&gt;AddNode(vLongitRibY.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, zi_x1, zi_y1),</div>
+<div class="line"><span class="lineno">  576</span>                          <span class="keyword">new</span> TGeoCombiTrans(zi_x1, (zi_y1 - ribThick), tZ,</div>
+<div class="line"><span class="lineno">  577</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  578</span>      tLongitRib-&gt;AddNode(vLongitRibY.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -zi_x1, -zi_y1),</div>
+<div class="line"><span class="lineno">  579</span>                          <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -(zi_y1 - ribThick), tZ,</div>
+<div class="line"><span class="lineno">  580</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  581</span> </div>
+<div class="line"><span class="lineno">  582</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
+<div class="line"><span class="lineno">  583</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  584</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScY_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 0));</div>
+<div class="line"><span class="lineno">  585</span>        TGeoVolume* LiScY = <a class="code hl_function" href="classveto.html#a7516f2891bea10bd8259bbc88c73cddc">GeoSideObj</a>(</div>
+<div class="line"><span class="lineno">  586</span>            name, dZ, liscThick1, zi_y1_Step, liscThick2, zi_y2_Step,</div>
+<div class="line"><span class="lineno">  587</span>            zi_x2 - zi_x1, zi_y2 - zi_y1, kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  588</span>        ttLiSc-&gt;AddNode(LiScY, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 1),</div>
+<div class="line"><span class="lineno">  589</span>                        <span class="keyword">new</span> TGeoCombiTrans(zi_x1, zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  590</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  591</span>        ttLiSc-&gt;AddNode(LiScY, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScY&quot;</span>, blockNr, Zlayer, i, 2),</div>
+<div class="line"><span class="lineno">  592</span>                        <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  593</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  594</span>      }</div>
 <div class="line"><span class="lineno">  595</span> </div>
-<div class="line"><span class="lineno">  596</span>    zi_x1 = zi_x_thickness_1 / 2;</div>
-<div class="line"><span class="lineno">  597</span>    zi_x2 = zi_x_thickness_2 / 2;</div>
-<div class="line"><span class="lineno">  598</span> </div>
-<div class="line"><span class="lineno">  599</span>    zi_y1 = zi_y_thickness_1 / 2 - liscThick1;</div>
-<div class="line"><span class="lineno">  600</span>    zi_y2 = zi_y_thickness_2 / 2 - liscThick1;</div>
-<div class="line"><span class="lineno">  601</span> </div>
-<div class="line"><span class="lineno">  602</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  603</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S3_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 0));</div>
-<div class="line"><span class="lineno">  604</span> </div>
-<div class="line"><span class="lineno">  605</span>    TGeoVolume* LiSc_S3 = <a class="code hl_function" href="classveto.html#a986f5434439b990aeac3d0de2ace4fd6">GeoCornerLiSc1</a>(</div>
-<div class="line"><span class="lineno">  606</span>        name, dZ, 0, zi_x1_Step - liscThick1 - ribThick / sqrt(2),</div>
-<div class="line"><span class="lineno">  607</span>        zi_x2_Step - liscThick2 - ribThick / sqrt(2), liscThick1, liscThick2,</div>
-<div class="line"><span class="lineno">  608</span>        zi_x2_Step - zi_x1_Step - ribThick / 2, zi_y2 - zi_y1, kMagenta - 10,</div>
-<div class="line"><span class="lineno">  609</span>        <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  610</span>    ttLiSc-&gt;AddNode(LiSc_S3, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 1),</div>
-<div class="line"><span class="lineno">  611</span>                    <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - zi_x1_Step), zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  612</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  613</span>    ttLiSc-&gt;AddNode(LiSc_S3, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 2),</div>
-<div class="line"><span class="lineno">  614</span>                    <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - zi_x1_Step), -zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  615</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  616</span> </div>
-<div class="line"><span class="lineno">  617</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  618</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S5_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 0));</div>
-<div class="line"><span class="lineno">  619</span> </div>
-<div class="line"><span class="lineno">  620</span>    TGeoVolume* LiSc_S5 = <a class="code hl_function" href="classveto.html#a986f5434439b990aeac3d0de2ace4fd6">GeoCornerLiSc1</a>(</div>
-<div class="line"><span class="lineno">  621</span>        name, dZ, 1, zi_x1_Step - liscThick1 - ribThick / sqrt(2),</div>
-<div class="line"><span class="lineno">  622</span>        zi_x2_Step - liscThick2 - ribThick / sqrt(2), liscThick1, liscThick2,</div>
-<div class="line"><span class="lineno">  623</span>        zi_x2_Step - zi_x1_Step - ribThick / 2, zi_y2 - zi_y1, kMagenta - 10,</div>
-<div class="line"><span class="lineno">  624</span>        <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  625</span>    ttLiSc-&gt;AddNode(LiSc_S5, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 1),</div>
-<div class="line"><span class="lineno">  626</span>                    <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - zi_x1_Step), zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  627</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  628</span>    ttLiSc-&gt;AddNode(LiSc_S5, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 2),</div>
-<div class="line"><span class="lineno">  629</span>                    <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - zi_x1_Step), -zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  630</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  631</span> </div>
-<div class="line"><span class="lineno">  632</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  633</span>      zi_x1 = zi_x1 - zi_x1_Step;</div>
-<div class="line"><span class="lineno">  634</span>      zi_x2 = zi_x2 - zi_x2_Step;</div>
+<div class="line"><span class="lineno">  596</span>      zi_y1 = zi_y1 - ribThick;</div>
+<div class="line"><span class="lineno">  597</span>      zi_y2 = zi_y2 - ribThick;</div>
+<div class="line"><span class="lineno">  598</span>    }</div>
+<div class="line"><span class="lineno">  599</span> </div>
+<div class="line"><span class="lineno">  600</span>    zi_x1 = zi_x_thickness_1 / 2;</div>
+<div class="line"><span class="lineno">  601</span>    zi_x2 = zi_x_thickness_2 / 2;</div>
+<div class="line"><span class="lineno">  602</span> </div>
+<div class="line"><span class="lineno">  603</span>    zi_y1 = zi_y_thickness_1 / 2 - liscThick1;</div>
+<div class="line"><span class="lineno">  604</span>    zi_y2 = zi_y_thickness_2 / 2 - liscThick1;</div>
+<div class="line"><span class="lineno">  605</span> </div>
+<div class="line"><span class="lineno">  606</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  607</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S3_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 0));</div>
+<div class="line"><span class="lineno">  608</span> </div>
+<div class="line"><span class="lineno">  609</span>    TGeoVolume* LiSc_S3 = <a class="code hl_function" href="classveto.html#a986f5434439b990aeac3d0de2ace4fd6">GeoCornerLiSc1</a>(</div>
+<div class="line"><span class="lineno">  610</span>        name, dZ, 0, zi_x1_Step - liscThick1 - ribThick / sqrt(2),</div>
+<div class="line"><span class="lineno">  611</span>        zi_x2_Step - liscThick2 - ribThick / sqrt(2), liscThick1, liscThick2,</div>
+<div class="line"><span class="lineno">  612</span>        zi_x2_Step - zi_x1_Step - ribThick / 2, zi_y2 - zi_y1, kMagenta - 10,</div>
+<div class="line"><span class="lineno">  613</span>        <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  614</span>    ttLiSc-&gt;AddNode(LiSc_S3, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 1),</div>
+<div class="line"><span class="lineno">  615</span>                    <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - zi_x1_Step), zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  616</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  617</span>    ttLiSc-&gt;AddNode(LiSc_S3, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S3&quot;</span>, blockNr, Zlayer, 0, 2),</div>
+<div class="line"><span class="lineno">  618</span>                    <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - zi_x1_Step), -zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  619</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  620</span> </div>
+<div class="line"><span class="lineno">  621</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  622</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiSc_S5_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 0));</div>
+<div class="line"><span class="lineno">  623</span> </div>
+<div class="line"><span class="lineno">  624</span>    TGeoVolume* LiSc_S5 = <a class="code hl_function" href="classveto.html#a986f5434439b990aeac3d0de2ace4fd6">GeoCornerLiSc1</a>(</div>
+<div class="line"><span class="lineno">  625</span>        name, dZ, 1, zi_x1_Step - liscThick1 - ribThick / sqrt(2),</div>
+<div class="line"><span class="lineno">  626</span>        zi_x2_Step - liscThick2 - ribThick / sqrt(2), liscThick1, liscThick2,</div>
+<div class="line"><span class="lineno">  627</span>        zi_x2_Step - zi_x1_Step - ribThick / 2, zi_y2 - zi_y1, kMagenta - 10,</div>
+<div class="line"><span class="lineno">  628</span>        <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  629</span>    ttLiSc-&gt;AddNode(LiSc_S5, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 1),</div>
+<div class="line"><span class="lineno">  630</span>                    <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - zi_x1_Step), zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  631</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  632</span>    ttLiSc-&gt;AddNode(LiSc_S5, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiSc_S5&quot;</span>, blockNr, Zlayer, nx, 2),</div>
+<div class="line"><span class="lineno">  633</span>                    <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - zi_x1_Step), -zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  634</span>                                       <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
 <div class="line"><span class="lineno">  635</span> </div>
-<div class="line"><span class="lineno">  636</span>      tLongitRib-&gt;AddNode(vLongitRibX.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, zi_x1, zi_y1),</div>
-<div class="line"><span class="lineno">  637</span>                          <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - ribThick), zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  638</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  639</span>      tLongitRib-&gt;AddNode(vLongitRibX.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -zi_x1, -zi_y1),</div>
-<div class="line"><span class="lineno">  640</span>                          <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - ribThick), -zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  641</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  642</span> </div>
-<div class="line"><span class="lineno">  643</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
-<div class="line"><span class="lineno">  644</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  645</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScX_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 0));</div>
-<div class="line"><span class="lineno">  646</span>        TGeoVolume* LiScX = <a class="code hl_function" href="classveto.html#a7516f2891bea10bd8259bbc88c73cddc">GeoSideObj</a>(</div>
-<div class="line"><span class="lineno">  647</span>            name, dZ, zi_x1_Step, liscThick1, zi_x2_Step, liscThick2,</div>
-<div class="line"><span class="lineno">  648</span>            zi_x2 - zi_x1, zi_y2 - zi_y1, kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  649</span>        ttLiSc-&gt;AddNode(LiScX, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 1),</div>
-<div class="line"><span class="lineno">  650</span>                        <span class="keyword">new</span> TGeoCombiTrans(zi_x1, zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  651</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
-<div class="line"><span class="lineno">  652</span>        ttLiSc-&gt;AddNode(LiScX, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 2),</div>
-<div class="line"><span class="lineno">  653</span>                        <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -zi_y1, tZ,</div>
-<div class="line"><span class="lineno">  654</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
-<div class="line"><span class="lineno">  655</span>      }</div>
-<div class="line"><span class="lineno">  656</span> </div>
-<div class="line"><span class="lineno">  657</span>      zi_x1 = zi_x1 - ribThick;</div>
-<div class="line"><span class="lineno">  658</span>      zi_x2 = zi_x2 - ribThick;</div>
-<div class="line"><span class="lineno">  659</span>    }</div>
-<div class="line"><span class="lineno">  660</span>  }</div>
-<div class="line"><span class="lineno">  661</span>}</div>
+<div class="line"><span class="lineno">  636</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  637</span>      zi_x1 = zi_x1 - zi_x1_Step;</div>
+<div class="line"><span class="lineno">  638</span>      zi_x2 = zi_x2 - zi_x2_Step;</div>
+<div class="line"><span class="lineno">  639</span> </div>
+<div class="line"><span class="lineno">  640</span>      tLongitRib-&gt;AddNode(vLongitRibX.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, zi_x1, zi_y1),</div>
+<div class="line"><span class="lineno">  641</span>                          <span class="keyword">new</span> TGeoCombiTrans((zi_x1 - ribThick), zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  642</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  643</span>      tLongitRib-&gt;AddNode(vLongitRibX.at(i), <a class="code hl_function" href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">makeId</a>(zi, -zi_x1, -zi_y1),</div>
+<div class="line"><span class="lineno">  644</span>                          <span class="keyword">new</span> TGeoCombiTrans(-(zi_x1 - ribThick), -zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  645</span>                                             <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  646</span> </div>
+<div class="line"><span class="lineno">  647</span>      <span class="keywordflow">if</span> (i &gt; 0) {</div>
+<div class="line"><span class="lineno">  648</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  649</span>        <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Form(<span class="stringliteral">&quot;LiScX_%d&quot;</span>, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 0));</div>
+<div class="line"><span class="lineno">  650</span>        TGeoVolume* LiScX = <a class="code hl_function" href="classveto.html#a7516f2891bea10bd8259bbc88c73cddc">GeoSideObj</a>(</div>
+<div class="line"><span class="lineno">  651</span>            name, dZ, zi_x1_Step, liscThick1, zi_x2_Step, liscThick2,</div>
+<div class="line"><span class="lineno">  652</span>            zi_x2 - zi_x1, zi_y2 - zi_y1, kMagenta - 10, <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  653</span>        ttLiSc-&gt;AddNode(LiScX, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 1),</div>
+<div class="line"><span class="lineno">  654</span>                        <span class="keyword">new</span> TGeoCombiTrans(zi_x1, zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  655</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 0)));</div>
+<div class="line"><span class="lineno">  656</span>        ttLiSc-&gt;AddNode(LiScX, <a class="code hl_function" href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">liscId</a>(<span class="stringliteral">&quot;LiScX&quot;</span>, blockNr, Zlayer, i, 2),</div>
+<div class="line"><span class="lineno">  657</span>                        <span class="keyword">new</span> TGeoCombiTrans(-zi_x1, -zi_y1, tZ,</div>
+<div class="line"><span class="lineno">  658</span>                                           <span class="keyword">new</span> TGeoRotation(<span class="stringliteral">&quot;r&quot;</span>, 0, 0, 180)));</div>
+<div class="line"><span class="lineno">  659</span>      }</div>
+<div class="line"><span class="lineno">  660</span> </div>
+<div class="line"><span class="lineno">  661</span>      zi_x1 = zi_x1 - ribThick;</div>
+<div class="line"><span class="lineno">  662</span>      zi_x2 = zi_x2 - ribThick;</div>
+<div class="line"><span class="lineno">  663</span>    }</div>
+<div class="line"><span class="lineno">  664</span>  }</div>
+<div class="line"><span class="lineno">  665</span>}</div>
 <div class="ttc" id="aclassveto_html_a06e9c84e10160ef5beafe50e2e16dadb"><div class="ttname"><a href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">veto::GeoTrapezoidHollow</a></div><div class="ttdeci">TGeoVolume * GeoTrapezoidHollow(TString xname, Double_t thick, Double_t wz, Double_t wX_start, Double_t wX_end, Double_t wY_start, Double_t wY_end, Int_t color, TGeoMedium *material, Bool_t sens)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00099">veto.cxx:99</a></div></div>
 <div class="ttc" id="aclassveto_html_a1a513f94fe82e3bb6ae33cd4690c5d1d"><div class="ttname"><a href="classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d">veto::liscId</a></div><div class="ttdeci">int liscId(TString ShapeTypeName, int blockNr, int Zlayer, int number, int position)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00337">veto.cxx:337</a></div></div>
 <div class="ttc" id="aclassveto_html_a3033d6c4b427718a1a072fe08b13a709"><div class="ttname"><a href="classveto.html#a3033d6c4b427718a1a072fe08b13a709">veto::makeId</a></div><div class="ttdeci">int makeId(double z, double x, double y)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00323">veto.cxx:323</a></div></div>
@@ -866,61 +870,61 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classSHiP_1_1Detector.html#a5904684ed427b3620dc01d9d66450d51">SHiP::Detector&lt; vetoPoint &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00823">823</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  823</span>                             {</div>
-<div class="line"><span class="lineno">  824</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><span class="lineno">  825</span> </div>
-<div class="line"><span class="lineno">  826</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;vacuums&quot;</span>);</div>
-<div class="line"><span class="lineno">  827</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Aluminum&quot;</span>);</div>
-<div class="line"><span class="lineno">  828</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;helium&quot;</span>);</div>
-<div class="line"><span class="lineno">  829</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
-<div class="line"><span class="lineno">  830</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;steel&quot;</span>);</div>
-<div class="line"><span class="lineno">  831</span> </div>
-<div class="line"><span class="lineno">  832</span>  gGeoManager-&gt;SetNsegments(100);</div>
-<div class="line"><span class="lineno">  833</span> </div>
-<div class="line"><span class="lineno">  834</span>  <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a> = gGeoManager-&gt;GetMedium(</div>
-<div class="line"><span class="lineno">  835</span>      <a class="code hl_variable" href="classveto.html#acc879b7cecb30b2d79f8ee552db5c102">vetoMed_name</a>);  </div>
-<div class="line"><span class="lineno">  836</span>  <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a> = gGeoManager-&gt;GetMedium(</div>
-<div class="line"><span class="lineno">  837</span>      <a class="code hl_variable" href="classveto.html#a120fbaba3c502e0ff936aa7dd0db321e">supportMedIn_name</a>);  </div>
-<div class="line"><span class="lineno">  838</span>  <a class="code hl_variable" href="classveto.html#a4a434b12bc568c550080aa67ef293ec4">supportMedOut</a> = gGeoManager-&gt;GetMedium(</div>
-<div class="line"><span class="lineno">  839</span>      <a class="code hl_variable" href="classveto.html#a9f97a9d1f8e6eaeb3089c015d2b4fafa">supportMedOut_name</a>);  </div>
-<div class="line"><span class="lineno">  840</span>  <a class="code hl_variable" href="classveto.html#a54394dec7154e7ba6f9c9f99f99d2fda">decayVolumeMed</a> = gGeoManager-&gt;GetMedium(</div>
-<div class="line"><span class="lineno">  841</span>      <a class="code hl_variable" href="classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347">decayVolumeMed_name</a>);  <span class="comment">// decay volume, air/helium/vacuum</span></div>
-<div class="line"><span class="lineno">  842</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;veto: Decay Volume medium set as: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347">decayVolumeMed_name</a>;</div>
-<div class="line"><span class="lineno">  843</span>  TGeoVolume* tDecayVol = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;DecayVolume&quot;</span>);</div>
-<div class="line"><span class="lineno">  844</span> </div>
-<div class="line"><span class="lineno">  845</span>  TGeoVolume* seg = <a class="code hl_function" href="classveto.html#a5ff94ab044d1f2921698684d6072ca19">MakeSegments</a>();</div>
-<div class="line"><span class="lineno">  846</span>  tDecayVol-&gt;AddNode(seg, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  847</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tDecayVol, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classveto.html#a99e5d32f6a467dba1d81d864bd4290a9">zStartDecayVol</a>));  <span class="comment">//));</span></div>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00827">827</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  827</span>                             {</div>
+<div class="line"><span class="lineno">  828</span>  TGeoVolume* <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><span class="lineno">  829</span> </div>
+<div class="line"><span class="lineno">  830</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;vacuums&quot;</span>);</div>
+<div class="line"><span class="lineno">  831</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Aluminum&quot;</span>);</div>
+<div class="line"><span class="lineno">  832</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;helium&quot;</span>);</div>
+<div class="line"><span class="lineno">  833</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;Scintillator&quot;</span>);</div>
+<div class="line"><span class="lineno">  834</span>  <a class="code hl_function" href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a>(<span class="stringliteral">&quot;steel&quot;</span>);</div>
+<div class="line"><span class="lineno">  835</span> </div>
+<div class="line"><span class="lineno">  836</span>  gGeoManager-&gt;SetNsegments(100);</div>
+<div class="line"><span class="lineno">  837</span> </div>
+<div class="line"><span class="lineno">  838</span>  <a class="code hl_variable" href="classveto.html#a4837a309d71bc3d9c81067d354d018da">vetoMed</a> = gGeoManager-&gt;GetMedium(</div>
+<div class="line"><span class="lineno">  839</span>      <a class="code hl_variable" href="classveto.html#acc879b7cecb30b2d79f8ee552db5c102">vetoMed_name</a>);  </div>
+<div class="line"><span class="lineno">  840</span>  <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a> = gGeoManager-&gt;GetMedium(</div>
+<div class="line"><span class="lineno">  841</span>      <a class="code hl_variable" href="classveto.html#a120fbaba3c502e0ff936aa7dd0db321e">supportMedIn_name</a>);  </div>
+<div class="line"><span class="lineno">  842</span>  <a class="code hl_variable" href="classveto.html#a4a434b12bc568c550080aa67ef293ec4">supportMedOut</a> = gGeoManager-&gt;GetMedium(</div>
+<div class="line"><span class="lineno">  843</span>      <a class="code hl_variable" href="classveto.html#a9f97a9d1f8e6eaeb3089c015d2b4fafa">supportMedOut_name</a>);  </div>
+<div class="line"><span class="lineno">  844</span>  <a class="code hl_variable" href="classveto.html#a54394dec7154e7ba6f9c9f99f99d2fda">decayVolumeMed</a> = gGeoManager-&gt;GetMedium(</div>
+<div class="line"><span class="lineno">  845</span>      <a class="code hl_variable" href="classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347">decayVolumeMed_name</a>);  <span class="comment">// decay volume, air/helium/vacuum</span></div>
+<div class="line"><span class="lineno">  846</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;veto: Decay Volume medium set as: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347">decayVolumeMed_name</a>;</div>
+<div class="line"><span class="lineno">  847</span>  TGeoVolume* tDecayVol = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;DecayVolume&quot;</span>);</div>
 <div class="line"><span class="lineno">  848</span> </div>
-<div class="line"><span class="lineno">  849</span>  <span class="comment">// only for fastMuon simulation, otherwise output becomes too big</span></div>
-<div class="line"><span class="lineno">  850</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classveto.html#aa046f849245e6393ef7bfcfdc2876ff5">fFastMuon</a> &amp;&amp; <a class="code hl_variable" href="classveto.html#a397f97c7beccd5d07362ca3087112643">fFollowMuon</a>) {</div>
-<div class="line"><span class="lineno">  851</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Vol = <span class="stringliteral">&quot;TGeoVolume&quot;</span>;</div>
-<div class="line"><span class="lineno">  852</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Cavern = <span class="stringliteral">&quot;Cavern&quot;</span>;</div>
-<div class="line"><span class="lineno">  853</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Ain = <span class="stringliteral">&quot;AbsorberAdd&quot;</span>;</div>
-<div class="line"><span class="lineno">  854</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Aout = <span class="stringliteral">&quot;AbsorberAddCore&quot;</span>;</div>
-<div class="line"><span class="lineno">  855</span>    TObjArray* volumelist = gGeoManager-&gt;GetListOfVolumes();</div>
-<div class="line"><span class="lineno">  856</span>    <span class="keywordtype">int</span> lastvolume = volumelist-&gt;GetLast();</div>
-<div class="line"><span class="lineno">  857</span>    <span class="keywordtype">int</span> volumeiterator = 0;</div>
-<div class="line"><span class="lineno">  858</span>    <span class="keywordflow">while</span> (volumeiterator &lt;= lastvolume) {</div>
-<div class="line"><span class="lineno">  859</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* volumename = volumelist-&gt;At(volumeiterator)-&gt;GetName();</div>
-<div class="line"><span class="lineno">  860</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* classname = volumelist-&gt;At(volumeiterator)-&gt;ClassName();</div>
-<div class="line"><span class="lineno">  861</span>      <span class="keywordflow">if</span> (strstr(classname, Vol)) {</div>
-<div class="line"><span class="lineno">  862</span>        <span class="keywordflow">if</span> (strstr(volumename, Cavern) || strstr(volumename, Ain) ||</div>
-<div class="line"><span class="lineno">  863</span>            strstr(volumename, Aout)) {</div>
-<div class="line"><span class="lineno">  864</span>          AddSensitiveVolume(gGeoManager-&gt;GetVolume(volumename));</div>
-<div class="line"><span class="lineno">  865</span>          LOG(info) &lt;&lt; <span class="stringliteral">&quot;veto: made sensitive for following muons: &quot;</span></div>
-<div class="line"><span class="lineno">  866</span>                    &lt;&lt; volumename;</div>
-<div class="line"><span class="lineno">  867</span>        }</div>
-<div class="line"><span class="lineno">  868</span>      }</div>
-<div class="line"><span class="lineno">  869</span>      volumeiterator++;</div>
-<div class="line"><span class="lineno">  870</span>    }</div>
-<div class="line"><span class="lineno">  871</span>  }</div>
-<div class="line"><span class="lineno">  872</span>}</div>
+<div class="line"><span class="lineno">  849</span>  TGeoVolume* seg = <a class="code hl_function" href="classveto.html#a5ff94ab044d1f2921698684d6072ca19">MakeSegments</a>();</div>
+<div class="line"><span class="lineno">  850</span>  tDecayVol-&gt;AddNode(seg, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  851</span>  <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(tDecayVol, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, <a class="code hl_variable" href="classveto.html#a99e5d32f6a467dba1d81d864bd4290a9">zStartDecayVol</a>));  <span class="comment">//));</span></div>
+<div class="line"><span class="lineno">  852</span> </div>
+<div class="line"><span class="lineno">  853</span>  <span class="comment">// only for fastMuon simulation, otherwise output becomes too big</span></div>
+<div class="line"><span class="lineno">  854</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classveto.html#aa046f849245e6393ef7bfcfdc2876ff5">fFastMuon</a> &amp;&amp; <a class="code hl_variable" href="classveto.html#a397f97c7beccd5d07362ca3087112643">fFollowMuon</a>) {</div>
+<div class="line"><span class="lineno">  855</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Vol = <span class="stringliteral">&quot;TGeoVolume&quot;</span>;</div>
+<div class="line"><span class="lineno">  856</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Cavern = <span class="stringliteral">&quot;Cavern&quot;</span>;</div>
+<div class="line"><span class="lineno">  857</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Ain = <span class="stringliteral">&quot;AbsorberAdd&quot;</span>;</div>
+<div class="line"><span class="lineno">  858</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* Aout = <span class="stringliteral">&quot;AbsorberAddCore&quot;</span>;</div>
+<div class="line"><span class="lineno">  859</span>    TObjArray* volumelist = gGeoManager-&gt;GetListOfVolumes();</div>
+<div class="line"><span class="lineno">  860</span>    <span class="keywordtype">int</span> lastvolume = volumelist-&gt;GetLast();</div>
+<div class="line"><span class="lineno">  861</span>    <span class="keywordtype">int</span> volumeiterator = 0;</div>
+<div class="line"><span class="lineno">  862</span>    <span class="keywordflow">while</span> (volumeiterator &lt;= lastvolume) {</div>
+<div class="line"><span class="lineno">  863</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* volumename = volumelist-&gt;At(volumeiterator)-&gt;GetName();</div>
+<div class="line"><span class="lineno">  864</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* classname = volumelist-&gt;At(volumeiterator)-&gt;ClassName();</div>
+<div class="line"><span class="lineno">  865</span>      <span class="keywordflow">if</span> (strstr(classname, Vol)) {</div>
+<div class="line"><span class="lineno">  866</span>        <span class="keywordflow">if</span> (strstr(volumename, Cavern) || strstr(volumename, Ain) ||</div>
+<div class="line"><span class="lineno">  867</span>            strstr(volumename, Aout)) {</div>
+<div class="line"><span class="lineno">  868</span>          AddSensitiveVolume(gGeoManager-&gt;GetVolume(volumename));</div>
+<div class="line"><span class="lineno">  869</span>          LOG(info) &lt;&lt; <span class="stringliteral">&quot;veto: made sensitive for following muons: &quot;</span></div>
+<div class="line"><span class="lineno">  870</span>                    &lt;&lt; volumename;</div>
+<div class="line"><span class="lineno">  871</span>        }</div>
+<div class="line"><span class="lineno">  872</span>      }</div>
+<div class="line"><span class="lineno">  873</span>      volumeiterator++;</div>
+<div class="line"><span class="lineno">  874</span>    }</div>
+<div class="line"><span class="lineno">  875</span>  }</div>
+<div class="line"><span class="lineno">  876</span>}</div>
 <div class="ttc" id="aclassveto_html_a120fbaba3c502e0ff936aa7dd0db321e"><div class="ttname"><a href="classveto.html#a120fbaba3c502e0ff936aa7dd0db321e">veto::supportMedIn_name</a></div><div class="ttdeci">TString supportMedIn_name</div><div class="ttdoc">medium of internal support structure(Default = Aluminum).</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00103">veto.h:103</a></div></div>
 <div class="ttc" id="aclassveto_html_a1bc2ba89ec01c8a1b6ef9132cbebb347"><div class="ttname"><a href="classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347">veto::decayVolumeMed_name</a></div><div class="ttdeci">TString decayVolumeMed_name</div><div class="ttdoc">medium of decay volume(Default= helium).</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00107">veto.h:107</a></div></div>
 <div class="ttc" id="aclassveto_html_a4a434b12bc568c550080aa67ef293ec4"><div class="ttname"><a href="classveto.html#a4a434b12bc568c550080aa67ef293ec4">veto::supportMedOut</a></div><div class="ttdeci">TGeoMedium * supportMedOut</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00111">veto.h:111</a></div></div>
-<div class="ttc" id="aclassveto_html_a5ff94ab044d1f2921698684d6072ca19"><div class="ttname"><a href="classveto.html#a5ff94ab044d1f2921698684d6072ca19">veto::MakeSegments</a></div><div class="ttdeci">TGeoVolume * MakeSegments()</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00663">veto.cxx:663</a></div></div>
+<div class="ttc" id="aclassveto_html_a5ff94ab044d1f2921698684d6072ca19"><div class="ttname"><a href="classveto.html#a5ff94ab044d1f2921698684d6072ca19">veto::MakeSegments</a></div><div class="ttdeci">TGeoVolume * MakeSegments()</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00667">veto.cxx:667</a></div></div>
 <div class="ttc" id="aclassveto_html_a99e5d32f6a467dba1d81d864bd4290a9"><div class="ttname"><a href="classveto.html#a99e5d32f6a467dba1d81d864bd4290a9">veto::zStartDecayVol</a></div><div class="ttdeci">Float_t zStartDecayVol</div><div class="ttdoc">z Position of the Decay Volume start in the global coordinate system</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00124">veto.h:124</a></div></div>
 <div class="ttc" id="aclassveto_html_a9f97a9d1f8e6eaeb3089c015d2b4fafa"><div class="ttname"><a href="classveto.html#a9f97a9d1f8e6eaeb3089c015d2b4fafa">veto::supportMedOut_name</a></div><div class="ttdeci">TString supportMedOut_name</div><div class="ttdoc">medium of external support structure(Default = Aluminum).</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00105">veto.h:105</a></div></div>
 <div class="ttc" id="aclassveto_html_acc879b7cecb30b2d79f8ee552db5c102"><div class="ttname"><a href="classveto.html#acc879b7cecb30b2d79f8ee552db5c102">veto::vetoMed_name</a></div><div class="ttdeci">TString vetoMed_name</div><div class="ttdoc">medium of veto counter, liquid or plastic scintillator</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00101">veto.h:101</a></div></div>
@@ -1905,89 +1909,89 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00663">663</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  663</span>                               {</div>
-<div class="line"><span class="lineno">  664</span>  TGeoVolumeAssembly* tTankVol = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;T2&quot;</span>);</div>
-<div class="line"><span class="lineno">  665</span> </div>
-<div class="line"><span class="lineno">  666</span>  Double_t cell_thickness_z0 =</div>
-<div class="line"><span class="lineno">  667</span>      800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the first cell along z (800mm) 2024 version</span></div>
-<div class="line"><span class="lineno">  668</span>  Double_t cell_thickness_z =</div>
-<div class="line"><span class="lineno">  669</span>      820 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the cell along z (820mm) 2024 version</span></div>
-<div class="line"><span class="lineno">  670</span> </div>
-<div class="line"><span class="lineno">  671</span>  TString nameInnerWall = <span class="stringliteral">&quot;VetoInnerWall&quot;</span>;</div>
-<div class="line"><span class="lineno">  672</span>  TGeoVolumeAssembly* tInnerWall = <span class="keyword">new</span> TGeoVolumeAssembly(nameInnerWall);</div>
-<div class="line"><span class="lineno">  673</span> </div>
-<div class="line"><span class="lineno">  674</span>  TString nameDecayVacuum = <span class="stringliteral">&quot;DecayVacuum&quot;</span>;</div>
-<div class="line"><span class="lineno">  675</span>  TGeoVolumeAssembly* tDecayVacuum = <span class="keyword">new</span> TGeoVolumeAssembly(nameDecayVacuum);</div>
-<div class="line"><span class="lineno">  676</span> </div>
-<div class="line"><span class="lineno">  677</span>  TString nameOuterWall = <span class="stringliteral">&quot;VetoOuterWall&quot;</span>;</div>
-<div class="line"><span class="lineno">  678</span>  TGeoVolumeAssembly* tOuterWall = <span class="keyword">new</span> TGeoVolumeAssembly(nameOuterWall);</div>
-<div class="line"><span class="lineno">  679</span> </div>
-<div class="line"><span class="lineno">  680</span>  TString nameLongitRib = <span class="stringliteral">&quot;VetoLongitRib&quot;</span>;</div>
-<div class="line"><span class="lineno">  681</span>  TGeoVolumeAssembly* tLongitRib = <span class="keyword">new</span> TGeoVolumeAssembly(nameLongitRib);</div>
-<div class="line"><span class="lineno">  682</span> </div>
-<div class="line"><span class="lineno">  683</span>  TString nameVerticalRib = <span class="stringliteral">&quot;VetoVerticalRib&quot;</span>;</div>
-<div class="line"><span class="lineno">  684</span>  TGeoVolumeAssembly* tVerticalRib = <span class="keyword">new</span> TGeoVolumeAssembly(nameVerticalRib);</div>
-<div class="line"><span class="lineno">  685</span> </div>
-<div class="line"><span class="lineno">  686</span>  TString nameLiSc = <span class="stringliteral">&quot;VetoLiSc&quot;</span>;</div>
-<div class="line"><span class="lineno">  687</span>  TGeoVolumeAssembly* ttLiSc = <span class="keyword">new</span> TGeoVolumeAssembly(nameLiSc);</div>
-<div class="line"><span class="lineno">  688</span>  <span class="keywordtype">int</span> liScCounter = 0;</div>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00667">667</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  667</span>                               {</div>
+<div class="line"><span class="lineno">  668</span>  TGeoVolumeAssembly* tTankVol = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;T2&quot;</span>);</div>
+<div class="line"><span class="lineno">  669</span> </div>
+<div class="line"><span class="lineno">  670</span>  Double_t cell_thickness_z0 =</div>
+<div class="line"><span class="lineno">  671</span>      800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the first cell along z (800mm) 2024 version</span></div>
+<div class="line"><span class="lineno">  672</span>  Double_t cell_thickness_z =</div>
+<div class="line"><span class="lineno">  673</span>      820 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the cell along z (820mm) 2024 version</span></div>
+<div class="line"><span class="lineno">  674</span> </div>
+<div class="line"><span class="lineno">  675</span>  TString nameInnerWall = <span class="stringliteral">&quot;VetoInnerWall&quot;</span>;</div>
+<div class="line"><span class="lineno">  676</span>  TGeoVolumeAssembly* tInnerWall = <span class="keyword">new</span> TGeoVolumeAssembly(nameInnerWall);</div>
+<div class="line"><span class="lineno">  677</span> </div>
+<div class="line"><span class="lineno">  678</span>  TString nameDecayVacuum = <span class="stringliteral">&quot;DecayVacuum&quot;</span>;</div>
+<div class="line"><span class="lineno">  679</span>  TGeoVolumeAssembly* tDecayVacuum = <span class="keyword">new</span> TGeoVolumeAssembly(nameDecayVacuum);</div>
+<div class="line"><span class="lineno">  680</span> </div>
+<div class="line"><span class="lineno">  681</span>  TString nameOuterWall = <span class="stringliteral">&quot;VetoOuterWall&quot;</span>;</div>
+<div class="line"><span class="lineno">  682</span>  TGeoVolumeAssembly* tOuterWall = <span class="keyword">new</span> TGeoVolumeAssembly(nameOuterWall);</div>
+<div class="line"><span class="lineno">  683</span> </div>
+<div class="line"><span class="lineno">  684</span>  TString nameLongitRib = <span class="stringliteral">&quot;VetoLongitRib&quot;</span>;</div>
+<div class="line"><span class="lineno">  685</span>  TGeoVolumeAssembly* tLongitRib = <span class="keyword">new</span> TGeoVolumeAssembly(nameLongitRib);</div>
+<div class="line"><span class="lineno">  686</span> </div>
+<div class="line"><span class="lineno">  687</span>  TString nameVerticalRib = <span class="stringliteral">&quot;VetoVerticalRib&quot;</span>;</div>
+<div class="line"><span class="lineno">  688</span>  TGeoVolumeAssembly* tVerticalRib = <span class="keyword">new</span> TGeoVolumeAssembly(nameVerticalRib);</div>
 <div class="line"><span class="lineno">  689</span> </div>
-<div class="line"><span class="lineno">  690</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> = 2;  <span class="comment">// number of Longitudinal ribs on X</span></div>
-<div class="line"><span class="lineno">  691</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> = 3;  <span class="comment">// number of Longitudinal ribs on Y</span></div>
-<div class="line"><span class="lineno">  692</span> </div>
-<div class="line"><span class="lineno">  693</span>  <span class="keywordtype">double</span> wallThick = <a class="code hl_variable" href="classveto.html#ab5b2a57ab78e8faf307971f155d96fd6">f_InnerSupportThickness</a>;</div>
-<div class="line"><span class="lineno">  694</span>  <span class="keywordtype">double</span> liscThick = <a class="code hl_variable" href="classveto.html#a815212dc35b35ef1745d8063bc728f73">f_VetoThickness</a>;</div>
-<div class="line"><span class="lineno">  695</span>  <span class="keywordtype">double</span> ribThick = <a class="code hl_variable" href="classveto.html#ad7a86d62096353655a67eaf0f1d5846b">f_RibThickness</a>;</div>
+<div class="line"><span class="lineno">  690</span>  TString nameLiSc = <span class="stringliteral">&quot;VetoLiSc&quot;</span>;</div>
+<div class="line"><span class="lineno">  691</span>  TGeoVolumeAssembly* ttLiSc = <span class="keyword">new</span> TGeoVolumeAssembly(nameLiSc);</div>
+<div class="line"><span class="lineno">  692</span>  <span class="keywordtype">int</span> liScCounter = 0;</div>
+<div class="line"><span class="lineno">  693</span> </div>
+<div class="line"><span class="lineno">  694</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">nx</a> = 2;  <span class="comment">// number of Longitudinal ribs on X</span></div>
+<div class="line"><span class="lineno">  695</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">ny</a> = 3;  <span class="comment">// number of Longitudinal ribs on Y</span></div>
 <div class="line"><span class="lineno">  696</span> </div>
-<div class="line"><span class="lineno">  697</span>  <span class="comment">//******************************** Block1</span></div>
-<div class="line"><span class="lineno">  698</span>  <span class="comment">//**************************************</span></div>
-<div class="line"><span class="lineno">  699</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  700</span>  <span class="keywordtype">double</span> z2 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><span class="lineno">  701</span>  <span class="keywordtype">double</span> wz = (z2 - z1);</div>
-<div class="line"><span class="lineno">  702</span> </div>
-<div class="line"><span class="lineno">  703</span>  <span class="keywordtype">double</span> Zshift = wz / 2;  <span class="comment">// calibration of Z position</span></div>
-<div class="line"><span class="lineno">  704</span> </div>
-<div class="line"><span class="lineno">  705</span>  <a class="code hl_function" href="classveto.html#a8933d77df311eb11a42831beaf55be70">AddBlock</a>(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,</div>
-<div class="line"><span class="lineno">  706</span>           ttLiSc, liScCounter, 1, nx, ny, z1, z2, Zshift, cell_thickness_z0,</div>
-<div class="line"><span class="lineno">  707</span>           wallThick, liscThick, liscThick, ribThick);</div>
+<div class="line"><span class="lineno">  697</span>  <span class="keywordtype">double</span> wallThick = <a class="code hl_variable" href="classveto.html#ab5b2a57ab78e8faf307971f155d96fd6">f_InnerSupportThickness</a>;</div>
+<div class="line"><span class="lineno">  698</span>  <span class="keywordtype">double</span> liscThick = <a class="code hl_variable" href="classveto.html#a815212dc35b35ef1745d8063bc728f73">f_VetoThickness</a>;</div>
+<div class="line"><span class="lineno">  699</span>  <span class="keywordtype">double</span> ribThick = <a class="code hl_variable" href="classveto.html#ad7a86d62096353655a67eaf0f1d5846b">f_RibThickness</a>;</div>
+<div class="line"><span class="lineno">  700</span> </div>
+<div class="line"><span class="lineno">  701</span>  <span class="comment">//******************************** Block1</span></div>
+<div class="line"><span class="lineno">  702</span>  <span class="comment">//**************************************</span></div>
+<div class="line"><span class="lineno">  703</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  704</span>  <span class="keywordtype">double</span> z2 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
+<div class="line"><span class="lineno">  705</span>  <span class="keywordtype">double</span> wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  706</span> </div>
+<div class="line"><span class="lineno">  707</span>  <span class="keywordtype">double</span> Zshift = wz / 2;  <span class="comment">// calibration of Z position</span></div>
 <div class="line"><span class="lineno">  708</span> </div>
-<div class="line"><span class="lineno">  709</span>  <span class="comment">//******************************** Block2</span></div>
-<div class="line"><span class="lineno">  710</span>  <span class="comment">//**************************************</span></div>
-<div class="line"><span class="lineno">  711</span> </div>
-<div class="line"><span class="lineno">  712</span>  Zshift += wz / 2;</div>
-<div class="line"><span class="lineno">  713</span> </div>
-<div class="line"><span class="lineno">  714</span>  z1 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><span class="lineno">  715</span>  z2 = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  716</span>  wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  709</span>  <a class="code hl_function" href="classveto.html#a8933d77df311eb11a42831beaf55be70">AddBlock</a>(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,</div>
+<div class="line"><span class="lineno">  710</span>           ttLiSc, liScCounter, 1, nx, ny, z1, z2, Zshift, cell_thickness_z0,</div>
+<div class="line"><span class="lineno">  711</span>           wallThick, liscThick, liscThick, ribThick);</div>
+<div class="line"><span class="lineno">  712</span> </div>
+<div class="line"><span class="lineno">  713</span>  <span class="comment">//******************************** Block2</span></div>
+<div class="line"><span class="lineno">  714</span>  <span class="comment">//**************************************</span></div>
+<div class="line"><span class="lineno">  715</span> </div>
+<div class="line"><span class="lineno">  716</span>  Zshift += wz / 2;</div>
 <div class="line"><span class="lineno">  717</span> </div>
-<div class="line"><span class="lineno">  718</span>  Zshift += wz / 2;</div>
-<div class="line"><span class="lineno">  719</span> </div>
-<div class="line"><span class="lineno">  720</span>  <a class="code hl_function" href="classveto.html#a8933d77df311eb11a42831beaf55be70">AddBlock</a>(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,</div>
-<div class="line"><span class="lineno">  721</span>           ttLiSc, liScCounter, 2, nx, ny, z1, z2, Zshift, cell_thickness_z,</div>
-<div class="line"><span class="lineno">  722</span>           wallThick, liscThick, liscThick, ribThick);</div>
+<div class="line"><span class="lineno">  718</span>  z1 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
+<div class="line"><span class="lineno">  719</span>  z2 = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  720</span>  wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  721</span> </div>
+<div class="line"><span class="lineno">  722</span>  Zshift += wz / 2;</div>
 <div class="line"><span class="lineno">  723</span> </div>
-<div class="line"><span class="lineno">  724</span>  <span class="keywordtype">double</span> zi = z2;</div>
-<div class="line"><span class="lineno">  725</span> </div>
-<div class="line"><span class="lineno">  726</span>  TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">  727</span>  nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
-<div class="line"><span class="lineno">  728</span>  TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(</div>
-<div class="line"><span class="lineno">  729</span>      nameVR, liscThick, ribThick, <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi) + 2 * wallThick,</div>
-<div class="line"><span class="lineno">  730</span>      <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * wallThick, <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi) + 2 * wallThick,</div>
-<div class="line"><span class="lineno">  731</span>      <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick, 15, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
-<div class="line"><span class="lineno">  732</span>  <span class="keywordtype">double</span> tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
-<div class="line"><span class="lineno">  733</span> </div>
-<div class="line"><span class="lineno">  734</span>  tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
-<div class="line"><span class="lineno">  735</span> </div>
-<div class="line"><span class="lineno">  736</span>  tTankVol-&gt;AddNode(tInnerWall, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  737</span>  tTankVol-&gt;AddNode(tDecayVacuum, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  738</span>  tTankVol-&gt;AddNode(tOuterWall, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  739</span>  tTankVol-&gt;AddNode(tVerticalRib, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  740</span>  tTankVol-&gt;AddNode(tLongitRib, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  741</span>  tTankVol-&gt;AddNode(ttLiSc, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
-<div class="line"><span class="lineno">  742</span> </div>
-<div class="line"><span class="lineno">  743</span>  <span class="keywordflow">return</span> tTankVol;</div>
-<div class="line"><span class="lineno">  744</span>}</div>
+<div class="line"><span class="lineno">  724</span>  <a class="code hl_function" href="classveto.html#a8933d77df311eb11a42831beaf55be70">AddBlock</a>(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,</div>
+<div class="line"><span class="lineno">  725</span>           ttLiSc, liScCounter, 2, nx, ny, z1, z2, Zshift, cell_thickness_z,</div>
+<div class="line"><span class="lineno">  726</span>           wallThick, liscThick, liscThick, ribThick);</div>
+<div class="line"><span class="lineno">  727</span> </div>
+<div class="line"><span class="lineno">  728</span>  <span class="keywordtype">double</span> zi = z2;</div>
+<div class="line"><span class="lineno">  729</span> </div>
+<div class="line"><span class="lineno">  730</span>  TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  731</span>  nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
+<div class="line"><span class="lineno">  732</span>  TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(</div>
+<div class="line"><span class="lineno">  733</span>      nameVR, liscThick, ribThick, <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi) + 2 * wallThick,</div>
+<div class="line"><span class="lineno">  734</span>      <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(zi + ribThick) + 2 * wallThick, <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi) + 2 * wallThick,</div>
+<div class="line"><span class="lineno">  735</span>      <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick, 15, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
+<div class="line"><span class="lineno">  736</span>  <span class="keywordtype">double</span> tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
+<div class="line"><span class="lineno">  737</span> </div>
+<div class="line"><span class="lineno">  738</span>  tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
+<div class="line"><span class="lineno">  739</span> </div>
+<div class="line"><span class="lineno">  740</span>  tTankVol-&gt;AddNode(tInnerWall, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  741</span>  tTankVol-&gt;AddNode(tDecayVacuum, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  742</span>  tTankVol-&gt;AddNode(tOuterWall, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  743</span>  tTankVol-&gt;AddNode(tVerticalRib, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  744</span>  tTankVol-&gt;AddNode(tLongitRib, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  745</span>  tTankVol-&gt;AddNode(ttLiSc, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
+<div class="line"><span class="lineno">  746</span> </div>
+<div class="line"><span class="lineno">  747</span>  <span class="keywordflow">return</span> tTankVol;</div>
+<div class="line"><span class="lineno">  748</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_ab05e85c22fe0c2c6ed701c357bbf1512"><div class="ttname"><a href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a></div><div class="ttdeci">Double_t mm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00026">ShipBellField.cxx:26</a></div></div>
 <div class="ttc" id="aclassveto_html_a815212dc35b35ef1745d8063bc728f73"><div class="ttname"><a href="classveto.html#a815212dc35b35ef1745d8063bc728f73">veto::f_VetoThickness</a></div><div class="ttdeci">Float_t f_VetoThickness</div><div class="ttdoc">Thickness of the liquid scintillator along z(Default = 20cm).</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00097">veto.h:97</a></div></div>
@@ -2047,15 +2051,15 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>The following methods can be implemented if you need to make any optional action in your detector during the transport. </p>
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00806">806</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  806</span>                    {</div>
-<div class="line"><span class="lineno">  807</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classveto.html#aa046f849245e6393ef7bfcfdc2876ff5">fFastMuon</a>) {</div>
-<div class="line"><span class="lineno">  808</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  809</span>  }</div>
-<div class="line"><span class="lineno">  810</span>  <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPid()) != 13) {</div>
-<div class="line"><span class="lineno">  811</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;StopTrack();</div>
-<div class="line"><span class="lineno">  812</span>  }</div>
-<div class="line"><span class="lineno">  813</span>}</div>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00810">810</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  810</span>                    {</div>
+<div class="line"><span class="lineno">  811</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classveto.html#aa046f849245e6393ef7bfcfdc2876ff5">fFastMuon</a>) {</div>
+<div class="line"><span class="lineno">  812</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  813</span>  }</div>
+<div class="line"><span class="lineno">  814</span>  <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPid()) != 13) {</div>
+<div class="line"><span class="lineno">  815</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;StopTrack();</div>
+<div class="line"><span class="lineno">  816</span>  }</div>
+<div class="line"><span class="lineno">  817</span>}</div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00420">run_fixedTarget.py:420</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2100,51 +2104,51 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>True if the hit was processed successfully, false otherwise. </dd></dl>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00760">760</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  760</span>                                        {</div>
-<div class="line"><span class="lineno">  762</span>  <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  763</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
-<div class="line"><span class="lineno">  764</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
-<div class="line"><span class="lineno">  765</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  766</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  767</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
-<div class="line"><span class="lineno">  768</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
-<div class="line"><span class="lineno">  769</span>  }</div>
-<div class="line"><span class="lineno">  770</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  771</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
-<div class="line"><span class="lineno">  772</span> </div>
-<div class="line"><span class="lineno">  773</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  774</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
-<div class="line"><span class="lineno">  775</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
-<div class="line"><span class="lineno">  776</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
-<div class="line"><span class="lineno">  777</span>      <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><span class="lineno">  778</span>    }</div>
-<div class="line"><span class="lineno">  779</span> </div>
-<div class="line"><span class="lineno">  780</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  781</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
-<div class="line"><span class="lineno">  782</span>    Int_t veto_uniqueId;</div>
-<div class="line"><span class="lineno">  783</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(veto_uniqueId);</div>
-<div class="line"><span class="lineno">  784</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  785</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  786</span>    TLorentzVector <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
-<div class="line"><span class="lineno">  787</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(pos);</div>
-<div class="line"><span class="lineno">  788</span>    TLorentzVector Mom;</div>
-<div class="line"><span class="lineno">  789</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
-<div class="line"><span class="lineno">  790</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X()) / 2.;</div>
-<div class="line"><span class="lineno">  791</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y()) / 2.;</div>
-<div class="line"><span class="lineno">  792</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z()) / 2.;</div>
-<div class="line"><span class="lineno">  793</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, veto_uniqueId, TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">  794</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
-<div class="line"><span class="lineno">  795</span>           pdgCode, TVector3(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z()),</div>
-<div class="line"><span class="lineno">  796</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
-<div class="line"><span class="lineno">  797</span> </div>
-<div class="line"><span class="lineno">  798</span>    <span class="comment">// Increment number of veto det points in TParticle</span></div>
-<div class="line"><span class="lineno">  799</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  800</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>);</div>
-<div class="line"><span class="lineno">  801</span>  }</div>
-<div class="line"><span class="lineno">  802</span> </div>
-<div class="line"><span class="lineno">  803</span>  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  804</span>}</div>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00764">764</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  764</span>                                        {</div>
+<div class="line"><span class="lineno">  766</span>  <span class="comment">// Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  767</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackEntering()) {</div>
+<div class="line"><span class="lineno">  768</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> = 0.;</div>
+<div class="line"><span class="lineno">  769</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  770</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  771</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>);</div>
+<div class="line"><span class="lineno">  772</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>);</div>
+<div class="line"><span class="lineno">  773</span>  }</div>
+<div class="line"><span class="lineno">  774</span>  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  775</span>  <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> += <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  776</span> </div>
+<div class="line"><span class="lineno">  777</span>  <span class="comment">// Create vetoPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  778</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackStop() ||</div>
+<div class="line"><span class="lineno">  779</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;IsTrackDisappeared()) {</div>
+<div class="line"><span class="lineno">  780</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a> == 0.) {</div>
+<div class="line"><span class="lineno">  781</span>      <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><span class="lineno">  782</span>    }</div>
+<div class="line"><span class="lineno">  783</span> </div>
+<div class="line"><span class="lineno">  784</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  785</span>    <a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentEvent();</div>
+<div class="line"><span class="lineno">  786</span>    Int_t veto_uniqueId;</div>
+<div class="line"><span class="lineno">  787</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;CurrentVolID(veto_uniqueId);</div>
+<div class="line"><span class="lineno">  788</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  789</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  790</span>    TLorentzVector <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
+<div class="line"><span class="lineno">  791</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackPosition(pos);</div>
+<div class="line"><span class="lineno">  792</span>    TLorentzVector Mom;</div>
+<div class="line"><span class="lineno">  793</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;TrackMomentum(Mom);</div>
+<div class="line"><span class="lineno">  794</span>    Double_t xmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.X() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X()) / 2.;</div>
+<div class="line"><span class="lineno">  795</span>    Double_t ymean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Y() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y()) / 2.;</div>
+<div class="line"><span class="lineno">  796</span>    Double_t zmean = (<a class="code hl_variable" href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">fPos</a>.Z() + <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z()) / 2.;</div>
+<div class="line"><span class="lineno">  797</span>    <a class="code hl_function" href="classSHiP_1_1Detector.html#a9885b9592a20ae576f27735098c33952">AddHit</a>(<a class="code hl_variable" href="classSHiP_1_1Detector.html#ac4ba571377f2accd0775e010df940ba1">fEventID</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">fTrackID</a>, veto_uniqueId, TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">  798</span>           TVector3(<a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Px(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Py(), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a9a38f37bdd864a330614332b9846f206">fMom</a>.Pz()), <a class="code hl_variable" href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">fTime</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#ae214ab7c082d1472301f659910703f70">fLength</a>, <a class="code hl_variable" href="classSHiP_1_1Detector.html#a73510d2ac4e0508cd8297620923db8e4">fELoss</a>,</div>
+<div class="line"><span class="lineno">  799</span>           pdgCode, TVector3(<a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y(), <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z()),</div>
+<div class="line"><span class="lineno">  800</span>           TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
+<div class="line"><span class="lineno">  801</span> </div>
+<div class="line"><span class="lineno">  802</span>    <span class="comment">// Increment number of veto det points in TParticle</span></div>
+<div class="line"><span class="lineno">  803</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  804</span>    <a class="code hl_variable" href="namespacemakeCascade.html#a4af6ee173bd7ee58725a4483fc98f07e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>);</div>
+<div class="line"><span class="lineno">  805</span>  }</div>
+<div class="line"><span class="lineno">  806</span> </div>
+<div class="line"><span class="lineno">  807</span>  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  808</span>}</div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a0f51e2d392c158d28d09fc71e9ef6a88"><div class="ttname"><a href="classSHiP_1_1Detector.html#a0f51e2d392c158d28d09fc71e9ef6a88">SHiP::Detector&lt; vetoPoint &gt;::fTrackID</a></div><div class="ttdeci">Int_t fTrackID</div><div class="ttdoc">event index</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00085">Detector.h:85</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a5017601ade4c6805f6685562092b72f4"><div class="ttname"><a href="classSHiP_1_1Detector.html#a5017601ade4c6805f6685562092b72f4">SHiP::Detector&lt; vetoPoint &gt;::fPos</a></div><div class="ttdeci">TLorentzVector fPos</div><div class="ttdoc">volume id</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00087">Detector.h:87</a></div></div>
 <div class="ttc" id="aclassSHiP_1_1Detector_html_a59b2901f4062e764c35947220fe99cee"><div class="ttname"><a href="classSHiP_1_1Detector.html#a59b2901f4062e764c35947220fe99cee">SHiP::Detector&lt; vetoPoint &gt;::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Detector_8h_source.html#l00089">Detector.h:89</a></div></div>
