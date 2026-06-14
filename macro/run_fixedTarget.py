@@ -345,6 +345,7 @@ sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
+sensPlaneT = None
 if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
     sensPlaneT = ROOT.exitHadronAbsorber()
     sensPlaneT.SetEnergyCut(args.ecut * u.GeV)
@@ -356,15 +357,15 @@ if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
 
 if args.storeOnlyMuons:
     sensPlaneHA.SetOnlyMuons()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SetOnlyMuons()
 if args.skipNeutrinos:
     sensPlaneHA.SkipNeutrinos()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SkipNeutrinos()
 if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
     sensPlaneHA.SetOpt4DP()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SetOpt4DP()
 
 run.AddModule(sensPlaneHA)

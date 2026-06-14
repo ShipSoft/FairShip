@@ -404,8 +404,10 @@ if options.A != "c":
         HNL = False
     if options.A not in ["b", "c", "bc", "meson", "pbrem", "qcd"]:
         inclusive = True
+motherMode = None
 if options.MM:
     motherMode = options.MM
+Opt_high = None
 if options.cosmics:
     Opt_high = int(options.cosmics)
 if options.inputFile:
@@ -430,6 +432,7 @@ if not options.theMass:
         options.theMass = theDPmass
     else:
         options.theMass = theHNLMass
+theCouplings = None
 if options.thecouplings:
     theCouplings = [float(c) for c in options.thecouplings.split(",")]
 if options.theprodcouplings:
@@ -548,6 +551,7 @@ import shipDet_conf
 modules = shipDet_conf.configure(run, ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
+P8gen = None  # populated below by the various generator branches
 if options.pythia8:
     primGen.SetTarget(ship_geo.target.z0, 0.0)
     # -----Pythia8--------------------------------------
@@ -972,7 +976,7 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(" ")
 print("Macro finished successfully.")
-if "P8gen" in globals():
+if P8gen is not None:
     if HNL:
         print("number of retries (no HNL produced) ", P8gen.nrOfRetries())
         print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())

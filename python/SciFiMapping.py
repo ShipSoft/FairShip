@@ -171,6 +171,9 @@ class SciFiMapping:
         ymax = -999.0
         fibre_positions = []
         fibresSiPM = self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
+        if not fibresSiPM[locChannel]:
+            return
+        globfiberID = 0
         for fibre in fibresSiPM[locChannel]:
             globfiberID = (
                 fibre + 100000000 + 1000000 + 0 * 100000
@@ -453,6 +456,12 @@ class SciFiMapping:
         angle_U = -5.0  # tilt for U
         angle_V = +5.0  # tilt for V
 
+        # These are only used in the real_event branch; bound to 0 here so static
+        # analysis sees them defined on the not-real_event branch too.
+        channels_x_U = 0
+        channels_x_V = 0
+        channel_x_U = 0
+        channel_x_V = 0
         if not real_event:
             alpha_sipm, alpha_fibre = 0.75, 0.5
         else:
@@ -489,6 +498,10 @@ class SciFiMapping:
         # cmap_V = plt.get_cmap('tab20b')
         # colorsU = [cmap_U(i/(len(chansU)-1)) for i in range(len(chansU))]
         # colorsV = [cmap_V(i/(len(chansV)-1)) for i in range(len(chansV))]
+        # alpha (tilt of the last drawn ribbon, used below to shift xlim)
+        # initialised here so static analysis sees it defined even if the loop
+        # doesn't iterate; both U and V have the same |alpha|.
+        alpha = np.deg2rad(angle_U)
         # 3) Draw ribbons and SiPM boxes per channel
         for chan in all_chans:
             isU = chan in chansU
