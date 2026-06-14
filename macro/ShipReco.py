@@ -85,6 +85,7 @@ vertexing = not options.noVertexing
 
 
 # need to figure out which geometry was used, only needed if no geo file
+dy = options.dy
 if not options.dy:
     # try to extract from input file name
     tmp = options.inputFile.split(".")
@@ -154,6 +155,7 @@ modules = shipDet_conf.configure(run, ShipGeo)
 sGeo = fgeo["FAIRGeom"]
 import geomGeant4
 
+fieldMaker = None
 if hasattr(ShipGeo.Bfield, "fieldMap"):
     fieldMaker = geomGeant4.addVMCFields(ShipGeo, "", True, withVirtualMC=False)
 
