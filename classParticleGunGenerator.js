@@ -35,7 +35,7 @@ var classParticleGunGenerator =
     [ "SetPtRange", "classParticleGunGenerator.html#a05e034e9ab46e1cbf8b8a6a0c96e323a", null ],
     [ "SetThetaRange", "classParticleGunGenerator.html#af114ae172eb673fd28ebf57842707e0f", null ],
     [ "SetVar", "classParticleGunGenerator.html#aa7d0946157c4f1e56313d01c49c34770", null ],
-    [ "SetVertexModel", "classParticleGunGenerator.html#a09fc5795b31d69b0f9bcc2ca0d560bdc", null ],
+    [ "SetVertexModel", "classParticleGunGenerator.html#a4c50dfde6e71a4f246a4c3c6bda127c4", null ],
     [ "SetYRange", "classParticleGunGenerator.html#ac8f58659dd5ecee64d44600cebc54496", null ],
     [ "fCosThetaIsSet", "classParticleGunGenerator.html#adf08a39d833a830a7f604a08e2ddf914", null ],
     [ "fEkinMax", "classParticleGunGenerator.html#a81e9327c2e4eeec40b360ba24d24ec97", null ],

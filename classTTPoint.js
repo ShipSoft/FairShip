@@ -1,7 +1,7 @@
 var classTTPoint =
 [
     [ "TTPoint", "classTTPoint.html#a08ac0ecaf31d9b632dd1ee6152efef80", null ],
-    [ "TTPoint", "classTTPoint.html#a7489c8f30479ffa5a959d21c3015fd54", null ],
+    [ "TTPoint", "classTTPoint.html#a2195023824e9be19ec4b18d655c79c83", null ],
     [ "~TTPoint", "classTTPoint.html#afc7e2f56df18c21540391318d34990d1", null ],
     [ "TTPoint", "classTTPoint.html#a5dc621baf081ed22551a2dd91bb18ef5", null ],
     [ "operator=", "classTTPoint.html#a9f28ad01cfed2ebc1087904c154dd89f", null ],

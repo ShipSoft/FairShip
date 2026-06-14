@@ -8,7 +8,7 @@ var classFixedTargetGenerator =
     [ "Init", "classFixedTargetGenerator.html#ad66ae220c864eae60b14e857c2917bb1", null ],
     [ "Init", "classFixedTargetGenerator.html#aa4cf8bb33b8473048125a8deec00b56c", null ],
     [ "Init", "classFixedTargetGenerator.html#a5c988a73fbfc2d3153c90887ec169ab7", null ],
-    [ "InitForCharmOrBeauty", "classFixedTargetGenerator.html#ae75a3d26b23da72e7e5d23ee6b2f9d4a", null ],
+    [ "InitForCharmOrBeauty", "classFixedTargetGenerator.html#a03500249963f1da62224d1596e890fdc", null ],
     [ "Print", "classFixedTargetGenerator.html#a0717a4f530494f5ea8f727339dbb4bf6", null ],
     [ "ReadEvent", "classFixedTargetGenerator.html#a141c3573dcad3a144cc8581234cf457d", null ],
     [ "SetBoost", "classFixedTargetGenerator.html#ad9f029b7834b9ba76e8ed9935a69ed08", null ],

@@ -10,7 +10,7 @@ var searchData=
   ['add_5ftau_5fchannel_7',['add_tau_channel',['../namespacepythia8__conf__utils.html#a0bdf53516ea3eb6aef29b237ce06a23a',1,'pythia8_conf_utils']]],
   ['addallhistograms_8',['addAllHistograms',['../namespacecompactingBackgroundProduction.html#ae7aa9a926baeca8aeeb82a3797c8617e',1,'compactingBackgroundProduction']]],
   ['addblock_9',['AddBlock',['../classveto.html#a8933d77df311eb11a42831beaf55be70',1,'veto']]],
-  ['addbox_10',['AddBox',['../classGenieGenerator.html#abb3327135face79d630176d066548e4a',1,'GenieGenerator']]],
+  ['addbox_10',['AddBox',['../classGenieGenerator.html#a540c1c62394edad0b8ac530d7d0bb906',1,'GenieGenerator']]],
   ['addchannelstopythia_11',['AddChannelsToPythia',['../classrpvsusy_1_1RPVSUSYbranchings.html#ae1cf72bb29013ab33a1757406f27034f',1,'rpvsusy::RPVSUSYbranchings']]],
   ['adddarkphotondecaychannels_12',['addDarkPhotondecayChannels',['../namespacereadDecayTable.html#a02bdb1dd20ec4dc591b37bfc0aad40a4',1,'readDecayTable']]],
   ['adddptoroot_13',['addDPtoROOT',['../namespacepythia8darkphoton__conf.html#a2d210c1850611efa3f2d94cfed4a549d',1,'pythia8darkphoton_conf']]],
