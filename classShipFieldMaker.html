@@ -708,19 +708,19 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  299</span>  <span class="keywordflow">if</span> (nWords == 6 || nWords == 9) {</div>
 <div class="line"><span class="lineno">  300</span>    TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>    Double_t BPeak = std::atof(inputLine[2].c_str());</div>
-<div class="line"><span class="lineno">  303</span>    Double_t zMiddle = std::atof(inputLine[3].c_str());  <span class="comment">// cm</span></div>
+<div class="line"><span class="lineno">  302</span>    Double_t BPeak = std::stod(inputLine[2]);</div>
+<div class="line"><span class="lineno">  303</span>    Double_t zMiddle = std::stod(inputLine[3]);  <span class="comment">// cm</span></div>
 <div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>    Int_t orient = std::atoi(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  306</span>    Double_t tubeR = std::atof(inputLine[5].c_str());  <span class="comment">// cm</span></div>
+<div class="line"><span class="lineno">  305</span>    Int_t orient = std::stoi(inputLine[4]);</div>
+<div class="line"><span class="lineno">  306</span>    Double_t tubeR = std::stod(inputLine[5]);  <span class="comment">// cm</span></div>
 <div class="line"><span class="lineno">  307</span> </div>
 <div class="line"><span class="lineno">  308</span>    Double_t xy(0.0), <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a>(0.0), <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">L</a>(0.0);</div>
 <div class="line"><span class="lineno">  309</span> </div>
 <div class="line"><span class="lineno">  310</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
 <div class="line"><span class="lineno">  311</span>      <span class="comment">// Specify &quot;target&quot; dimensions (cm)</span></div>
-<div class="line"><span class="lineno">  312</span>      xy = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  313</span>      <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = std::atof(inputLine[7].c_str());</div>
-<div class="line"><span class="lineno">  314</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">L</a> = std::atof(inputLine[8].c_str());</div>
+<div class="line"><span class="lineno">  312</span>      xy = std::stod(inputLine[6]);</div>
+<div class="line"><span class="lineno">  313</span>      <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = std::stod(inputLine[7]);</div>
+<div class="line"><span class="lineno">  314</span>      <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">L</a> = std::stod(inputLine[8]);</div>
 <div class="line"><span class="lineno">  315</span>    }</div>
 <div class="line"><span class="lineno">  316</span> </div>
 <div class="line"><span class="lineno">  317</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e">defineBell</a>(name, BPeak, zMiddle, orient, tubeR, xy, z, L);</div>
@@ -1084,19 +1084,19 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  233</span>  <span class="keywordflow">if</span> (nWords == 11) {</div>
 <div class="line"><span class="lineno">  234</span>    TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>    Double_t xMin = std::atof(inputLine[2].c_str());</div>
-<div class="line"><span class="lineno">  237</span>    Double_t xMax = std::atof(inputLine[3].c_str());</div>
+<div class="line"><span class="lineno">  236</span>    Double_t xMin = std::stod(inputLine[2]);</div>
+<div class="line"><span class="lineno">  237</span>    Double_t xMax = std::stod(inputLine[3]);</div>
 <div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>    Double_t yMin = std::atof(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  240</span>    Double_t yMax = std::atof(inputLine[5].c_str());</div>
+<div class="line"><span class="lineno">  239</span>    Double_t yMin = std::stod(inputLine[4]);</div>
+<div class="line"><span class="lineno">  240</span>    Double_t yMax = std::stod(inputLine[5]);</div>
 <div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>    Double_t zMin = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  243</span>    Double_t zMax = std::atof(inputLine[7].c_str());</div>
+<div class="line"><span class="lineno">  242</span>    Double_t zMin = std::stod(inputLine[6]);</div>
+<div class="line"><span class="lineno">  243</span>    Double_t zMax = std::stod(inputLine[7]);</div>
 <div class="line"><span class="lineno">  244</span> </div>
 <div class="line"><span class="lineno">  245</span>    <span class="comment">// Input field in Tesla_, interface needs kGauss units</span></div>
-<div class="line"><span class="lineno">  246</span>    Double_t Bx = std::atof(inputLine[8].c_str());</div>
-<div class="line"><span class="lineno">  247</span>    Double_t By = std::atof(inputLine[9].c_str());</div>
-<div class="line"><span class="lineno">  248</span>    Double_t Bz = std::atof(inputLine[10].c_str());</div>
+<div class="line"><span class="lineno">  246</span>    Double_t Bx = std::stod(inputLine[8]);</div>
+<div class="line"><span class="lineno">  247</span>    Double_t By = std::stod(inputLine[9]);</div>
+<div class="line"><span class="lineno">  248</span>    Double_t Bz = std::stod(inputLine[10]);</div>
 <div class="line"><span class="lineno">  249</span> </div>
 <div class="line"><span class="lineno">  250</span>    <span class="keyword">const</span> TVector2 xRange(xMin, xMax);</div>
 <div class="line"><span class="lineno">  251</span>    <span class="keyword">const</span> TVector2 yRange(yMin, yMax);</div>
@@ -1259,15 +1259,15 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  361</span>    Double_t phi(0.0), theta(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  362</span> </div>
 <div class="line"><span class="lineno">  363</span>    <span class="keywordflow">if</span> (nWords &gt; 5) {</div>
-<div class="line"><span class="lineno">  364</span>      x0 = std::atof(inputLine[3].c_str());</div>
-<div class="line"><span class="lineno">  365</span>      y0 = std::atof(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  366</span>      z0 = std::atof(inputLine[5].c_str());</div>
+<div class="line"><span class="lineno">  364</span>      x0 = std::stod(inputLine[3]);</div>
+<div class="line"><span class="lineno">  365</span>      y0 = std::stod(inputLine[4]);</div>
+<div class="line"><span class="lineno">  366</span>      z0 = std::stod(inputLine[5]);</div>
 <div class="line"><span class="lineno">  367</span>    }</div>
 <div class="line"><span class="lineno">  368</span> </div>
 <div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
-<div class="line"><span class="lineno">  370</span>      phi = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  371</span>      theta = std::atof(inputLine[7].c_str());</div>
-<div class="line"><span class="lineno">  372</span>      psi = std::atof(inputLine[8].c_str());</div>
+<div class="line"><span class="lineno">  370</span>      phi = std::stod(inputLine[6]);</div>
+<div class="line"><span class="lineno">  371</span>      theta = std::stod(inputLine[7]);</div>
+<div class="line"><span class="lineno">  372</span>      psi = std::stod(inputLine[8]);</div>
 <div class="line"><span class="lineno">  373</span>    }</div>
 <div class="line"><span class="lineno">  374</span> </div>
 <div class="line"><span class="lineno">  375</span>    <span class="keyword">const</span> TVector3 localCentre(x0, y0, z0);</div>
@@ -1438,16 +1438,16 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  452</span>    <span class="comment">// We want to try to copy and transpose an already existing field map</span></div>
 <div class="line"><span class="lineno">  453</span>    <span class="keyword">const</span> TString mapNameToCopy(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  454</span> </div>
-<div class="line"><span class="lineno">  455</span>    Double_t x0 = std::atof(inputLine[3].c_str());</div>
-<div class="line"><span class="lineno">  456</span>    Double_t y0 = std::atof(inputLine[4].c_str());</div>
-<div class="line"><span class="lineno">  457</span>    Double_t z0 = std::atof(inputLine[5].c_str());</div>
+<div class="line"><span class="lineno">  455</span>    Double_t x0 = std::stod(inputLine[3]);</div>
+<div class="line"><span class="lineno">  456</span>    Double_t y0 = std::stod(inputLine[4]);</div>
+<div class="line"><span class="lineno">  457</span>    Double_t z0 = std::stod(inputLine[5]);</div>
 <div class="line"><span class="lineno">  458</span> </div>
 <div class="line"><span class="lineno">  459</span>    Double_t phi(0.0), theta(0.0), psi(0.0);</div>
 <div class="line"><span class="lineno">  460</span> </div>
 <div class="line"><span class="lineno">  461</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
-<div class="line"><span class="lineno">  462</span>      phi = std::atof(inputLine[6].c_str());</div>
-<div class="line"><span class="lineno">  463</span>      theta = std::atof(inputLine[7].c_str());</div>
-<div class="line"><span class="lineno">  464</span>      psi = std::atof(inputLine[8].c_str());</div>
+<div class="line"><span class="lineno">  462</span>      phi = std::stod(inputLine[6]);</div>
+<div class="line"><span class="lineno">  463</span>      theta = std::stod(inputLine[7]);</div>
+<div class="line"><span class="lineno">  464</span>      psi = std::stod(inputLine[8]);</div>
 <div class="line"><span class="lineno">  465</span>    }</div>
 <div class="line"><span class="lineno">  466</span> </div>
 <div class="line"><span class="lineno">  467</span>    <span class="keyword">const</span> TVector3 translation(x0, y0, z0);</div>
@@ -1799,7 +1799,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  808</span> </div>
 <div class="line"><span class="lineno">  809</span>    Double_t scale(1.0);</div>
 <div class="line"><span class="lineno">  810</span>    <span class="keywordflow">if</span> (nWords == 4) {</div>
-<div class="line"><span class="lineno">  811</span>      scale = std::atof(inputLine[3].c_str());</div>
+<div class="line"><span class="lineno">  811</span>      scale = std::stod(inputLine[3]);</div>
 <div class="line"><span class="lineno">  812</span>    }</div>
 <div class="line"><span class="lineno">  813</span> </div>
 <div class="line"><span class="lineno">  814</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#a9da15b26eea1a0d7eb588e2689c87e99">defineLocalField</a>(volName, fieldName, scale);</div>
@@ -1914,7 +1914,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  686</span> </div>
 <div class="line"><span class="lineno">  687</span>    Double_t scale(1.0);</div>
 <div class="line"><span class="lineno">  688</span>    <span class="keywordflow">if</span> (nWords == 4) {</div>
-<div class="line"><span class="lineno">  689</span>      scale = std::atof(inputLine[3].c_str());</div>
+<div class="line"><span class="lineno">  689</span>      scale = std::stod(inputLine[3]);</div>
 <div class="line"><span class="lineno">  690</span>    }</div>
 <div class="line"><span class="lineno">  691</span> </div>
 <div class="line"><span class="lineno">  692</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#aef31f2695b538e04b00db829f7895e57">defineRegionField</a>(volName, fieldName, scale);</div>
@@ -2028,9 +2028,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  188</span>  <span class="keywordflow">if</span> (nWords == 5) {</div>
 <div class="line"><span class="lineno">  189</span>    <span class="keyword">const</span> TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>    Double_t Bx = std::atof(inputLine[2].c_str());</div>
-<div class="line"><span class="lineno">  192</span>    Double_t By = std::atof(inputLine[3].c_str());</div>
-<div class="line"><span class="lineno">  193</span>    Double_t Bz = std::atof(inputLine[4].c_str());</div>
+<div class="line"><span class="lineno">  191</span>    Double_t Bx = std::stod(inputLine[2]);</div>
+<div class="line"><span class="lineno">  192</span>    Double_t By = std::stod(inputLine[3]);</div>
+<div class="line"><span class="lineno">  193</span>    Double_t Bz = std::stod(inputLine[4]);</div>
 <div class="line"><span class="lineno">  194</span>    <span class="keyword">const</span> TVector3 BVector(Bx, By, Bz);</div>
 <div class="line"><span class="lineno">  195</span> </div>
 <div class="line"><span class="lineno">  196</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#ab664b64d707783cf30521c2ac9bd5192">defineUniform</a>(name, BVector);</div>
