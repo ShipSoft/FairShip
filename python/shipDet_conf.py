@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-from typing import Any
-
 import os
+from typing import Any
 
 import ROOT
 import shipunit as u
