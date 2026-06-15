@@ -7,7 +7,8 @@ from array import array
 
 import acts
 import acts.examples
-from strawReco import runTracking, calculate_sbt_doca
+from strawReco import runTracking, calculateSBTDOCA
+import ctypes
 import global_variables
 import ROOT
 import rootUtils as ut
@@ -45,7 +46,6 @@ class ShipDigiReco:
 
         # Create output file and new tree for digi/reco branches only
         self.outputFile = ROOT.TFile.Open(fout, "recreate")
-        #self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
         self.recoTree = ROOT.TTree("ship_reco_sim", "Digitization and Reconstruction")
 
         # Disable GeoTracks branch if present in input
@@ -55,19 +55,13 @@ class ShipDigiReco:
         # event header
         self.header = ROOT.FairEventHeader()
         self.eventHeader = self.recoTree.Branch("ShipEventHeader", self.header, 32000, -1)
-        # fitted tracks
-        self.fitTrack2MC = ROOT.std.vector("int")()
-        self.goodTracksVect = ROOT.std.vector("int")()
-        self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
 
+        # fitted tracks
         self.fACTSArray = ROOT.std.vector("ActsExamples::RecoTrack")()
         self.fitACTSTracks = self.recoTree.Branch("RecoTracks", self.fACTSArray, 32000, -1)
         self.fACTSVertexArray = ROOT.std.vector("ActsExamples::RecoVertex")()
         self.fitACTSVertices = self.recoTree.Branch("RecoVertices", self.fACTSVertexArray, 32000, -1)
 
-        self.goodTracksBranch = self.recoTree.Branch("goodTracks", self.goodTracksVect, 32000, -1)
-        self.fTrackletsArray = ROOT.std.vector("Tracklet")()
-        self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
         #
         self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
         ##Vectors of MCTracks/Strawtube hits to pass to ACTS EventData
@@ -94,8 +88,6 @@ class ShipDigiReco:
             self.digiSplitcal = self.splitcalDetector.det
             self.recoSplitcal = self.splitcalDetector.reco
 
-        # prepare vertexing
-        #self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
         # setup random number generator
         self.random = ROOT.TRandom()
         ROOT.gRandom.SetSeed(13)
@@ -127,18 +119,19 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
         ##Set up ACTS tracking geometry and magnetic field
-        self.detector = acts.examples.StrawtubeBuilder()
-        self.trackingGeometry = detector.trackingGeometry()
+        cfg = acts.examples.StrawtubeDetector.Config()
+        self.detector = acts.examples.StrawtubeDetector(cfg)
+        self.trackingGeometry = self.detector.trackingGeometry()
 
         # Read the root file containing spectrometer B field
-        u = acts.UnitConstants
         currentPath = os.path.dirname(__file__)
         sourcePath = os.path.abspath(os.path.join(currentPath, ".."))
+        uu = acts.UnitConstants
         self.actsFieldMap = acts.examples.MagneticFieldMapXyz(
             file=str(sourcePath + "/" + global_variables.ShipGeo.Bfield.fieldMap),
             tree="Data",
-            lengthUnit=u.cm,
-            BFieldUnit=u.T,
+            lengthUnit=10, #cm to mm conversion
+            BFieldUnit=uu.T, #B field stored in root file has units T?
             translateToGlobal=acts.Vector3(
                 global_variables.ShipGeo.Bfield.x, global_variables.ShipGeo.Bfield.y, global_variables.ShipGeo.Bfield.z
             ),
@@ -172,8 +165,36 @@ class ShipDigiReco:
                 )
         #self.findTracks()
         self.actsTracks()
+
+        output_tracks, vertices = self.actsTracks()
+
+        self.fACTSArray.clear()
+        self.fACTSVertexArray.clear()
+        geo_ctx = acts.GeometryContext()
+
+        vector_ptr = ROOT.addressof(self.fACTSArray)
+        vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
+
+        for track in output_tracks:
+
+            acts.pushRecoTrack(vector_ptr, track, geo_ctx)
+
+        for vtx in vertices:
+
+            acts.pushRecoVertex(vertex_vector_ptr, vtx)
+
         if hasattr(self, "digiSBT"):
-           calculate_sbt_doca(self, output_tracks, self.digiSBT.det)
+           veto_results = calculateSBTDOCA(
+                output_tracks, 
+                self.digiSBT.det, 
+                self.trackingGeometry, 
+                self.actsFieldMap
+                )
+           self.vetoHitOnTrackArray.clear()
+           for hitID, distMin in veto_results:
+               self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
+
+
 
     def actsTracks(self) -> list:
         self.strawHits.clear()
@@ -189,18 +210,20 @@ class ShipDigiReco:
             layer = self.strawtubes.det[sm["digiHit"]].GetLayerNumber()
             straw = self.strawtubes.det[sm["digiHit"]].GetStrawNumber()
             time = self.strawtubes.det[sm["digiHit"]].GetTDC()
+            drift = sm["dist"]
+            xtop = sm["xtop"]
+            ytop = sm["ytop"]
+            xbot = sm["xbot"]
+            ybot = sm["ybot"]
             trID = self.sTree.strawtubesPoint[sm["digiHit"]].GetTrackID()
-            px = self.sTree.strawtubesPoint[sm["digiHit"]].GetPx()
-            py = self.sTree.strawtubesPoint[sm["digiHit"]].GetPy()
-            pz = self.sTree.strawtubesPoint[sm["digiHit"]].GetPz()
             x = self.sTree.strawtubesPoint[sm["digiHit"]].GetX()
             y = self.sTree.strawtubesPoint[sm["digiHit"]].GetY()
             z = self.sTree.strawtubesPoint[sm["digiHit"]].GetZ()
             deltaE = self.sTree.strawtubesPoint[sm["digiHit"]].GetEnergyLoss()
 
-            #Structure of hit vector (station, layer, view, straw, track_id, Hx,Hy,Hz,Ht, Px,Py,Pz,E, deltaPx, deltaPy, deltaPz, deltaE )
+            #Structure of hit vector (detector [straw=0], station, layer, view, straw, track_id, x,y,z,t, E, drift, wire-xtop, ytop, xbot, ybot )
             iHit = ROOT.std.vector("float")()
-            iHit += [station, layer, view, straw, trID, x, y, z, time, px, py, pz, 0, 0, 0, 0, deltaE]
+            iHit += [0, station, layer, view, straw, trID, x, y, z, time, deltaE, drift, xtop, ytop, xbot, ybot]
             self.strawHits.push_back(iHit)
 
         candidates = []
@@ -210,17 +233,35 @@ class ShipDigiReco:
             raw_candidates = self.findTracks()
             for cand in raw_candidates:
                 candidates.append(cand)
-        elif globa_variables.patRec == "Truth":
+        elif global_variables.patRec == "Truth":
             # Truth Source
             for trID, tr in enumerate(self.sTree.MCTrack):
-                indices = [i for i, h in enumerate(self.strawHits) if int(h[4]) == trID]
-                pos = ROOT.TVector3(tr.GetStartX(), tr.GetStartY(), tr.GetStartZ())
+                indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
+                if not indices: continue
+   
+                #Sort indices by Z-position to find the first straw hit
+                # iHit[8] is the Z-coordinate
+                indices.sort(key=lambda idx: self.strawHits[idx][8])
+                first_idx = indices[0]
+                first_hit = self.strawHits[first_idx]
+   
+                # Create Seed from the first straw hit
+                # Position from the straw hit truth (indices 6, 7, 8)
+                pos = ROOT.TVector3(first_hit[6], first_hit[7], first_hit[8])
+   
+                # Momentum from MCTrack 
                 mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
+   
                 charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
 
                 candidates.append({"pos": pos, "mom": mom, "indices": indices, "charge": charge})
 
-        output_tracks = runTracking(candidates)
+        output_tracks = runTracking(
+        candidates,
+        self.trackingGeometry,
+        self.actsFieldMap,
+        self.strawHits
+        )
 
         return output_tracks
 
@@ -249,7 +290,6 @@ class ShipDigiReco:
         stationCrossed: dict[int, dict[int, int]] = {}
         listOfIndices: dict[int, list[int]] = {}
         trackParams: dict[int, dict] = {}
-        self.fitTrack2MC.clear()
 
         #
         if global_variables.withT0:
@@ -342,6 +382,16 @@ class ShipDigiReco:
             if global_variables.debug:
                 self.sTree.MCTrack[atrack]
             if atrack < 0: continue
+            # Determine charge sign from bending between stations 1-2 and 3-4.
+            # The slope difference dk = k_y34 - k_y12 encodes the charge:
+            # dk > 0 → positive charge (mu+, pi+), dk < 0 → negative charge (mu-, pi-)
+            params = trackParams.get(atrack, {})
+            k_y12 = params.get("k_y12")
+            k_y34 = params.get("k_y34")
+            if k_y12 is not None and k_y34 is not None:
+                charge = -1 if k_y34 > k_y12 else 1
+            else:
+                charge = 1
 
             posM, momM = self._compute_seed_state(atrack, hitPosLists[atrack], trackParams)
 
@@ -486,7 +536,7 @@ class ShipDigiReco:
                 "pos": posM,
                 "mom": momM,
                 "indices": indices,
-                "charge": 1.0 # Assuming muons
+                "charge": charge
             })
 
         return track_candidates
