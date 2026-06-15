@@ -25,6 +25,10 @@ struct Path {
   double density;
   double wdensity;
   double P;
+  double vtxX;
+  double vtxY;
+  double vtxZ;
+  double vtxT;
   double startX;
   double startY;
   double startZ;
@@ -40,25 +44,29 @@ struct Path {
   double v;
   std::vector<std::pair<double,double>> addZ;
 
-  void SetStartInfo(const TVector3 & vecpos, const TVector3 vecp, const double & time){
-    startX = vecpos.X();
-    startY = vecpos.Y();
-    startT = time;
+  void SetVertexInfo(const TVector3 & vecpos, const TVector3 vecp, const double & time){
+    vtxX = vecpos.X();
+    vtxY = vecpos.Y();
+    vtxZ = vecpos.Z();
+    vtxT = time;
     P = vecp.Mag();
     px = vecp.X();
     py = vecp.Y();
     pz = vecp.Z();
-  }
-  
-  void init(){
-    label = GetLabel(volName,material);
     tx = px/pz;
     ty = py/pz;
-    zlength = endZ-startZ;
-    length = GetLength(endZ);
-    wdensity = density*length;
     v = c_light * P /
       TMath::Sqrt(TMath::Power(P, 2) + TMath::Power(muon_mass, 2));
+    startX = GetX(startZ);
+    startY = GetY(startZ);    
+    startT = GetTimeNs(startZ);    
+  }
+
+  void init(){
+    label = GetLabel(volName,material);
+    zlength = endZ-startZ;
+    length = GetLength(endZ)-GetLength(startZ);
+    wdensity = density*length;
   }
 
   std::string GetLabel(const std::string & aVol,const std::string & aMat){
@@ -67,8 +75,12 @@ struct Path {
     else if (aVol.find("Upstream")!=aVol.npos) return "UBT";
     else if (aVol.find("Decay")!=aVol.npos && aMat.find("helium")!=aMat.npos) return "HE";
     else if (aMat.find("air")!=aMat.npos) return "AIR";
-    else if (aVol.find("straw")!=aVol.npos) return "SST";
-    else if (aVol.find("gas")!=aVol.npos && aMat.find("STT")!=aMat.npos) return "SST";
+    else if (aVol.find("straw")!=aVol.npos) return "SSTsens";
+    else if (aVol.find("gas")!=aVol.npos && aMat.find("STT")!=aMat.npos) return "SSTsens";
+    else if (aVol.find("wire")!=aVol.npos && aMat.find("tungsten")!=aMat.npos) return "SSTsens";
+    else if (aVol.find("Tr1_frame")!=aVol.npos && aMat.find("steel")!=aMat.npos) return "SSTfr";
+    else if ((aVol.find("Veto")!=aVol.npos || aVol.find("vLongitRib")!=aVol.npos) && aMat.find("Aluminum")!=aMat.npos) return "SBTfr";
+    else if (aVol.find("LiSc")!=aVol.npos) return "SBTsens";
     else {
       LOG(debug) << aVol << " " << aMat << " assigned to REST.";  
       return "REST";
@@ -78,11 +90,11 @@ struct Path {
   }
   
   double GetX(const double & aZ) const{
-    return startX + (aZ-startZ)*tx;
+    return vtxX + (aZ-vtxZ)*tx;
   }
   
   double GetY(const double & aZ) const{
-    return startY + (aZ-startZ)*ty;
+    return vtxY + (aZ-vtxZ)*ty;
   }
   
   double GetZ(const double & aZ) const{
@@ -100,26 +112,33 @@ struct Path {
   }
   
   double GetLength(const double & aZ) const{
-    return TMath::Sqrt(TMath::Power(GetX(aZ) - startX, 2) +
-		       TMath::Power(GetY(aZ) - startY, 2) +
-		       TMath::Power(aZ - startZ, 2));  // in cm
+    return TMath::Sqrt(TMath::Power(GetX(aZ) - vtxX, 2) +
+		       TMath::Power(GetY(aZ) - vtxY, 2) +
+		       TMath::Power(aZ - vtxZ, 2));  // in cm
   }
   
   double GetTimeNs(const double & aZ) const{
-    return startT + GetLength(aZ)/v;
+    return vtxT + GetLength(aZ)/v;
   }
 
   void Print(){
-    LOG(debug) << label << " "
-	       << volName << " "
-	       << material
-	       << " d=" << density
-	       << " <d>=" << wdensity/length << std::endl
-	       << " p=" << P
-	       << " l=" << length
-	       << " l_in_z=" << zlength
-	       << " zIn=" << startZ
-	       << " zOut=" << endZ;
+    std::ostringstream ldebug;
+    ldebug << label << " "
+	   << volName << " "
+	   << material
+	   << " d=" << density
+	   << " <d>=" << wdensity/length << std::endl
+	   << " p=" << P
+	   << " l=" << length
+	   << " l_in_z=" << zlength
+	   << " zIn=" << startZ
+	   << " zOut=" << endZ << std::endl;
+    if (addZ.size()>0) ldebug << "Other z-slices n=" << addZ.size() << ": ";
+    for (unsigned iz(0);iz<addZ.size();++iz){
+      ldebug << "[" << addZ[iz].first << "-" << addZ[iz].second << "] ";
+    }
+    ldebug << std::endl;
+    LOG(debug) << ldebug.str();
   }
 
   void Add(const Path & aEle) {
@@ -191,8 +210,10 @@ struct MuonBranches {
   std::vector<strawtubesPoint> sstPt;
   MuonDISBranches brMS;
   MuonDISBranches brUBT;
-  MuonDISBranches brSBT;
-  MuonDISBranches brSST;
+  MuonDISBranches brSBTsens;//sensitive
+  MuonDISBranches brSBTfr;//frame
+  MuonDISBranches brSSTsens;
+  MuonDISBranches brSSTfr;
   MuonDISBranches brHE;
   MuonDISBranches brAIR;
   MuonDISBranches brREST;
@@ -203,10 +224,12 @@ struct MuonBranches {
     t->Branch("muon_UBTPoints", &ubtPt);
     brMS.InitTree(t,"MS");
     brUBT.InitTree(t,"UBT");
-    brSBT.InitTree(t,"SBT");
-    brSST.InitTree(t,"SST");
-    brSST.InitTree(t,"HE");
-    brSST.InitTree(t,"AIR");
+    brSBTsens.InitTree(t,"SBTsens");
+    brSBTfr.InitTree(t,"SBTfr");
+    brSSTsens.InitTree(t,"SSTsens");
+    brSSTfr.InitTree(t,"SSTfr");
+    brHE.InitTree(t,"HE");
+    brAIR.InitTree(t,"AIR");
     brREST.InitTree(t,"REST");
   };
 };

@@ -27,6 +27,7 @@ MuDISProcessor::MuDISProcessor() {
   fnDIS = 10;
   fP6seed = 0;
 
+  fGeoProcessor.CheckAllVolumes();
 }
 
 void MuDISProcessor::init(const int & aEvts, const int & aDIS, const int & aSeed){
@@ -120,8 +121,10 @@ void MuDISProcessor::initEvent(){
   //Number of DIS events generated per volume.
   foutEv.brMS.initEvent(fnDIS);
   foutEv.brUBT.initEvent(fnDIS);
-  foutEv.brSBT.initEvent(fnDIS);
-  foutEv.brSST.initEvent(fnDIS);
+  foutEv.brSBTsens.initEvent(fnDIS);
+  foutEv.brSBTfr.initEvent(fnDIS);
+  foutEv.brSSTsens.initEvent(fnDIS);
+  foutEv.brSSTfr.initEvent(fnDIS);
   foutEv.brHE.initEvent(fnDIS);
   foutEv.brAIR.initEvent(fnDIS);
   foutEv.brREST.initEvent(fnDIS);
@@ -336,10 +339,14 @@ void MuDISProcessor::ProcessMuons()
 	generateDISevents(targetType,"MS",lPathMap.find("MS")->second,foutEv.brMS);
       if (lPathMap.find("UBT")!=lPathMap.end())
 	generateDISevents(targetType,"UBT",lPathMap.find("UBT")->second,foutEv.brUBT);
-      if (lPathMap.find("SBT")!=lPathMap.end())
-	generateDISevents(targetType,"SBT",lPathMap.find("SBT")->second,foutEv.brSBT);
-      if (lPathMap.find("SST")!=lPathMap.end())
-	generateDISevents(targetType,"SST",lPathMap.find("SST")->second,foutEv.brSST);
+      if (lPathMap.find("SBTsens")!=lPathMap.end())
+	generateDISevents(targetType,"SBTsens",lPathMap.find("SBTsens")->second,foutEv.brSBTsens);
+      if (lPathMap.find("SBTfr")!=lPathMap.end())
+	generateDISevents(targetType,"SBTfr",lPathMap.find("SBTfr")->second,foutEv.brSBTfr);
+      if (lPathMap.find("SSTsens")!=lPathMap.end())
+	generateDISevents(targetType,"SSTsens",lPathMap.find("SSTsens")->second,foutEv.brSSTsens);
+      if (lPathMap.find("SSTfr")!=lPathMap.end())
+	generateDISevents(targetType,"SSTfr",lPathMap.find("SSTfr")->second,foutEv.brSSTfr);
       if (lPathMap.find("HE")!=lPathMap.end())
 	generateDISevents(targetType,"HE",lPathMap.find("HE")->second,foutEv.brHE);
       if (lPathMap.find("AIR")!=lPathMap.end())

@@ -24,7 +24,9 @@ class MuGeoProcessor {
   ~MuGeoProcessor();
 
   void initialise(MuonBranches& aEvt);
-  
+  TVector3 GetVertex(const TVector3 & r1, const TVector3 & p1,
+		     const TVector3 & r2, const TVector3 & p2);                                                        
+  void CheckAllVolumes();  
   std::map<std::string,Path> & FillMuonPath();
 
  private:
@@ -38,10 +40,19 @@ class MuGeoProcessor {
   TVector3 fUBTp;
   TVector3 fSBTp;
   TVector3 fSSTp;
+
+  TVector3 fVtx12;
+  TVector3 fVtx13;
+  TVector3 fVtx14;
+  TVector3 fVtx23;
+  TVector3 fVtx24;
+  TVector3 fVtx34;
+  
   double fStartT;
   double fUBTT;
   double fSBTT;
   double fSSTT;
+
   bool fhasUBThit;
   bool fhasSBThit;
   bool fhasSSThit;
