@@ -1,0 +1,72 @@
+{
+  "job": "tracking-benchmark",
+  "config": "pixi",
+  "files": [
+    {
+      "name": "h_dp_over_p",
+      "root_path": "h_dp_over_p",
+      "file": "h_dp_over_p.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_dp_vs_p",
+      "root_path": "h_dp_vs_p",
+      "file": "h_dp_vs_p.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "h_dx",
+      "root_path": "h_dx",
+      "file": "h_dx.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_dy",
+      "root_path": "h_dy",
+      "file": "h_dy.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_dtx",
+      "root_path": "h_dtx",
+      "file": "h_dtx.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_dty",
+      "root_path": "h_dty",
+      "file": "h_dty.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_hit_residual",
+      "root_path": "h_hit_residual",
+      "file": "h_hit_residual.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_hit_pull",
+      "root_path": "h_hit_pull",
+      "file": "h_hit_pull.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_chi2ndf",
+      "root_path": "h_chi2ndf",
+      "file": "h_chi2ndf.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_p_truth",
+      "root_path": "h_p_truth",
+      "file": "h_p_truth.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "h_p_matched",
+      "root_path": "h_p_matched",
+      "file": "h_p_matched.png",
+      "type": "TH1D"
+    }
+  ]
+}
