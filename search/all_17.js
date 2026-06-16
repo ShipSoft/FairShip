@@ -246,7 +246,7 @@ var searchData=
   ['shipdigireco_243',['shipdigireco',['../classshipDigiReco_1_1ShipDigiReco.html',1,'shipDigiReco.ShipDigiReco'],['../namespaceshipDigiReco.html',1,'shipDigiReco']]],
   ['shipdigireco_2epy_244',['shipDigiReco.py',['../shipDigiReco_8py.html',1,'']]],
   ['shipdisplay_245',['shipdisplay',['../namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20',1,'evd_transparentMode.SHiPDisplay'],['../namespaceeveGlobal.html#af384e4f875e85dd37b0398e54a393298',1,'eveGlobal.SHiPDisplay'],['../namespaceeventDisplay.html#a681445dbc58506f91aedc16be890fd0d',1,'eventDisplay.SHiPDisplay']]],
-  ['shipfieldcreator_246',['shipfieldcreator',['../classShipFieldCreator.html',1,'ShipFieldCreator'],['../classShipFieldCreator.html#a9026d27f3ad73ac5f03569f3f136b226',1,'ShipFieldCreator::ShipFieldCreator()'],['../classShipFieldCreator.html#a0d196ac820cf4ba51720b87d51115083',1,'ShipFieldCreator::ShipFieldCreator(const ShipFieldCreator &amp;)=delete']]],
+  ['shipfieldcreator_246',['shipfieldcreator',['../classShipFieldCreator.html',1,'ShipFieldCreator'],['../classShipFieldCreator.html#ace226dfcd3846b9b6835e6f3b70e7297',1,'ShipFieldCreator::ShipFieldCreator() noexcept'],['../classShipFieldCreator.html#a0d196ac820cf4ba51720b87d51115083',1,'ShipFieldCreator::ShipFieldCreator(const ShipFieldCreator &amp;)=delete']]],
   ['shipfieldcreator_2ecxx_247',['ShipFieldCreator.cxx',['../ShipFieldCreator_8cxx.html',1,'']]],
   ['shipfieldcreator_2eh_248',['ShipFieldCreator.h',['../ShipFieldCreator_8h.html',1,'']]],
   ['shipfieldmaker_249',['shipfieldmaker',['../classShipFieldMaker.html',1,'ShipFieldMaker'],['../classShipFieldMaker.html#a55ad765b425243cfb424ecc759a1918a',1,'ShipFieldMaker::ShipFieldMaker()']]],
