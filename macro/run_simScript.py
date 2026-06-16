@@ -427,6 +427,8 @@ if options.RPVSUSY:
     HNL = False
 if options.DarkPhoton:
     HNL = False
+    if inclusive not in {"meson", "pbrem", "qcd"}:
+        parser.error("For --DarkPhoton, -A must be one of: meson, pbrem, qcd")
 if not options.theMass:
     if options.DarkPhoton:
         options.theMass = theDPmass
