@@ -233,8 +233,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 hits["Pdg"] += [ahit.PdgCode()]
 
             # List to numpy arrays
-            for key in hits:
-                hits[key] = numpy.array(hits[key])
+            hits = {key: numpy.array(values) for key, values in hits.items()}
 
             # Decoding
             decode = global_variables.modules["strawtubes"].StrawDecode(hits["DetID"])
@@ -478,6 +477,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 Y_fit = []
                 for az in Z_true:
                     _rc, pos, _mom = extrapolateToPlane(thetrack, az)
+                    if pos is None:
+                        continue
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
@@ -576,7 +577,7 @@ def fracMCsame(trackids):
 
     # now get track with largest number of hits
     if track != {}:
-        tmax = max(track, key=track.get)
+        tmax = max(track, key=lambda k: track[k])
     else:
         track = {-999: 0}
         tmax = -999

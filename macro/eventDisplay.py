@@ -209,6 +209,8 @@ def printParticles() -> None:
 class DrawVetoDigi(ROOT.FairTask):
     "My Fair Task"
 
+    Targetz: float = 0.0  # set externally by the owning EventLoop after geometry init
+
     def InitTask(self) -> None:
         self.comp = ROOT.TEveCompound("Veto Digis")
         gEve.AddElement(self.comp)
@@ -588,7 +590,7 @@ class IO:
         else:
             a.set(0)
         self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
-        self.lbut[x].var = a
+        self.lbut[x].var = a  # pyrefly: ignore  # dynamic attribute, read back by toggleMCTracks / toggle
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
@@ -660,6 +662,7 @@ class IO:
         SHiPDisplay.NextEvent(self.n)
 
     def toggleMCTracks(self) -> None:
+        assert fRun is not None, "toggleMCTracks called before fRun was initialised"
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
@@ -722,6 +725,7 @@ class EventLoop(ROOT.FairTask):
         t0.SetText(ROOT.TGString("3D"))
 
     def NextEvent(self, i: int = -1) -> None:
+        assert fRun is not None, "NextEvent called before fRun was initialised"
         if i < 0:
             self.n += 1
         else:

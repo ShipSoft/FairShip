@@ -30,6 +30,7 @@ def readFromAscii():
         content = ascii.readlines()
     h = {}
     n = 0
+    hname = ""  # first line is always a TH1F header; defensively bind for static analysis
     while n < len(content):
         line = content[n]
         if "TH1F" in line:
