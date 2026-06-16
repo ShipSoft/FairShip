@@ -77,12 +77,25 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
 
     # Loop over seeds (e.g., from PatRec or Truth)
     for cand in candidates:
-        if len(cand['indices']) < 13:
-            logger.debug("Skipping track with too few hits: %d", len(cand['indices']))
-            continue
 
         sorted_indices = sorted(cand['indices'], key=lambda i: strawHits[i][8])
-        first_idx = sorted_indices[0]
+        
+        filtered_indices = []
+        seen_layers = set()
+
+        #Add a check to ensure only one hit per layer
+        for idx in sorted_indices:
+            gid = acts.getMeasurementGeoId(measurements, idx)
+
+            if gid.layer not in seen_layers:
+                filtered_indices.append(idx)
+                seen_layers.add(gid.layer)
+
+        if len(filtered_indices) < 13:
+            logger.debug("Skipping track with too few hits: %d", len(filtered_indices))
+            continue
+
+        first_idx = filtered_indices[0]
         
         geo_id = acts.getMeasurementGeoId(measurements, first_idx)
        
@@ -103,7 +116,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
 
         acts.fitTrack(
             measurements,
-            sorted_indices,
+            filtered_indices,
             initial_params,
             output_tracks,
             trackingGeometry,
