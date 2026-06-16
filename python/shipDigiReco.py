@@ -26,7 +26,10 @@ class ShipDigiReco:
 
     def __init__(self, finput, fout, fgeo, validation: bool = False) -> None:
         self.validation = validation
-        self.validation_stats = validation_tools.make_reco_validation_stats() if self.validation else None
+        # Always allocate the counter dict so static analysis sees it as
+        # subscriptable; entries are only updated when self.validation is true,
+        # so a non-validation run still ends with the zeroed defaults.
+        self.validation_stats = validation_tools.make_reco_validation_stats()
         # Open input file (read-only) and get the MC tree
         self.inputFile = ROOT.TFile.Open(finput, "read")
         self.sTree = self.inputFile["cbmsim"]
@@ -476,7 +479,7 @@ class ShipDigiReco:
             veto_link = self.findVetoHitOnTrack(track)
             self.vetoHitOnTrackArray.push_back(veto_link)
             if self.validation:
-                if veto_link.GetIndex() >= 0:  # Only record real matches
+                if veto_link.GetHitID() >= 0:  # Only record real matches
                     dist = float(veto_link.GetDist())
                     self.validation_stats["veto_link_distance_sum"] += dist
                     self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
@@ -493,7 +496,7 @@ class ShipDigiReco:
             else:
                 track[tid] = 1
         if track != {}:
-            tmax = max(track, key=track.get)
+            tmax = max(track, key=lambda k: track[k])
         else:
             track = {-999: 0}
             tmax = -999
