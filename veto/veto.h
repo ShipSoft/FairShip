@@ -6,6 +6,7 @@
 #define VETO_VETO_H_
 
 #include <map>
+#include <utility>
 #include <vector>
 
 #include "Detector.h"
@@ -61,11 +62,11 @@ class veto : public SHiP::Detector<vetoPoint> {
     f_InnerSupportThickness = a;
     f_VetoThickness = b;
     f_OuterSupportThickness = c;
-    supportMedIn_name = d;
+    supportMedIn_name = std::move(d);
     f_LidThickness = l;
-    vetoMed_name = e;
-    supportMedOut_name = f;
-    decayVolumeMed_name = v;
+    vetoMed_name = std::move(e);
+    supportMedOut_name = std::move(f);
+    decayVolumeMed_name = std::move(v);
     f_RibThickness = r;
   }
 

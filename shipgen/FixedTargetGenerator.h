@@ -5,6 +5,8 @@
 #ifndef SHIPGEN_FIXEDTARGETGENERATOR_H_
 #define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
+#include <utility>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
 #include "GenieGenerator.h"
@@ -54,7 +56,7 @@ class FixedTargetGenerator : public SHiP::Generator {
     fUseRandom3 = kTRUE;
   };
   void SetTarget(TString s, Double_t x, Double_t y) {
-    targetName = s;
+    targetName = std::move(s);
     xOff = x;
     yOff = y;
   };

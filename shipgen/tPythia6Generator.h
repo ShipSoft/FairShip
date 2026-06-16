@@ -5,6 +5,8 @@
 #ifndef SHIPGEN_TPYTHIA6GENERATOR_H_
 #define SHIPGEN_TPYTHIA6GENERATOR_H_
 
+#include <utility>
+
 #include "Generator.h"
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
@@ -29,8 +31,8 @@ class tPythia6Generator : public SHiP::Generator {
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetTarget(TString Type, TString Target) {
-    fType = Type;
-    fTarget = Target;
+    fType = std::move(Type);
+    fTarget = std::move(Target);
   };
   void UseDeepCopy() { fDeepCopy = kTRUE; };
   double getPyint5_XSEC(int i, int j) {
