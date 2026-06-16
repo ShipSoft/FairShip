@@ -8,6 +8,7 @@ import sys
 import uuid
 from argparse import ArgumentParser
 from array import array
+from typing import cast
 
 import geometry_config
 import ROOT
@@ -575,6 +576,7 @@ if options.pythia8:
                 P8gen, options.theMass, theProductionCouplings, theDecayCouplings, inclusive, options.deepCopy
             )
         if options.RPVSUSY:
+            assert theCouplings is not None, "options.thecouplings is required for --RPVSUSY"
             print("Generating RPVSUSY events of mass %.3f GeV" % theHNLMass)
             print(f"and with couplings=[{theCouplings[0]:.3f},{theCouplings[1]:.3f}]")
             print("and with stop mass=%.3f GeV\n" % theCouplings[2])
@@ -606,6 +608,7 @@ if options.pythia8:
         if passDPconf != 1:
             sys.exit()
     if HNL or options.RPVSUSY or options.DarkPhoton:
+        assert P8gen is not None  # guaranteed by the three branches above
         P8gen.SetSmearBeam(options.SmearBeam * u.cm)  # Gaussian beam smearing
         P8gen.SetPaintRadius(options.PaintBeam * u.cm)  # beam painting radius
         P8gen.SetLmin(ship_geo.decayVolume.z0 - ship_geo.target.z0)
@@ -853,6 +856,7 @@ if options.muonback:
     # ROOT.kShipMuonsCrossSectionFactor = 100.
 #
 if options.cosmics:
+    assert Opt_high is not None  # guaranteed by the same options.cosmics check above
     primGen.SetTarget(0.0, 0.0)
     Cosmicsgen = ROOT.CosmicsGenerator()
     import CMBG_conf
@@ -999,13 +1003,14 @@ if options.muonback:
     tmpFile = outFile + "tmp"
     xxx = outFile.split("/")
     check = xxx[len(xxx) - 1]
-    fin = False
+    fin: ROOT.TFile | None = None
     for ff in ROOT.gROOT.GetListOfFiles():
         nm = ff.GetName().split("/")
         if nm[len(nm) - 1] == check:
-            fin = ff
-    if not fin:
+            fin = cast(ROOT.TFile, ff)
+    if fin is None:
         fin = ROOT.TFile.Open(outFile)
+    assert fin is not None  # TFile.Open returns nullptr on failure; treat that as fatal
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
     fSink = ROOT.FairRootFileSink(fout)
