@@ -47,6 +47,7 @@ def parse_file(infile: str):
                 current_block.append(line.strip())
 
         if current_block:
+            assert process_type is not None and sampled_points is not None  # first header sets both
             data = np.loadtxt(current_block)
             variables = [data[:, i] for i in range(data.shape[1])]
             parsed_data.append((process_type, sampled_points, variables))
@@ -55,10 +56,10 @@ def parse_file(infile: str):
 
     except FileNotFoundError:
         print(f"- convertEvtCalc - Error: The file {infile} was not found.")
-        return None, None, None
+        return None
     except Exception as e:
         print(f"- convertEvtCalc - An error occurred: {e}")
-        return None, None, None
+        return None
 
 
 def check_consistency_infile(nvars, ncols) -> None:
@@ -113,6 +114,8 @@ def convert_file(infile, outdir) -> str | None:
 
     infile = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
+    if not parsed_data:
+        sys.exit(1)
     outfile = infile.split(".dat")[0] + ".root"
     ncols = len(parsed_data[0][2])
     nvardau = 6  # qualifiers for each daughter
