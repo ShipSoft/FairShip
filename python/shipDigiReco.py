@@ -248,11 +248,22 @@ class ShipDigiReco:
             for trID, tr in enumerate(self.sTree.MCTrack):
                 indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
                 if not indices: continue
-   
+                unique_indices = []
+                seen_layers = set()   
                 #Sort indices by Z-position to find the first straw hit
                 # iHit[8] is the Z-coordinate
                 indices.sort(key=lambda idx: self.strawHits[idx][8])
-                first_idx = indices[0]
+                for idx in indices:
+                    h = self.strawHits[idx]
+
+                    # We want to keep only one straw per unique station/layer/view combination
+                    # our Kalman filter cant handle more than 1 measurement per acts::layer
+                    layer_key = (int(h[1]), int(h[2]), int(h[3])) 
+                    
+                    if layer_key not in seen_layers:
+                        unique_indices.append(idx)
+                        seen_layers.add(layer_key)
+                first_idx = unique_indices[0]
                 first_hit = self.strawHits[first_idx]
    
                 # Create Seed from the first straw hit
@@ -264,7 +275,8 @@ class ShipDigiReco:
    
                 charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
 
-                candidates.append({"pos": pos, "mom": mom, "indices": indices, "charge": charge})
+                candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
+
 
         output_tracks = runTracking(
         candidates,
