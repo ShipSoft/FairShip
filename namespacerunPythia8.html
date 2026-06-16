@@ -213,9 +213,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runPythia8_8py_source.html#l00287">287</a> of file <a class="el" href="runPythia8_8py_source.html">runPythia8.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  287</span><span class="keyword">def </span>debugging(g) -&gt; None:</div>
-<div class="line"><span class="lineno">  288</span>    generators[g].settings.listAll()</div>
+<p class="definition">Definition at line <a class="el" href="runPythia8_8py_source.html#l00288">288</a> of file <a class="el" href="runPythia8_8py_source.html">runPythia8.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  288</span><span class="keyword">def </span>debugging(g) -&gt; None:</div>
+<div class="line"><span class="lineno">  289</span>    generators[g].settings.listAll()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -239,31 +239,32 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  259</span>    Z_Mo = 96.0</div>
 <div class="line"><span class="lineno">  260</span>    P_Mo = 42</div>
 <div class="line"><span class="lineno">  261</span>    fraction = {}</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">for</span> g <span class="keywordflow">in</span> generators:</div>
-<div class="line"><span class="lineno">  263</span>        processes = generators[g].info.codesHard()</div>
-<div class="line"><span class="lineno">  264</span>        name = generators[g].info.nameProc(processes[0])</div>
-<div class="line"><span class="lineno">  265</span>        sigma = generators[g].info.sigmaGen(processes[0])</div>
-<div class="line"><span class="lineno">  266</span>        yax = h[<span class="stringliteral">&quot;M_&quot;</span> + g].GetYaxis()</div>
-<div class="line"><span class="lineno">  267</span>        xax = h[<span class="stringliteral">&quot;M_&quot;</span> + g].GetXaxis()</div>
-<div class="line"><span class="lineno">  268</span>        Mmin = xax.FindBin(0.0)</div>
-<div class="line"><span class="lineno">  269</span>        Mmax = xax.FindBin(5.0)</div>
-<div class="line"><span class="lineno">  270</span>        Ymin = yax.FindBin(0.3)</div>
-<div class="line"><span class="lineno">  271</span>        Ymax = yax.FindBin(3.0)</div>
-<div class="line"><span class="lineno">  272</span>        h[<span class="stringliteral">&quot;MA&quot;</span>] = h[<span class="stringliteral">&quot;M_&quot;</span> + g].ProjectionX(<span class="stringliteral">&quot;MA&quot;</span>)</div>
-<div class="line"><span class="lineno">  273</span>        h[<span class="stringliteral">&quot;M&quot;</span>] = h[<span class="stringliteral">&quot;M_&quot;</span> + g].ProjectionX(<span class="stringliteral">&quot;M&quot;</span>, Ymin, Ymax)</div>
-<div class="line"><span class="lineno">  274</span>        print(</div>
-<div class="line"><span class="lineno">  275</span>            g,</div>
-<div class="line"><span class="lineno">  276</span>            name,</div>
-<div class="line"><span class="lineno">  277</span>            sigma,</div>
-<div class="line"><span class="lineno">  278</span>            float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()) / options.NPoT,</div>
-<div class="line"><span class="lineno">  279</span>            h[<span class="stringliteral">&quot;MA&quot;</span>].Integral(Mmin, Mmax) / float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()),</div>
-<div class="line"><span class="lineno">  280</span>            h[<span class="stringliteral">&quot;M&quot;</span>].GetEntries() / float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()),</div>
-<div class="line"><span class="lineno">  281</span>        )</div>
-<div class="line"><span class="lineno">  282</span>        fraction[g] = h[<span class="stringliteral">&quot;M&quot;</span>].Integral(Mmin, Mmax) / options.NPoT</div>
-<div class="line"><span class="lineno">  283</span>    meanFraction = (fraction[<span class="stringliteral">&quot;p&quot;</span>] * P_Mo + fraction[<span class="stringliteral">&quot;n&quot;</span>] * (Z_Mo - P_Mo)) / Z_Mo * sigma</div>
-<div class="line"><span class="lineno">  284</span>    print(<span class="stringliteral">&quot;cross section a la muflux: %5.2F pb&quot;</span> % (0.5 * meanFraction * 1e9))</div>
-<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  262</span>    sigma = 0.0</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">for</span> g <span class="keywordflow">in</span> generators:</div>
+<div class="line"><span class="lineno">  264</span>        processes = generators[g].info.codesHard()</div>
+<div class="line"><span class="lineno">  265</span>        name = generators[g].info.nameProc(processes[0])</div>
+<div class="line"><span class="lineno">  266</span>        sigma = generators[g].info.sigmaGen(processes[0])</div>
+<div class="line"><span class="lineno">  267</span>        yax = h[<span class="stringliteral">&quot;M_&quot;</span> + g].GetYaxis()</div>
+<div class="line"><span class="lineno">  268</span>        xax = h[<span class="stringliteral">&quot;M_&quot;</span> + g].GetXaxis()</div>
+<div class="line"><span class="lineno">  269</span>        Mmin = xax.FindBin(0.0)</div>
+<div class="line"><span class="lineno">  270</span>        Mmax = xax.FindBin(5.0)</div>
+<div class="line"><span class="lineno">  271</span>        Ymin = yax.FindBin(0.3)</div>
+<div class="line"><span class="lineno">  272</span>        Ymax = yax.FindBin(3.0)</div>
+<div class="line"><span class="lineno">  273</span>        h[<span class="stringliteral">&quot;MA&quot;</span>] = h[<span class="stringliteral">&quot;M_&quot;</span> + g].ProjectionX(<span class="stringliteral">&quot;MA&quot;</span>)</div>
+<div class="line"><span class="lineno">  274</span>        h[<span class="stringliteral">&quot;M&quot;</span>] = h[<span class="stringliteral">&quot;M_&quot;</span> + g].ProjectionX(<span class="stringliteral">&quot;M&quot;</span>, Ymin, Ymax)</div>
+<div class="line"><span class="lineno">  275</span>        print(</div>
+<div class="line"><span class="lineno">  276</span>            g,</div>
+<div class="line"><span class="lineno">  277</span>            name,</div>
+<div class="line"><span class="lineno">  278</span>            sigma,</div>
+<div class="line"><span class="lineno">  279</span>            float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()) / options.NPoT,</div>
+<div class="line"><span class="lineno">  280</span>            h[<span class="stringliteral">&quot;MA&quot;</span>].Integral(Mmin, Mmax) / float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()),</div>
+<div class="line"><span class="lineno">  281</span>            h[<span class="stringliteral">&quot;M&quot;</span>].GetEntries() / float(h[<span class="stringliteral">&quot;MA&quot;</span>].GetEntries()),</div>
+<div class="line"><span class="lineno">  282</span>        )</div>
+<div class="line"><span class="lineno">  283</span>        fraction[g] = h[<span class="stringliteral">&quot;M&quot;</span>].Integral(Mmin, Mmax) / options.NPoT</div>
+<div class="line"><span class="lineno">  284</span>    meanFraction = (fraction[<span class="stringliteral">&quot;p&quot;</span>] * P_Mo + fraction[<span class="stringliteral">&quot;n&quot;</span>] * (Z_Mo - P_Mo)) / Z_Mo * sigma</div>
+<div class="line"><span class="lineno">  285</span>    print(<span class="stringliteral">&quot;cross section a la muflux: %5.2F pb&quot;</span> % (0.5 * meanFraction * 1e9))</div>
 <div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

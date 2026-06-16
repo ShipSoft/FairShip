@@ -226,8 +226,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  176</span>        fieldMaker.readInputFile(controlFile)</div>
 <div class="line"><span class="lineno">  177</span> </div>
 <div class="line"><span class="lineno">  178</span>    <span class="comment"># Set the main spectrometer field map as a global field</span></div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
-<div class="line"><span class="lineno">  180</span>        fieldsList = []</div>
+<div class="line"><span class="lineno">  179</span>    fieldsList: list[str] = []</div>
+<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
 <div class="line"><span class="lineno">  181</span>        fieldMaker.defineFieldMap(<span class="stringliteral">&quot;MainSpecMap&quot;</span>, shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))</div>
 <div class="line"><span class="lineno">  182</span>        fieldsList.append(<span class="stringliteral">&quot;MainSpecMap&quot;</span>)</div>
 <div class="line"><span class="lineno">  183</span> </div>

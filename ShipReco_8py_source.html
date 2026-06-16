@@ -186,108 +186,110 @@ $(document).ready(function(){initNavTree('ShipReco_8py_source.html',''); initRes
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"># need to figure out which geometry was used, only needed if no geo file</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.dy:</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment"># try to extract from input file name</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9">   90</a></span>    tmp = options.inputFile.split(<span class="stringliteral">&quot;.&quot;</span>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb">   92</a></span>        dy = float(tmp[1] + <span class="stringliteral">&quot;.&quot;</span> + tmp[2])</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">except</span> (ValueError, IndexError):</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        dy = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>print(</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="stringliteral">&quot;configured to process &quot;</span>,</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    options.nEvents,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="stringliteral">&quot; events from &quot;</span>,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    options.inputFile,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="stringliteral">&quot; starting with event &quot;</span>,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    options.firstEvent,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="stringliteral">&quot; with option Yheight = &quot;</span>,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    dy,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="stringliteral">&quot; with vertexing&quot;</span>,</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    vertexing,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="stringliteral">&quot; and pattern reco &quot;</span>,</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    options.patRec,</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>)</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"># Determine output filename (will contain only digi/reco branches)</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.inputFile.find(<span class="stringliteral">&quot;_rec.root&quot;</span>) &lt; 0:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3">  112</a></span>    outFile = options.inputFile</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4">  113</a></span>    options.inputFile = outFile.replace(<span class="stringliteral">&quot;_rec.root&quot;</span>, <span class="stringliteral">&quot;.root&quot;</span>)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    outFile = options.inputFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>)</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment"># outfile should be in local directory</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    tmp = outFile.split(<span class="stringliteral">&quot;/&quot;</span>)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    outFile = tmp[len(tmp) - 1]</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.geoFile:</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    tmp = options.inputFile.replace(<span class="stringliteral">&quot;ship.&quot;</span>, <span class="stringliteral">&quot;geofile_full.&quot;</span>)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798">  122</a></span>    options.geoFile = tmp.replace(<span class="stringliteral">&quot;_rec&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a048945b5e2e313357c8cd4ac2b1e5d81">  124</a></span>fgeo = ROOT.TFile.Open(options.geoFile)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd">  125</a></span>geoMat = ROOT.genfit.TGeoMaterialInterface()  <span class="comment"># if only called in ShipDigiReco -&gt; crash, reason unknown</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment"># load Shipgeo dictionary</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb">  130</a></span>ShipGeo = load_from_root_file(fgeo, <span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4a6c4fe79938efbfd9bb7d1a98ae8755">  132</a></span>h = {}</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keywordflow">if</span> withHists:</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    ut.bookHist(h, <span class="stringliteral">&quot;distu&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    ut.bookHist(h, <span class="stringliteral">&quot;distv&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    ut.bookHist(h, <span class="stringliteral">&quot;disty&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    ut.bookHist(h, <span class="stringliteral">&quot;nmeas&quot;</span>, <span class="stringliteral">&quot;nr measurements&quot;</span>, 100, 0.0, 50.0)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    ut.bookHist(h, <span class="stringliteral">&quot;chi2&quot;</span>, <span class="stringliteral">&quot;Chi2/DOF&quot;</span>, 100, 0.0, 20.0)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="keyword">import</span> shipDet_conf</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1">  142</a></span>run = ROOT.FairRunSim()</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>run.SetName(<span class="stringliteral">&quot;TGeant4&quot;</span>)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">import</span> tempfile</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81">  146</a></span>sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=<span class="stringliteral">&quot;.root&quot;</span>))</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>run.SetSink(sink)</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>ROOT.SetOwnership(sink, <span class="keyword">False</span>)  <span class="comment"># C++ FairRun takes ownership</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config_basic.C&quot;</span>)  <span class="comment"># geant4 transport not used, only needed for creating VMC field</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a44987cb8249b92984200ef8843b0fed1">  150</a></span>rtdb = run.GetRuntimeDb()</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4850398ee3476da47f58999b04e3a0e7">  152</a></span>modules = <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ShipGeo)</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"># run.Init()</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#acfee5ea8a044017a72eaf414bf4eb99c">  154</a></span>sGeo = fgeo[<span class="stringliteral">&quot;FAIRGeom&quot;</span>]</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="keyword">import</span> geomGeant4</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordflow">if</span> hasattr(ShipGeo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a0e633b86c4896f37150fcf869b3fd59e">  158</a></span>    fieldMaker = <a class="code hl_function" href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">geomGeant4.addVMCFields</a>(ShipGeo, <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">True</span>, withVirtualMC=<span class="keyword">False</span>)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment"># make global variables</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186">  161</a></span>global_variables.debug = options.Debug</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>global_variables.fieldMaker = fieldMaker</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>global_variables.pidProton = pidProton</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20">  164</a></span>global_variables.withT0 = options.withT0</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#aef73bfe78732856662cc5bc1afd8b169">  165</a></span>global_variables.patRec = options.patRec</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>global_variables.vertexing = vertexing</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>global_variables.ShipGeo = ShipGeo</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>global_variables.modules = modules</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4563247f8c82a82f64d3c921dd359728">  169</a></span>global_variables.withNoStrawSmearing = options.withNoStrawSmearing</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>global_variables.h = h</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7">  171</a></span>global_variables.iEvent = 0</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment"># import reco tasks</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keyword">import</span> shipDigiReco</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#af29bc13f95d9544b1f56ece16b06a4c6">  176</a></span>SHiP = <a class="code hl_class" href="classshipDigiReco_1_1ShipDigiReco.html">shipDigiReco.ShipDigiReco</a>(options.inputFile, outFile, fgeo, validation=options.validation)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a5d79d13160dfaad7ee80f62adb0ee67e">  177</a></span>options.nEvents = min(SHiP.sTree.GetEntries(), options.nEvents)</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment"># main loop</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="keywordflow">for</span> global_variables.iEvent <span class="keywordflow">in</span> range(options.firstEvent, options.nEvents):</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">if</span> global_variables.iEvent % 1000 == 0 <span class="keywordflow">or</span> global_variables.debug:</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        print(<span class="stringliteral">&quot;event &quot;</span>, global_variables.iEvent)</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ad65f7dc3b97b1adf05861f52855e59c1">  182</a></span>    rc = SHiP.sTree.GetEvent(global_variables.iEvent)</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    SHiP.digitize()</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    SHiP.reconstruct()</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    SHiP.recoTree.Fill()</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment"># memory monitoring</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"># mem_monitor()</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment"># end loop over events</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>SHiP.finish()</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb">   88</a></span>dy = options.dy</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.dy:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment"># try to extract from input file name</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9">   91</a></span>    tmp = options.inputFile.split(<span class="stringliteral">&quot;.&quot;</span>)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        dy = float(tmp[1] + <span class="stringliteral">&quot;.&quot;</span> + tmp[2])</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">except</span> (ValueError, IndexError):</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        dy = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>print(</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="stringliteral">&quot;configured to process &quot;</span>,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    options.nEvents,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="stringliteral">&quot; events from &quot;</span>,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    options.inputFile,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="stringliteral">&quot; starting with event &quot;</span>,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    options.firstEvent,</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="stringliteral">&quot; with option Yheight = &quot;</span>,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    dy,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="stringliteral">&quot; with vertexing&quot;</span>,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    vertexing,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="stringliteral">&quot; and pattern reco &quot;</span>,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    options.patRec,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>)</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"># Determine output filename (will contain only digi/reco branches)</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.inputFile.find(<span class="stringliteral">&quot;_rec.root&quot;</span>) &lt; 0:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3">  113</a></span>    outFile = options.inputFile</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4">  114</a></span>    options.inputFile = outFile.replace(<span class="stringliteral">&quot;_rec.root&quot;</span>, <span class="stringliteral">&quot;.root&quot;</span>)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    outFile = options.inputFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_rec.root&quot;</span>)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="comment"># outfile should be in local directory</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    tmp = outFile.split(<span class="stringliteral">&quot;/&quot;</span>)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    outFile = tmp[len(tmp) - 1]</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.geoFile:</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    tmp = options.inputFile.replace(<span class="stringliteral">&quot;ship.&quot;</span>, <span class="stringliteral">&quot;geofile_full.&quot;</span>)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798">  123</a></span>    options.geoFile = tmp.replace(<span class="stringliteral">&quot;_rec&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a048945b5e2e313357c8cd4ac2b1e5d81">  125</a></span>fgeo = ROOT.TFile.Open(options.geoFile)</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd">  126</a></span>geoMat = ROOT.genfit.TGeoMaterialInterface()  <span class="comment"># if only called in ShipDigiReco -&gt; crash, reason unknown</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment"># load Shipgeo dictionary</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb">  131</a></span>ShipGeo = load_from_root_file(fgeo, <span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4a6c4fe79938efbfd9bb7d1a98ae8755">  133</a></span>h = {}</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keywordflow">if</span> withHists:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    ut.bookHist(h, <span class="stringliteral">&quot;distu&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    ut.bookHist(h, <span class="stringliteral">&quot;distv&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    ut.bookHist(h, <span class="stringliteral">&quot;disty&quot;</span>, <span class="stringliteral">&quot;distance to wire&quot;</span>, 100, 0.0, 5.0)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    ut.bookHist(h, <span class="stringliteral">&quot;nmeas&quot;</span>, <span class="stringliteral">&quot;nr measurements&quot;</span>, 100, 0.0, 50.0)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    ut.bookHist(h, <span class="stringliteral">&quot;chi2&quot;</span>, <span class="stringliteral">&quot;Chi2/DOF&quot;</span>, 100, 0.0, 20.0)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">import</span> shipDet_conf</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1">  143</a></span>run = ROOT.FairRunSim()</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>run.SetName(<span class="stringliteral">&quot;TGeant4&quot;</span>)  <span class="comment"># Transport engine</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keyword">import</span> tempfile</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a7adf1c90f5639c5887ba1d602f4b2f81">  147</a></span>sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=<span class="stringliteral">&quot;.root&quot;</span>))</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>run.SetSink(sink)</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>ROOT.SetOwnership(sink, <span class="keyword">False</span>)  <span class="comment"># C++ FairRun takes ownership</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config_basic.C&quot;</span>)  <span class="comment"># geant4 transport not used, only needed for creating VMC field</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a44987cb8249b92984200ef8843b0fed1">  151</a></span>rtdb = run.GetRuntimeDb()</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4850398ee3476da47f58999b04e3a0e7">  153</a></span>modules = <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ShipGeo)</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"># run.Init()</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#acfee5ea8a044017a72eaf414bf4eb99c">  155</a></span>sGeo = fgeo[<span class="stringliteral">&quot;FAIRGeom&quot;</span>]</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keyword">import</span> geomGeant4</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a0e633b86c4896f37150fcf869b3fd59e">  158</a></span>fieldMaker = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keywordflow">if</span> hasattr(ShipGeo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    fieldMaker = <a class="code hl_function" href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">geomGeant4.addVMCFields</a>(ShipGeo, <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">True</span>, withVirtualMC=<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment"># make global variables</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186">  163</a></span>global_variables.debug = options.Debug</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>global_variables.fieldMaker = fieldMaker</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>global_variables.pidProton = pidProton</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a273d50a8ed0a846b0a62a86bba9b1c20">  166</a></span>global_variables.withT0 = options.withT0</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#aef73bfe78732856662cc5bc1afd8b169">  167</a></span>global_variables.patRec = options.patRec</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>global_variables.vertexing = vertexing</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>global_variables.ShipGeo = ShipGeo</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>global_variables.modules = modules</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a4563247f8c82a82f64d3c921dd359728">  171</a></span>global_variables.withNoStrawSmearing = options.withNoStrawSmearing</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>global_variables.h = h</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7">  173</a></span>global_variables.iEvent = 0</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment"># import reco tasks</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">import</span> shipDigiReco</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#af29bc13f95d9544b1f56ece16b06a4c6">  178</a></span>SHiP = <a class="code hl_class" href="classshipDigiReco_1_1ShipDigiReco.html">shipDigiReco.ShipDigiReco</a>(options.inputFile, outFile, fgeo, validation=options.validation)</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a5d79d13160dfaad7ee80f62adb0ee67e">  179</a></span>options.nEvents = min(SHiP.sTree.GetEntries(), options.nEvents)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment"># main loop</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keywordflow">for</span> global_variables.iEvent <span class="keywordflow">in</span> range(options.firstEvent, options.nEvents):</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">if</span> global_variables.iEvent % 1000 == 0 <span class="keywordflow">or</span> global_variables.debug:</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        print(<span class="stringliteral">&quot;event &quot;</span>, global_variables.iEvent)</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#ad65f7dc3b97b1adf05861f52855e59c1">  184</a></span>    rc = SHiP.sTree.GetEvent(global_variables.iEvent)</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    SHiP.digitize()</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    SHiP.reconstruct()</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    SHiP.recoTree.Fill()</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment"># memory monitoring</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment"># mem_monitor()</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment"># end loop over events</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>SHiP.finish()</div>
 <div class="ttc" id="aclassshipDigiReco_1_1ShipDigiReco_html"><div class="ttname"><a href="classshipDigiReco_1_1ShipDigiReco.html">shipDigiReco.ShipDigiReco</a></div><div class="ttdef"><b>Definition</b> <a href="shipDigiReco_8py_source.html#l00024">shipDigiReco.py:24</a></div></div>
 <div class="ttc" id="anamespaceShipReco_html_abef5d8b1901b0297e8a03041a63b8d7d"><div class="ttname"><a href="namespaceShipReco.html#abef5d8b1901b0297e8a03041a63b8d7d">ShipReco.mem_monitor</a></div><div class="ttdeci">None mem_monitor()</div><div class="ttdef"><b>Definition</b> <a href="ShipReco_8py_source.html#l00013">ShipReco.py:13</a></div></div>
 <div class="ttc" id="anamespacegeomGeant4_html_a92c04a276d287a72320c3f0ed4f5a420"><div class="ttname"><a href="namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420">geomGeant4.addVMCFields</a></div><div class="ttdeci">addVMCFields(shipGeo, str controlFile=&quot;&quot;, bool verbose=False, bool withVirtualMC=True)</div><div class="ttdef"><b>Definition</b> <a href="geomGeant4_8py_source.html#l00165">geomGeant4.py:165</a></div></div>

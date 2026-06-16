@@ -764,7 +764,7 @@ var namespaces_dup =
       [ "setByHand", "namespacemakeDecay.html#a80350a40054e766036a4d5b25d89a92e", null ],
       [ "sTree", "namespacemakeDecay.html#ae5a856c0860587c503dfd928d8708053", null ],
       [ "tmp", "namespacemakeDecay.html#aabc207b3a8656d874bd06f6f24d1214e", null ],
-      [ "wspill", "namespacemakeDecay.html#aba31d2bd4d941b30fc3604be92b089f7", null ]
+      [ "wspill", "namespacemakeDecay.html#ae5998936dab0f9c58f08f4edf1d57c86", null ]
     ] ],
     [ "makeGenieEvents", "namespacemakeGenieEvents.html", [
       [ "_build_env", "namespacemakeGenieEvents.html#a2753d22aa456638fb09ae9f003523cee", null ],
@@ -1232,7 +1232,7 @@ var namespaces_dup =
       [ "temp_filename", "namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40", null ],
       [ "test", "namespacerun__simScript.html#aeb48497c16acd583fcd0904bbd20e1e5", null ],
       [ "testf", "namespacerun__simScript.html#a1ea8d63e503c3d3ec966f4bc4aff471e", null ],
-      [ "theCouplings", "namespacerun__simScript.html#ae33bdd9891e2b28ad2bed3f3af498fb2", null ],
+      [ "theCouplings", "namespacerun__simScript.html#ad937cb1c59f43fc66c3e887dd5f0be6f", null ],
       [ "theDecayCouplings", "namespacerun__simScript.html#a3aa0b86013751d051d25e6bba245707e", null ],
       [ "theDPmass", "namespacerun__simScript.html#accda339f17ef6a9ca8465a8221c5dae0", null ],
       [ "theHNLMass", "namespacerun__simScript.html#a248635485cd4f6bdad43e3dc17be4648", null ],

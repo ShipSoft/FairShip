@@ -373,36 +373,37 @@ Inputs:
 <div class="line"><span class="lineno">  427</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  428</span>        had = re.search(<span class="stringliteral">r&quot;-&gt;\ (.+?)\ &quot;</span>, decayString).group(1)</div>
 <div class="line"><span class="lineno">  429</span>        decaysplit = decayString.split(<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><span class="lineno">  430</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
-<div class="line"><span class="lineno">  431</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
-<div class="line"><span class="lineno">  432</span>                lep = split</div>
-<div class="line"><span class="lineno">  433</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
-<div class="line"><span class="lineno">  434</span>            print(</div>
-<div class="line"><span class="lineno">  435</span>                <span class="stringliteral">&quot;findBranchingRatio() ERROR: Pions in final &quot;</span></div>
-<div class="line"><span class="lineno">  436</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
-<div class="line"><span class="lineno">  437</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
-<div class="line"><span class="lineno">  438</span>            )</div>
-<div class="line"><span class="lineno">  439</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  440</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  441</span> </div>
-<div class="line"><span class="lineno">  442</span>        corrdecstring = f<span class="stringliteral">&quot;N -&gt; {had} {lep}&quot;</span></div>
-<div class="line"><span class="lineno">  443</span>        listdecs = self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  444</span>        gooddec = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  445</span>        print(<span class="stringliteral">&quot;findBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
-<div class="line"><span class="lineno">  446</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
-<div class="line"><span class="lineno">  447</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
-<div class="line"><span class="lineno">  448</span>                gooddec = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  449</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
-<div class="line"><span class="lineno">  450</span>            print(<span class="stringliteral">&quot;findBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span>)</div>
-<div class="line"><span class="lineno">  451</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  452</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  453</span> </div>
-<div class="line"><span class="lineno">  454</span>        br = 0.0</div>
-<div class="line"><span class="lineno">  455</span>        totalwidth = self.NdecayWidth()</div>
-<div class="line"><span class="lineno">  456</span>        <span class="keywordflow">if</span> totalwidth &gt; 0.0:</div>
-<div class="line"><span class="lineno">  457</span>            br = self.Width_H_L(had, lep) / totalwidth</div>
-<div class="line"><span class="lineno">  458</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  459</span> </div>
+<div class="line"><span class="lineno">  430</span>        lep = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  431</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
+<div class="line"><span class="lineno">  432</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
+<div class="line"><span class="lineno">  433</span>                lep = split</div>
+<div class="line"><span class="lineno">  434</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
+<div class="line"><span class="lineno">  435</span>            print(</div>
+<div class="line"><span class="lineno">  436</span>                <span class="stringliteral">&quot;findBranchingRatio() ERROR: Pions in final &quot;</span></div>
+<div class="line"><span class="lineno">  437</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
+<div class="line"><span class="lineno">  438</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
+<div class="line"><span class="lineno">  439</span>            )</div>
+<div class="line"><span class="lineno">  440</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  441</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>        corrdecstring = f<span class="stringliteral">&quot;N -&gt; {had} {lep}&quot;</span></div>
+<div class="line"><span class="lineno">  444</span>        listdecs = self.decays[self.bench]</div>
+<div class="line"><span class="lineno">  445</span>        gooddec = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  446</span>        print(<span class="stringliteral">&quot;findBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
+<div class="line"><span class="lineno">  447</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
+<div class="line"><span class="lineno">  448</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
+<div class="line"><span class="lineno">  449</span>                gooddec = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  450</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
+<div class="line"><span class="lineno">  451</span>            print(<span class="stringliteral">&quot;findBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span>)</div>
+<div class="line"><span class="lineno">  452</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  453</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  454</span> </div>
+<div class="line"><span class="lineno">  455</span>        br = 0.0</div>
+<div class="line"><span class="lineno">  456</span>        totalwidth = self.NdecayWidth()</div>
+<div class="line"><span class="lineno">  457</span>        <span class="keywordflow">if</span> totalwidth &gt; 0.0:</div>
+<div class="line"><span class="lineno">  458</span>            br = self.Width_H_L(had, lep) / totalwidth</div>
+<div class="line"><span class="lineno">  459</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  460</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -436,46 +437,47 @@ Inputs:
 Inputs:
 - decayString is a string describing the decay, in the form 'H -&gt; N ... stuffN'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00460">460</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>    <span class="keyword">def </span>findProdBranchingRatio(self, decayString):</div>
-<div class="line"><span class="lineno">  461</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  462</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino product channel</span></div>
-<div class="line"><span class="lineno">  463</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  464</span><span class="stringliteral">        Inputs:</span></div>
-<div class="line"><span class="lineno">  465</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;H -&gt; N ... stuffN&#39;</span></div>
-<div class="line"><span class="lineno">  466</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  467</span>        had = re.search(<span class="stringliteral">r&quot;(.+?)\ -&gt;&quot;</span>, decayString).group(1)</div>
-<div class="line"><span class="lineno">  468</span>        decaysplit = decayString.split(<span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line"><span class="lineno">  469</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
-<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
-<div class="line"><span class="lineno">  471</span>                lep = split</div>
-<div class="line"><span class="lineno">  472</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
-<div class="line"><span class="lineno">  473</span>            print(</div>
-<div class="line"><span class="lineno">  474</span>                <span class="stringliteral">&quot;findProdBranchingRatio() ERROR: Pions in final &quot;</span></div>
-<div class="line"><span class="lineno">  475</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
-<div class="line"><span class="lineno">  476</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
-<div class="line"><span class="lineno">  477</span>            )</div>
-<div class="line"><span class="lineno">  478</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  479</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  480</span> </div>
-<div class="line"><span class="lineno">  481</span>        corrdecstring = f<span class="stringliteral">&quot;{had} -&gt; N {lep}&quot;</span></div>
-<div class="line"><span class="lineno">  482</span>        listdecs = self.prods[self.bench]</div>
-<div class="line"><span class="lineno">  483</span>        gooddec = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  484</span>        print(<span class="stringliteral">&quot;findProdBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
-<div class="line"><span class="lineno">  485</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
-<div class="line"><span class="lineno">  486</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
-<div class="line"><span class="lineno">  487</span>                gooddec = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
-<div class="line"><span class="lineno">  489</span>            print(</div>
-<div class="line"><span class="lineno">  490</span>                <span class="stringliteral">&quot;findProdBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span></div>
-<div class="line"><span class="lineno">  491</span>            )</div>
-<div class="line"><span class="lineno">  492</span>            print(self.decays)</div>
-<div class="line"><span class="lineno">  493</span>            <span class="keywordflow">return</span> -999</div>
-<div class="line"><span class="lineno">  494</span> </div>
-<div class="line"><span class="lineno">  495</span>        br = self.Width_N_L(had, lep) / (self.Width_N_L(had, lep) + c.hGeV / lifetime(had))</div>
-<div class="line"><span class="lineno">  496</span>        <span class="keywordflow">return</span> br</div>
-<div class="line"><span class="lineno">  497</span> </div>
-<div class="line"><span class="lineno">  498</span> </div>
+<p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00461">461</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  461</span>    <span class="keyword">def </span>findProdBranchingRatio(self, decayString):</div>
+<div class="line"><span class="lineno">  462</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  463</span><span class="stringliteral">        Returns the branching ratio of the selected SUSY RPV neutralino product channel</span></div>
+<div class="line"><span class="lineno">  464</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  465</span><span class="stringliteral">        Inputs:</span></div>
+<div class="line"><span class="lineno">  466</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;H -&gt; N ... stuffN&#39;</span></div>
+<div class="line"><span class="lineno">  467</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  468</span>        had = re.search(<span class="stringliteral">r&quot;(.+?)\ -&gt;&quot;</span>, decayString).group(1)</div>
+<div class="line"><span class="lineno">  469</span>        decaysplit = decayString.split(<span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line"><span class="lineno">  470</span>        lep = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  471</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
+<div class="line"><span class="lineno">  472</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&quot;mu&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;e&quot;</span>) &gt; -1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&quot;tau&quot;</span>) &gt; -1:</div>
+<div class="line"><span class="lineno">  473</span>                lep = split</div>
+<div class="line"><span class="lineno">  474</span>        <span class="keywordflow">if</span> had == <span class="stringliteral">&quot;pi+&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi-&quot;</span> <span class="keywordflow">or</span> had == <span class="stringliteral">&quot;pi0&quot;</span>:</div>
+<div class="line"><span class="lineno">  475</span>            print(</div>
+<div class="line"><span class="lineno">  476</span>                <span class="stringliteral">&quot;findProdBranchingRatio() ERROR: Pions in final &quot;</span></div>
+<div class="line"><span class="lineno">  477</span>                <span class="stringliteral">&quot;state have not been implemented, please choose &quot;</span></div>
+<div class="line"><span class="lineno">  478</span>                <span class="stringliteral">&quot;a different decay mode of out...\n&quot;</span></div>
+<div class="line"><span class="lineno">  479</span>            )</div>
+<div class="line"><span class="lineno">  480</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  481</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  482</span> </div>
+<div class="line"><span class="lineno">  483</span>        corrdecstring = f<span class="stringliteral">&quot;{had} -&gt; N {lep}&quot;</span></div>
+<div class="line"><span class="lineno">  484</span>        listdecs = self.prods[self.bench]</div>
+<div class="line"><span class="lineno">  485</span>        gooddec = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  486</span>        print(<span class="stringliteral">&quot;findProdBranchingRation() INFO: You have chosen the decay: &#39;&quot;</span>, corrdecstring)</div>
+<div class="line"><span class="lineno">  487</span>        <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> listdecs:</div>
+<div class="line"><span class="lineno">  488</span>            <span class="keywordflow">if</span> corrdecstring <span class="keywordflow">in</span> dec:</div>
+<div class="line"><span class="lineno">  489</span>                gooddec = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  490</span>        <span class="keywordflow">if</span> gooddec <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
+<div class="line"><span class="lineno">  491</span>            print(</div>
+<div class="line"><span class="lineno">  492</span>                <span class="stringliteral">&quot;findProdBranchingRation() ERROR: Badly formulated decay string, please choose one of the following\n&quot;</span></div>
+<div class="line"><span class="lineno">  493</span>            )</div>
+<div class="line"><span class="lineno">  494</span>            print(self.decays)</div>
+<div class="line"><span class="lineno">  495</span>            <span class="keywordflow">return</span> -999</div>
+<div class="line"><span class="lineno">  496</span> </div>
+<div class="line"><span class="lineno">  497</span>        br = self.Width_N_L(had, lep) / (self.Width_N_L(had, lep) + c.hGeV / lifetime(had))</div>
+<div class="line"><span class="lineno">  498</span>        <span class="keywordflow">return</span> br</div>
+<div class="line"><span class="lineno">  499</span> </div>
+<div class="line"><span class="lineno">  500</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
