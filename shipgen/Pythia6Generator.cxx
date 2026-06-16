@@ -10,6 +10,8 @@
 
 #include <cstdio>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
@@ -51,36 +53,54 @@ Bool_t Pythia6Generator::ReadEvent(FairPrimaryGenerator* primGen) {
   }
 
   // Define event variable to be read from file
-  Int_t ntracks = 0, eventID = 0, ncols = 0;
+  Int_t ntracks = 0, eventID = 0;
 
   // Define track variables to be read from file
   Int_t nLev = 0, pdgID = 0, nM1 = -1, nM2 = -1, nDF = -1, nDL = -1;
   Float_t fPx = 0., fPy = 0., fPz = 0., fM = 0., fE = 0.;
   Float_t fVx = 0., fVy = 0., fVz = 0., fT = 0.;
 
-  // Read event header line from input file
-
-  ncols = fscanf(fInputFile, "%d\t%d", &eventID, &ntracks);
-
-  if (ncols && ntracks > 0) {
-    if (fVerbose > 0)
-      cout << "Event number: " << eventID << "\tNtracks: " << ntracks << endl;
-
-    for (Int_t ll = 0; ll < ntracks; ll++) {
-      (void)fscanf(fInputFile, "%d %d %d %d %d %d %f %f %f %f %f %f %f %f %f",
-                   &nLev, &pdgID, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE,
-                   &fM, &fVx, &fVy, &fVz, &fT);
-      if (fVerbose > 0)
-        cout << nLev << "\t" << pdgID << "\t" << nM1 << "\t" << nM2 << "\t"
-             << nDF << "\t" << nDL << "\t" << fPx << "\t" << fPy << "\t" << fPz
-             << "\t" << fE << "\t" << fM << "\t" << fVx << "\t" << fVy << "\t"
-             << fVz << "\t" << fT << endl;
-      if (nLev == 1) primGen->AddTrack(pdgID, fPx, fPy, fPz, fVx, fVy, fVz);
-    }
-  } else {
+  // Read event header line from input file. fgets+istringstream gives us
+  // per-field error checking that the old fscanf("%d\t%d", …) lacked.
+  char headerBuf[256];
+  if (fgets(headerBuf, sizeof(headerBuf), fInputFile) == nullptr) {
     cout << "-I Pythia6Generator: End of input file reached " << endl;
     CloseInput();
     return kFALSE;
+  }
+  std::istringstream headerStream(headerBuf);
+  if (!(headerStream >> eventID >> ntracks) || ntracks <= 0) {
+    cout << "-I Pythia6Generator: End of input file reached " << endl;
+    CloseInput();
+    return kFALSE;
+  }
+
+  if (fVerbose > 0)
+    cout << "Event number: " << eventID << "\tNtracks: " << ntracks << endl;
+
+  for (Int_t ll = 0; ll < ntracks; ll++) {
+    char trackBuf[512];
+    if (fgets(trackBuf, sizeof(trackBuf), fInputFile) == nullptr) {
+      LOG(error) << "Pythia6Generator: unexpected end of file while reading "
+                    "tracks for event "
+                 << eventID;
+      CloseInput();
+      return kFALSE;
+    }
+    std::istringstream trackStream(trackBuf);
+    if (!(trackStream >> nLev >> pdgID >> nM1 >> nM2 >> nDF >> nDL >> fPx >>
+          fPy >> fPz >> fE >> fM >> fVx >> fVy >> fVz >> fT)) {
+      LOG(error) << "Pythia6Generator: malformed track line for event "
+                 << eventID << " track " << ll << ": " << trackBuf;
+      CloseInput();
+      return kFALSE;
+    }
+    if (fVerbose > 0)
+      cout << nLev << "\t" << pdgID << "\t" << nM1 << "\t" << nM2 << "\t" << nDF
+           << "\t" << nDL << "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t"
+           << fE << "\t" << fM << "\t" << fVx << "\t" << fVy << "\t" << fVz
+           << "\t" << fT << endl;
+    if (nLev == 1) primGen->AddTrack(pdgID, fPx, fPy, fPz, fVx, fVy, fVz);
   }
 
   // If end of input file is reached : close it and abort run
