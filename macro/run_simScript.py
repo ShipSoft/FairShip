@@ -477,8 +477,6 @@ if options.reproducible and options.debug == 0:
 
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
-ROOT.gInterpreter.ProcessLine('fair::Logger::SetFileSeverity("fatal");')
-ROOT.gInterpreter.ProcessLine('fair::Logger::SetVerbosity("verylow");')
 if options.debug == 0:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 1:
@@ -943,11 +941,8 @@ if options.print_fields:
 # fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 # fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
-print("about to run: ", options.nEvents)
-
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
-print("all sorted")
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
@@ -965,8 +960,6 @@ run.CreateGeometryFile(geofile_name)
 import saveBasicParameters
 
 saveBasicParameters.execute(geofile_name, ship_geo)
-
-ROOT.gErrorIgnoreLevel = ROOT.kFatal
 
 # checking for overlaps
 if options.check_overlaps:
