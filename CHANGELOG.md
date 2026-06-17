@@ -19,6 +19,8 @@ it in future.
 
 ### Changed
 
+* Change A scaling in makeDecay
+
 ### Fixed
 
 ### Removed
