@@ -13,7 +13,10 @@ ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
 # Reference values for Molybdenum (historical defaults). Cross-section ratios
-# scale ~ A^(1/3) since heavy-flavour ~ A and mbias ~ A^(2/3).
+# scale heavy-flavour ~ A and mbias ~ A^(0.71).
+heavyflavour_Ascale = 1
+mbias_Ascale = 0.71
+
 A_REF = 98.0
 CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
 CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
@@ -51,7 +54,7 @@ fname = args.input.replace(".root", "")
 nrpotspill = args.pot
 
 A = args.A if args.A is not None else TARGET_A[args.target_composition]
-scale = (A / A_REF) ** (1.0 / 3.0)
+scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
 
 if args.chicc is not None:
     chicc = args.chicc
@@ -62,7 +65,7 @@ else:
 
 chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
 
-print(f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^(1/3)={scale:.4f}")
+print(f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}")
 print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
 
 FIN = fname + ".root"
