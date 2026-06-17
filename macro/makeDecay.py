@@ -46,7 +46,11 @@ ap.add_argument(
     "-A",
     type=float,
     default=None,
-    help="Target mass number; overrides --target_composition preset. Used to scale chicc/chibb as (A/A_Mo)^(1/3).",
+    help=(
+        "Target mass number; overrides --target_composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
 )
 args = ap.parse_args()
 
