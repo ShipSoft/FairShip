@@ -70,7 +70,7 @@ class MTCDetHit : public SHiP::DetectorHit {
   Float_t Xch = 0.0, Ych = 0.0, Zch = 0.0;
   Bool_t flag{true};  ///< flag
 
-  ClassDef(MTCDetHit, 6);
+  ClassDefOverride(MTCDetHit, 6);
 };
 
 #endif  // SND_MTC_MTCDETHIT_H_

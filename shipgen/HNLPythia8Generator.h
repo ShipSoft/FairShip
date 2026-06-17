@@ -20,7 +20,7 @@ class FairPrimaryGenerator;
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
   PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
-  virtual ~PyTr1Rng() {};
+  ~PyTr1Rng() override {};
 
   Double_t flat() { return rng->Rndm(); };
 
@@ -31,7 +31,7 @@ class PyTr1Rng : public Pythia8::RndmEngine {
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
   PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
-  virtual ~PyTr3Rng() {};
+  ~PyTr3Rng() override {};
 
   Double_t flat() { return rng->Rndm(); };
 
@@ -90,11 +90,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   Pythia8::Pythia* getPythiaInstance() { return fPythia; };
   Pythia8::Pythia* fPythia;  //!
  private:
-#if PYTHIA_VERSION_INTEGER >= 8300
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;
-#else
-  Pythia8::RndmEngine* fRandomEngine;  //!
-#endif
 
  protected:
   Double_t fMom;       // proton momentum
@@ -104,7 +100,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
-  Int_t fnRetries;     // number of events without any HNL
+  Int_t fnRetries;     // retries: no HNL produced
   Double_t fctau;      // hnl lifetime
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;  // finite beam size

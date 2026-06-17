@@ -3,8 +3,12 @@
 
 __author__ = "Mikhail Hushchyn"
 
+import logging
+
 import global_variables
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 # Globals
 ReconstructibleMCTracks = []
@@ -33,6 +37,8 @@ def execute(smeared_hits, ship_geo, method: str = ""):
 
     recognized_tracks = {}
 
+    logger.debug("PatRec input: %d smeared hits, method=%s", len(smeared_hits), method or "none")
+
     if method == "TemplateMatching":
         recognized_tracks = template_matching_pattern_recognition(smeared_hits, ship_geo)
     elif method == "FH":
@@ -44,7 +50,7 @@ def execute(smeared_hits, ship_geo, method: str = ""):
         atrack = {"y12": hits_y12, "stereo12": hits_stereo12, "y34": hits_y34, "stereo34": hits_stereo34}
         recognized_tracks[0] = atrack
 
-    # print "track_hits.keys(): ", recognized_tracks.keys()
+    logger.debug("PatRec output: %d tracks", len(recognized_tracks))
 
     return recognized_tracks
 
@@ -104,27 +110,9 @@ def template_matching_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks_combo = tracks_combination_using_extrapolation(
         recognized_tracks_12, recognized_tracks_34, ShipGeo.Bfield.z
     )
-    # recognized_tracks_combo = [{'hits_y12': [hit1, hit2, ...], 'hits_stereo12': [hit1, hit2, ...],
-    #                             'hits_y34': [hit1, hit2, ...], 'hits_stereo34': [hit1, hit2, ...]}, {..}, ..]
 
     # Prepare output of PatRec
-    recognized_tracks = {}
-    i_track = 0
-    for atrack_combo in recognized_tracks_combo:
-        hits_y12 = atrack_combo["hits_y12"]
-        hits_stereo12 = atrack_combo["hits_stereo12"]
-        hits_y34 = atrack_combo["hits_y34"]
-        hits_stereo34 = atrack_combo["hits_stereo34"]
-
-        if (
-            len(hits_y12) >= min_hits
-            and len(hits_stereo12) >= min_hits
-            and len(hits_y34) >= min_hits
-            and len(hits_stereo34) >= min_hits
-        ):
-            atrack = {"y12": hits_y12, "stereo12": hits_stereo12, "y34": hits_y34, "stereo34": hits_stereo34}
-            recognized_tracks[i_track] = atrack
-            i_track += 1
+    recognized_tracks = _prepare_output(recognized_tracks_combo, min_hits)
 
     return recognized_tracks
 
@@ -143,6 +131,8 @@ def pat_rec_view(SmearedHits, min_hits: int):
     """
 
     long_recognized_tracks = []
+    n_seeds_tried = 0
+    n_seeds_slope_cut = 0
 
     # Take 2 hits as a track seed
     for ahit1 in SmearedHits:
@@ -152,10 +142,12 @@ def pat_rec_view(SmearedHits, min_hits: int):
             if ahit1["detID"] == ahit2["detID"]:
                 continue
 
+            n_seeds_tried += 1
             k_seed = 1.0 * (ahit2["ytop"] - ahit1["ytop"]) / (ahit2["z"] - ahit1["z"])
             b_seed = ahit1["ytop"] - k_seed * ahit1["z"]
 
             if abs(k_seed) > 1:
+                n_seeds_slope_cut += 1
                 continue
 
             atrack = {}
@@ -181,6 +173,15 @@ def pat_rec_view(SmearedHits, min_hits: int):
 
     # Remove clones
     recognized_tracks = reduce_clones_using_one_track_per_hit(long_recognized_tracks, min_hits)
+
+    logger.debug(
+        "pat_rec_view: %d hits, %d seeds tried, %d cut by slope, %d tracks before clone removal, %d after",
+        len(SmearedHits),
+        n_seeds_tried,
+        n_seeds_slope_cut,
+        len(long_recognized_tracks),
+        len(recognized_tracks),
+    )
 
     # Track fit
     for atrack in recognized_tracks:
@@ -224,47 +225,23 @@ def fast_hough_transform_pattern_recognition(SmearedHits, ShipGeo):
 
     #### PatRec in 12y
     recognized_tracks_y12 = fast_hough_pat_rec_y_view(SmearedHits_12y, min_hits)
-    # recognized_tracks_y12 = [{'hits_y': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### PatRec in stereo12
-    # recognized_tracks_12 = pat_rec_stereo_views(SmearedHits_12stereo, recognized_tracks_y12, min_hits)
     recognized_tracks_12 = fast_hough_pat_rec_stereo_views(SmearedHits_12stereo, recognized_tracks_y12, min_hits)
-    # recognized_tracks_12 = [{'hits_y': [hit1, hit2, ...], 'hits_stereo': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     #### PatRec in 34y
     recognized_tracks_y34 = fast_hough_pat_rec_y_view(SmearedHits_34y, min_hits)
-    # recognized_tracks_y34 = [{'hits_y': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### PatRec in stereo34
-    # recognized_tracks_34 = pat_rec_stereo_views(SmearedHits_34stereo, recognized_tracks_y34, min_hits)
     recognized_tracks_34 = fast_hough_pat_rec_stereo_views(SmearedHits_34stereo, recognized_tracks_y34, min_hits)
-    # recognized_tracks_34 = [{'hits_y': [hit1, hit2, ...], 'hits_stereo': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### Combination of tracks before and after the magnet
     recognized_tracks_combo = tracks_combination_using_extrapolation(
         recognized_tracks_12, recognized_tracks_34, ShipGeo.Bfield.z
     )
-    # recognized_tracks_combo = [{'hits_y12': [hit1, hit2, ...], 'hits_stereo12': [hit1, hit2, ...],
-    #                             'hits_y34': [hit1, hit2, ...], 'hits_stereo34': [hit1, hit2, ...]}, {..}, ..]
 
     # Prepare output of PatRec
-    recognized_tracks = {}
-    i_track = 0
-    for atrack_combo in recognized_tracks_combo:
-        hits_y12 = atrack_combo["hits_y12"]
-        hits_stereo12 = atrack_combo["hits_stereo12"]
-        hits_y34 = atrack_combo["hits_y34"]
-        hits_stereo34 = atrack_combo["hits_stereo34"]
-
-        if (
-            len(hits_y12) >= min_hits
-            and len(hits_stereo12) >= min_hits
-            and len(hits_y34) >= min_hits
-            and len(hits_stereo34) >= min_hits
-        ):
-            atrack = {"y12": hits_y12, "stereo12": hits_stereo12, "y34": hits_y34, "stereo34": hits_stereo34}
-            recognized_tracks[i_track] = atrack
-            i_track += 1
+    recognized_tracks = _prepare_output(recognized_tracks_combo, min_hits)
 
     return recognized_tracks
 
@@ -283,6 +260,8 @@ def fast_hough_pat_rec_y_view(SmearedHits, min_hits: int):
     """
 
     long_recognized_tracks = []
+    n_seeds_tried = 0
+    n_seeds_slope_cut = 0
 
     # Take 2 hits as a track seed
     for ahit1 in SmearedHits:
@@ -292,10 +271,12 @@ def fast_hough_pat_rec_y_view(SmearedHits, min_hits: int):
             if ahit1["detID"] == ahit2["detID"]:
                 continue
 
+            n_seeds_tried += 1
             k_seed = 1.0 * (ahit2["ytop"] - ahit1["ytop"]) / (ahit2["z"] - ahit1["z"])
             b_seed = ahit1["ytop"] - k_seed * ahit1["z"]
 
             if abs(k_seed) > 1:
+                n_seeds_slope_cut += 1
                 continue
 
             atrack = {}
@@ -329,6 +310,15 @@ def fast_hough_pat_rec_y_view(SmearedHits, min_hits: int):
     # Remove clones
     recognized_tracks = reduce_clones_using_one_track_per_hit(long_recognized_tracks, min_hits)
 
+    logger.debug(
+        "fast_hough_y_view: %d hits, %d seeds tried, %d cut by slope, %d tracks before clone removal, %d after",
+        len(SmearedHits),
+        n_seeds_tried,
+        n_seeds_slope_cut,
+        len(long_recognized_tracks),
+        len(recognized_tracks),
+    )
+
     # Track fit
     for atrack in recognized_tracks:
         z_coords = [ahit["z"] for ahit in atrack["hits_y"]]
@@ -342,6 +332,7 @@ def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []
+    n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
         k_y = atrack_y["k_y"]
@@ -420,10 +411,18 @@ def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min
 
         if max_track is not None:
             atrack["hits_stereo"] = max_track["hits_stereo"]
+            n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
                 used_hits.append(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
+
+    logger.debug(
+        "fast_hough_stereo: %d stereo hits, %d y-tracks, %d matched with stereo",
+        len(SmearedHits_stereo),
+        len(recognized_tracks_y),
+        n_y_tracks_with_stereo,
+    )
 
     return recognized_tracks_stereo
 
@@ -494,47 +493,23 @@ def artificial_retina_pattern_recognition(SmearedHits, ShipGeo):
 
     #### PatRec in 12y
     recognized_tracks_y12 = artificial_retina_pat_rec_y_view(SmearedHits_12y, min_hits)
-    # recognized_tracks_y12 = [{'hits_y': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### PatRec in stereo12
-    # recognized_tracks_12 = pat_rec_stereo_views(SmearedHits_12stereo, recognized_tracks_y12, min_hits)
     recognized_tracks_12 = artificial_retina_pat_rec_stereo_views(SmearedHits_12stereo, recognized_tracks_y12, min_hits)
-    # recognized_tracks_12 = [{'hits_y': [hit1, hit2, ...], 'hits_stereo': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     #### PatRec in 34y
     recognized_tracks_y34 = artificial_retina_pat_rec_y_view(SmearedHits_34y, min_hits)
-    # recognized_tracks_y34 = [{'hits_y': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### PatRec in stereo34
-    # recognized_tracks_34 = pat_rec_stereo_views(SmearedHits_34stereo, recognized_tracks_y34, min_hits)
     recognized_tracks_34 = artificial_retina_pat_rec_stereo_views(SmearedHits_34stereo, recognized_tracks_y34, min_hits)
-    # recognized_tracks_34 = [{'hits_y': [hit1, hit2, ...], 'hits_stereo': [hit1, hit2, ...], 'k_y': float, 'b_y': float}, {...}, ...]
 
     ### Combination of tracks before and after the magnet
     recognized_tracks_combo = tracks_combination_using_extrapolation(
         recognized_tracks_12, recognized_tracks_34, ShipGeo.Bfield.z
     )
-    # recognized_tracks_combo = [{'hits_y12': [hit1, hit2, ...], 'hits_stereo12': [hit1, hit2, ...],
-    #                             'hits_y34': [hit1, hit2, ...], 'hits_stereo34': [hit1, hit2, ...]}, {..}, ..]
 
     # Prepare output of PatRec
-    recognized_tracks = {}
-    i_track = 0
-    for atrack_combo in recognized_tracks_combo:
-        hits_y12 = atrack_combo["hits_y12"]
-        hits_stereo12 = atrack_combo["hits_stereo12"]
-        hits_y34 = atrack_combo["hits_y34"]
-        hits_stereo34 = atrack_combo["hits_stereo34"]
-
-        if (
-            len(hits_y12) >= min_hits
-            and len(hits_stereo12) >= min_hits
-            and len(hits_y34) >= min_hits
-            and len(hits_stereo34) >= min_hits
-        ):
-            atrack = {"y12": hits_y12, "stereo12": hits_stereo12, "y34": hits_y34, "stereo34": hits_stereo34}
-            recognized_tracks[i_track] = atrack
-            i_track += 1
+    recognized_tracks = _prepare_output(recognized_tracks_combo, min_hits)
 
     return recognized_tracks
 
@@ -605,6 +580,13 @@ def artificial_retina_pat_rec_y_view(SmearedHits, min_hits: int):
     # Remove clones
     recognized_tracks = reduce_clones_using_one_track_per_hit(long_recognized_tracks, min_hits)
 
+    logger.debug(
+        "ar_y_view: %d hits, %d tracks before clone removal, %d after",
+        len(SmearedHits),
+        len(long_recognized_tracks),
+        len(recognized_tracks),
+    )
+
     # Track fit
     for atrack in recognized_tracks:
         z_coords = [ahit["z"] for ahit in atrack["hits_y"]]
@@ -618,6 +600,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []
+    n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
         k_y = atrack_y["k_y"]
@@ -697,10 +680,18 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
 
         if max_track is not None:
             atrack["hits_stereo"] = max_track["hits_stereo"]
+            n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
                 used_hits.append(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
+
+    logger.debug(
+        "ar_stereo: %d stereo hits, %d y-tracks, %d matched with stereo",
+        len(SmearedHits_stereo),
+        len(recognized_tracks_y),
+        n_y_tracks_with_stereo,
+    )
 
     return recognized_tracks_stereo
 
@@ -838,6 +829,14 @@ def hits_split(smeared_hits):
         if is_stereo34:
             smeared_hits_34stereo.append(ahit)
 
+    logger.debug(
+        "hits_split: y12=%d, stereo12=%d, y34=%d, stereo34=%d",
+        len(smeared_hits_12y),
+        len(smeared_hits_12stereo),
+        len(smeared_hits_34y),
+        len(smeared_hits_34stereo),
+    )
+
     return smeared_hits_12y, smeared_hits_12stereo, smeared_hits_34y, smeared_hits_34stereo
 
 
@@ -909,6 +908,10 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
             atrack["hits_stereo12"] = recognized_tracks_12[i_12]["hits_stereo"]
             atrack["hits_y34"] = recognized_tracks_34[i_34]["hits_y"]
             atrack["hits_stereo34"] = recognized_tracks_34[i_34]["hits_stereo"]
+            atrack["k_y12"] = recognized_tracks_12[i_12]["k_y"]
+            atrack["b_y12"] = recognized_tracks_12[i_12]["b_y"]
+            atrack["k_y34"] = recognized_tracks_34[i_34]["k_y"]
+            atrack["b_y34"] = recognized_tracks_34[i_34]["b_y"]
             recognized_tracks_combo.append(atrack)
             used_y12.append(i_12)
             used_y34.append(i_34)
@@ -920,6 +923,10 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
             atrack["hits_stereo12"] = recognized_tracks_12[i_12]["hits_stereo"]
             atrack["hits_y34"] = []
             atrack["hits_stereo34"] = []
+            atrack["k_y12"] = recognized_tracks_12[i_12]["k_y"]
+            atrack["b_y12"] = recognized_tracks_12[i_12]["b_y"]
+            atrack["k_y34"] = None
+            atrack["b_y34"] = None
             recognized_tracks_combo.append(atrack)
 
     for i_34 in range(len(recognized_tracks_34)):
@@ -929,30 +936,86 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
             atrack["hits_stereo12"] = []
             atrack["hits_y34"] = recognized_tracks_34[i_34]["hits_y"]
             atrack["hits_stereo34"] = recognized_tracks_34[i_34]["hits_stereo"]
+            atrack["k_y12"] = None
+            atrack["b_y12"] = None
+            atrack["k_y34"] = recognized_tracks_34[i_34]["k_y"]
+            atrack["b_y34"] = recognized_tracks_34[i_34]["b_y"]
             recognized_tracks_combo.append(atrack)
+
+    logger.debug(
+        "tracks_combo: %d 12-tracks, %d 34-tracks, %d matched pairs, %d total combos",
+        len(recognized_tracks_12),
+        len(recognized_tracks_34),
+        len(used_y12),
+        len(recognized_tracks_combo),
+    )
 
     return recognized_tracks_combo
 
 
+def _prepare_output(recognized_tracks_combo, min_hits):
+    """Prepare PatRec output, filtering tracks with too few hits and preserving track parameters."""
+    recognized_tracks = {}
+    i_track = 0
+    n_rejected = 0
+    for atrack_combo in recognized_tracks_combo:
+        hits_y12 = atrack_combo["hits_y12"]
+        hits_stereo12 = atrack_combo["hits_stereo12"]
+        hits_y34 = atrack_combo["hits_y34"]
+        hits_stereo34 = atrack_combo["hits_stereo34"]
+
+        if (
+            len(hits_y12) >= min_hits
+            and len(hits_stereo12) >= min_hits
+            and len(hits_y34) >= min_hits
+            and len(hits_stereo34) >= min_hits
+        ):
+            atrack = {
+                "y12": hits_y12,
+                "stereo12": hits_stereo12,
+                "y34": hits_y34,
+                "stereo34": hits_stereo34,
+                "k_y12": atrack_combo.get("k_y12"),
+                "b_y12": atrack_combo.get("b_y12"),
+                "k_y34": atrack_combo.get("k_y34"),
+                "b_y34": atrack_combo.get("b_y34"),
+            }
+            recognized_tracks[i_track] = atrack
+            i_track += 1
+        else:
+            n_rejected += 1
+
+    logger.debug(
+        "output: %d tracks accepted, %d rejected by min_hits=%d filter",
+        i_track,
+        n_rejected,
+        min_hits,
+    )
+
+    return recognized_tracks
+
+
 def hit_in_window(x, y, k_bin, b_bin, window_width=1.0) -> bool:
     """
-    Counts hits in a bin of track parameter space (b, k).
+    Check whether a hit falls within a window around a straight-line track.
 
     Parameters
     ---------
-    x : array-like
-        Array of x coordinates of hits.
-    y : array-like
-        Array of x coordinates of hits.
+    x : float
+        Z coordinate of the hit.
+    y : float
+        Y (or projected X) coordinate of the hit.
     k_bin : float
-        Track parameter: y = k_bin * x + b_bin
+        Track slope: y = k_bin * x + b_bin
     b_bin : float
-        Track parameter: y = k_bin * x + b_bin
+        Track intercept: y = k_bin * x + b_bin
+    window_width : float
+        Half-width of the acceptance window in the y direction.
 
     Return
     ------
-    track_inds : array-like
-        Hit indexes of a track: [ind1, ind2, ...]
+    flag : bool
+        True if the hit is within the window.
     """
 
     y_approx = k_bin * x + b_bin
@@ -965,6 +1028,42 @@ def hit_in_window(x, y, k_bin, b_bin, window_width=1.0) -> bool:
 
 
 def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
+    """
+    Project a stereo straw hit onto the ZX plane using the Y-view track parameters.
+
+    A stereo straw is tilted: its top-end is at (xtop, ytop) and bottom-end at
+    (xbot, ybot), both at the same z. The Y-view track gives the y position at
+    this z as y_track = k_y * z + b_y. This function finds the x coordinate
+    where the straw wire crosses y_track by parameterising the wire as a line
+    in the XY plane and evaluating it at y = y_track.
+
+    Note: the caller passes (ytop, xtop, ybot, xbot) — the argument names here
+    are swapped relative to the geometric meaning because the call sites swap
+    the x/y coordinates. This is intentional: the straw wire is parameterised
+    as x(y), not y(x), because the stereo straws are nearly vertical.
+
+    Parameters
+    ----------
+    z : float
+        Z coordinate of the hit.
+    xtop : float
+        First coordinate of wire top-end (actually ytop at call site).
+    ytop : float
+        Second coordinate of wire top-end (actually xtop at call site).
+    xbot : float
+        First coordinate of wire bottom-end (actually ybot at call site).
+    ybot : float
+        Second coordinate of wire bottom-end (actually xbot at call site).
+    k_y : float
+        Slope of the Y-view track: y = k_y * z + b_y.
+    b_y : float
+        Intercept of the Y-view track.
+
+    Returns
+    -------
+    y : float
+        The projected x coordinate of the hit in the ZX plane.
+    """
     x = k_y * z + b_y
     k = (ytop - ybot) / (xtop - xbot + 10**-6)
     b = ytop - k * xtop
@@ -977,6 +1076,7 @@ def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int)
     ### PatRec in stereo
     recognized_tracks_stereo = []
     used_hits = []
+    n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
         k_y = atrack_y["k_y"]
@@ -1050,9 +1150,17 @@ def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int)
 
         if max_track is not None:
             atrack["hits_stereo"] = max_track["hits_stereo"]
+            n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
                 used_hits.append(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
+
+    logger.debug(
+        "pat_rec_stereo: %d stereo hits, %d y-tracks, %d matched with stereo",
+        len(SmearedHits_stereo),
+        len(recognized_tracks_y),
+        n_y_tracks_with_stereo,
+    )
 
     return recognized_tracks_stereo

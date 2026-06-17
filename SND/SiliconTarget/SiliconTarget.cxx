@@ -101,8 +101,8 @@ TGeoVolume* SiliconTarget::CreateSiliconPlanes(const char* name, Double_t width,
   return trackingStation;
 }
 void SiliconTarget::ConstructGeometry() {
-  ShipGeo::InitMedium("tungstenalloySND");
-  TGeoMedium* tungsten = gGeoManager->GetMedium("tungstenalloySND");
+  ShipGeo::InitMedium("tungstensifon");
+  TGeoMedium* tungsten = gGeoManager->GetMedium("tungstensifon");
   ShipGeo::InitMedium("air");
   TGeoMedium* air = gGeoManager->GetMedium("air");
   ShipGeo::InitMedium("silicon");

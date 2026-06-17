@@ -31,7 +31,7 @@ class strawtubesPoint : public SHiP::DetectorPoint {
                   Int_t pdgcode, Double_t dist);
 
   /** Destructor **/
-  virtual ~strawtubesPoint();
+  ~strawtubesPoint() override;
 
   /** Output to screen **/
 

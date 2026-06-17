@@ -13,7 +13,7 @@ from ShipGeoConfig import AttrDict, Config
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
 
-# Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
+# Here you can select the MS geometry
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
@@ -133,7 +133,7 @@ def create_config(
     Yheight: float = 6.0,
     strawDesign: int = 10,
     muShieldGeo=None,
-    shieldName: str = "New_HA_Design",
+    shieldName: str = "TRY_2025",
     nuTargetPassive: int = 1,
     SND: bool = True,
     SND_design=None,
@@ -147,7 +147,7 @@ def create_config(
         Yheight: Height of vacuum tank in meters, default: 6.0
         strawDesign: Straw tube design (4=aluminium frame, 10=steel frame), default: 10
         muShieldGeo: Muon shield geometry file (for experts), default: None
-        shieldName: Name of shield configuration ("warm_opt" or "New_HA_Design"), default: "New_HA_Design"
+        shieldName: Name of shield configuration, default: "TRY_2025"
         nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
         SND: Enable SND detector, default: True
         SND_design: SND design options (list of design numbers), default: [2]
@@ -282,6 +282,11 @@ def create_config(
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
     c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.0
+    veto_yaml = os.path.expandvars(f"$FAIRSHIP/geometry/veto_config_{DecayVolumeMedium}.yaml")
+    with open(veto_yaml) as f:
+        veto_config = yaml.safe_load(f)
+    c.decayVolume.xEndInner = veto_config["xendInner"] * u.cm
+    c.decayVolume.yEndInner = veto_config["yendInner"] * u.cm
 
     c.chambers = AttrDict()
     magnetIncrease = 100.0 * u.cm
@@ -315,7 +320,7 @@ def create_config(
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
-    c.UBTStation1 = AttrDict(z = c.decayVolume.z0 - 50*u.cm)
+    c.UBTStation1 = AttrDict(z=c.decayVolume.z0 - 50 * u.cm)
 
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
@@ -417,15 +422,13 @@ def create_config(
     c.UpstreamTagger = AttrDict()
     c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
     c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
-#<<<<<<< HEAD
+    # <<<<<<< HEAD
     c.UpstreamTagger.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
-    c.UpstreamTagger.Z_Position = (
-        -25.400 * u.m + c.decayVolume.z
-    )  # Relative position of UBT to decay vessel centre
-#=======
-#    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
-#    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
-#>>>>>>> mymaster
+    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    # =======
+    #    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    #    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z  # Relative position of UBT to decay vessel centre
+    # >>>>>>> mymaster
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
 

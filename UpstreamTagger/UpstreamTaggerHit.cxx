@@ -35,7 +35,7 @@ UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
   // Smear time with Gaussian resolution
   fTime = gRandom->Gaus(p->GetTime() + t0, time_res);
 
-//  fSubDetID = p->GetLayerID();
+  //  fSubDetID = p->GetLayerID();
 }
 
 // -----   Print   ------------------------------

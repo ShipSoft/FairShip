@@ -40,7 +40,7 @@ class TargetTracker : public SHiP::Detector<TTPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   TargetTracker(const TargetTracker&) = delete;
   TargetTracker& operator=(const TargetTracker&) = delete;

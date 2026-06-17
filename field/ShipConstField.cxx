@@ -138,7 +138,7 @@ Double_t ShipConstField::GetBz(Double_t x, Double_t y, Double_t z) {
 // -------------------------------------------------------------------------
 
 // -----   Screen output   -------------------------------------------------
-void ShipConstField::Print() {
+void ShipConstField::Print(Option_t*) const {
   cout << "======================================================" << endl;
   cout << "----  " << fTitle << " : " << fName << endl;
   cout << "----" << endl;

@@ -5,6 +5,7 @@
 #ifndef SHIPGEN_GENERATOR_H_
 #define SHIPGEN_GENERATOR_H_
 
+#include <cmath>
 #include <optional>
 #include <string>
 #include <vector>
@@ -15,8 +16,9 @@
 namespace SHiP {
 class Generator : public FairGenerator {
  public:
+  using FairGenerator::Init;
   Generator() {};
-  virtual ~Generator();
+  ~Generator() override;
 
   virtual Bool_t Init(const char*, int) = 0;
   virtual Bool_t Init(const char*) = 0;
@@ -43,9 +45,28 @@ class Generator : public FairGenerator {
     UseExternalFile(inFiles.at(0).c_str(), i);
   }
 
+  /// Set maximum allowed slopes |px/pz| and |py/pz| for vessel acceptance.
+  /// Parameters are tan(theta), not angle in radians.
+  void SetMaxTheta(Double_t thetaX, Double_t thetaY) {
+    fMaxThetaX = thetaX;
+    fMaxThetaY = thetaY;
+    fUseVesselAcceptance = true;
+  };
+  Int_t nrOfGeoRejections() const { return fnGeoRejects; }
+
  protected:
+  bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const {
+    if (!fUseVesselAcceptance) return true;
+    if (pz <= 0) return false;
+    return std::abs(px / pz) < fMaxThetaX && std::abs(py / pz) < fMaxThetaY;
+  }
+
   std::optional<std::string> fextFile;
   Int_t firstEvent = 0;
+  Double_t fMaxThetaX = 0;
+  Double_t fMaxThetaY = 0;
+  bool fUseVesselAcceptance = false;
+  Int_t fnGeoRejects = 0;
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_

@@ -18,7 +18,7 @@ class ShipTargetStation : public FairModule {
                     const char* Title = "ShipTargetStation");
   ShipTargetStation();
   ~ShipTargetStation() override;
-  void ConstructGeometry();
+  void ConstructGeometry() override;
   void SetLayerPosMat(Float_t d, const std::vector<float>& L,
                       const std::vector<float>& G,
                       const std::vector<std::string>& M) {
@@ -30,7 +30,7 @@ class ShipTargetStation : public FairModule {
     assert(G.size() == fnS);
     fG = G;
   }
-  ClassDef(ShipTargetStation, 6);
+  ClassDefOverride(ShipTargetStation, 6);
 
  protected:
   Double_t fTargetLength;       //

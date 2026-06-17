@@ -91,7 +91,7 @@ class splitcalHit : public SHiP::DetectorHit {
   int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;
   bool _isX, _isY;
 
-  ClassDef(splitcalHit, 6);
+  ClassDefOverride(splitcalHit, 6);
 };
 
 #endif  // SPLITCAL_SPLITCALHIT_H_

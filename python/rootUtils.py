@@ -5,7 +5,7 @@ import os
 import sys
 from collections import Counter
 
-from ROOT import TH1D, TH2D, TH3D, TCanvas, TFile, TProfile, gROOT, gSystem
+import ROOT
 
 _error_log: Counter[str] = Counter()
 
@@ -14,10 +14,10 @@ def readHists(h, fname, wanted=None) -> None:
     if wanted is None:
         wanted = []
     if fname[0:4] == "/eos":
-        eospath = gSystem.Getenv("EOSSHIP") + fname
-        f = TFile.Open(eospath)
+        eospath = ROOT.gSystem.Getenv("EOSSHIP") + fname
+        f = ROOT.TFile.Open(eospath)
     else:
-        f = TFile(fname)
+        f = ROOT.TFile(fname)
     for akey in f.GetListOfKeys():
         name = akey.GetName()
         try:
@@ -40,7 +40,7 @@ def readHists(h, fname, wanted=None) -> None:
             h[hname] = obj.Clone()
             if h[hname].GetSumw2N() == 0:
                 h[hname].Sumw2()
-        h[hname].SetDirectory(gROOT)
+        h[hname].SetDirectory(ROOT.gROOT)
         if cln in {"TH2D", "TH2F"}:
             for p in ["_projx", "_projy"]:
                 if isinstance(hname, str):
@@ -52,7 +52,7 @@ def readHists(h, fname, wanted=None) -> None:
                 else:
                     h[projname] = h[hname].ProjectionY()
                 h[projname].SetName(name + p)
-                h[projname].SetDirectory(gROOT)
+                h[projname].SetDirectory(ROOT.gROOT)
     return
 
 
@@ -77,12 +77,12 @@ def bookHist(
     if key in h:
         h[key].Reset()
     elif nbinsz > 0:
-        h[key] = TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)
+        h[key] = ROOT.TH3D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax, nbinsz, zmin, zmax)
     elif nbinsy > 0:
-        h[key] = TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)
+        h[key] = ROOT.TH2D(rkey, title, nbinsx, xmin, xmax, nbinsy, ymin, ymax)
     else:
-        h[key] = TH1D(rkey, title, nbinsx, xmin, xmax)
-    h[key].SetDirectory(gROOT)
+        h[key] = ROOT.TH1D(rkey, title, nbinsx, xmin, xmax)
+    h[key].SetDirectory(ROOT.gROOT)
 
 
 def bookProf(
@@ -103,14 +103,14 @@ def bookProf(
     if key in h:
         h[key].Reset()
     if ymin is None or ymax is None:
-        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, option)
+        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, option)
     else:
-        h[key] = TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)
-    h[key].SetDirectory(gROOT)
+        h[key] = ROOT.TProfile(rkey, title, nbinsx, xmin, xmax, ymin, ymax, option)
+    h[key].SetDirectory(ROOT.gROOT)
 
 
 def writeHists(h, fname, plusCanvas: bool = False) -> None:
-    f = TFile(fname, "RECREATE")
+    f = ROOT.TFile(fname, "RECREATE")
     for akey in h:
         if not hasattr(h[akey], "Class"):
             continue
@@ -127,7 +127,7 @@ def bookCanvas(h, key=None, title: str = "", nx: int = 900, ny: int = 600, cx: i
         print("missing key")
         return
     if key not in h:
-        h[key] = TCanvas(key, title, nx, ny)
+        h[key] = ROOT.TCanvas(key, title, nx, ny)
         h[key].Divide(cx, cy)
 
 
@@ -152,10 +152,10 @@ def checkFileExists(x) -> str:
         fileType = ""
         for _f in tx:
             if _f[0:4] == "/eos":
-                f = gSystem.Getenv("EOSSHIP") + _f
+                f = ROOT.gSystem.Getenv("EOSSHIP") + _f
             else:
                 f = _f
-            test = TFile.Open(f)
+            test = ROOT.TFile.Open(f)
             if not test:
                 print("ERROR FileCheck: input file", f, " does not exist. Missing authentication?")
                 sys.exit(1)

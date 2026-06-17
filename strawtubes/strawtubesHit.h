@@ -43,7 +43,7 @@ class strawtubesHit : public SHiP::DetectorHit {
  private:
   Bool_t flag{true};  ///< validity flag
 
-  ClassDef(strawtubesHit, 6);
+  ClassDefOverride(strawtubesHit, 6);
 };
 
 #endif  // STRAWTUBES_STRAWTUBESHIT_H_

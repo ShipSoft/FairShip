@@ -2193,7 +2193,12 @@ tungstenmisis      1  183.84  74.  18.85
                    0  1  20.  .001
                    0
 
+// TP Type 1, used during SND@LHC TP studies
 tungstenalloySND   3  183.84  58.69  63.54  74.  28.  29. 18.78  .95  .03 .02
+                   0  1  20.  .001
+                   0
+//actual pure tungsten (TP Type 2), used for SND@LHC
+tungstensifon      1  183.84  74.  19.2
                    0  1  20.  .001
                    0
 

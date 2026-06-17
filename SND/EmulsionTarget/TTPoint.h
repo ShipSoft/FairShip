@@ -33,21 +33,21 @@ class TTPoint : public FairMCPoint {
           Double_t length, Double_t eLoss, Int_t pdgCode);
 
   /** Destructor **/
-  virtual ~TTPoint();
+  ~TTPoint() override;
 
   /** Copy constructor **/
   TTPoint(const TTPoint& point) = default;
   TTPoint& operator=(const TTPoint& point) = default;
 
   /** Output to screen **/
-  virtual void Print(const Option_t* opt) const;
+  void Print(const Option_t* opt) const override;
 
   Int_t PdgCode() const { return fPdgCode; }
 
  private:
   Int_t fPdgCode;
 
-  ClassDef(TTPoint, 3)
+  ClassDefOverride(TTPoint, 3)
 };
 
 #endif  // SND_EMULSIONTARGET_TTPOINT_H_

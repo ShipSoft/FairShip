@@ -27,7 +27,7 @@ class ShipParticle : public TObject {
                Int_t daughter1, Int_t daughter2, const TLorentzVector& p,
                const TLorentzVector& v);
   /**  Destructor  **/
-  virtual ~ShipParticle();
+  ~ShipParticle() override;
 
   /**  Copy constructor  **/
   ShipParticle(const ShipParticle& particle) = default;

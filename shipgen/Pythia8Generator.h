@@ -65,11 +65,7 @@ class Pythia8Generator : public SHiP::Generator {
   Int_t nrOfRetries() { return fnRetries; };
 
  private:
-#if PYTHIA_VERSION_INTEGER >= 8300
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
-#else
-  Pythia8::RndmEngine* fRandomEngine;  //!
-#endif
 
  protected:
   Double_t fMom;       // proton momentum

@@ -19,7 +19,7 @@ class splitcalCluster : public TObject {
   splitcalCluster();
 
   /** Destructor **/
-  virtual ~splitcalCluster();
+  ~splitcalCluster() override;
 
   /** Methods **/
   virtual void Print() const;

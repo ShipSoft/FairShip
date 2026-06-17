@@ -126,7 +126,7 @@ Double_t ShipBellField::GetBz(Double_t x, Double_t y, Double_t z) { return 0.; }
 // -------------------------------------------------------------------------
 
 // -----   Screen output   -------------------------------------------------
-void ShipBellField::Print() {
+void ShipBellField::Print(Option_t*) const {
   cout << "======================================================" << endl;
   cout << "----  " << fTitle << " : " << fName << endl;
   cout << "----" << endl;

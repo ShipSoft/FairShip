@@ -1,0 +1,16 @@
+"""Partial type stubs for ROOT.Pythia8 as used in FairShip."""
+
+from typing import Any
+
+class Pythia:  # Partial stub
+    """Pythia8::Pythia generator."""
+
+    def __init__(self) -> None: ...
+    def readString(self, s: str) -> bool: ...
+    def init(self) -> bool: ...
+    def next(self) -> bool: ...
+    def stat(self) -> None: ...
+    event: Any
+    info: Any
+    settings: Any
+    particleData: Any

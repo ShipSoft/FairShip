@@ -41,13 +41,8 @@ Bool_t HNLPythia8Generator::Init() {
   if (debug) {
     List(9900015);
   }
-#if PYTHIA_VERSION_INTEGER >= 8300
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
-#else
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-#endif
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile) {
@@ -148,14 +143,25 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     iHNL = hnls.size();
     if (iHNL == 0) {
-      // fLogger->Info(MESSAGE_ORIGIN,"Event without HNL. Retry.");
-      // fPythia->event.list();
-      fnRetries += 1;  // can happen if phasespace does not allow charm hadron
-                       // to decay to HNL
+      fnRetries += 1;
     } else {
-      int r = static_cast<int>(gRandom->Uniform(0, iHNL));
-      // cout << " ----> debug 2 " << r  <<  endl;
-      int i = hnls[r];
+      // filter HNLs by vessel acceptance
+      std::vector<int> accepted;
+      for (int idx : hnls) {
+        if (IsInVesselAcceptance(fPythia->event[idx].px(),
+                                 fPythia->event[idx].py(),
+                                 fPythia->event[idx].pz())) {
+          accepted.push_back(idx);
+        }
+      }
+      if (accepted.empty()) {
+        iHNL = 0;
+        hnls.clear();
+        fnGeoRejects += 1;
+        continue;
+      }
+      int r = static_cast<int>(gRandom->Uniform(0, accepted.size()));
+      int i = accepted[r];
       // production vertex
       zp = fPythia->event[i].zProd();
       xp = fPythia->event[i].xProd();

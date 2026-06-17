@@ -18,10 +18,10 @@ class ShipTAUMagneticSpectrometer : public FairModule {
       const Double_t DGap, const Double_t MGap, const Double_t mf,
       const char* Title = "ShipTAUMagneticSpectrometer");
   ShipTAUMagneticSpectrometer();
-  virtual ~ShipTAUMagneticSpectrometer();
-  void ConstructGeometry();
+  ~ShipTAUMagneticSpectrometer() override;
+  void ConstructGeometry() override;
   void Initialize();
- ClassDef(ShipTAUMagneticSpectrometer, 1)
+ ClassDefOverride(ShipTAUMagneticSpectrometer, 1)
 
      protected
      : Double_t

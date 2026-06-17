@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import json
 import os
 
 import geometry_config
@@ -116,7 +117,7 @@ ap.add_argument(
 )
 ap.add_argument(
     "--shieldName",
-    help="Name of the shield in the database. New_HA_Design or warm_opt.",
+    help="Name of the shield in the database.",
     default="TRY_2025",
     choices=["TRY_2025"],
 )
@@ -500,6 +501,15 @@ fout.Close()
 rc1 = os.system("rm  " + outFile)
 rc2 = os.system("mv " + tmpFile + " " + outFile)
 print("removed out file, moved tmpFile to out file", rc1, rc2)
+
+if rc1 == 0 and rc2 == 0:
+    print("INFO: Adding file summary")
+    fsr = vars(args)
+    with ROOT.TFile.Open(outFile, "UPDATE") as _of:
+        _of.WriteObject(ROOT.TString(json.dumps(fsr)), "FileSummary")
+else:
+    print("WARNING: tempFile mv or rm not successful. No attempt at FileSummary writing")
+
 fin.SetWritable(False)  # bpyass flush error
 
 print(f"Number of events produced with activity after hadron absorber: {nEvents}")

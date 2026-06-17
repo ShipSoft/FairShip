@@ -5,6 +5,7 @@
 #ifndef STRAWTUBES_STRAWTUBES_H_
 #define STRAWTUBES_STRAWTUBES_H_
 
+#include <array>
 #include <map>
 #include <vector>
 
@@ -15,8 +16,6 @@
 class strawtubesPoint;
 class FairVolume;
 class TClonesArray;
-class tuple;
-
 class strawtubes : public SHiP::Detector<strawtubesPoint> {
  public:
   /**      Name :  Detector Name
@@ -33,7 +32,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
   void SetApertureArea(Double_t width, Double_t height);
@@ -45,7 +44,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   void SetFrameMaterial(TString frame_material);
   void SetDeltazView(Double_t delta_z_view);
   void SetStationEnvelope(Double_t x, Double_t y, Double_t z);
-  static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
+  static std::array<Int_t, 4> StrawDecode(Int_t detID);
   static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
   // for the digitizing step
   void SetStrawResolution(Double_t a, Double_t b) {

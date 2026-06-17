@@ -30,7 +30,7 @@ class SiliconTargetPoint : public FairMCPoint {
                      Int_t pdgcode);
 
   /** Destructor **/
-  virtual ~SiliconTargetPoint();
+  ~SiliconTargetPoint() override;
 
   /** Copy constructor **/
   SiliconTargetPoint(const SiliconTargetPoint& point) = default;
@@ -59,7 +59,7 @@ class SiliconTargetPoint : public FairMCPoint {
  private:
   Int_t fPdgCode;
 
-  ClassDef(SiliconTargetPoint, 2)
+  ClassDefOverride(SiliconTargetPoint, 2)
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGETPOINT_H_

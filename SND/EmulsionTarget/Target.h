@@ -74,7 +74,7 @@ class Target : public SHiP::Detector<TargetPoint> {
   /**       this method is called for each step during simulation
    *       (see FairMCApplication::Stepping())
    */
-  Bool_t ProcessHits(FairVolume* v = 0) override;
+  Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
   Target(const Target&) = delete;
   Target& operator=(const Target&) = delete;

@@ -59,7 +59,7 @@ class TimeDetHit : public SHiP::DetectorHit {
   Bool_t flag{true};  ///< flag
   Float_t t_1, t_2;   ///< TDC on both sides
 
-  ClassDef(TimeDetHit, 4);
+  ClassDefOverride(TimeDetHit, 4);
 };
 
 #endif  // TIMEDET_TIMEDETHIT_H_

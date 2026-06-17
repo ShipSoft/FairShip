@@ -82,6 +82,19 @@ class Task:
         self.chi2(res, self.Vy)
         return
 
+    def _stepwise_extrapolate_to_z(self, extrapolate_fn, current_z, target_z, max_step=500.0):
+        """Extrapolate in steps to avoid RK failures over large distances."""
+        dz_total = target_z - current_z
+        n_steps = max(1, math.ceil(abs(dz_total) / max_step))
+        for istep in range(n_steps):
+            step_z = current_z + dz_total * (istep + 1) / n_steps
+            plane = ROOT.genfit.DetPlane(
+                ROOT.TVector3(0, 0, step_z),
+                ROOT.TVector3(1, 0, 0),
+                ROOT.TVector3(0, 1, 0),
+            )
+            extrapolate_fn(ROOT.genfit.SharedPlanePtr(plane))
+
     def TwoTrackVertex(self) -> None:
         self.fPartArray.clear()
         fittedTracks = getattr(self.sTree, self.fitTrackLoc)
@@ -123,9 +136,37 @@ class Task:
                 if PosDirCharge[t2]["charge"] == c1:
                     continue
                 newPos, doca = self.VertexError(t1, t2, PosDirCharge)
+                # Extrapolate both tracks toward the initial vertex
+                # estimate in steps to avoid long backward extrapolation
+                # through the magnetic field which causes RK failures.
+                rc = True
+                target_z = newPos[2]
+                extrapolatedPosDir = {}
+                for tr in [t1, t2]:
+                    current_z = PosDirCharge[tr]["rep"].getPos(PosDirCharge[tr]["newstate"]).Z()
+                    try:
+                        self._stepwise_extrapolate_to_z(
+                            lambda sp, _tr=tr: PosDirCharge[_tr]["rep"].extrapolateToPlane(
+                                PosDirCharge[_tr]["newstate"], sp
+                            ),
+                            current_z,
+                            target_z,
+                        )
+                    except Exception:
+                        ut.reportError("shipVertex: stepwise plane extrapolation did not work")
+                        rc = False
+                        break
+                    extrapolatedPosDir[tr] = {
+                        "position": PosDirCharge[tr]["rep"].getPos(PosDirCharge[tr]["newstate"]),
+                        "direction": PosDirCharge[tr]["rep"].getDir(PosDirCharge[tr]["newstate"]),
+                        "momentum": PosDirCharge[tr]["rep"].getMom(PosDirCharge[tr]["newstate"]),
+                    }
+                if not rc:
+                    continue
+                # Recompute DOCA from the extrapolated positions
+                newPos, doca = self.VertexError(t1, t2, extrapolatedPosDir)
                 # as we have learned, need iterative procedure
                 dz = 99999.0
-                rc = True
                 step = 0
                 while dz > 0.01:
                     zBefore = newPos[2]
@@ -166,7 +207,6 @@ class Task:
                 #
                 if not rc:
                     continue  # extrapolation failed, makes no sense to continue
-                    # now go for the last step and vertex error
                 scalFac[t1] = (
                     (PosDirCharge[t1]["position"][2] - newPos[2])
                     / PosDirCharge[t1]["direction"][2]
@@ -181,37 +221,20 @@ class Task:
                 # monitor Vx resolution and pulls
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
-                #   HNL true
-                if self.sTree.GetBranch("fitTrack2MC"):
-                    mctrack = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-                    self.mcTree.MCTrack[self.sTree.fitTrack2MC[t2]]
-                    self.mcTree.MCTrack[mctrack.GetMotherId()]
-                    # print "true vtx: ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
-                    # print "reco vtx: ",HNLPos[0],HNLPos[1],HNLPos[2]
-                    # self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
-                    # self.h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
-                    # self.h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
-                    # self.h['dVx'].Fill( (mctrack.GetStartX()-HNLPos[0]) )
-                    # self.h['dVy'].Fill( (mctrack.GetStartY()-HNLPos[1]) )
-                    # self.h['dVz'].Fill( (mctrack.GetStartZ()-HNLPos[2]) )
 
-                # print "*********************************** vertex fit precise   ******************************************** "
-
-                detPlane = ROOT.genfit.DetPlane(
-                    ROOT.TVector3(0, 0, HNLPos[2]), ROOT.TVector3(1, 0, 0), ROOT.TVector3(0, 1, 0)
-                )
-                detPlanePtr = ROOT.genfit.SharedPlanePtr(detPlane)
                 st1 = fittedTracks[t1].getFittedState()
                 st2 = fittedTracks[t2].getFittedState()
-                try:
-                    st1.extrapolateToPlane(detPlanePtr)
-                except Exception:
-                    ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
-                    continue
-                try:
-                    st2.extrapolateToPlane(detPlanePtr)
-                except Exception:
-                    ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
+                # Extrapolate to the vertex Z-plane stepwise to avoid
+                # RK failures for long backward extrapolation.
+                rc = True
+                for st in [st1, st2]:
+                    try:
+                        self._stepwise_extrapolate_to_z(st.extrapolateToPlane, st.getPos().Z(), HNLPos[2])
+                    except Exception:
+                        ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
+                        rc = False
+                        break
+                if not rc:
                     continue
                 mom1 = st1.getMom()
                 mom2 = st2.getMom()
@@ -238,7 +261,6 @@ class Task:
                 for i in range(100):
                     self.Vy[i] = covInv[i // 10][i % 10]
 
-                np.array([0.0])
                 gMinuit = ROOT.TMinuit(9)
                 tempFcn = self.fcn
                 gMinuit.SetFCN(tempFcn)
@@ -319,9 +341,6 @@ class Task:
                 yFit = values[1]
                 zFit = values[2]
                 HNLPosFit = ROOT.TVector3(xFit, yFit, zFit)
-                errors[0]
-                errors[1]
-                errors[2]
 
                 # fixme: mass from track reconstraction needed
                 m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()

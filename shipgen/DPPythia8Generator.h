@@ -89,11 +89,7 @@ class DPPythia8Generator : public SHiP::Generator {
   Pythia8::Pythia* fPythia;  //!
   // Pythia8::Pythia* fPythiaHadDecay;             //!
  private:
-#if PYTHIA_VERSION_INTEGER >= 8300
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
-#else
-  Pythia8::RndmEngine* fRandomEngine;  //!
-#endif
 
  protected:
   // Bool_t fHadDecay;    //select hadronic decay
@@ -112,7 +108,7 @@ class DPPythia8Generator : public SHiP::Generator {
                      // QCD production.
   Double_t fLmin;    // m minimum  decay position z
   Double_t fLmax;    // m maximum decay position z
-  Int_t fnRetries;   // number of events without any DP
+  Int_t fnRetries;   // retries: no DP produced
   Int_t fnDPtot;  // total number of DP from multiple mesons in single collision
   Double_t fctau;  // dark photon lifetime
   Double_t fFDs;   // correction for Pythia6 to match measured Ds production

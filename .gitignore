@@ -54,3 +54,7 @@ cc
 # Eclipse
 *.project
 *.pydevproject
+
+# Merge conflict artifacts
+.merge_file_*
+*.orig

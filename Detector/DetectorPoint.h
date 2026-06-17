@@ -13,7 +13,7 @@
 namespace SHiP {
 class DetectorPoint : public FairMCPoint {
  public:
-  DetectorPoint() {};
+  DetectorPoint() = default;
   ~DetectorPoint() = default;
 
   DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
@@ -42,7 +42,7 @@ class DetectorPoint : public FairMCPoint {
   std::array<Double_t, 3> fLpos, fLmom;
 
  private:
-  ClassDef(SHiP::DetectorPoint, 1);
+  ClassDefOverride(SHiP::DetectorPoint, 1);
 };
 }  // namespace SHiP
 

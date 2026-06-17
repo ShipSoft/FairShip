@@ -1,19 +1,45 @@
-#name: Doxygen GitHub Pages Deploy Action
+name: Doxygen GitHub Pages
 on:
   push:
     branches:
       - master
   workflow_dispatch:
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Install Graphviz
-        run: sudo apt-get install graphviz -y
-        shell: bash
-      - uses: DenverCoder1/doxygen-github-pages-action@v2.0.0
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Install dependencies
+        run: sudo apt-get install -y graphviz doxygen
+      - name: Generate Doxygen
+        run: doxygen doxygen/Doxyfile
+      - name: Checkout gh-pages
+        uses: actions/checkout@v6
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: doxygen/html
-          config_file: doxygen/Doxyfile
+          ref: gh-pages
+          path: gh-pages-checkout
+      - name: Update Doxygen files, preserve plots/
+        run: |
+          cd gh-pages-checkout
+          # Remove everything except plots/, .git, and .nojekyll
+          find . -maxdepth 1 -not -name '.' -not -name '.git' \
+            -not -name 'plots' -not -name '.nojekyll' \
+            -exec rm -rf {} +
+          # Copy new Doxygen output
+          cp -r ../doxygen/html/* .
+          touch .nojekyll
+      - name: Deploy
+        run: |
+          cd gh-pages-checkout
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && echo "No changes" && exit 0
+          git commit -m "Deploy Doxygen from ${{ github.sha }}"
+          git push

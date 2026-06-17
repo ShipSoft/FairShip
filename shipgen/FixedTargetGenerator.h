@@ -13,13 +13,9 @@
 #include "TROOT.h"
 #include "TTree.h"
 
-#if PYTHIA_VERSION_INTEGER >= 8315
 namespace Pythia8 {
 class EvtGenDecays;
 }
-#else
-class EvtGenDecays;
-#endif
 
 class FairPrimaryGenerator;
 
@@ -110,11 +106,7 @@ class FixedTargetGenerator : public SHiP::Generator {
   Pythia8::Pythia* GetPythiaN() { return fPythiaN; }
 
  private:
-#if PYTHIA_VERSION_INTEGER >= 8300
   std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
-#else
-  Pythia8::RndmEngine* fRandomEngine;  //!
-#endif
 
  protected:
   Double_t fMom;       // proton momentum
@@ -127,13 +119,8 @@ class FixedTargetGenerator : public SHiP::Generator {
   FairLogger* fLogger;        //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;  //!
   Pythia8::Pythia* fPythiaP;  //!
-#if PYTHIA_VERSION_INTEGER >= 8315
-  Pythia8::EvtGenDecays* evtgenN;  //!
-  Pythia8::EvtGenDecays* evtgenP;  //!
-#else
-  EvtGenDecays* evtgenN;  //!
-  EvtGenDecays* evtgenP;  //!
-#endif
+  Pythia8::EvtGenDecays* evtgenN;         //!
+  Pythia8::EvtGenDecays* evtgenP;         //!
   GenieGenerator* fMaterialInvestigator;  //!
   Bool_t withNtuple;  //! special option for Dark Photon physics studies
   TNtuple* fNtuple;   //!

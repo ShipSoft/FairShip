@@ -22,7 +22,7 @@ class ShipFieldCreator : public FairFieldFactory {
   ~ShipFieldCreator() override;
   FairField* createFairField() override;
   void SetParm() override;
-  ClassDef(ShipFieldCreator, 1);
+  ClassDefOverride(ShipFieldCreator, 1);
 
  protected:
   ShipFieldPar* fFieldPar;

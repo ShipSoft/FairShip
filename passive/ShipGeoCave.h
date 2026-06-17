@@ -26,7 +26,7 @@ class ShipGeoCave : public FairGeoSet {
   void addRefNodes();
   void write(std::fstream&);
   void print();
-  ClassDef(ShipGeoCave, 0)  // Class for the geometry of CAVE
+  ClassDefOverride(ShipGeoCave, 0)  // Class for the geometry of CAVE
 };
 
 #endif  // PASSIVE_SHIPGEOCAVE_H_  /* !PNDGEOCAVE_H */

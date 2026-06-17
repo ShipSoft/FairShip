@@ -60,7 +60,7 @@ class SiliconTargetHit : public SHiP::DetectorHit {
   Double_t fZ{0.};
   Bool_t flag{true};
 
-  ClassDef(SiliconTargetHit, 2);
+  ClassDefOverride(SiliconTargetHit, 2);
 };
 
 #endif  // SND_SILICONTARGET_SILICONTARGETHIT_H_

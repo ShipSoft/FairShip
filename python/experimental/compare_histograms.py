@@ -1,80 +1,56 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-"""Compare histogreams for exact or statistical equality."""
+"""Compare histograms for exact or statistical equality."""
 
 import argparse
 
-import uproot
-from scipy import stats
+import ROOT
 
 
-def compare_histograms(hist1, hist2, use_ks_test: bool = False, significance_threshold: float = 0.05) -> bool:
-    """
-    Compare two histograms for equality or statistical compatibility.
+def compare_histograms(
+    hist1: ROOT.TH1, hist2: ROOT.TH1, use_ks_test: bool = False, significance_threshold: float = 0.05
+) -> bool:
+    """Compare two histograms for equality or statistical compatibility."""
+    name = hist1.GetName()
 
-    Parameters:
-    hist1 (hist.Hist): The first histogram to compare.
-    hist2 (hist.Hist): The second histogram to compare.
-    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.
-    significance_threshold (float): The significance threshold for the KS test.
-
-    Returns:
-    bool: True if the histograms are equal or statistically compatible, False otherwise.
-    """
-    # Check if the histograms are equal
-    if hist1 != hist2:
-        print(f"Histograms '{hist1.name}' are different in terms of bin contents or errors.")
+    if not hist1.IsEqual(hist2):
+        print(f"Histograms '{name}' are different in terms of bin contents or errors.")
 
         if use_ks_test:
-            # Perform the Kolmogorov-Smirnov test
-            ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())
-            print(f"KS Statistic: {ks_statistic}, p-value: {p_value}")
-            if p_value.all() < significance_threshold:
-                print(f"Histograms '{hist1.name}' are statistically different (p < {significance_threshold}).")
+            p_value = hist1.KolmogorovTest(hist2)
+            print(f"KS p-value: {p_value}")
+            if p_value < significance_threshold:
+                print(f"Histograms '{name}' are statistically different (p < {significance_threshold}).")
             else:
-                print(f"Histograms '{hist1.name}' are statistically compatible (p >= {significance_threshold}).")
+                print(f"Histograms '{name}' are statistically compatible (p >= {significance_threshold}).")
         return False
 
-    print(f"Histograms '{hist1.name}' are equal.")
+    print(f"Histograms '{name}' are equal.")
     return True
 
 
-def main(file1_path, file2_path, use_ks_test, significance_threshold) -> None:
-    """
-    Compare histograms in two ROOT files.
+def main(file1_path: str, file2_path: str, use_ks_test: bool, significance_threshold: float) -> None:
+    """Compare histograms in two ROOT files."""
+    file1 = ROOT.TFile.Open(file1_path)
+    file2 = ROOT.TFile.Open(file2_path)
 
-    Parameters:
-    file1_path (str): Path to the first ROOT file.
-    file2_path (str): Path to the second ROOT file.
-    use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.
-    significance_threshold (float): The significance threshold for the KS test.
-    """
-    files = {1: uproot.open(file1_path), 2: uproot.open(file2_path)}
+    histograms1 = {}
+    for key in file1.GetListOfKeys():
+        if ROOT.TClass.GetClass(key.GetClassName()).InheritsFrom("TH1"):
+            histograms1[key.GetName()] = file1.Get(key.GetName())
 
-    # Get the list of histogram names from the first file
+    histograms2 = {}
+    for key in file2.GetListOfKeys():
+        if ROOT.TClass.GetClass(key.GetClassName()).InheritsFrom("TH1"):
+            histograms2[key.GetName()] = file2.Get(key.GetName())
 
-    def isuproothist(inkey, fileno: int) -> bool:
-        isHist = False
-        try:
-            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)
-        except uproot.deserialization.DeserializationError:
-            isHist = False
-        return isHist
-
-    histograms1 = {key: files[1][key] for key in files[1] if isuproothist(key, 1)}
-    histograms2 = {key: files[2][key] for key in files[2] if isuproothist(key, 2)}
-
-    # Compare histograms with the same names
     for hist_name in histograms1:
         if hist_name in histograms2:
-            hist1 = histograms1[hist_name].to_hist()
-            hist2 = histograms2[hist_name].to_hist()
-            compare_histograms(hist1, hist2, use_ks_test, significance_threshold)
+            compare_histograms(histograms1[hist_name], histograms2[hist_name], use_ks_test, significance_threshold)
         else:
             print(f"Histogram '{hist_name}' not found in file2.")
 
-    # Check for histograms in file2 that are not in file1
     for hist_name in histograms2:
         if hist_name not in histograms1:
             print(f"Histogram '{hist_name}' not found in file1.")

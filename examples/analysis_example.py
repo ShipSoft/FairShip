@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
-"""Example script for usage of the analysis_toolkit for signal selection.""" 
+"""Example script for usage of the analysis_toolkit for signal selection."""
 
 from argparse import ArgumentParser
 

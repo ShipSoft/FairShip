@@ -61,15 +61,15 @@ parser.add_argument(
     type=int,
 )
 parser.add_argument(
-    "--realPR",
-    dest="realPR",
-    help="Option for pattern recognition without MC truth. \n\
+    "--patRec",
+    dest="patRec",
+    help="Options for pattern recognition. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
     required=False,
     choices=["FH", "AR", "TemplateMatching"],
-    default="",
+    default="AR",
 )
 parser.add_argument("-dy", dest="dy", help="Max height of tank", required=False, default=None, type=int)
 parser.add_argument("--Debug", dest="Debug", help="Switch on debugging", required=False, action="store_true")
@@ -98,8 +98,8 @@ print(
     dy,
     " with vertexing",
     vertexing,
-    " and real pattern reco ",
-    options.realPR,
+    " and pattern reco ",
+    options.patRec,
 )
 # Determine output filename (will contain only digi/reco branches)
 if not options.inputFile.find("_rec.root") < 0:
@@ -152,7 +152,7 @@ global_variables.debug = options.Debug
 global_variables.fieldMaker = fieldMaker
 global_variables.pidProton = pidProton
 global_variables.withT0 = options.withT0
-global_variables.realPR = options.realPR
+global_variables.patRec = options.patRec
 global_variables.vertexing = vertexing
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
