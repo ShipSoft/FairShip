@@ -65,7 +65,9 @@ else:
 
 chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
 
-print(f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}")
+print(
+    f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
+)
 print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
 
 FIN = fname + ".root"
