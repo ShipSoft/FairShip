@@ -50,7 +50,9 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 
 boostFactor = 100.0
 if boostFactor > 1:

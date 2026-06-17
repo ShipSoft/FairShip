@@ -15,8 +15,8 @@ class splitcalContFact : public FairContFact {
 
  public:
   splitcalContFact();
-  ~splitcalContFact() {}
-  FairParSet* createContainer(FairContainer*);
+  ~splitcalContFact() override = default;
+  FairParSet* createContainer(FairContainer*) override;
   ClassDefOverride(splitcalContFact,
                    0)  // Factory for all splitcal parameter containers
 };

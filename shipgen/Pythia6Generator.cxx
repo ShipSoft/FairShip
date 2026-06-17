@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <iostream>
 
+#include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
 
 using std::cout;
@@ -18,7 +19,7 @@ using std::endl;
 using std::max;
 
 // -----   Default constructor   ------------------------------------------
-Pythia6Generator::Pythia6Generator() {}
+Pythia6Generator::Pythia6Generator() = default;
 // ------------------------------------------------------------------------
 
 // -----   Standard constructor   -----------------------------------------
@@ -45,7 +46,7 @@ Bool_t Pythia6Generator::ReadEvent(FairPrimaryGenerator* primGen) {
   // Check for input file
   if (!fInputFile) {
     // if ( ! fInputFile->is_open() ) {
-    cout << "-E Pythia6Generator: Input file not open!" << endl;
+    LOG(error) << "Pythia6Generator: input file not open";
     return kFALSE;
   }
 

@@ -906,7 +906,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                _p = PDG.GetParticle(temp)
+                assert _p is not None, f"Unknown PDG: {temp}"
+                nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         hid = h[histlist[i] + "_mu_id"]
         for k in range(hid.GetNbinsX()):
@@ -914,7 +916,9 @@ def makePlots(nstations: int) -> None:
             pid = hid.GetBinCenter(k + 1)
             if ncont > 0:
                 temp = int(abs(pid) + 0.5) * int(pid / abs(pid))
-                nm = PDG.GetParticle(temp).GetName()
+                _p = PDG.GetParticle(temp)
+                assert _p is not None, f"Unknown PDG: {temp}"
+                nm = _p.GetName()
                 print(f"{nm} :{ncont:5.2g}")
         #
         tc = h["ResultsV"].cd(1)
@@ -1348,6 +1352,7 @@ def depEnergy(sTree) -> None:
             dE = ahit.GetEnergyLoss() / u.keV
             ahit.Momentum(mom)
             pa = PDG.GetParticle(ahit.PdgCode())
+            assert pa is not None, f"Unknown PDG: {ahit.PdgCode()}"
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2() + mpa**2)
             ekin = E - mpa
@@ -1509,7 +1514,7 @@ def readAndMergeHistos(prods) -> None:
 # python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 910 911 912 913 914 915 916 917 918 919 1012 1013 1014 1015 1016 1017 1018 1019
 # python -i $HNL/ana_ShipMuon.py 820 821 822 823 824 825 826 827 828 829 920 921 922 923 924 925 926 927 928 929 1022 1023 1024 1025 1026 1027 1028 1029
 # make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
-#                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
-#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root
+#                      second step python $FAIRSHIP/muonDIS/makeMuonDIS.py -f muDISVetoCounter.root -n 10 -nDISPerMuon 10000
+#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis.root
 # for concrete
 # analyzeConcrete() -> muConcrete.root

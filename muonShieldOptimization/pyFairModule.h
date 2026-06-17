@@ -22,7 +22,6 @@ class pyFairModule : public FairModule {
 
  private:
   PyObject* fSelf;
-  ClassDefOverride(pyFairModule, 0)
 };
 
 #endif  // MUONSHIELDOPTIMIZATION_PYFAIRMODULE_H_

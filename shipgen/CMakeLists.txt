@@ -6,13 +6,13 @@ ship_add_library(
   SOURCES Generator.cxx Pythia8Generator.cxx Pythia6Generator.cxx tPythia6Generator.cxx
           HNLPythia8Generator.cxx DPPythia8Generator.cxx GenieGenerator.cxx
           NtupleGenerator.cxx MuonBackGenerator.cxx CosmicsGenerator.cxx
-          MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx
+          MuDISGenerator.cxx FixedTargetGenerator.cxx EvtCalcGenerator.cxx TTreeGenerator.cxx
           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
+          ParticleGunGenerator.cxx
   LINKDEF LinkDef.h
   DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
                FairLogger::FairLogger ROOT::EGPythia6
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
-                             ${HEPMC_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}
-                             ${EVTGEN_INCLUDE_DIR}/..
+                             ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
 )

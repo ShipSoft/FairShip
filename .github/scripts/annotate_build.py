@@ -7,9 +7,10 @@
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 
-def parse_compiler_output(line):
+def parse_compiler_output(line: str) -> dict[str, Any] | None:
     """
     Parse GCC/Clang compiler output line.
 
@@ -120,7 +121,7 @@ def create_annotation(parsed, repo_dir="FairShip") -> str:
 
 def main() -> None:
     """Parse stdin and output annotations."""
-    annotation_count = {"error": 0, "warning": 0, "notice": 0}
+    annotation_count: dict[str, int] = {"error": 0, "warning": 0, "notice": 0}
 
     for line in sys.stdin:
         # Print original line for logging
@@ -128,6 +129,13 @@ def main() -> None:
 
         # Try to parse as compiler output
         parsed = parse_compiler_output(line)
+
+        # Drop diagnostics in third-party / generated trees. clang-tidy's
+        # HeaderFilterRegex only filters check warnings, not compiler
+        # diagnostics, so clang-diagnostic-* errors from conda gcc intrinsic
+        # headers (.pixi/envs/.../include/ia32intrin.h etc.) leak through.
+        if parsed and any(seg in parsed["file"] for seg in ("/.pixi/", "/.direnv/", "/build/", "/cmake/")):
+            parsed = None
 
         if parsed:
             # Create and output annotation

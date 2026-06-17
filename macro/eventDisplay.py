@@ -1172,9 +1172,14 @@ if options.geoFile:
 
 inFile = ROOT.FairFileSource(options.InputFile)
 fRun.SetSource(inFile)
+ROOT.SetOwnership(inFile, False)  # C++ FairRun takes ownership
 if options.OutputFile is None:
-    options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
-fRun.SetSink(ROOT.FairRootFileSink(options.OutputFile))
+    import tempfile
+
+    options.OutputFile = tempfile.mktemp(suffix=".root")
+sink = ROOT.FairRootFileSink(options.OutputFile)
+fRun.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 
 if options.ParFile:
     rtdb = fRun.GetRuntimeDb()
@@ -1244,7 +1249,6 @@ gEve = ROOT.gEve
 
 if hasattr(ShipGeo, "Bfield"):
     if hasattr(ShipGeo.Bfield, "fieldMap"):
-        ROOT.gSystem.Load("libG4clhep.so")
         ROOT.gSystem.Load("libgeant4vmc.so")
         import geomGeant4
 
@@ -1304,7 +1308,7 @@ def DrawCharmTracks() -> None:
             continue
         if aTrack.GetMotherId() == 1:
             pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())
-            if pa.Lifetime() > 1.0e-12:
+            if pa is not None and pa.Lifetime() > 1.0e-12:
                 print(sTree.MCTrack[i])
                 SHiPDisplay.tracks.DrawMCTrack(i)
 

@@ -52,6 +52,11 @@ ap.add_argument("-d", "--debug", action="store_true")
 ap.add_argument("-f", "--force", action="store_true", help="force overwriting output directory")
 ap.add_argument("-r", "--run-number", type=int, dest="runnr", default=1)
 ap.add_argument(
+    "--reproducible",
+    action="store_true",
+    help="Reduce nondeterministic log output for reproducibility/testing",
+)
+ap.add_argument(
     "-e", "--ecut", type=float, help="energy cut", default=0.5
 )  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
 ap.add_argument("-n", "--num-events", type=int, help="number of events to generate", dest="nev", default=100)
@@ -236,6 +241,8 @@ if seed > 900000000:
     seed = seed % 900000000
 ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure()  # load basic libraries, prepare atexit for python
+if args.reproducible and not args.debug:
+    ROOT.gErrorIgnoreLevel = ROOT.kWarning
 ship_geo_kwargs = {
     "Yheight": dy,
     "DecayVolumeMedium": args.DecayVolumeMedium,
@@ -257,7 +264,11 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+if hasattr(run, "SetRunId"):
+    run.SetRunId(args.runnr)
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
@@ -271,6 +282,7 @@ cave = ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("caveWithAir.geo")
 
 run.AddModule(cave)
+ROOT.SetOwnership(cave, False)  # C++ FairRunSim takes ownership
 
 TargetStation = ROOT.ShipTargetStation(
     name="TargetStation",
@@ -286,6 +298,7 @@ TargetStation.SetLayerPosMat(
     M=ship_geo.target.slices_material,
 )
 run.AddModule(TargetStation)
+ROOT.SetOwnership(TargetStation, False)  # C++ FairRunSim takes ownership
 
 
 if args.AddPostTargetSensPlane:
@@ -306,6 +319,7 @@ if args.AddPostTargetSensPlane:
     if args.FourDP:
         sensPlanePostT.SetOpt4DP()
     run.AddModule(sensPlanePostT)
+    ROOT.SetOwnership(sensPlanePostT, False)  # C++ FairRunSim takes ownership
 
 
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
@@ -324,12 +338,14 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     )
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield)  # needs to be added because of magn hadron shield.
+    ROOT.SetOwnership(MuonShield, False)  # C++ FairRunSim takes ownership
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
+sensPlaneT = None
 if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
     sensPlaneT = ROOT.exitHadronAbsorber()
     sensPlaneT.SetEnergyCut(args.ecut * u.GeV)
@@ -341,21 +357,23 @@ if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
 
 if args.storeOnlyMuons:
     sensPlaneHA.SetOnlyMuons()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SetOnlyMuons()
 if args.skipNeutrinos:
     sensPlaneHA.SkipNeutrinos()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SkipNeutrinos()
 if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
     sensPlaneHA.SetOpt4DP()
-    if args.AddCylindricalSensPlane:
+    if sensPlaneT is not None:
         sensPlaneT.SetOpt4DP()
 
 run.AddModule(sensPlaneHA)
+ROOT.SetOwnership(sensPlaneHA, False)  # C++ FairRunSim takes ownership
 
 if args.AddCylindricalSensPlane:
     run.AddModule(sensPlaneT)
+    ROOT.SetOwnership(sensPlaneT, False)  # C++ FairRunSim takes ownership
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -392,8 +410,10 @@ if args.charm or args.beauty:
     print("--- process heavy flavours ---")
     P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
+ROOT.SetOwnership(P8gen, False)  # C++ FairPrimaryGenerator takes ownership
 #
 run.SetGenerator(primGen)
+ROOT.SetOwnership(primGen, False)  # C++ FairRunSim takes ownership
 
 # -----Initialize simulation run------------------------------------
 run.Init()
@@ -428,15 +448,19 @@ ctime = timer.CpuTime()
 print(" ")
 print("Macro finished successfully.")
 print(f"Output file is {outFile}")
-print(f"Real time {rtime} s, CPU time {ctime} s")
+if not args.reproducible:
+    print(f"Real time {rtime} s, CPU time {ctime} s")
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile + "tmp"
 if ROOT.gROOT.GetListOfFiles().GetEntries() > 0:
     fin = ROOT.gROOT.GetListOfFiles()[0]
 else:
     fin = ROOT.TFile.Open(outFile)
-fHeader = fin["FileHeader"]
-fHeader.SetRunId(args.runnr)
+fHeader = fin.Get("FileHeader")
+if fHeader:
+    fHeader.SetRunId(args.runnr)
+else:
+    print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
 if args.charm or args.beauty:
     # normalization for charm
     poteq = P8gen.GetPotForCharm()
@@ -457,8 +481,11 @@ if args.boostFactor > 1:
     conditions += " X" + str(args.boostFactor)
 
 info += conditions
-fHeader.SetTitle(info)
-print(f"Data generated {fHeader.GetTitle()}")
+if fHeader:
+    fHeader.SetTitle(info)
+    print(f"Data generated {fHeader.GetTitle()}")
+else:
+    print(f"Data generated {info}")
 
 nt = fin.Get("4DP")
 if nt:
@@ -492,9 +519,10 @@ for k in fin.GetListOfKeys():
         xcopy = x.Clone()
         rc = xcopy.Write()
 sTree.AutoSave()
-ff = fin["FileHeader"].Clone(fout.GetName())
-fout.cd()
-ff.Write("FileHeader", ROOT.TObject.kSingleKey)
+if fHeader:
+    ff = fHeader.Clone(fout.GetName())
+    fout.cd()
+    ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
 

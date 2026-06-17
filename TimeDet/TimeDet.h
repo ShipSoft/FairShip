@@ -76,8 +76,6 @@ class TimeDet : public SHiP::Detector<TimeDetPoint> {
 
   TimeDet(const TimeDet&) = delete;
   TimeDet& operator=(const TimeDet&) = delete;
-
-  ClassDefOverride(TimeDet, 5)
 };
 
 #endif  // TIMEDET_TIMEDET_H_

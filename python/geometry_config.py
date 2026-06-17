@@ -317,7 +317,8 @@ def create_config(
         c.TrackStation1 = AttrDict(z=z1)
 
         # positions and lengths of vacuum tube segments (for backward compatibility)
-        c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
+        # Chamber1.z is the downstream end of Tub1, so consumers can take z - Tub1length to get the decay-vessel entrance.
+        c.Chamber1 = AttrDict(z=c.decayVolume.z0 + c.chambers.Tub1length)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
     c.UBTStation1 = AttrDict(z=c.decayVolume.z0 - 50 * u.cm)
@@ -327,7 +328,7 @@ def create_config(
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y = c.Yheight
     c.Bfield.x = 2.4 * u.m
-    c.Bfield.fieldMap = "files/MainSpectrometerField.root"
+    c.Bfield.fieldMap = "files/2025_02_12_SHiP_SpectrometerField_ECN3_MgB2.root"
     if c.magnetDesign > 3:  # MISIS design
         c.Bfield.YokeWidth = 0.8 * u.m  # full width       200.*cm
         c.Bfield.YokeDepth = 1.4 * u.m  # half length      200 *cm;

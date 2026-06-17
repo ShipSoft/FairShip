@@ -30,7 +30,6 @@ class ShipTargetStation : public FairModule {
     assert(G.size() == fnS);
     fG = G;
   }
-  ClassDefOverride(ShipTargetStation, 6);
 
  protected:
   Double_t fTargetLength;       //

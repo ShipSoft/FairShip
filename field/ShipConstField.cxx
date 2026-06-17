@@ -86,7 +86,7 @@ ShipConstField::ShipConstField(ShipFieldPar* fieldPar)
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-ShipConstField::~ShipConstField() {}
+ShipConstField::~ShipConstField() = default;
 // -------------------------------------------------------------------------
 
 // -----   Set field region   ----------------------------------------------

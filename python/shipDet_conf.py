@@ -3,13 +3,16 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import os
+from typing import Any
 
 import ROOT
 import shipunit as u
 import yaml
 from ShipGeoConfig import AttrDict
 
-detectorList = []
+# Holds heterogeneous FairModule subclasses (Target, MTC, ShipCave, …); annotate
+# as list[Any] so pyrefly doesn't lock the element type to the first append.
+detectorList: list[Any] = []
 
 
 def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuonShield) -> None:
@@ -498,17 +501,20 @@ def configure(run, ship_geo):
                 ship_geo.Yheight / 2.0 * u.m,
             )
         run.SetField(fMagField)
+        ROOT.SetOwnership(fMagField, False)  # C++ FairRunSim takes ownership
 
     exclusionList = ["TargetStation"]
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
+    # Heterogeneous module dict: keys are GetName() strings, values are
+    # FairModule subclasses (Target/MTC/strawtubes/...). Annotate as Any to
+    # match the heterogeneous detectorList type.
+    detElements: dict[str, Any] = {}
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue
         run.AddModule(x)
-    # return list of detector elements
-    detElements = {}
-    for x in run.GetListOfModules():
+        ROOT.SetOwnership(x, False)  # C++ FairRunSim takes ownership
         detElements[x.GetName()] = x
     return detElements

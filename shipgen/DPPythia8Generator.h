@@ -29,14 +29,14 @@ class DPPythia8Generator : public SHiP::Generator {
  public:
   /** default constructor **/
   DPPythia8Generator();
-
   /** destructor **/
   ~DPPythia8Generator() override;
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
-  void Print() { fPythia->settings.listAll(); };
+  using TObject::Print;
+  void Print();
   void List(int id) { fPythia->particleData.list(id); };
 
   // void SetDecayToHadrons(){
@@ -59,9 +59,10 @@ class DPPythia8Generator : public SHiP::Generator {
   void SetId(Double_t id) { fId = id; };
   void SetDPId(Int_t id) { fDP = id; };
   Int_t GetDPId() { return fDP; };
-  void SetLmin(Double_t z) { fLmin = z * 10; };
-  void SetLmax(Double_t z) { fLmax = z * 10; };
+  void SetLmin(Double_t z) { fLmin = z; };
+  void SetLmax(Double_t z) { fLmax = z; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
+  void SetPaintRadius(Double_t r) { fPaintBeam = r; };
   void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() {
     fUseRandom1 = kTRUE;
@@ -113,8 +114,9 @@ class DPPythia8Generator : public SHiP::Generator {
   Double_t fctau;  // dark photon lifetime
   Double_t fFDs;   // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam;  // finite beam size
-  TFile* fInputFile;    //! pointer to a file
-  TTree* fTree;         //!
+  Double_t fPaintBeam;
+  TFile* fInputFile;  //! pointer to a file
+  TTree* fTree;       //!
   Int_t fNevents, fn, fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
       hid[1], mid[1];

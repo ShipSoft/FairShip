@@ -15,5 +15,5 @@ vetoHitOnTrack::vetoHitOnTrack(Int_t hitID, Float_t dist)
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-vetoHitOnTrack::~vetoHitOnTrack() {}
+vetoHitOnTrack::~vetoHitOnTrack() = default;
 // -------------------------------------------------------------------------

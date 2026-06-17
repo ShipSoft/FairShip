@@ -8,6 +8,7 @@
 #include <cmath>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "FairGenerator.h"
@@ -17,7 +18,7 @@ namespace SHiP {
 class Generator : public FairGenerator {
  public:
   using FairGenerator::Init;
-  Generator() {};
+  Generator() = default;
   ~Generator() override;
 
   virtual Bool_t Init(const char*, int) = 0;
@@ -53,6 +54,16 @@ class Generator : public FairGenerator {
     fUseVesselAcceptance = true;
   };
   Int_t nrOfGeoRejections() const { return fnGeoRejects; }
+  Long64_t GetCounter(const std::string& name) const {
+    auto it = fCounters.find(name);
+    return it == fCounters.end() ? 0 : it->second;
+  }
+  void SetCounter(const std::string& name, Long64_t value) {
+    fCounters[name] = value;
+  }
+  void IncrementCounter(const std::string& name, Long64_t delta = 1) {
+    fCounters[name] += delta;
+  }
 
  protected:
   bool IsInVesselAcceptance(Double_t px, Double_t py, Double_t pz) const {
@@ -67,6 +78,7 @@ class Generator : public FairGenerator {
   Double_t fMaxThetaY = 0;
   bool fUseVesselAcceptance = false;
   Int_t fnGeoRejects = 0;
+  std::unordered_map<std::string, int64_t> fCounters;
 };
 }  // namespace SHiP
 #endif  // SHIPGEN_GENERATOR_H_

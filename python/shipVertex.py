@@ -79,7 +79,7 @@ class Task:
 
     def fcn(self, npar, gin, f, par, iflag) -> None:
         res = self.residuals(self.y_data, par, self.z0)
-        self.chi2(res, self.Vy)
+        f.value = self.chi2(res, self.Vy)
         return
 
     def _stepwise_extrapolate_to_z(self, extrapolate_fn, current_z, target_z, max_step=500.0):
@@ -276,13 +276,26 @@ class Task:
                 rc = gMinuit.DefineParameter(8, "1/mom2", 1.0 / mom2.Mag(), 0.1, 0, 0)
                 gMinuit.Clear()
                 gMinuit.Migrad()
+                # Check Migrad convergence via mnstat
+                fmin = ctypes.c_double()
+                fedm = ctypes.c_double()
+                errdef = ctypes.c_double()
+                npari = ctypes.c_int()
+                nparx = ctypes.c_int()
+                istat = ctypes.c_int()
+                gMinuit.mnstat(fmin, fedm, errdef, npari, nparx, istat)
+                if istat.value == 0:
+                    ut.reportError(f"shipVertex::Migrad not converged, istat={istat.value}")
+                    continue
                 try:
                     tmp = array("d", [0])
                     err = array("i", [0])
                     gMinuit.mnexcm("HESSE", tmp, -1, err)
-                    # gMinuit.mnexcm( "MINOS", tmp, -1, err )
+                    if err[0] != 0:
+                        ut.reportError(f"shipVertex::HESSE failed, ierflg={err[0]}")
+                        continue
                 except Exception:
-                    ut.reportError("shipVertex::minos does not work")
+                    ut.reportError("shipVertex::HESSE raised exception")
                     continue
                 # get results from TMinuit:
                 emat = array(
@@ -342,9 +355,41 @@ class Task:
                 zFit = values[2]
                 HNLPosFit = ROOT.TVector3(xFit, yFit, zFit)
 
+                # Recompute DOCA at the chi^2-optimal vertex z-plane.
+                # The geometric `doca` from the iterative VertexError above is
+                # evaluated using tangent-line linearisations at the geometric
+                # iteration's converged vertex. For tracks that bend weakly in
+                # the helium decay volume (residual spectrometer-field leakage
+                # plus the Kalman fit's material handling), the line-to-line
+                # distance evaluated at HNLPosFit is closer to truth than the
+                # geometric value, often by a factor of several. Re-extrapolate
+                # the two FitTrack states (already at z = HNLPos[2]) the small
+                # residual dz to HNLPosFit.Z() and read off the perpendicular
+                # distance between the two lines through (pos, dir).
+                try:
+                    self._stepwise_extrapolate_to_z(st1.extrapolateToPlane, st1.getPos().Z(), HNLPosFit.Z())
+                    self._stepwise_extrapolate_to_z(st2.extrapolateToPlane, st2.getPos().Z(), HNLPosFit.Z())
+                except Exception:
+                    ut.reportError("shipVertex: extrapolation to HNLPosFit failed")
+                    continue
+                d1u = st1.getMom().Unit()
+                d2u = st2.getMom().Unit()
+                delta = st2.getPos() - st1.getPos()
+                cross = d1u.Cross(d2u)
+                cross_mag = cross.Mag()
+                if cross_mag > 1e-9:
+                    doca = abs(delta.Dot(cross)) / cross_mag
+                else:
+                    # Nearly parallel tracks — perpendicular component of (p2-p1).
+                    doca = (delta - d1u * delta.Dot(d1u)).Mag()
+
                 # fixme: mass from track reconstraction needed
-                m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()
-                m2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"]).Mass()
+                p1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"])
+                p2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"])
+                assert p1 is not None, f"Unknown PDG: {PosDirCharge[t1]['pdgCode']}"
+                assert p2 is not None, f"Unknown PDG: {PosDirCharge[t2]['pdgCode']}"
+                m1 = p1.Mass()
+                m2 = p2.Mass()
 
                 # self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
                 # self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )

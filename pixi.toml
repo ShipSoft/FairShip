@@ -1,0 +1,130 @@
+[workspace]
+name = "fairship"
+description = "SHiP experiment simulation framework"
+channels = ["https://prefix.dev/ship", "conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+# Core HEP packages (conda-forge)
+root = ">=6.38"
+geant4 = ">=11.3"
+pythia8 = ">=8.312"
+evtgen = ">=2.2"
+fmt = "*"
+# Available on both channels — pin to conda-forge so a future SHiP-channel
+# garbage collection cannot break the lock.
+faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
+# fairlogger is on conda-forge but is not in fairroot's runtime deps —
+# keep it explicit so CMake's find_package(FairLogger) resolves.
+fairlogger = ">=2.3"
+
+# Python (conda-forge)
+python = "3.12.*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+pandas = "*"
+pytest = "*"
+pytest-xdist = "*"
+pyyaml = "*"
+tabulate = "*"
+
+# SHiP custom packages (prefix.dev/ship channel)
+geant4-vmc = ">=6.7"
+fairroot = ">=19.0"
+genfit = ">=2.3"
+rootegpythia6 = "*"
+# tauolapp and photospp are runtime-only (not needed for build)
+# They will be added to a runtime environment later
+
+# Build tools
+cmake = ">=3.27"
+ninja = "*"
+cxx-compiler = "*"
+
+# Static analysis
+clang-tools = "*"  # provides clang-tidy
+
+[pypi-dependencies]
+pyrefly = "*"
+
+[activation]
+scripts = ["activate.sh"]
+env = { FAIRROOTPATH = "$CONDA_PREFIX", ROOT_INCLUDE_PATH = "$CONDA_PREFIX/include:$CONDA_PREFIX/include/geant4vmc:$CONDA_PREFIX/include/Geant4:$CONDA_PREFIX/include/vmc" }
+
+[tasks]
+configure = { cmd = """cmake -S . -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+    -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+    "-DCMAKE_CXX_FLAGS=-isystem $CONDA_PREFIX/include/geant4vmc -isystem $CONDA_PREFIX/include/Geant4" """ }
+build = { cmd = "cmake --build build -j$(nproc)", depends-on = ["configure"] }
+install = { cmd = "cmake --install build", depends-on = ["build"] }
+test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["build"] }
+
+# --- CI sim-chain tasks ---
+# Mirror the per-step commands in .github/workflows/build-run.yml so the
+# whole sim/reco/ana/benchmark chain is reproducible locally via `pixi run`.
+# Each task is standalone; the CI workflow invokes them in order. Files are
+# tagged `ci-test` (sim chain) and `ci-benchmark` (tracking) so successive
+# steps can find each other's outputs.
+
+[tasks.ci-sim]
+args = [
+  { arg = "vessel", default = "vacuums" },
+  { arg = "snd_design", default = "all" },
+  { arg = "muon_shield", default = "TRY_2025" },
+]
+cmd = "python macro/run_simScript.py --test --debug 2 --{{ vessel }} --SND --SND_design={{ snd_design }} --shieldName {{ muon_shield }} --EvtGenDecayer --tag ci-test"
+
+[tasks.ci-overlap-check]
+cmd = "python python/experimental/check_overlaps.py --geofile geo_ci-test.root | tee overlap.log && ! grep -q Overlap overlap.log"
+
+[tasks.ci-geo-info]
+cmd = "python macro/getGeoInformation.py --geometry geo_ci-test.root --level 2"
+
+[tasks.ci-reco]
+cmd = "python macro/ShipReco.py -f sim_ci-test.root -g geo_ci-test.root --patRec AR --Debug"
+
+[tasks.ci-ana]
+cmd = "python macro/ShipAna.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
+
+[tasks.ci-analysis-example]
+cmd = "python examples/analysis_example.py -f sim_ci-test.root -r sim_ci-test_rec.root -g geo_ci-test.root"
+
+[tasks.ci-tracking-benchmark]
+cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmark --output-json tracking_metrics.json"
+
+[tasks.ci-fixed-target]
+cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
+
+[tasks.ci-sim-muonback]
+cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
+
+# --- CI plot rendering tasks ---
+# Wrap .github/scripts/render_plots.py for each per-job output set. The
+# CI workflow invokes these after the corresponding sim/reco step. The
+# `config` arg gives the per-matrix subdirectory under plots/.
+
+[tasks.ci-render-plots-sim-chain]
+args = [{ arg = "config", default = "pixi-default" }]
+cmd = "python .github/scripts/render_plots.py recohists.root sim_ci-test_ana.root --output-dir plots/sim-chain/{{ config }} --job sim-chain --config {{ config }}"
+
+[tasks.ci-render-plots-tracking-benchmark]
+cmd = "python .github/scripts/render_plots.py tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/pixi --job tracking-benchmark --config pixi"
+
+[tasks.ci-render-plots-fixed-target]
+cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
+
+# --- CI static analysis tasks ---
+# clang-tidy and pyrefly take file lists via the CPP_FILES / PY_FILES env vars
+# so the workflow can pass them in without fighting pixi's positional-args
+# expansion.
+
+[tasks.ci-clang-tidy]
+cmd = "bash -c 'set -o pipefail; GCC_INC=$(x86_64-conda-linux-gnu-gcc -print-file-name=include); echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ --extra-arg-before=-isystem$GCC_INC 2>&1 | python .github/scripts/annotate_build.py'"
+
+[tasks.ci-pyrefly]
+cmd = "pyrefly check --output-format=github $PY_FILES"

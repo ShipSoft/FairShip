@@ -38,7 +38,7 @@ Bool_t ShipGeoCave::read(std::fstream& fin, FairGeoMedia* media) {
   }
   const Int_t maxbuf = 256;
   char buf[maxbuf];
-  FairGeoNode* volu = 0;
+  FairGeoNode* volu = nullptr;
   FairGeoMedium* medium;
   Bool_t rc = kTRUE;
   do {
@@ -81,7 +81,7 @@ Bool_t ShipGeoCave::read(std::fstream& fin, FairGeoMedia* media) {
     masterNodes->Add(new FairGeoNode(*volu));
   } else {
     delete volu;
-    volu = 0;
+    volu = nullptr;
     rc = kFALSE;
   }
   return rc;

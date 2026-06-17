@@ -4,6 +4,7 @@
 """Script to run and test tracking in the straw tubes"""
 
 from argparse import ArgumentParser
+from typing import Any
 
 import geometry_config
 import global_variables
@@ -72,7 +73,11 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     run.SetName("TGeant4")  # Transport engine
     # Create dummy output file as the  input file is updated directly and
     # histograms are written to output file (hists.root by default)
-    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
+    import tempfile
+
+    sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+    run.SetSink(sink)
+    ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for the mag field
     run.GetRuntimeDb()
 
@@ -117,8 +122,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     ########################################## Start Track Pattern Recognition #########################################
 
-    # Init book of hists for the quality measurements
-    metrics = {
+    # Init book of hists for the quality measurements.
+    # Mixed counter/list values, so type as dict[str, Any].
+    metrics: dict[str, Any] = {
         "n_hits": [],
         "reconstructible": 0,
         "passed_y12": 0,

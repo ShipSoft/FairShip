@@ -1,6 +1,6 @@
 # FairShip
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![.github/workflows/build-run.yml](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/build-run.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020629.svg)](https://doi.org/10.5281/zenodo.18020629)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![Pixi Build](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020628.svg)](https://doi.org/10.5281/zenodo.18020628)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of contents**
@@ -8,135 +8,103 @@
 - [FairShip](#fairship)
     - [Introduction](#introduction)
         - [Branches](#branches)
-    - [Build instructions using CVMFS](#build-instructions-using-cvmfs)
-    - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
+    - [Using pixi](#using-pixi)
     - [Run instructions](#run-instructions)
     - [Docker instructions](#docker-instructions)
     - [Troubleshooting information](#troubleshooting-information)
     - [Documentation](#documentation)
     - [License](#license)
     - [Contributing code](#contributing-code)
+    - [Legacy releases (CVMFS + aliBuild, ≤26.04)](#legacy-releases-cvmfs--alibuild-2604)
 
 <!-- markdown-toc end -->
 
 ## Introduction
 
 FairShip is the software framework for the SHiP experiment which is based on
-FairRoot. The dependencies of FairShip are tracked and installed using
-[alibuild](https://alisw.github.io/alibuild/). A wiki can be found [here](https://github.com/ShipSoft/FairShip/wiki)
+FairRoot. Its dependencies are managed with [pixi](https://pixi.sh) — see
+[Using pixi](#using-pixi) below. See the
+[FairShip wiki](https://github.com/ShipSoft/FairShip/wiki) for additional
+documentation.
 
 ### Branches
 
 <dl>
   <dt><code>master</code></dt>
   <dd>Main development branch.
-      All python code is <b>required to be python 3</b>. Python 2 is no longer supported.
-      Requires aliBuild default <code>release</code>.</dd>
+      All python code is <b>required to be python 3</b>. Python 2 is no longer supported.</dd>
   <dt><code>charmdet</code></dt>
   <dd>Branch for the charm cross-section measurement.
       Kept as reference for potential future studies.</dd>
   <dt><code>SHiP-2018</code></dt>
   <dd>Frozen branch for the CDS, kept for backward compatibility.
-      Python 2 only.
-      Requires aliBuild default <code>fairship-2018</code>.</dd>
+      Python 2 only. Builds via the
+      <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only.</dd>
   <dt><code>muflux</code></dt>
   <dd>Branch for the muon flux analysis.
-      Python 2 only.
-      Requires aliBuild default <code>fairship-2018</code>.</dd>
+      Python 2 only. Builds via the
+      <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only.</dd>
 </dl>
 
 All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
 
-## Build Instructions using CVMFS
+## Using pixi
 
-On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be setup on your own machine (please see the [CVMFS documentation](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html))
+[Pixi](https://pixi.sh) manages all dependencies via the `pixi.toml` and
+`activate.sh` already included in this repository. The activation script sets
+`FAIRSHIP` and `GEOMPATH` (among others) to `PIXI_PROJECT_ROOT`, so the pixi
+project root **must** be the FairShip clone itself — it contains the required
+`geometry/` and `files/` directories.
 
-1. Download the FairShip software
+### Build from source (recommended)
+
+1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
+
+2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    pixi run build
     ```
-    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run
+
+3. Run commands inside the environment:
     ```bash
-    git lfs install
+    pixi run python macro/run_simScript.py --tag my-simulation
     ```
-    if you have never used `git-lfs` on your account before.
 
-3. Make sure you can access the SHiP CVMFS Repository
+    Or start a shell:
     ```bash
-    ls /cvmfs/ship.cern.ch
-    ```
-4. Source the `setUp.sh` script from the CVMFS release you want to use (replace `$SHIP_RELEASE` with the release you want to use):
-    ```bash
-    source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
-    ```
-    Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
-    Please report issues with particular releases or the setup script there.
-
-5. Build the software using aliBuild
-    ```bash
-    aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
-    ```
-    If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
-
-If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
-
-To load the FairShip environment, after you build the software you can simply use:
-
-5. Load the environment
-    ```bash
-    alienv enter FairShip/latest
+    pixi shell
+    python macro/run_simScript.py --tag my-simulation
     ```
 
-However, this won't work if you are using HTCondor. In such case you can do:
+### Using the pre-built package
+
+Pre-built FairShip packages are available from the
+[ship](https://prefix.dev/channels/ship) channel. Because `activate.sh`
+expects `geometry/`, `files/`, and other data directories at
+`PIXI_PROJECT_ROOT`, the simplest approach is to add `fairship` directly to
+the clone:
 
 ```bash
-eval $(alienv load FairShip/latest --no-refresh)
+git clone https://github.com/ShipSoft/FairShip.git
+cd FairShip
+pixi add fairship
+pixi run python macro/run_simScript.py --tag my-simulation
 ```
 
-## Local build, without access to CVMFS
-Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.
-
-1. Install `alibuild` using `pipx` (recommended) or `pip`.
-2. Clone the FairShip repository:
-    ```bash
-    git clone https://github.com/ShipSoft/FairShip.git
-    ```
-    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run
-    ```bash
-    git lfs install
-    ```
-    if you have never used `git-lfs` on your account before.
-2. Clone the shipdist repository, which contains the recipes to build the software stack:
-    ```bash
-    git clone https://github.com/ShipSoft/shipdist.git
-    ```
-2. Build the software using aliBuild:
-    ```bash
-    aliBuild build FairShip --config-dir $SHIPDIST --defaults release
-    ```
-    NB: Depending on the platform you might have to pass the `--always-prefer-system` or `--force-unknown-architecture` flags to aliBuild. For debugging, `aliDoctor` is very useful!
-
-3. Load the environment
-    ```bash
-    alienv enter FairShip/latest
-    ```
 ## Run instructions
 
-Set up the bulk of the environment from CVMFS (see the [dedicated repository](https://github.com/ShipSoft/cvmfs_release) for information about the available releases):
+Start a shell with the FairShip environment activated:
 
 ```bash
-source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
+pixi shell
 ```
 
-Load your local FairShip environment.
-
-```bash
-alienv enter FairShip/latest
-```
-
-Now you can for example simulate some events, run reconstruction and analysis:
+(Or prefix individual commands with `pixi run`.) Then you can simulate some
+events, run reconstruction and analysis:
 
 ```bash
 python $FAIRSHIP/macro/run_simScript.py --tag my-simulation
@@ -226,3 +194,61 @@ Copyright is held by CERN for the benefit of the SHiP Collaboration. Some compon
 * Contributions via pull requests are preferred, but if you require help with git, don't hesitate to write reach out to us.
 * Please split your work into small commits with self-contained changes to make them easy to review and check.
 * To help us consistently improve the quality of our code, please try to follow the [C++](https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines) and [Python](https://github.com/ShipSoft/FairShip/wiki/Python-guidelines) guidelines.
+
+## Legacy releases (CVMFS + aliBuild, ≤26.04)
+
+These instructions are kept for users running existing CVMFS releases up to
+**26.04** and for legacy branches (`SHiP-2018`, `muflux`). New work should use
+[Using pixi](#using-pixi) instead; the
+[shipdist](https://github.com/ShipSoft/shipdist) repository (aliBuild recipes)
+is no longer maintained.
+
+### With CVMFS (lxplus and similar)
+
+1. Clone the FairShip software (initialise `git-lfs` first if you've never
+   used it):
+    ```bash
+    git lfs install
+    git clone https://github.com/ShipSoft/FairShip.git
+    ```
+2. Make sure CVMFS is mounted:
+    ```bash
+    ls /cvmfs/ship.cern.ch
+    ```
+3. Source the chosen release (≤ 26.04; see the
+   [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo for the
+   list):
+    ```bash
+    source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
+    ```
+4. Build with aliBuild:
+    ```bash
+    aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
+    ```
+    For legacy branches, swap `--defaults release` for `--defaults fairship-2018`.
+5. Load the environment:
+    ```bash
+    alienv enter FairShip/latest
+    ```
+    Or, in non-interactive contexts (e.g. HTCondor):
+    ```bash
+    eval $(alienv load FairShip/latest --no-refresh)
+    ```
+
+### Without CVMFS
+
+1. Install [aliBuild](https://alisw.github.io/alibuild/) via `pipx` or `pip`.
+2. Clone [shipdist](https://github.com/ShipSoft/shipdist) alongside FairShip:
+    ```bash
+    git clone https://github.com/ShipSoft/shipdist.git
+    ```
+3. Build:
+    ```bash
+    aliBuild build FairShip --config-dir ./shipdist --defaults release
+    ```
+    Pass `--always-prefer-system` or `--force-unknown-architecture` if needed;
+    `aliDoctor` helps when something doesn't resolve.
+4. Load the environment:
+    ```bash
+    alienv enter FairShip/latest
+    ```

@@ -41,8 +41,8 @@ class FixedTargetGenerator : public SHiP::Generator {
   using SHiP::Generator::Init;
   Bool_t Init() override;
 
-  Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots = 5E13,
-                              Int_t nStart = 0);
+  Bool_t InitForCharmOrBeauty(const TString& fInName, Int_t nev,
+                              Double_t npots = 5E13, Int_t nStart = 0);
 
   void SetMom(Double_t mom) { fMom = mom; };
   void UseRandom1() {

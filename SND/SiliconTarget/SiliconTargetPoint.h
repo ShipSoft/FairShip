@@ -25,9 +25,9 @@ class SiliconTargetPoint : public FairMCPoint {
    *@param pdgcode  PDG code of MCTrack
    **/
 
-  SiliconTargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss,
-                     Int_t pdgcode);
+  SiliconTargetPoint(Int_t trackID, Int_t detID, const TVector3& pos,
+                     const TVector3& mom, Double_t tof, Double_t length,
+                     Double_t eLoss, Int_t pdgcode);
 
   /** Destructor **/
   ~SiliconTargetPoint() override;
