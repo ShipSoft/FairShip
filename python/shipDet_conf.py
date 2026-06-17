@@ -464,15 +464,7 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
-    # <<<<<<< HEAD
     configure_upstreamTagger(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubt_config.yaml"), ship_geo)
-    # =======
-    #    upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-    #    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
-    #    upstreamTagger.SetBoxDimensions(
-    #        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
-    # >>>>>>> mymaster
-    #    )
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)
@@ -503,7 +495,7 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
         ROOT.SetOwnership(fMagField, False)  # C++ FairRunSim takes ownership
 
-    exclusionList = ["TargetStation"]
+    exclusionList = []
     # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
