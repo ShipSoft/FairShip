@@ -569,7 +569,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  963</span>                  &lt;&lt; <span class="stringliteral">&quot;, y0 = &quot;</span> &lt;&lt; theInfo.y0_ &lt;&lt; <span class="stringliteral">&quot;, z0 = &quot;</span> &lt;&lt; theInfo.z0_</div>
 <div class="line"><span class="lineno">  964</span>                  &lt;&lt; <span class="stringliteral">&quot;, phi = &quot;</span> &lt;&lt; theInfo.<a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a></div>
 <div class="line"><span class="lineno">  965</span>                  &lt;&lt; <span class="stringliteral">&quot;, theta = &quot;</span> &lt;&lt; theInfo.theta_</div>
-<div class="line"><span class="lineno">  966</span>                  &lt;&lt; <span class="stringliteral">&quot;, psi = &quot;</span> &lt;&lt; theInfo.psi_ &lt;&lt; <span class="stringliteral">&quot;, scale = &quot;</span> &lt;&lt; scale</div>
+<div class="line"><span class="lineno">  966</span>                  &lt;&lt; <span class="stringliteral">&quot;, psi = &quot;</span> &lt;&lt; theInfo.psi_ &lt;&lt; <span class="stringliteral">&quot;, scale = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a></div>
 <div class="line"><span class="lineno">  967</span>                  &lt;&lt; <span class="stringliteral">&quot; and symmetry = &quot;</span> &lt;&lt; mapField-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a23fc5866bcd2e4009b99bc3824f5ee48">HasSymmetry</a>() &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  968</span>      }</div>
 <div class="line"><span class="lineno">  969</span> </div>
@@ -596,6 +596,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aclassShipBFieldMap_html_afd3eebaf079b2685fdd9479438a16a47"><div class="ttname"><a href="classShipBFieldMap.html#afd3eebaf079b2685fdd9479438a16a47">ShipBFieldMap::GetZOffset</a></div><div class="ttdeci">Float_t GetZOffset() const</div><div class="ttdoc">Get the z offset coordinate of the map for global positioning.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00259">ShipBFieldMap.h:259</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_a536ddce150f887c5434c788216bf00cd"><div class="ttname"><a href="classShipFieldMaker.html#a536ddce150f887c5434c788216bf00cd">ShipFieldMaker::getField</a></div><div class="ttdeci">TVirtualMagField * getField(const TString &amp;name) const</div><div class="ttdoc">Get the field stored with the given name name.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01116">ShipFieldMaker.cxx:1116</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_a6e7d9c110249730e4a725e374c321aee"><div class="ttname"><a href="classShipFieldMaker.html#a6e7d9c110249730e4a725e374c321aee">ShipFieldMaker::getTransformation</a></div><div class="ttdeci">void getTransformation(const TString &amp;volName, transformInfo &amp;theInfo)</div><div class="ttdoc">Get the transformation matrix for the volume position and orientation.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00983">ShipFieldMaker.cxx:983</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a623b9d889ae161ebb139e0181427e1e0"><div class="ttname"><a href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">makeDecay.scale</a></div><div class="ttdeci">tuple scale</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00054">makeDecay.py:54</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1375,7 +1376,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  423</span>    Float_t theta = localAngles.Y();</div>
 <div class="line"><span class="lineno">  424</span>    Float_t psi = localAngles.Z();</div>
 <div class="line"><span class="lineno">  425</span> </div>
-<div class="line"><span class="lineno">  426</span>    Float_t scale(1.0);</div>
+<div class="line"><span class="lineno">  426</span>    Float_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a>(1.0);</div>
 <div class="line"><span class="lineno">  427</span> </div>
 <div class="line"><span class="lineno">  428</span>    <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>* mapField =</div>
 <div class="line"><span class="lineno">  429</span>        <span class="keyword">new</span> <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>(<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data(), fullFileName, x0, y0, z0, phi, theta,</div>
@@ -1536,7 +1537,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  501</span>      Float_t theta = eulerAngles.Y();</div>
 <div class="line"><span class="lineno">  502</span>      Float_t psi = eulerAngles.Z();</div>
 <div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>      Float_t scale(1.0);</div>
+<div class="line"><span class="lineno">  504</span>      Float_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a>(1.0);</div>
 <div class="line"><span class="lineno">  505</span> </div>
 <div class="line"><span class="lineno">  506</span>      <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>* copiedMap = <span class="keyword">new</span> <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>(</div>
 <div class="line"><span class="lineno">  507</span>          <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data(), *fieldToCopy, x0, y0, z0, phi, theta, psi, scale);</div>
@@ -1797,9 +1798,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  806</span>    TString volName(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  807</span>    TString fieldName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  808</span> </div>
-<div class="line"><span class="lineno">  809</span>    Double_t scale(1.0);</div>
+<div class="line"><span class="lineno">  809</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a>(1.0);</div>
 <div class="line"><span class="lineno">  810</span>    <span class="keywordflow">if</span> (nWords == 4) {</div>
-<div class="line"><span class="lineno">  811</span>      scale = std::stod(inputLine[3]);</div>
+<div class="line"><span class="lineno">  811</span>      <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> = std::stod(inputLine[3]);</div>
 <div class="line"><span class="lineno">  812</span>    }</div>
 <div class="line"><span class="lineno">  813</span> </div>
 <div class="line"><span class="lineno">  814</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#a9da15b26eea1a0d7eb588e2689c87e99">defineLocalField</a>(volName, fieldName, scale);</div>
@@ -1860,7 +1861,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  825</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldMaker.html#aa6ea6ea385a201195ce579e19175072a">verbose_</a>) {</div>
 <div class="line"><span class="lineno">  826</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;ShipFieldMaker::defineLocalField for volume &quot;</span></div>
 <div class="line"><span class="lineno">  827</span>              &lt;&lt; volName.Data() &lt;&lt; <span class="stringliteral">&quot; and field &quot;</span> &lt;&lt; fieldName.Data()</div>
-<div class="line"><span class="lineno">  828</span>              &lt;&lt; <span class="stringliteral">&quot; with scale = &quot;</span> &lt;&lt; scale &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  828</span>              &lt;&lt; <span class="stringliteral">&quot; with scale = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  829</span>  }</div>
 <div class="line"><span class="lineno">  830</span> </div>
 <div class="line"><span class="lineno">  831</span>  fieldInfo theInfo(volName, fieldName, scale);</div>
@@ -1912,9 +1913,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  684</span>    TString volName(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  685</span>    TString fieldName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  686</span> </div>
-<div class="line"><span class="lineno">  687</span>    Double_t scale(1.0);</div>
+<div class="line"><span class="lineno">  687</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a>(1.0);</div>
 <div class="line"><span class="lineno">  688</span>    <span class="keywordflow">if</span> (nWords == 4) {</div>
-<div class="line"><span class="lineno">  689</span>      scale = std::stod(inputLine[3]);</div>
+<div class="line"><span class="lineno">  689</span>      <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> = std::stod(inputLine[3]);</div>
 <div class="line"><span class="lineno">  690</span>    }</div>
 <div class="line"><span class="lineno">  691</span> </div>
 <div class="line"><span class="lineno">  692</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#aef31f2695b538e04b00db829f7895e57">defineRegionField</a>(volName, fieldName, scale);</div>
@@ -1977,7 +1978,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  705</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldMaker.html#aa6ea6ea385a201195ce579e19175072a">verbose_</a>) {</div>
 <div class="line"><span class="lineno">  706</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;ShipFieldMaker::defineRegionField for volume &quot;</span></div>
 <div class="line"><span class="lineno">  707</span>              &lt;&lt; volName.Data() &lt;&lt; <span class="stringliteral">&quot; and field &quot;</span> &lt;&lt; fieldName.Data()</div>
-<div class="line"><span class="lineno">  708</span>              &lt;&lt; <span class="stringliteral">&quot; with scale = &quot;</span> &lt;&lt; scale &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  708</span>              &lt;&lt; <span class="stringliteral">&quot; with scale = &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  709</span>  }</div>
 <div class="line"><span class="lineno">  710</span> </div>
 <div class="line"><span class="lineno">  711</span>  fieldInfo theInfo(volName, fieldName, scale);</div>
@@ -3114,7 +3115,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  842</span>    fieldInfo theInfo = *localIter;</div>
 <div class="line"><span class="lineno">  843</span>    <span class="keyword">const</span> TString volName = theInfo.volName_;</div>
 <div class="line"><span class="lineno">  844</span>    TString fieldName = theInfo.fieldName_;</div>
-<div class="line"><span class="lineno">  845</span>    Double_t scale = theInfo.scale_;</div>
+<div class="line"><span class="lineno">  845</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  846</span> </div>
 <div class="line"><span class="lineno">  847</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  848</span>    <span class="keywordflow">if</span> (gGeoManager) {</div>
@@ -3182,7 +3183,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  722</span>    fieldInfo theInfo = *regionIter;</div>
 <div class="line"><span class="lineno">  723</span>    <span class="keyword">const</span> TString volName = theInfo.volName_;</div>
 <div class="line"><span class="lineno">  724</span>    TString fieldName = theInfo.fieldName_;</div>
-<div class="line"><span class="lineno">  725</span>    Double_t scale = theInfo.scale_;</div>
+<div class="line"><span class="lineno">  725</span>    Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a623b9d889ae161ebb139e0181427e1e0">scale</a> = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  726</span> </div>
 <div class="line"><span class="lineno">  727</span>    <span class="comment">// Find the volume</span></div>
 <div class="line"><span class="lineno">  728</span>    TGeoVolume* theVol(<span class="keyword">nullptr</span>);</div>
