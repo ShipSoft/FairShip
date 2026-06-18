@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 def make_seed(pos, mom, charge, surface, geo_ctx, nM):
 
-    sigma_drift = 5.0    # 5mm uncertainty (Relaxed from 0.12)
-    sigma_long  = 50.0   # 50mm uncertainty (Straws are long)
+    sigma_drift = 5.0    # 5mm uncertainty 
+    sigma_long  = 50.0   # 50mm uncertainty 
     sigma_phi   = 0.05   # 50 mrad
     sigma_theta = 0.05   # 50 mrad
-    sigma_qp    = 0.5 / mom.Mag() # 20% relative error on q/p
-    sigma_time = 10 
+    sigma_qp    = 0.2 / mom.Mag() # 20% relative error on q/p
+    sigma_time = 1e9 # deweight time parameter, as unused
 
     cov = np.diag([
         sigma_drift**2,
@@ -26,9 +26,6 @@ def make_seed(pos, mom, charge, surface, geo_ctx, nM):
         sigma_time**2
     ]).flatten().tolist()
 
-    #Use the first surface for setting the bound state 
-#    surf_center = surface.center(geo_ctx)
-#    pos = ROOT.TVector3(surf_center[0], surf_center[1], surf_center[2])
 
     return acts.createTrackParameters(
         pos.Z() * 10, pos.Y() * 10, pos.X() * -10,
@@ -40,7 +37,8 @@ def make_seed(pos, mom, charge, surface, geo_ctx, nM):
 
 def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
     """
-    Fit tracks in the Reco frame using truth of patrec seeds, optionally vertex
+    Fit tracks in the Reco frame using truth, or patrec seeds,
+    fit vertices if tracks meet criteria 
     """
 
     # Setup geo context 
@@ -71,57 +69,60 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
          iHit.push_back(sign)
 
     measurements = acts.processMeasurements(strawHits, trackingGeometry)
-
+    acts_index_map = build_acts_index_map(measurements, len(strawHits))
     # Setup output containers
     output_tracks = acts.examples.makeTrackContainer()
 
     # Loop over seeds (e.g., from PatRec or Truth)
     for cand in candidates:
+      cand['indices'].sort(key=lambda i: strawHits[i][8])
+      # This maps Truth indices -> Acts Container indices
+      remapped_indices = align_candidate_indices(cand, acts_index_map, strawHits)
 
-        sorted_indices = sorted(cand['indices'], key=lambda i: strawHits[i][8])
-        
-        filtered_indices = []
-        seen_layers = set()
 
-        #Add a check to ensure only one hit per layer
-        for idx in sorted_indices:
-            gid = acts.getMeasurementGeoId(measurements, idx)
+   
+      filtered_indices = []
+      seen_layers = set()
+   
+      for idx in remapped_indices:
 
-            if gid.layer not in seen_layers:
-                filtered_indices.append(idx)
-                seen_layers.add(gid.layer)
+        gid = acts.getMeasurementGeoId(measurements, idx)
+   
+        if gid.layer not in seen_layers:
+              filtered_indices.append(idx)
+              seen_layers.add(gid.layer)
 
-        if len(filtered_indices) < 13:
-            logger.debug("Skipping track with too few hits: %d", len(filtered_indices))
-            continue
+      if len(filtered_indices) < 13:
+          logger.debug("Skipping track with too few hits: %d", len(filtered_indices))
+          continue
 
-        first_idx = filtered_indices[0]
-        
-        geo_id = acts.getMeasurementGeoId(measurements, first_idx)
-       
-        target_surface = acts.getSurface(trackingGeometry, geo_id)
-        if not target_surface:
-            logger.warning("Could not find surface for GeoID: %s", geo_id)
-            continue
+      first_idx = filtered_indices[0]
+      
+      geo_id = acts.getMeasurementGeoId(measurements, first_idx)
+      
+      target_surface = acts.getSurface(trackingGeometry, geo_id)
+      if not target_surface:
+          logger.warning("Could not find surface for GeoID: %s", geo_id)
+          continue
 
-        # Call the make_seed function to get the required BoundTrackParameters
-        initial_params = make_seed(
-            cand['pos'],
-            cand['mom'], 
-            cand['charge'], 
-            target_surface,
-            geo_ctx,
-            len(strawHits)
-        )   
+      # Call the make_seed function to get the required BoundTrackParameters
+      initial_params = make_seed(
+          cand['pos'],
+          cand['mom'], 
+          cand['charge'], 
+          target_surface,
+          geo_ctx,
+          len(strawHits)
+      )   
 
-        acts.fitTrack(
-            measurements,
-            filtered_indices,
-            initial_params,
-            output_tracks,
-            trackingGeometry,
-            fieldMap
-        )
+      acts.fitTrack(
+          measurements,
+          filtered_indices,
+          initial_params,
+          output_tracks,
+          trackingGeometry,
+          fieldMap
+      )
 
 
     vertices = []
@@ -205,3 +206,46 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
         veto_results.append((hitID, distMin))
 
     return veto_results
+
+def build_acts_index_map(measurements, hit_count):
+    """
+    Builds a lookup table: GeoID Value -> Acts Container Index.
+    """
+    gid_to_idx = {}
+    for i in range(hit_count):
+        gid = acts.getMeasurementGeoId(measurements, i)
+        gid_to_idx[gid.value] = i
+    return gid_to_idx
+
+def align_candidate_indices(cand, index_map, strawHits):
+    aligned_indices = []
+
+    for old_idx in cand['indices']:
+        h = strawHits[old_idx]
+
+        station = int(h[1])
+        layer   = int(h[2])
+        view    = int(h[3])
+        straw   = int(h[4])
+        acts_layer = 16 * station + 4 * view + 2 * layer - 14
+
+        gid = acts.GeometryIdentifier()
+
+        try:
+            gid.volume = 1
+            gid.layer = acts_layer
+            gid.sensitive = straw
+        except AttributeError:
+            print("Error: Could not set GeometryIdentifier properties in Python.")
+            return []
+
+        target_gid_value = gid.value
+
+        if target_gid_value in index_map:
+            aligned_indices.append(index_map[target_gid_value])
+        else:
+            print(f"Mismatch: Straw {straw}, Layer {acts_layer} -> Value {target_gid_value}")
+
+    return aligned_indices
+
+
