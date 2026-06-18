@@ -1,6 +1,6 @@
 # FairShip
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![Pixi Build](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020628.svg)](https://doi.org/10.5281/zenodo.18020628)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![Pixi Build](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020628.svg)](https://doi.org/10.5281/zenodo.18020628)[![REUSE status](https://api.reuse.software/badge/github.com/ShipSoft/FairShip)](https://api.reuse.software/info/github.com/ShipSoft/FairShip)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of contents**
