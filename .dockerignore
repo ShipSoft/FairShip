@@ -1,9 +1,7 @@
-map
-files
-system
-travis.sh
-localBuild.sh
-aliBuild.sh
-Dockerfile
-Vagrantfile
-README.md
+.pixi/
+.direnv/
+.claude/
+build/
+plots/
+/*.root
+/*.pdf

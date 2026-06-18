@@ -22,6 +22,7 @@ class splitcalCluster : public TObject {
   ~splitcalCluster() override;
 
   /** Methods **/
+  using TObject::Print;
   virtual void Print() const;
 
   void SetEtaPhiE(double& eta, double& phi, double& e) {
@@ -80,7 +81,7 @@ class splitcalCluster : public TObject {
   std::vector<int> _hitIndices;
   std::vector<double> _hitWeights;
 
-  ClassDef(splitcalCluster, 4);
+  ClassDefOverride(splitcalCluster, 4);
 };
 
 #endif  // SPLITCAL_SPLITCALCLUSTER_H_

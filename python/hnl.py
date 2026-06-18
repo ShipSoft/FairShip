@@ -276,9 +276,11 @@ class HNLbranchings:
             if beta in [4, 7, 9]:  # up quarks
                 C1 = 0.25 * (1.0 - 8.0 / 3.0 * c.s2thetaw + 32.0 / 9.0 * c.s2thetaw**2.0)
                 C2 = 1.0 / 3.0 * c.s2thetaw * (4.0 / 3.0 * c.s2thetaw - 1.0)
-            if beta in [5, 6, 8]:  # down quarks
+            elif beta in [5, 6, 8]:  # down quarks
                 C1 = 0.25 * (1.0 - 4.0 / 3.0 * c.s2thetaw + 8.0 / 9.0 * c.s2thetaw**2.0)
                 C2 = 1.0 / 6.0 * c.s2thetaw * (2.0 / 3.0 * c.s2thetaw - 1.0)
+            else:
+                raise ValueError(f"HNLbranchings: unsupported quark beta index {beta}")
         width = (
             width
             * NZ

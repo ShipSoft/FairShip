@@ -27,7 +27,7 @@ using ShipUnit::cm;
 using ShipUnit::mm;
 const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
                                           // = 2.99792458e+8 * m/s)
-const Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
+constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
 FixedTargetGenerator::FixedTargetGenerator() {
@@ -63,30 +63,66 @@ FixedTargetGenerator::FixedTargetGenerator() {
   wspill = 1.;  // event weight == 1 for primary events
   heartbeat = 1000;
 }
-Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev,
-                                                  Double_t npot, Int_t nStart) {
+Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
+                                                  Int_t nev, Double_t npot,
+                                                  Int_t nStart) {
   Option = "charm";
   nEntry = nStart;
   // open input file with charm or beauty
-  fin = TFile::Open(fInName);
-  if (!fin) {
-    LOG(fatal) << "Could not open input file: " << fInName.Data();
+  if (nStart < 0) {
+    LOG(error) << "FixedTargetGenerator: startEvent must be >= 0, got "
+               << nStart;
+    return kFALSE;
+  }
+  fin = TFile::Open(fInName, "READ");
+  if (!fin || fin->IsZombie()) {
+    LOG(error) << "FixedTargetGenerator: could not open input file "
+               << fInName.Data();
+    delete fin;
+    fin = nullptr;
     return kFALSE;
   }
   nTree = dynamic_cast<TNtuple*>(
       fin->FindObjectAny("pythia6"));  // old format, simple ntuple
+  if (!nTree) {
+    LOG(error) << "FixedTargetGenerator: cannot find tree pythia6 in file "
+               << fInName.Data();
+    fin->Close();
+    delete fin;
+    fin = nullptr;
+    return kFALSE;
+  }
   nEvents = nTree->GetEntries();
-  nTree->SetBranchAddress("id", &n_id);
-  nTree->SetBranchAddress("px", &n_px);
-  nTree->SetBranchAddress("py", &n_py);
-  nTree->SetBranchAddress("pz", &n_pz);
-  nTree->SetBranchAddress("M", &n_M);
-  nTree->SetBranchAddress("E", &n_E);
-  nTree->SetBranchAddress("mid", &n_mid);
-  nTree->SetBranchAddress("mpx", &n_mpx);
-  nTree->SetBranchAddress("mpy", &n_mpy);
-  nTree->SetBranchAddress("mpz", &n_mpz);
-  nTree->SetBranchAddress("mE", &n_mE);
+  if (nStart >= nEvents) {
+    LOG(error) << "FixedTargetGenerator: startEvent " << nStart
+               << " is out of range for " << nEvents << " entries";
+    fin->Close();
+    delete fin;
+    fin = nullptr;
+    nTree = nullptr;
+    return kFALSE;
+  }
+  bool ok = true;
+  ok &= (nTree->SetBranchAddress("id", &n_id) >= 0);
+  ok &= (nTree->SetBranchAddress("px", &n_px) >= 0);
+  ok &= (nTree->SetBranchAddress("py", &n_py) >= 0);
+  ok &= (nTree->SetBranchAddress("pz", &n_pz) >= 0);
+  ok &= (nTree->SetBranchAddress("M", &n_M) >= 0);
+  ok &= (nTree->SetBranchAddress("E", &n_E) >= 0);
+  ok &= (nTree->SetBranchAddress("mid", &n_mid) >= 0);
+  ok &= (nTree->SetBranchAddress("mpx", &n_mpx) >= 0);
+  ok &= (nTree->SetBranchAddress("mpy", &n_mpy) >= 0);
+  ok &= (nTree->SetBranchAddress("mpz", &n_mpz) >= 0);
+  ok &= (nTree->SetBranchAddress("mE", &n_mE) >= 0);
+  if (!ok) {
+    LOG(error)
+        << "FixedTargetGenerator: failed to bind one or more required branches";
+    fin->Close();
+    delete fin;
+    fin = nullptr;
+    nTree = nullptr;
+    return kFALSE;
+  }
   if (nTree->GetBranch("k")) {
     LOG(info) << "+++has branch+++";
     nTree->SetBranchAddress("k", &ck);
@@ -105,7 +141,11 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev,
   // pot are counted double, i.e. for each signal, i.e. pot/2.
   auto* potHist = dynamic_cast<TH1F*>(fin->Get("2"));
   if (!potHist) {
-    LOG(fatal) << "Histogram '2' not found in input file";
+    LOG(error) << "FixedTargetGenerator: histogram '2' not found in input file";
+    fin->Close();
+    delete fin;
+    fin = nullptr;
+    nTree = nullptr;
     return kFALSE;
   }
   Int_t nrcpot =
@@ -322,7 +362,7 @@ Bool_t FixedTargetGenerator::Init() {
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-FixedTargetGenerator::~FixedTargetGenerator() {}
+FixedTargetGenerator::~FixedTargetGenerator() = default;
 // -------------------------------------------------------------------------
 
 // -----   Passing the event   ---------------------------------------------

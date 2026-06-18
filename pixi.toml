@@ -11,7 +11,12 @@ geant4 = ">=11.3"
 pythia8 = ">=8.312"
 evtgen = ">=2.2"
 fmt = "*"
-gsl = "*"
+# Available on both channels — pin to conda-forge so a future SHiP-channel
+# garbage collection cannot break the lock.
+faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
+# fairlogger is on conda-forge but is not in fairroot's runtime deps —
+# keep it explicit so CMake's find_package(FairLogger) resolves.
+fairlogger = ">=2.3"
 
 # Python (conda-forge)
 python = "3.12.*"
@@ -19,23 +24,15 @@ numpy = "*"
 scipy = "*"
 matplotlib = "*"
 pandas = "*"
-awkward = "*"
-uproot = "*"
 pytest = "*"
 pytest-xdist = "*"
 pyyaml = "*"
 tabulate = "*"
 
 # SHiP custom packages (prefix.dev/ship channel)
-vmc = ">=2.2"
-vgm = ">=5.4"
-geant3 = ">=4.5"
-geant4-vmc = "==6.7.1"
-faircmakemodules = ">=1.0"
-fairlogger = ">=2.3"
+geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
-pythia6 = ">=6.4"
 rootegpythia6 = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
 # They will be added to a runtime environment later
@@ -103,6 +100,9 @@ cmd = "python macro/run_tracking_benchmark.py -n 200 --seed 42 --tag ci-benchmar
 [tasks.ci-fixed-target]
 cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 
+[tasks.ci-sim-muonback]
+cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
+
 # --- CI plot rendering tasks ---
 # Wrap .github/scripts/render_plots.py for each per-job output set. The
 # CI workflow invokes these after the corresponding sim/reco step. The
@@ -124,7 +124,7 @@ cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --outpu
 # expansion.
 
 [tasks.ci-clang-tidy]
-cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py'"
+cmd = "bash -c 'set -o pipefail; GCC_INC=$(x86_64-conda-linux-gnu-gcc -print-file-name=include); echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ --extra-arg-before=-isystem$GCC_INC 2>&1 | python .github/scripts/annotate_build.py'"
 
 [tasks.ci-pyrefly]
 cmd = "pyrefly check --output-format=github $PY_FILES"

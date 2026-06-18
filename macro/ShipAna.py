@@ -60,8 +60,7 @@ else:
 
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
-else:
-    fgeo = ROOT.TFile(options.geoFile)
+fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")

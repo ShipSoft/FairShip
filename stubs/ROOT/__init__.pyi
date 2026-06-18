@@ -1257,6 +1257,8 @@ class vetoHit(FairMCPoint):  # Partial stub
 
 class vetoHitOnTrack:  # Partial stub
     def __init__(self, hitID: int, dist: float) -> None: ...
+    def GetHitID(self) -> int: ...
+    def GetDist(self) -> float: ...
 
 class splitcal:  # Partial stub
     def __init__(self, name: str, active: bool) -> None: ...
@@ -1729,6 +1731,58 @@ vector = std.vector
 
 # basiclibs compatibility module
 def basiclibs() -> None: ...
+
+# ---------------------------------------------------------------------------
+# Reflection helpers
+# ---------------------------------------------------------------------------
+class TClass(TObject):  # Partial stub
+    @staticmethod
+    def GetClass(name: str) -> TClass | None: ...
+    def InheritsFrom(self, name: str) -> bool: ...
+    def GetName(self) -> str: ...
+
+# ---------------------------------------------------------------------------
+# TString — used as a writable label container for File metadata
+# ---------------------------------------------------------------------------
+class TString(TObject):  # Partial stub
+    def __init__(self, value: str = ...) -> None: ...
+    def Data(self) -> str: ...
+    def __str__(self) -> str: ...
+
+# ---------------------------------------------------------------------------
+# RDataFrame factory helpers
+# ---------------------------------------------------------------------------
+class RDF:  # Namespace
+    @staticmethod
+    def FromNumpy(arrays: dict[str, Any]) -> Any: ...
+
+    class RSnapshotOptions:
+        fOutputFormat: int
+
+        def __init__(self) -> None: ...
+
+    class ESnapshotOutputFormat:
+        kDefault: int
+        kTTree: int
+        kRNTuple: int
+
+# ---------------------------------------------------------------------------
+# SHiP — C++ namespace exposed via PyROOT for in-tree classes
+# ---------------------------------------------------------------------------
+class SHiP:  # Namespace
+    class TTreeGenerator:
+        def __init__(self) -> None: ...
+        def SetTreeName(self, name: str) -> None: ...
+        def Init(self, in_file: str | list[str], first_event: int = ...) -> bool: ...
+        def GetNEvents(self) -> int: ...
+
+# ---------------------------------------------------------------------------
+# Runtime-declared symbols
+# build_time_windows is generated and registered via
+# ROOT.gInterpreter.Declare(...) inside macro/make_time_window.py, so
+# pyrefly cannot see it statically. Declare it here as a permissive stub.
+# ---------------------------------------------------------------------------
+def build_time_windows(*args: Any, **kwargs: Any) -> Any: ...
 
 # ---------------------------------------------------------------------------
 # RNTuple support (ROOT 7)

@@ -17,7 +17,13 @@ using std::endl;
 
 static ShipFieldCreator gShipFieldCreator;
 
-ShipFieldCreator::ShipFieldCreator() : FairFieldFactory(), fFieldPar(nullptr) {}
+// Marked noexcept so the static `gShipFieldCreator` registration cannot trip
+// bugprone-throwing-static-initialization. FairFieldFactory's own ctor sets a
+// static pointer and never throws in practice; if that ever changes, the
+// resulting std::terminate is preferable to silently calling a destructor we
+// can't reach.
+ShipFieldCreator::ShipFieldCreator() noexcept
+    : FairFieldFactory(), fFieldPar(nullptr) {}
 
 ShipFieldCreator::~ShipFieldCreator() = default;
 

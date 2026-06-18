@@ -427,6 +427,7 @@ class RPVSUSYbranchings:
         """
         had = re.search(r"->\ (.+?)\ ", decayString).group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split
@@ -466,6 +467,7 @@ class RPVSUSYbranchings:
         """
         had = re.search(r"(.+?)\ ->", decayString).group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split
