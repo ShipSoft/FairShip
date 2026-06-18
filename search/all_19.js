@@ -14,7 +14,7 @@ var searchData=
   ['update_5fnumeric_5fstat_11',['update_numeric_stat',['../namespacevalidationTools.html#a609e5981bf437388589ab4804356f777',1,'validationTools']]],
   ['updateenergy_12',['UpdateEnergy',['../classsplitcalHit.html#a5896b24a017d44df6a292d4afa4b9c32',1,'splitcalHit']]],
   ['updatepointtrackindices_13',['updatepointtrackindices',['../classISTLPointContainer.html#ac2df1de47576d45fa00f744ce898fa3b',1,'ISTLPointContainer::UpdatePointTrackIndices()'],['../classSHiP_1_1Detector.html#a4810198266164567bff61adcad9be168',1,'SHiP::Detector::UpdatePointTrackIndices()']]],
-  ['updates_14',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md37',1,'']]],
+  ['updates_14',['Detector Geometry Updates',['../md_CHANGELOG.html#autotoc_md42',1,'']]],
   ['updatetrackindex_15',['UpdateTrackIndex',['../classShipStack.html#afbe9564e96a068a1be591663b1c5f248',1,'ShipStack']]],
   ['upperironthick_16',['upperIronThick',['../classMTCDetector.html#a5d95ddbeca95c7a451da9e8b6af18e10',1,'MTCDetector']]],
   ['upstreamtagger_17',['upstreamtagger',['../classUpstreamTagger.html#a63dd607c0d6d84c20955d21d8dd72342',1,'UpstreamTagger::UpstreamTagger(const char *Name, Bool_t Active)'],['../classUpstreamTagger.html#ac7888dcb73c7f6f99c8b749c92bd6f57',1,'UpstreamTagger::UpstreamTagger()'],['../classUpstreamTagger.html#a18f903973a0b35a9472d2016195f72a3',1,'UpstreamTagger::UpstreamTagger(const UpstreamTagger &amp;)=delete'],['../classUpstreamTagger.html',1,'UpstreamTagger']]],
@@ -36,7 +36,7 @@ var searchData=
   ['userandom1_33',['userandom1',['../classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549',1,'Pythia8Generator::UseRandom1()'],['../classHNLPythia8Generator.html#af5c3daa98bc8428d66a7569e3c60c0f9',1,'HNLPythia8Generator::UseRandom1()'],['../classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9',1,'FixedTargetGenerator::UseRandom1()'],['../classDPPythia8Generator.html#ab4c1edc6b0d596bb683bf06696a3cdba',1,'DPPythia8Generator::UseRandom1()']]],
   ['userandom3_34',['userandom3',['../classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7',1,'Pythia8Generator::UseRandom3()'],['../classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa',1,'DPPythia8Generator::UseRandom3()'],['../classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458',1,'FixedTargetGenerator::UseRandom3()'],['../classHNLPythia8Generator.html#a10cfa18bf9fcef7c426880b02a6aeb8e',1,'HNLPythia8Generator::UseRandom3()']]],
   ['usesymmetry_35',['UseSymmetry',['../classShipBFieldMap.html#a8ce60bff834f49ad519b0d381bae4333',1,'ShipBFieldMap']]],
-  ['using_20pixi_36',['Using pixi',['../md_README.html#autotoc_md81',1,'']]],
-  ['using_20the_20pre_20built_20package_37',['Using the pre-built package',['../md_README.html#autotoc_md83',1,'']]],
-  ['utilities_38',['utilities',['../md_CHANGELOG.html#autotoc_md55',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md27',1,'Tools and Utilities']]]
+  ['using_20pixi_36',['Using pixi',['../md_README.html#autotoc_md86',1,'']]],
+  ['using_20the_20pre_20built_20package_37',['Using the pre-built package',['../md_README.html#autotoc_md88',1,'']]],
+  ['utilities_38',['utilities',['../md_CHANGELOG.html#autotoc_md60',1,'Custom Utilities'],['../md_CHANGELOG.html#autotoc_md32',1,'Tools and Utilities']]]
 ];

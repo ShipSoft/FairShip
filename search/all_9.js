@@ -47,7 +47,7 @@ var searchData=
   ['evd_5ftransparentmode_2epy_44',['evd_transparentMode.py',['../evd__transparentMode_8py.html',1,'']]],
   ['eveglobal_45',['eveGlobal',['../namespaceeveGlobal.html',1,'']]],
   ['eveglobal_2epy_46',['eveGlobal.py',['../eveGlobal_8py.html',1,'']]],
-  ['event_20display_20and_20reconstruction_47',['Event Display and Reconstruction',['../md_CHANGELOG.html#autotoc_md51',1,'']]],
+  ['event_20display_20and_20reconstruction_47',['Event Display and Reconstruction',['../md_CHANGELOG.html#autotoc_md56',1,'']]],
   ['event_5fdata_48',['event_data',['../namespacemake__nTuple__SBT.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0',1,'make_nTuple_SBT.event_data'],['../namespacemake__nTuple__Tr.html#acde6f1b368186db401b2b7ca1089fd37',1,'make_nTuple_Tr.event_data']]],
   ['event_5finspector_49',['event_inspector',['../classexperimental_1_1analysis__toolkit_1_1event__inspector.html',1,'experimental::analysis_toolkit']]],
   ['eventdisplay_50',['eventDisplay',['../namespaceeventDisplay.html',1,'']]],
