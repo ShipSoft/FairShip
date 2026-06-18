@@ -7,15 +7,11 @@ from array import array
 
 import acts
 import acts.examples
-from strawReco import runTracking, calculateSBTDOCA
-import ctypes
 import global_variables
 import ROOT
 import rootUtils as ut
 import shipPatRec
 import shipunit as u
-import shipVertex
-
 import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
@@ -23,6 +19,7 @@ from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from strawReco import calculateSBTDOCA, runTracking
 
 logger = logging.getLogger(__name__)
 
@@ -102,10 +99,11 @@ class ShipDigiReco:
         # Read the root file containing spectrometer B field
         currentPath = os.path.dirname(__file__)
         sourcePath = os.path.abspath(os.path.join(currentPath, ".."))
-        field_map_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap))
+        field_map_path = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap)
+        )
         uu = acts.UnitConstants
         self.actsFieldMap = acts.createShipFieldProvider(field_map_path, uu.T)
-
 
     def reconstruct(self) -> None:
 
@@ -119,24 +117,16 @@ class ShipDigiReco:
         vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
 
         for track in output_tracks:
-
             acts.pushRecoTrack(vector_ptr, track, geo_ctx)
 
         for vtx in vertices:
-
             acts.pushRecoVertex(vertex_vector_ptr, vtx)
 
         if hasattr(self, "digiSBT"):
-           veto_results = calculateSBTDOCA(
-                output_tracks, 
-                self.digiSBT.det, 
-                self.trackingGeometry, 
-                self.actsFieldMap
-                )
-           self.vetoHitOnTrackArray.clear()
-           for hitID, distMin in veto_results:
-               self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
-
+            veto_results = calculateSBTDOCA(output_tracks, self.digiSBT.det, self.trackingGeometry, self.actsFieldMap)
+            self.vetoHitOnTrackArray.clear()
+            for hitID, distMin in veto_results:
+                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
 
     def actsTracks(self) -> list:
         self.strawHits.clear()
@@ -163,7 +153,7 @@ class ShipDigiReco:
             z = self.sTree.strawtubesPoint[sm["digiHit"]].GetZ()
             deltaE = self.sTree.strawtubesPoint[sm["digiHit"]].GetEnergyLoss()
 
-            #Structure of hit vector (detector [straw=0], station, layer, view, straw, track_id, x,y,z,t, E, drift, wire-xtop, ytop, xbot, ybot )
+            # Structure of hit vector (detector [straw=0], station, layer, view, straw, track_id, x,y,z,t, E, drift, wire-xtop, ytop, xbot, ybot )
             iHit = ROOT.std.vector("float")()
             iHit += [0, station, layer, view, straw, trID, x, y, z, time, deltaE, drift, xtop, ytop, xbot, ybot]
             self.strawHits.push_back(iHit)
@@ -179,10 +169,11 @@ class ShipDigiReco:
             # Truth Source
             for trID, tr in enumerate(self.sTree.MCTrack):
                 indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
-                if not indices: continue
+                if not indices:
+                    continue
                 unique_indices = []
-                seen_layers = set()   
-                #Sort indices by Z-position to find the first straw hit
+                seen_layers = set()
+                # Sort indices by Z-position to find the first straw hit
                 # iHit[8] is the Z-coordinate
                 indices.sort(key=lambda idx: self.strawHits[idx][8])
                 for idx in indices:
@@ -190,32 +181,26 @@ class ShipDigiReco:
 
                     # We want to keep only one straw per unique station/layer/view combination
                     # our Kalman filter cant handle more than 1 measurement per acts::layer
-                    layer_key = (int(h[1]), int(h[2]), int(h[3])) 
-                    
+                    layer_key = (int(h[1]), int(h[2]), int(h[3]))
+
                     if layer_key not in seen_layers:
                         unique_indices.append(idx)
                         seen_layers.add(layer_key)
                 first_idx = unique_indices[0]
                 first_hit = self.strawHits[first_idx]
-   
+
                 # Create Seed from the first straw hit
                 # Position from the straw hit truth (indices 6, 7, 8)
                 pos = ROOT.TVector3(first_hit[6], first_hit[7], first_hit[8])
-   
-                # Momentum from MCTrack 
+
+                # Momentum from MCTrack
                 mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
-   
+
                 charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
 
                 candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
 
-
-        output_tracks = runTracking(
-        candidates,
-        self.trackingGeometry,
-        self.actsFieldMap,
-        self.strawHits
-        )
+        output_tracks = runTracking(candidates, self.trackingGeometry, self.actsFieldMap, self.strawHits)
 
         return output_tracks
 
@@ -340,12 +325,7 @@ class ShipDigiReco:
 
             indices = listOfIndices[atrack]
 
-            track_candidates.append({
-                "pos": posM,
-                "mom": momM,
-                "indices": indices,
-                "charge": charge
-            })
+            track_candidates.append({"pos": posM, "mom": momM, "indices": indices, "charge": charge})
 
         return track_candidates
 
@@ -388,7 +368,6 @@ class ShipDigiReco:
             posM = ROOT.TVector3(0, 0, z_seed)
             momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
         return posM, momM
-
 
     def finish(self) -> None:
         if self.validation:
