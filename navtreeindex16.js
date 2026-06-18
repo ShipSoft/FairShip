@@ -243,11 +243,11 @@ var NAVTREEINDEX16 =
 "makeCascade_8py.html#aff9dd2d5f680ad23da5ad14070df2639":[7,0,6,15,14],
 "makeCascade_8py_source.html":[7,0,6,15],
 "makeDecay_8py.html":[7,0,6,16],
-"makeDecay_8py.html#a01dc90383daffd7d00a441b46189c74c":[7,0,6,16,47],
+"makeDecay_8py.html#a01dc90383daffd7d00a441b46189c74c":[7,0,6,16,49],
 "makeDecay_8py.html#a054de5146e896cc727218cd4b43715ae":[7,0,6,16,19],
-"makeDecay_8py.html#a093ea6eb39711c567e9e0085f9bb52a9":[7,0,6,16,41],
+"makeDecay_8py.html#a093ea6eb39711c567e9e0085f9bb52a9":[7,0,6,16,43],
 "makeDecay_8py.html#a1d9afd01a598d83d61bf13f290b9787c":[7,0,6,16,4],
 "makeDecay_8py.html#a1ec10b6fcd210fce31ebbfbc27fd2c5e":[7,0,6,16,9],
 "makeDecay_8py.html#a207051c620ec6397467ca2b001921080":[7,0,6,16,8],
-"makeDecay_8py.html#a22cff1f783360666322570921ddea831":[7,0,6,16,55]
+"makeDecay_8py.html#a22cff1f783360666322570921ddea831":[7,0,6,16,57]
 };

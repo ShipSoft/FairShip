@@ -1,5 +1,9 @@
 var NAVTREEINDEX22 =
 {
+"namespacemakeGenieEvents.html#a557a9c1bcb8d76bae072301861803340":[5,0,49,7],
+"namespacemakeGenieEvents.html#a698a7c30dc81870f2fe1001c44e3b98e":[5,0,49,2],
+"namespacemakeGenieEvents.html#a73633863ecb31bd0b5cad5366edfd862":[5,0,49,13],
+"namespacemakeGenieEvents.html#a81f9b7fc054fb2f9fe4a2cd9f8f6ad45":[5,0,49,6],
 "namespacemakeGenieEvents.html#a8d85a53750f8937b2e67972a0871d41e":[5,0,49,3],
 "namespacemakeGenieEvents.html#a8d9f64a726e1f2908898186e0345a12e":[5,0,49,10],
 "namespacemakeGenieEvents.html#aa43083eb0dfff8f3af821a35a17837d8":[5,0,49,5],
@@ -245,9 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemembers_vars_k.html":[5,1,2,11],
 "namespacemembers_vars_l.html":[5,1,2,12],
 "namespacemembers_vars_m.html":[5,1,2,13],
-"namespacemembers_vars_n.html":[5,1,2,14],
-"namespacemembers_vars_o.html":[5,1,2,15],
-"namespacemembers_vars_p.html":[5,1,2,16],
-"namespacemembers_vars_q.html":[5,1,2,17],
-"namespacemembers_vars_r.html":[5,1,2,18]
+"namespacemembers_vars_n.html":[5,1,2,14]
 };
