@@ -179,7 +179,7 @@ var searchData=
   ['custom_20utilities_176',['Custom Utilities',['../md_CHANGELOG.html#autotoc_md60',1,'']]],
   ['cuts_177',['cuts',['../namespacemergeMbias.html#a090f13dac409b4f5f13664de9ae51a36',1,'mergeMbias']]],
   ['cvmfs_178',['Without CVMFS',['../md_README.html#autotoc_md97',1,'']]],
-  ['cvmfs_20alibuild_20≤26_2004_179',['Legacy releases (CVMFS + aliBuild, ≤26.04)',['../md_README.html#autotoc_md95',1,'']]],
+  ['cvmfs_20alibuild_179',['Legacy releases (CVMFS + aliBuild)',['../md_README.html#autotoc_md95',1,'']]],
   ['cvmfs_20lxplus_20and_20similar_180',['With CVMFS (lxplus and similar)',['../md_README.html#autotoc_md96',1,'']]],
   ['cx_181',['cx',['../namespacestudy__muMSC.html#a257d0c9a808d31e9e46250b231ebd696',1,'study_muMSC.cx'],['../namespacestudy__thinTarget.html#a6ab62725a04f4f0c23b38e5dc9315f17',1,'study_thinTarget.cx']]],
   ['cy_182',['cy',['../namespacestudy__muMSC.html#a75382afe241c0be021497e8d372d8d17',1,'study_muMSC.cy'],['../namespacestudy__thinTarget.html#addc7a3ca10ca437ff69442851d1876b5',1,'study_thinTarget.cy']]],

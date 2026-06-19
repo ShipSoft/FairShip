@@ -53,7 +53,7 @@ var searchData=
   ['ree_5finterp_50',['Ree_interp',['../classdarkphoton_1_1DarkPhoton.html#adb446e4bca62bcc2ceeb7720d5701314',1,'darkphoton::DarkPhoton']]],
   ['regioninfo_5f_51',['regionInfo_',['../classShipFieldMaker.html#a610485fbe459382bd59d6025483cc2eb',1,'ShipFieldMaker']]],
   ['register_52',['register',['../classexitHadronAbsorber.html#ab484947e4d0692b6a35dc5703fa81d21',1,'exitHadronAbsorber::Register()'],['../classSHiP_1_1Detector.html#a1f405a7f2839bcf329dc672c1c572110',1,'SHiP::Detector::Register()'],['../classShipStack.html#a30667a849c9d953e4ddfd76c66148bf3',1,'ShipStack::Register()']]],
-  ['releases_20cvmfs_20alibuild_20≤26_2004_53',['Legacy releases (CVMFS + aliBuild, ≤26.04)',['../md_README.html#autotoc_md95',1,'']]],
+  ['releases_20cvmfs_20alibuild_53',['Legacy releases (CVMFS + aliBuild)',['../md_README.html#autotoc_md95',1,'']]],
   ['remove_54',['remove',['../classeventDisplay_1_1Rulers.html#a7eeb8393b99682591dd776d21ba06589',1,'eventDisplay::Rulers']]],
   ['removecharm_55',['removeCharm',['../namespacemergeMbias.html#a80ba3e6e28a4b92b65d779e31c6ed424',1,'mergeMbias']]],
   ['removed_56',['removed',['../md_CHANGELOG.html#autotoc_md71',1,'Removed'],['../md_CHANGELOG.html#autotoc_md76',1,'Removed'],['../md_CHANGELOG.html#autotoc_md59',1,'Removed'],['../md_CHANGELOG.html#autotoc_md81',1,'Removed'],['../md_CHANGELOG.html#autotoc_md25',1,'Removed'],['../md_CHANGELOG.html#autotoc_md20',1,'Removed'],['../md_CHANGELOG.html#autotoc_md15',1,'Removed'],['../md_CHANGELOG.html#autotoc_md10',1,'Removed'],['../md_CHANGELOG.html#autotoc_md5',1,'Removed']]],

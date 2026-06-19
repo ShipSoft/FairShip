@@ -37,7 +37,7 @@ var searchData=
   ['addvmcfields_34',['addVMCFields',['../namespacegeomGeant4.html#a92c04a276d287a72320c3f0ed4f5a420',1,'geomGeant4']]],
   ['airgap_35',['airGap',['../classMTCDetector.html#ae3853be73630bad88e8777a3889315db',1,'MTCDetector']]],
   ['airlenght_36',['AirLenght',['../classShipTAUMagneticSpectrometer.html#a6362c913eb26c37d97d3617b26376669',1,'ShipTAUMagneticSpectrometer']]],
-  ['alibuild_20≤26_2004_37',['Legacy releases (CVMFS + aliBuild, ≤26.04)',['../md_README.html#autotoc_md95',1,'']]],
+  ['alibuild_37',['Legacy releases (CVMFS + aliBuild)',['../md_README.html#autotoc_md95',1,'']]],
   ['allowedchannels_38',['allowedchannels',['../classdarkphoton_1_1DarkPhoton.html#aa255bf3288ab56e0229c35f147c4621b',1,'darkphoton.DarkPhoton.allowedChannels()'],['../classhnl_1_1HNLbranchings.html#a0a5975e144a9c7ed1755fa61e0825f1b',1,'hnl.HNLbranchings.allowedChannels()']]],
   ['allplatewidth_39',['AllPlateWidth',['../classTarget.html#ab048c58ef9a027b308b057bea9452384',1,'Target']]],
   ['allprods_40',['allProds',['../namespacemergeMbias.html#ad76b253d12e2a798dff088668ce0484c',1,'mergeMbias']]],

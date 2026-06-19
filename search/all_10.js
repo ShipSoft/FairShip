@@ -9,7 +9,7 @@ var searchData=
   ['lbut_6',['lbut',['../classeventDisplay_1_1IO.html#a60c1c14546f74e6515578b5c897554e0',1,'eventDisplay::IO']]],
   ['leadthickness_7',['LeadThickness',['../classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb',1,'Target']]],
   ['leftview_8',['leftView',['../classeventDisplay_1_1EventLoop.html#af5f8fe09b77ea11e08480c1f320c5b79',1,'eventDisplay::EventLoop']]],
-  ['legacy_20releases_20cvmfs_20alibuild_20≤26_2004_9',['Legacy releases (CVMFS + aliBuild, ≤26.04)',['../md_README.html#autotoc_md95',1,'']]],
+  ['legacy_20releases_20cvmfs_20alibuild_9',['Legacy releases (CVMFS + aliBuild)',['../md_README.html#autotoc_md95',1,'']]],
   ['leptonicbranchingratio_10',['leptonicBranchingRatio',['../classdarkphoton_1_1DarkPhoton.html#a07316739e6579eb4c8d347730c8045c9',1,'darkphoton::DarkPhoton']]],
   ['leptonicdecaywidth_11',['leptonicDecayWidth',['../classdarkphoton_1_1DarkPhoton.html#aa1d1bf393d07231bdb858aa35f81df55',1,'darkphoton::DarkPhoton']]],
   ['level_12',['level',['../namespacemakeMuonDIS.html#a32a6bfe871be0dae206a851b48ff62ed',1,'makeMuonDIS.level'],['../namespacemake__nTuple__Tr.html#ae1b46f63f35856ccf5c84822ea2a1524',1,'make_nTuple_Tr.level'],['../namespacemake__nTuple__SBT.html#ae59d644069f8f948ec97c819faae4f1f',1,'make_nTuple_SBT.level'],['../namespaceadd__muonresponse.html#a55e193298dc5f0f17334eee4e4568886',1,'add_muonresponse.level'],['../namespacemake__time__window.html#ab4ec26536f5912b0c3e0cda334d34257',1,'make_time_window.level']]],

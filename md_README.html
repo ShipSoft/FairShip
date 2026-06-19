@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('md_README.html',''); initResizable(); 
 <li>Documentation</li>
 <li>License</li>
 <li>Contributing code</li>
-<li>Legacy releases (CVMFS + aliBuild, ≤26.04)</li>
+<li>Legacy releases (CVMFS + aliBuild)</li>
 </ul>
 </li>
 </ul>
@@ -122,9 +122,9 @@ Branches</h2>
 <dt><code>charmdet</code> </dt>
 <dd>Branch for the charm cross-section measurement. Kept as reference for potential future studies. </dd>
 <dt><code>SHiP-2018</code> </dt>
-<dd>Frozen branch for the CDS, kept for backward compatibility. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only. </dd>
+<dd>Frozen branch for the CDS, kept for backward compatibility. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild">legacy aliBuild path</a> only. </dd>
 <dt><code>muflux</code> </dt>
-<dd>Branch for the muon flux analysis. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only. </dd>
+<dd>Branch for the muon flux analysis. Python 2 only. Builds via the <a href="#legacy-releases-cvmfs--alibuild">legacy aliBuild path</a> only. </dd>
 </dl>
 <p>All packages are managed in Git and GitHub. Please read <a href="https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP">the Git tutorial for SHiP</a> first, even if you already know Git, as it explains how development is done on GitHub.</p>
 <h1><a class="anchor" id="autotoc_md86"></a>
@@ -216,8 +216,8 @@ Contributing code</h1>
 <li>To help us consistently improve the quality of our code, please try to follow the <a href="https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines">C++</a> and <a href="https://github.com/ShipSoft/FairShip/wiki/Python-guidelines">Python</a> guidelines.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md95"></a>
-Legacy releases (CVMFS + aliBuild, ≤26.04)</h1>
-<p>These instructions are kept for users running existing CVMFS releases up to <b>26.04</b> and for legacy branches (<code>SHiP-2018</code>, <code>muflux</code>). New work should use Using pixi instead; the <a href="https://github.com/ShipSoft/shipdist">shipdist</a> repository (aliBuild recipes) is no longer maintained.</p>
+Legacy releases (CVMFS + aliBuild)</h1>
+<p>aliBuild on top of a CVMFS-provided toolchain was the supported default up to and including release <b>26.05</b>. From <b>26.06</b> onwards pixi is the recommended build path; CVMFS images of newer releases (e.g. 26.06) may still be published for convenience, but are no longer the primary distribution channel. These instructions are kept for users running existing CVMFS releases and for legacy branches (<code>SHiP-2018</code>, <code>muflux</code>). The <a href="https://github.com/ShipSoft/shipdist">shipdist</a> repository (aliBuild recipes) is now in maintenance mode.</p>
 <h2><a class="anchor" id="autotoc_md96"></a>
 With CVMFS (lxplus and similar)</h2>
 <ol type="1">
@@ -226,7 +226,7 @@ With CVMFS (lxplus and similar)</h2>
 </div><!-- fragment --></li>
 <li>Make sure CVMFS is mounted: <div class="fragment"><div class="line">ls /cvmfs/ship.cern.ch</div>
 </div><!-- fragment --></li>
-<li>Source the chosen release (≤ 26.04; see the <a href="https://github.com/ShipSoft/cvmfs_release">cvmfs_release</a> repo for the list): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
+<li>Source the chosen release (see the <a href="https://github.com/ShipSoft/cvmfs_release">cvmfs_release</a> repo for the list): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
 </div><!-- fragment --></li>
 <li>Build with aliBuild: <div class="fragment"><div class="line">aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release</div>
 </div><!-- fragment --> For legacy branches, swap <code>--defaults release</code> for <code>--defaults fairship-2018</code>.</li>

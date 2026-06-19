@@ -137,7 +137,7 @@ var NAVTREE =
       [ "Documentation", "md_README.html#autotoc_md92", null ],
       [ "License", "md_README.html#autotoc_md93", null ],
       [ "Contributing code", "md_README.html#autotoc_md94", null ],
-      [ "Legacy releases (CVMFS + aliBuild, ≤26.04)", "md_README.html#autotoc_md95", [
+      [ "Legacy releases (CVMFS + aliBuild)", "md_README.html#autotoc_md95", [
         [ "With CVMFS (lxplus and similar)", "md_README.html#autotoc_md96", null ],
         [ "Without CVMFS", "md_README.html#autotoc_md97", null ]
       ] ]
