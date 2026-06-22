@@ -241,7 +241,7 @@ for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
         idw = idbeam[idp] * idpm
         _p = PDG.GetParticle(idw)
-        if _p is not None:  # if particle exists, book hists etc.
+        if _p:  # if particle exists, book hists etc.
             name = _p.GetName()
             id = id + 1
             for idnp in range(2):
