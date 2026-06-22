@@ -21,7 +21,7 @@ it in future.
 * Fix check of existing particle pdg in makeCascade
 
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
-
+* Fix call to next Pythia event generation
 ### Removed
 
 * Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
