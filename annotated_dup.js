@@ -108,7 +108,6 @@ var annotated_dup =
     [ "ParticleGunGenerator", "classParticleGunGenerator.html", "classParticleGunGenerator" ],
     [ "ParticleGunParticle", "structParticleGunParticle.html", "structParticleGunParticle" ],
     [ "pyFairModule", "classpyFairModule.html", "classpyFairModule" ],
-    [ "Pythia6Generator", "classPythia6Generator.html", "classPythia6Generator" ],
     [ "Pythia8Generator", "classPythia8Generator.html", "classPythia8Generator" ],
     [ "PyTr1Rng", "classPyTr1Rng.html", "classPyTr1Rng" ],
     [ "PyTr3Rng", "classPyTr3Rng.html", "classPyTr3Rng" ],
