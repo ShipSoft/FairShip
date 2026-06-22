@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"namespacemakeGenieEvents.html#ab534ac1a6f852d893e005ce778e06a05":[5,0,49,1],
+"namespacemakeGenieEvents.html#ad69e319c475fca9f00d6f8c2fce34348":[5,0,49,9],
 "namespacemakeGenieEvents.html#aea90f25c7fc1d44ddc7ac30d8ac1dce8":[5,0,49,8],
 "namespacemakeGenieEvents.html#aef2c13310a027d86a7488d24d178e57b":[5,0,49,12],
 "namespacemakeMuonDIS.html":[5,0,50],
@@ -175,8 +177,8 @@ var NAVTREEINDEX22 =
 "namespacemake__time__window.html#ad702651157375d054d152e52e2d33ce9":[5,0,46,5],
 "namespacemake__time__window.html#ad9a5f138839e002e69063ec327aa04af":[5,0,46,3],
 "namespacemake__time__window.html#afda1a6f3fb6cb9bc575146730c927cfb":[5,0,46,0],
-"namespacemembers.html":[5,1,0,0],
 "namespacemembers.html":[5,1,0],
+"namespacemembers.html":[5,1,0,0],
 "namespacemembers_a.html":[5,1,0,1],
 "namespacemembers_b.html":[5,1,0,2],
 "namespacemembers_c.html":[5,1,0,3],
@@ -225,8 +227,8 @@ var NAVTREEINDEX22 =
 "namespacemembers_t.html":[5,1,0,20],
 "namespacemembers_u.html":[5,1,0,21],
 "namespacemembers_v.html":[5,1,0,22],
-"namespacemembers_vars.html":[5,1,2],
 "namespacemembers_vars.html":[5,1,2,0],
+"namespacemembers_vars.html":[5,1,2],
 "namespacemembers_vars_a.html":[5,1,2,1],
 "namespacemembers_vars_b.html":[5,1,2,2],
 "namespacemembers_vars_c.html":[5,1,2,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemembers_vars_r.html":[5,1,2,18],
 "namespacemembers_vars_s.html":[5,1,2,19],
 "namespacemembers_vars_t.html":[5,1,2,20],
-"namespacemembers_vars_u.html":[5,1,2,21],
-"namespacemembers_vars_v.html":[5,1,2,22],
-"namespacemembers_vars_w.html":[5,1,2,23]
+"namespacemembers_vars_u.html":[5,1,2,21]
 };
