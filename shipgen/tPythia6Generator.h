@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "FairLogger.h"
 #include "Generator.h"
 #include "TPythia6.h"
 #include "TPythia6Calls.h"
@@ -28,6 +29,12 @@ class tPythia6Generator : public SHiP::Generator {
 
   using SHiP::Generator::Init;
   Bool_t Init() override;
+  Bool_t Init(const char* inFile) override { return Init(inFile, 0); };
+  Bool_t Init(const char* inFile, int startEvent) override {
+    LOG(warning) << "Init with files not implemented for tPythia6Generator. "
+                    "Using default Init() instead";
+    return Init();
+  };
 
   void SetMom(Double_t mom) { fMom = mom; };
   void SetTarget(TString Type, TString Target) {
