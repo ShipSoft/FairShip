@@ -346,7 +346,7 @@ $(document).ready(function(){initNavTree('makeCascade_8py_source.html',''); init
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">for</span> idpm <span class="keywordflow">in</span> [-1, 1]:  <span class="comment"># particle or anti-particle</span></div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="namespacemakeCascade.html#a01404b2f458b9421e40c21a5c483f109">  242</a></span>        idw = idbeam[idp] * idpm</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        _p = PDG.GetParticle(idw)</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">if</span> _p <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:  <span class="comment"># if particle exists, book hists etc.</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">if</span> _p:  <span class="comment"># if particle exists, book hists etc.</span></div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">  245</a></span>            name = _p.GetName()</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            id = id + 1</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            <span class="keywordflow">for</span> idnp <span class="keywordflow">in</span> range(2):</div>
