@@ -20,6 +20,8 @@ it in future.
 
 ### Removed
 
+* Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
+
 ## 26.06 - 2026-06-18
 
 ### Added
