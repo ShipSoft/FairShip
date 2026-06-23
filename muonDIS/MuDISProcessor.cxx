@@ -30,10 +30,13 @@ MuDISProcessor::MuDISProcessor() {
   fGeoProcessor.CheckAllVolumes();
 }
 
-void MuDISProcessor::init(const int & aEvts, const int & aDIS, const int & aSeed){
+void MuDISProcessor::init(const int & aEvts, const int & aDIS,
+			  const int & aSeed,
+			  const double & aZmax){
   fnEvts=aEvts;
   fnDIS=aDIS;
   fP6seed = aSeed;
+  fGeoProcessor.SetZmax(aZmax);
 }
 
 void MuDISProcessor::initPythia6(){
@@ -178,25 +181,25 @@ void  MuDISProcessor::fillSSTHits(const Int_t aIdx)
 
 void MuDISProcessor::generateDISevents(const std::string & tType,
 				       const std::string & aLabel,
-				       const Path & aPath,
+				       const MuonPath & aPath,
 				       MuonDISBranches & aDISBr)
 {
 
-  fPythia->Initialize("FIXT", tType.c_str(), "p+", aPath.P);  // target = "p+"
+  //for Pythia beam, just use the initial muon momentum...
+  //@FIXME AMM - is this OK ? Reinitialising each time will be too heavy...
+  double P = aPath.GetMomentum(0);
+  fPythia->Initialize("FIXT", tType.c_str(), "p+", P);  // target = "p+"
   bool isProton = true;
   //print summary of initialisation params
   fPythia->Pylist(1);
 
-  double theta = TMath::ACos(aPath.pz / aPath.P);
-  //returns phi between -pi and pi
-  double phi = TMath::ATan2(aPath.py,aPath.px);
 
   double lastxs = 0;
   for (int ia(0); ia < fnDIS; ++ia)
     {
-      //half-way through, we change to neutron target with 50-50 : ---> update to real material ??
+      //@FIXME AMM - half-way through, we change to neutron target with 50-50 : ---> update to real material ??
       if (ia == static_cast<int>(fnDIS / 2)){
-	fPythia->Initialize("FIXT", tType.c_str(), "n0", aPath.P);  // target = "n0"
+	fPythia->Initialize("FIXT", tType.c_str(), "n0", P);  // target = "n0"
 	isProton = false;
       }
       
@@ -211,13 +214,17 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
 
       // choose a random vertex position to set to all daughters
       // Take into account "broken" paths with different slices in z.
-      double vtx_z = gRandom->Uniform(aPath.startZ, aPath.startZ+aPath.zlength);
+      double vtx_z = gRandom->Uniform(aPath.GetstartZ(), aPath.GetstartZ()+aPath.GetZLength());
       // put back to real Z position for paths with different slices in z.
-      double realz = aPath.GetZ(vtx_z);
+      unsigned slice = 0;
+      double realz = aPath.GetZ(vtx_z,slice);
       aDISBr.DISvz.push_back(realz);
-      aDISBr.DISvx.push_back(aPath.GetX(realz));
-      aDISBr.DISvy.push_back(aPath.GetY(realz));
-      aDISBr.DISvt.push_back(aPath.GetTimeNs(realz));
+      aDISBr.DISvx.push_back(aPath.GetX(realz,slice));
+      aDISBr.DISvy.push_back(aPath.GetY(realz,slice));
+      aDISBr.DISvt.push_back(aPath.GetTimeNs(realz,slice));
+      double theta = TMath::ACos(aPath.Getpz(slice) / aPath.GetMomentum(slice));
+      //returns phi between -pi and pi
+      double phi = TMath::ATan2(aPath.Getpy(slice),aPath.Getpx(slice));
 
       unsigned ndaugh = fPythia->GetN();
       aDISBr.nDISdau.push_back(ndaugh);
@@ -247,7 +254,7 @@ void MuDISProcessor::generateDISevents(const std::string & tType,
   //calculate weight
   //@FIXME AMM propagate input muon weight too
   //times length divided by length, length cancels out...
-  aDISBr.wDIS = lastxs/fnDIS*aPath.wdensity;
+  aDISBr.wDIS = lastxs/fnDIS*aPath.GetWeightedDensity();
   
   LOG(debug) << " -- path " << aLabel
 	     << " -- size of DISparticles collections: " << std::endl
@@ -326,7 +333,7 @@ void MuDISProcessor::ProcessMuons()
 
       //retrieve a map of material label, with same density, and lengths, and [zin,zout] ranges
       fGeoProcessor.initialise(foutEv);
-      std::map<std::string,Path> & lPathMap = fGeoProcessor.FillMuonPath();
+      std::map<std::string,MuonPath> & lPathMap = fGeoProcessor.FillMuonPath();
 
       if (lPathMap.size()==0){
 	LOG(error) << " -- No elements in path... Not doing anything...";

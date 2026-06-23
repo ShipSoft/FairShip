@@ -14,6 +14,7 @@
 #include "TVector3.h"
 
 #include "MuDISDefs.h"
+#include "MuonPath.h"
 
 class MuGeoProcessor {
  public:
@@ -24,12 +25,19 @@ class MuGeoProcessor {
   ~MuGeoProcessor();
 
   void initialise(MuonBranches& aEvt);
+
+  inline void SetZmax(const double & zmax){
+    LOG(info) << " Maximum z position for MuonPath building: " << zmax << " cm.";
+    fZmax = zmax;
+  };
+  
   TVector3 GetVertex(const TVector3 & r1, const TVector3 & p1,
 		     const TVector3 & r2, const TVector3 & p2);                                                        
   void CheckAllVolumes();  
-  std::map<std::string,Path> & FillMuonPath();
+  std::map<std::string,MuonPath> & FillMuonPath();
 
  private:
+  double fZmax;
   //position
   TVector3 fStartpos;
   TVector3 fUBTpos;
@@ -57,7 +65,7 @@ class MuGeoProcessor {
   bool fhasSBThit;
   bool fhasSSThit;
   
-  std::map<std::string,Path> fPathMap;
+  std::map<std::string,MuonPath> fPathMap;
 
 };//class
 

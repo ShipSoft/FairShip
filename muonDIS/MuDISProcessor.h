@@ -13,6 +13,7 @@
 
 #include "MuGeoProcessor.h"
 #include "MuDISDefs.h"
+#include "MuonPath.h"
 
 class MuDISProcessor {
  public:
@@ -22,7 +23,9 @@ class MuDISProcessor {
   /** destructor **/
   ~MuDISProcessor(){};
 
-  void init(const int & aEvts, const int & aDIS, const int & aSeed);
+  void init(const int & aEvts, const int & aDIS,
+	    const int & aSeed,
+	    const double & aZmax);
   void initPythia6();
   
   void rotate(const TVector3 & pvec,
@@ -40,7 +43,7 @@ class MuDISProcessor {
 
   void generateDISevents(const std::string & tType,
 			 const std::string & aLabel,
-			 const Path & aPath,
+			 const MuonPath & aPath,
 			 MuonDISBranches & aDISBr);
   
   void ProcessMuons();

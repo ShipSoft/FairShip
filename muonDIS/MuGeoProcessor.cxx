@@ -2,25 +2,26 @@
 
 
 MuGeoProcessor::MuGeoProcessor(){
-    fhasUBThit=false;
-    fhasSBThit=false;
-    fhasSSThit=false;
-    TVector3 nulVec(0,0,0);
-    fStartpos = nulVec;
-    fStartp = nulVec;
-    fStartT=0;
-    fUBTpos = nulVec;
-    fUBTp = nulVec;
-    fUBTT=0;
-    fSBTpos = nulVec;
-    fSBTp = nulVec;
-    fSBTT=0;
-    fSSTpos = nulVec;
-    fSSTp = nulVec;
-    fSSTT=0;
+  fZmax = 20000;
+  fhasUBThit=false;
+  fhasSBThit=false;
+  fhasSSThit=false;
+  TVector3 nulVec(0,0,0);
+  fStartpos = nulVec;
+  fStartp = nulVec;
+  fStartT=0;
+  fUBTpos = nulVec;
+  fUBTp = nulVec;
+  fUBTT=0;
+  fSBTpos = nulVec;
+  fSBTp = nulVec;
+  fSBTT=0;
+  fSSTpos = nulVec;
+  fSSTp = nulVec;
+  fSSTT=0;
 }
-  
-  /** destructor **/
+
+/** destructor **/
 MuGeoProcessor::~MuGeoProcessor(){
   fPathMap.clear();
 }
@@ -117,7 +118,7 @@ void MuGeoProcessor::CheckAllVolumes(){
 	  while(currentnode) {
 	    std::string material = currentnode->GetVolume()->GetMedium()->GetMaterial()->GetName();
 	    std::string volName = currentnode->GetVolume()->GetName();
-	    if (volName.find("Tr2") != volName.npos) break;
+	    //if (volName.find("Tr2") != volName.npos) break;
 	    volName.append("_");
 	    volName.append(material);
 	    lMap.emplace(volName,snext);
@@ -125,7 +126,7 @@ void MuGeoProcessor::CheckAllVolumes(){
 	    snext += gGeoManager->GetStep()*dz;
 	    
 	    //for safety...
-	    if (lcount > 1000) break;
+	    if (lcount > 5000) break;
 	    lcount++;
 	  }
 	}
@@ -141,7 +142,7 @@ void MuGeoProcessor::CheckAllVolumes(){
 }
 
 
-std::map<std::string,Path> & MuGeoProcessor::FillMuonPath(){
+std::map<std::string,MuonPath> & MuGeoProcessor::FillMuonPath(){
 
   fPathMap.clear();
   if (!gGeoManager) {
@@ -227,26 +228,20 @@ std::map<std::string,Path> & MuGeoProcessor::FillMuonPath(){
   unsigned iV = 0;
 
   while(currentnode) {
+    //stop when reaching input config zmax position
+    if (zpos > fZmax) break;
+
     TGeoMaterial* material = currentnode->GetVolume()->GetMedium()->GetMaterial();
-    Path lpath;
-    lpath.volName = currentnode->GetVolume()->GetName();
+    std::string lvolName = currentnode->GetVolume()->GetName();
+    const Double_t* lpos = gGeoManager->GetCurrentPoint();
 
-    //stop when reaching SST2
-    if (lpath.volName.find("Tr2") != lpath.volName.npos) break;
-    
-    lpath.density = material->GetDensity();
-    lpath.material = material->GetName();
-    lpath.startZ = zpos;
-    lpath.label = lpath.GetLabel(lpath.volName,lpath.material);
+    TVector3 currentPos(lpos[0],lpos[1],lpos[2]);
 
-    //reset vertex info to closest measured point
-    lpath.SetVertexInfo(startVec[iV],dirVec[iV],timeVec[iV]);
     muonp = dirVec[iV].Mag();
-    
-    TVector3 currentPos(lpath.startX,lpath.startY,lpath.startZ);
 
     if (doInit[iV]) {
       currentnode = gGeoManager->InitTrack(vtxVec[iV].X(),vtxVec[iV].Y(),vtxVec[iV].Z(),dirVec[iV].X()/muonp,dirVec[iV].Y()/muonp,dirVec[iV].Z()/muonp);
+      material = currentnode->GetVolume()->GetMedium()->GetMaterial();
       LOG(debug) << " ---> Update track direction at z=" << zpos;
       doInit[iV] = false;
     }
@@ -256,9 +251,9 @@ std::map<std::string,Path> & MuGeoProcessor::FillMuonPath(){
 		 << vtxVec[iV].X() << ", y "
 		 << vtxVec[iV].Y() << ", z "
 		 << vtxVec[iV].Z() << ", direction: "
-		 << lpath.px/muonp << ","
-		 << lpath.py/muonp << ","
-		 << lpath.pz/muonp;
+		 << dirVec[iV].X()/muonp << ","
+		 << dirVec[iV].Y()/muonp << ","
+		 << dirVec[iV].Z()/muonp;
       break;
     }
     std::ostringstream lInfo;
@@ -280,19 +275,24 @@ std::map<std::string,Path> & MuGeoProcessor::FillMuonPath(){
       if (nextL>0 && step<nextL) switchVtx = false;
     }
     else currentnode = gGeoManager->FindNextBoundaryAndStep();
-    znext = gGeoManager->GetStep()*lpath.pz/muonp;
-    lInfo << " end zpos = " << zpos+znext << " stepz " << znext << " step3D " << gGeoManager->GetStep();
+    double step = gGeoManager->GetStep();
+    znext = step*dirVec[iV].Z()/muonp;
+    lInfo << " end zpos = " << zpos+znext << " stepz " << znext << " step3D " << step;
     LOG(debug) << lInfo.str();
 
-    lpath.endZ = lpath.startZ+znext;
-    lpath.init();
+    //create new path object
+    MuonPath lpath;
+    lpath.AddVolume(lvolName,material->GetName(),material->GetDensity());
+    //reset vertex info to closest measured point
+    lpath.SetVertexInfo(startVec[iV],dirVec[iV],timeVec[iV]);
+    lpath.SetLength(step,currentPos,znext);
     lpath.Print();
   
     zpos += znext;
-    auto lele = fPathMap.emplace(lpath.label,lpath);
+    auto lele = fPathMap.emplace(lpath.GetLabel(),lpath);
     if (!lele.second){
       //already exists, add to it
-      Path & thepath=lele.first->second;
+      MuonPath & thepath=lele.first->second;
       thepath.Add(lpath);
     }
     //increment vtx index to go to next change in direction...
