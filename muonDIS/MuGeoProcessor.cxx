@@ -223,7 +223,7 @@ std::map<std::string,MuonPath> & MuGeoProcessor::FillMuonPath(){
     doInit.push_back(true);
   }
 
-  LOG(info) << " Number of vertices found to change track direction: " << nVtx;
+  LOG(debug) << " Number of vertices found to change track direction: " << nVtx;
   
   unsigned iV = 0;
 

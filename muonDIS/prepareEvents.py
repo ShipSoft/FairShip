@@ -16,8 +16,8 @@ r.gSystem.Load("libShipMuDIS.so")
 # Configure FairLogger verbosity based on debug level                                                                                                
 r.gInterpreter.ProcessLine('#include "FairLogger.h"')                                                                                             
 #r.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
-#r.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
-r.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+r.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+#r.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 pdg = r.TDatabasePDG.Instance()
 
 logging.basicConfig(level=logging.INFO)
