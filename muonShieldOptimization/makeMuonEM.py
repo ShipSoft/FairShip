@@ -18,7 +18,9 @@ masssq = {}
 def getMasssq(pid):
     apid = abs(int(pid))
     if apid not in masssq:
-        masssq[apid] = PDG.GetParticle(apid).Mass() ** 2
+        _p = PDG.GetParticle(apid)
+        assert _p is not None, f"Unknown PDG: {apid}"
+        masssq[apid] = _p.Mass() ** 2
     return masssq[apid]
 
 

@@ -60,8 +60,7 @@ else:
 
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
-else:
-    fgeo = ROOT.TFile(options.geoFile)
+fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fgeo, "ShipGeo")
@@ -401,7 +400,9 @@ def RedoVertexing(t1, t2):
         pid = abs(states[tr].getPDG())
         if pid == 2212:
             pid = 211
-        mass = PDG.GetParticle(pid).Mass()
+        _pdg_particle = PDG.GetParticle(pid)
+        assert _pdg_particle is not None, f"Unknown PDG: {pid}"
+        mass = _pdg_particle.Mass()
         E = ROOT.TMath.Sqrt(mass * mass + mom.Mag2())
         LV[tr] = ROOT.TLorentzVector()
         LV[tr].SetPxPyPzE(mom.x(), mom.y(), mom.z(), E)

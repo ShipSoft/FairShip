@@ -107,9 +107,8 @@ Bool_t CosmicsGenerator::Init(Bool_t largeMom) {
   cout << "n_EVENTS:" << n_EVENTS << endl;
   cout << "minE:    " << minE << endl << endl;
   if (xdist * zdist * n_EVENTS == 0) {
-    cout << "check the configuration for unphysical behavior." << endl
-         << "We stop the execution." << endl
-         << endl;
+    LOG(error) << "CosmicsGenerator: invalid configuration "
+               << "(xdist * zdist * n_EVENTS == 0). Stopping execution.";
     return kFALSE;
   }
 
@@ -129,11 +128,14 @@ Bool_t CosmicsGenerator::Init(Bool_t largeMom) {
   FluxIntegral = 0;
   if (!high) {  // momentum range 1 GeV - 100 GeV
     if (minE > 100) {
-      cout << "choose minE < 100 !" << endl;
+      LOG(error)
+          << "CosmicsGenerator: invalid configuration, choose minE < 100";
       return kFALSE;
     }
-    double dt = TMath::Pi() / 2 / 100;
-    for (double t = dt / 2; t < TMath::Pi() / 2; t += dt) {
+    constexpr int kIntegrationSteps = 100;
+    const double dt = TMath::Pi() / 2 / kIntegrationSteps;
+    for (int i = 0; i < kIntegrationSteps; ++i) {
+      const double t = (i + 0.5) * dt;  // midpoint rule
       FluxIntegral += fRandomEngine->fSpectrumL(t, minE, 0);
     }
     FluxIntegral = 2 * TMath::Pi() / 3 * FluxIntegral * dt * 10000;

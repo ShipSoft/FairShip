@@ -46,28 +46,63 @@ Bool_t HNLPythia8Generator::Init() {
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile) {
-    fInputFile = TFile::Open(fextFile->c_str());
+    if (firstEvent < 0) {
+      LOG(error) << "HNLPythia8Generator: firstEvent must be >= 0, got "
+                 << firstEvent;
+      return kFALSE;
+    }
+    fInputFile = TFile::Open(fextFile->c_str(), "READ");
     LOG(info) << "Open external file with charm or beauty hadrons: "
               << *fextFile;
-    if (!fInputFile) {
-      LOG(fatal) << "Error opening input file.";
+    if (!fInputFile || fInputFile->IsZombie()) {
+      LOG(error) << "HNLPythia8Generator: error opening input file "
+                 << *fextFile;
+      delete fInputFile;
+      fInputFile = nullptr;
       return kFALSE;
     }
 
     fTree = fInputFile->Get<TTree>("pythia6");
+    if (!fTree) {
+      LOG(error) << "HNLPythia8Generator: cannot find tree pythia6 in file "
+                 << *fextFile;
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      return kFALSE;
+    }
     fNevents = fTree->GetEntries();
+    if (firstEvent >= fNevents) {
+      LOG(error) << "HNLPythia8Generator: firstEvent " << firstEvent
+                 << " is out of range for " << fNevents << " entries";
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      fTree = nullptr;
+      return kFALSE;
+    }
     fn = firstEvent;
-    fTree->SetBranchAddress("id", &hid);  // particle id
-    fTree->SetBranchAddress("px", &hpx);  // momentum
-    fTree->SetBranchAddress("py", &hpy);
-    fTree->SetBranchAddress("pz", &hpz);
-    fTree->SetBranchAddress("E", &hE);
-    fTree->SetBranchAddress("M", &hM);
-    fTree->SetBranchAddress("mid", &mid);  // mother
-    fTree->SetBranchAddress("mpx", &mpx);  // momentum
-    fTree->SetBranchAddress("mpy", &mpy);
-    fTree->SetBranchAddress("mpz", &mpz);
-    fTree->SetBranchAddress("mE", &mE);
+    bool ok = true;
+    ok &= (fTree->SetBranchAddress("id", &hid) >= 0);
+    ok &= (fTree->SetBranchAddress("px", &hpx) >= 0);
+    ok &= (fTree->SetBranchAddress("py", &hpy) >= 0);
+    ok &= (fTree->SetBranchAddress("pz", &hpz) >= 0);
+    ok &= (fTree->SetBranchAddress("E", &hE) >= 0);
+    ok &= (fTree->SetBranchAddress("M", &hM) >= 0);
+    ok &= (fTree->SetBranchAddress("mid", &mid) >= 0);
+    ok &= (fTree->SetBranchAddress("mpx", &mpx) >= 0);
+    ok &= (fTree->SetBranchAddress("mpy", &mpy) >= 0);
+    ok &= (fTree->SetBranchAddress("mpz", &mpz) >= 0);
+    ok &= (fTree->SetBranchAddress("mE", &mE) >= 0);
+    if (!ok) {
+      LOG(error) << "HNLPythia8Generator: failed to bind one or more required "
+                    "branches";
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      fTree = nullptr;
+      return kFALSE;
+    }
   } else {
     LOG(debug) << "Beam Momentum " << fMom;
     fPythia->settings.mode("Beams:idA", fId);
@@ -77,7 +112,19 @@ Bool_t HNLPythia8Generator::Init() {
     fPythia->settings.parm("Beams:eB", 0.);    // codespell:ignore parm
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
+  auto* hnl = pdgBase->GetParticle(fHNL);
+  if (!hnl) {
+    LOG(error) << "HNLPythia8Generator: PDG " << fHNL
+               << " not found in ROOT database";
+    if (fInputFile) {
+      fInputFile->Close();
+      delete fInputFile;
+      fInputFile = nullptr;
+      fTree = nullptr;
+    }
+    return kFALSE;
+  }
+  Double_t root_ctau = hnl->Lifetime();
   fctau = fPythia->particleData.tau0(fHNL);  //* 3.3333e-12
   LOG(debug) << "tau root " << root_ctau
              << "[s] ctau root = " << root_ctau * 3e10 << "[cm]";
@@ -91,7 +138,14 @@ Bool_t HNLPythia8Generator::Init() {
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-HNLPythia8Generator::~HNLPythia8Generator() {}
+HNLPythia8Generator::~HNLPythia8Generator() {
+  if (fInputFile) {
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+  }
+}
 // -------------------------------------------------------------------------
 
 // -----   Passing the event   ---------------------------------------------
@@ -141,6 +195,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
         hnls.push_back(i);
       }
     }
+    IncrementCounter("hnl_candidates", hnls.size());
+    if (hnls.size() > 1) {
+      IncrementCounter("hnl_multi_candidate_tries");
+    }
     iHNL = hnls.size();
     if (iHNL == 0) {
       fnRetries += 1;
@@ -154,6 +212,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
           accepted.push_back(idx);
         }
       }
+      IncrementCounter("hnl_accepted_candidates", accepted.size());
       if (accepted.empty()) {
         iHNL = 0;
         hnls.clear();
@@ -277,6 +336,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     if (fextFile) {
       im += 1;
     }
+    IncrementCounter("hnl_stored_decay_products");
     cpg->AddTrack((Int_t)fPythia->event[k].id(), px, py, pz, xS / cm, yS / cm,
                   zS / cm, im, wanttracking, e, tS / cm / c_light, w);
     // std::cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " <<

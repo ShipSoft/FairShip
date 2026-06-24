@@ -1,0 +1,44 @@
+name: Legacy CVMFS CI
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+    tags: ['v*']
+  workflow_dispatch:
+  merge_group:
+concurrency:
+  group: legacy-cvmfs-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build-and-test:
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["26.02", "26.06"]
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+    env:
+      version: ${{ matrix.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: FairShip
+          lfs: true
+          fetch-depth: 0
+      - name: Build
+        run: |
+          set -o pipefail
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs $(nproc) --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
+      - name: Run sim
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/macro/run_simScript.py --test

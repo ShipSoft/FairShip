@@ -20,9 +20,9 @@ class FairPrimaryGenerator;
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
   PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
-  ~PyTr1Rng() override {};
+  ~PyTr1Rng() override = default;
 
-  Double_t flat() { return rng->Rndm(); };
+  Double_t flat() override { return rng->Rndm(); };
 
  private:
   TRandom1* rng;  //!
@@ -31,9 +31,9 @@ class PyTr1Rng : public Pythia8::RndmEngine {
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
   PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
-  ~PyTr3Rng() override {};
+  ~PyTr3Rng() override = default;
 
-  Double_t flat() { return rng->Rndm(); };
+  Double_t flat() override { return rng->Rndm(); };
 
  private:
   TRandom3* rng;  //!
@@ -50,6 +50,7 @@ class HNLPythia8Generator : public SHiP::Generator {
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
   void SetParameters(char*);
+  using TObject::Print;
   void Print() { fPythia->settings.listAll(); };
   void List(int id) { fPythia->particleData.list(id); };
 

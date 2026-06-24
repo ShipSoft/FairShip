@@ -13,7 +13,7 @@ TimeDetPoint::TimeDetPoint() : SHiP::DetectorPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-TimeDetPoint::~TimeDetPoint() {}
+TimeDetPoint::~TimeDetPoint() = default;
 // -------------------------------------------------------------------------
 
 void TimeDetPoint::extraPrintInfo() const {

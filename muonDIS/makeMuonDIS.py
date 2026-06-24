@@ -203,7 +203,9 @@ def makeMuonDIS() -> None:
         nmuons = imuondata[9]  # number of muons in the original MuBack event
 
         p = r.TMath.Sqrt(px**2 + py**2 + pz**2)
-        mass = PDG.GetParticle(abs(int(pid))).Mass()
+        _p_pdg = PDG.GetParticle(abs(int(pid)))
+        assert _p_pdg is not None, f"Unknown PDG: {pid}"
+        mass = _p_pdg.Mass()
         E = r.TMath.Sqrt(mass**2 + p**2)
 
         theta = r.TMath.ACos(pz / p)
@@ -261,7 +263,9 @@ def makeMuonDIS() -> None:
                     phi,
                 )
                 psq = dpx**2 + dpy**2 + dpz**2
-                masssq = PDG.GetParticle(did).Mass() ** 2
+                _dau = PDG.GetParticle(did)
+                assert _dau is not None, f"Unknown PDG: {did}"
+                masssq = _dau.Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
                 part = r.TVectorD(5, m)
@@ -282,7 +286,9 @@ def makeMuonDIS() -> None:
                 dpz = softTrack.GetPz()
 
                 psq = dpx**2 + dpy**2 + dpz**2
-                masssq = PDG.GetParticle(did).Mass() ** 2
+                _soft = PDG.GetParticle(did)
+                assert _soft is not None, f"Unknown PDG: {did}"
+                masssq = _soft.Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
 
                 softx = softTrack.GetStartX()

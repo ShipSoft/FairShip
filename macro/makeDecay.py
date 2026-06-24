@@ -3,9 +3,8 @@
 
 # Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 # Output is an ntuple with muon/neutrinos
-import getopt
+import argparse
 import os
-import sys
 
 import ROOT
 import rootUtils as ut
@@ -13,32 +12,67 @@ import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
-# latest production May 2016,76 M pot which produce a charm event equivalent,roughly 150 M charm hadrons
-fname = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1"
+# Reference values for Molybdenum (historical defaults). Cross-section ratios
+# scale heavy-flavour ~ A and mbias ~ A^(0.71).
+heavyflavour_Ascale = 1
+mbias_Ascale = 0.71
 
-nrpotspill = 5.0e13  # number of pot/spill
-chicc = 1.7e-3  # prob to produce primary ccbar pair/pot
-chibb = 1.6e-7  # prob to produce primary bbbar pair/pot
-setByHand = False
+A_REF = 98.0
+CHICC_REF = 1.7e-3  # prob to produce primary ccbar pair/pot on Mo
+CHIBB_REF = 1.6e-7  # prob to produce primary bbbar pair/pot on Mo
+TARGET_A = {"W": 184.0, "Mo": 98.0}
 
-print("usage: python $FAIRSHIP/macro/makeDecay.py -f ")
+ap = argparse.ArgumentParser(description="Decay charm/beauty signals from makeCascade output with Pythia8")
+ap.add_argument(
+    "-f",
+    "--input",
+    default="/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1",
+    help="input file with charm/beauty hadrons (.root suffix optional)",
+)
+ap.add_argument("-p", "--pot", type=float, default=5.0e13, help="number of protons on target per spill to normalise on")
+ap.add_argument(
+    "-c", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "--target_composition",
+    default="W",
+    choices=["W", "Mo"],
+    help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
+)
+ap.add_argument(
+    "-A",
+    type=float,
+    default=None,
+    help=(
+        "Target mass number; overrides --target_composition preset. "
+        "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
+        "(default exponent: 0.29)."
+    ),
+)
+args = ap.parse_args()
 
-try:
-    opts, args = getopt.getopt(sys.argv[1:], "f:p:c:", ["pot=", "chicc="])
-except getopt.GetoptError:
-    # print help information and exit:
-    print(" enter -f: input file with charm hadrons")
-    print(" for experts: p pot= number of protons on target per spill to normalize on")
-    print("            : c chicc= ccbar over mbias cross section")
-    sys.exit()
-for o, a in opts:
-    if o in ("-f",):
-        fname = a.replace(".root", "")
-    if o in ("-p", "--pot"):
-        nrpotspill = float(a)
-    if o in ("-c", "--chicc"):
-        chicc = float(a)
-        setByHand = True
+fname = args.input.replace(".root", "")
+nrpotspill = args.pot
+
+A = args.A if args.A is not None else TARGET_A[args.target_composition]
+scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
+
+if args.chicc is not None:
+    chicc = args.chicc
+    setByHand = True
+else:
+    chicc = CHICC_REF * scale
+    setByHand = False
+
+chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
+
+print(
+    f"Target composition: {args.target_composition}, A={A}, scale=(A/{A_REF})^({heavyflavour_Ascale}-{mbias_Ascale})={scale:.4f}"
+)
+print(f"Derived cross-section ratios: chicc={chicc:.3e}, chibb={chibb:.3e}")
 
 FIN = fname + ".root"
 tmp = os.path.abspath(FIN).split("/")
@@ -97,7 +131,9 @@ for idnu in range(12, 18, 2):
         if idadd == -1:
             idhnu += 1000
             idw = -idnu
-        name = PDG.GetParticle(idw).GetName()
+        _p = PDG.GetParticle(idw)
+        assert _p is not None, f"Unknown PDG: {idw}"
+        name = _p.GetName()
         ut.bookHist(h, str(idhnu), name + " momentum (GeV)", 400, 0.0, 400.0)
         ut.bookHist(h, str(idhnu + 100), name + " log10-p vs log10-pt", 100, -0.3, 1.7, 100, -2.0, 0.5)
         ut.bookHist(h, str(idhnu + 200), name + " log10-p vs log10-pt", 25, -0.3, 1.7, 100, -2.0, 0.5)
@@ -106,6 +142,7 @@ pot = 0.0
 # Determine fDs on this file for primaries
 nDsprim = 0
 ntotprim = 0
+wspill = 0.0  # populated on the n == 0 event below
 
 for n in range(nEvents):
     rc = sTree.GetEvent(n)
@@ -132,7 +169,7 @@ for n in range(nEvents):
             nDsprim += 1
     P8.event.reset()
     P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)
-    next(P8)
+    P8.next()
     # P8.event.list()
     for n in range(len(P8.event)):
         # ask for stable particles

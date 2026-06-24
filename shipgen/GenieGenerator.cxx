@@ -28,43 +28,75 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {}
+GenieGenerator::GenieGenerator() = default;
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
   fNuOnly = false;
-  fInputFile = TFile::Open(fileName);
   LOG(info) << "Opening input file " << fileName;
-  if (!fInputFile) {
-    LOG(fatal) << "Error opening input file.";
+  if (startEvent < 0) {
+    LOG(error) << "GenieGenerator: startEvent must be >= 0, got " << startEvent;
+    return kFALSE;
+  }
+  fInputFile = TFile::Open(fileName, "READ");
+  if (!fInputFile || fInputFile->IsZombie()) {
+    LOG(error) << "GenieGenerator: error opening input file " << fileName;
+    delete fInputFile;
+    fInputFile = nullptr;
     return kFALSE;
   }
   fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
+  if (!fTree) {
+    LOG(error) << "GenieGenerator: cannot find tree gst in file " << fileName;
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    return kFALSE;
+  }
   fNevents = fTree->GetEntries();
+  if (startEvent >= fNevents) {
+    LOG(error) << "GenieGenerator: startEvent " << startEvent
+               << " is out of range for " << fNevents << " entries";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
   fn = startEvent;
-  fTree->SetBranchAddress("Ev", &Ev);  // incoming neutrino energy
-  fTree->SetBranchAddress("pxv", &pxv);
-  fTree->SetBranchAddress("pyv", &pyv);
-  fTree->SetBranchAddress("pzv", &pzv);
-  fTree->SetBranchAddress("neu", &neu);    // incoming neutrino PDG code
-  fTree->SetBranchAddress("cc", &cc);      // Is it a CC event?
-  fTree->SetBranchAddress("nuel", &nuel);  // Is it a NUEEL event?
-  fTree->SetBranchAddress("vtxx", &vtxx);  // vertex  in SI units
-  fTree->SetBranchAddress("vtxy", &vtxy);
-  fTree->SetBranchAddress("vtxz", &vtxz);
-  fTree->SetBranchAddress("vtxt", &vtxt);
-  fTree->SetBranchAddress("El", &El);  // outgoing lepton momentum
-  fTree->SetBranchAddress("pxl", &pxl);
-  fTree->SetBranchAddress("pyl", &pyl);
-  fTree->SetBranchAddress("pzl", &pzl);
-  fTree->SetBranchAddress("Ef", &Ef);  // outgoing hadronic momenta
-  fTree->SetBranchAddress("pxf", &pxf);
-  fTree->SetBranchAddress("pyf", &pyf);
-  fTree->SetBranchAddress("pzf", &pzf);
-  fTree->SetBranchAddress("nf", &nf);      // nr of outgoing hadrons
-  fTree->SetBranchAddress("pdgf", &pdgf);  // pdg code of hadron
+  bool ok = true;
+  ok &= (fTree->SetBranchAddress("Ev", &Ev) >= 0);
+  ok &= (fTree->SetBranchAddress("pxv", &pxv) >= 0);
+  ok &= (fTree->SetBranchAddress("pyv", &pyv) >= 0);
+  ok &= (fTree->SetBranchAddress("pzv", &pzv) >= 0);
+  ok &= (fTree->SetBranchAddress("neu", &neu) >= 0);
+  ok &= (fTree->SetBranchAddress("cc", &cc) >= 0);
+  ok &= (fTree->SetBranchAddress("nuel", &nuel) >= 0);
+  ok &= (fTree->SetBranchAddress("vtxx", &vtxx) >= 0);
+  ok &= (fTree->SetBranchAddress("vtxy", &vtxy) >= 0);
+  ok &= (fTree->SetBranchAddress("vtxz", &vtxz) >= 0);
+  ok &= (fTree->SetBranchAddress("vtxt", &vtxt) >= 0);
+  ok &= (fTree->SetBranchAddress("El", &El) >= 0);
+  ok &= (fTree->SetBranchAddress("pxl", &pxl) >= 0);
+  ok &= (fTree->SetBranchAddress("pyl", &pyl) >= 0);
+  ok &= (fTree->SetBranchAddress("pzl", &pzl) >= 0);
+  ok &= (fTree->SetBranchAddress("Ef", &Ef) >= 0);
+  ok &= (fTree->SetBranchAddress("pxf", &pxf) >= 0);
+  ok &= (fTree->SetBranchAddress("pyf", &pyf) >= 0);
+  ok &= (fTree->SetBranchAddress("pzf", &pzf) >= 0);
+  ok &= (fTree->SetBranchAddress("nf", &nf) >= 0);
+  ok &= (fTree->SetBranchAddress("pdgf", &pdgf) >= 0);
+  if (!ok) {
+    LOG(error)
+        << "GenieGenerator: failed to bind one or more required branches";
+    fInputFile->Close();
+    delete fInputFile;
+    fInputFile = nullptr;
+    fTree = nullptr;
+    return kFALSE;
+  }
   fFirst = kTRUE;
   return kTRUE;
 }
@@ -92,12 +124,14 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z,
 
 // -----   Destructor   ----------------------------------------------------
 GenieGenerator::~GenieGenerator() {
-  fInputFile->Close();
-  fInputFile->Delete();
-  delete fInputFile;
+  if (fInputFile) {
+    fInputFile->Close();
+    fInputFile->Delete();
+    delete fInputFile;
+  }
 }
 // -------------------------------------------------------------------------
-void GenieGenerator::AddBox(TVector3 dVec, TVector3 box) {
+void GenieGenerator::AddBox(const TVector3& dVec, const TVector3& box) {
   dVecs.push_back(dVec);
   m_boxes.push_back(box);
   cout << "Debug GenieGenerator: " << dVec.X() << " " << box.Z() << endl;
@@ -228,6 +262,9 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
   // cout << "Info GenieGenerator: neutrino " << neu << "p-rot "<< pout[0] << "
   // fn "<< fn << endl;
   cpg->AddTrack(neu, pout[0], pout[1], pout[2], x, y, z, -1, false);
+  IncrementCounter("generated_events");
+  if (cc) IncrementCounter("cc_events");
+  if (nuel) IncrementCounter("nue_elastic_events");
 
   // second, outgoing lepton
   pout = Rotate(x, y, zrelative, pxl, pyl, pzl);
@@ -239,10 +276,12 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
     oLPdgCode = 11;
   }
   cpg->AddTrack(oLPdgCode, pout[0], pout[1], pout[2], x, y, z, 0, true);
+  IncrementCounter("outgoing_leptons_stored");
   // last, all others
   for (int i = 0; i < nf; i++) {
     pout = Rotate(x, y, zrelative, pxf[i], pyf[i], pzf[i]);
     cpg->AddTrack(pdgf[i], pout[0], pout[1], pout[2], x, y, z, 0, true);
+    IncrementCounter("outgoing_hadrons_stored");
     // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
   }
 
@@ -379,6 +418,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t y = 0.;
   Double_t z = 0.;
   while (prob2int < gRandom->Uniform(0., 1.)) {
+    IncrementCounter("interaction_sampling_trials");
     // place x,y,z uniform along path
     z = gRandom->Uniform(start[2], end[2]);
     x = txnu * (z - ztarget);
@@ -399,9 +439,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         // to Prob largest density along this trajectory, i.e. use rho(Pt)
         prob2int = mat->GetDensity() / mparam[7];
         if (prob2int > 1.)
-          cout << "***WARNING*** GenieGenerator: prob2int > Maximum density????"
-               << prob2int << " maxrho:" << mparam[7]
-               << " material: " << mat->GetName() << endl;
+          LOG(warning) << "GenieGenerator: prob2int > Maximum density???? "
+                       << prob2int << " maxrho:" << mparam[7]
+                       << " material: " << mat->GetName();
       } else {
         prob2int = 0.;
       }
@@ -417,6 +457,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       neu, pout[0], pout[1], pout[2], x, y, z, -1, false,
       TMath::Sqrt(pout[0] * pout[0] + pout[1] * pout[1] + pout[2] * pout[2]),
       tof, mparam[0] * mparam[4]);
+  IncrementCounter("generated_events");
+  if (cc) IncrementCounter("cc_events");
+  if (nuel) IncrementCounter("nue_elastic_events");
   if (!fNuOnly) {
     // second, outgoing lepton
     std::vector<double> pp = Rotate(x, y, zrelative, pxl, pyl, pzl);
@@ -429,11 +472,13 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     cpg->AddTrack(oLPdgCode, pp[0], pp[1], pp[2], x, y, z, 0, true, El, tof,
                   mparam[0] * mparam[4]);
+    IncrementCounter("outgoing_leptons_stored");
     // last, all others
     for (int i = 0; i < nf; i++) {
       pp = Rotate(x, y, zrelative, pxf[i], pyf[i], pzf[i]);
       cpg->AddTrack(pdgf[i], pp[0], pp[1], pp[2], x, y, z, 0, true, Ef[i], tof,
                     mparam[0] * mparam[4]);
+      IncrementCounter("outgoing_hadrons_stored");
       // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
     }
     // cout << "Info GenieGenerator Return from GenieGenerator" << endl;

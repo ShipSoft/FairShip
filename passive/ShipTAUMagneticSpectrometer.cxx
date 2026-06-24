@@ -27,7 +27,7 @@
 using std::cout;
 using std::endl;
 
-ShipTAUMagneticSpectrometer::~ShipTAUMagneticSpectrometer() {}
+ShipTAUMagneticSpectrometer::~ShipTAUMagneticSpectrometer() = default;
 
 ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer()
     : FairModule("ShipTAUMagneticSpectrometer", "") {}

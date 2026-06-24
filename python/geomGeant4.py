@@ -176,8 +176,8 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
         fieldMaker.readInputFile(controlFile)
 
     # Set the main spectrometer field map as a global field
+    fieldsList: list[str] = []
     if hasattr(shipGeo, "Bfield"):
-        fieldsList = []
         fieldMaker.defineFieldMap("MainSpecMap", shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
         fieldsList.append("MainSpecMap")
 

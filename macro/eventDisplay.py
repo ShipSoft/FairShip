@@ -1308,7 +1308,7 @@ def DrawCharmTracks() -> None:
             continue
         if aTrack.GetMotherId() == 1:
             pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())
-            if pa.Lifetime() > 1.0e-12:
+            if pa is not None and pa.Lifetime() > 1.0e-12:
                 print(sTree.MCTrack[i])
                 SHiPDisplay.tracks.DrawMCTrack(i)
 

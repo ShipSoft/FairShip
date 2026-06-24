@@ -30,6 +30,7 @@ ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'
 [tool.pyrefly]
 python-version = "3.12"
 search-path = ["python", "stubs"]
+project-excludes = [".pixi/**", "build/**", ".direnv/**"]
 
 replace-imports-with-any = [
     "rootUtils", "rootUtils.*",
