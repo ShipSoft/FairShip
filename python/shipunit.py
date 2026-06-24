@@ -20,7 +20,7 @@ import warnings
 warnings.warn(
     "shipunit is deprecated and will be removed in a future release. Please use hepunits instead.",
     category=UserWarning,
-    stacklevel=1,
+    stacklevel=2,
 )
 
 # ==================================================================
