@@ -29,14 +29,14 @@ def printMCTrack(n: int, MCTrack) -> None:
     )
 
 
-def dump(i, pcut) -> None:
+def dump(i, pcut_in_GeV) -> None:
     tree = ROOT.gROOT.FindObjectAny("cbmsim")
     tree.GetEntry(i)
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
     n = -1
     for mcp in tree.MCTrack:
         n += 1
-        if mcp.GetP() / u.GeV < pcut:
+        if mcp.GetP() / u.GeV < pcut_in_GeV:
             continue
         printMCTrack(n, tree.MCTrack)
 
