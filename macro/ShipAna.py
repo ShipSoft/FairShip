@@ -347,8 +347,8 @@ def myVertex(t1, t2, PosDir):
     # v.a - v.c + s*v._u    - t*|v|**2 = 0
     E = _u.Dot(a) - _u.Dot(c)
     F = v.Dot(a) - v.Dot(c)
-    A, B = _u.Mag2(), - _u.Dot(v)
-    C, D = _u.Dot(v), - v.Mag2()
+    A, B = _u.Mag2(), -_u.Dot(v)
+    C, D = _u.Dot(v), -v.Mag2()
     t = -(C * E - A * F) / (B * C - A * D)
     X = c.x() + v.x() * t
     Y = c.y() + v.y() * t
