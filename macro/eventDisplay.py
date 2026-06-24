@@ -15,8 +15,8 @@ from argparse import ArgumentParser
 from array import array
 
 import decorators
-import shipRoot_conf
 import hepunits as u
+import shipRoot_conf
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()

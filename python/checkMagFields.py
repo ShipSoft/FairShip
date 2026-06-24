@@ -3,9 +3,9 @@
 
 import sys
 
+import hepunits as u
 import ROOT
 import rootUtils as ut
-import hepunits as u
 
 
 def run():

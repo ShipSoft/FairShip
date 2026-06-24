@@ -8,12 +8,12 @@ from typing import Any
 
 import geometry_config
 import global_variables
+import hepunits as u
 import numpy
 import ROOT
 
 # For modules
 import shipDet_conf
-import hepunits as u
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file

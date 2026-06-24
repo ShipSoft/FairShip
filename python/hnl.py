@@ -33,8 +33,8 @@
 import math
 import os
 
-import ROOT
 import hepunits as u
+import ROOT
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()

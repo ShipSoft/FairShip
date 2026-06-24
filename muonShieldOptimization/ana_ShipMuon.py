@@ -361,8 +361,8 @@ else:
     inputFile1 = inputFile
     inputFile2 = inputFile.replace(".root", "_D.root")
 
-import rootUtils as ut
 import hepunits as u
+import rootUtils as ut
 
 PDG = ROOT.TDatabasePDG.Instance()
 import geometry_config

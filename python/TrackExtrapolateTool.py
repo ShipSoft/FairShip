@@ -3,8 +3,8 @@
 
 from typing import Any
 
-import ROOT
 import hepunits as u
+import ROOT
 
 
 def cmp(a, b):

@@ -20,9 +20,9 @@ import pickle
 import sys
 from pathlib import Path
 
+import hepunits as u
 import numpy as np
 import ROOT
-import hepunits as u
 
 
 def parse_arguments():

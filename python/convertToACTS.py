@@ -5,9 +5,9 @@ import array
 from collections import defaultdict
 
 import global_variables
+import hepunits as u
 import numpy as np
 import ROOT
-import hepunits as u
 
 PDG = ROOT.TDatabasePDG.Instance()
 import acts

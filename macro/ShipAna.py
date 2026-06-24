@@ -5,11 +5,11 @@
 from argparse import ArgumentParser
 
 import decorators
+import hepunits as u
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
 from ShipGeoConfig import load_from_root_file
-import hepunits as u
 
 shipRoot_conf.configure()
 decorators.apply_decorators()

@@ -4,8 +4,8 @@
 from array import array
 
 import hepunit as G4Unit
-import ROOT
 import hepunits as u
+import ROOT
 
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')

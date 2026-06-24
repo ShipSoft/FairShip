@@ -34,8 +34,8 @@ r"""
 import math
 import re
 
-import ROOT
 import hepunits as u
+import ROOT
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()

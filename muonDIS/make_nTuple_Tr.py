@@ -9,8 +9,8 @@ import csv
 import logging
 import os
 
-import ROOT as r
 import hepunits as u
+import ROOT as r
 from tabulate import tabulate
 
 pdg = r.TDatabasePDG.Instance()

@@ -1,6 +1,6 @@
 import global_variables
-import ROOT
 import hepunits as u
+import ROOT
 from BaseDetector import BaseDetector
 
 

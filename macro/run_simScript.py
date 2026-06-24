@@ -10,10 +10,10 @@ from argparse import ArgumentParser
 from array import array
 
 import geometry_config
+import hepunits as u
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
-import hepunits as u
 import validationTools as validation_tools
 
 

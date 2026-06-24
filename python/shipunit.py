@@ -18,11 +18,10 @@
 import warnings
 
 warnings.warn(
-    f"shipunit is deprecated and will be removed in a future release. "
-    f"Please use hepunits instead.",
+    "shipunit is deprecated and will be removed in a future release. Please use hepunits instead.",
     category=UserWarning,
     stacklevel=1,
-    )
+)
 
 # ==================================================================
 # imported from "SystemOfUnits.h"
