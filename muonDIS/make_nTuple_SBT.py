@@ -10,7 +10,7 @@ import logging
 import os
 
 import ROOT as r
-import shipunit as u
+import hepunits as u
 from tabulate import tabulate
 
 pdg = r.TDatabasePDG.Instance()

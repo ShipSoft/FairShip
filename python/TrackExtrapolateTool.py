@@ -4,7 +4,7 @@
 from typing import Any
 
 import ROOT
-import shipunit as u
+import hepunits as u
 
 
 def cmp(a, b):

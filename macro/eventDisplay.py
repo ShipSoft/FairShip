@@ -16,7 +16,7 @@ from array import array
 
 import decorators
 import shipRoot_conf
-import shipunit as u
+import hepunits as u
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()

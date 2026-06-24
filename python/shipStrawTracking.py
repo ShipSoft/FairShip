@@ -13,7 +13,7 @@ import ROOT
 
 # For modules
 import shipDet_conf
-import shipunit as u
+import hepunits as u
 
 # For ShipGeo
 from ShipGeoConfig import load_from_root_file
