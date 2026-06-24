@@ -4,17 +4,14 @@
 import argparse
 import logging
 import os
-import time
 from array import array
-import sys
 
+import cppyy
 import ROOT as r
 from tabulate import tabulate
 
-
-import cppyy
 # Load library
-#cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
+# cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
 cppyy.load_library("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/pythia6/latest/lib/libPythia6.so")
 # Include header
 cppyy.include("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/include/TPythia6.h")
@@ -23,8 +20,8 @@ myPythia = cppyy.gbl.TPythia6()
 print("Pythia6 created")
 
 
-#r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
-#r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libEGPythia6.so")
+# r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libPythia6.so")
+# r.gSystem.Load("/cvmfs/ship.cern.ch/26.05/sw/slc9_x86-64/ROOTEGPythia6/latest/lib/libEGPythia6.so")
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
@@ -137,10 +134,8 @@ def inspect_file(filename):
         partPz = float(firstDIS[3])
         firstSoft = event.SoftParticles[1]
         softpartPz = float(firstSoft[3])
-        
-        table_rows.append(
-            [i, fix_target, nParticles, partPz, nSoftTracks, softpartPz, cross_sec]
-        )
+
+        table_rows.append([i, fix_target, nParticles, partPz, nSoftTracks, softpartPz, cross_sec])
 
     file.Close()
     logging.info("\n" + tabulate(table_rows, headers=headers, tablefmt="grid"))
@@ -161,7 +156,7 @@ def makeMuonDIS():
         exit(1)
 
     logging.debug(f"Total entries in the tree: {muon_tree.GetEntries()}")
-    if (n_events>0):
+    if n_events > 0:
         last_mu_event = min(muon_tree.GetEntries(), first_mu_event + n_events)
     else:
         last_mu_event = muon_tree.GetEntries()
@@ -180,26 +175,23 @@ def makeMuonDIS():
     dPartSoft = r.TClonesArray("TVectorD")
     output_tree.Branch("SoftParticles", dPartSoft, 32000, -1)
 
-
-    #set process 1=QCD, 2=DY/others
+    # set process 1=QCD, 2=DY/others
     myPythia.SetMSEL(2)
-    #set min hard scale: 2 GeV --->try 1.5 for soft muons ?
+    # set min hard scale: 2 GeV --->try 1.5 for soft muons ?
     myPythia.SetPARP(2, 2)
-    #disable decay for those PDGID
+    # disable decay for those PDGID
     for kf in [211, 321, 130, 310, 3112, 3122, 3222, 3312, 3322, 3334]:
         kc = myPythia.Pycomp(kf)
         myPythia.SetMDCY(kc, 1, 0)
 
     seed = 880161889
-    #seed = int(time.time() % 900000000)
+    # seed = int(time.time() % 900000000)
     myPythia.SetMRPY(1, seed)
-    #dictionary: pythia beam definition to enable gamma radiations
+    # dictionary: pythia beam definition to enable gamma radiations
     mutype = {-13: "gamma/mu+", 13: "gamma/mu-"}
-    #for pythia6 output, 11=set to output file. 6=stdout.
+    # for pythia6 output, 11=set to output file. 6=stdout.
     myPythia.SetMSTU(11, 11)
-    logging.info(
-        f"Processing muon events from {first_mu_event} to {last_mu_event - 1}..."
-    )
+    logging.info(f"Processing muon events from {first_mu_event} to {last_mu_event - 1}...")
 
     nMade = 0
 
@@ -227,7 +219,7 @@ def makeMuonDIS():
         E = r.TMath.Sqrt(mass**2 + p**2)
 
         theta = r.TMath.ACos(pz / p)
-        #returns phi between -pi and pi
+        # returns phi between -pi and pi
         phi = r.TMath.ATan2(py, px)
 
         isProton = 1
@@ -254,41 +246,40 @@ def makeMuonDIS():
         )
 
         myPythia.Initialize("FIXT", mutype[pid], "p+", p)  # target = "p+"
-        
-        #print summary of initialisation params
+
+        # print summary of initialisation params
         myPythia.Pylist(1)
 
         for a in range(args.nDIS):
-            #half-way through, we change to neutron target with 50-50 : ---> update to real material ??
+            # half-way through, we change to neutron target with 50-50 : ---> update to real material ??
             if a == args.nDIS // 2:
                 myPythia.Initialize("FIXT", mutype[pid], "n0", p)  # target = "n0"
                 isProton = 0
                 # logging.debug("Switching to neutron interaction")
 
- 
             myPythia.GenerateEvent()
-            #clean all but final stable particles
+            # clean all but final stable particles
             myPythia.Pyedit(1)
 
-            xsec = myPythia.GetPARI(1) #in mb
+            xsec = myPythia.GetPARI(1)  # in mb
 
             mu[9] = isProton
             mu[10] = xsec
 
-            #copy again input muon
+            # copy again input muon
             iMuon.Clear()
-            
+
             vec = iMuon.ConstructedAt(0)
             vec.ResizeTo(14)
             for i in range(len(mu)):
                 vec[i] = mu[i]
 
-            #print("initial muon z",mu[7],vec[7])
-            
-            ndaugh =  myPythia.GetN()
+            # print("initial muon z",mu[7],vec[7])
+
+            ndaugh = myPythia.GetN()
             dPartDIS.Clear()
-            
-            #loop over daughters and rotate in muon input direction
+
+            # loop over daughters and rotate in muon input direction
             for itrk in range(1, ndaugh + 1):
                 did = myPythia.GetK(itrk, 2)
                 dpx, dpy, dpz = rotate(
@@ -302,13 +293,13 @@ def makeMuonDIS():
                 masssq = PDG.GetParticle(did).Mass() ** 2
                 E = r.TMath.Sqrt(masssq + psq)
                 m = array("d", [did, dpx, dpy, dpz, E])
-                
-                dvec = dPartDIS.ConstructedAt(itrk-1)
+
+                dvec = dPartDIS.ConstructedAt(itrk - 1)
                 dvec.ResizeTo(5)
 
                 for i in range(len(m)):
                     dvec[i] = m[i]
-                #print("DIS particle",itrk-1,"pz",m[3],dvec[3])
+                # print("DIS particle",itrk-1,"pz",m[3],dvec[3])
 
             cross_sections.append(xsec)
 
@@ -336,9 +327,7 @@ def makeMuonDIS():
                 for i in range(len(m)):
                     svec[i] = m[i]
 
-                #print("Soft particle",isft,"pz",m[3],svec[3])
-
-
+                # print("Soft particle",isft,"pz",m[3],svec[3])
 
             output_tree.Fill()
             DIS_table.append(
@@ -370,7 +359,7 @@ def makeMuonDIS():
     outputFile.Close()
     muonFile.Close()
 
-    #set the same xs for all DIS events of the same muon
+    # set the same xs for all DIS events of the same muon
     update_file(args.outputFile, final_xsec)
 
 

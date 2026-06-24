@@ -1,12 +1,12 @@
 #ifndef SHIPMuDIS_DISparticle_H_
 #define SHIPMuDIS_DISparticle_H_
 
-#include "TObject.h"           // for TObject
-#include "Rtypes.h"            // for Double_t, Int_t, Double32_t, etc
+#include "Rtypes.h"   // for Double_t, Int_t, Double32_t, etc
+#include "TObject.h"  // for TObject
 
 class DISparticle : public TObject {
  public:
-  DISparticle(){};
+  DISparticle() {};
   ~DISparticle() override {};
 
   int pid;
@@ -16,7 +16,6 @@ class DISparticle : public TObject {
   double E;
 
   ClassDefOverride(DISparticle, 1);
-
 };
 
 #endif

@@ -1568,7 +1568,6 @@ class tPythia6Generator:  # Partial stub
     def Pythia8(self) -> Any: ...
     def getPyint5_XSEC(self, i: int, j: int) -> float: ...
 
-
 # --- Others ---
 
 class MuDISProcessor:  # Partial stub
@@ -1577,8 +1576,6 @@ class MuDISProcessor:  # Partial stub
     def process_file(self, input: str, output: str) -> None: ...
     def ProcessMuons(self) -> None: ...
 
-
-    
 # ===========================================================================
 # Geant4 classes (loaded dynamically, need static stubs)
 # ===========================================================================
