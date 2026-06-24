@@ -13,7 +13,7 @@ UpstreamTaggerPoint::UpstreamTaggerPoint() : SHiP::DetectorPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-UpstreamTaggerPoint::~UpstreamTaggerPoint() {}
+UpstreamTaggerPoint::~UpstreamTaggerPoint() = default;
 // -------------------------------------------------------------------------
 
 void UpstreamTaggerPoint::extraPrintInfo() const {

@@ -61,7 +61,7 @@ void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx,
   snd_hole_dy = hole_dy;
 }
 
-void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
+void ShipMuonShield::CreateArb8(const TString& arbName, TGeoMedium* medium,
                                 Double_t dZ, std::array<Double_t, 16> corners,
                                 Int_t color, TGeoUniformMagField* magField,
                                 TGeoVolume* tShield, Double_t x_translation,
@@ -132,7 +132,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium* medium,
 }
 
 void ShipMuonShield::CreateMagnet(
-    TString magnetName, TGeoMedium* medium, TGeoVolume* tShield,
+    const TString& magnetName, TGeoMedium* medium, TGeoVolume* tShield,
     TGeoUniformMagField* fields[4], FieldDirection fieldDirection, Double_t dX,
     Double_t dY, Double_t dX2, Double_t dY2, Double_t ratio_yoke_1,
     Double_t ratio_yoke_2, Double_t dY_yoke_1, Double_t dY_yoke_2, Double_t dZ,
@@ -243,8 +243,8 @@ void ShipMuonShield::CreateMagnet(
   std::ranges::transform(cornersCLBA, cornersCRTA.begin(), std::negate{});
   std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});
   // Need to change order as corners need to be defined clockwise
-  for (int i = 0; i < 8; ++i) {
-    int j = (11 - i) % 8;
+  for (std::size_t i = 0; i < 8; ++i) {
+    const std::size_t j = (11 - i) % 8;
     cornersCLTA[2 * j] = cornersCLBA[2 * i];
     cornersCLTA[2 * j + 1] = -cornersCLBA[2 * i + 1];
     cornersTR[2 * j] = -cornersTL[2 * i];

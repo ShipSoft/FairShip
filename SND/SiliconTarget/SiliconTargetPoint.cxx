@@ -12,17 +12,17 @@ using std::endl;
 SiliconTargetPoint::SiliconTargetPoint() : FairMCPoint() {}
 // -------------------------------------------------------------------------
 
-SiliconTargetPoint::SiliconTargetPoint(Int_t trackID, Int_t detID, TVector3 pos,
-                                       TVector3 mom, Double_t tof,
-                                       Double_t length, Double_t eLoss,
-                                       Int_t pdgcode)
+SiliconTargetPoint::SiliconTargetPoint(Int_t trackID, Int_t detID,
+                                       const TVector3& pos, const TVector3& mom,
+                                       Double_t tof, Double_t length,
+                                       Double_t eLoss, Int_t pdgcode)
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
       fPdgCode(pdgcode) {}
 
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-SiliconTargetPoint::~SiliconTargetPoint() {}
+SiliconTargetPoint::~SiliconTargetPoint() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

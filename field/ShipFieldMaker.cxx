@@ -188,9 +188,9 @@ void ShipFieldMaker::defineUniform(const stringVect& inputLine) {
   if (nWords == 5) {
     const TString name(inputLine[1].c_str());
 
-    Double_t Bx = std::atof(inputLine[2].c_str());
-    Double_t By = std::atof(inputLine[3].c_str());
-    Double_t Bz = std::atof(inputLine[4].c_str());
+    Double_t Bx = std::stod(inputLine[2]);
+    Double_t By = std::stod(inputLine[3]);
+    Double_t Bz = std::stod(inputLine[4]);
     const TVector3 BVector(Bx, By, Bz);
 
     this->defineUniform(name, BVector);
@@ -233,19 +233,19 @@ void ShipFieldMaker::defineConstant(const stringVect& inputLine) {
   if (nWords == 11) {
     TString name(inputLine[1].c_str());
 
-    Double_t xMin = std::atof(inputLine[2].c_str());
-    Double_t xMax = std::atof(inputLine[3].c_str());
+    Double_t xMin = std::stod(inputLine[2]);
+    Double_t xMax = std::stod(inputLine[3]);
 
-    Double_t yMin = std::atof(inputLine[4].c_str());
-    Double_t yMax = std::atof(inputLine[5].c_str());
+    Double_t yMin = std::stod(inputLine[4]);
+    Double_t yMax = std::stod(inputLine[5]);
 
-    Double_t zMin = std::atof(inputLine[6].c_str());
-    Double_t zMax = std::atof(inputLine[7].c_str());
+    Double_t zMin = std::stod(inputLine[6]);
+    Double_t zMax = std::stod(inputLine[7]);
 
     // Input field in Tesla_, interface needs kGauss units
-    Double_t Bx = std::atof(inputLine[8].c_str());
-    Double_t By = std::atof(inputLine[9].c_str());
-    Double_t Bz = std::atof(inputLine[10].c_str());
+    Double_t Bx = std::stod(inputLine[8]);
+    Double_t By = std::stod(inputLine[9]);
+    Double_t Bz = std::stod(inputLine[10]);
 
     const TVector2 xRange(xMin, xMax);
     const TVector2 yRange(yMin, yMax);
@@ -299,19 +299,19 @@ void ShipFieldMaker::defineBell(const stringVect& inputLine) {
   if (nWords == 6 || nWords == 9) {
     TString name(inputLine[1].c_str());
 
-    Double_t BPeak = std::atof(inputLine[2].c_str());
-    Double_t zMiddle = std::atof(inputLine[3].c_str());  // cm
+    Double_t BPeak = std::stod(inputLine[2]);
+    Double_t zMiddle = std::stod(inputLine[3]);  // cm
 
-    Int_t orient = std::atoi(inputLine[4].c_str());
-    Double_t tubeR = std::atof(inputLine[5].c_str());  // cm
+    Int_t orient = std::stoi(inputLine[4]);
+    Double_t tubeR = std::stod(inputLine[5]);  // cm
 
     Double_t xy(0.0), z(0.0), L(0.0);
 
     if (nWords == 9) {
       // Specify "target" dimensions (cm)
-      xy = std::atof(inputLine[6].c_str());
-      z = std::atof(inputLine[7].c_str());
-      L = std::atof(inputLine[8].c_str());
+      xy = std::stod(inputLine[6]);
+      z = std::stod(inputLine[7]);
+      L = std::stod(inputLine[8]);
     }
 
     this->defineBell(name, BPeak, zMiddle, orient, tubeR, xy, z, L);
@@ -361,15 +361,15 @@ void ShipFieldMaker::defineFieldMap(const stringVect& inputLine,
     Double_t phi(0.0), theta(0.0), psi(0.0);
 
     if (nWords > 5) {
-      x0 = std::atof(inputLine[3].c_str());
-      y0 = std::atof(inputLine[4].c_str());
-      z0 = std::atof(inputLine[5].c_str());
+      x0 = std::stod(inputLine[3]);
+      y0 = std::stod(inputLine[4]);
+      z0 = std::stod(inputLine[5]);
     }
 
     if (nWords == 9) {
-      phi = std::atof(inputLine[6].c_str());
-      theta = std::atof(inputLine[7].c_str());
-      psi = std::atof(inputLine[8].c_str());
+      phi = std::stod(inputLine[6]);
+      theta = std::stod(inputLine[7]);
+      psi = std::stod(inputLine[8]);
     }
 
     const TVector3 localCentre(x0, y0, z0);
@@ -452,16 +452,16 @@ void ShipFieldMaker::defineFieldMapCopy(const stringVect& inputLine) {
     // We want to try to copy and transpose an already existing field map
     const TString mapNameToCopy(inputLine[2].c_str());
 
-    Double_t x0 = std::atof(inputLine[3].c_str());
-    Double_t y0 = std::atof(inputLine[4].c_str());
-    Double_t z0 = std::atof(inputLine[5].c_str());
+    Double_t x0 = std::stod(inputLine[3]);
+    Double_t y0 = std::stod(inputLine[4]);
+    Double_t z0 = std::stod(inputLine[5]);
 
     Double_t phi(0.0), theta(0.0), psi(0.0);
 
     if (nWords == 9) {
-      phi = std::atof(inputLine[6].c_str());
-      theta = std::atof(inputLine[7].c_str());
-      psi = std::atof(inputLine[8].c_str());
+      phi = std::stod(inputLine[6]);
+      theta = std::stod(inputLine[7]);
+      psi = std::stod(inputLine[8]);
     }
 
     const TVector3 translation(x0, y0, z0);
@@ -686,7 +686,7 @@ void ShipFieldMaker::defineRegionField(const stringVect& inputLine) {
 
     Double_t scale(1.0);
     if (nWords == 4) {
-      scale = std::atof(inputLine[3].c_str());
+      scale = std::stod(inputLine[3]);
     }
 
     this->defineRegionField(volName, fieldName, scale);
@@ -725,7 +725,7 @@ void ShipFieldMaker::setAllRegionFields() {
     Double_t scale = theInfo.scale_;
 
     // Find the volume
-    TGeoVolume* theVol(0);
+    TGeoVolume* theVol(nullptr);
     if (gGeoManager) {
       theVol = gGeoManager->FindVolumeFast(volName.Data());
     }
@@ -808,7 +808,7 @@ void ShipFieldMaker::defineLocalField(const stringVect& inputLine) {
 
     Double_t scale(1.0);
     if (nWords == 4) {
-      scale = std::atof(inputLine[3].c_str());
+      scale = std::stod(inputLine[3]);
     }
 
     this->defineLocalField(volName, fieldName, scale);
@@ -844,7 +844,7 @@ void ShipFieldMaker::setAllLocalFields() {
     TString fieldName = theInfo.fieldName_;
     Double_t scale = theInfo.scale_;
 
-    TGeoVolume* theVol(0);
+    TGeoVolume* theVol(nullptr);
     if (gGeoManager) {
       theVol = gGeoManager->FindVolumeFast(volName.Data());
     }
@@ -993,7 +993,7 @@ void ShipFieldMaker::getTransformation(const TString& volName,
   theInfo.theta_ = 0.0;
   theInfo.psi_ = 0.0;
 
-  TGeoMatrix* theMatrix(0);
+  TGeoMatrix* theMatrix(nullptr);
 
   TGeoVolume* topVolume = gGeoManager->GetTopVolume();
   if (!topVolume) {
@@ -1008,7 +1008,7 @@ void ShipFieldMaker::getTransformation(const TString& volName,
   }
 
   // Find the geometry node that matches the required name
-  theNode_ = 0;
+  theNode_ = nullptr;
   gotNode_ = kFALSE;
   this->findNode(topVolume, volName);
 
@@ -1080,8 +1080,8 @@ void ShipFieldMaker::findNode(TGeoVolume* aVolume, const TString& volName) {
 }
 
 TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const {
-  TVirtualMagField* theField(0);
-  TGeoVolume* theVol(0);
+  TVirtualMagField* theField(nullptr);
+  TGeoVolume* theVol(nullptr);
   if (gGeoManager) {
     theVol = gGeoManager->FindVolumeFast(volName.Data());
   }
@@ -1114,7 +1114,7 @@ Bool_t ShipFieldMaker::gotField(const TString& name) const {
 }
 
 TVirtualMagField* ShipFieldMaker::getField(const TString& name) const {
-  TVirtualMagField* theField(0);
+  TVirtualMagField* theField(nullptr);
 
   // Iterate over the internal map and see if we have a match
   SFMap::const_iterator iter;
@@ -1179,7 +1179,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
     theHist[icomponent] =
         TH2D(Form("theHist[%i]", icomponent), titles[icomponent].data(), Nx,
              xMin, xMax, Ny, yMin, yMax);
-    theHist[icomponent].SetDirectory(0);
+    theHist[icomponent].SetDirectory(nullptr);
     if (type == 0) {
       // x-y
       theHist[icomponent].SetXTitle("x (cm)");
@@ -1287,7 +1287,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis,
   }
 }
 
-void ShipFieldMaker::generateFieldMap(TString fileName, const float step,
+void ShipFieldMaker::generateFieldMap(const TString& fileName, const float step,
                                       const float xRange, const float yRange,
                                       const float zRange, const float zShift) {
   std::ofstream myfile;

@@ -38,7 +38,7 @@ class GenieGenerator : public SHiP::Generator {
     startZ = zS;
     endZ = zE;
   }
-  void AddBox(TVector3 dVec, TVector3 box);
+  void AddBox(const TVector3& dVec, const TVector3& box);
 
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px,

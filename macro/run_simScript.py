@@ -14,6 +14,7 @@ import ROOT
 import rootUtils as ut
 import shipRoot_conf
 import shipunit as u
+import validationTools as validation_tools
 
 
 def _fraction_0_1(value: str) -> float:
@@ -185,6 +186,7 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
+parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
 parser.add_argument(
     "--MuonBack",
     dest="muonback",
@@ -272,9 +274,29 @@ parser.add_argument(
     help="Input file (repeat -f for multiple files)",
     default=None,
 )
+parser.add_argument(
+    "--remote-input",
+    dest="remoteInput",
+    help="Treat -f/--inputFile values as remote ROOT paths/URLs and skip local glob expansion",
+    action="store_true",
+)
 parser.add_argument("--nFiles", dest="nFiles", help="Number of input files to process", default=-1, type=int)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory", default=".")
+parser.add_argument(
+    "-r",
+    "--run-number",
+    dest="run_number",
+    help="Numeric simulation ID to reuse instead of generating a new UUID",
+    default=None,
+    type=int,
+)
+parser.add_argument(
+    "--reproducible",
+    dest="reproducible",
+    help="Reduce nondeterministic log output for reproducibility/testing",
+    action="store_true",
+)
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument(
     "--strawDesign",
@@ -353,6 +375,12 @@ parser.add_argument(
 parser.add_argument(
     "--tag", dest="output_tag", help="Custom tag for output files instead of auto-generated UUID", default=None
 )
+parser.add_argument(
+    "--validation",
+    dest="validation",
+    help="Print an extended simulation validation summary after the run",
+    action="store_true",
+)
 
 
 options = parser.parse_args()
@@ -376,8 +404,10 @@ if options.A != "c":
         HNL = False
     if options.A not in ["b", "c", "bc", "meson", "pbrem", "qcd"]:
         inclusive = True
+motherMode = None
 if options.MM:
     motherMode = options.MM
+Opt_high = None
 if options.cosmics:
     Opt_high = int(options.cosmics)
 if options.inputFile:
@@ -385,8 +415,11 @@ if options.inputFile:
         options.inputFile = None
     inputFile = []
     for _f in options.inputFile:
-        inputFile.extend(glob.glob(_f))
-    inputFile = list(set(inputFile))
+        if options.remoteInput:
+            inputFile.append(os.path.expandvars(_f))
+        else:
+            inputFile.extend(glob.glob(_f))
+    inputFile = list(dict.fromkeys(inputFile))
     if options.nFiles > 0:
         inputFile = inputFile[: options.nFiles]
     defaultInputFile = False
@@ -394,11 +427,14 @@ if options.RPVSUSY:
     HNL = False
 if options.DarkPhoton:
     HNL = False
+    if inclusive not in {"meson", "pbrem", "qcd"}:
+        parser.error("For --DarkPhoton, -A must be one of: meson, pbrem, qcd")
 if not options.theMass:
     if options.DarkPhoton:
         options.theMass = theDPmass
     else:
         options.theMass = theHNLMass
+theCouplings = None
 if options.thecouplings:
     theCouplings = [float(c) for c in options.thecouplings.split(",")]
 if options.theprodcouplings:
@@ -436,6 +472,8 @@ if seed > 900000000:
     seed = seed % 900000000
 ROOT.gRandom.SetSeed(seed)
 shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
+if options.reproducible and options.debug == 0:
+    ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
@@ -459,15 +497,30 @@ ship_geo = geometry_config.create_config(
 )
 
 if not options.command:
-    for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
+    for g in [
+        "pythia8",
+        "ttree",
+        "evtcalc",
+        "pythia6",
+        "nuradio",
+        "ntuple",
+        "muonback",
+        "mudis",
+        "fixedTarget",
+        "cosmics",
+    ]:
         if getattr(options, g):
             break
     else:
         options.pythia8 = True  # Ensure Pythia8 is enabled by default
 
 # Output file name
-# Use custom tag if provided, otherwise use random UUID version 4
-run_identifier = options.output_tag if options.output_tag else str(uuid.uuid4())
+# Use custom tag if provided, otherwise reuse the requested run number or generate a UUID4
+run_identifier = (
+    options.output_tag
+    if options.output_tag
+    else str(options.run_number if options.run_number is not None else uuid.uuid4())
+)
 if not os.path.exists(options.outputDir):
     os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/sim_{run_identifier}.root"
@@ -485,6 +538,8 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
+if options.run_number is not None and hasattr(run, "SetRunId"):
+    run.SetRunId(options.run_number)
 sink = ROOT.FairRootFileSink(outFile)
 run.SetSink(sink)
 ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
@@ -498,6 +553,7 @@ import shipDet_conf
 modules = shipDet_conf.configure(run, ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
+P8gen = None  # populated below by the various generator branches
 if options.pythia8:
     primGen.SetTarget(ship_geo.target.z0, 0.0)
     # -----Pythia8--------------------------------------
@@ -613,7 +669,8 @@ if options.evtcalc:
     print(f"Opening input file for EvtCalc generator: {inputFile}")
     ut.checkFileExists(inputFile)
     EvtCalcGen = ROOT.EvtCalcGenerator()
-    EvtCalcGen.Init(inputFile, options.firstEvent)
+    if not EvtCalcGen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize EvtCalcGenerator from input: {inputFile}")
     EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
     primGen.AddGenerator(EvtCalcGen)
     ROOT.SetOwnership(EvtCalcGen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -679,7 +736,8 @@ if options.mudis:
     mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
     print("MuDIS position info input=", mu_start, mu_end)
     DISgen.SetPositions(mu_start, mu_end)
-    DISgen.Init(inputFile, options.firstEvent)
+    if not DISgen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize MuDISGenerator from input: {inputFile}")
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
@@ -690,7 +748,8 @@ if options.command == "Genie":
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.Init(inputFile, options.firstEvent)
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
     Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
@@ -701,7 +760,8 @@ if options.nuradio:
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)  # do not interfere with GenieGenerator
     Geniegen = ROOT.GenieGenerator()
-    Geniegen.Init(inputFile, options.firstEvent)
+    if not Geniegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
     # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
     Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
     Geniegen.NuOnly()
@@ -716,12 +776,25 @@ if options.nuradio:
     # this requires writing a C macro, would have been easier to do directly in python!
     # for i in [431,421,411,-431,-421,-411]:
     # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if options.ttree:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)
+    generator = ROOT.SHiP.TTreeGenerator()
+    generator.SetTreeName("converted_ntuple")
+    if not generator.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize TTreeGenerator from input: {inputFile}")
+    primGen.AddGenerator(generator)
+    ROOT.SetOwnership(generator, False)  # C++ FairPrimaryGenerator takes ownership
+    available_events = max(0, generator.GetNEvents() - options.firstEvent)
+    options.nEvents = available_events if options.nEvents == -1 else min(options.nEvents, available_events)
+    print("Process ", options.nEvents, " from input file")
 if options.ntuple:
     # reading previously processed muon events, [-50m - 50m]
     ut.checkFileExists(inputFile)
     primGen.SetTarget(ship_geo.target.z0 + 50 * u.m, 0.0)
     Ntuplegen = ROOT.NtupleGenerator()
-    Ntuplegen.Init(inputFile, options.firstEvent)
+    if not Ntuplegen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize NtupleGenerator from input: {inputFile}")
     primGen.AddGenerator(Ntuplegen)
     ROOT.SetOwnership(Ntuplegen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = Ntuplegen.GetNevents() if options.nEvents == -1 else min(options.nEvents, Ntuplegen.GetNevents())
@@ -741,7 +814,8 @@ if options.muonback:
     #
     MuonBackgen = ROOT.MuonBackGenerator()
     # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
-    MuonBackgen.Init(inputFile, options.firstEvent)
+    if not MuonBackgen.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize MuonBackGenerator from input: {inputFile}")
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
@@ -872,12 +946,13 @@ run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
+if os.path.exists(parFile):
+    os.remove(parFile)
 parOut.open(parFile)
 rtdb.setOutput(parOut)
 ROOT.SetOwnership(parOut, False)  # C++ FairRuntimeDb takes ownership
 rtdb.saveOutput()
-rtdb.printParamContexts()
-rtdb.print()
+
 # ------------------------------------------------------------------------
 geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
 run.CreateGeometryFile(geofile_name)
@@ -903,7 +978,7 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(" ")
 print("Macro finished successfully.")
-if "P8gen" in globals():
+if P8gen is not None:
     if HNL:
         print("number of retries (no HNL produced) ", P8gen.nrOfRetries())
         print("number of geometric rejections (outside vessel acceptance) ", P8gen.nrOfGeoRejections())
@@ -915,7 +990,9 @@ if "P8gen" in globals():
 print("Output file is ", outFile)
 print("Parameter file is ", parFile)
 print("Geometry file is ", geofile_name)
-print("Real time ", rtime, " s, CPU time ", ctime, "s")
+if not options.reproducible:
+    print("Real time ", rtime, " s, CPU time ", ctime, "s")
+
 
 # remove empty events
 if options.muonback:
@@ -932,6 +1009,7 @@ if options.muonback:
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
     fSink = ROOT.FairRootFileSink(fout)
+    ROOT.SetOwnership(fout, False)  # FairRootFileSink's unique_ptr now owns fout
 
     sTree = t.CloneTree(0)
     nEvents = 0
@@ -957,19 +1035,25 @@ if options.muonback:
 
     branches = ROOT.TList()
     branches.SetName("BranchList")
-    branches.Add(ROOT.TObjString("MCTrack"))
-    branches.Add(ROOT.TObjString("vetoPoint"))
-    branches.Add(ROOT.TObjString("ShipRpcPoint"))
-    branches.Add(ROOT.TObjString("TargetPoint"))
-    branches.Add(ROOT.TObjString("TTPoint"))
-    branches.Add(ROOT.TObjString("ScoringPoint"))
-    branches.Add(ROOT.TObjString("strawtubesPoint"))
-    branches.Add(ROOT.TObjString("TimeDetPoint"))
-    branches.Add(ROOT.TObjString("MCEventHeader"))
-    branches.Add(ROOT.TObjString("UpstreamTaggerPoint"))
-    branches.Add(ROOT.TObjString("MTCdetPoint"))
-    branches.Add(ROOT.TObjString("SiliconTargetPoint"))
-    branches.Add(ROOT.TObjString("sGeoTracks"))
+    branches.SetOwner(True)
+    for name in (
+        "MCTrack",
+        "vetoPoint",
+        "ShipRpcPoint",
+        "TargetPoint",
+        "TTPoint",
+        "ScoringPoint",
+        "strawtubesPoint",
+        "TimeDetPoint",
+        "MCEventHeader",
+        "UpstreamTaggerPoint",
+        "MTCdetPoint",
+        "SiliconTargetPoint",
+        "sGeoTracks",
+    ):
+        obj = ROOT.TObjString(name)
+        ROOT.SetOwnership(obj, False)  # C++ TList takes ownership
+        branches.Add(obj)
 
     sTree.AutoSave()
     fSink.WriteObject(branches, "BranchList", ROOT.TObject.kSingleKey)
@@ -1032,6 +1116,34 @@ if options.command == "Genie":
 
     f_input.Close()
     f_output.Close()
+
+if options.run_number is not None:
+    with ROOT.TFile.Open(outFile, "UPDATE") as f_output:
+        file_header = f_output.Get("FileHeader")
+        if file_header:
+            file_header.SetRunId(options.run_number)
+            file_header.Write("FileHeader", ROOT.TObject.kSingleKey)
+        else:
+            print("WARNING: FileHeader not found in simulation output; skipped FileHeader RunID update")
+
+print("=" * 72)
+print("Simulation finished successfully")
+print("=" * 72)
+
+if options.validation:
+    validation_tools.print_simulation_output_summary(
+        ROOT,
+        outFile,
+        options.nEvents,
+        {"HNL": HNL, "DarkPhoton": options.DarkPhoton, "fixedTarget": options.fixedTarget},
+        {
+            "P8gen": globals().get("P8gen"),
+            "MuonBackgen": globals().get("MuonBackgen"),
+            "Ntuplegen": globals().get("Ntuplegen"),
+            "DISgen": globals().get("DISgen"),
+            "Geniegen": globals().get("Geniegen"),
+        },
+    )
 
 # ------------------------------------------------------------------------
 import checkMagFields

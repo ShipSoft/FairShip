@@ -63,7 +63,7 @@ output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
 output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 
-h = {}
+h: dict[str, "r.TH1"] = {}
 h["PvPt_muon"] = r.TH2F(
     "PvPt_muon",
     "The momentum of the muons hitting the SBT(unweighted);P(GeV/c);Pt(GeV/c)",
@@ -96,7 +96,9 @@ def printMCTrack(n: int, MCTrack) -> None:
     RESET = "\033[0m"  # ANSI code Reset to default
 
     try:
-        particle_name = pdg.GetParticle(mcp.GetPdgCode()).GetName()
+        _p = pdg.GetParticle(mcp.GetPdgCode())
+        assert _p is not None, f"Unknown PDG: {mcp.GetPdgCode()}"
+        particle_name = _p.GetName()
 
         if particle_name == "mu+" or particle_name == "mu-":
             particle_name = f"{RED}{particle_name}{RESET}       "  # Highlight muons in red
@@ -246,7 +248,9 @@ for inputFolder in os.listdir(path):
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
 
             if 1000 < detID < 999999 and abs(pid) == 13 and P_threshold / u.GeV < P:
-                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                _p = pdg.GetParticle(hit.PdgCode())
+                assert _p is not None, f"Unknown PDG: {hit.PdgCode()}"
+                particle_name = _p.GetName()
                 if track_id not in muon_ids:
                     muon_ids.append(track_id)
                     muon_hits[track_id] = 0

@@ -1,0 +1,60 @@
+name: Container Build
+on:
+  push:
+    tags: ['[0-9]*']
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref to build'
+        default: 'master'
+concurrency:
+  group: container-${{ inputs.ref || github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          lfs: true
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/shipsoft/fairship
+          # FairShip uses unprefixed CalVer tags (e.g. 26.06, 26.06.1) —
+          # semver rules would silently drop these (strict semver rejects
+          # leading-zero ".05/.06"). The (\d+\.\d+)\.\d+ pattern only matches
+          # three-component tags, so a patch tag like 26.06.1 also updates
+          # the :26.06 minor-line pointer, while a plain 26.06 tag emits a
+          # single 26.06 image tag without a redundant duplicate.
+          tags: |
+            type=ref,event=tag
+            type=match,pattern=(\d+\.\d+\.\d+),group=1
+            type=match,pattern=(\d+\.\d+)\.\d+,group=1
+            type=ref,event=branch
+            type=sha,format=short
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Containerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true

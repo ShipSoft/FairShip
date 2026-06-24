@@ -4,6 +4,7 @@
 """Script to run and test tracking in the straw tubes"""
 
 from argparse import ArgumentParser
+from typing import Any
 
 import geometry_config
 import global_variables
@@ -121,8 +122,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     ########################################## Start Track Pattern Recognition #########################################
 
-    # Init book of hists for the quality measurements
-    metrics = {
+    # Init book of hists for the quality measurements.
+    # Mixed counter/list values, so type as dict[str, Any].
+    metrics: dict[str, Any] = {
         "n_hits": [],
         "reconstructible": 0,
         "passed_y12": 0,

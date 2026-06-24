@@ -13,7 +13,7 @@ splitcalPoint::splitcalPoint() : DetectorPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-splitcalPoint::~splitcalPoint() {}
+splitcalPoint::~splitcalPoint() = default;
 // -------------------------------------------------------------------------
 
 void splitcalPoint::extraPrintInfo() const {
