@@ -64,7 +64,6 @@ PS: no need to source the environment from cvmfs with this...
 
 1. [Install pixi](https://pixi.sh/latest/#installation) if you haven't already.
 
-   Note on lxplus: execute this command from an area in which you have enough disk space
    ```bash
    curl -fsSL https://pixi.sh/install.sh | sh
    ```
@@ -72,13 +71,14 @@ PS: no need to source the environment from cvmfs with this...
    ```bash
    pixi info
    ```
-   And if required, set the environment variables in .bashrc:
+   And if required, move the .pixi and .cache directories and set the environment variables to where you want them in .bashrc:
    ```bash
-   export PATH="<your_path>/.pixi/bin:$PATH"
-   export PIXI_HOME=<your_path>/.pixi
-   export PIXI_CACHE_DIR=<your_path>/.cache
+   export PATH="<full_path>/.pixi/bin:$PATH"
+   export PIXI_HOME=<full_path>/.pixi
+   export PIXI_CACHE_DIR=<full_path>/.cache
    ```
-   
+(PS: Remember to source again the .bashrc to set them properly)
+
 2. Clone and build:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
@@ -95,8 +95,8 @@ PS: no need to source the environment from cvmfs with this...
     Or start a shell, within FairShip/, from which you can "cd" into any workdir of your choice:
     ```bash
     pixi shell
-    cd <../your_workdir>
-    python ../FairShip/macro/run_simScript.py --tag my-simulation
+    cd <path_to_your_workdir>
+    python <path_to_your_>/FairShip/macro/run_simScript.py --tag my-simulation
     ```
 
 ### Using the pre-built package
