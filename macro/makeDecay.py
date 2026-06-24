@@ -192,7 +192,7 @@ for n in range(nEvents):
                     sTree.py,
                     sTree.pz,
                     sTree.E,
-                    sTree.M,
+                    nrpotspill,
                     ptGM,
                     sTree.mpz,
                 )
