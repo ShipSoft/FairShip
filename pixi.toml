@@ -5,6 +5,17 @@ channels = ["https://prefix.dev/ship", "conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
+# Python (conda-forge)
+python = "3.12.*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+pandas = "*"
+pytest = "*"
+pytest-xdist = "*"
+pyyaml = "*"
+tabulate = "*"
+
 # Core HEP packages (conda-forge)
 root = ">=6.38"
 geant4 = ">=11.3"
@@ -18,16 +29,8 @@ faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
 # keep it explicit so CMake's find_package(FairLogger) resolves.
 fairlogger = ">=2.3"
 
-# Python (conda-forge)
-python = "3.12.*"
-numpy = "*"
-scipy = "*"
-matplotlib = "*"
-pandas = "*"
-pytest = "*"
-pytest-xdist = "*"
-pyyaml = "*"
-tabulate = "*"
+# Other HEP packages (conda-forge)
+hepunits = ">=2.4.0"
 
 # SHiP custom packages (prefix.dev/ship channel)
 geant4-vmc = ">=6.7"
