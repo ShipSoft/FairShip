@@ -7,6 +7,8 @@ import ROOT
 # configure the GenieGenerator
 def config(GenieGen):
     fGeo = ROOT.gGeoManager
+    fGeo.SetDefaultUnits(fGeo.kG4Units)
+    fGeo.LockDefaultUnits(ROOT.kTRUE)
     top = fGeo.GetTopVolume()
     # positions for nu events inside the nutau detector volume
     muSpectrometer = top.FindNode("volNuTauMudet_1")

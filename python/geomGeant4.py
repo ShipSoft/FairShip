@@ -3,7 +3,6 @@
 
 from array import array
 
-import hepunit as G4Unit
 import hepunits as u
 import ROOT
 
@@ -53,6 +52,8 @@ def check4OrphanVolumes(fGeo) -> None:
 def setMagnetField(flag=None) -> None:
     print("setMagnetField() called. Out of date, does not set field for tau neutrino detector!")
     fGeo = ROOT.gGeoManager
+    fGeo.SetDefaultUnits(fGeo.kG4Units)
+    fGeo.LockDefaultUnits(ROOT.kTRUE)
     vols = fGeo.GetListOfVolumes()
     # copy field by hand to geant4
     listOfFields = {}
@@ -60,9 +61,9 @@ def setMagnetField(flag=None) -> None:
         field = v.GetField()
         if not field:
             continue
-        bx = field.GetFieldValue()[0] / u.tesla * G4Unit.tesla
-        by = field.GetFieldValue()[1] / u.tesla * G4Unit.tesla
-        bz = field.GetFieldValue()[2] / u.tesla * G4Unit.tesla
+        bx = field.GetFieldValue()[0] / u.tesla
+        by = field.GetFieldValue()[1] / u.tesla
+        bz = field.GetFieldValue()[2] / u.tesla
         magFieldIron = ROOT.G4UniformMagField(ROOT.G4ThreeVector(bx, by, bz))
         FieldIronMgr = ROOT.G4FieldManager(magFieldIron)
         FieldIronMgr.CreateChordFinder(magFieldIron)
@@ -112,8 +113,8 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
     if mvl != "cave":
         vln = mvl + "/" + vln
     lvl = vl.GetLogicalVolume()
-    cvol = lvl.GetSolid().GetCubicVolume() / G4Unit.m3
-    M = lvl.GetMass() / G4Unit.kg
+    cvol = lvl.GetSolid().GetCubicVolume() / u.m3
+    M = lvl.GetMass() / u.kg
     fm = lvl.GetFieldManager()
     if not fm and onlyWithField:
         return magnetMass
@@ -123,7 +124,7 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
         print("%-35s volume = %5.2Fm3  mass = %5.2F t" % (vln, cvol, M / 1000.0))
     if fm:
         fi = fm.GetDetectorField()
-        print("   Magnetic field:", fi.GetConstantFieldValue() / G4Unit.tesla)
+        print("   Magnetic field:", fi.GetConstantFieldValue() / u.tesla)
     # if vl.GetName().c_str()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
     name = vl.GetName().c_str()
     if "_" in name and "Mag" in name.split("_")[1]:
@@ -226,6 +227,8 @@ def printVMCFields() -> None:
     print("Printing VMC fields and associated volumes")
 
     fGeo = ROOT.gGeoManager
+    fGeo.SetDefaultUnits(fGeo.kG4Units)
+    fGeo.LockDefaultUnits(ROOT.kTRUE)
     vols = fGeo.GetListOfVolumes()
 
     for v in vols:
@@ -263,7 +266,7 @@ def debug() -> None:
         vmap[vl.GetName().c_str()] = vl
         print(da, vl.GetName())
     lvl = vmap["MagB"].GetLogicalVolume()
-    print(lvl.GetMass() / G4Unit.kg, lvl.GetMaterial().GetName())
+    print(lvl.GetMass() / u.kg, lvl.GetMaterial().GetName())
     print(lvl.GetFieldManager())
     #
     for da in range(world.GetNoDaughters()):
@@ -276,6 +279,8 @@ def debug() -> None:
             print(vln, fm, v.getX(), v.getY())
     # FairROOT view
     fgeom = ROOT.gGeoManager
+    fgeom.SetDefaultUnits(fgeom.kG4Units)
+    fgeom.LockDefaultUnits(ROOT.kTRUE)
     magB = fgeom.GetVolume("MagB")
     fl = magB.GetField()
     print(fl.GetFieldValue()[0], fl.GetFieldValue()[1], fl.GetFieldValue()[2])

@@ -1137,6 +1137,8 @@ def mydebug() -> None:
         )
     # Load geometry
     sGeo = ROOT.gGeoManager
+    sGeo.SetDefaultUnits(sGeo.kG4Units)
+    sGeo.LockDefaultUnits(ROOT.kTRUE)
     cave = sGeo.GetTopVolume()
     cave.Draw("ogl")
     # eve
@@ -1151,6 +1153,8 @@ def mydebug() -> None:
 
 def debugStraw(n) -> None:
     sGeo = ROOT.gGeoManager
+    sGeo.SetDefaultUnits(sGeo.kG4Units)
+    sGeo.LockDefaultUnits(ROOT.kTRUE)
     vols = sGeo.GetListOfVolumes()
     sTree = g.FindObjectAny("cbmsim")
     sTree.GetEntry(n)
@@ -1242,6 +1246,8 @@ if options.recoFile and _file_accessible(options.recoFile):
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree)
 sGeo = ROOT.gGeoManager
+sGeo.SetDefaultUnits(sGeo.kG4Units)
+sGeo.LockDefaultUnits(ROOT.kTRUE)
 top = sGeo.GetTopVolume()
 # manipulate colors and transparency before scene created
 speedUp()

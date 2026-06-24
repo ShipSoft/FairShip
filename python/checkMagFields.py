@@ -10,6 +10,8 @@ import rootUtils as ut
 
 def run():
     fGeo = ROOT.gGeoManager
+    fGeo.SetDefaultUnits(fGeo.kG4Units)
+    fGeo.LockDefaultUnits(ROOT.kTRUE)
     run = sys.modules["__main__"].run
     if hasattr(sys.modules["__main__"], "h"):
         h = sys.modules["__main__"].h
