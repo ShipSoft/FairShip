@@ -1,6 +1,6 @@
 # FairShip
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![Pixi Build](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020628.svg)](https://doi.org/10.5281/zenodo.18020628)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master) [![Pixi Build](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml/badge.svg)](https://github.com/ShipSoft/FairShip/actions/workflows/pixi-build.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18020628.svg)](https://doi.org/10.5281/zenodo.18020628)[![REUSE status](https://api.reuse.software/badge/github.com/ShipSoft/FairShip)](https://api.reuse.software/info/github.com/ShipSoft/FairShip)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of contents**
@@ -15,7 +15,7 @@
     - [Documentation](#documentation)
     - [License](#license)
     - [Contributing code](#contributing-code)
-    - [Legacy releases (CVMFS + aliBuild, ≤26.04)](#legacy-releases-cvmfs--alibuild-2604)
+    - [Legacy releases (CVMFS + aliBuild)](#legacy-releases-cvmfs--alibuild)
 
 <!-- markdown-toc end -->
 
@@ -39,11 +39,11 @@ documentation.
   <dt><code>SHiP-2018</code></dt>
   <dd>Frozen branch for the CDS, kept for backward compatibility.
       Python 2 only. Builds via the
-      <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only.</dd>
+      <a href="#legacy-releases-cvmfs--alibuild">legacy aliBuild path</a> only.</dd>
   <dt><code>muflux</code></dt>
   <dd>Branch for the muon flux analysis.
       Python 2 only. Builds via the
-      <a href="#legacy-releases-cvmfs--alibuild-2604">legacy aliBuild path</a> only.</dd>
+      <a href="#legacy-releases-cvmfs--alibuild">legacy aliBuild path</a> only.</dd>
 </dl>
 
 All packages are managed in Git and GitHub. Please read [the Git tutorial for
@@ -195,13 +195,16 @@ Copyright is held by CERN for the benefit of the SHiP Collaboration. Some compon
 * Please split your work into small commits with self-contained changes to make them easy to review and check.
 * To help us consistently improve the quality of our code, please try to follow the [C++](https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines) and [Python](https://github.com/ShipSoft/FairShip/wiki/Python-guidelines) guidelines.
 
-## Legacy releases (CVMFS + aliBuild, ≤26.04)
+## Legacy releases (CVMFS + aliBuild)
 
-These instructions are kept for users running existing CVMFS releases up to
-**26.04** and for legacy branches (`SHiP-2018`, `muflux`). New work should use
-[Using pixi](#using-pixi) instead; the
+aliBuild on top of a CVMFS-provided toolchain was the supported default up to
+and including release **26.05**. From **26.06** onwards [pixi](#using-pixi) is
+the recommended build path; CVMFS images of newer releases (e.g. 26.06) may
+still be published for convenience, but are no longer the primary
+distribution channel. These instructions are kept for users running existing
+CVMFS releases and for legacy branches (`SHiP-2018`, `muflux`). The
 [shipdist](https://github.com/ShipSoft/shipdist) repository (aliBuild recipes)
-is no longer maintained.
+is now in maintenance mode.
 
 ### With CVMFS (lxplus and similar)
 
@@ -215,7 +218,7 @@ is no longer maintained.
     ```bash
     ls /cvmfs/ship.cern.ch
     ```
-3. Source the chosen release (≤ 26.04; see the
+3. Source the chosen release (see the
    [cvmfs_release](https://github.com/ShipSoft/cvmfs_release) repo for the
    list):
     ```bash

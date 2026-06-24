@@ -14,17 +14,68 @@ it in future.
 
 ### Added
 
+### Changed
+
+### Fixed
+
+* Fix check of existing particle pdg in makeCascade
+
+* Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
+* Fix call to next Pythia event generation
+### Removed
+
+* Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
+
+## 26.06 - 2026-06-18
+
+### Added
+
 * Add experimental script to import Muons and Matter pkl files
-* Add TTreeGenerator to read M&M ntuples
 * Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
+* Add `TTreeGenerator` to read events from ROOT TTrees (including the converted M&M ntuples)
+* Add `--ttree` option to `run_simScript.py` for ROOT TTree input
+* Add `--target_composition` option to `makeDecay`, defaulting to Tungsten and mirroring the `makeCascade.py` flag
+* Add `--validation` flag to `run_simScript.py` and `ShipReco.py` that prints generator, output, pattern-recognition, and fit counters
+* Add `--remote-input` flag to `run_simScript.py` for direct `root://…` input without local download
+* Add `--reproducible` mode and explicit, reusable run IDs in `run_simScript.py` / `run_fixedTarget.py`, with consistent metadata written into output headers
+* Add pixi environment (`pixi.toml`) and pixi-based CI build workflow as the new primary build path
+* Add CI sim-chain tasks driven by pixi
+* Add CI workflow to build and publish pixi-based container images on release
+* Add REUSE compliance badge to README
+* Add pixi installation instructions to README
 
 ### Changed
 
 * Change A scaling in makeDecay
+* Rewrite README to be pixi-first
+* Derive project version from git tags via `git describe` instead of hardcoded `0.0.0`
+* Migrate CI to shared `ShipSoft/.github` reusable workflows
 
 ### Fixed
 
+* Validate `-A` choice for `--DarkPhoton` runs; previously silently misconfigured (#1166)
+* Always allocate `validation_stats` dict and fix `GetHitID` typo in `shipDigiReco`
+* Harden generator input handling: fail-fast on missing files, trees, branches, and out-of-range start events, and switch to `TFile::Open` for remote-input compatibility
+* Prevent MuonBack post-processing double-free of output `TFile` at interpreter shutdown (#1226)
+* Null-init `MuonBackGenerator` pointers and drop dead `CloseFile` path
+* Keep `BranchList` `TObjStrings` alive under ROOT 6.40 PyROOT ownership changes
+* Load `libEGPythia6` in `shipRoot_conf`
+* Remove unnecessary `libG4clhep` loads
+* Chain `Initialize` through immediate parent in `exitHadronAbsorber`
+* Address real bugs surfaced by `pyrefly` static type-checking
+* Remove throwing static initializers
+* Initialise variables before conditional branches
+* Replace `atof`/`atoi` with `std::stod`/`std::stoi` for proper error handling
+* Replace floating-point loop counters with integers
+* Use `size_t` for `ShipMuonShield` corner-index loop
+* Use `git rev-parse` in `retrieveGitTags` for Python 3 compatibility
+* Correct DOI badge link in README
+* Fix help-message text in `makeDecay`
+
 ### Removed
+
+* Drop unused HepMC dependency
+* Retire aliBuild-driven `build-run.yml`; replaced by `pixi-build.yml`
 
 ## 26.05 - 2026-05-25
 

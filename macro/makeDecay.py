@@ -169,7 +169,7 @@ for n in range(nEvents):
             nDsprim += 1
     P8.event.reset()
     P8.event.append(int(sTree.id), 1, 0, 0, sTree.px, sTree.py, sTree.pz, sTree.E, sTree.M, 0.0, 9.0)
-    next(P8)
+    P8.next()
     # P8.event.list()
     for n in range(len(P8.event)):
         # ask for stable particles

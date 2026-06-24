@@ -1,7 +1,7 @@
 name: Container Build
 on:
   push:
-    tags: ['v*']
+    tags: ['[0-9]*']
   workflow_dispatch:
     inputs:
       ref:
@@ -33,18 +33,19 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ghcr.io/shipsoft/fairship
-          # FairShip uses CalVer (e.g. v26.05, v26.05.1) — semver rules would
-          # silently drop these (strict semver rejects leading-zero ".05").
-          # The two type=match patterns are intentionally overlapping so a
-          # tag like v26.05.1 also updates :26.05, mirroring the moving
-          # minor-line pointer that type=semver/{{major}}.{{minor}} produces.
+          # FairShip uses unprefixed CalVer tags (e.g. 26.06, 26.06.1) —
+          # semver rules would silently drop these (strict semver rejects
+          # leading-zero ".05/.06"). The (\d+\.\d+)\.\d+ pattern only matches
+          # three-component tags, so a patch tag like 26.06.1 also updates
+          # the :26.06 minor-line pointer, while a plain 26.06 tag emits a
+          # single 26.06 image tag without a redundant duplicate.
           tags: |
             type=ref,event=tag
-            type=match,pattern=v(\d+\.\d+\.\d+),group=1
-            type=match,pattern=v(\d+\.\d+),group=1
+            type=match,pattern=(\d+\.\d+\.\d+),group=1
+            type=match,pattern=(\d+\.\d+)\.\d+,group=1
             type=ref,event=branch
             type=sha,format=short
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
       - uses: docker/build-push-action@v7
         with:
           context: .
