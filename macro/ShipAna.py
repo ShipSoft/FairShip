@@ -156,7 +156,7 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
     a, _u = PosDir[t1]["position"], PosDir[t1]["direction"]
     c, v = PosDir[t2]["position"], PosDir[t2]["direction"]
     Vsq = v.Dot(v)
-    Usq = _u_.Dot(_u)
+    Usq = _u.Dot(_u)
     UV = _u.Dot(v)
     ca = c - a
     denom = Usq * Vsq - UV**2
@@ -176,7 +176,7 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
                     KD = 1
                 if k == 0 or k == 2:
                     # cova and covc
-                    temp = (_u[j] * Vsq - v[j] * UV) * u[i] + (_u[j] * UV - v[j] * Usq) * v[i]
+                    temp = (_u[j] * Vsq - v[j] * UV) * _u[i] + (_u[j] * UV - v[j] * Usq) * v[i]
                     sign = -1
                     if k == 2:
                         sign = +1
@@ -194,7 +194,7 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
                     # covv
                     aNAZ = denom * (2 * ca.Dot(_u) * v[j] - ca.Dot(v) * _u[j] - ca[j] * UV)
                     aZAN = (ca.Dot(_u) * Vsq - ca.Dot(v) * UV) * 2 * (v[j] * Usq - _u[j] * UV)
-                    bNAZ = denom * (ca.Dot(u) * u[j] - ca[j] * Usq)
+                    bNAZ = denom * (ca.Dot(_u) * _u[j] - ca[j] * Usq)
                     bZAN = (ca.Dot(_u) * UV - ca.Dot(v) * Usq) * 2 * (v[j] * Usq - _u[j] * UV)
                     T[i][3 * k + j] = 0.5 * (
                         Vb * KD + _u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)
