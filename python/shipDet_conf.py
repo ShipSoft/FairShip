@@ -265,6 +265,45 @@ def configure_strawtubes(yaml_file: str, ship_geo) -> None:
     detectorList.append(strawtubes)
 
 
+def configure_upstreamTagger(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.ubt_geo = AttrDict(config["UBT"])
+
+    # Straw tubes in decay vessel if vacuum, otherwise outside in air
+    ship_geo.ubt_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+
+    ship_geo.ubt_geo.frame_material = "DIRCcarbonFiber"
+
+    ubt = ROOT.UpstreamTagger(ship_geo.ubt_geo.medium)
+    ubt.SetzPositions(
+        ship_geo.UBTStation1.z,
+    )
+    ubt.SetApertureArea(ship_geo.ubt_geo.width, ship_geo.ubt_geo.height, ship_geo.ubt_geo.station_length)
+    ubt.SetStrawDiameter(
+        ship_geo.ubt_geo.outer_straw_diameter,
+        ship_geo.ubt_geo.wall_thickness,
+    )
+    ubt.SetStrawPitch(
+        ship_geo.ubt_geo.straw_pitch,
+        ship_geo.ubt_geo.y_layer_offset,
+    )
+    ubt.SetDeltazLayer(ship_geo.ubt_geo.delta_z_layer)
+    ubt.SetStereoAngle(ship_geo.ubt_geo.view_angle)
+    ubt.SetWireThickness(ship_geo.ubt_geo.wire_thickness)
+    ubt.SetDeltazView(ship_geo.ubt_geo.delta_z_view)
+    ubt.SetFrameMaterial(ship_geo.ubt_geo.frame_material)
+
+    # For digitization
+    #    strawtubes.SetStrawResolution(
+    #        ship_geo.strawtubesDigi.v_drift,
+    #        ship_geo.strawtubesDigi.sigma_spatial,
+    #    )
+
+    detectorList.append(ubt)
+
+
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
@@ -425,12 +464,7 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
-    upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
-    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
-    upstreamTagger.SetBoxDimensions(
-        ship_geo.UpstreamTagger.BoxX, ship_geo.UpstreamTagger.BoxY, ship_geo.UpstreamTagger.BoxZ
-    )
-    detectorList.append(upstreamTagger)
+    configure_upstreamTagger(os.path.join(os.environ["FAIRSHIP"], "geometry", "ubt_config.yaml"), ship_geo)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
     timeDet.SetZposition(ship_geo.TimeDet.z)
