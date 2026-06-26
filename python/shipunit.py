@@ -15,6 +15,14 @@
 """
 # $Id: hepunit.py 66892 2013-01-17 10:57:59Z gunter $
 
+import warnings
+
+warnings.warn(
+    "shipunit is deprecated and will be removed in a future release. Please use hepunits instead.",
+    category=UserWarning,
+    stacklevel=2,
+)
+
 # ==================================================================
 # imported from "SystemOfUnits.h"
 # ==================================================================

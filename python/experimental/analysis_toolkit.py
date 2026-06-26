@@ -4,10 +4,10 @@
 
 """Toolkit for Analysis."""
 
+import hepunits as u
 import numpy as np
 import pythia8_conf
 import ROOT
-import shipunit as u
 import yaml
 from ShipGeoConfig import AttrDict, load_from_root_file
 from tabulate import tabulate

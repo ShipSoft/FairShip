@@ -3,8 +3,8 @@
 
 from ctypes import c_double
 
+import hepunits as u
 import ROOT
-import shipunit as u
 
 
 def MCPointPrintOut(self) -> str:

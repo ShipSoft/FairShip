@@ -5,8 +5,8 @@
 import os
 from typing import Any
 
+import hepunits as u
 import ROOT
-import shipunit as u
 import yaml
 from ShipGeoConfig import AttrDict
 

@@ -5,10 +5,10 @@ import contextlib
 import os
 
 import darkphoton
+import hepunits as u
 import proton_bremsstrahlung
 import readDecayTable
 import ROOT
-import shipunit as u
 from method_logger import MethodLogger
 
 # Boundaries for production in meson decays

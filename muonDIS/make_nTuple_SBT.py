@@ -9,8 +9,8 @@ import csv
 import logging
 import os
 
+import hepunits as u
 import ROOT as r
-import shipunit as u
 from tabulate import tabulate
 
 pdg = r.TDatabasePDG.Instance()

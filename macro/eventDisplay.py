@@ -15,8 +15,8 @@ from argparse import ArgumentParser
 from array import array
 
 import decorators
+import hepunits as u
 import shipRoot_conf
-import shipunit as u
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
@@ -150,12 +150,12 @@ def printMCTrack(n: int, MCTrack) -> None:
     )
 
 
-def dump(pcut: float = 0) -> None:
+def dump(pcut_in_GeV: float = 0) -> None:
     print("   #         pid   px    py      pz     vx      vy       vz      mid")
     n = -1
     for mcp in sTree.MCTrack:
         n += 1
-        if mcp.GetP() / u.GeV < pcut:
+        if mcp.GetP() / u.GeV < pcut_in_GeV:
             continue
         printMCTrack(n, sTree.MCTrack)
 
@@ -1137,6 +1137,8 @@ def mydebug() -> None:
         )
     # Load geometry
     sGeo = ROOT.gGeoManager
+    sGeo.SetDefaultUnits(sGeo.kG4Units)
+    sGeo.LockDefaultUnits(ROOT.kTRUE)
     cave = sGeo.GetTopVolume()
     cave.Draw("ogl")
     # eve
@@ -1151,6 +1153,8 @@ def mydebug() -> None:
 
 def debugStraw(n) -> None:
     sGeo = ROOT.gGeoManager
+    sGeo.SetDefaultUnits(sGeo.kG4Units)
+    sGeo.LockDefaultUnits(ROOT.kTRUE)
     vols = sGeo.GetListOfVolumes()
     sTree = g.FindObjectAny("cbmsim")
     sTree.GetEntry(n)
@@ -1242,6 +1246,8 @@ if options.recoFile and _file_accessible(options.recoFile):
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree)
 sGeo = ROOT.gGeoManager
+sGeo.SetDefaultUnits(sGeo.kG4Units)
+sGeo.LockDefaultUnits(ROOT.kTRUE)
 top = sGeo.GetTopVolume()
 # manipulate colors and transparency before scene created
 speedUp()

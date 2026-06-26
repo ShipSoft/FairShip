@@ -36,9 +36,9 @@ import logging
 import os
 import sys
 
+import hepunits as u
 import numpy as np
 import ROOT
-import shipunit as u
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)

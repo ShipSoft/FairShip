@@ -14,7 +14,11 @@ it in future.
 
 ### Added
 
+* Add dependency on Scikit-HEP's `hepunits` package, replacing privately maintained `shipunit`.
+
 ### Changed
+
+* Python code adapted to use the `hepunits` package instead of `shipunit`.
 
 ### Fixed
 

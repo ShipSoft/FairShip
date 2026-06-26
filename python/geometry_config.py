@@ -3,7 +3,7 @@
 
 import os
 
-import shipunit as u
+import hepunits as u
 import yaml
 from ShipGeoConfig import AttrDict, Config
 

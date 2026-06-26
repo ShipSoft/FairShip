@@ -3,13 +3,15 @@
 
 import sys
 
+import hepunits as u
 import ROOT
 import rootUtils as ut
-import shipunit as u
 
 
 def run():
     fGeo = ROOT.gGeoManager
+    fGeo.SetDefaultUnits(fGeo.kG4Units)
+    fGeo.LockDefaultUnits(ROOT.kTRUE)
     run = sys.modules["__main__"].run
     if hasattr(sys.modules["__main__"], "h"):
         h = sys.modules["__main__"].h

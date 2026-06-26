@@ -6,9 +6,9 @@ import json
 import os
 
 import geometry_config
+import hepunits as u
 import ROOT
 import shipRoot_conf
-import shipunit as u
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"

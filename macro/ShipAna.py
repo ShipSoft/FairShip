@@ -5,10 +5,10 @@
 from argparse import ArgumentParser
 
 import decorators
+import hepunits as u
 import ROOT
 import rootUtils as ut
 import shipRoot_conf
-import shipunit as u
 from ShipGeoConfig import load_from_root_file
 
 shipRoot_conf.configure()
@@ -153,19 +153,19 @@ import TrackExtrapolateTool
 
 def VertexError(t1, t2, PosDir, CovMat, scalFac):
     # with improved Vx x,y resolution
-    a, u = PosDir[t1]["position"], PosDir[t1]["direction"]
+    a, _u = PosDir[t1]["position"], PosDir[t1]["direction"]
     c, v = PosDir[t2]["position"], PosDir[t2]["direction"]
     Vsq = v.Dot(v)
-    Usq = u.Dot(u)
-    UV = u.Dot(v)
+    Usq = _u.Dot(_u)
+    UV = _u.Dot(v)
     ca = c - a
     denom = Usq * Vsq - UV**2
-    tmp2 = Vsq * u - UV * v
+    tmp2 = Vsq * _u - UV * v
     Va = ca.Dot(tmp2) / denom
-    tmp2 = UV * u - Usq * v
+    tmp2 = UV * _u - Usq * v
     Vb = ca.Dot(tmp2) / denom
-    X = (a + c + Va * u + Vb * v) * 0.5
-    l1 = a - X + u * Va  # l2 = c - X + v*Vb
+    X = (a + c + Va * _u + Vb * v) * 0.5
+    l1 = a - X + _u * Va  # l2 = c - X + v*Vb
     dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))
     T = ROOT.TMatrixD(3, 12)
     for i in range(3):
@@ -176,7 +176,7 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
                     KD = 1
                 if k == 0 or k == 2:
                     # cova and covc
-                    temp = (u[j] * Vsq - v[j] * UV) * u[i] + (u[j] * UV - v[j] * Usq) * v[i]
+                    temp = (_u[j] * Vsq - v[j] * UV) * _u[i] + (_u[j] * UV - v[j] * Usq) * v[i]
                     sign = -1
                     if k == 2:
                         sign = +1
@@ -184,20 +184,20 @@ def VertexError(t1, t2, PosDir, CovMat, scalFac):
                 elif k == 1:
                     # covu
                     aNAZ = denom * (ca[j] * Vsq - v.Dot(ca) * v[j])
-                    aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (u[j] * Vsq - v[j] * UV)
-                    bNAZ = denom * (ca[j] * UV + (u.Dot(ca) * v[j]) - 2 * ca.Dot(v) * u[j])
-                    bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (u[j] * Vsq - v[j] * UV)
+                    aZAN = (ca.Dot(_u) * Vsq - ca.Dot(v) * UV) * 2 * (_u[j] * Vsq - v[j] * UV)
+                    bNAZ = denom * (ca[j] * UV + (_u.Dot(ca) * v[j]) - 2 * ca.Dot(v) * _u[j])
+                    bZAN = (ca.Dot(_u) * UV - ca.Dot(v) * Usq) * 2 * (_u[j] * Vsq - v[j] * UV)
                     T[i][3 * k + j] = 0.5 * (
-                        Va * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)
+                        Va * KD + _u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)
                     )
                 elif k == 3:
                     # covv
-                    aNAZ = denom * (2 * ca.Dot(u) * v[j] - ca.Dot(v) * u[j] - ca[j] * UV)
-                    aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (v[j] * Usq - u[j] * UV)
-                    bNAZ = denom * (ca.Dot(u) * u[j] - ca[j] * Usq)
-                    bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (v[j] * Usq - u[j] * UV)
+                    aNAZ = denom * (2 * ca.Dot(_u) * v[j] - ca.Dot(v) * _u[j] - ca[j] * UV)
+                    aZAN = (ca.Dot(_u) * Vsq - ca.Dot(v) * UV) * 2 * (v[j] * Usq - _u[j] * UV)
+                    bNAZ = denom * (ca.Dot(_u) * _u[j] - ca[j] * Usq)
+                    bZAN = (ca.Dot(_u) * UV - ca.Dot(v) * Usq) * 2 * (v[j] * Usq - _u[j] * UV)
                     T[i][3 * k + j] = 0.5 * (
-                        Vb * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)
+                        Vb * KD + _u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)
                     )
     transT = ROOT.TMatrixD(12, 3)
     transT.Transpose(T)
@@ -337,18 +337,18 @@ def myVertex(t1, t2, PosDir):
     # closest distance between two tracks
     # d = |pq . u x v|/|u x v|
     a = ROOT.TVector3(PosDir[t1][0](0), PosDir[t1][0](1), PosDir[t1][0](2))
-    u = ROOT.TVector3(PosDir[t1][1](0), PosDir[t1][1](1), PosDir[t1][1](2))
+    _u = ROOT.TVector3(PosDir[t1][1](0), PosDir[t1][1](1), PosDir[t1][1](2))
     c = ROOT.TVector3(PosDir[t2][0](0), PosDir[t2][0](1), PosDir[t2][0](2))
     v = ROOT.TVector3(PosDir[t2][1](0), PosDir[t2][1](1), PosDir[t2][1](2))
     pq = a - c
-    uCrossv = u.Cross(v)
+    uCrossv = _u.Cross(v)
     dist = pq.Dot(uCrossv) / (uCrossv.Mag() + 1e-8)
-    # u.a - u.c + s*|u|**2 - u.v*t    = 0
-    # v.a - v.c + s*v.u    - t*|v|**2 = 0
-    E = u.Dot(a) - u.Dot(c)
+    # _u.a - _u.c + s*|u|**2 - _u.v*t    = 0
+    # v.a - v.c + s*v._u    - t*|v|**2 = 0
+    E = _u.Dot(a) - _u.Dot(c)
     F = v.Dot(a) - v.Dot(c)
-    A, B = u.Mag2(), -u.Dot(v)
-    C, D = u.Dot(v), -v.Mag2()
+    A, B = _u.Mag2(), -_u.Dot(v)
+    C, D = _u.Dot(v), -v.Mag2()
     t = -(C * E - A * F) / (B * C - A * D)
     X = c.x() + v.x() * t
     Y = c.y() + v.y() * t

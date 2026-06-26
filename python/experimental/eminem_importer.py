@@ -20,9 +20,9 @@ import pickle
 import sys
 from pathlib import Path
 
+import hepunits as u
 import numpy as np
 import ROOT
-import shipunit as u
 
 
 def parse_arguments():
@@ -175,7 +175,7 @@ def load_custom_config(config_path):
 
 def parse_custom_config_units(custom_config):
     """
-    Parse custom configuration and convert string unit representations to shipunit objects.
+    Parse custom configuration and convert string unit representations to hepunits objects.
 
     Args:
         custom_config (dict): Custom configuration dictionary
@@ -183,7 +183,7 @@ def parse_custom_config_units(custom_config):
     Returns:
         dict: Configuration with parsed units
     """
-    # Common unit mappings for shipunit
+    # Common unit mappings for hepunits
     unit_map = {
         "m": u.m,
         "cm": u.cm,
@@ -205,7 +205,7 @@ def parse_custom_config_units(custom_config):
     for col_name, col_config in custom_config.items():
         parsed_col_config = col_config.copy()
 
-        # Parse unit strings to shipunit objects
+        # Parse unit strings to hepunits objects
         if "unit" in col_config and isinstance(col_config["unit"], str):
             unit_str = col_config["unit"]
             if unit_str in unit_map:
@@ -268,7 +268,7 @@ def get_column_config(custom_config_path=None):
     if custom_config_path:
         try:
             custom_config = load_custom_config(custom_config_path)
-            # Parse string unit representations back to shipunit objects
+            # Parse string unit representations back to hepunits objects
             return parse_custom_config_units(custom_config)
         except Exception as e:
             print(f"Error: Could not load custom config: {e}")
@@ -339,7 +339,7 @@ def apply_column_transformation(data_column, config):
         config (dict): Column configuration
 
     Returns:
-        numpy.ndarray or shipunit quantity: Transformed data column
+        numpy.ndarray or hepunits quantity: Transformed data column
     """
     result = data_column.copy()
 
