@@ -13,6 +13,7 @@ it in future.
 ## Unreleased
 
 ### Added
+* Add option to split kaons and pions right before they decay, to increase the number of muons
 
 ### Changed
 
