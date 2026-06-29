@@ -1,7 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9":[5,0,95,4],
-"namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32":[5,0,95,12],
 "namespacestudy__GammaConv.html#aff680131360b4875e5bc81afd58165de":[5,0,95,26],
 "namespacestudy__muMSC.html":[5,0,96],
 "namespacestudy__muMSC.html#a04613d86a219f5aeb04cb1e36481376f":[5,0,96,15],
@@ -249,5 +247,7 @@ var NAVTREEINDEX26 =
 "runPythia8_8py.html#a1a8d7ca59e772a0a5007e9cb0463ac57":[7,0,6,23,26],
 "runPythia8_8py.html#a1bdc1a9234189ec12e0c0ec2cbd7b467":[7,0,6,23,32],
 "runPythia8_8py.html#a24680e77a16421da609473d84823d0ad":[7,0,6,23,46],
-"runPythia8_8py.html#a37ac80fc30a94015d44df3e31962380a":[7,0,6,23,9]
+"runPythia8_8py.html#a37ac80fc30a94015d44df3e31962380a":[7,0,6,23,9],
+"runPythia8_8py.html#a37c672aa66546c16eb77e37e8aaa8806":[7,0,6,23,31],
+"runPythia8_8py.html#a380a3c892c2405b9d69e49713450f797":[7,0,6,23,23]
 };

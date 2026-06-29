@@ -1,7 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"namespacesaveBasicParameters.html#a59e9b134da12cfd065718f6ac6a08e4b":[5,0,74,0],
-"namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389":[5,0,74,1],
 "namespaceshipDet__conf.html":[5,0,79],
 "namespaceshipDet__conf.html#a0507a6f94174d43157cb96b2984eb98d":[5,0,79,6],
 "namespaceshipDet__conf.html#a2f1dbf4e6c24e237425ed38e92d377db":[5,0,79,4],
@@ -249,5 +247,7 @@ var NAVTREEINDEX25 =
 "namespacestudy__GammaConv.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9":[5,0,95,2],
 "namespacestudy__GammaConv.html#ade4e48b9a86cfadba1da8efe7fe47452":[5,0,95,9],
 "namespacestudy__GammaConv.html#ae5ea996dca81cea56362bb1e3000a3da":[5,0,95,11],
-"namespacestudy__GammaConv.html#ae9f62388c418118cb93b9514b1cf9c0d":[5,0,95,10]
+"namespacestudy__GammaConv.html#ae9f62388c418118cb93b9514b1cf9c0d":[5,0,95,10],
+"namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9":[5,0,95,4],
+"namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32":[5,0,95,12]
 };

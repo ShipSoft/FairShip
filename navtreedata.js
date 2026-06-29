@@ -211,12 +211,12 @@ var NAVTREEINDEX =
 "namespacemakeGenieEvents.html#ab534ac1a6f852d893e005ce778e06a05",
 "namespacemembers_vars_v.html",
 "namespacerun__fixedTarget.html#a2ecf6a13590cfb316a6f17be3fb51f35",
-"namespacesaveBasicParameters.html#a59e9b134da12cfd065718f6ac6a08e4b",
-"namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9",
-"runPythia8_8py.html#a37c672aa66546c16eb77e37e8aaa8806",
-"run__simScript_8py.html#a7d8472b792e7e39ff6b5ee3f54e39b8d",
-"shipunit_8py.html#a97fde45bff189307cbb2578825ad3203",
-"study__thinTarget_8py.html#aa9ff8642ba3746c2603b01b6f1595c8b"
+"namespaceshipDet__conf.html",
+"namespacestudy__GammaConv.html#aff680131360b4875e5bc81afd58165de",
+"runPythia8_8py.html#a395a6e06f74d001ce45ae155209001ff",
+"run__simScript_8py.html#a893491cd4d054b1dc81038ab02105345",
+"shipunit_8py.html#aa0dada46fb73282f13bbab53e61082fe",
+"study__thinTarget_8py.html#abab42de4ec96b6e76ef8b5f2320acbf2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
