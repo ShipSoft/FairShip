@@ -1,0 +1,19 @@
+name: Lint
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+  merge_group:
+concurrency:
+  group: lint-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  prek:
+    uses: ShipSoft/.github/.github/workflows/prek.yml@main
+    with:
+      # mypy was skipped on pre-commit.ci; keep it local-only for now.
+      extra-args: --skip mypy

@@ -128,3 +128,48 @@ cmd = "bash -c 'set -o pipefail; GCC_INC=$(x86_64-conda-linux-gnu-gcc -print-fil
 
 [tasks.ci-pyrefly]
 cmd = "pyrefly check --output-format=github $PY_FILES"
+
+# Linting / formatting toolchain. prek orchestrates the hooks; the tools come
+# from this environment so versions are tracked in pixi.lock and run identically
+# everywhere (including NixOS). See .pre-commit-config.yaml. This is separate
+# from the build env so CI lint runs install only these lightweight tools.
+[feature.lint.dependencies]
+prek = "*"
+python = ">=3.11"
+ruff = "*"
+clang-format = "22.*"
+codespell = "*"
+reuse = "*"
+cffconvert = "*"
+pyupgrade = "*"
+mypy = "*"
+yamlfmt = "*"
+pre-commit-hooks = "*"  # provides the `check-ast` entry point
+
+# Pinned via PyPI to match the previous hook revs exactly:
+#  - conda-forge's cpplint is stuck at 1.6.0 (a different, stale fork); the
+#    maintained cpplint/cpplint fork lives on PyPI.
+#  - conda-forge's gersemi (0.24.0) lags the repo's 0.27.7 and would reflow
+#    CMake files.
+# mypy stubs are pinned to match the previous additional_dependencies.
+[feature.lint.pypi-dependencies]
+cpplint = "==2.0.2"
+gersemi = "==0.27.7"
+types-PyYAML = "*"
+types-tabulate = "*"
+typing-extensions = ">=4.8"
+
+[feature.lint.tasks]
+lint = "prek run --all-files"
+# Install the git hooks and route them through `pixi run` so the conda-provided
+# hook tools are on PATH at commit time (required on NixOS, where the tools are
+# not runnable without pixi activation).
+install-hooks = '''
+prek install --hook-type pre-commit
+hooks=$(git rev-parse --git-path hooks)
+sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/pre-commit"
+'''
+
+[environments]
+default = { solve-group = "default" }
+lint = { features = ["lint"], solve-group = "lint" }

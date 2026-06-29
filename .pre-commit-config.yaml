@@ -1,6 +1,11 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# Run with prek (https://github.com/j178/prek), a drop-in pre-commit replacement.
+# The hook tools are provided by the pixi `lint` environment (see pixi.toml), so
+# versions are tracked in pixi.lock and the hooks run identically everywhere.
+#
+#   pixi run install-hooks   # one-off: install the git hooks
+#   pixi run lint            # run all hooks on all files
 repos:
+  # prek runs these as native Rust builtins (no environment, fully portable).
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -10,45 +15,58 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files
-      - id: check-ast
       - id: check-merge-conflict
       - id: check-vcs-permalinks
       - id: check-executables-have-shebangs
       - id: mixed-line-ending
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.18
+  # Tools below come from the pixi `lint` environment via language: system.
+  - repo: local
     hooks:
+      # check-ast has no prek builtin; entry comes from the pre-commit-hooks
+      # package in the lint environment.
+      - id: check-ast
+        name: check python ast
+        language: system
+        entry: check-ast
+        types: [python]
       - id: ruff-check
-        types_or: [python, pyi, jupyter]
+        name: ruff check
+        language: system
+        entry: ruff check --force-exclude
         args: [--fix, --show-fixes]
-      - id: ruff-format
         types_or: [python, pyi, jupyter]
-  - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.5
-    hooks:
+      - id: ruff-format
+        name: ruff format
+        language: system
+        entry: ruff format --force-exclude
+        types_or: [python, pyi, jupyter]
       - id: clang-format
+        name: clang-format
+        language: system
+        entry: clang-format -i
         types_or: [c++, c, cuda]
         exclude: LinkDef.h
-  - repo: https://github.com/cpplint/cpplint
-    rev: 2.0.2
-    hooks:
       - id: cpplint
+        name: cpplint
+        language: system
+        entry: cpplint
+        types: [c++]
         exclude: LinkDef.h
-  - repo: https://github.com/codespell-project/codespell
-    rev: "v2.4.2"
-    hooks:
       - id: codespell
-        additional_dependencies: [tomli]
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
-    hooks:
+        name: codespell
+        language: system
+        entry: codespell
+        types: [text]
+        exclude: ^pixi\.lock$
       - id: pyupgrade
-        args: [--py312-plus]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
-    hooks:
+        name: pyupgrade
+        language: system
+        entry: pyupgrade --py312-plus
+        types: [python]
       - id: mypy
         name: mypy (type-check)
+        language: system
+        entry: mypy
         types_or: [python, pyi]
         files: ^(\.github/scripts/annotate_build\.py|python/experimental/check_overlaps\.py|python/experimental/compare_histograms\.py|macro/makeGenieEvents\.py|macro/convertTreeToRNTuple\.py|macro/inspect_tree_branches\.py|python/genie_interface\.py|python/BaseDetector\.py|python/detectors/UpstreamTaggerDetector\.py|python/ShipGeoConfig\.py|python/method_logger\.py|python/decorators\.py|python/pythia8_conf_utils\.py|python/shipRoot_conf\.py|python/shipVeto\.py|python/rootUtils\.py|python/geomGeant4\.py|python/readDecayTable\.py|python/shipDigiReco\.py)$
         args:
@@ -58,29 +76,26 @@ repos:
           - --pretty
           - --follow-imports=skip
           - --disable-error-code=name-defined
-        additional_dependencies:
-          - types-PyYAML
-          - types-tabulate
-          - typing-extensions>=4.8
-  - repo: https://github.com/citation-file-format/cffconvert
-    rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
-    hooks:
       - id: validate-cff
-  - repo: https://github.com/fsfe/reuse-tool
-    rev: v6.2.0
-    hooks:
+        name: validate CITATION.cff
+        language: system
+        entry: cffconvert --validate
+        files: ^CITATION\.cff$
+        pass_filenames: false
       - id: reuse
-  - repo: https://github.com/BlankSpruce/gersemi-pre-commit
-    rev: 0.27.7
-    hooks:
+        name: reuse lint
+        language: system
+        entry: reuse lint
+        pass_filenames: false
+        always_run: true
       - id: gersemi
-  - repo: https://github.com/google/yamlfmt
-    rev: v0.21.0
-    hooks:
+        name: gersemi
+        language: system
+        entry: gersemi -i
+        files: (\.cmake|CMakeLists\.txt)$
       - id: yamlfmt
+        name: yamlfmt
+        language: system
+        entry: yamlfmt
+        types: [yaml]
         exclude: python/hnl_production|\.clang-tidy|\.clang-format
-ci:
-  autofix_prs: true
-  autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
-  autofix_commit_msg: "style: pre-commit fixes"
-  skip: [mypy]
