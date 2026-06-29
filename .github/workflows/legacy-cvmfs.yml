@@ -14,6 +14,7 @@ permissions:
   contents: read
 jobs:
   build-and-test:
+    name: Build & test (${{ matrix.version }})
     runs-on: self-hosted
     strategy:
       fail-fast: false
