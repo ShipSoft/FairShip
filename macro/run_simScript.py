@@ -1001,16 +1001,16 @@ if not options.reproducible:
 # remove empty events
 if options.muonback:
     tmpFile = outFile + "tmp"
-    xxx = outFile.split("/")
-    check = xxx[len(xxx) - 1]
+    target = os.path.normpath(outFile)
     fin: ROOT.TFile | None = None
     for ff in ROOT.gROOT.GetListOfFiles():
-        nm = ff.GetName().split("/")
-        if nm[len(nm) - 1] == check:
+        if os.path.normpath(ff.GetName()) == target:
             fin = cast(ROOT.TFile, ff)
+            break
     if fin is None:
         fin = ROOT.TFile.Open(outFile)
-    assert fin is not None  # TFile.Open returns nullptr on failure; treat that as fatal
+    if not fin or fin.IsZombie():
+        raise OSError(f"Failed to open output file: {outFile}")
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
     fSink = ROOT.FairRootFileSink(fout)
