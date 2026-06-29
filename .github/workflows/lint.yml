@@ -13,6 +13,7 @@ permissions:
   contents: read
 jobs:
   prek:
+    name: Pre-commit (prek)
     uses: ShipSoft/.github/.github/workflows/prek.yml@main
     with:
       # mypy was skipped on pre-commit.ci; keep it local-only for now.

@@ -1,4 +1,4 @@
-name: Pixi Build
+name: CI
 on:
   pull_request:
     branches: [master]
@@ -14,6 +14,7 @@ permissions:
   contents: read
 jobs:
   generate-matrix:
+    name: Generate test matrix
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,6 +22,7 @@ jobs:
       - id: set-matrix
         run: echo 'matrix={"vessel":["vacuums","helium"],"snd_design":["all"],"muon_shield":["TRY_2025"]}' >> "$GITHUB_OUTPUT"
   build:
+    name: Build & unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -44,6 +46,7 @@ jobs:
           path: build/
           retention-days: 1
   run-sim-chain:
+    name: Simulation chain (${{ matrix.vessel }})
     needs: [generate-matrix, build]
     runs-on: ubuntu-latest
     strategy:
@@ -64,15 +67,15 @@ jobs:
         with:
           name: build
           path: build/
-      - name: Sim
+      - name: Simulation
         run: pixi run --locked ci-sim ${{ matrix.vessel }} ${{ matrix.snd_design }} ${{ matrix.muon_shield }}
       - name: Overlap check
         run: pixi run --locked ci-overlap-check
-      - name: Geo info
+      - name: Geometry info
         run: pixi run --locked ci-geo-info
-      - name: Reco
+      - name: Reconstruction
         run: pixi run --locked ci-reco
-      - name: Ana
+      - name: Analysis
         run: pixi run --locked ci-ana
       - name: Analysis example
         run: pixi run --locked ci-analysis-example
@@ -84,6 +87,7 @@ jobs:
           name: plots-sim-chain-${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
           path: plots/
   run-tracking-benchmark:
+    name: Tracking benchmark
     needs: build
     runs-on: ubuntu-latest
     env:
@@ -117,6 +121,7 @@ jobs:
           name: plots-tracking-benchmark
           path: plots/
   run-fixed-target:
+    name: Fixed-target simulation
     needs: build
     runs-on: ubuntu-latest
     env:
@@ -148,6 +153,7 @@ jobs:
           name: plots-fixed-target
           path: plots/
   run-muonback:
+    name: Muon-background smoke test
     needs: build
     runs-on: ubuntu-latest
     env:
@@ -164,7 +170,7 @@ jobs:
         with:
           name: build
           path: build/
-      - name: MuonBack smoke
+      - name: Muon-background smoke test
         run: pixi run --locked ci-sim-muonback
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v7
@@ -172,6 +178,7 @@ jobs:
           name: root-files-muonback
           path: sim_ci-muonback.root
   static-analysis:
+    name: Static analysis (PR diff)
     if: github.event_name == 'pull_request'
     needs: build
     runs-on: ubuntu-latest
@@ -206,6 +213,7 @@ jobs:
           PY_FILES: ${{ steps.files.outputs.py }}
         run: pixi run --locked ci-pyrefly
   static-analysis-push:
+    name: Static analysis (full)
     if: github.event_name == 'push'
     needs: build
     runs-on: ubuntu-latest
@@ -243,6 +251,7 @@ jobs:
         continue-on-error: true
         run: pixi run --locked -- pyrefly check --output-format=github python macro
   deploy-plots:
+    name: Deploy plots
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: [run-tracking-benchmark, run-sim-chain, run-fixed-target]
@@ -340,7 +349,8 @@ jobs:
                 body: body,
               });
             }
-  ci:
+  all-checks:
+    name: All checks passed
     if: always()
     runs-on: ubuntu-latest
     needs: [build, run-sim-chain, run-fixed-target, run-tracking-benchmark, run-muonback]

@@ -1,10 +1,11 @@
-name: Update lock files
+name: Update Lock Files
 on:
   workflow_dispatch:
   schedule:
     - cron: 0 5 1 * *
 jobs:
   pixi-update:
+    name: Update pixi lock
     uses: ShipSoft/.github/.github/workflows/pixi-lock-update.yml@main
     with:
       base: master

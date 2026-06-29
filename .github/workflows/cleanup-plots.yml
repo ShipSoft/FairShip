@@ -1,4 +1,4 @@
-name: Cleanup old PR plots
+name: Cleanup Plots
 on:
   schedule:
     - cron: '0 3 * * 0' # Weekly, Sunday 03:00 UTC
@@ -8,6 +8,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   cleanup:
+    name: Clean up old plots
     runs-on: ubuntu-latest
     permissions:
       contents: write
