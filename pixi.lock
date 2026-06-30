@@ -400,7 +400,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/webencodings-0.5.1-pyhd8ed1ab_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/websocket-client-1.9.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-4.1.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260608+fcf8bbe-hc97bc57_3.conda
+      - conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260622+f5bb9fc-hc97bc57_0.conda
       - conda: https://prefix.dev/ship/linux-64/fairroot-19.0.1-hb0f4dca_11.conda
       - conda: https://prefix.dev/ship/linux-64/geant3-4.5-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/geant4-vmc-6.8-hb0f4dca_6.conda
@@ -812,7 +812,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/webencodings-0.5.1-pyhd8ed1ab_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/websocket-client-1.9.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-4.1.0-pyhcf101f3_0.conda
-      - conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260608+fcf8bbe-hc97bc57_3.conda
+      - conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260622+f5bb9fc-hc97bc57_0.conda
       - conda: https://prefix.dev/ship/linux-64/fairroot-19.0.1-hb0f4dca_11.conda
       - conda: https://prefix.dev/ship/linux-64/geant3-4.5-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/geant4-vmc-6.8-hb0f4dca_6.conda
@@ -7809,26 +7809,26 @@ packages:
   run_exports: {}
   size: 24190
   timestamp: 1779159948016
-- conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260608+fcf8bbe-hc97bc57_3.conda
-  sha256: f220536dccb56462f50df37f2f9166a15effd39a46d4de6fdf90c2e33ae574d4
-  md5: f1cd34cd2358669dc6e1d65a2e1769b0
+- conda: https://prefix.dev/ship/linux-64/acts-ship-0.0.0.dev20260622+f5bb9fc-hc97bc57_0.conda
+  sha256: b3aada2ed4439ac12193eb33d55eaf36de55262737186a59d93ff18b51bf7fef
+  md5: 3bd8a38bc02334d6e8cc5e9dfb3dd30c
   depends:
   - python 3.13.*
   - hepmc3 <3.3.1
   - libstdcxx >=15
   - libgcc >=15
   - __glibc >=2.17,<3.0.a0
-  - libboost >=1.90.0,<1.91.0a0
-  - root_base >=6.40.2,<6.40.3.0a0
   - python_abi 3.13.* *_cp313
   - root_cxx_standard ==20
+  - libboost >=1.90.0,<1.91.0a0
   - tbb >=2023.0.0
+  - root_base >=6.40.2,<6.40.3.0a0
   license: MPL-2.0
   run_exports:
     weak:
-    - acts-ship >=0.0.0.dev20260608+fcf8bbe,<0.1.0a0
-  size: 10153812
-  timestamp: 1782750904814
+    - acts-ship >=0.0.0.dev20260622+f5bb9fc,<0.1.0a0
+  size: 10157178
+  timestamp: 1782809476512
 - conda: https://prefix.dev/ship/linux-64/fairroot-19.0.1-hb0f4dca_11.conda
   sha256: bf98f3797a5ffbcf607c8942baadb0006c63e1543ff847c44582699161b036ee
   md5: 68e356fb523d2bc7e70a5e0995d340c1
