@@ -546,7 +546,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  135</span>                <span class="comment"># ignore this for background studies</span></div>
 <div class="line"><span class="lineno">  136</span>                <span class="keywordflow">if</span> PosDirCharge[t2][<span class="stringliteral">&quot;charge&quot;</span>] == c1:</div>
 <div class="line"><span class="lineno">  137</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  138</span>                newPos, doca = self.VertexError(t1, t2, PosDirCharge)</div>
+<div class="line"><span class="lineno">  138</span>                newPos, _covX, doca = self.VertexError(t1, t2, PosDirCharge)</div>
 <div class="line"><span class="lineno">  139</span>                <span class="comment"># Extrapolate both tracks toward the initial vertex</span></div>
 <div class="line"><span class="lineno">  140</span>                <span class="comment"># estimate in steps to avoid long backward extrapolation</span></div>
 <div class="line"><span class="lineno">  141</span>                <span class="comment"># through the magnetic field which causes RK failures.</span></div>
@@ -575,7 +575,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  164</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc:</div>
 <div class="line"><span class="lineno">  165</span>                    <span class="keywordflow">continue</span></div>
 <div class="line"><span class="lineno">  166</span>                <span class="comment"># Recompute DOCA from the extrapolated positions</span></div>
-<div class="line"><span class="lineno">  167</span>                newPos, doca = self.VertexError(t1, t2, extrapolatedPosDir)</div>
+<div class="line"><span class="lineno">  167</span>                newPos, _covX, doca = self.VertexError(t1, t2, extrapolatedPosDir)</div>
 <div class="line"><span class="lineno">  168</span>                <span class="comment"># as we have learned, need iterative procedure</span></div>
 <div class="line"><span class="lineno">  169</span>                dz = 99999.0</div>
 <div class="line"><span class="lineno">  170</span>                step = 0</div>
@@ -596,7 +596,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  185</span>                        }</div>
 <div class="line"><span class="lineno">  186</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc:</div>
 <div class="line"><span class="lineno">  187</span>                        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  188</span>                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)</div>
+<div class="line"><span class="lineno">  188</span>                    newPos, _covX, doca = self.VertexError(t1, t2, self.newPosDir)</div>
 <div class="line"><span class="lineno">  189</span>                    dz = abs(zBefore - newPos[2])</div>
 <div class="line"><span class="lineno">  190</span>                    step += 1</div>
 <div class="line"><span class="lineno">  191</span>                    <span class="keywordflow">if</span> step &gt; 10:</div>
@@ -981,80 +981,82 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00518">518</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  518</span>    <span class="keyword">def </span>VertexError(self, t1, t2, PosDir, CovMat=None, scalFac=None):</div>
-<div class="line"><span class="lineno">  519</span>        <span class="comment"># with improved Vx x,y resolution</span></div>
-<div class="line"><span class="lineno">  520</span>        a, u = PosDir[t1][<span class="stringliteral">&quot;position&quot;</span>], PosDir[t1][<span class="stringliteral">&quot;direction&quot;</span>]</div>
-<div class="line"><span class="lineno">  521</span>        c, v = PosDir[t2][<span class="stringliteral">&quot;position&quot;</span>], PosDir[t2][<span class="stringliteral">&quot;direction&quot;</span>]</div>
-<div class="line"><span class="lineno">  522</span>        Vsq = v.Dot(v)</div>
-<div class="line"><span class="lineno">  523</span>        Usq = u.Dot(u)</div>
-<div class="line"><span class="lineno">  524</span>        UV = u.Dot(v)</div>
-<div class="line"><span class="lineno">  525</span>        ca = c - a</div>
-<div class="line"><span class="lineno">  526</span>        denom = Usq * Vsq - UV**2</div>
-<div class="line"><span class="lineno">  527</span>        tmp2 = Vsq * u - UV * v</div>
-<div class="line"><span class="lineno">  528</span>        Va = ca.Dot(tmp2) / denom</div>
-<div class="line"><span class="lineno">  529</span>        tmp2 = UV * u - Usq * v</div>
-<div class="line"><span class="lineno">  530</span>        Vb = ca.Dot(tmp2) / denom</div>
-<div class="line"><span class="lineno">  531</span>        X = (a + c + Va * u + Vb * v) * 0.5</div>
-<div class="line"><span class="lineno">  532</span>        l1 = a - X + u * Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
-<div class="line"><span class="lineno">  533</span>        dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))</div>
-<div class="line"><span class="lineno">  534</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> CovMat:</div>
-<div class="line"><span class="lineno">  535</span>            <span class="keywordflow">return</span> X, dist</div>
-<div class="line"><span class="lineno">  536</span>        T = ROOT.TMatrixD(3, 12)</div>
-<div class="line"><span class="lineno">  537</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  538</span>            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><span class="lineno">  539</span>                <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  540</span>                    KD = 0</div>
-<div class="line"><span class="lineno">  541</span>                    <span class="keywordflow">if</span> i == j:</div>
-<div class="line"><span class="lineno">  542</span>                        KD = 1</div>
-<div class="line"><span class="lineno">  543</span>                    <span class="keywordflow">if</span> k == 0 <span class="keywordflow">or</span> k == 2:</div>
-<div class="line"><span class="lineno">  544</span>                        <span class="comment"># cova and covc</span></div>
-<div class="line"><span class="lineno">  545</span>                        temp = (u[j] * Vsq - v[j] * UV) * u[i] + (u[j] * UV - v[j] * Usq) * v[i]</div>
-<div class="line"><span class="lineno">  546</span>                        sign = -1</div>
-<div class="line"><span class="lineno">  547</span>                        <span class="keywordflow">if</span> k == 2:</div>
-<div class="line"><span class="lineno">  548</span>                            sign = +1</div>
-<div class="line"><span class="lineno">  549</span>                        T[i][3 * k + j] = 0.5 * (KD + sign * temp / denom)</div>
-<div class="line"><span class="lineno">  550</span>                    <span class="keywordflow">elif</span> k == 1:</div>
-<div class="line"><span class="lineno">  551</span>                        <span class="comment"># covu</span></div>
-<div class="line"><span class="lineno">  552</span>                        aNAZ = denom * (ca[j] * Vsq - v.Dot(ca) * v[j])</div>
-<div class="line"><span class="lineno">  553</span>                        aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (u[j] * Vsq - v[j] * UV)</div>
-<div class="line"><span class="lineno">  554</span>                        bNAZ = denom * (ca[j] * UV + (u.Dot(ca) * v[j]) - 2 * ca.Dot(v) * u[j])</div>
-<div class="line"><span class="lineno">  555</span>                        bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (u[j] * Vsq - v[j] * UV)</div>
-<div class="line"><span class="lineno">  556</span>                        T[i][3 * k + j] = 0.5 * (</div>
-<div class="line"><span class="lineno">  557</span>                            Va * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)</div>
-<div class="line"><span class="lineno">  558</span>                        )</div>
-<div class="line"><span class="lineno">  559</span>                    <span class="keywordflow">elif</span> k == 3:</div>
-<div class="line"><span class="lineno">  560</span>                        <span class="comment"># covv</span></div>
-<div class="line"><span class="lineno">  561</span>                        aNAZ = denom * (2 * ca.Dot(u) * v[j] - ca.Dot(v) * u[j] - ca[j] * UV)</div>
-<div class="line"><span class="lineno">  562</span>                        aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (v[j] * Usq - u[j] * UV)</div>
-<div class="line"><span class="lineno">  563</span>                        bNAZ = denom * (ca.Dot(u) * u[j] - ca[j] * Usq)</div>
-<div class="line"><span class="lineno">  564</span>                        bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (v[j] * Usq - u[j] * UV)</div>
-<div class="line"><span class="lineno">  565</span>                        T[i][3 * k + j] = 0.5 * (</div>
-<div class="line"><span class="lineno">  566</span>                            Vb * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)</div>
-<div class="line"><span class="lineno">  567</span>                        )</div>
-<div class="line"><span class="lineno">  568</span>        transT = ROOT.TMatrixD(12, 3)</div>
-<div class="line"><span class="lineno">  569</span>        transT.Transpose(T)</div>
-<div class="line"><span class="lineno">  570</span>        CovTracks = ROOT.TMatrixD(12, 12)</div>
-<div class="line"><span class="lineno">  571</span>        tlist = [t1, t2]</div>
-<div class="line"><span class="lineno">  572</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
-<div class="line"><span class="lineno">  573</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  574</span>                <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  575</span>                    xfac = 1.0</div>
-<div class="line"><span class="lineno">  576</span>                    <span class="keywordflow">if</span> i &gt; 2:</div>
-<div class="line"><span class="lineno">  577</span>                        xfac = scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  578</span>                    <span class="keywordflow">if</span> j &gt; 2:</div>
-<div class="line"><span class="lineno">  579</span>                        xfac = xfac * scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  580</span>                    CovTracks[i + k * 6][j + k * 6] = CovMat[tlist[k]][i][j] * xfac</div>
-<div class="line"><span class="lineno">  581</span>                    <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
-<div class="line"><span class="lineno">  582</span>        tmp = ROOT.TMatrixD(3, 12)</div>
-<div class="line"><span class="lineno">  583</span>        tmp.Mult(T, CovTracks)</div>
-<div class="line"><span class="lineno">  584</span>        covX = ROOT.TMatrixD(3, 3)</div>
-<div class="line"><span class="lineno">  585</span>        covX.Mult(tmp, transT)</div>
-<div class="line"><span class="lineno">  586</span>        <span class="keywordflow">return</span> X, covX, dist</div>
-<div class="line"><span class="lineno">  587</span> </div>
-<div class="line"><span class="lineno">  588</span> </div>
-<div class="line"><span class="lineno">  589</span><span class="comment"># usage</span></div>
-<div class="line"><span class="lineno">  590</span><span class="comment"># import shipVertex</span></div>
-<div class="line"><span class="lineno">  591</span><span class="comment"># VertexError = shipVertex.Task()</span></div>
-<div class="line"><span class="lineno">  592</span><span class="comment"># newPos,doca = myVertexError(t1,t2,PosDirCharge)</span></div>
+<div class="line"><span class="lineno">  519</span>        <span class="comment"># with improved Vx x,y resolution. Returns (X, covX, dist) where covX is</span></div>
+<div class="line"><span class="lineno">  520</span>        <span class="comment"># None when no track covariance was supplied.</span></div>
+<div class="line"><span class="lineno">  521</span>        a, u = PosDir[t1][<span class="stringliteral">&quot;position&quot;</span>], PosDir[t1][<span class="stringliteral">&quot;direction&quot;</span>]</div>
+<div class="line"><span class="lineno">  522</span>        c, v = PosDir[t2][<span class="stringliteral">&quot;position&quot;</span>], PosDir[t2][<span class="stringliteral">&quot;direction&quot;</span>]</div>
+<div class="line"><span class="lineno">  523</span>        Vsq = v.Dot(v)</div>
+<div class="line"><span class="lineno">  524</span>        Usq = u.Dot(u)</div>
+<div class="line"><span class="lineno">  525</span>        UV = u.Dot(v)</div>
+<div class="line"><span class="lineno">  526</span>        ca = c - a</div>
+<div class="line"><span class="lineno">  527</span>        denom = Usq * Vsq - UV**2</div>
+<div class="line"><span class="lineno">  528</span>        tmp2 = Vsq * u - UV * v</div>
+<div class="line"><span class="lineno">  529</span>        Va = ca.Dot(tmp2) / denom</div>
+<div class="line"><span class="lineno">  530</span>        tmp2 = UV * u - Usq * v</div>
+<div class="line"><span class="lineno">  531</span>        Vb = ca.Dot(tmp2) / denom</div>
+<div class="line"><span class="lineno">  532</span>        X = (a + c + Va * u + Vb * v) * 0.5</div>
+<div class="line"><span class="lineno">  533</span>        l1 = a - X + u * Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
+<div class="line"><span class="lineno">  534</span>        dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))</div>
+<div class="line"><span class="lineno">  535</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> CovMat:</div>
+<div class="line"><span class="lineno">  536</span>            <span class="keywordflow">return</span> X, <span class="keywordtype">None</span>, dist</div>
+<div class="line"><span class="lineno">  537</span>        <span class="keyword">assert</span> scalFac <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>, <span class="stringliteral">&quot;VertexError requires scalFac when CovMat is set&quot;</span></div>
+<div class="line"><span class="lineno">  538</span>        T = ROOT.TMatrixD(3, 12)</div>
+<div class="line"><span class="lineno">  539</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  540</span>            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><span class="lineno">  541</span>                <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  542</span>                    KD = 0</div>
+<div class="line"><span class="lineno">  543</span>                    <span class="keywordflow">if</span> i == j:</div>
+<div class="line"><span class="lineno">  544</span>                        KD = 1</div>
+<div class="line"><span class="lineno">  545</span>                    <span class="keywordflow">if</span> k == 0 <span class="keywordflow">or</span> k == 2:</div>
+<div class="line"><span class="lineno">  546</span>                        <span class="comment"># cova and covc</span></div>
+<div class="line"><span class="lineno">  547</span>                        temp = (u[j] * Vsq - v[j] * UV) * u[i] + (u[j] * UV - v[j] * Usq) * v[i]</div>
+<div class="line"><span class="lineno">  548</span>                        sign = -1</div>
+<div class="line"><span class="lineno">  549</span>                        <span class="keywordflow">if</span> k == 2:</div>
+<div class="line"><span class="lineno">  550</span>                            sign = +1</div>
+<div class="line"><span class="lineno">  551</span>                        T[i][3 * k + j] = 0.5 * (KD + sign * temp / denom)</div>
+<div class="line"><span class="lineno">  552</span>                    <span class="keywordflow">elif</span> k == 1:</div>
+<div class="line"><span class="lineno">  553</span>                        <span class="comment"># covu</span></div>
+<div class="line"><span class="lineno">  554</span>                        aNAZ = denom * (ca[j] * Vsq - v.Dot(ca) * v[j])</div>
+<div class="line"><span class="lineno">  555</span>                        aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (u[j] * Vsq - v[j] * UV)</div>
+<div class="line"><span class="lineno">  556</span>                        bNAZ = denom * (ca[j] * UV + (u.Dot(ca) * v[j]) - 2 * ca.Dot(v) * u[j])</div>
+<div class="line"><span class="lineno">  557</span>                        bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (u[j] * Vsq - v[j] * UV)</div>
+<div class="line"><span class="lineno">  558</span>                        T[i][3 * k + j] = 0.5 * (</div>
+<div class="line"><span class="lineno">  559</span>                            Va * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)</div>
+<div class="line"><span class="lineno">  560</span>                        )</div>
+<div class="line"><span class="lineno">  561</span>                    <span class="keywordflow">elif</span> k == 3:</div>
+<div class="line"><span class="lineno">  562</span>                        <span class="comment"># covv</span></div>
+<div class="line"><span class="lineno">  563</span>                        aNAZ = denom * (2 * ca.Dot(u) * v[j] - ca.Dot(v) * u[j] - ca[j] * UV)</div>
+<div class="line"><span class="lineno">  564</span>                        aZAN = (ca.Dot(u) * Vsq - ca.Dot(v) * UV) * 2 * (v[j] * Usq - u[j] * UV)</div>
+<div class="line"><span class="lineno">  565</span>                        bNAZ = denom * (ca.Dot(u) * u[j] - ca[j] * Usq)</div>
+<div class="line"><span class="lineno">  566</span>                        bZAN = (ca.Dot(u) * UV - ca.Dot(v) * Usq) * 2 * (v[j] * Usq - u[j] * UV)</div>
+<div class="line"><span class="lineno">  567</span>                        T[i][3 * k + j] = 0.5 * (</div>
+<div class="line"><span class="lineno">  568</span>                            Vb * KD + u[i] / denom**2 * (aNAZ - aZAN) + v[i] / denom**2 * (bNAZ - bZAN)</div>
+<div class="line"><span class="lineno">  569</span>                        )</div>
+<div class="line"><span class="lineno">  570</span>        transT = ROOT.TMatrixD(12, 3)</div>
+<div class="line"><span class="lineno">  571</span>        transT.Transpose(T)</div>
+<div class="line"><span class="lineno">  572</span>        CovTracks = ROOT.TMatrixD(12, 12)</div>
+<div class="line"><span class="lineno">  573</span>        tlist = [t1, t2]</div>
+<div class="line"><span class="lineno">  574</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
+<div class="line"><span class="lineno">  575</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  576</span>                <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  577</span>                    xfac = 1.0</div>
+<div class="line"><span class="lineno">  578</span>                    <span class="keywordflow">if</span> i &gt; 2:</div>
+<div class="line"><span class="lineno">  579</span>                        xfac = scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  580</span>                    <span class="keywordflow">if</span> j &gt; 2:</div>
+<div class="line"><span class="lineno">  581</span>                        xfac = xfac * scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  582</span>                    CovTracks[i + k * 6][j + k * 6] = CovMat[tlist[k]][i][j] * xfac</div>
+<div class="line"><span class="lineno">  583</span>                    <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
+<div class="line"><span class="lineno">  584</span>        tmp = ROOT.TMatrixD(3, 12)</div>
+<div class="line"><span class="lineno">  585</span>        tmp.Mult(T, CovTracks)</div>
+<div class="line"><span class="lineno">  586</span>        covX = ROOT.TMatrixD(3, 3)</div>
+<div class="line"><span class="lineno">  587</span>        covX.Mult(tmp, transT)</div>
+<div class="line"><span class="lineno">  588</span>        <span class="keywordflow">return</span> X, covX, dist</div>
+<div class="line"><span class="lineno">  589</span> </div>
+<div class="line"><span class="lineno">  590</span> </div>
+<div class="line"><span class="lineno">  591</span><span class="comment"># usage</span></div>
+<div class="line"><span class="lineno">  592</span><span class="comment"># import shipVertex</span></div>
+<div class="line"><span class="lineno">  593</span><span class="comment"># VertexError = shipVertex.Task()</span></div>
+<div class="line"><span class="lineno">  594</span><span class="comment"># newPos,doca = myVertexError(t1,t2,PosDirCharge)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
