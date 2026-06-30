@@ -17,6 +17,10 @@ faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
 # fairlogger is on conda-forge but is not in fairroot's runtime deps —
 # keep it explicit so CMake's find_package(FairLogger) resolves.
 fairlogger = ">=2.3"
+# Eigen is header-only, so its conda package has no run_export and is not pulled
+# in transitively by acts-ship/genfit. acts-ship's CMake config requires
+# Eigen3 3.4.0 EXACT, so pin to 3.4.x (conda-forge is the only source).
+eigen = "3.4.*"
 
 # Python (conda-forge)
 # acts-ship requires python 3.13, so the whole env is pinned to 3.13.
