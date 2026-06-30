@@ -49,7 +49,7 @@ Bool_t TTreeGenerator::Init(const char* fileName, int startEvent) {
   fCurrentEvent = 0;
 
   fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "TTreeGenerator: Cannot open file " << fileName;
     delete fInputFile;
     fInputFile = nullptr;

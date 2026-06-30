@@ -52,7 +52,7 @@ Bool_t Pythia8Generator::Init() {
     fInputFile = TFile::Open(fextFile->c_str(), "READ");
     LOG(info) << "Open external file with charm or beauty hadrons: "
               << *fextFile;
-    if (!fInputFile || fInputFile->IsZombie()) {
+    if (!fInputFile) {
       LOG(error) << "Pythia8Generator: error opening input file " << *fextFile;
       delete fInputFile;
       fInputFile = nullptr;

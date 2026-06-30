@@ -88,7 +88,7 @@ void ParticleGunGenerator::LoadHistoFromFile(
     const std::string& inFile, const std::string& inHisto,
     std::vector<std::string> varNames) {
   TFile* loadFile = TFile::Open(inFile.c_str(), "READ");
-  if (!loadFile || loadFile->IsZombie()) {
+  if (!loadFile) {
     delete loadFile;
     LOG(fatal) << "ParticleGunGenerator: Cannot open file " << inFile;
     throw std::runtime_error("ParticleGunGenerator: Cannot open file " +

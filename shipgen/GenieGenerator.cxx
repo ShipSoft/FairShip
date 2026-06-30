@@ -41,7 +41,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
     return kFALSE;
   }
   fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
+  if (!fInputFile) {
     LOG(error) << "GenieGenerator: error opening input file " << fileName;
     delete fInputFile;
     fInputFile = nullptr;
