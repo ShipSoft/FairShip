@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classeventDisplay_1_1DrawVetoDigi.html
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classeventDisplay_1_1DrawVetoDigi-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">eventDisplay.DrawVetoDigi Class Reference</div></div>
 </div><!--header-->
@@ -136,6 +137,11 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8559a32d4b5a1c9a4f0792a1f40dba39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7fdc64f6692f36dc97cb37d8bc9c8d0" id="r_aa7fdc64f6692f36dc97cb37d8bc9c8d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeventDisplay_1_1DrawVetoDigi.html#aa7fdc64f6692f36dc97cb37d8bc9c8d0">Targetz</a></td></tr>
 <tr class="separator:aa7fdc64f6692f36dc97cb37d8bc9c8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:adb18250bfa2e0fc4fbf71a217cfdec1a" id="r_adb18250bfa2e0fc4fbf71a217cfdec1a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeventDisplay_1_1DrawVetoDigi.html#adb18250bfa2e0fc4fbf71a217cfdec1a">Targetz</a> = 0.0</td></tr>
+<tr class="separator:adb18250bfa2e0fc4fbf71a217cfdec1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -167,25 +173,25 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00256">256</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  256</span>    <span class="keyword">def </span>DrawParticle(self, n) -&gt; None:</div>
-<div class="line"><span class="lineno">  257</span>        self.comp.OpenCompound()</div>
-<div class="line"><span class="lineno">  258</span>        DTrack = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno">  259</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  260</span>        DTrack.SetMainColor(ROOT.kCyan)</div>
-<div class="line"><span class="lineno">  261</span>        DTrack.SetLineWidth(4)</div>
-<div class="line"><span class="lineno">  262</span>        aP = sTree.Particles[n]</div>
-<div class="line"><span class="lineno">  263</span>        DTrack.SetTitle(aP.__repr__())</div>
-<div class="line"><span class="lineno">  264</span>        DTrack.SetName(<span class="stringliteral">&quot;Prtcle_&quot;</span> + str(n))</div>
-<div class="line"><span class="lineno">  265</span>        DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
-<div class="line"><span class="lineno">  266</span>        lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
-<div class="line"><span class="lineno">  267</span>        DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)</div>
-<div class="line"><span class="lineno">  268</span>        self.comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno">  269</span>        self.comp.CloseCompound()</div>
-<div class="line"><span class="lineno">  270</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span><span class="comment">#</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00258">258</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  258</span>    <span class="keyword">def </span>DrawParticle(self, n) -&gt; None:</div>
+<div class="line"><span class="lineno">  259</span>        self.comp.OpenCompound()</div>
+<div class="line"><span class="lineno">  260</span>        DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno">  261</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  262</span>        DTrack.SetMainColor(ROOT.kCyan)</div>
+<div class="line"><span class="lineno">  263</span>        DTrack.SetLineWidth(4)</div>
+<div class="line"><span class="lineno">  264</span>        aP = sTree.Particles[n]</div>
+<div class="line"><span class="lineno">  265</span>        DTrack.SetTitle(aP.__repr__())</div>
+<div class="line"><span class="lineno">  266</span>        DTrack.SetName(<span class="stringliteral">&quot;Prtcle_&quot;</span> + str(n))</div>
+<div class="line"><span class="lineno">  267</span>        DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
+<div class="line"><span class="lineno">  268</span>        lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
+<div class="line"><span class="lineno">  269</span>        DTrack.SetNextPoint(aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz)</div>
+<div class="line"><span class="lineno">  270</span>        self.comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno">  271</span>        self.comp.CloseCompound()</div>
+<div class="line"><span class="lineno">  272</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span><span class="comment">#</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -215,42 +221,42 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00221">221</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>    <span class="keyword">def </span>ExecuteTask(self, option: str = <span class="stringliteral">&quot;&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  222</span>        self.comp.DestroyElements()</div>
-<div class="line"><span class="lineno">  223</span>        self.comp.OpenCompound()</div>
-<div class="line"><span class="lineno">  224</span>        nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
-<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">for</span> digi <span class="keywordflow">in</span> sTree.Digi_SBTHits:</div>
-<div class="line"><span class="lineno">  226</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> digi.isValid():</div>
-<div class="line"><span class="lineno">  227</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  228</span>            node = digi.GetNode()</div>
-<div class="line"><span class="lineno">  229</span>            shape = node.GetVolume().GetShape()</div>
-<div class="line"><span class="lineno">  230</span>            bx = ROOT.TEveBox(node.GetName())</div>
-<div class="line"><span class="lineno">  231</span>            bx.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  232</span>            bx.SetTitle(digi.__repr__())</div>
-<div class="line"><span class="lineno">  233</span>            bx.SetMainColor(ROOT.kMagenta + 3)</div>
-<div class="line"><span class="lineno">  234</span>            dx, dy, dz = shape.GetDX(), shape.GetDY(), shape.GetDZ()</div>
-<div class="line"><span class="lineno">  235</span>            o = shape.GetOrigin()</div>
-<div class="line"><span class="lineno">  236</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
-<div class="line"><span class="lineno">  237</span>            n = 0</div>
-<div class="line"><span class="lineno">  238</span>            <span class="keywordflow">for</span> edge <span class="keywordflow">in</span> [</div>
-<div class="line"><span class="lineno">  239</span>                [-dx, -dy, -dz],</div>
-<div class="line"><span class="lineno">  240</span>                [-dx, +dy, -dz],</div>
-<div class="line"><span class="lineno">  241</span>                [+dx, +dy, -dz],</div>
-<div class="line"><span class="lineno">  242</span>                [+dx, -dy, -dz],</div>
-<div class="line"><span class="lineno">  243</span>                [-dx, -dy, dz],</div>
-<div class="line"><span class="lineno">  244</span>                [-dx, +dy, dz],</div>
-<div class="line"><span class="lineno">  245</span>                [+dx, +dy, dz],</div>
-<div class="line"><span class="lineno">  246</span>                [+dx, -dy, dz],</div>
-<div class="line"><span class="lineno">  247</span>            ]:</div>
-<div class="line"><span class="lineno">  248</span>                origin = array(<span class="stringliteral">&quot;d&quot;</span>, [edge[0] + o[0], edge[1] + o[1], edge[2] + o[2]])</div>
-<div class="line"><span class="lineno">  249</span>                nav.LocalToMaster(origin, master)</div>
-<div class="line"><span class="lineno">  250</span>                bx.SetVertex(n, master[0], master[1], master[2])</div>
-<div class="line"><span class="lineno">  251</span>                n += 1</div>
-<div class="line"><span class="lineno">  252</span>            self.comp.AddElement(bx)</div>
-<div class="line"><span class="lineno">  253</span>        self.comp.CloseCompound()</div>
-<div class="line"><span class="lineno">  254</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  255</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00223">223</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>    <span class="keyword">def </span>ExecuteTask(self, option: str = <span class="stringliteral">&quot;&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  224</span>        self.comp.DestroyElements()</div>
+<div class="line"><span class="lineno">  225</span>        self.comp.OpenCompound()</div>
+<div class="line"><span class="lineno">  226</span>        nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
+<div class="line"><span class="lineno">  227</span>        <span class="keywordflow">for</span> digi <span class="keywordflow">in</span> sTree.Digi_SBTHits:</div>
+<div class="line"><span class="lineno">  228</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> digi.isValid():</div>
+<div class="line"><span class="lineno">  229</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  230</span>            node = digi.GetNode()</div>
+<div class="line"><span class="lineno">  231</span>            shape = node.GetVolume().GetShape()</div>
+<div class="line"><span class="lineno">  232</span>            bx = ROOT.TEveBox(node.GetName())</div>
+<div class="line"><span class="lineno">  233</span>            bx.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  234</span>            bx.SetTitle(digi.__repr__())</div>
+<div class="line"><span class="lineno">  235</span>            bx.SetMainColor(ROOT.kMagenta + 3)</div>
+<div class="line"><span class="lineno">  236</span>            dx, dy, dz = shape.GetDX(), shape.GetDY(), shape.GetDZ()</div>
+<div class="line"><span class="lineno">  237</span>            o = shape.GetOrigin()</div>
+<div class="line"><span class="lineno">  238</span>            master = array(<span class="stringliteral">&quot;d&quot;</span>, [0, 0, 0])</div>
+<div class="line"><span class="lineno">  239</span>            n = 0</div>
+<div class="line"><span class="lineno">  240</span>            <span class="keywordflow">for</span> edge <span class="keywordflow">in</span> [</div>
+<div class="line"><span class="lineno">  241</span>                [-dx, -dy, -dz],</div>
+<div class="line"><span class="lineno">  242</span>                [-dx, +dy, -dz],</div>
+<div class="line"><span class="lineno">  243</span>                [+dx, +dy, -dz],</div>
+<div class="line"><span class="lineno">  244</span>                [+dx, -dy, -dz],</div>
+<div class="line"><span class="lineno">  245</span>                [-dx, -dy, dz],</div>
+<div class="line"><span class="lineno">  246</span>                [-dx, +dy, dz],</div>
+<div class="line"><span class="lineno">  247</span>                [+dx, +dy, dz],</div>
+<div class="line"><span class="lineno">  248</span>                [+dx, -dy, dz],</div>
+<div class="line"><span class="lineno">  249</span>            ]:</div>
+<div class="line"><span class="lineno">  250</span>                origin = array(<span class="stringliteral">&quot;d&quot;</span>, [edge[0] + o[0], edge[1] + o[1], edge[2] + o[2]])</div>
+<div class="line"><span class="lineno">  251</span>                nav.LocalToMaster(origin, master)</div>
+<div class="line"><span class="lineno">  252</span>                bx.SetVertex(n, master[0], master[1], master[2])</div>
+<div class="line"><span class="lineno">  253</span>                n += 1</div>
+<div class="line"><span class="lineno">  254</span>            self.comp.AddElement(bx)</div>
+<div class="line"><span class="lineno">  255</span>        self.comp.CloseCompound()</div>
+<div class="line"><span class="lineno">  256</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  257</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,10 +276,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00218">218</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  218</span>    <span class="keyword">def </span>FinishEvent(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  219</span>        <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  220</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00220">220</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  220</span>    <span class="keyword">def </span>FinishEvent(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  221</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  222</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -293,13 +299,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00212">212</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  212</span>    <span class="keyword">def </span>InitTask(self) -&gt; None:</div>
-<div class="line"><span class="lineno">  213</span>        self.comp = ROOT.TEveCompound(<span class="stringliteral">&quot;Veto Digis&quot;</span>)</div>
-<div class="line"><span class="lineno">  214</span>        gEve.AddElement(self.comp)</div>
-<div class="line"><span class="lineno">  215</span>        sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  216</span>        self.evscene = sc.FindChild(<span class="stringliteral">&quot;Event scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  217</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00214">214</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  214</span>    <span class="keyword">def </span>InitTask(self) -&gt; None:</div>
+<div class="line"><span class="lineno">  215</span>        self.comp = ROOT.TEveCompound(<span class="stringliteral">&quot;Veto Digis&quot;</span>)</div>
+<div class="line"><span class="lineno">  216</span>        gEve.AddElement(self.comp)</div>
+<div class="line"><span class="lineno">  217</span>        sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  218</span>        self.evscene = sc.FindChild(<span class="stringliteral">&quot;Event scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  219</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,7 +322,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00213">213</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00215">215</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -332,12 +338,36 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00216">216</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00218">218</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+
+</div>
+</div>
+<a id="adb18250bfa2e0fc4fbf71a217cfdec1a" name="adb18250bfa2e0fc4fbf71a217cfdec1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb18250bfa2e0fc4fbf71a217cfdec1a">&#9670;&#160;</a></span>Targetz <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float eventDisplay.DrawVetoDigi.Targetz = 0.0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00212">212</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
 <a id="aa7fdc64f6692f36dc97cb37d8bc9c8d0" name="aa7fdc64f6692f36dc97cb37d8bc9c8d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7fdc64f6692f36dc97cb37d8bc9c8d0">&#9670;&#160;</a></span>Targetz</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7fdc64f6692f36dc97cb37d8bc9c8d0">&#9670;&#160;</a></span>Targetz <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +378,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00267">267</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00269">269</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

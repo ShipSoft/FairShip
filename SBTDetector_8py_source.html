@@ -155,10 +155,11 @@ $(document).ready(function(){initNavTree('SBTDetector_8py_source.html',''); init
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(aHit)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                v.push_back(x)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a>.push_back(v)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a> <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    v.push_back(x)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950">MCdet</a>.push_back(v)</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00011">BaseDetector.py:11</a></div></div>

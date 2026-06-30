@@ -279,10 +279,11 @@ Eloss defined as the cumulative energy deposition of MC hits in the cell.</pre>
 <div class="line"><span class="lineno">   52</span>            <span class="keywordflow">if</span> ElossPerDetId[seg] &lt; 0.045:</div>
 <div class="line"><span class="lineno">   53</span>                aHit.setInvalid()  <span class="comment"># threshold for liquid scintillator, source Berlin group</span></div>
 <div class="line"><span class="lineno">   54</span>            self.det.push_back(aHit)</div>
-<div class="line"><span class="lineno">   55</span>            v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
-<div class="line"><span class="lineno">   56</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
-<div class="line"><span class="lineno">   57</span>                v.push_back(x)</div>
-<div class="line"><span class="lineno">   58</span>            self.MCdet.push_back(v)</div>
+<div class="line"><span class="lineno">   55</span>            <span class="keywordflow">if</span> self.MCdet <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   56</span>                v = ROOT.std.vector(<span class="stringliteral">&quot;int&quot;</span>)()</div>
+<div class="line"><span class="lineno">   57</span>                <span class="keywordflow">for</span> x <span class="keywordflow">in</span> listOfVetoPoints[seg]:</div>
+<div class="line"><span class="lineno">   58</span>                    v.push_back(x)</div>
+<div class="line"><span class="lineno">   59</span>                self.MCdet.push_back(v)</div>
 </div><!-- fragment -->
 </div>
 </div>

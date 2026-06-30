@@ -228,25 +228,27 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span>    histograms1 = {}</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file1.GetListOfKeys():</div>
-<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">if</span> ROOT.TClass.GetClass(key.GetClassName()).InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
-<div class="line"><span class="lineno">   41</span>            histograms1[key.GetName()] = file1.Get(key.GetName())</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>    histograms2 = {}</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file2.GetListOfKeys():</div>
-<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">if</span> ROOT.TClass.GetClass(key.GetClassName()).InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
-<div class="line"><span class="lineno">   46</span>            histograms2[key.GetName()] = file2.Get(key.GetName())</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1:</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
-<div class="line"><span class="lineno">   50</span>            compare_histograms(histograms1[hist_name], histograms2[hist_name], use_ks_test, significance_threshold)</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   52</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file2.&quot;</span>)</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
-<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> histograms1:</div>
-<div class="line"><span class="lineno">   56</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file1.&quot;</span>)</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   40</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
+<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><span class="lineno">   42</span>            histograms1[key.GetName()] = file1.Get(key.GetName())</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    histograms2 = {}</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> file2.GetListOfKeys():</div>
+<div class="line"><span class="lineno">   46</span>        cls = ROOT.TClass.GetClass(key.GetClassName())</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">if</span> cls <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> cls.InheritsFrom(<span class="stringliteral">&quot;TH1&quot;</span>):</div>
+<div class="line"><span class="lineno">   48</span>            histograms2[key.GetName()] = file2.Get(key.GetName())</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms1:</div>
+<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
+<div class="line"><span class="lineno">   52</span>            compare_histograms(histograms1[hist_name], histograms2[hist_name], use_ks_test, significance_threshold)</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   54</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file2.&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">for</span> hist_name <span class="keywordflow">in</span> histograms2:</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">if</span> hist_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> histograms1:</div>
+<div class="line"><span class="lineno">   58</span>            print(f<span class="stringliteral">&quot;Histogram &#39;{hist_name}&#39; not found in file1.&quot;</span>)</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span> </div>
 <div class="ttc" id="atest__data__class__io_8cxx_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="test__data__class__io_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="test__data__class__io_8cxx_source.html#l00199">test_data_class_io.cxx:199</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -264,7 +266,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00065">65</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00067">67</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -280,7 +282,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00075">75</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00077">77</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -296,7 +298,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00071">71</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00073">73</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -312,7 +314,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00061">61</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00063">63</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -328,7 +330,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00060">60</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00062">62</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
@@ -344,7 +346,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00070">70</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compare__histograms_8py_source.html#l00072">72</a> of file <a class="el" href="compare__histograms_8py_source.html">compare_histograms.py</a>.</p>
 
 </div>
 </div>
