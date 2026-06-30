@@ -668,12 +668,12 @@ class IO:
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
             globals()["withMCTracks"] = False
-            self.lbut["withMC"].var.set(1)
+            self.lbut["withMC"].var.set(0)
             if geoTask:
                 geoTask.SetActive(0)
         else:
             globals()["withMCTracks"] = True
-            self.lbut["withMC"].var.set(0)
+            self.lbut["withMC"].var.set(1)
             if geoTask:
                 geoTask.SetActive(1)
 
