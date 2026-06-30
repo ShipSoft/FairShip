@@ -110,8 +110,9 @@ def main() -> int:
     all_rendered: list[dict[str, str]] = []
 
     for input_path in args.inputs:
-        root_file = ROOT.TFile.Open(input_path)
-        if not root_file or root_file.IsZombie():
+        try:
+            root_file = ROOT.TFile.Open(input_path)
+        except OSError:
             print(f"WARNING: Cannot open {input_path}", file=sys.stderr)
             continue
 
