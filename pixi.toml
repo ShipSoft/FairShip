@@ -19,7 +19,8 @@ faircmakemodules = { version = ">=1.0", channel = "conda-forge" }
 fairlogger = ">=2.3"
 
 # Python (conda-forge)
-python = "3.12.*"
+# acts-ship requires python 3.13, so the whole env is pinned to 3.13.
+python = "3.13.*"
 numpy = "*"
 scipy = "*"
 matplotlib = "*"
@@ -34,6 +35,8 @@ geant4-vmc = ">=6.7"
 fairroot = ">=19.0"
 genfit = ">=2.3"
 rootegpythia6 = "*"
+# SHiP fork of ACTS; used at reco time via `import acts` (python/ACTSReco.py).
+acts-ship = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
 # They will be added to a runtime environment later
 
