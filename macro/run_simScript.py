@@ -68,6 +68,12 @@ pg_parser.add_argument(
 )
 pg_parser.add_argument("--pID", dest="pID", default=22, type=int, help="id of particle used by the gun (default=22)")
 pg_parser.add_argument(
+    "--thetamin", default=0, type=float, help="min theta range of particle gun in degrees (default=0 degrees)"
+)
+pg_parser.add_argument(
+    "--thetamax", default=90, type=float, help="max theta range of particle gun in degrees (default=90 degrees)"
+)
+pg_parser.add_argument(
     "--Estart", default=10, type=float, help="start of energy range of particle gun (default=10 GeV)"
 )
 pg_parser.add_argument(
@@ -479,13 +485,13 @@ if options.reproducible and options.debug == 0:
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
 elif options.debug == 1:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 2:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 elif options.debug == 3:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,
@@ -691,7 +697,7 @@ if options.command == "PG":
         sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(0, 0)  # // Polar angle in lab system range [degree]
+    myPgun.SetThetaRange(options.thetamin, options.thetamax)  # // Polar angle in lab system range [degree]
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:
