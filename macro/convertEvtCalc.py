@@ -47,7 +47,8 @@ def parse_file(infile: str):
                 current_block.append(line.strip())
 
         if current_block:
-            assert process_type is not None and sampled_points is not None  # first header sets both
+            if process_type is None or sampled_points is None:
+                raise ValueError("bin data encountered before any header")
             data = np.loadtxt(current_block)
             variables = [data[:, i] for i in range(data.shape[1])]
             parsed_data.append((process_type, sampled_points, variables))
@@ -57,7 +58,7 @@ def parse_file(infile: str):
     except FileNotFoundError:
         print(f"- convertEvtCalc - Error: The file {infile} was not found.")
         return None
-    except Exception as e:
+    except (ValueError, IndexError) as e:
         print(f"- convertEvtCalc - An error occurred: {e}")
         return None
 
@@ -114,7 +115,11 @@ def convert_file(infile, outdir) -> str | None:
 
     infile = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
+    if parsed_data is None:
+        # parse_file already reported the failure
+        sys.exit(1)
     if not parsed_data:
+        print(f"- convertEvtCalc - Error: no completed blocks found in {infile}.")
         sys.exit(1)
     outfile = infile.split(".dat")[0] + ".root"
     ncols = len(parsed_data[0][2])

@@ -10,7 +10,8 @@ def config(GenieGen):
     top = fGeo.GetTopVolume()
     # positions for nu events inside the nutau detector volume
     muSpectrometer = top.FindNode("volNuTauMudet_1")
-    assert muSpectrometer is not None, "GenieGenerator config requires volNuTauMudet_1 in the geometry"
+    if muSpectrometer is None:
+        raise RuntimeError("GenieGenerator config requires volNuTauMudet_1 in the geometry")
     muSpectrometerTrans = muSpectrometer.GetMatrix().GetTranslation()
     # upper and lower yokes:
     # volFeYoke_1, volFeYoke_2, volFeYoke1_1  (in UpYoke) and  volFeYoke_3, volFeYoke_4, volFeYoke1_1 (in LowYoke).
