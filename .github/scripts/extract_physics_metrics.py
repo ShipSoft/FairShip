@@ -196,10 +196,12 @@ def extract_metrics_from_file(file_path: Path, config: dict[str, Any]) -> dict[s
         2. Add a new key to the metrics dict (e.g., "graphs": {})
         3. Add an isinstance check in the loop below
     """
-    with ROOT.TFile.Open(str(file_path)) as root_file:
-        if not root_file or root_file.IsZombie():
-            return None
+    try:
+        root_file = ROOT.TFile.Open(str(file_path))
+    except OSError:
+        return None
 
+    with root_file:
         metrics = {
             "file_size": file_path.stat().st_size,
             "trees": {},

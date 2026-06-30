@@ -261,11 +261,13 @@ def print_simulation_output_summary(ROOT, output_filename, requested_events, fla
         for label, value in generator_stats:
             print_kv(label, value)
 
-    with ROOT.TFile.Open(output_filename, "READ") as summary_file:
-        if not summary_file or summary_file.IsZombie():
-            print("Could not reopen output file for summary:", output_filename)
-            return
+    try:
+        summary_file = ROOT.TFile.Open(output_filename, "READ")
+    except OSError:
+        print("Could not reopen output file for summary:", output_filename)
+        return
 
+    with summary_file:
         keys = list(summary_file.GetListOfKeys())
         print_section("Tree Validation")
         print_kv("Requested events", requested_events)
