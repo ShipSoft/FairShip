@@ -1009,8 +1009,6 @@ if options.muonback:
             break
     if fin is None:
         fin = ROOT.TFile.Open(outFile)
-    if not fin or fin.IsZombie():
-        raise OSError(f"Failed to open output file: {outFile}")
     t = fin["cbmsim"]
     fout = ROOT.TFile(tmpFile, "recreate")
     fSink = ROOT.FairRootFileSink(fout)
@@ -1102,8 +1100,6 @@ if options.command == "Genie":
     # Copy Genie (gst TTree) information to the output file
     input_path = inputFile[0] if isinstance(inputFile, (list, tuple)) else inputFile
     f_input = ROOT.TFile.Open(input_path, "READ")
-    if not f_input or f_input.IsZombie():
-        raise OSError(f"Failed to open GENIE input file: {input_path}")
     gst = f_input["gst"]
     if not gst:
         raise KeyError("TTree 'gst' not found in GENIE input file")

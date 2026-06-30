@@ -40,15 +40,11 @@ def main() -> int:
     args = parser.parse_args()
 
     src = ROOT.TFile.Open(args.source, "READ")
-    if not src or src.IsZombie():
-        raise SystemExit(f"Failed to open source: {args.source}")
     tree = src.Get("pythia8-Geant4") or src.Get("cbmsim")
     if not tree:
         raise SystemExit("Neither pythia8-Geant4 nor cbmsim tree found in source")
 
     out = ROOT.TFile.Open(str(args.output), "RECREATE")
-    if not out or out.IsZombie():
-        raise SystemExit(f"Failed to open output: {args.output}")
     skim = tree.CopyTree("", "", args.entries, 0)
     skim.Write()
     out.Close()
