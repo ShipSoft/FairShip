@@ -61,7 +61,7 @@ repos:
       - id: pyupgrade
         name: pyupgrade
         language: system
-        entry: pyupgrade --py312-plus
+        entry: pyupgrade --py313-plus
         types: [python]
       - id: mypy
         name: mypy (type-check)
