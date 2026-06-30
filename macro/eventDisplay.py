@@ -662,7 +662,8 @@ class IO:
         SHiPDisplay.NextEvent(self.n)
 
     def toggleMCTracks(self) -> None:
-        assert fRun is not None, "toggleMCTracks called before fRun was initialised"
+        if fRun is None:
+            raise RuntimeError("toggleMCTracks called before fRun was initialised")
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
@@ -725,7 +726,8 @@ class EventLoop(ROOT.FairTask):
         t0.SetText(ROOT.TGString("3D"))
 
     def NextEvent(self, i: int = -1) -> None:
-        assert fRun is not None, "NextEvent called before fRun was initialised"
+        if fRun is None:
+            raise RuntimeError("NextEvent called before fRun was initialised")
         if i < 0:
             self.n += 1
         else:

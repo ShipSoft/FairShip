@@ -30,7 +30,7 @@ def readFromAscii():
         content = ascii.readlines()
     h = {}
     n = 0
-    hname = ""  # first line is always a TH1F header; defensively bind for static analysis
+    hname = None  # set by the first TH1F header; bin data before it is an error
     while n < len(content):
         line = content[n]
         if "TH1F" in line:
@@ -44,6 +44,8 @@ def readFromAscii():
                 hname, keys[2] + ";" + keys[3] + ";" + keys[4], int(limits[0]), float(limits[1]), float(limits[2])
             )
         else:
+            if hname is None:
+                raise ValueError("bin data encountered before any TH1F header")
             keys = line.split(",")
             h[hname].SetBinContent(int(keys[0]), float(keys[1]))
         n += 1
