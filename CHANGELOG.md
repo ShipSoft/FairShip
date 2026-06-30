@@ -33,6 +33,7 @@ it in future.
 ### Added
 
 * Add experimental script to import Muons and Matter pkl files
+* Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)
 * Add `TTreeGenerator` to read events from ROOT TTrees (including the converted M&M ntuples)
 * Add `--ttree` option to `run_simScript.py` for ROOT TTree input
 * Add `--target_composition` option to `makeDecay`, defaulting to Tungsten and mirroring the `makeCascade.py` flag
