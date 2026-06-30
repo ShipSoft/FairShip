@@ -943,7 +943,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   29</span>  }</div>
 <div class="line"><span class="lineno">   30</span>  <a class="code hl_variable" href="classEvtCalcGenerator.html#a03fc7304f4455ce7b87b68002d38e952">fInputFile</a> = std::unique_ptr&lt;TFile&gt;(TFile::Open(fileName, <span class="stringliteral">&quot;read&quot;</span>));</div>
 <div class="line"><span class="lineno">   31</span>  LOGF(info, <span class="stringliteral">&quot;Info EvtCalcGenerator: Opening input file %s&quot;</span>, fileName);</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classEvtCalcGenerator.html#a03fc7304f4455ce7b87b68002d38e952">fInputFile</a> || <a class="code hl_variable" href="classEvtCalcGenerator.html#a03fc7304f4455ce7b87b68002d38e952">fInputFile</a>-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classEvtCalcGenerator.html#a03fc7304f4455ce7b87b68002d38e952">fInputFile</a>) {</div>
 <div class="line"><span class="lineno">   33</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;EvtCalcGenerator: error opening input file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   34</span>    <a class="code hl_variable" href="classEvtCalcGenerator.html#a03fc7304f4455ce7b87b68002d38e952">fInputFile</a>.reset();</div>
 <div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> kFALSE;</div>
@@ -1008,7 +1008,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a045c84129f2b91a90cc62b53e14236d2"><div class="ttname"><a href="classEvtCalcGenerator.html#a045c84129f2b91a90cc62b53e14236d2">EvtCalcGenerator::fn</a></div><div class="ttdeci">int fn</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00077">EvtCalcGenerator.h:77</a></div></div>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a42158fc710adf68bf7654057de726de3"><div class="ttname"><a href="classEvtCalcGenerator.html#a42158fc710adf68bf7654057de726de3">EvtCalcGenerator::fTree</a></div><div class="ttdeci">std::unique_ptr&lt; TTree &gt; fTree</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00062">EvtCalcGenerator.h:62</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01041">run_simScript.py:1041</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l01039">run_simScript.py:1039</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

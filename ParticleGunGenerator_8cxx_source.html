@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('ParticleGunGenerator_8cxx_source.html'
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keyword">const</span> std::string&amp; inFile, <span class="keyword">const</span> std::string&amp; inHisto,</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::vector&lt;std::string&gt; varNames) {</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  TFile* loadFile = TFile::Open(inFile.c_str(), <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!loadFile || loadFile-&gt;IsZombie()) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!loadFile) {</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">delete</span> loadFile;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ParticleGunGenerator: Cannot open file &quot;</span> &lt;&lt; inFile;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ParticleGunGenerator: Cannot open file &quot;</span> +</div>

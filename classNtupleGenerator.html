@@ -393,7 +393,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;NtupleGenerator: Opening input file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a> = TFile::Open(fileName, <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a> || <a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a>-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a>) {</div>
 <div class="line"><span class="lineno">   38</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;NtupleGenerator: Error opening input file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a>;</div>
 <div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classNtupleGenerator.html#aea2daf5d738b097a396f9cbcb3bf5105">fInputFile</a> = <span class="keyword">nullptr</span>;</div>

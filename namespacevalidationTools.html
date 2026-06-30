@@ -652,128 +652,130 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  261</span>        <span class="keywordflow">for</span> label, value <span class="keywordflow">in</span> generator_stats:</div>
 <div class="line"><span class="lineno">  262</span>            print_kv(label, value)</div>
 <div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>    <span class="keyword">with</span> ROOT.TFile.Open(output_filename, <span class="stringliteral">&quot;READ&quot;</span>) <span class="keyword">as</span> summary_file:</div>
-<div class="line"><span class="lineno">  265</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> summary_file <span class="keywordflow">or</span> summary_file.IsZombie():</div>
-<div class="line"><span class="lineno">  266</span>            print(<span class="stringliteral">&quot;Could not reopen output file for summary:&quot;</span>, output_filename)</div>
-<div class="line"><span class="lineno">  267</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>        keys = list(summary_file.GetListOfKeys())</div>
-<div class="line"><span class="lineno">  270</span>        print_section(<span class="stringliteral">&quot;Tree Validation&quot;</span>)</div>
-<div class="line"><span class="lineno">  271</span>        print_kv(<span class="stringliteral">&quot;Requested events&quot;</span>, requested_events)</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>        tree = summary_file.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">  274</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
-<div class="line"><span class="lineno">  275</span>            print(<span class="stringliteral">&quot;No cbmsim tree found in output file.&quot;</span>)</div>
-<div class="line"><span class="lineno">  276</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  277</span> </div>
-<div class="line"><span class="lineno">  278</span>        n_entries = tree.GetEntries()</div>
-<div class="line"><span class="lineno">  279</span>        print_kv(<span class="stringliteral">&quot;Final cbmsim entries&quot;</span>, n_entries)</div>
-<div class="line"><span class="lineno">  280</span>        print_kv(<span class="stringliteral">&quot;Kept fraction&quot;</span>, safe_fraction(n_entries, requested_events))</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>        branch_names = [branch.GetName() <span class="keywordflow">for</span> branch <span class="keywordflow">in</span> tree.GetListOfBranches()]</div>
-<div class="line"><span class="lineno">  283</span>        print_kv(<span class="stringliteral">&quot;Branches in cbmsim&quot;</span>, len(branch_names))</div>
-<div class="line"><span class="lineno">  284</span>        print_kv(<span class="stringliteral">&quot;ROOT objects&quot;</span>, len(keys))</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">if</span> n_entries &lt;= 0:</div>
-<div class="line"><span class="lineno">  287</span>            print(<span class="stringliteral">&quot;cbmsim tree is empty.&quot;</span>)</div>
-<div class="line"><span class="lineno">  288</span>            <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  289</span> </div>
-<div class="line"><span class="lineno">  290</span>        scalar_stats = {}</div>
-<div class="line"><span class="lineno">  291</span>        branch_stats = {}</div>
-<div class="line"><span class="lineno">  292</span>        track_stats = {</div>
-<div class="line"><span class="lineno">  293</span>            <span class="stringliteral">&quot;total_tracks&quot;</span>: 0,</div>
-<div class="line"><span class="lineno">  294</span>            <span class="stringliteral">&quot;primary_tracks&quot;</span>: 0,</div>
-<div class="line"><span class="lineno">  295</span>            <span class="stringliteral">&quot;secondary_tracks&quot;</span>: 0,</div>
-<div class="line"><span class="lineno">  296</span>            <span class="stringliteral">&quot;weight_sum&quot;</span>: 0.0,</div>
-<div class="line"><span class="lineno">  297</span>            <span class="stringliteral">&quot;weight_sq_sum&quot;</span>: 0.0,</div>
-<div class="line"><span class="lineno">  298</span>            <span class="stringliteral">&quot;weight_min&quot;</span>: <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  299</span>            <span class="stringliteral">&quot;weight_max&quot;</span>: <span class="keywordtype">None</span>,</div>
-<div class="line"><span class="lineno">  300</span>            <span class="stringliteral">&quot;p&quot;</span>: make_numeric_stats(),</div>
-<div class="line"><span class="lineno">  301</span>            <span class="stringliteral">&quot;energy&quot;</span>: make_numeric_stats(),</div>
-<div class="line"><span class="lineno">  302</span>            <span class="stringliteral">&quot;start_z&quot;</span>: make_numeric_stats(),</div>
-<div class="line"><span class="lineno">  303</span>            <span class="stringliteral">&quot;pdg_counts&quot;</span>: {},</div>
-<div class="line"><span class="lineno">  304</span>        }</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>        <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> branch_names:</div>
-<div class="line"><span class="lineno">  307</span>            branch_stats[branch_name] = {<span class="stringliteral">&quot;total&quot;</span>: 0, <span class="stringliteral">&quot;nonzero&quot;</span>: 0, <span class="stringliteral">&quot;max&quot;</span>: 0, <span class="stringliteral">&quot;sum_sq&quot;</span>: 0.0}</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>        <span class="keywordflow">for</span> event_index <span class="keywordflow">in</span> range(n_entries):</div>
-<div class="line"><span class="lineno">  310</span>            tree.GetEntry(event_index)</div>
-<div class="line"><span class="lineno">  311</span>            <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> branch_names:</div>
-<div class="line"><span class="lineno">  312</span>                container = getattr(tree, branch_name, <span class="keywordtype">None</span>)</div>
-<div class="line"><span class="lineno">  313</span>                count = container_size(container)</div>
-<div class="line"><span class="lineno">  314</span>                <span class="keywordflow">if</span> count <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  315</span>                    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  316</span>                        value = float(container)</div>
-<div class="line"><span class="lineno">  317</span>                    <span class="keywordflow">except</span> (TypeError, ValueError):</div>
-<div class="line"><span class="lineno">  318</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  319</span>                    <span class="keywordflow">if</span> branch_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> scalar_stats:</div>
-<div class="line"><span class="lineno">  320</span>                        scalar_stats[branch_name] = make_numeric_stats()</div>
-<div class="line"><span class="lineno">  321</span>                    update_numeric_stat(scalar_stats[branch_name], value)</div>
-<div class="line"><span class="lineno">  322</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>                stats = branch_stats[branch_name]</div>
-<div class="line"><span class="lineno">  325</span>                stats[<span class="stringliteral">&quot;total&quot;</span>] += count</div>
-<div class="line"><span class="lineno">  326</span>                <span class="keywordflow">if</span> count &gt; 0:</div>
-<div class="line"><span class="lineno">  327</span>                    stats[<span class="stringliteral">&quot;nonzero&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  328</span>                <span class="keywordflow">if</span> count &gt; stats[<span class="stringliteral">&quot;max&quot;</span>]:</div>
-<div class="line"><span class="lineno">  329</span>                    stats[<span class="stringliteral">&quot;max&quot;</span>] = count</div>
-<div class="line"><span class="lineno">  330</span>                stats[<span class="stringliteral">&quot;sum_sq&quot;</span>] += count * count</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>                <span class="keywordflow">if</span> branch_name == <span class="stringliteral">&quot;MCTrack&quot;</span> <span class="keywordflow">and</span> count &gt; 0:</div>
-<div class="line"><span class="lineno">  333</span>                    <span class="keywordflow">for</span> track <span class="keywordflow">in</span> container:</div>
-<div class="line"><span class="lineno">  334</span>                        track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  335</span>                        <span class="keywordflow">if</span> track.GetMotherId() &lt; 0:</div>
-<div class="line"><span class="lineno">  336</span>                            track_stats[<span class="stringliteral">&quot;primary_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  337</span>                        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  338</span>                            track_stats[<span class="stringliteral">&quot;secondary_tracks&quot;</span>] += 1</div>
-<div class="line"><span class="lineno">  339</span>                        weight = float(track.GetWeight())</div>
-<div class="line"><span class="lineno">  340</span>                        track_stats[<span class="stringliteral">&quot;weight_sum&quot;</span>] += weight</div>
-<div class="line"><span class="lineno">  341</span>                        track_stats[<span class="stringliteral">&quot;weight_sq_sum&quot;</span>] += weight * weight</div>
-<div class="line"><span class="lineno">  342</span>                        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>] <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> weight &lt; track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>]:</div>
-<div class="line"><span class="lineno">  343</span>                            track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>] = weight</div>
-<div class="line"><span class="lineno">  344</span>                        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>] <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> weight &gt; track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>]:</div>
-<div class="line"><span class="lineno">  345</span>                            track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>] = weight</div>
-<div class="line"><span class="lineno">  346</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;p&quot;</span>], float(track.GetP()))</div>
-<div class="line"><span class="lineno">  347</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;energy&quot;</span>], float(track.GetEnergy()))</div>
-<div class="line"><span class="lineno">  348</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;start_z&quot;</span>], float(track.GetStartZ()))</div>
-<div class="line"><span class="lineno">  349</span>                        pdg = int(track.GetPdgCode())</div>
-<div class="line"><span class="lineno">  350</span>                        track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>][pdg] = track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>].get(pdg, 0) + 1</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>        countable_branches = [</div>
-<div class="line"><span class="lineno">  353</span>            name <span class="keywordflow">for</span> name, stats <span class="keywordflow">in</span> branch_stats.items() <span class="keywordflow">if</span> stats[<span class="stringliteral">&quot;total&quot;</span>] &gt; 0 <span class="keywordflow">or</span> stats[<span class="stringliteral">&quot;nonzero&quot;</span>] &gt; 0</div>
-<div class="line"><span class="lineno">  354</span>        ]</div>
-<div class="line"><span class="lineno">  355</span>        print_kv(<span class="stringliteral">&quot;Countable branches&quot;</span>, len(countable_branches))</div>
-<div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>] &gt; 0:</div>
-<div class="line"><span class="lineno">  358</span>            print_section(<span class="stringliteral">&quot;MCTrack Validation&quot;</span>)</div>
-<div class="line"><span class="lineno">  359</span>            print_kv(<span class="stringliteral">&quot;Total tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>])</div>
-<div class="line"><span class="lineno">  360</span>            print_kv(<span class="stringliteral">&quot;Primary tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;primary_tracks&quot;</span>])</div>
-<div class="line"><span class="lineno">  361</span>            print_kv(<span class="stringliteral">&quot;Secondary tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;secondary_tracks&quot;</span>])</div>
-<div class="line"><span class="lineno">  362</span>            print_kv(<span class="stringliteral">&quot;Tracks per event&quot;</span>, f<span class="stringliteral">&quot;{track_stats[&#39;total_tracks&#39;] / n_entries:.4g}&quot;</span>)</div>
-<div class="line"><span class="lineno">  363</span>            print_kv(<span class="stringliteral">&quot;Track momentum&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;p&quot;</span>]))</div>
-<div class="line"><span class="lineno">  364</span>            print_kv(<span class="stringliteral">&quot;Track energy&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;energy&quot;</span>]))</div>
-<div class="line"><span class="lineno">  365</span>            print_kv(<span class="stringliteral">&quot;Track start Z&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;start_z&quot;</span>]))</div>
-<div class="line"><span class="lineno">  366</span>            top_pdgs = sorted(track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>].items(), key=<span class="keyword">lambda</span> item: (-item[1], abs(item[0]), item[0]))[</div>
-<div class="line"><span class="lineno">  367</span>                :10</div>
-<div class="line"><span class="lineno">  368</span>            ]</div>
-<div class="line"><span class="lineno">  369</span>            print_kv(<span class="stringliteral">&quot;Top PDG counts&quot;</span>, <span class="stringliteral">&quot;, &quot;</span>.join(f<span class="stringliteral">&quot;{pdg}:{count}&quot;</span> <span class="keywordflow">for</span> pdg, count <span class="keywordflow">in</span> top_pdgs))</div>
-<div class="line"><span class="lineno">  370</span> </div>
-<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">if</span> scalar_stats:</div>
-<div class="line"><span class="lineno">  372</span>            print_section(<span class="stringliteral">&quot;Scalar Branch Validation&quot;</span>)</div>
-<div class="line"><span class="lineno">  373</span>            <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> sorted(scalar_stats):</div>
-<div class="line"><span class="lineno">  374</span>                print_kv(branch_name, format_stat_summary(scalar_stats[branch_name]))</div>
-<div class="line"><span class="lineno">  375</span> </div>
-<div class="line"><span class="lineno">  376</span>        print_section(<span class="stringliteral">&quot;Branch Multiplicity&quot;</span>)</div>
-<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> sorted(countable_branches):</div>
-<div class="line"><span class="lineno">  378</span>            stats = branch_stats[branch_name]</div>
-<div class="line"><span class="lineno">  379</span>            active = 100.0 * stats[<span class="stringliteral">&quot;nonzero&quot;</span>] / n_entries</div>
-<div class="line"><span class="lineno">  380</span>            print_kv(</div>
-<div class="line"><span class="lineno">  381</span>                branch_name,</div>
-<div class="line"><span class="lineno">  382</span>                f<span class="stringliteral">&quot;total={stats[&#39;total&#39;]}, mean/event={format_mean_std(n_entries, stats[&#39;total&#39;], stats[&#39;sum_sq&#39;])},&quot;</span></div>
-<div class="line"><span class="lineno">  383</span>                f<span class="stringliteral">&quot; active={stats[&#39;nonzero&#39;]}/{n_entries} ({active:5.1f}%), max={stats[&#39;max&#39;]}&quot;</span>,</div>
-<div class="line"><span class="lineno">  384</span>                width=22,</div>
-<div class="line"><span class="lineno">  385</span>            )</div>
+<div class="line"><span class="lineno">  264</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  265</span>        summary_file = ROOT.TFile.Open(output_filename, <span class="stringliteral">&quot;READ&quot;</span>)</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">except</span> OSError:</div>
+<div class="line"><span class="lineno">  267</span>        print(<span class="stringliteral">&quot;Could not reopen output file for summary:&quot;</span>, output_filename)</div>
+<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>    <span class="keyword">with</span> summary_file:</div>
+<div class="line"><span class="lineno">  271</span>        keys = list(summary_file.GetListOfKeys())</div>
+<div class="line"><span class="lineno">  272</span>        print_section(<span class="stringliteral">&quot;Tree Validation&quot;</span>)</div>
+<div class="line"><span class="lineno">  273</span>        print_kv(<span class="stringliteral">&quot;Requested events&quot;</span>, requested_events)</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>        tree = summary_file.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
+<div class="line"><span class="lineno">  277</span>            print(<span class="stringliteral">&quot;No cbmsim tree found in output file.&quot;</span>)</div>
+<div class="line"><span class="lineno">  278</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>        n_entries = tree.GetEntries()</div>
+<div class="line"><span class="lineno">  281</span>        print_kv(<span class="stringliteral">&quot;Final cbmsim entries&quot;</span>, n_entries)</div>
+<div class="line"><span class="lineno">  282</span>        print_kv(<span class="stringliteral">&quot;Kept fraction&quot;</span>, safe_fraction(n_entries, requested_events))</div>
+<div class="line"><span class="lineno">  283</span> </div>
+<div class="line"><span class="lineno">  284</span>        branch_names = [branch.GetName() <span class="keywordflow">for</span> branch <span class="keywordflow">in</span> tree.GetListOfBranches()]</div>
+<div class="line"><span class="lineno">  285</span>        print_kv(<span class="stringliteral">&quot;Branches in cbmsim&quot;</span>, len(branch_names))</div>
+<div class="line"><span class="lineno">  286</span>        print_kv(<span class="stringliteral">&quot;ROOT objects&quot;</span>, len(keys))</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>        <span class="keywordflow">if</span> n_entries &lt;= 0:</div>
+<div class="line"><span class="lineno">  289</span>            print(<span class="stringliteral">&quot;cbmsim tree is empty.&quot;</span>)</div>
+<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  292</span>        scalar_stats = {}</div>
+<div class="line"><span class="lineno">  293</span>        branch_stats = {}</div>
+<div class="line"><span class="lineno">  294</span>        track_stats = {</div>
+<div class="line"><span class="lineno">  295</span>            <span class="stringliteral">&quot;total_tracks&quot;</span>: 0,</div>
+<div class="line"><span class="lineno">  296</span>            <span class="stringliteral">&quot;primary_tracks&quot;</span>: 0,</div>
+<div class="line"><span class="lineno">  297</span>            <span class="stringliteral">&quot;secondary_tracks&quot;</span>: 0,</div>
+<div class="line"><span class="lineno">  298</span>            <span class="stringliteral">&quot;weight_sum&quot;</span>: 0.0,</div>
+<div class="line"><span class="lineno">  299</span>            <span class="stringliteral">&quot;weight_sq_sum&quot;</span>: 0.0,</div>
+<div class="line"><span class="lineno">  300</span>            <span class="stringliteral">&quot;weight_min&quot;</span>: <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  301</span>            <span class="stringliteral">&quot;weight_max&quot;</span>: <span class="keywordtype">None</span>,</div>
+<div class="line"><span class="lineno">  302</span>            <span class="stringliteral">&quot;p&quot;</span>: make_numeric_stats(),</div>
+<div class="line"><span class="lineno">  303</span>            <span class="stringliteral">&quot;energy&quot;</span>: make_numeric_stats(),</div>
+<div class="line"><span class="lineno">  304</span>            <span class="stringliteral">&quot;start_z&quot;</span>: make_numeric_stats(),</div>
+<div class="line"><span class="lineno">  305</span>            <span class="stringliteral">&quot;pdg_counts&quot;</span>: {},</div>
+<div class="line"><span class="lineno">  306</span>        }</div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span>        <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> branch_names:</div>
+<div class="line"><span class="lineno">  309</span>            branch_stats[branch_name] = {<span class="stringliteral">&quot;total&quot;</span>: 0, <span class="stringliteral">&quot;nonzero&quot;</span>: 0, <span class="stringliteral">&quot;max&quot;</span>: 0, <span class="stringliteral">&quot;sum_sq&quot;</span>: 0.0}</div>
+<div class="line"><span class="lineno">  310</span> </div>
+<div class="line"><span class="lineno">  311</span>        <span class="keywordflow">for</span> event_index <span class="keywordflow">in</span> range(n_entries):</div>
+<div class="line"><span class="lineno">  312</span>            tree.GetEntry(event_index)</div>
+<div class="line"><span class="lineno">  313</span>            <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> branch_names:</div>
+<div class="line"><span class="lineno">  314</span>                container = getattr(tree, branch_name, <span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">  315</span>                count = container_size(container)</div>
+<div class="line"><span class="lineno">  316</span>                <span class="keywordflow">if</span> count <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  317</span>                    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  318</span>                        value = float(container)</div>
+<div class="line"><span class="lineno">  319</span>                    <span class="keywordflow">except</span> (TypeError, ValueError):</div>
+<div class="line"><span class="lineno">  320</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  321</span>                    <span class="keywordflow">if</span> branch_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> scalar_stats:</div>
+<div class="line"><span class="lineno">  322</span>                        scalar_stats[branch_name] = make_numeric_stats()</div>
+<div class="line"><span class="lineno">  323</span>                    update_numeric_stat(scalar_stats[branch_name], value)</div>
+<div class="line"><span class="lineno">  324</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  325</span> </div>
+<div class="line"><span class="lineno">  326</span>                stats = branch_stats[branch_name]</div>
+<div class="line"><span class="lineno">  327</span>                stats[<span class="stringliteral">&quot;total&quot;</span>] += count</div>
+<div class="line"><span class="lineno">  328</span>                <span class="keywordflow">if</span> count &gt; 0:</div>
+<div class="line"><span class="lineno">  329</span>                    stats[<span class="stringliteral">&quot;nonzero&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  330</span>                <span class="keywordflow">if</span> count &gt; stats[<span class="stringliteral">&quot;max&quot;</span>]:</div>
+<div class="line"><span class="lineno">  331</span>                    stats[<span class="stringliteral">&quot;max&quot;</span>] = count</div>
+<div class="line"><span class="lineno">  332</span>                stats[<span class="stringliteral">&quot;sum_sq&quot;</span>] += count * count</div>
+<div class="line"><span class="lineno">  333</span> </div>
+<div class="line"><span class="lineno">  334</span>                <span class="keywordflow">if</span> branch_name == <span class="stringliteral">&quot;MCTrack&quot;</span> <span class="keywordflow">and</span> count &gt; 0:</div>
+<div class="line"><span class="lineno">  335</span>                    <span class="keywordflow">for</span> track <span class="keywordflow">in</span> container:</div>
+<div class="line"><span class="lineno">  336</span>                        track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  337</span>                        <span class="keywordflow">if</span> track.GetMotherId() &lt; 0:</div>
+<div class="line"><span class="lineno">  338</span>                            track_stats[<span class="stringliteral">&quot;primary_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  339</span>                        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  340</span>                            track_stats[<span class="stringliteral">&quot;secondary_tracks&quot;</span>] += 1</div>
+<div class="line"><span class="lineno">  341</span>                        weight = float(track.GetWeight())</div>
+<div class="line"><span class="lineno">  342</span>                        track_stats[<span class="stringliteral">&quot;weight_sum&quot;</span>] += weight</div>
+<div class="line"><span class="lineno">  343</span>                        track_stats[<span class="stringliteral">&quot;weight_sq_sum&quot;</span>] += weight * weight</div>
+<div class="line"><span class="lineno">  344</span>                        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>] <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> weight &lt; track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>]:</div>
+<div class="line"><span class="lineno">  345</span>                            track_stats[<span class="stringliteral">&quot;weight_min&quot;</span>] = weight</div>
+<div class="line"><span class="lineno">  346</span>                        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>] <span class="keywordflow">is</span> <span class="keywordtype">None</span> <span class="keywordflow">or</span> weight &gt; track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>]:</div>
+<div class="line"><span class="lineno">  347</span>                            track_stats[<span class="stringliteral">&quot;weight_max&quot;</span>] = weight</div>
+<div class="line"><span class="lineno">  348</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;p&quot;</span>], float(track.GetP()))</div>
+<div class="line"><span class="lineno">  349</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;energy&quot;</span>], float(track.GetEnergy()))</div>
+<div class="line"><span class="lineno">  350</span>                        update_numeric_stat(track_stats[<span class="stringliteral">&quot;start_z&quot;</span>], float(track.GetStartZ()))</div>
+<div class="line"><span class="lineno">  351</span>                        pdg = int(track.GetPdgCode())</div>
+<div class="line"><span class="lineno">  352</span>                        track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>][pdg] = track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>].get(pdg, 0) + 1</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>        countable_branches = [</div>
+<div class="line"><span class="lineno">  355</span>            name <span class="keywordflow">for</span> name, stats <span class="keywordflow">in</span> branch_stats.items() <span class="keywordflow">if</span> stats[<span class="stringliteral">&quot;total&quot;</span>] &gt; 0 <span class="keywordflow">or</span> stats[<span class="stringliteral">&quot;nonzero&quot;</span>] &gt; 0</div>
+<div class="line"><span class="lineno">  356</span>        ]</div>
+<div class="line"><span class="lineno">  357</span>        print_kv(<span class="stringliteral">&quot;Countable branches&quot;</span>, len(countable_branches))</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">if</span> track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>] &gt; 0:</div>
+<div class="line"><span class="lineno">  360</span>            print_section(<span class="stringliteral">&quot;MCTrack Validation&quot;</span>)</div>
+<div class="line"><span class="lineno">  361</span>            print_kv(<span class="stringliteral">&quot;Total tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;total_tracks&quot;</span>])</div>
+<div class="line"><span class="lineno">  362</span>            print_kv(<span class="stringliteral">&quot;Primary tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;primary_tracks&quot;</span>])</div>
+<div class="line"><span class="lineno">  363</span>            print_kv(<span class="stringliteral">&quot;Secondary tracks&quot;</span>, track_stats[<span class="stringliteral">&quot;secondary_tracks&quot;</span>])</div>
+<div class="line"><span class="lineno">  364</span>            print_kv(<span class="stringliteral">&quot;Tracks per event&quot;</span>, f<span class="stringliteral">&quot;{track_stats[&#39;total_tracks&#39;] / n_entries:.4g}&quot;</span>)</div>
+<div class="line"><span class="lineno">  365</span>            print_kv(<span class="stringliteral">&quot;Track momentum&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;p&quot;</span>]))</div>
+<div class="line"><span class="lineno">  366</span>            print_kv(<span class="stringliteral">&quot;Track energy&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;energy&quot;</span>]))</div>
+<div class="line"><span class="lineno">  367</span>            print_kv(<span class="stringliteral">&quot;Track start Z&quot;</span>, format_stat_summary(track_stats[<span class="stringliteral">&quot;start_z&quot;</span>]))</div>
+<div class="line"><span class="lineno">  368</span>            top_pdgs = sorted(track_stats[<span class="stringliteral">&quot;pdg_counts&quot;</span>].items(), key=<span class="keyword">lambda</span> item: (-item[1], abs(item[0]), item[0]))[</div>
+<div class="line"><span class="lineno">  369</span>                :10</div>
+<div class="line"><span class="lineno">  370</span>            ]</div>
+<div class="line"><span class="lineno">  371</span>            print_kv(<span class="stringliteral">&quot;Top PDG counts&quot;</span>, <span class="stringliteral">&quot;, &quot;</span>.join(f<span class="stringliteral">&quot;{pdg}:{count}&quot;</span> <span class="keywordflow">for</span> pdg, count <span class="keywordflow">in</span> top_pdgs))</div>
+<div class="line"><span class="lineno">  372</span> </div>
+<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">if</span> scalar_stats:</div>
+<div class="line"><span class="lineno">  374</span>            print_section(<span class="stringliteral">&quot;Scalar Branch Validation&quot;</span>)</div>
+<div class="line"><span class="lineno">  375</span>            <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> sorted(scalar_stats):</div>
+<div class="line"><span class="lineno">  376</span>                print_kv(branch_name, format_stat_summary(scalar_stats[branch_name]))</div>
+<div class="line"><span class="lineno">  377</span> </div>
+<div class="line"><span class="lineno">  378</span>        print_section(<span class="stringliteral">&quot;Branch Multiplicity&quot;</span>)</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">for</span> branch_name <span class="keywordflow">in</span> sorted(countable_branches):</div>
+<div class="line"><span class="lineno">  380</span>            stats = branch_stats[branch_name]</div>
+<div class="line"><span class="lineno">  381</span>            active = 100.0 * stats[<span class="stringliteral">&quot;nonzero&quot;</span>] / n_entries</div>
+<div class="line"><span class="lineno">  382</span>            print_kv(</div>
+<div class="line"><span class="lineno">  383</span>                branch_name,</div>
+<div class="line"><span class="lineno">  384</span>                f<span class="stringliteral">&quot;total={stats[&#39;total&#39;]}, mean/event={format_mean_std(n_entries, stats[&#39;total&#39;], stats[&#39;sum_sq&#39;])},&quot;</span></div>
+<div class="line"><span class="lineno">  385</span>                f<span class="stringliteral">&quot; active={stats[&#39;nonzero&#39;]}/{n_entries} ({active:5.1f}%), max={stats[&#39;max&#39;]}&quot;</span>,</div>
+<div class="line"><span class="lineno">  386</span>                width=22,</div>
+<div class="line"><span class="lineno">  387</span>            )</div>
 </div><!-- fragment -->
 </div>
 </div>

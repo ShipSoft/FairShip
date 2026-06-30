@@ -952,7 +952,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>    <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">   76</span>  }</div>
 <div class="line"><span class="lineno">   77</span>  <a class="code hl_variable" href="classFixedTargetGenerator.html#a953443e07609f0fe33a4eceb9ee17b20">fin</a> = TFile::Open(fInName, <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#a953443e07609f0fe33a4eceb9ee17b20">fin</a> || <a class="code hl_variable" href="classFixedTargetGenerator.html#a953443e07609f0fe33a4eceb9ee17b20">fin</a>-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classFixedTargetGenerator.html#a953443e07609f0fe33a4eceb9ee17b20">fin</a>) {</div>
 <div class="line"><span class="lineno">   79</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;FixedTargetGenerator: could not open input file &quot;</span></div>
 <div class="line"><span class="lineno">   80</span>               &lt;&lt; fInName.Data();</div>
 <div class="line"><span class="lineno">   81</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classFixedTargetGenerator.html#a953443e07609f0fe33a4eceb9ee17b20">fin</a>;</div>

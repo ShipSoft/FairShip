@@ -1014,7 +1014,7 @@ Additional Inherited Members</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ParticleGunGenerator_8cxx_source.html#l00087">87</a> of file <a class="el" href="ParticleGunGenerator_8cxx_source.html">ParticleGunGenerator.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>                                   {</div>
 <div class="line"><span class="lineno">   90</span>  TFile* loadFile = TFile::Open(<a class="code hl_variable" href="namespaceeventDisplay.html#a5a68f0a10abeb90c299b4aef44abdd5a">inFile</a>.c_str(), <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!loadFile || loadFile-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!loadFile) {</div>
 <div class="line"><span class="lineno">   92</span>    <span class="keyword">delete</span> loadFile;</div>
 <div class="line"><span class="lineno">   93</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;ParticleGunGenerator: Cannot open file &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceeventDisplay.html#a5a68f0a10abeb90c299b4aef44abdd5a">inFile</a>;</div>
 <div class="line"><span class="lineno">   94</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ParticleGunGenerator: Cannot open file &quot;</span> +</div>

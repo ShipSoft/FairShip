@@ -146,23 +146,19 @@ sample format changes.
 <div class="line"><span class="lineno">   40</span>    args = parser.parse_args()</div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>    src = ROOT.TFile.Open(args.source, <span class="stringliteral">&quot;READ&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> src <span class="keywordflow">or</span> src.IsZombie():</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">raise</span> SystemExit(f<span class="stringliteral">&quot;Failed to open source: {args.source}&quot;</span>)</div>
-<div class="line"><span class="lineno">   45</span>    tree = src.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>) <span class="keywordflow">or</span> src.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">raise</span> SystemExit(<span class="stringliteral">&quot;Neither pythia8-Geant4 nor cbmsim tree found in source&quot;</span>)</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    out = ROOT.TFile.Open(str(args.output), <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> out <span class="keywordflow">or</span> out.IsZombie():</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">raise</span> SystemExit(f<span class="stringliteral">&quot;Failed to open output: {args.output}&quot;</span>)</div>
-<div class="line"><span class="lineno">   52</span>    skim = tree.CopyTree(<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, args.entries, 0)</div>
-<div class="line"><span class="lineno">   53</span>    skim.Write()</div>
-<div class="line"><span class="lineno">   54</span>    out.Close()</div>
-<div class="line"><span class="lineno">   55</span>    src.Close()</div>
-<div class="line"><span class="lineno">   56</span>    print(f<span class="stringliteral">&quot;Wrote {args.entries} entries to {args.output} ({args.output.stat().st_size} B)&quot;</span>)</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   43</span>    tree = src.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>) <span class="keywordflow">or</span> src.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">raise</span> SystemExit(<span class="stringliteral">&quot;Neither pythia8-Geant4 nor cbmsim tree found in source&quot;</span>)</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    out = ROOT.TFile.Open(str(args.output), <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><span class="lineno">   48</span>    skim = tree.CopyTree(<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, args.entries, 0)</div>
+<div class="line"><span class="lineno">   49</span>    skim.Write()</div>
+<div class="line"><span class="lineno">   50</span>    out.Close()</div>
+<div class="line"><span class="lineno">   51</span>    src.Close()</div>
+<div class="line"><span class="lineno">   52</span>    print(f<span class="stringliteral">&quot;Wrote {args.entries} entries to {args.output} ({args.output.stat().st_size} B)&quot;</span>)</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span> </div>
 <div class="ttc" id="atest__data__class__io_8cxx_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="test__data__class__io_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="test__data__class__io_8cxx_source.html#l00199">test_data_class_io.cxx:199</a></div></div>
 </div><!-- fragment -->
 </div>

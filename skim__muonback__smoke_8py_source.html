@@ -140,26 +140,22 @@ $(document).ready(function(){initNavTree('skim__muonback__smoke_8py_source.html'
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    args = parser.parse_args()</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    src = ROOT.TFile.Open(args.source, <span class="stringliteral">&quot;READ&quot;</span>)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> src <span class="keywordflow">or</span> src.IsZombie():</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">raise</span> SystemExit(f<span class="stringliteral">&quot;Failed to open source: {args.source}&quot;</span>)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    tree = src.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>) <span class="keywordflow">or</span> src.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">raise</span> SystemExit(<span class="stringliteral">&quot;Neither pythia8-Geant4 nor cbmsim tree found in source&quot;</span>)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    out = ROOT.TFile.Open(str(args.output), <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> out <span class="keywordflow">or</span> out.IsZombie():</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">raise</span> SystemExit(f<span class="stringliteral">&quot;Failed to open output: {args.output}&quot;</span>)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    skim = tree.CopyTree(<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, args.entries, 0)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    skim.Write()</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    out.Close()</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    src.Close()</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    print(f<span class="stringliteral">&quot;Wrote {args.entries} entries to {args.output} ({args.output.stat().st_size} B)&quot;</span>)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">return</span> 0</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    tree = src.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>) <span class="keywordflow">or</span> src.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> tree:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">raise</span> SystemExit(<span class="stringliteral">&quot;Neither pythia8-Geant4 nor cbmsim tree found in source&quot;</span>)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    out = ROOT.TFile.Open(str(args.output), <span class="stringliteral">&quot;RECREATE&quot;</span>)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    skim = tree.CopyTree(<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, args.entries, 0)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    skim.Write()</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    out.Close()</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    src.Close()</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    print(f<span class="stringliteral">&quot;Wrote {args.entries} entries to {args.output} ({args.output.stat().st_size} B)&quot;</span>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> 0</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">raise</span> SystemExit(<a class="code hl_function" href="namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0">main</a>())</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">raise</span> SystemExit(<a class="code hl_function" href="namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0">main</a>())</div>
 <div class="ttc" id="anamespaceshipRoot__conf_html_a59bfc0b1b7bf8bc3e1a1270881622da6"><div class="ttname"><a href="namespaceshipRoot__conf.html#a59bfc0b1b7bf8bc3e1a1270881622da6">shipRoot_conf.configure</a></div><div class="ttdeci">None configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00049">shipRoot_conf.py:49</a></div></div>
 <div class="ttc" id="anamespaceskim__muonback__smoke_html_acd265e66314c1a63a4f8d835f99a00f0"><div class="ttname"><a href="namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0">skim_muonback_smoke.main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="skim__muonback__smoke_8py_source.html#l00021">skim_muonback_smoke.py:21</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

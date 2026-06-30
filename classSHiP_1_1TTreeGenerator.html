@@ -540,7 +540,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>  <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a2f464cc0291f74aee321505513e854c7">fCurrentEvent</a> = 0;</div>
 <div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span>  <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> = TFile::Open(fileName, <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> || <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>) {</div>
 <div class="line"><span class="lineno">   53</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;TTreeGenerator: Cannot open file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>;</div>
 <div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> = <span class="keyword">nullptr</span>;</div>
