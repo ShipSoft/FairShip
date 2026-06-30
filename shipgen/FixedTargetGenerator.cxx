@@ -75,7 +75,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(const TString& fInName,
     return kFALSE;
   }
   fin = TFile::Open(fInName, "READ");
-  if (!fin || fin->IsZombie()) {
+  if (!fin) {
     LOG(error) << "FixedTargetGenerator: could not open input file "
                << fInName.Data();
     delete fin;
