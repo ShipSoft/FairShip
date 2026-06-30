@@ -493,10 +493,11 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                     h["abs(x - x-true)"].Fill(xerr)
                     h["abs(y - y-true)"].Fill(yerr)
 
-                rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true_matched)) ** 2))
-                rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true_matched)) ** 2))
-                h["rmse_x"].Fill(rmse_x)
-                h["rmse_y"].Fill(rmse_y)
+                if Z_fit:
+                    rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true_matched)) ** 2))
+                    rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true_matched)) ** 2))
+                    h["rmse_x"].Fill(rmse_x)
+                    h["rmse_y"].Fill(rmse_y)
 
             except Exception:
                 print("Problem with fitted state.")
