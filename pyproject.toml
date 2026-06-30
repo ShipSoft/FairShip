@@ -28,7 +28,7 @@ skip = "pixi.lock"
 ignore-words-list = 'Millepede,Gaus,gaus,dYIn,te,KNO,kno'
 
 [tool.pyrefly]
-python-version = "3.12"
+python-version = "3.13"
 search-path = ["python", "stubs"]
 project-excludes = [".pixi/**", "build/**", ".direnv/**"]
 
@@ -50,7 +50,7 @@ ignore-missing-imports = [
 missing-import = false
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 mypy_path = ["stubs", "python"]
 ignore_missing_imports = true
 explicit_package_bases = true
