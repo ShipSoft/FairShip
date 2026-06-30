@@ -475,22 +475,26 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 Z_fit = []
                 X_fit = []
                 Y_fit = []
-                for az in Z_true:
+                X_true_matched = []
+                Y_true_matched = []
+                for az, ax_true, ay_true in zip(Z_true, X_true, Y_true):
                     _rc, pos, _mom = extrapolateToPlane(thetrack, az)
                     if pos is None:
                         continue
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
+                    X_true_matched.append(ax_true)
+                    Y_true_matched.append(ay_true)
 
-                for i in range(len(Z_true)):
-                    xerr = abs(X_fit[i] - X_true[i])
-                    yerr = abs(Y_fit[i] - Y_true[i])
+                for i in range(len(Z_fit)):
+                    xerr = abs(X_fit[i] - X_true_matched[i])
+                    yerr = abs(Y_fit[i] - Y_true_matched[i])
                     h["abs(x - x-true)"].Fill(xerr)
                     h["abs(y - y-true)"].Fill(yerr)
 
-                rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true)) ** 2))
-                rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true)) ** 2))
+                rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true_matched)) ** 2))
+                rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true_matched)) ** 2))
                 h["rmse_x"].Fill(rmse_x)
                 h["rmse_y"].Fill(rmse_y)
 
