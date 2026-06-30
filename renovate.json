@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>ShipSoft/.github"]
+  "extends": ["local>ShipSoft/.github"],
+  "packageRules": [
+    {
+      "description": "Eigen is pinned to 3.4.x because acts-ship requires Eigen 3.4.0 EXACT",
+      "matchManagers": ["pixi"],
+      "matchPackageNames": ["eigen"],
+      "enabled": false
+    }
+  ]
 }
