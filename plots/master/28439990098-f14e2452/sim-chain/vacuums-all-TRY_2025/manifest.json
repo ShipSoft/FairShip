@@ -1,0 +1,276 @@
+{
+  "job": "sim-chain",
+  "config": "vacuums-all-TRY_2025",
+  "files": [
+    {
+      "name": "distu",
+      "root_path": "distu",
+      "file": "distu.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "distv",
+      "root_path": "distv",
+      "file": "distv.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "disty",
+      "root_path": "disty",
+      "file": "disty.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "nmeas",
+      "root_path": "nmeas",
+      "file": "nmeas.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "chi2",
+      "root_path": "chi2",
+      "file": "chi2.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "delPOverP",
+      "root_path": "delPOverP",
+      "file": "delPOverP.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "pullPOverPx",
+      "root_path": "pullPOverPx",
+      "file": "pullPOverPx.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "pullPOverPy",
+      "root_path": "pullPOverPy",
+      "file": "pullPOverPy.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "pullPOverPz",
+      "root_path": "pullPOverPz",
+      "file": "pullPOverPz.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "delPOverP2",
+      "root_path": "delPOverP2",
+      "file": "delPOverP2.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "delPOverPz",
+      "root_path": "delPOverPz",
+      "file": "delPOverPz.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "delPOverP2z",
+      "root_path": "delPOverP2z",
+      "file": "delPOverP2z.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "chi2",
+      "root_path": "chi2",
+      "file": "chi2.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "prob",
+      "root_path": "prob",
+      "file": "prob.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "IP",
+      "root_path": "IP",
+      "file": "IP.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vzresol",
+      "root_path": "Vzresol",
+      "file": "Vzresol.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vxresol",
+      "root_path": "Vxresol",
+      "file": "Vxresol.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vyresol",
+      "root_path": "Vyresol",
+      "file": "Vyresol.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vzpull",
+      "root_path": "Vzpull",
+      "file": "Vzpull.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vxpull",
+      "root_path": "Vxpull",
+      "file": "Vxpull.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Vypull",
+      "root_path": "Vypull",
+      "file": "Vypull.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "Doca",
+      "root_path": "Doca",
+      "file": "Doca.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "IP0",
+      "root_path": "IP0",
+      "file": "IP0.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "HNL",
+      "root_path": "HNL",
+      "file": "HNL.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "IP0_pi0",
+      "root_path": "IP0_pi0",
+      "file": "IP0_pi0.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "HNL_pi0",
+      "root_path": "HNL_pi0",
+      "file": "HNL_pi0.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "HNLw",
+      "root_path": "HNLw",
+      "file": "HNLw.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "meas",
+      "root_path": "meas",
+      "file": "meas.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "meas2",
+      "root_path": "meas2",
+      "file": "meas2.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "measVSchi2",
+      "root_path": "measVSchi2",
+      "file": "measVSchi2.png",
+      "type": "TH2D"
+    },
+    {
+      "name": "distu",
+      "root_path": "distu",
+      "file": "distu.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "distv",
+      "root_path": "distv",
+      "file": "distv.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "disty",
+      "root_path": "disty",
+      "file": "disty.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "meanhits",
+      "root_path": "meanhits",
+      "file": "meanhits.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "extrapTimeDetX",
+      "root_path": "extrapTimeDetX",
+      "file": "extrapTimeDetX.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "extrapTimeDetY",
+      "root_path": "extrapTimeDetY",
+      "file": "extrapTimeDetY.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "oa",
+      "root_path": "oa",
+      "file": "oa.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "nrtracks",
+      "root_path": "nrtracks",
+      "file": "nrtracks.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "nrSBT",
+      "root_path": "nrSBT",
+      "file": "nrSBT.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "pi0Mass",
+      "root_path": "pi0Mass",
+      "file": "pi0Mass.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "delPOverPz_py",
+      "root_path": "delPOverPz_py",
+      "file": "delPOverPz_py.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "delPOverP2z_py",
+      "root_path": "delPOverP2z_py",
+      "file": "delPOverP2z_py.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "pullPOverPx_py",
+      "root_path": "pullPOverPx_py",
+      "file": "pullPOverPx_py.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "pullPOverPy_py",
+      "root_path": "pullPOverPy_py",
+      "file": "pullPOverPy_py.png",
+      "type": "TH1D"
+    },
+    {
+      "name": "pullPOverPz_py",
+      "root_path": "pullPOverPz_py",
+      "file": "pullPOverPz_py.png",
+      "type": "TH1D"
+    }
+  ]
+}
