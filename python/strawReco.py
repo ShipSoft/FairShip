@@ -2,6 +2,7 @@ import logging
 
 import acts
 import acts.examples
+from collections import defaultdict
 import numpy as np
 
 logger = logging.getLogger(__name__)
@@ -67,7 +68,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
 
     # Loop over seeds (e.g., from PatRec or Truth)
     for cand in candidates:
-        cand["indices"].sort(key=lambda i: strawHits[i][8])
+        cand["indices"].sort(key=lambda i: strawHits.at(i).at(8))
         # This maps Truth indices -> Acts Container indices
         remapped_indices = align_candidate_indices(cand, acts_index_map, strawHits)
 
@@ -151,7 +152,7 @@ def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
 
     veto_results = []
 
-    for t_idx, track in enumerate(output_tracks):
+    for _t_idx, track in enumerate(output_tracks):
         if not track.hasReferenceSurface():
             continue
         start_params = track.parametersObject
@@ -186,10 +187,10 @@ def build_acts_index_map(measurements, hit_count):
     """
     Builds a lookup table: GeoID Value -> Acts Container Index.
     """
-    gid_to_idx = {}
+    gid_to_idx = defaultdict(list)
     for i in range(hit_count):
         gid = acts.getMeasurementGeoId(measurements, i)
-        gid_to_idx[gid.value] = i
+        gid_to_idx[gid.value].append(i)
     return gid_to_idx
 
 
@@ -217,9 +218,12 @@ def align_candidate_indices(cand, index_map, strawHits):
 
         target_gid_value = gid.value
 
-        if target_gid_value in index_map:
-            aligned_indices.append(index_map[target_gid_value])
-        else:
-            print(f"Mismatch: Straw {straw}, Layer {acts_layer} -> Value {target_gid_value}")
+        matching_indices = index_map.get(target_gid_value, [])
+        if old_idx in matching_indices:
+            aligned_indices.append(old_idx)
+        elif len(matching_indices) == 1:
+            aligned_indices.append(matching_indices[0])
+        elif matching_indices:
+            print(f"Ambiguous: Straw {straw}, Layer {acts_layer} -> Value {target_gid_value}")
 
     return aligned_indices

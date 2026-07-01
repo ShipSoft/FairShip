@@ -24,6 +24,8 @@ from strawReco import calculateSBTDOCA, runTracking
 
 logger = logging.getLogger(__name__)
 
+ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoTrack.hpp"')
+ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoVertex.hpp"')
 
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
@@ -104,8 +106,6 @@ class ShipDigiReco:
         self.trackingGeometry = self.detector.trackingGeometry()
 
         # Read the root file containing spectrometer B field
-        currentPath = os.path.dirname(__file__)
-        sourcePath = os.path.abspath(os.path.join(currentPath, ".."))
         field_map_path = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap)
         )
@@ -205,7 +205,11 @@ class ShipDigiReco:
                 # Momentum from MCTrack
                 mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
 
-                charge = self.PDG.GetParticle(tr.GetPdgCode()).Charge() / 3.0
+                particle = self.PDG.GetParticle(tr.GetPdgCode())
+                if particle is None:
+                    logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
+                    continue
+                charge = particle.Charge() / 3.0
 
                 candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
 
@@ -235,7 +239,7 @@ class ShipDigiReco:
         if self.validation:
             self.validation_stats["events_digitized"] += 1
 
-    def findTracks(self) -> int:
+    def findTracks(self) -> list[dict]:
         hitPosLists = {}
         hit_detector_ids = {}
         stationCrossed: dict[int, dict[int, int]] = {}
@@ -253,7 +257,6 @@ class ShipDigiReco:
             if len(self.SmearedHits) > 0:
                 self.validation_stats["events_with_hits"] += 1
 
-        trackCandidates = []
 
         # Do pattern recognition
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
@@ -314,7 +317,6 @@ class ShipDigiReco:
             else:
                 charge = 1
             meas = hitPosLists[atrack]
-            detIDs = hit_detector_ids[atrack]
             nM = len(meas)
             n_stations_crossed = len(stationCrossed[atrack])
             if self.validation:
