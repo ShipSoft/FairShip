@@ -23,6 +23,7 @@ from strawReco import calculateSBTDOCA, runTracking
 
 logger = logging.getLogger(__name__)
 
+ROOT.gSystem.Load("libActsExamplesSHiP")
 ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoTrack.hpp"')
 ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoVertex.hpp"')
 
@@ -282,7 +283,9 @@ class ShipDigiReco:
                 hit_detector_ids[trID].push_back(detID)
                 m = array("d", [sm["xtop"], sm["ytop"], sm["z"], sm["xbot"], sm["ybot"], sm["z"], sm["dist"]])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7, m))
-                listOfIndices[trID].append(sm["digiHit"])
+                local_hit_index = self.SmearedHits.index(sm)
+                listOfIndices[trID].append(local_hit_index)
+
                 if station not in stationCrossed[trID]:
                     stationCrossed[trID][station] = 0
                 stationCrossed[trID][station] += 1
