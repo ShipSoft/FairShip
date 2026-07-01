@@ -249,7 +249,7 @@ def add_dummy_channel(P8gen, particle, remainder) -> None:
         P8gen.SetParameters(f"{particle}:addChannel      1   {remainder:.16}    0       22      22")
 
 
-def compute_max_total_br(decay_chains) -> int:
+def compute_max_total_br(decay_chains) -> float:
     """
     This function computes the maximum total branching ratio for all decay chains.
 
@@ -271,11 +271,11 @@ def compute_max_total_br(decay_chains) -> int:
     return max(total_branching_ratios)
 
 
-def compute_total_br(particle, decay_chains) -> int:
+def compute_total_br(particle, decay_chains) -> float:
     """
     Returns the total branching ratio to HNLs for a given particle.
     """
-    return sum(np.prod(branching_ratios) for (top, branching_ratios) in decay_chains if top == particle)
+    return sum(float(np.prod(branching_ratios)) for (top, branching_ratios) in decay_chains if top == particle)
 
 
 def get_top_level_particles(decay_chains):
