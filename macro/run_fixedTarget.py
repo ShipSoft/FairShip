@@ -78,6 +78,16 @@ ap.add_argument("-t", "--tau-only", action=argparse.BooleanOptionalAction, dest=
 ap.add_argument("-J", "--Jpsi-mainly", action=argparse.BooleanOptionalAction, dest="JpsiMainly", default=False)
 ap.add_argument("-b", "--boostDiMuon", type=float, default=1.0, help="boost Di-muon branching ratios")
 ap.add_argument("-X", "--boostFactor", type=float, default=1.0, help="boost Di-muon prod cross sections")
+ap.add_argument(
+    "--kaon-pion-splits",
+    type=int,
+    default=0,
+    help="splitting factor for kaons and pions, in order to boost the number of muons stemming from their decays",
+)
+ap.add_argument(
+    "--multiple-kpi-splits", action="store_true", help="split kaons and pions multiple times along the track path"
+)
+
 ap.add_argument("-C", "--charm", action=argparse.BooleanOptionalAction, default=False, help="generate charm decays")
 ap.add_argument("-B", "--beauty", action=argparse.BooleanOptionalAction, default=False, help="generate beauty decays")
 ap.add_argument(
@@ -186,6 +196,11 @@ args = ap.parse_args()
 if args.debug:
     logger.setLevel(logging.DEBUG)
 
+if args.kaon_pion_splits < 0:
+    ap.error("--kaon-pion-splits must be >= 0")
+if args.multiple_kpi_splits and args.kaon_pion_splits == 0:
+    ap.error("--multiple-kpi-splits requires --kaon-pion-splits > 0")
+
 
 if args.G4only:
     args.charm = False
@@ -272,6 +287,8 @@ ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 if args.boostFactor > 1:
     # Turn off UseGeneralProcess to access GammaToMuons directly when cross-sections need to be changed
     os.environ["SET_GENERAL_PROCESS_TO_FALSE"] = "1"
+if args.kaon_pion_splits > 0:
+    os.environ["KAON_PION_SPLITS"] = str(args.kaon_pion_splits)
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
@@ -342,6 +359,9 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
 
 
 sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetNSplits(args.kaon_pion_splits)  # type: ignore[missing-attribute]
+if args.multiple_kpi_splits:
+    sensPlaneHA.SetSplitMultipleTimes()  # type: ignore[missing-attribute]
 sensPlaneHA.SetEnergyCut(args.ecut * u.GeV)
 sensPlaneHA.SetVetoPointName("PlaneHA")
 
@@ -422,6 +442,8 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.0)
+if args.kaon_pion_splits > 0:
+    fStack.SetSplitting()
 #
 import AddDiMuonDecayChannelsToG4
 

@@ -12,10 +12,12 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
+#include "FairLogger.h"
 #include "FairRootManager.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
+#include "TArrayI.h"
 #include "TDatabasePDG.h"
 #include "TGeoBBox.h"
 #include "TGeoBoolNode.h"
@@ -24,9 +26,13 @@
 #include "TGeoMaterial.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TLorentzVector.h"
+#include "TMCProcess.h"
 #include "TParticle.h"
 #include "TROOT.h"
 #include "TVirtualMC.h"
+#include "vetoPoint.h"
+
 using std::cout;
 using std::endl;
 
@@ -41,7 +47,10 @@ exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
       fVetoName("veto"),
       fzPos(3E8),
       withNtuple(kFALSE),
-      fCylindricalPlane(kFALSE) {}
+      fCylindricalPlane(kFALSE),
+      fUseCaveCoordinates(kFALSE),
+      fNsplits(0),
+      fCurrentSurvivalFactor(1) {}
 
 exitHadronAbsorber::exitHadronAbsorber()
     : Detector("exitHadronAbsorber", kTRUE, kVETO),
@@ -52,33 +61,109 @@ exitHadronAbsorber::exitHadronAbsorber()
       fzPos(3E8),
       withNtuple(kFALSE),
       fCylindricalPlane(kFALSE),
-      fUseCaveCoordinates(kFALSE) {}
+      fUseCaveCoordinates(kFALSE),
+      fNsplits(0),
+      fCurrentSurvivalFactor(1) {}
 
 Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
-  if (gMC->IsTrackEntering()) {
-    fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-    fEventID = gMC->CurrentEvent();
-    TParticle* p = gMC->GetStack()->GetCurrentTrack();
-    fUniqueID = p->GetUniqueID();
-    Int_t pdgCode = p->GetPdgCode();
-    gMC->TrackMomentum(fMom);
-    if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
-      fTime = gMC->TrackTime() * 1.0e09;
-      fLength = gMC->TrackLength();
-      gMC->TrackPosition(fPos);
-      if ((fMom.E() - fMom.M()) > EMax) {
-        AddHit(fEventID, fTrackID, 111, TVector3(fPos.X(), fPos.Y(), fPos.Z()),
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
-               pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
-               TVector3(p->Px(), p->Py(), p->Pz()));
-        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
-        stack->AddPoint(kVETO);
+  TString volName = gMC->CurrentVolName();
+
+  if (volName.Contains("exitHadronAbsorber")) {
+    if (gMC->IsTrackEntering()) {
+      fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
+      fEventID = gMC->CurrentEvent();
+      TParticle* p = gMC->GetStack()->GetCurrentTrack();
+      fUniqueID = p->GetUniqueID();
+      Int_t pdgCode = p->GetPdgCode();
+      Int_t motherId = p->GetFirstMother();
+      gMC->TrackMomentum(fMom);
+      if (!fOnlyMuons || TMath::Abs(pdgCode) == 13) {
+        fTime = gMC->TrackTime() * 1.0e09;
+        fLength = gMC->TrackLength();
+        gMC->TrackPosition(fPos);
+        if (((fMom.E() - fMom.M()) > EMax) &&
+            (fDecayedParentIDs.count(motherId) == 0)) {
+          AddHit(fEventID, fTrackID, 111,
+                 TVector3(fPos.X(), fPos.Y(), fPos.Z()),
+                 TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 0,
+                 pdgCode, TVector3(p->Vx(), p->Vy(), p->Vz()),
+                 TVector3(p->Px(), p->Py(), p->Pz()));
+          auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+          stack->AddPoint(kVETO);
+        }
       }
     }
+
+    if ((!fCylindricalPlane) && fzPos > 1E8) {
+      gMC->StopTrack();
+    }
   }
-  if ((!fCylindricalPlane) && fzPos > 1E8) {
-    gMC->StopTrack();
+
+  if (fNsplits > 0 && (!fSplitOnce)) {
+    Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
+
+    if (fCloneTracks.count(currentTrackId) > 0 ||
+        fContinuationTracks.count(currentTrackId) > 0) {
+      return kTRUE;
+    }
+
+    Int_t track_pid = gMC->TrackPid();
+    bool kaon_or_pion =
+        (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321);
+
+    if (kaon_or_pion) {
+      TParticle* part = gMC->GetStack()->GetCurrentTrack();
+      if (!part) return kTRUE;
+
+      Double_t delta_s = gMC->TrackStep();
+
+      if (delta_s > 0) {
+        TLorentzVector pos, mom;
+        gMC->TrackPosition(pos);
+        gMC->TrackMomentum(mom);
+
+        Double_t mass = gMC->TrackMass();
+        Double_t tau = gMC->ParticleLifeTime(track_pid);  // in nanoseconds
+        Double_t c_tau = tau * 29.9792458;                // in cm/ns
+
+        Double_t instantP = mom.P();
+
+        Double_t lambda_decay = (instantP / mass) * c_tau;
+        Double_t P_decay = 1.0 - TMath::Exp(-delta_s / lambda_decay);
+        if ((P_decay > 0.0) && ((mom.E() - mom.M()) > EMax)) {
+          double polX = 0, polY = 0, polZ = 0;
+          TVector3 polVector;
+          part->GetPolarisation(polVector);
+          polX = polVector.X();
+          polY = polVector.Y();
+          polZ = polVector.Z();
+          Int_t trueParentId = part->GetFirstMother();
+
+          Double_t decayBranchWeight = fCurrentSurvivalFactor * P_decay;
+          Double_t cloneWeight = decayBranchWeight / fNsplits;
+          for (int i = 0; i < fNsplits; ++i) {
+            TrackBuffer clone;
+            clone.pdg = track_pid;
+            clone.px = mom.Px();
+            clone.py = mom.Py();
+            clone.pz = mom.Pz();
+            clone.e = mom.E();
+            clone.x = pos.X();
+            clone.y = pos.Y();
+            clone.z = pos.Z();
+            clone.t = pos.T();
+            clone.polx = polX;
+            clone.poly = polY;
+            clone.polz = polZ;
+            clone.weight = cloneWeight;
+            clone.parentID = trueParentId;
+            fSecondaryBuffer.push_back(clone);
+          }
+          fCurrentSurvivalFactor *= (1.0 - P_decay);
+        }
+      }
+    }
   }
   return kTRUE;
 }
@@ -152,14 +237,128 @@ void exitHadronAbsorber::Initialize() {
   }
 }
 
+void exitHadronAbsorber::BeginEvent() {
+  fCloneTracks.clear();
+  fContinuationTracks.clear();
+  fDecayedParentIDs.clear();
+  fSecondaryBuffer.clear();
+}
+
+void exitHadronAbsorber::PostTrack() {
+  Int_t currentTrackId = gMC->GetStack()->GetCurrentTrackNumber();
+
+  if (fCloneTracks.count(currentTrackId) > 0 ||
+      fContinuationTracks.count(currentTrackId) > 0) {
+    return;
+  }
+
+  Int_t track_pid = gMC->TrackPid();
+  bool kaon_or_pion =
+      (TMath::Abs(track_pid) == 211 || TMath::Abs(track_pid) == 321);
+
+  if (fNsplits > 0 && kaon_or_pion) {
+    bool isNaturalDecay = false;
+    bool isParticleDestroyed = gMC->IsTrackStop() || gMC->IsTrackDisappeared();
+    TArrayI processes;
+    gMC->StepProcesses(processes);
+    for (int i = 0; i < processes.GetSize(); i++) {
+      if (processes[i] == kPDecay) {
+        isNaturalDecay = true;
+        break;
+      }
+    }
+
+    TParticle* part = gMC->GetStack()->GetCurrentTrack();
+    if (!part) return;
+
+    TLorentzVector finalPos, finalMom;
+    gMC->TrackPosition(finalPos);
+    gMC->TrackMomentum(finalMom);
+
+    double polX = 0, polY = 0, polZ = 0;
+    TVector3 polVector;
+    part->GetPolarisation(polVector);
+    polX = polVector.X();
+    polY = polVector.Y();
+    polZ = polVector.Z();
+    Int_t trueParentId = part->GetFirstMother();
+
+    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+
+    // All remaining weight used if cloning happens at point where original
+    // particle decays
+    if (isNaturalDecay) {
+      Double_t finalEndpointWeight = fCurrentSurvivalFactor / fNsplits;
+      for (int i = 0; i < fNsplits; ++i) {
+        TrackBuffer clone;
+        clone.pdg = track_pid;
+        clone.px = finalMom.Px();
+        clone.py = finalMom.Py();
+        clone.pz = finalMom.Pz();
+        clone.e = finalMom.E();
+        clone.x = finalPos.X();
+        clone.y = finalPos.Y();
+        clone.z = finalPos.Z();
+        clone.t = finalPos.T();
+        clone.polx = polX;
+        clone.poly = polY;
+        clone.polz = polZ;
+        clone.weight = finalEndpointWeight;
+        clone.parentID = trueParentId;
+        fSecondaryBuffer.push_back(clone);
+      }
+      fCurrentSurvivalFactor = 0.0;
+      fDecayedParentIDs.insert(currentTrackId);
+    }
+
+    // tracks which do not decay are stopped with stoptrack and added back with
+    // a given weight
+    if (!isNaturalDecay && !isParticleDestroyed && stack) {
+      Int_t ntr;
+      stack->PushTrack(1, trueParentId, track_pid, finalMom.Px(), finalMom.Py(),
+                       finalMom.Pz(), finalMom.E(), finalPos.X(), finalPos.Y(),
+                       finalPos.Z(), finalPos.T(), polX, polY, polZ,
+                       kPNoProcess, ntr, fCurrentSurvivalFactor, 999);
+      fContinuationTracks.insert(ntr);
+    }
+
+    gMC->StopTrack();
+  }
+}
+
 void exitHadronAbsorber::PreTrack() {
+  bool stackbufferisnotempty = !fSecondaryBuffer.empty();
+  if (stackbufferisnotempty) {
+    auto* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+    Int_t ntr;
+    for (const auto& trk : fSecondaryBuffer) {
+      stack->PushTrack(1, trk.parentID, trk.pdg, trk.px, trk.py, trk.pz, trk.e,
+                       trk.x, trk.y, trk.z, trk.t, trk.polx, trk.poly, trk.polz,
+                       kPNoProcess, ntr, trk.weight, 999);
+      fCloneTracks.insert(ntr);
+    }
+    // Clear the buffer so we don't duplicate them for the next track
+    fSecondaryBuffer.clear();
+  }
+
+  // Reset relative survival factor to 1.0
+  fCurrentSurvivalFactor = 1.0;
+
   gMC->TrackMomentum(fMom);
   if ((fMom.E() - fMom.M()) < EMax) {
     gMC->StopTrack();
     return;
   }
   TParticle* p = gMC->GetStack()->GetCurrentTrack();
+  Int_t currentID = gMC->GetStack()->GetCurrentTrackNumber();
+
+  if (fCloneTracks.find(currentID) != fCloneTracks.end()) {
+    //  Force the decay time to 0
+    gMC->ForceDecayTime(0);
+  }
+
   Int_t pdgCode = p->GetPdgCode();
+
   // record statistics for neutrinos, electrons and photons
   // add pi0 111 eta 221 eta' 331  omega 223
   Int_t idabs = TMath::Abs(pdgCode);
@@ -252,6 +451,26 @@ void exitHadronAbsorber::FinishRun() {
   }
 }
 
+void RegisterDaughtersRecursively(TGeoVolume* volume,
+                                  exitHadronAbsorber* detector) {
+  if (!volume) return;
+  Int_t nDaughters = volume->GetNdaughters();
+  for (Int_t i = 0; i < nDaughters; ++i) {
+    TGeoNode* daughterNode = volume->GetNode(i);
+    if (daughterNode) {
+      TGeoVolume* daughterVol = daughterNode->GetVolume();
+      if (daughterVol) {
+        // register daughter volume
+        detector->AddSensitiveVolume(daughterVol);
+        LOG(info) << "[exitHadronAbsorber] Registered subvolume: "
+                  << daughterVol->GetName();
+        // call function recursively
+        RegisterDaughtersRecursively(daughterVol, detector);
+      }
+    }
+  }
+}
+
 void exitHadronAbsorber::ConstructGeometry() {
   static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
   static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
@@ -327,6 +546,14 @@ void exitHadronAbsorber::ConstructGeometry() {
     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1,
                                                 new TGeoTranslation(0, 0, 0));
     AddSensitiveVolume(sensPlaneCyl);
+  }
+  if ((fNsplits > 0) && (!fSplitOnce)) {
+    TString parentVolumeName = "/target_vacuum_box_1";
+    nav->cd(parentVolumeName.Data());
+    TGeoVolume* vol = nav->GetCurrentNode()->GetVolume();
+    AddSensitiveVolume(vol);
+    // register each unique daughter volume
+    RegisterDaughtersRecursively(vol, this);
   }
 }
 
