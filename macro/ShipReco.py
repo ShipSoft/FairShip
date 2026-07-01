@@ -66,7 +66,7 @@ parser.add_argument(
     help="Options for pattern recognition. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
-           Truth                     : MC truth seeding.\n\
+           Truth                     : MC truth seeding -- for simulation only.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed.",
     required=False,
     choices=["FH", "AR", "TemplateMatching", "Truth"],
