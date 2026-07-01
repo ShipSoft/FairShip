@@ -123,10 +123,10 @@ Functions</h2></td></tr>
 <tr class="separator:ade00ce3cb2e966baa84b24ed0f591bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa415462767f3d0c161afc3d9a373bb3d" id="r_aa415462767f3d0c161afc3d9a373bb3d"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#aa415462767f3d0c161afc3d9a373bb3d">add_dummy_channel</a> (P8gen, particle, remainder)</td></tr>
 <tr class="separator:aa415462767f3d0c161afc3d9a373bb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6319d4a26a81df3d147bed65059d4c51" id="r_a6319d4a26a81df3d147bed65059d4c51"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#a6319d4a26a81df3d147bed65059d4c51">compute_max_total_br</a> (decay_chains)</td></tr>
-<tr class="separator:a6319d4a26a81df3d147bed65059d4c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af048b039f7c88bb7985ee9107fab5dcd" id="r_af048b039f7c88bb7985ee9107fab5dcd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#af048b039f7c88bb7985ee9107fab5dcd">compute_total_br</a> (particle, decay_chains)</td></tr>
-<tr class="separator:af048b039f7c88bb7985ee9107fab5dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6878ec49546de3b11ddc0c54ce1fcce" id="r_af6878ec49546de3b11ddc0c54ce1fcce"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#af6878ec49546de3b11ddc0c54ce1fcce">compute_max_total_br</a> (decay_chains)</td></tr>
+<tr class="separator:af6878ec49546de3b11ddc0c54ce1fcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce89d36d2d056880cf5a50554fd26d5" id="r_a8ce89d36d2d056880cf5a50554fd26d5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#a8ce89d36d2d056880cf5a50554fd26d5">compute_total_br</a> (particle, decay_chains)</td></tr>
+<tr class="separator:a8ce89d36d2d056880cf5a50554fd26d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bec05780607ee21023f773202ab1cd7" id="r_a7bec05780607ee21023f773202ab1cd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#a7bec05780607ee21023f773202ab1cd7">get_top_level_particles</a> (decay_chains)</td></tr>
 <tr class="separator:a7bec05780607ee21023f773202ab1cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4c096d7b903bbbb76b9828e32e521a0" id="r_af4c096d7b903bbbb76b9828e32e521a0"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepythia8__conf__utils.html#af4c096d7b903bbbb76b9828e32e521a0">exit_if_zero_br</a> (max_total_br, selection, mass, str particle=&quot;HNL&quot;)</td></tr>
@@ -469,14 +469,14 @@ added by PYTHIA.
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a6319d4a26a81df3d147bed65059d4c51" name="a6319d4a26a81df3d147bed65059d4c51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6319d4a26a81df3d147bed65059d4c51">&#9670;&#160;</a></span>compute_max_total_br()</h2>
+<a id="af6878ec49546de3b11ddc0c54ce1fcce" name="af6878ec49546de3b11ddc0c54ce1fcce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6878ec49546de3b11ddc0c54ce1fcce">&#9670;&#160;</a></span>compute_max_total_br()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> int pythia8_conf_utils.compute_max_total_br </td>
+          <td class="memname"> float pythia8_conf_utils.compute_max_total_br </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>decay_chains</em></td><td>)</td>
@@ -498,7 +498,7 @@ the highest of those.
 Note: the decay chain length must be at most 2.
 </pre> 
 <p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00252">252</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>compute_max_total_br(decay_chains) -&gt; int:</div>
+<div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>compute_max_total_br(decay_chains) -&gt; float:</div>
 <div class="line"><span class="lineno">  253</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  254</span><span class="stringliteral">    This function computes the maximum total branching ratio for all decay chains.</span></div>
 <div class="line"><span class="lineno">  255</span><span class="stringliteral"></span> </div>
@@ -523,14 +523,14 @@ Note: the decay chain length must be at most 2.
 </div><!-- fragment -->
 </div>
 </div>
-<a id="af048b039f7c88bb7985ee9107fab5dcd" name="af048b039f7c88bb7985ee9107fab5dcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af048b039f7c88bb7985ee9107fab5dcd">&#9670;&#160;</a></span>compute_total_br()</h2>
+<a id="a8ce89d36d2d056880cf5a50554fd26d5" name="a8ce89d36d2d056880cf5a50554fd26d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce89d36d2d056880cf5a50554fd26d5">&#9670;&#160;</a></span>compute_total_br()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> int pythia8_conf_utils.compute_total_br </td>
+          <td class="memname"> float pythia8_conf_utils.compute_total_br </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>particle</em>, </td>
@@ -551,11 +551,11 @@ Note: the decay chain length must be at most 2.
 <pre class="fragment">Returns the total branching ratio to HNLs for a given particle.
 </pre> 
 <p class="definition">Definition at line <a class="el" href="pythia8__conf__utils_8py_source.html#l00274">274</a> of file <a class="el" href="pythia8__conf__utils_8py_source.html">pythia8_conf_utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span><span class="keyword">def </span>compute_total_br(particle, decay_chains) -&gt; int:</div>
+<div class="fragment"><div class="line"><span class="lineno">  274</span><span class="keyword">def </span>compute_total_br(particle, decay_chains) -&gt; float:</div>
 <div class="line"><span class="lineno">  275</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  276</span><span class="stringliteral">    Returns the total branching ratio to HNLs for a given particle.</span></div>
 <div class="line"><span class="lineno">  277</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> sum(np.prod(branching_ratios) <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains <span class="keywordflow">if</span> top == particle)</div>
+<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> sum(float(np.prod(branching_ratios)) <span class="keywordflow">for</span> (top, branching_ratios) <span class="keywordflow">in</span> decay_chains <span class="keywordflow">if</span> top == particle)</div>
 <div class="line"><span class="lineno">  279</span> </div>
 <div class="line"><span class="lineno">  280</span> </div>
 </div><!-- fragment -->
