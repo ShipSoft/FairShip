@@ -2,14 +2,16 @@
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 import logging
+import os
 from array import array
 
+import acts
+import acts.examples
 import global_variables
 import ROOT
 import rootUtils as ut
 import shipPatRec
 import shipunit as u
-import shipVertex
 import validationTools as validation_tools
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
@@ -17,9 +19,13 @@ from detectors.splitcalDetector import splitcalDetector
 from detectors.strawtubesDetector import strawtubesDetector
 from detectors.timeDetector import timeDetector
 from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from strawReco import calculateSBTDOCA, runTracking
 
 logger = logging.getLogger(__name__)
 
+ROOT.gSystem.Load("libActsExamplesSHiP")
+ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoTrack.hpp"')
+ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoVertex.hpp"')
 
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
@@ -45,19 +51,17 @@ class ShipDigiReco:
         # event header
         self.header = ROOT.FairEventHeader()
         self.eventHeader = self.recoTree.Branch("ShipEventHeader", self.header, 32000, -1)
+
         # fitted tracks
-        # Must use pointer storage: genfit::Track has circular references with TrackPoint
-        # requiring stable memory addresses (value storage would invalidate back-pointers on vector resize)
-        self.fGenFitArray = ROOT.std.vector("genfit::Track*")()
-        self.fitTrack2MC = ROOT.std.vector("int")()
-        self.goodTracksVect = ROOT.std.vector("int")()
-        self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
-        self.fitTracks = self.recoTree.Branch("FitTracks", self.fGenFitArray, 32000, -1)
-        self.goodTracksBranch = self.recoTree.Branch("goodTracks", self.goodTracksVect, 32000, -1)
-        self.fTrackletsArray = ROOT.std.vector("Tracklet")()
-        self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
+        self.fACTSArray = ROOT.std.vector("ActsExamples::RecoTrack")()
+        self.fitACTSTracks = self.recoTree.Branch("RecoTracks", self.fACTSArray, 32000, -1)
+        self.fACTSVertexArray = ROOT.std.vector("ActsExamples::RecoVertex")()
+        self.fitACTSVertices = self.recoTree.Branch("RecoVertices", self.fACTSVertexArray, 32000, -1)
+
         #
         self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
+        ##Vectors of MCTracks/Strawtube hits to pass to ACTS EventData
+        self.strawHits = ROOT.std.vector(ROOT.std.vector("float"))()
 
         if self.sTree.GetBranch("MTCDetPoint"):
             self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
@@ -80,8 +84,6 @@ class ShipDigiReco:
             self.digiSplitcal = self.splitcalDetector.det
             self.recoSplitcal = self.splitcalDetector.reco
 
-        # prepare vertexing
-        self.Vertexing = shipVertex.Task(global_variables.h, self.recoTree, self.sTree)
         # setup random number generator
         self.random = ROOT.TRandom()
         ROOT.gRandom.SetSeed(13)
@@ -89,53 +91,123 @@ class ShipDigiReco:
         # access ShipTree
         self.sTree.GetEvent(0)
         #
-        # init geometry and mag. field
-        self.geoMat = ROOT.genfit.TGeoMaterialInterface()
-        #
-        self.bfield = ROOT.genfit.FairShipFields()
-        self.bfield.setField(global_variables.fieldMaker.getGlobalField())
-        self.fM = ROOT.genfit.FieldManager.getInstance()
-        self.fM.init(self.bfield)
-        ROOT.SetOwnership(self.bfield, False)  # genfit::FieldManager singleton takes ownership
-        ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
-        ROOT.SetOwnership(self.geoMat, False)  # genfit::MaterialEffects singleton takes ownership
-
-        # init fitter, to be done before importing shipPatRec
-        # fitter          = ROOT.genfit.KalmanFitter()
-        # fitter          = ROOT.genfit.KalmanFitterRefTrack()
-        self.fitter = ROOT.genfit.DAF()
-        self.fitter.setMaxIterations(50)
-        if global_variables.debug:
-            self.fitter.setDebugLvl(1)  # produces lot of printout
-        # set to True if "real" pattern recognition is required also
-
         # for 'real' PatRec
         shipPatRec.initialize(fgeo)
 
+        ##Set up ACTS tracking geometry and magnetic field
+        cfg = acts.examples.StrawtubeDetector.Config()
+        self.detector = acts.examples.StrawtubeDetector(cfg)
+        self.trackingGeometry = self.detector.trackingGeometry()
+
+        # Read the root file containing spectrometer B field
+        field_map_path = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", global_variables.ShipGeo.Bfield.fieldMap)
+        )
+        uu = acts.UnitConstants
+        self.actsFieldMap = acts.createShipFieldProvider(field_map_path, uu.T)
+
     def reconstruct(self) -> None:
-        n_tracks = self.findTracks()
-        n_good_tracks = self.findGoodTracks()
+
+        output_tracks, vertices = self.actsTracks()
+
+        self.fACTSArray.clear()
+        self.fACTSVertexArray.clear()
+        geo_ctx = acts.GeometryContext()
+
+        vector_ptr = ROOT.addressof(self.fACTSArray)
+        vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
+
+        for track in output_tracks:
+            acts.pushRecoTrack(vector_ptr, track, geo_ctx)
+
+        for vtx in vertices:
+            acts.pushRecoVertex(vertex_vector_ptr, vtx)
+
         if hasattr(self, "digiSBT"):
-            self.linkVetoOnTracks()
-        if global_variables.vertexing:
-            # now go for 2-track combinations
-            if self.validation:
-                self.validation_stats["vertexing_calls"] += 1
-            self.Vertexing.execute()
-        if self.validation:
-            self.validation_stats["events_reconstructed"] += 1
-            self.validation_stats["fitted_tracks_total"] += n_tracks
-            self.validation_stats["good_tracks_total"] += n_good_tracks
-            if n_tracks > 0:
-                self.validation_stats["events_with_fitted_tracks"] += 1
-            if n_good_tracks > 0:
-                self.validation_stats["events_with_good_tracks"] += 1
-            validation_tools.record_event_stat(self.validation_stats, "event_fitted_tracks", n_tracks)
-            validation_tools.record_event_stat(self.validation_stats, "event_good_tracks", n_good_tracks)
-            if hasattr(self, "digiSBT"):
-                validation_tools.record_event_stat(
-                    self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray)
-                )
+            veto_results = calculateSBTDOCA(output_tracks, self.digiSBT.det, self.trackingGeometry, self.actsFieldMap)
+            self.vetoHitOnTrackArray.clear()
+            for hitID, distMin in veto_results:
+                self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
+
+    def actsTracks(self) -> list:
+        self.strawHits.clear()
+
+        if global_variables.withT0:
+            self.SmearedHits = self.strawtubes.withT0Estimate()
+        else:
+            self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
+
+        for sm in self.SmearedHits:
+            station = self.strawtubes.det[sm["digiHit"]].GetStationNumber()
+            view = self.strawtubes.det[sm["digiHit"]].GetViewNumber()
+            layer = self.strawtubes.det[sm["digiHit"]].GetLayerNumber()
+            straw = self.strawtubes.det[sm["digiHit"]].GetStrawNumber()
+            time = self.strawtubes.det[sm["digiHit"]].GetTDC()
+            drift = sm["dist"]
+            xtop = sm["xtop"]
+            ytop = sm["ytop"]
+            xbot = sm["xbot"]
+            ybot = sm["ybot"]
+            trID = self.sTree.strawtubesPoint[sm["digiHit"]].GetTrackID()
+            x = self.sTree.strawtubesPoint[sm["digiHit"]].GetX()
+            y = self.sTree.strawtubesPoint[sm["digiHit"]].GetY()
+            z = self.sTree.strawtubesPoint[sm["digiHit"]].GetZ()
+            deltaE = self.sTree.strawtubesPoint[sm["digiHit"]].GetEnergyLoss()
+
+            # Structure of hit vector (detector [straw=0], station, layer, view, straw, track_id, x,y,z,t, E, drift, wire-xtop, ytop, xbot, ybot )
+            iHit = ROOT.std.vector("float")()
+            iHit += [0, station, layer, view, straw, trID, x, y, z, time, deltaE, drift, xtop, ytop, xbot, ybot]
+            self.strawHits.push_back(iHit)
+
+        candidates = []
+
+        if global_variables.patRec == "AR":
+            # PatRec Source
+            raw_candidates = self.findTracks()
+            for cand in raw_candidates:
+                candidates.append(cand)
+        elif global_variables.patRec == "Truth":
+            # Truth Source
+            for trID, tr in enumerate(self.sTree.MCTrack):
+                indices = [i for i, h in enumerate(self.strawHits) if int(h[5]) == trID]
+                if not indices:
+                    continue
+                unique_indices = []
+                seen_layers = set()
+                # Sort indices by Z-position to find the first straw hit
+                # iHit[8] is the Z-coordinate
+                indices.sort(key=lambda idx: self.strawHits[idx][8])
+                for idx in indices:
+                    h = self.strawHits[idx]
+
+                    # We want to keep only one straw per unique station/layer/view combination
+                    # our Kalman filter cant handle more than 1 measurement per acts::layer
+                    layer_key = (int(h[1]), int(h[2]), int(h[3]))
+
+                    if layer_key not in seen_layers:
+                        unique_indices.append(idx)
+                        seen_layers.add(layer_key)
+                first_idx = unique_indices[0]
+                first_hit = self.strawHits[first_idx]
+
+                # Create Seed from the first straw hit
+                # Position from the straw hit truth (indices 6, 7, 8)
+                pos = ROOT.TVector3(first_hit[6], first_hit[7], first_hit[8])
+
+                # Momentum from MCTrack
+                mom = ROOT.TVector3(tr.GetPx(), tr.GetPy(), tr.GetPz())
+
+                particle = self.PDG.GetParticle(tr.GetPdgCode())
+                if particle is None:
+                    logger.warning("Skipping MCTrack %d with unknown PDG code %d", trID, tr.GetPdgCode())
+                    continue
+                charge = particle.Charge() / 3.0
+
+                candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
+
+        output_tracks = runTracking(candidates, self.trackingGeometry, self.actsFieldMap, self.strawHits)
+
+        return output_tracks
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond
@@ -156,15 +228,12 @@ class ShipDigiReco:
         if self.validation:
             self.validation_stats["events_digitized"] += 1
 
-    def findTracks(self) -> int:
+    def findTracks(self) -> list[dict]:
         hitPosLists = {}
         hit_detector_ids = {}
         stationCrossed: dict[int, dict[int, int]] = {}
         listOfIndices: dict[int, list[int]] = {}
         trackParams: dict[int, dict] = {}
-        self.fGenFitArray.clear()
-        self.fTrackletsArray.clear()
-        self.fitTrack2MC.clear()
 
         #
         if global_variables.withT0:
@@ -177,7 +246,6 @@ class ShipDigiReco:
             if len(self.SmearedHits) > 0:
                 self.validation_stats["events_with_hits"] += 1
 
-        trackCandidates = []
 
         # Do pattern recognition
         track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.patRec)
@@ -215,7 +283,9 @@ class ShipDigiReco:
                 hit_detector_ids[trID].push_back(detID)
                 m = array("d", [sm["xtop"], sm["ytop"], sm["z"], sm["xbot"], sm["ybot"], sm["z"], sm["dist"]])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7, m))
-                listOfIndices[trID].append(sm["digiHit"])
+                local_hit_index = self.SmearedHits.index(sm)
+                listOfIndices[trID].append(local_hit_index)
+
                 if station not in stationCrossed[trID]:
                     stationCrossed[trID][station] = 0
                 stationCrossed[trID][station] += 1
@@ -223,6 +293,7 @@ class ShipDigiReco:
         n_too_few_hits = 0
         n_too_few_stations = 0
 
+        track_candidates = []
         for atrack in hitPosLists:
             if atrack < 0:
                 continue  # these are hits not assigned to MC track because low E cut
@@ -233,11 +304,10 @@ class ShipDigiReco:
             k_y12 = params.get("k_y12")
             k_y34 = params.get("k_y34")
             if k_y12 is not None and k_y34 is not None:
-                pdg = -13 if k_y34 > k_y12 else 13
+                charge = -1 if k_y34 > k_y12 else 1
             else:
-                pdg = 13
+                charge = 1
             meas = hitPosLists[atrack]
-            detIDs = hit_detector_ids[atrack]
             nM = len(meas)
             n_stations_crossed = len(stationCrossed[atrack])
             if self.validation:
@@ -256,144 +326,13 @@ class ShipDigiReco:
             if global_variables.debug:
                 self.sTree.MCTrack[atrack]
 
-            # Seed state: use PatRec track parameters when available
-            posM, momM = self._compute_seed_state(atrack, meas, trackParams)
+            posM, momM = self._compute_seed_state(atrack, hitPosLists[atrack], trackParams)
 
-            # Try both charge hypotheses, keep the one with better chi2/NDF
-            best_track = None
-            best_chi2ndf = float("inf")
-            for try_pdg in [pdg, -pdg]:
-                if self.validation:
-                    self.validation_stats["fit_hypotheses_tried"] += 1
-                # approximate covariance
-                covM = ROOT.TMatrixDSym(6)
-                resolution = self.sigma_spatial
-                if global_variables.withT0:
-                    resolution *= 1.4  # worse resolution due to t0 estimate
-                for i in range(3):
-                    covM[i][i] = resolution * resolution
-                covM[0][0] = resolution * resolution * 100.0
-                for i in range(3, 6):
-                    covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
-                rep = ROOT.genfit.RKTrackRep(try_pdg)
-                stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
-                rep.setPosMomCov(stateSmeared, posM, momM, covM)
-                seedState = ROOT.TVectorD(6)
-                seedCov = ROOT.TMatrixDSym(6)
-                rep.get6DStateCov(stateSmeared, seedState, seedCov)
-                theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
-                ROOT.SetOwnership(rep, False)  # genfit::Track takes ownership
-                hitCov = ROOT.TMatrixDSym(7)
-                hitCov[6][6] = resolution * resolution
-                hitID = 0
-                for m, detID in zip(meas, detIDs, strict=True):
-                    tp = ROOT.genfit.TrackPoint(theTrack)
-                    measurement = ROOT.genfit.WireMeasurement(m, hitCov, detID, hitID, tp)
-                    measurement.setMaxDistance(
-                        global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2.0
-                        - global_variables.ShipGeo.strawtubes_geo.wall_thickness
-                    )
-                    tp.addRawMeasurement(measurement)
-                    ROOT.SetOwnership(measurement, False)  # TrackPoint takes ownership
-                    theTrack.insertPoint(tp)
-                    ROOT.SetOwnership(tp, False)  # genfit::Track takes ownership
-                    hitID += 1
-                # Fit this hypothesis
-                try:
-                    theTrack.checkConsistency()
-                except ROOT.genfit.Exception:
-                    if self.validation:
-                        self.validation_stats["tracks_failed_consistency"] += 1
-                    continue
-                try:
-                    self.fitter.processTrack(theTrack)
-                except Exception as e:
-                    logger.debug("Failed to processTrack for hypothesis %d: %s", try_pdg, e)
-                    if self.validation:
-                        self.validation_stats["tracks_failed_fit"] += 1
-                    continue
-                try:
-                    theTrack.checkConsistency()
-                except ROOT.genfit.Exception:
-                    logger.debug("Track inconsistent after fit for hypothesis %d", try_pdg)
-                    if self.validation:
-                        self.validation_stats["tracks_failed_consistency"] += 1
-                    continue
-                try:
-                    fittedState = theTrack.getFittedState()
-                    fittedState.getMomMag()
-                except Exception as e:
-                    logger.debug("Failed to getFittedState/getMomMag for hypothesis %d: %s", try_pdg, e)
-                    if self.validation:
-                        self.validation_stats["tracks_failed_state_access"] += 1
-                    continue
-                fitStatus = theTrack.getFitStatus()
-                if not fitStatus.isFitConverged():
-                    continue
-                if self.validation:
-                    self.validation_stats["fit_hypotheses_converged"] += 1
-                nmeas = fitStatus.getNdf()
-                if nmeas <= 0:
-                    continue
-                chi2ndf = fitStatus.getChi2() / nmeas
-                if chi2ndf < best_chi2ndf:
-                    best_chi2ndf = chi2ndf
-                    best_track = theTrack
-            if best_track is not None:
-                trackCandidates.append((best_track, atrack))
+            indices = listOfIndices[atrack]
 
-        for theTrack, atrack in trackCandidates:
-            # Tracks are already fitted from the dual-hypothesis loop above
-            fitStatus = theTrack.getFitStatus()
-            nmeas = fitStatus.getNdf()  # guaranteed > 0 by hypothesis loop filter
-            global_variables.h["nmeas"].Fill(nmeas)
-            chi2 = fitStatus.getChi2() / nmeas
-            if self.validation:
-                self.validation_stats["chi2_sum"] += chi2
-                self.validation_stats["chi2_sum_sq"] += chi2 * chi2
-                self.validation_stats["chi2_count"] += 1
-                self.validation_stats["ndf_sum"] += nmeas
-                self.validation_stats["ndf_sum_sq"] += nmeas * nmeas
-                self.validation_stats["ndf_count"] += 1
-            global_variables.h["chi2"].Fill(chi2)
-            # make track persistent
-            # Store pointer - make a copy and let ROOT manage lifetime
-            trackCopy = ROOT.genfit.Track(theTrack)
-            ROOT.SetOwnership(trackCopy, False)  # ROOT TTree owns the track
-            self.fGenFitArray.push_back(trackCopy)
-            if global_variables.debug:
-                print("save track", theTrack, chi2, nmeas, fitStatus.isFitConverged())
-            # Save MC link
-            track_ids = []
-            for index in listOfIndices[atrack]:
-                ahit = self.sTree.strawtubesPoint[index]
-                track_ids += [ahit.GetTrackID()]
-            _frac, tmax = self.fracMCsame(track_ids)
-            self.fitTrack2MC.push_back(tmax)
-            # Save hits indexes of the the fitted tracks
-            indices = ROOT.std.vector("unsigned int")()
-            for index in listOfIndices[atrack]:
-                indices.push_back(index)
-            aTracklet = ROOT.Tracklet(1, indices)
-            self.fTrackletsArray.push_back(aTracklet)
+            track_candidates.append({"pos": posM, "mom": momM, "indices": indices, "charge": charge})
 
-        logger.debug(
-            "findTracks: %d candidates, %d too few hits, %d too few stations, %d fitted tracks saved",
-            len(hitPosLists),
-            n_too_few_hits,
-            n_too_few_stations,
-            len(self.fGenFitArray),
-        )
-        if self.validation:
-            self.validation_stats["track_candidates_rejected_hits"] += n_too_few_hits
-            self.validation_stats["track_candidates_rejected_stations"] += n_too_few_stations
-
-        # debug
-        if global_variables.debug:
-            print("save tracklets:")
-            for x in self.recoTree.Tracklets:
-                print(x.getType(), len(x.getList()))
-        return len(self.fGenFitArray)
+        return track_candidates
 
     def _compute_seed_state(self, atrack, meas, trackParams):
         """Compute seed position and momentum for the track fitter.
@@ -435,78 +374,7 @@ class ShipDigiReco:
             momM = ROOT.TVector3(0, 0, 3.0 * u.GeV)
         return posM, momM
 
-    def findGoodTracks(self) -> int:
-        self.goodTracksVect.clear()
-        nGoodTracks = 0
-        for i, track in enumerate(self.fGenFitArray):
-            fitStatus = track.getFitStatus()
-            if not fitStatus.isFitConverged():
-                continue
-            nmeas = fitStatus.getNdf()
-            chi2 = fitStatus.getChi2() / nmeas
-            if chi2 < 50 and not chi2 < 0:
-                self.goodTracksVect.push_back(i)
-                nGoodTracks += 1
-        return nGoodTracks
-
-    def findVetoHitOnTrack(self, track):
-        distMin = 99999.0
-        hitID = -1
-        xx = track.getFittedState()
-        rep = ROOT.genfit.RKTrackRep(xx.getPDG())
-        state = ROOT.genfit.StateOnPlane(rep)
-        rep.setPosMom(state, xx.getPos(), xx.getMom())
-        for i, vetoHit in enumerate(self.digiSBT.det):
-            vetoHitPos = vetoHit.GetXYZ()
-            try:
-                rep.extrapolateToPoint(state, vetoHitPos, False)
-            except Exception:
-                error = "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
-                ut.reportError(error)
-                if global_variables.debug:
-                    print(error)
-                continue
-            dist = (rep.getPos(state) - vetoHitPos).Mag()
-            if dist < distMin:
-                distMin = dist
-                hitID = i
-        return ROOT.vetoHitOnTrack(hitID, distMin)
-
-    def linkVetoOnTracks(self) -> None:
-        self.vetoHitOnTrackArray.clear()
-        for good_track in self.goodTracksVect:
-            track = self.fGenFitArray[good_track]
-            veto_link = self.findVetoHitOnTrack(track)
-            self.vetoHitOnTrackArray.push_back(veto_link)
-            if self.validation:
-                if veto_link.GetHitID() >= 0:  # Only record real matches
-                    dist = float(veto_link.GetDist())
-                    self.validation_stats["veto_link_distance_sum"] += dist
-                    self.validation_stats["veto_link_distance_sum_sq"] += dist * dist
-                    self.validation_stats["veto_link_distance_count"] += 1
-        if self.validation:
-            self.validation_stats["veto_links_total"] += len(self.vetoHitOnTrackArray)
-
-    def fracMCsame(self, trackids):
-        track = {}
-        nh = len(trackids)
-        for tid in trackids:
-            if tid in track:
-                track[tid] += 1
-            else:
-                track[tid] = 1
-        if track != {}:
-            tmax = max(track, key=lambda k: track[k])
-        else:
-            track = {-999: 0}
-            tmax = -999
-        frac = 0.0
-        if nh > 0:
-            frac = float(track[tmax]) / float(nh)
-        return frac, tmax
-
     def finish(self) -> None:
-        del self.fitter
         if self.validation:
             validation_tools.print_reco_validation_summary(
                 self.validation_stats, has_veto_detector=hasattr(self, "digiSBT")
