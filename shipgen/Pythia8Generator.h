@@ -11,7 +11,6 @@
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
-#include "GenieGenerator.h"
 #include "Pythia8/Pythia.h"
 #include "TROOT.h"
 #include "TTree.h"
@@ -28,8 +27,6 @@ class Pythia8Generator : public SHiP::Generator {
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
-  void SetParameters(char*);
-  void Print();
 
   using SHiP::Generator::Init;
   Bool_t Init() override;
@@ -83,7 +80,6 @@ class Pythia8Generator : public SHiP::Generator {
   Pythia8::Pythia* fPythia;  //!
   Double_t fFDs;    // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;  //
-  GenieGenerator* fMaterialInvestigator;  //!
   TString targetName;
   Double_t xOff;
   Double_t yOff;

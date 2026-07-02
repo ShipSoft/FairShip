@@ -20,7 +20,6 @@
 const Double_t cm = 10.;                  // pythia units are mm
 const Double_t c_light = 2.99792458e+10;  // speed of light in cm/sec (c_light
                                           // = 2.99792458e+8 * m/s)
-Int_t counter = 0;
 constexpr Double_t mbarn = 1E-3 * 1E-24 * TMath::Na();  // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
@@ -141,7 +140,6 @@ Bool_t Pythia8Generator::Init() {
   fPythia->init();
   if (targetFromGeometry) {
     // Use geometry-based coordinates passed from run_simScript.py
-    fMaterialInvestigator = new GenieGenerator();
     start[0] = xOff;
     start[1] = yOff;
     start[2] = startZ;
@@ -156,7 +154,6 @@ Bool_t Pythia8Generator::Init() {
     maxCrossSection = mparam[9];
   } else if (targetName != "") {
     // Fallback to fragile TGeo navigation for backward compatibility
-    fMaterialInvestigator = new GenieGenerator();
     TGeoVolume* top = gGeoManager->GetTopVolume();
     TGeoNode* target = top->FindNode(targetName);
     if (!target) {
@@ -334,7 +331,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
     key += addedParticles - 1;  // pythia counts from 1
   }
-  counter += 1;
   // now the underlying event
   bool lx = true;
   while (lx) {

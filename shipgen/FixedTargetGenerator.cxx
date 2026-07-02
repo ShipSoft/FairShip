@@ -19,6 +19,7 @@
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
+#include "TH1.h"
 #include "TMCProcess.h"
 #include "TMath.h"
 #include "TROOT.h"
@@ -304,7 +305,6 @@ Bool_t FixedTargetGenerator::Init() {
   }
   if (targetFromGeometry) {
     // Use geometry-based coordinates passed from run_simScript.py
-    fMaterialInvestigator = new GenieGenerator();
     start[0] = xOff;
     start[1] = yOff;
     start[2] = startZ + zOff;
@@ -319,7 +319,6 @@ Bool_t FixedTargetGenerator::Init() {
     maxCrossSection = mparam[9];
   } else if (targetName != "") {
     // Fallback to fragile TGeo navigation for backward compatibility
-    fMaterialInvestigator = new GenieGenerator();
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     if (nav->CheckPath(targetName)) {
       nav->cd(targetName);
