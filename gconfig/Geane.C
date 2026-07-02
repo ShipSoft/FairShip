@@ -53,12 +53,7 @@ void Config() {
   Float_t usrcuts[5] = {0., 0., 0., 0., 0.};  // usercuts
   Float_t gcalpha = 0.999;                    // Optimal value for alpha
 
-  cout << "Energy straggling area parameter from user set to: " << gcalpha
-       << endl;
-  if (gcalpha < 0.9) {
-    gcalpha = 0.9;
-    cout << "User alpha parameter too low: forced to 0.9" << endl;
-  }
+  cout << "Energy straggling area parameter set to: " << gcalpha << endl;
 
   // set cuts here
   //             GAM ELEC NHAD CHAD MUON EBREM MUHAB EDEL MUDEL MUPA TOFMAX
