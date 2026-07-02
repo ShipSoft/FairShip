@@ -47,7 +47,7 @@ def runTracking():
 
     elif global_variables.detector == "MTC":
         # MTC setup to be updated.
-        field = acts.ConstantBField(acts.Vector3(0.0, -1.2, 0.0 * u.T))
+        field = acts.ConstantBField(acts.Vector3(0.0, -1.2 * u.T, 0.0 * u.T))
         simHitTree = "mtcHits"
         digiConfigFile = currentPath + "/MTC-digi-config.json"
         detector = acts.examples.MTCBuilder(
