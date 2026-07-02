@@ -167,18 +167,22 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     // get local material at this point
     TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
     TGeoMaterial* mat = nullptr;
-    if (node && !gGeoManager->IsOutside())
+    if (node && !gGeoManager->IsOutside()) {
       mat = node->GetVolume()->GetMaterial();
-    LOG(debug) << "Info MuDISGenerator: mat " << count << ", " << mat->GetName()
-               << ", " << mat->GetDensity();
-    // density relative to Prob largest density along this trajectory, i.e. use
-    // rho(Pt)
-    prob2int = mat->GetDensity() / mparam[7];
-    if (prob2int > 1.) {
-      LOG(warning) << "MuDISGenerator: prob2int > Maximum density????";
-      LOG(warning) << "prob2int: " << prob2int;
-      LOG(warning) << "maxrho: " << mparam[7];
-      LOG(warning) << "material: " << mat->GetName();
+      LOG(debug) << "Info MuDISGenerator: mat " << count << ", "
+                 << mat->GetName() << ", " << mat->GetDensity();
+      // density relative to Prob largest density along this trajectory, i.e.
+      // use rho(Pt)
+      prob2int = mat->GetDensity() / mparam[7];
+      if (prob2int > 1.) {
+        LOG(warning) << "MuDISGenerator: prob2int > Maximum density????";
+        LOG(warning) << "prob2int: " << prob2int;
+        LOG(warning) << "maxrho: " << mparam[7];
+        LOG(warning) << "material: " << mat->GetName();
+      }
+    } else {
+      // sampled point is outside the geometry: reject and resample
+      prob2int = 0.;
     }
     count += 1;
   }
