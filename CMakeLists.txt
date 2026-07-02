@@ -161,10 +161,6 @@ find_package(genfit2 REQUIRED)
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
 
-if(DEFINED $ENV{GSL_ROOT})
-    set(GSL_DIR $ENV{GSL_ROOT})
-endif()
-
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase
 message("-- Setting basic variables ...")
