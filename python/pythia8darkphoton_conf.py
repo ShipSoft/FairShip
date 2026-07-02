@@ -10,6 +10,7 @@ import readDecayTable
 import ROOT
 import shipunit as u
 from method_logger import MethodLogger
+from pythia8_conf_utils import make_particles_stable
 
 # Boundaries for production in meson decays
 # mass of the mesons
@@ -107,15 +108,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     ROOT.TDatabasePDG.Instance()
     if inclusive == "meson":
         # let strange particle decay in Geant4
-        p8 = P8gen.getPythiaInstance()
-        n = 1
-        while n != 0:
-            n = p8.particleData.nextId(n)
-            p = p8.particleData.particleDataEntryPtr(n)
-            if p.tau0() > 1:
-                command = str(n) + ":mayDecay = false"
-                p8.readString(command)
-                print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4" % (p.name()))
+        make_particles_stable(P8gen, above_lifetime=1)
 
         # Configuring production
         P8gen.SetParameters("SoftQCD:nonDiffractive = on")
@@ -126,18 +119,11 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
 
         if mass < P8gen.MinDPMass():
             print("WARNING! Mass is too small, minimum is set to %3.3f GeV." % P8gen.MinDPMass())
+            _exit_stack.close()
             return 0
 
         # produce a Z' from hidden valleys model
-        p8 = P8gen.getPythiaInstance()
-        n = 1
-        while n != 0:
-            n = p8.particleData.nextId(n)
-            p = p8.particleData.particleDataEntryPtr(n)
-            if p.tau0() > 1:
-                command = str(n) + ":mayDecay = false"
-                p8.readString(command)
-                print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4" % (p.name()))
+        make_particles_stable(P8gen, above_lifetime=1)
 
         # Configuring production
         P8gen.SetParameters("HiddenValley:ffbar2Zv = on")
@@ -210,6 +196,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
         selectedMum = manipulatePhysics(motherMode, mass, P8gen)
         print("selected mum is : %d" % selectedMum)
         if selectedMum == -1:
+            _exit_stack.close()
             return 0
 
     # P8gen.SetParameters("Check:particleData = on")
