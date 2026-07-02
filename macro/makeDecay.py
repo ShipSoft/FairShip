@@ -90,7 +90,11 @@ hc = {}
 if fin.GetKey("2"):
     hc["2"] = fin.Get("2")
 else:
-    fhin = ROOT.TFile(FIN.replace("ntuple", "hists"))
+    fhinName = FIN.replace("ntuple", "hists")
+    if fhinName.find("eos") < 0:
+        fhin = ROOT.TFile(fhinName)
+    else:
+        fhin = ROOT.TFile.Open(ROOT.gSystem.Getenv("EOSSHIP") + fhinName)
     hc["2"] = fhin.Get("2")
 
 # pot are counted double, i.e. for each signal, i.e. pot/2.
@@ -111,7 +115,7 @@ while n != 0:
     if p.tau0() > 1:
         command = str(n) + ":mayDecay = false"
         P8.readString(command)
-        print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4", p.name())
+        print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4" % p.name())
 P8.init()
 
 

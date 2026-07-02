@@ -206,6 +206,9 @@ def na50(online: bool = True) -> None:
         Ymax = yax.FindBin(0.575)
         h["MA"] = h["M_" + g].ProjectionX("MA")
         h["M"] = h["M_" + g].ProjectionX("M", Ymin, Ymax)
+        if h["MA"].GetEntries() == 0:
+            print(f"na50: empty histogram for generator {g}, skipping")
+            continue
         print("generator     sigma   mumu-ratio  in-mass-range  in-y-range")
         print(
             "%s %s %6.2F nbarn, %5.2F, %5.2G, %5.2F    "
@@ -238,6 +241,9 @@ def na50(online: bool = True) -> None:
         Ymax = yax.FindBin(0.575)
         h["MA"] = h["cosCSJpsi_" + g].ProjectionX("MA")
         h["M"] = h["cosCSJpsi_" + g].ProjectionX("M", Ymin, Ymax)
+        if h["MA"].GetEntries() == 0:
+            print(f"na50: empty histogram for generator {g}, skipping")
+            continue
         print("generator     sigma   mumu-in-mass-range% cosCS in-y-range")
         print(
             "%s %s %6.2F nbarn, %5.2F, %5.2F, %5.2F   "
@@ -272,6 +278,10 @@ def muflux() -> None:
         Ymax = yax.FindBin(3.0)
         h["MA"] = h["M_" + g].ProjectionX("MA")
         h["M"] = h["M_" + g].ProjectionX("M", Ymin, Ymax)
+        if h["MA"].GetEntries() == 0:
+            print(f"muflux: empty histogram for generator {g}, skipping")
+            fraction[g] = 0.0
+            continue
         print(
             g,
             name,
