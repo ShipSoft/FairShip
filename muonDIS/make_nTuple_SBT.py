@@ -287,7 +287,7 @@ for inputFolder in os.listdir(path):
 
                 if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
                     muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                muon_UpstreamTaggerPoints.ConstructedAt(ubt_index).__assign__(hit)
 
                 ubt_index += 1
 
@@ -309,7 +309,7 @@ for inputFolder in os.listdir(path):
 
                     if muon_vetoPoints.GetSize() == index:
                         muon_vetoPoints.Expand(index + 1)
-                    muon_vetoPoints[index] = hit
+                    muon_vetoPoints.ConstructedAt(index).__assign__(hit)
 
                     index += 1
 
@@ -348,7 +348,10 @@ for inputFolder in os.listdir(path):
                         h["PvPt_muon"].Fill(P, Pt)
                         h["n_softtracks"].Fill(len(track_array))
 
-                    muon_table[-1][-2] = len(muon_vetoPoints)
+                    # Update the final SBT-hit count (column -3); the row was
+                    # appended on the first SBT hit before the count was complete.
+                    # (-2 is the already-complete UBT count.)
+                    muon_table[-1][-3] = len(muon_vetoPoints)
 
             h["n_sbthits"].Fill(len(muon_vetoPoints))
 
