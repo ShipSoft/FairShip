@@ -21,3 +21,9 @@ jobs:
     with:
       # mypy was skipped on pre-commit.ci; keep it local-only for now.
       extra-args: --skip mypy
+  commit-check:
+    name: Commit messages (commitizen)
+    permissions:
+      contents: read
+      pull-requests: write # let commit-check post its output as a PR comment on failure
+    uses: ShipSoft/.github/.github/workflows/commit-check.yml@main
