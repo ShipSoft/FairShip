@@ -47,10 +47,15 @@ def extrapolateToPlane(fT, z) -> tuple[bool, Any, Any]:
                 rc = True
             except Exception:
                 # print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
-                pass
-            if not rc or z > z_ecal:
-                # use linear extrapolation
+                # Honour the contract: no valid extrapolation -> pos/mom are None.
+                rc, pos, mom = False, None, None
+            if rc and z > z_ecal:
+                # RK only reaches z_ecal; continue with linear extrapolation
                 px, py, pz = mom.X(), mom.Y(), mom.Z()
-                lam = (z - pos.Z()) / pz
-                pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)
+                if pz != 0:
+                    lam = (z - pos.Z()) / pz
+                    pos = ROOT.TVector3(pos.X() + lam * px, pos.Y() + lam * py, z)
+                else:
+                    # cannot extrapolate in z with zero longitudinal momentum
+                    rc, pos, mom = False, None, None
     return rc, pos, mom
