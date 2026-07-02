@@ -40,7 +40,6 @@ void SetCuts() {
   gMC->SetProcess("MULS", 1); /**multiple scattering*/
 
   Double_t cut1 = 1.0E-3;   // GeV --> 1 MeV
-  Double_t cutb = 1.0E4;    // GeV --> 10 TeV
   Double_t tofmax = 1.E10;  // seconds
   cout << "SetCuts Macro: Setting cuts.." << endl;
 
