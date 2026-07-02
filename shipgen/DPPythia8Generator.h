@@ -94,11 +94,11 @@ class DPPythia8Generator : public SHiP::Generator {
 
  protected:
   // Bool_t fHadDecay;    //select hadronic decay
-  Double_t fMom;       // proton energy
-  Int_t fDP;           // DP ID
-  Int_t fId;           // target type
-  Bool_t fUseRandom1;  // flag to use TRandom1
-  Bool_t fUseRandom3;  // flag to use TRandom3 (default)
+  Double_t fMom;               // proton energy
+  Int_t fDP;                   // DP ID
+  Int_t fId;                   // target type
+  Bool_t fUseRandom1{kFALSE};  // flag to use TRandom1
+  Bool_t fUseRandom3{kTRUE};   // flag to use TRandom3 (default)
   Bool_t
       fpbrem;  // flag to do proton bremstrahlung production (default is false)
   TH2F* fpbremPDF;   // pointer to TH2 containing PDF(p,theta) to have a dark
