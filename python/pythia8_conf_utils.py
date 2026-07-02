@@ -80,7 +80,7 @@ def parse_histograms(filepath):
     th1f_exp = re.compile(r"^TH1F\|.+")
     header_exp = re.compile(r"^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \(GeV\)\|?")
     subheader_exp = re.compile(r"^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$")
-    data_exp = re.compile(r"^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$")
+    data_exp = re.compile(r"^\s*(\d+?)\s*,\s*(-?\d+\.\d+)\s*$")
     # Locate beginning of each histogram
     header_line_idx = [i for i in range(len(lines)) if th1f_exp.match(lines[i]) is not None]
     # Iterate over histograms
