@@ -314,7 +314,9 @@ void ShipMuonShield::Initialize(
   for (auto i : {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &Z_rel, &midGapIn,
                  &midGapOut, &ratio_yokesIn, &ratio_yokesOut, &dY_yokeIn,
                  &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
-    i->reserve(nMagnets);
+    // These are written below via operator[], which requires size(), not
+    // merely reserved capacity; resize() to avoid out-of-bounds UB.
+    i->resize(nMagnets);
   }
   magnetName.push_back("MagnAbsorb");
   for (size_t i = 1; i < nMagnets; ++i) {
@@ -327,6 +329,11 @@ void ShipMuonShield::Initialize(
                     FieldDirection::up,   FieldDirection::up,
                     FieldDirection::up,   FieldDirection::down,
                     FieldDirection::down, FieldDirection::down};
+  if (nMagnets > fieldDirection.size()) {
+    LOG(fatal) << "ShipMuonShield::Initialize: " << nMagnets
+               << " magnets configured but only " << fieldDirection.size()
+               << " field directions are defined; extend fieldDirection.";
+  }
 
   std::vector<Double_t> params;
   params = shield_params;

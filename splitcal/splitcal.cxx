@@ -169,11 +169,11 @@ void splitcal::ConstructGeometry() {
   TGeoVolume* stripGivingX;
   TGeoVolume* stripGivingY;
 
-  TGeoVolume* newHCALfilter[100];
-  TGeoVolume* newHCALdet[100];
-  const char* char_labelHCALfilter[100];
+  TGeoVolume* newHCALfilter[100] = {};
+  TGeoVolume* newHCALdet[100] = {};
+  const char* char_labelHCALfilter[100] = {};
   TString labelHCALfilter;
-  const char* char_labelHCALdet[100];
+  const char* char_labelHCALdet[100] = {};
   TString labelHCALdet;
 
   Double_t z_splitcal = 0;
@@ -301,7 +301,7 @@ void splitcal::ConstructGeometry() {
 
   }  // end loop in ecal layers
 
-  for (Int_t i_nlayHCAL = 0; i_nlayHCAL < 1; i_nlayHCAL++) {
+  for (Int_t i_nlayHCAL = 0; i_nlayHCAL < fnHCALSamplings; i_nlayHCAL++) {
     labelHCALfilter = "HCALfilter_";
     labelHCALfilter += i_nlayHCAL;
     char_labelHCALfilter[i_nlayHCAL] = labelHCALfilter;
