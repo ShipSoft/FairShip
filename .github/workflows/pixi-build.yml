@@ -4,7 +4,9 @@ on:
     branches: [main]
   push:
     branches: [main]
-    tags: ['v*']
+    # Releases use unprefixed CalVer tags (e.g. 26.06, 26.05.1), not v-prefixed
+    # (matches the container-build workflow's trigger).
+    tags: ['[0-9]*']
   workflow_dispatch:
   merge_group:
 concurrency:
@@ -386,7 +388,10 @@ jobs:
             }
   deploy-plots:
     name: Deploy plots
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    # Fork PRs get a read-only GITHUB_TOKEN, so the gh-pages push and PR comment
+    # would always fail; only run for same-repo PRs and main pushes.
+    if: >-
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [run-tracking-benchmark, run-sim-chain, run-fixed-target]
     concurrency:
