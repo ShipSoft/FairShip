@@ -322,33 +322,10 @@ class Task:
                 )
                 dValue = ctypes.c_double()
                 dError = ctypes.c_double()
-                rc = gMinuit.GetParameter(0, dValue, dError)
-                values[0] = dValue.value
-                errors[0] = dError.value
-                rc = gMinuit.GetParameter(1, dValue, dError)
-                values[1] = dValue.value
-                errors[1] = dError.value
-                rc = gMinuit.GetParameter(2, dValue, dError)
-                values[2] = dValue.value
-                errors[2] = dError.value
-                rc = gMinuit.GetParameter(3, dValue, dError)
-                values[3] = dValue.value
-                errors[3] = dError.value
-                rc = gMinuit.GetParameter(4, dValue, dError)
-                values[4] = dValue.value
-                errors[4] = dError.value
-                rc = gMinuit.GetParameter(5, dValue, dError)
-                values[5] = dValue.value
-                errors[5] = dError.value
-                rc = gMinuit.GetParameter(6, dValue, dError)
-                values[6] = dValue.value
-                errors[6] = dError.value
-                rc = gMinuit.GetParameter(7, dValue, dError)
-                values[7] = dValue.value
-                errors[7] = dError.value
-                rc = gMinuit.GetParameter(8, dValue, dError)
-                values[8] = dValue.value
-                errors[8] = dError.value
+                for i in range(9):
+                    gMinuit.GetParameter(i, dValue, dError)
+                    values[i] = dValue.value
+                    errors[i] = dError.value
 
                 xFit = values[0]
                 yFit = values[1]

@@ -805,20 +805,20 @@ class SciFiMapping:
         fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()
 
         print("Validating U plane mapping:")
-        for fiber_id, fibers in sipm_to_fiber_map_U.items():
-            for sipm_chan, chan_info in fibers.items():
+        for sipm_chan, fibers in sipm_to_fiber_map_U.items():
+            for fiber_id, chan_info in fibers.items():
                 weight = chan_info["weight"]
                 xpos = chan_info["xpos"]
                 print(
-                    f"""---- Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},
+                    f"""---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},
                     Weight: {weight}, X Position: {xpos}"""
                 )
-        for sipm_chan, sipm_fibers in fiber_to_sipm_map_U.items():
-            for fiber_id, fiber_info in sipm_fibers.items():
+        for fiber_id, sipm_fibers in fiber_to_sipm_map_U.items():
+            for sipm_chan, fiber_info in sipm_fibers.items():
                 weight = fiber_info["weight"]
                 xpos = fiber_info["xpos"]
                 print(
-                    f"""++++ SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},
+                    f"""++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},
                     Weight: {weight}, X Position: {xpos}"""
                 )
 

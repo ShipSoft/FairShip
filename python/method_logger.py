@@ -11,7 +11,7 @@ class MethodLogger:
     method calls and logs them to a file (default: `sys.stdout`).
 
     >>> import method_logger as ml
-    >>> from StringIO import StringIO
+    >>> from io import StringIO
     >>> class TestClass(object):
     ...     def __init__(self):
     ...         pass
