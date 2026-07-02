@@ -66,7 +66,7 @@ class MTCDetHit : public SHiP::DetectorHit {
   */
  private:
   Float_t signals = 0;
-  Float_t time;
+  Float_t time = 0;
   Float_t Xch = 0.0, Ych = 0.0, Zch = 0.0;
   Bool_t flag{true};  ///< flag
 

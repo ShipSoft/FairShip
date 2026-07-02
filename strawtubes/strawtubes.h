@@ -45,7 +45,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   void SetDeltazView(Double_t delta_z_view);
   void SetStationEnvelope(Double_t x, Double_t y, Double_t z);
   static std::array<Int_t, 4> StrawDecode(Int_t detID);
-  static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
+  static void StrawEndPoints(Int_t detID, TVector3& bot, TVector3& top);
   // for the digitizing step
   void SetStrawResolution(Double_t a, Double_t b) {
     v_drift = a;
