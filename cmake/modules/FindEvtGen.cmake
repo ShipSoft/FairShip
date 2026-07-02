@@ -120,6 +120,10 @@ if(EvtGen_FOUND)
     # Set output variables
     set(EvtGen_INCLUDE_DIRS "${EvtGen_INCLUDE_DIR}")
     set(EvtGen_LIBRARIES "${EvtGen_LIBRARY}" "${EvtGen_External_LIBRARY}")
+    # Also export the upper-case name that the config package provides, so
+    # consumers (e.g. shipgen) that use ${EVTGEN_INCLUDE_DIR} work on the
+    # module-fallback path too.
+    set(EVTGEN_INCLUDE_DIR "${EvtGen_INCLUDE_DIR}")
 
     # Create imported target for EvtGen core library (must be created first)
     if(NOT TARGET EvtGen::EvtGen)
