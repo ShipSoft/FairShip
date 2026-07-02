@@ -63,7 +63,6 @@ class DPPythia8Generator : public SHiP::Generator {
   void SetLmax(Double_t z) { fLmax = z; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };
-  void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() {
     fUseRandom1 = kTRUE;
     fUseRandom3 = kFALSE;
@@ -111,16 +110,11 @@ class DPPythia8Generator : public SHiP::Generator {
   Double_t fLmax;    // m maximum decay position z
   Int_t fnRetries;   // retries: no DP produced
   Int_t fnDPtot;  // total number of DP from multiple mesons in single collision
-  Double_t fctau;  // dark photon lifetime
-  Double_t fFDs;   // correction for Pythia6 to match measured Ds production
+  Double_t fctau;       // dark photon lifetime
   Double_t fsmearBeam;  // finite beam size
   Double_t fPaintBeam;
-  TFile* fInputFile;  //! pointer to a file
-  TTree* fTree;       //!
-  Int_t fNevents, fn, fShipEventNr;
-  Float_t hpx[1], hpy[1], hpz[1], hE[1], hM[1], mpx[1], mpy[1], mpz[1], mE[1],
-      hid[1], mid[1];
-  Bool_t fDeepCopy;     // not used
+  Int_t fn, fShipEventNr;
+  Bool_t fDeepCopy;     // set by UseDeepCopy() from python config; not read yet
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
 };
 
