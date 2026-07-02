@@ -129,10 +129,14 @@ void ShipBellField::Print(Option_t*) const {
   cout << "======================================================" << endl;
   cout << "----  " << fTitle << " : " << fName << endl;
   cout << "----" << endl;
-  cout << "----  Field type    : constant" << endl;
+  cout << "----  Field type       : Bell" << endl;
   cout << "----" << endl;
-  cout << "----  Field regions : " << endl;
   cout.precision(4);
+  cout << "----  Peak field       : " << fPeak << " kG" << endl;
+  cout << "----  Middle (z centre) : " << fMiddle << " cm" << endl;
+  cout << "----  Btube            : " << fBtube << " cm" << endl;
+  cout << "----  Orientation      : " << fOrient << endl;
+  cout << "----  Include target   : " << (fInclTarget ? "yes" : "no") << endl;
   cout << "======================================================" << endl;
 }
 // -------------------------------------------------------------------------
