@@ -152,6 +152,7 @@ pyupgrade = "*"
 mypy = "*"
 yamlfmt = "*"
 pre-commit-hooks = "*"  # provides the `check-ast` entry point
+commitizen = "*"
 
 # Pinned via PyPI to match the previous hook revs exactly:
 #  - conda-forge's cpplint is stuck at 1.6.0 (a different, stale fork); the
@@ -172,9 +173,11 @@ lint = "prek run --all-files"
 # hook tools are on PATH at commit time (required on NixOS, where the tools are
 # not runnable without pixi activation).
 install-hooks = '''
-prek install --hook-type pre-commit
+prek install --hook-type pre-commit --hook-type commit-msg
 hooks=$(git rev-parse --git-path hooks)
-sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/pre-commit"
+for h in pre-commit commit-msg; do
+  sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/$h"
+done
 '''
 
 [environments]
