@@ -398,6 +398,24 @@ class DrawTracks(ROOT.FairTask):
         ntot = 0
         fPos = ROOT.TVector3()
         fMom = ROOT.TVector3()
+        # Build a trackID -> hits map once per event instead of rescanning every
+        # hit collection for every MC track (was O(tracks x hits)). Branch and
+        # in-branch order are preserved, so downstream hitlist building is
+        # unchanged.
+        hits_by_track: dict[int, list] = {}
+        for P in [
+            "vetoPoint",
+            "strawtubesPoint",
+            "ShipRpcPoint",
+            "TargetPoint",
+            "MTCDetPoint",
+            "SiliconTargetPoint",
+            "TimeDetPoint",
+        ]:
+            if not sTree.GetBranch(P):
+                continue
+            for p in getattr(sTree, P):
+                hits_by_track.setdefault(p.GetTrackID(), []).append(p)
         for fT in sTree.MCTrack:
             n += 1
             DTrack = ROOT.TEveLine()
@@ -414,34 +432,21 @@ class DrawTracks(ROOT.FairTask):
                 # end vertex of HNL
                 da.GetStartVertex(fPos)
                 hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
-            # loop over all sensitive volumes to find hits
-            for P in [
-                "vetoPoint",
-                "strawtubesPoint",
-                "ShipRpcPoint",
-                "TargetPoint",
-                "MTCDetPoint",
-                "SiliconTargetPoint",
-                "TimeDetPoint",
-            ]:
-                if not sTree.GetBranch(P):
-                    continue
-                c = eval("sTree." + P)
-                for p in c:
-                    if p.GetTrackID() == n:
-                        if hasattr(p, "LastPoint"):
-                            lp = p.LastPoint()
-                            if lp.x() == lp.y() and lp.x() == lp.z() and lp.x() == 0:
-                                # must be old data, don't expect hit at 0,0,0
-                                hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
-                            else:
-                                hitlist[lp.z()] = [lp.x(), lp.y()]
-                                hitlist[2.0 * p.GetZ() - lp.z()] = [
-                                    2.0 * p.GetX() - lp.x(),
-                                    2.0 * p.GetY() - lp.y(),
-                                ]
-                        else:
-                            hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
+            # collect the hits belonging to this MC track (per-event map above)
+            for p in hits_by_track.get(n, []):
+                if hasattr(p, "LastPoint"):
+                    lp = p.LastPoint()
+                    if lp.x() == lp.y() and lp.x() == lp.z() and lp.x() == 0:
+                        # must be old data, don't expect hit at 0,0,0
+                        hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
+                    else:
+                        hitlist[lp.z()] = [lp.x(), lp.y()]
+                        hitlist[2.0 * p.GetZ() - lp.z()] = [
+                            2.0 * p.GetX() - lp.x(),
+                            2.0 * p.GetY() - lp.y(),
+                        ]
+                else:
+                    hitlist[p.GetZ()] = [p.GetX(), p.GetY()]
             if len(hitlist) == 1:
                 if fT.GetMotherId() < 0:
                     continue
