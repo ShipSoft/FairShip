@@ -184,8 +184,11 @@ def normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):
 def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin=-0.5 * math.pi, tmax=0.5 * math.pi, suffix=""):
     """Histogram of the PDF for A' production in SHIP"""
     angles = np.linspace(tmin, tmax, binstheta).tolist()
-    anglestep = 2.0 * (tmax - tmin) / binstheta
-    momentumStep = (pMax(mDarkPhoton) - pMin(mDarkPhoton)) / (binsp - 1)
+    # angles is an endpoint-inclusive grid (step over binstheta-1 intervals);
+    # momenta excludes the endpoint (step over binsp intervals). Match each bin
+    # width to its own grid so the sampled points land on bin centres.
+    anglestep = (tmax - tmin) / (binstheta - 1)
+    momentumStep = (pMax(mDarkPhoton) - pMin(mDarkPhoton)) / binsp
     momenta = np.linspace(pMin(mDarkPhoton), pMax(mDarkPhoton), binsp, endpoint=False).tolist()
     hPDF = r.TH2F(
         f"hPDF_eps{epsilon}_m{mDarkPhoton}",
@@ -195,7 +198,7 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin=-0.5 * math.pi, 
         pMax(mDarkPhoton) - 0.5 * momentumStep,
         binstheta,
         tmin - 0.5 * anglestep,
-        tmax - 0.5 * anglestep,
+        tmax + 0.5 * anglestep,
     )
     hPDF.SetTitle(f"PDF for A' production (m_{{A'}}={mDarkPhoton} GeV, #epsilon ={epsilon})")
     hPDF.GetXaxis().SetTitle("P_{A'} [GeV]")
@@ -205,7 +208,7 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin=-0.5 * math.pi, 
         f"hPDFtheta_eps{epsilon}_m{mDarkPhoton}",
         binstheta,
         tmin - 0.5 * anglestep,
-        tmax - 0.5 * anglestep,
+        tmax + 0.5 * anglestep,
     )
     hPDFp = r.TH1F(
         f"hPDFp_eps{epsilon}_m{mDarkPhoton}",
