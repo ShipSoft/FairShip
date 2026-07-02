@@ -25,8 +25,6 @@ def _fraction_0_1(value: str) -> float:
     return v
 
 
-DownScaleDiMuon = False
-
 # Default HNL parameters
 theHNLMass = 1.0 * u.GeV
 theProductionCouplings = theDecayCouplings = None
@@ -834,12 +832,6 @@ if options.muonback:
     MuonBackgen.SetPaintRadius(options.PaintBeam * u.cm)
     MuonBackgen.SetSmearBeam(options.SmearBeam * u.cm)
     MuonBackgen.SetPhiRandomize(options.phiRandom)
-    if DownScaleDiMuon:
-        testf = ROOT.TFile.Open(inputFile[0])
-        if not testf.FileHeader.GetTitle().find("diMu100.0") < 0:
-            MuonBackgen.SetDownScaleDiMuon()  # avoid interference with boosted channels
-            print("MuonBackgenerator: set downscale for dimuon on")
-        testf.Close()
     if options.sameSeed:
         MuonBackgen.SetSameSeed(options.sameSeed)
     primGen.AddGenerator(MuonBackgen)

@@ -25,34 +25,6 @@ def addDPtoROOT(pid=9900015, m=0.2, g=4.866182e-04):
     pdg.AddParticle("A", "DarkPhoton", m, False, g, 0.0, "A", pid)
 
 
-def readFromAscii():
-    FairShip = os.environ["FAIRSHIP"]
-    with open(FairShip + "/shipgen/branchingratios.dat") as ascii:
-        content = ascii.readlines()
-    h = {}
-    n = 0
-    hname = None  # set by the first TH1F header; bin data before it is an error
-    while n < len(content):
-        line = content[n]
-        if "TH1F" in line:
-            keys = line.split("|")
-            n += 1
-            limits = content[n].split(",")
-            hname = keys[1]
-            if len(keys) < 5:
-                keys.append(",")
-            h[hname] = ROOT.TH1F(
-                hname, keys[2] + ";" + keys[3] + ";" + keys[4], int(limits[0]), float(limits[1]), float(limits[2])
-            )
-        else:
-            if hname is None:
-                raise ValueError("bin data encountered before any TH1F header")
-            keys = line.split(",")
-            h[hname].SetBinContent(int(keys[0]), float(keys[1]))
-        n += 1
-    return h
-
-
 def manipulatePhysics(motherMode, mass, P8gen):
     # changes of the table, now it is deleted and we have each meson mother for each meson production
     # print motherMode
