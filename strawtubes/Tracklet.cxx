@@ -39,7 +39,7 @@ Tracklet::~Tracklet() = default;
 Int_t Tracklet::link2MCTrack(std::vector<strawtubesPoint>* strawPoints,
                              Float_t min) {
   Int_t nTot = aTracklet.size();
-  std::unordered_map<int, int> MC;
+  std::unordered_map<int, double> MC;
   Int_t trackID = -1;
   for (std::vector<int>::size_type i = 0; i != aTracklet.size(); i++) {
     trackID = (*strawPoints)[aTracklet[i]].GetTrackID();
