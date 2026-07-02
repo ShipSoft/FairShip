@@ -210,9 +210,9 @@ def fillp1(hist) -> None:
                 px = hist.GetBinCenter(ib)
                 yx = (px - p1) * tg + y1
                 hist.Fill(px, yx)
-                i1 = i
-                y1 = y2
-                p1 = p2
+            i1 = i
+            y1 = y2
+            p1 = p2
 
 
 if args.pythia_tune == "PoorE791":
