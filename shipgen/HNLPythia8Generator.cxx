@@ -145,6 +145,8 @@ HNLPythia8Generator::~HNLPythia8Generator() {
     fInputFile = nullptr;
     fTree = nullptr;
   }
+  delete fPythia;
+  fPythia = nullptr;
 }
 // -------------------------------------------------------------------------
 
