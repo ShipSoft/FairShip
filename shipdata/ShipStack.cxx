@@ -246,11 +246,6 @@ void ShipStack::FillTrackArray() {
       fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
       ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
-      // --> Set the number of points in the detectors for this track
-      for (Int_t iDet = kVETO; iDet < kEndOfList; iDet++) {
-        pair<Int_t, Int_t> a(iPart, iDet);
-        track.SetNPoints(iDet, fPointsMap[a]);
-      }
       track.SetTrackID(fNTracks);
       track.SetEventID(evtNo);
       fNTracks++;

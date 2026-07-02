@@ -368,8 +368,8 @@ void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
                     TGeoVolumeAssembly* tOuterWall,
                     TGeoVolumeAssembly* tLongitRib,
                     TGeoVolumeAssembly* tVerticalRib,
-                    TGeoVolumeAssembly* ttLiSc, int& liScCounter, int blockNr,
-                    int nx, int ny, double z1, double z2, double Zshift,
+                    TGeoVolumeAssembly* ttLiSc, int blockNr, int nx, int ny,
+                    double z1, double z2, double Zshift,
                     double cell_thickness_z, double wallThick,
                     double liscThick1, double liscThick2, double ribThick) {
   TString blockName = "block";
@@ -691,7 +691,6 @@ TGeoVolume* veto::MakeSegments() {
 
   TString nameLiSc = "VetoLiSc";
   TGeoVolumeAssembly* ttLiSc = new TGeoVolumeAssembly(nameLiSc);
-  int liScCounter = 0;
 
   int nx = 2;  // number of Longitudinal ribs on X
   int ny = 3;  // number of Longitudinal ribs on Y
@@ -709,8 +708,8 @@ TGeoVolume* veto::MakeSegments() {
   double Zshift = wz / 2;  // calibration of Z position
 
   AddBlock(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,
-           ttLiSc, liScCounter, 1, nx, ny, z1, z2, Zshift, cell_thickness_z0,
-           wallThick, liscThick, liscThick, ribThick);
+           ttLiSc, 1, nx, ny, z1, z2, Zshift, cell_thickness_z0, wallThick,
+           liscThick, liscThick, ribThick);
 
   //******************************** Block2
   //**************************************
@@ -724,8 +723,8 @@ TGeoVolume* veto::MakeSegments() {
   Zshift += wz / 2;
 
   AddBlock(tInnerWall, tDecayVacuum, tOuterWall, tLongitRib, tVerticalRib,
-           ttLiSc, liScCounter, 2, nx, ny, z1, z2, Zshift, cell_thickness_z,
-           wallThick, liscThick, liscThick, ribThick);
+           ttLiSc, 2, nx, ny, z1, z2, Zshift, cell_thickness_z, wallThick,
+           liscThick, liscThick, ribThick);
 
   double zi = z2;
 

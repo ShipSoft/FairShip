@@ -47,14 +47,12 @@ using std::endl;
 UpstreamTagger::UpstreamTagger()
     : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
       det_zPos(0),
-      UpstreamTagger_fulldet(nullptr),
-      scoringPlaneUBText(nullptr) {}
+      UpstreamTagger_fulldet(nullptr) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     : Detector(name, active, kUpstreamTagger),
       det_zPos(0),
-      UpstreamTagger_fulldet(nullptr),
-      scoringPlaneUBText(nullptr) {}
+      UpstreamTagger_fulldet(nullptr) {}
 
 Bool_t UpstreamTagger::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
