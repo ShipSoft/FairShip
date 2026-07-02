@@ -5,6 +5,8 @@
 #ifndef SHIPGEN_HNLPYTHIA8GENERATOR_H_
 #define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
+#include <memory>
+
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
 #include "Pythia8/Pythia.h"
@@ -19,24 +21,24 @@ class FairPrimaryGenerator;
 
 class PyTr1Rng : public Pythia8::RndmEngine {
  public:
-  PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
+  PyTr1Rng() : rng(std::make_unique<TRandom1>(gRandom->GetSeed())) {}
   ~PyTr1Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
 
  private:
-  TRandom1* rng;  //!
+  std::unique_ptr<TRandom1> rng;  //!
 };
 
 class PyTr3Rng : public Pythia8::RndmEngine {
  public:
-  PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
+  PyTr3Rng() : rng(std::make_unique<TRandom3>(gRandom->GetSeed())) {}
   ~PyTr3Rng() override = default;
 
   Double_t flat() override { return rng->Rndm(); };
 
  private:
-  TRandom3* rng;  //!
+  std::unique_ptr<TRandom3> rng;  //!
 };
 
 class HNLPythia8Generator : public SHiP::Generator {
