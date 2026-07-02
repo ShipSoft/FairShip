@@ -60,6 +60,11 @@ Bool_t strawtubes::ProcessHits(FairVolume* vol) {
     fLength = gMC->TrackLength();
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
+    // Clear the "already recorded" marker on every fresh entry so that a later
+    // traversal of the same straw (curling track, delta ray, next track or
+    // event) is not silently dropped. The marker only exists to deduplicate
+    // repeated exit signals at the same boundary crossing.
+    fVolumeID = -1;
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
