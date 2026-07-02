@@ -186,7 +186,7 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   cpg->AddTrack(
       PID, px, py, pz, x, y, z, -1, true, TMath::Sqrt(P * P + mass * mass), 0,
       weight);  // -1 = Mother ID, true = tracking, SQRT(x) = Energy, 0 = t
-  if (!nInside % 10000) {
+  if (nInside % 10000 == 0) {
     cout << nInside / 10000 << "10k events have been simulated" << endl;
   }
   return kTRUE;

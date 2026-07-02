@@ -172,6 +172,7 @@ Bool_t FixedTargetGenerator::Init() {
     fPythiaN = new Pythia8::Pythia();
   } else if (Option != "charm" && Option != "beauty" && !G4only) {
     LOG(error) << "Option not known " << Option.Data() << ", abort";
+    return kFALSE;
   }
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
@@ -464,7 +465,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t pt = TMath::Sqrt((n_mpx * n_mpx) + (n_mpy * n_mpy));
     // every event appears twice, i.e.
     if (pt < 1.e-5 && n_mid == 2212) {
-      pot += +0.5;
+      pot += 0.5;
       ntotprim += 1;
     }
     Int_t idabs = static_cast<int>(TMath::Abs(n_id));
