@@ -131,8 +131,10 @@ def printWF(vl, alreadyPrinted, onlyWithField: bool = True):
     return magnetMass
 
 
-def nextLevel(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):
-    tmp = 0
+def nextLevel(lv, magnetMass, onlyWithField, exclude, alreadyPrinted):
+    # Accumulate the magnet mass of every leaf volume in the subtree. A single
+    # running total is threaded through the recursion so that leaves at any
+    # depth (and direct leaf daughters of the top level) are all counted.
     for da in range(lv.GetNoDaughters()):
         lvn = lv.GetDaughter(da)
         name = lvn.GetName().c_str()
@@ -140,11 +142,10 @@ def nextLevel(lv, magnetMass: int, onlyWithField, exclude, alreadyPrinted):
             continue
         lvln = lvn.GetLogicalVolume()
         if lvln.GetNoDaughters() > 0:
-            xtmp, _dummy = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)
-            magnetMass += xtmp
+            magnetMass = nextLevel(lvln, magnetMass, onlyWithField, exclude, alreadyPrinted)
         else:
-            tmp += printWF(lvn, alreadyPrinted, onlyWithField)
-    return tmp, magnetMass
+            magnetMass += printWF(lvn, alreadyPrinted, onlyWithField)
+    return magnetMass
 
 
 def printWeightsandFields(onlyWithField: bool = True, exclude=None) -> None:
@@ -157,7 +158,7 @@ def printWeightsandFields(onlyWithField: bool = True, exclude=None) -> None:
     world = gn.GetWorldVolume().GetLogicalVolume()
     magnetMass = 0
     alreadyPrinted: dict[str, str] = {}
-    _dummy, nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)
+    nM = nextLevel(world, magnetMass, onlyWithField, exclude, alreadyPrinted)
     print("total magnet mass", nM / 1000.0, "t")
     return
 
@@ -194,8 +195,8 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
     if len(fieldsList) > 1:
         fieldMaker.defineComposite("TotalField", *fieldsList)  # fieldsList MUST have length <=4
         fieldMaker.defineGlobalField("TotalField")
-    else:
-        fieldMaker.defineGlobalField("MainSpecMap")
+    elif fieldsList:
+        fieldMaker.defineGlobalField(fieldsList[0])
     if withVirtualMC:
         # Force the VMC to update/reset the fields defined by the fieldMaker object.
         # Get the ROOT/Geant4 geometry manager
