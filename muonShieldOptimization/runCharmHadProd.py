@@ -166,7 +166,7 @@ def compactifyCascade(run) -> None:
     cmd = ""
     Ntot = 0
     NperJob = nev
-    for i in range(run, +ncpus):
+    for i in range(run, run + ncpus):
         fName = path + "run" + str(i) + "/Cascade-run" + str(i) + "-parp16-MSTP82-1-MSEL" + msel + ".root"
         with open(path + "run" + str(i) + "/log" + str(i)) as f:
             success = False

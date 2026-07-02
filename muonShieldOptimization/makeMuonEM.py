@@ -55,7 +55,9 @@ for k in range(sTree.GetEntries()):
         iMuon.Clear()
         tca_vec = iMuon.ConstructedAt(0)
         tca_vec.ResizeTo(muPart)
-        ROOT.std.swap(tca_vec, muPart)
+        # copy (do not swap) so muPart keeps its data across all duplications
+        for i in range(muPart.GetNrows()):
+            tca_vec[i] = muPart[i]
         m = array("d", [pid, px, py, pz, E])
         part = ROOT.TVectorD(5, m)
         # copy to branch

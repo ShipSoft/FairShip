@@ -383,20 +383,20 @@ run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run, ShipGeo)
 
 
-rz_inter = -1.0, 0.0
+def origin(sTree, it):
+    """Return (r, z) of the ancestor track produced by the primary muon.
 
-
-def origin(sTree, it) -> None:
+    Returns the sentinel (-1.0, 0.0) if the mother chain does not end at the
+    primary muon (track 0).
+    """
     at = sTree.MCTrack[it]
     im = at.GetMotherId()
     if im > 0:
-        origin(sTree, im)
-    if im < 0:
-        # print 'does not come from muon'
-        pass
+        return origin(sTree, im)
     if im == 0:
-        # print 'origin z',at.GetStartZ()
-        ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+        return ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+    # does not come from muon
+    return -1.0, 0.0
 
 
 otherPhysList = False
@@ -771,8 +771,9 @@ def executeOneFile(fn, output=None, pid=None) -> None:
                     h["borigin"].Fill(aTrack.GetStartZ() / u.m, r, w)
                     aTrack.GetMomentum(mom)
                     h[detName + "_OP"].Fill(mom.Mag() / u.GeV, w)
+                    rz_inter = -1.0, 0.0
                     if trackID > 0:
-                        origin(sTree, trackID)
+                        rz_inter = origin(sTree, trackID)
                         h["porigin"].Fill(
                             aTrack.GetStartZ() / u.m,
                             ROOT.TMath.Sqrt(aTrack.GetStartX() ** 2 + aTrack.GetStartY() ** 2) / u.m,
@@ -1313,7 +1314,8 @@ def debugGeoTracks(sTree) -> None:
 
 
 def eventsWithStrawPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
@@ -1330,7 +1332,8 @@ def eventsWithStrawPoints(i) -> None:
 
 
 def eventsWithEntryPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
