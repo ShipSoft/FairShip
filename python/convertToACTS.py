@@ -182,26 +182,26 @@ def main():
         # Vertex branches
         event_id_vertex = array.array("i", [0])
         vertexTree.Branch("event_id", event_id_vertex, "event_id/i")
-        vertex_id = ROOT.std.vector("unsigned long")([0])
+        vertex_id = ROOT.std.vector("unsigned long")()
         vertexTree.Branch("vertex_id", vertex_id)
-        process_vtx = ROOT.std.vector("int")([0])
+        process_vtx = ROOT.std.vector("int")()
         vertexTree.Branch("process", process_vtx)
-        vx_vtx = ROOT.std.vector("float")([0])
+        vx_vtx = ROOT.std.vector("float")()
         vertexTree.Branch("vx", vx_vtx)
-        vy_vtx = ROOT.std.vector("float")([0])
+        vy_vtx = ROOT.std.vector("float")()
         vertexTree.Branch("vy", vy_vtx)
-        vz_vtx = ROOT.std.vector("float")([0])
+        vz_vtx = ROOT.std.vector("float")()
         vertexTree.Branch("vz", vz_vtx)
-        vt_vtx = ROOT.std.vector("float")([0])
+        vt_vtx = ROOT.std.vector("float")()
         vertexTree.Branch("vt", vt_vtx)
         outgoing_particlesVec = ROOT.std.vector("unsigned long")()
         outgoing_particles = ROOT.std.vector(ROOT.std.vector("unsigned long"))()
         vertexTree.Branch("outgoing_particles", outgoing_particles)
-        vertex_primary_vtx = ROOT.std.vector("int")([0])
+        vertex_primary_vtx = ROOT.std.vector("int")()
         vertexTree.Branch("vertex_primary", vertex_primary_vtx)
-        vertex_secondary_vtx = ROOT.std.vector("int")([0])
+        vertex_secondary_vtx = ROOT.std.vector("int")()
         vertexTree.Branch("vertex_secondary", vertex_secondary_vtx)
-        generation_vtx = ROOT.std.vector("int")([0])
+        generation_vtx = ROOT.std.vector("int")()
         vertexTree.Branch("generation", generation_vtx)
 
         # Particle branches
@@ -260,10 +260,18 @@ def main():
         outcome = ROOT.std.vector("float")()
         particleTree.Branch("outcome", outcome)
 
+        # Seed the RNG once, before the event loop, so digitisation draws a
+        # fresh random sequence per event instead of repeating the same one.
+        ROOT.gRandom.SetSeed(13)
+
         for ievent, event in enumerate(sTree):
             motherMap = defaultdict(list)
             motherMapVal = defaultdict(list)
             detHitMap = defaultdict(list)
+            # Hits already accounted for that will be discarded from detHitMap
+            # before the per-particle hit count is taken (e.g. SND SiliconTarget
+            # hits, which are cleared before the MTC block reuses detHitMap).
+            extraHitCount = defaultdict(int)
             detHitArray = []
             strawHitArr = []
             trID = []
@@ -332,6 +340,10 @@ def main():
             if global_variables.detector == "MTC" or global_variables.detector == "SND":
                 detHitArray.clear()
                 trID.clear()
+                # For SND the SiliconTarget hits were stored in detHitMap above;
+                # preserve their per-track counts before reusing the map for MTC.
+                for trackID in detHitMap:
+                    extraHitCount[trackID] += len(detHitMap[trackID])
                 detHitMap.clear()
                 pointsDict = defaultdict(list)
                 for index, point in enumerate(event.MTCPoint):
@@ -396,8 +408,7 @@ def main():
 
             if global_variables.detector == "StrawTracker":
                 # Follow shipDigiReco method of only selecting the point with the earliest time
-                ROOT.gRandom.SetSeed(13)
-                t0 = ROOT.TRandom().Rndm() * 1 * u.microsecond
+                t0 = ROOT.gRandom.Rndm() * 1 * u.microsecond
                 strawHitArr.clear()
                 earliestHitPerDet = {}
                 for index, point in enumerate(event.strawtubesPoint):
@@ -509,7 +520,7 @@ def main():
                 sub_particle.push_back(0)
                 vertex_primary.push_back(1)
                 vertex_secondary.push_back(0)
-                number_of_hits.push_back(len(detHitMap[count]))
+                number_of_hits.push_back(len(detHitMap[count]) + extraHitCount[count])
                 total_x0.push_back(0)
                 total_l0.push_back(0)
                 outcome.push_back(0)
@@ -552,7 +563,9 @@ def main():
                 if len(particleCodes) < 2:
                     continue
                 event_id_vertex[0] = ievent
-                vertexVal = acts.Barcode(primaryVertex=1, secondaryVertex=0, part=0, gen=0, subpart=0).value
+                # Encode the per-event vertex index so each vertex gets a distinct
+                # id (previously constant, so every vertex shared the same value).
+                vertexVal = acts.Barcode(primaryVertex=1, secondaryVertex=0, part=c, gen=0, subpart=0).value
                 vertex_id.push_back(vertexVal)
                 particle_0ID = motherMap[str(i)]
                 particle_0 = event.MCTrack[particle_0ID[0]]
