@@ -30,9 +30,9 @@
 using std::cout;
 using std::endl;
 
-Double_t cm = 1;         // cm
-Double_t m = 100 * cm;   //  m
-Double_t mm = 0.1 * cm;  //  mm
+constexpr Double_t cm = 1;         // cm
+constexpr Double_t m = 100 * cm;   //  m
+constexpr Double_t mm = 0.1 * cm;  //  mm
 
 exitHadronAbsorber::exitHadronAbsorber(const char* Name, Bool_t Active)
     : Detector(Name, Active, kVETO),
