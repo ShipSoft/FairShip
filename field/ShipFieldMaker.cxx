@@ -1095,41 +1095,12 @@ TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const {
 }
 
 Bool_t ShipFieldMaker::gotField(const TString& name) const {
-  Bool_t result(kFALSE);
-
-  // Iterate over the internal map and see if we have a match
-  SFMap::const_iterator iter;
-  for (iter = theFields_.begin(); iter != theFields_.end(); ++iter) {
-    TString key = iter->first;
-    TVirtualMagField* theField = iter->second;
-
-    // Check that we have the key already stored and the pointer is not null
-    if (!key.CompareTo(name, TString::kExact) && theField) {
-      result = kTRUE;
-      break;
-    }
-  }
-
-  return result;
+  return this->getField(name) != nullptr;
 }
 
 TVirtualMagField* ShipFieldMaker::getField(const TString& name) const {
-  TVirtualMagField* theField(nullptr);
-
-  // Iterate over the internal map and see if we have a match
-  SFMap::const_iterator iter;
-  for (iter = theFields_.begin(); iter != theFields_.end(); ++iter) {
-    TString key = iter->first;
-    TVirtualMagField* BField = iter->second;
-
-    // Check that we have the key already stored
-    if (!key.CompareTo(name, TString::kExact)) {
-      theField = BField;
-      break;
-    }
-  }
-
-  return theField;
+  SFMap::const_iterator iter = theFields_.find(name);
+  return (iter != theFields_.end()) ? iter->second : nullptr;
 }
 
 void ShipFieldMaker::plotXYField(const TVector3& xAxis, const TVector3& yAxis,
