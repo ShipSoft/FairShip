@@ -147,7 +147,7 @@ cmd = "ship-metrics-compare {{ reference }} {{ new }} --config .github/scripts/m
 # expansion.
 
 [tasks.ci-clang-tidy]
-cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py'"
+cmd = "bash -c 'set -o pipefail; echo $CPP_FILES | xargs -P $(nproc) -n 4 clang-tidy -p build/ 2>&1 | python .github/scripts/annotate_build.py'"
 
 [tasks.ci-pyrefly]
 cmd = "pyrefly check --output-format=github $PY_FILES"
