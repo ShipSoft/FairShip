@@ -56,16 +56,16 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   inline void SetUseCaveCoordinates() { fUseCaveCoordinates = kTRUE; }
 
  private:
-  Int_t fUniqueID;
+  Int_t fUniqueID = 0;
   Bool_t fOnlyMuons;         //! flag if only muons should be stored
   Bool_t fSkipNeutrinos;     //! flag if neutrinos should be ignored
   TString fVetoName;         // name to save veto collection
   Double_t fzPos;            //!  zPos, optional
   Bool_t withNtuple;         //! special option for Dark Photon physics studies
   TNtuple* fNtuple;          //!
-  Float_t EMax;              //! max energy to transport
+  Float_t EMax = 0.;         //! max energy to transport
   Bool_t fCylindricalPlane;  //! cylindrical sensPlane flag
-  Bool_t fUseCaveCoordinates;  //! set position from cave
+  Bool_t fUseCaveCoordinates = kFALSE;  //! set position from cave
 
   int32_t fNsplits;
   Double_t fCurrentSurvivalFactor;  // survival factor at every step, if we

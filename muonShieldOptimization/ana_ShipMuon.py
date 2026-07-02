@@ -387,6 +387,7 @@ rz_inter = -1.0, 0.0
 
 
 def origin(sTree, it) -> None:
+    global rz_inter
     at = sTree.MCTrack[it]
     im = at.GetMotherId()
     if im > 0:
@@ -396,7 +397,7 @@ def origin(sTree, it) -> None:
         pass
     if im == 0:
         # print 'origin z',at.GetStartZ()
-        ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
+        rz_inter = ROOT.TMath.Sqrt(at.GetStartX() ** 2 + at.GetStartY() ** 2), at.GetStartZ()
 
 
 otherPhysList = False
@@ -1313,7 +1314,8 @@ def debugGeoTracks(sTree) -> None:
 
 
 def eventsWithStrawPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
@@ -1330,7 +1332,8 @@ def eventsWithStrawPoints(i) -> None:
 
 
 def eventsWithEntryPoints(i) -> None:
-    sTree = fchain[i].Get("cbmsim")
+    f = ROOT.TFile.Open(fchain[i])
+    sTree = f.Get("cbmsim")
     mom = ROOT.TVector3()
     for i in range(sTree.GetEntries()):
         sTree.GetEntry(i)
