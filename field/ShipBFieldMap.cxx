@@ -187,30 +187,49 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B) {
   Int_t iY1(iY + 1);
   Int_t iZ1(iZ + 1);
 
-  binA_ = this->getMapBin(iX, iY, iZ);
-  binB_ = this->getMapBin(iX1, iY, iZ);
-  binC_ = this->getMapBin(iX, iY1, iZ);
-  binD_ = this->getMapBin(iX1, iY1, iZ);
-  binE_ = this->getMapBin(iX, iY, iZ1);
-  binF_ = this->getMapBin(iX1, iY, iZ1);
-  binG_ = this->getMapBin(iX, iY1, iZ1);
-  binH_ = this->getMapBin(iX1, iY1, iZ1);
+  const Int_t binA = this->getMapBin(iX, iY, iZ);
+  const Int_t binB = this->getMapBin(iX1, iY, iZ);
+  const Int_t binC = this->getMapBin(iX, iY1, iZ);
+  const Int_t binD = this->getMapBin(iX1, iY1, iZ);
+  const Int_t binE = this->getMapBin(iX, iY, iZ1);
+  const Int_t binF = this->getMapBin(iX1, iY, iZ1);
+  const Int_t binG = this->getMapBin(iX, iY1, iZ1);
+  const Int_t binH = this->getMapBin(iX1, iY1, iZ1);
 
-  // Retrieve the fractional bin distances
-  xFrac_ = xBinInfo.second;
-  yFrac_ = yBinInfo.second;
-  zFrac_ = zBinInfo.second;
+  // Retrieve the fractional bin distances and their complements
+  const Float_t xFrac = xBinInfo.second;
+  const Float_t yFrac = yBinInfo.second;
+  const Float_t zFrac = zBinInfo.second;
+  const Float_t xFrac1 = 1.0 - xFrac;
+  const Float_t yFrac1 = 1.0 - yFrac;
+  const Float_t zFrac1 = 1.0 - zFrac;
 
-  // Set the complimentary fractional bin distances
-  xFrac1_ = 1.0 - xFrac_;
-  yFrac1_ = 1.0 - yFrac_;
-  zFrac1_ = 1.0 - zFrac_;
+  if (!fieldMap_) {
+    return;
+  }
 
-  // Finally get the magnetic field components using trilinear interpolation
-  // and scale with the appropriate multiplication factor (default = 1.0)
-  B[0] = this->BInterCalc(ShipBFieldMap::xAxis) * scale_ * BxSign;
-  B[1] = this->BInterCalc(ShipBFieldMap::yAxis) * scale_;
-  B[2] = this->BInterCalc(ShipBFieldMap::zAxis) * scale_ * BzSign;
+  // Fetch each of the eight corner triples once and interpolate all three
+  // field components in a single pass (trilinear interpolation), then scale
+  // with the appropriate multiplication factor (default = 1.0).
+  const floatArray& fm = *fieldMap_;
+  const std::array<Float_t, 3>& cA = fm[binA];
+  const std::array<Float_t, 3>& cB = fm[binB];
+  const std::array<Float_t, 3>& cC = fm[binC];
+  const std::array<Float_t, 3>& cD = fm[binD];
+  const std::array<Float_t, 3>& cE = fm[binE];
+  const std::array<Float_t, 3>& cF = fm[binF];
+  const std::array<Float_t, 3>& cG = fm[binG];
+  const std::array<Float_t, 3>& cH = fm[binH];
+
+  Float_t Bc[3];
+  for (Int_t i = 0; i < 3; ++i) {
+    Bc[i] = triLinearInterp(cA[i], cB[i], cC[i], cD[i], cE[i], cF[i], cG[i],
+                            cH[i], xFrac, xFrac1, yFrac, yFrac1, zFrac, zFrac1);
+  }
+
+  B[0] = Bc[0] * scale_ * BxSign;
+  B[1] = Bc[1] * scale_;
+  B[2] = Bc[2] * scale_ * BzSign;
 }
 
 void ShipBFieldMap::initialise() {
@@ -478,43 +497,25 @@ Int_t ShipBFieldMap::getMapBin(Int_t iX, Int_t iY, Int_t iZ) {
   return index;
 }
 
-Float_t ShipBFieldMap::BInterCalc(CoordAxis theAxis) {
-  // Find the magnetic field component along theAxis using trilinear
-  // interpolation based on the current position and neighbouring bins
-  Float_t result(0.0);
+Float_t ShipBFieldMap::triLinearInterp(Float_t A, Float_t B, Float_t C,
+                                       Float_t D, Float_t E, Float_t F,
+                                       Float_t G, Float_t H, Float_t xFrac,
+                                       Float_t xFrac1, Float_t yFrac,
+                                       Float_t yFrac1, Float_t zFrac,
+                                       Float_t zFrac1) {
+  // Trilinear interpolation of a single component from its eight corner values
+  // A..H (bit-for-bit the arithmetic previously performed per axis by
+  // BInterCalc).
+  // Linear interpolation along x
+  const Float_t F00 = A * xFrac1 + B * xFrac;
+  const Float_t F10 = C * xFrac1 + D * xFrac;
+  const Float_t F01 = E * xFrac1 + F * xFrac;
+  const Float_t F11 = G * xFrac1 + H * xFrac;
 
-  Int_t iAxis(0);
+  // Linear interpolation along y
+  const Float_t F0 = F00 * yFrac1 + F10 * yFrac;
+  const Float_t F1 = F01 * yFrac1 + F11 * yFrac;
 
-  if (theAxis == CoordAxis::yAxis) {
-    iAxis = 1;
-  } else if (theAxis == CoordAxis::zAxis) {
-    iAxis = 2;
-  }
-
-  if (fieldMap_) {
-    // Get the field component values for the neighbouring bins
-    Float_t A = (*fieldMap_)[binA_][iAxis];
-    Float_t B = (*fieldMap_)[binB_][iAxis];
-    Float_t C = (*fieldMap_)[binC_][iAxis];
-    Float_t D = (*fieldMap_)[binD_][iAxis];
-    Float_t E = (*fieldMap_)[binE_][iAxis];
-    Float_t F = (*fieldMap_)[binF_][iAxis];
-    Float_t G = (*fieldMap_)[binG_][iAxis];
-    Float_t H = (*fieldMap_)[binH_][iAxis];
-
-    // Perform linear interpolation along x
-    Float_t F00 = A * xFrac1_ + B * xFrac_;
-    Float_t F10 = C * xFrac1_ + D * xFrac_;
-    Float_t F01 = E * xFrac1_ + F * xFrac_;
-    Float_t F11 = G * xFrac1_ + H * xFrac_;
-
-    // Linear interpolation along y
-    Float_t F0 = F00 * yFrac1_ + F10 * yFrac_;
-    Float_t F1 = F01 * yFrac1_ + F11 * yFrac_;
-
-    // Linear interpolation along z
-    result = F0 * zFrac1_ + F1 * zFrac_;
-  }
-
-  return result;
+  // Linear interpolation along z
+  return F0 * zFrac1 + F1 * zFrac;
 }
