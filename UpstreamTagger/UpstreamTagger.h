@@ -65,9 +65,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
   /**  Create the detector geometry */
   void ConstructGeometry() override;
 
-  Double_t module[11][3];  // x,y,z centre positions for each module
-  // TODO Avoid 1-indexed array!
-
   /** Detector parameters.*/
 
   Double_t det_zPos;  //!  z-position of detector (set via SetZposition)
@@ -79,7 +76,6 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
 
  private:
   TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
-  TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
 
   UpstreamTagger(const UpstreamTagger&) = delete;

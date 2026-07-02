@@ -234,33 +234,25 @@ void ShipMuonShield::CreateMagnet(
         4 * dX2 + middleGap2 + gap2, dY2 + 3 * dX2 - anti_overlap,
         4 * dX2 + middleGap2 + gap2, -(dY2 + 3 * dX2 - anti_overlap)};
   }
-  std::array<Double_t, 16> cornersMainR, cornersCLBA, cornersMainSideR,
-      cornersCLTA, cornersCRBA, cornersCRTA, cornersTR, cornersBL, cornersBR;
+  std::array<Double_t, 16> cornersMainR, cornersMainSideR, cornersTR, cornersBL,
+      cornersBR;
   // Use symmetries to define remaining magnets
   std::ranges::transform(cornersMainL, cornersMainR.begin(), std::negate{});
   std::ranges::transform(cornersMainSideL, cornersMainSideR.begin(),
                          std::negate{});
-  std::ranges::transform(cornersCLBA, cornersCRTA.begin(), std::negate{});
   std::ranges::transform(cornersTL, cornersBR.begin(), std::negate{});
   // Need to change order as corners need to be defined clockwise
   for (std::size_t i = 0; i < 8; ++i) {
     const std::size_t j = (11 - i) % 8;
-    cornersCLTA[2 * j] = cornersCLBA[2 * i];
-    cornersCLTA[2 * j + 1] = -cornersCLBA[2 * i + 1];
     cornersTR[2 * j] = -cornersTL[2 * i];
     cornersTR[2 * j + 1] = cornersTL[2 * i + 1];
   }
-  std::ranges::transform(cornersCLTA, cornersCRBA.begin(), std::negate{});
   std::ranges::transform(cornersTR, cornersBL.begin(), std::negate{});
 
   TString str1L = "_MiddleMagL";
   TString str1R = "_MiddleMagR";
   TString str2 = "_MagRetL";
   TString str3 = "_MagRetR";
-  TString str4 = "_MagCLB";
-  TString str5 = "_MagCLT";
-  TString str6 = "_MagCRT";
-  TString str7 = "_MagCRB";
   TString str8 = "_MagTopLeft";
   TString str9 = "_MagTopRight";
   TString str10 = "_MagBotLeft";

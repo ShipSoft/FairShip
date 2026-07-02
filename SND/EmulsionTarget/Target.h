@@ -49,7 +49,6 @@ class Target : public SHiP::Detector<TargetPoint> {
 
   // Functions to get parameters relative to the magnet in which the detector is
   // placed
-  void SetMagnetConfiguration(Int_t config);  // 1=TP, 0=new
   void SetMagnetHeight(Double_t Y);
   void SetBaseHeight(Double_t Y);
   void SetColumnHeight(Double_t Y);
