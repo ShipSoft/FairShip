@@ -113,6 +113,7 @@ parser.add_argument(
     dest="HiddenParticleID",
     help="HiddenParticle ID",
     required=False,
+    type=int,
     default=9900015,
 )
 
@@ -408,12 +409,15 @@ class DrawTracks(ROOT.FairTask):
             hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
             # look for HNL
             if abs(fT.GetPdgCode()) == options.HiddenParticleID:
+                found = False
                 for da in sTree.MCTrack:
                     if da.GetMotherId() == n:
+                        found = True
                         break
                 # end vertex of HNL
-                da.GetStartVertex(fPos)
-                hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
+                if found:
+                    da.GetStartVertex(fPos)
+                    hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]
             # loop over all sensitive volumes to find hits
             for P in [
                 "vetoPoint",
