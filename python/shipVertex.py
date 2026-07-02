@@ -68,13 +68,13 @@ class Task:
         res[0] = abs(y_data[0]) - a[5]
         res[1] = y_data[1] - a[3]
         res[2] = y_data[2] - a[4]
-        res[3] = y_data[3] - a[0] - a[3] * (a[2] - z0)
-        res[4] = y_data[4] - a[1] - a[4] * (a[2] - z0)
+        res[3] = y_data[3] - a[0] - a[3] * (z0 - a[2])
+        res[4] = y_data[4] - a[1] - a[4] * (z0 - a[2])
         res[5] = abs(y_data[5]) - a[8]
         res[6] = y_data[6] - a[6]
         res[7] = y_data[7] - a[7]
-        res[8] = y_data[8] - a[0] - a[6] * (a[2] - z0)
-        res[9] = y_data[9] - a[1] - a[7] * (a[2] - z0)
+        res[8] = y_data[8] - a[0] - a[6] * (z0 - a[2])
+        res[9] = y_data[9] - a[1] - a[7] * (z0 - a[2])
         return res
 
     def fcn(self, npar, gin, f, par, iflag) -> None:
@@ -222,8 +222,13 @@ class Task:
                 # print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
                 # print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 
-                st1 = fittedTracks[t1].getFittedState()
-                st2 = fittedTracks[t2].getFittedState()
+                # Copy the fitted states: getFittedState() returns a reference to
+                # the state cached in the track's KalmanFitterInfo, and the
+                # stepwise extrapolation below would otherwise mutate the stored
+                # genfit::Track in place (affecting later pairs / getFittedState
+                # calls, making results depend on pair-processing order).
+                st1 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t1].getFittedState())
+                st2 = ROOT.genfit.MeasuredStateOnPlane(fittedTracks[t2].getFittedState())
                 # Extrapolate to the vertex Z-plane stepwise to avoid
                 # RK failures for long backward extrapolation.
                 rc = True
