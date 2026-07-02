@@ -2,7 +2,9 @@ name: Legacy CVMFS CI
 on:
   push:
     branches: [main]
-    tags: ['v*']
+    # Releases use unprefixed CalVer tags (e.g. 26.06, 26.05.1), not v-prefixed
+    # (matches the container-build workflow's trigger).
+    tags: ['[0-9]*']
   workflow_dispatch:
   schedule:
     - cron: 30 2 * * *
