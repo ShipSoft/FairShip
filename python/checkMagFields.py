@@ -71,9 +71,9 @@ def run():
                     h["By-"].Fill(z, x, y, -f.GetBy(x, y, z) / u.tesla)
                 if f.GetBy(x, y, z) > 0:
                     h["By+"].Fill(z, x, y, f.GetBy(x, y, z) / u.tesla)
-    for x in h:
+    for x in list(h):  # snapshot keys: the loop inserts new entries into h
         hi = h[x]
-        if hi.ClassName() == "TH3F":
+        if hi.InheritsFrom("TH3"):  # bookHist creates TH3D, not TH3F
             h[x + "_xz"] = h[x].Project3D("xy")
             h[x + "_xz"].SetTitle(hi.GetTitle() + " top view")
             h[x + "_yz"] = h[x].Project3D("xz")
