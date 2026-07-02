@@ -1,8 +1,8 @@
 import logging
+from collections import defaultdict
 
 import acts
 import acts.examples
-from collections import defaultdict
 import numpy as np
 
 logger = logging.getLogger(__name__)
@@ -122,7 +122,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
 
     if 2 <= len(good_proxies) <= 4 and has_pos and has_neg:
         print(f"Fitting vertex for {len(good_proxies)} tracks with opposite charge candidates.")
-        vertices = acts.fitVertex(good_proxies, fieldMap)
+        vertices = acts.fitVertex(good_proxies, fieldMap, geo_ctx, trackingGeometry)
 
         for vtx in vertices:
             print(f"Vertex found at: {vtx.position()}")

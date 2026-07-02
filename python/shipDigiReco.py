@@ -24,10 +24,6 @@ from strawReco import calculateSBTDOCA, runTracking
 
 logger = logging.getLogger(__name__)
 
-ROOT.gSystem.Load("libActsExamplesSHiP")
-ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoTrack.hpp"')
-ROOT.gInterpreter.Declare('#include "ActsExamples/SHiP/RecoVertex.hpp"')
-
 class ShipDigiReco:
     "convert FairSHiP MC hits / digitized hits to measurements"
 
@@ -190,7 +186,7 @@ class ShipDigiReco:
                     h = self.strawHits[idx]
 
                     # We want to keep only one straw per unique station/layer/view combination
-                    # our Kalman filter cant handle more than 1 measurement per acts::layer
+                    # our Kalman filter can't handle more than 1 measurement per acts::layer
                     layer_key = (int(h[1]), int(h[2]), int(h[3]))
 
                     if layer_key not in seen_layers:
