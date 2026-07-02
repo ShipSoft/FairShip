@@ -187,6 +187,16 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t x, y, z, px, py, pz, dl, e, tof;
   Int_t im, id, key;
   fnRetries = 0;
+  // ReadEvent only supports the external-file mode (charm/beauty hadrons read
+  // from fTree). The standalone (no external file) branch in Init() has no
+  // corresponding event path here, so guard against dereferencing a null fTree
+  // instead of crashing on an uninitialized pointer.
+  if (!fTree) {
+    LOG(fatal) << "Pythia8Generator::ReadEvent: no external input tree is set; "
+                  "standalone generation is not implemented. Call "
+                  "UseExternalFile() before generating.";
+    return kFALSE;
+  }
   // take charm hadrons from external file
   // correct eventually for too much primary Ds produced by pythia6
   key = 0;
@@ -219,7 +229,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     }
   }
   Double_t zinter = 0;
-  if (targetName != "") {
+  if (targetFromGeometry || targetName != "") {
     // calculate primary proton interaction point:
     // loop over trajectory between start and end to pick an interaction point,
     // copied from GenieGenerator and adapted to hadrons
