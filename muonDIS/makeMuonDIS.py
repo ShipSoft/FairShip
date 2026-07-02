@@ -82,7 +82,10 @@ def update_file(filename: str, final_xsec) -> None:
 
     for i, event in enumerate(original_tree):
         mu = event.InMuon[0]
-        mu[10] = final_xsec[int(first_mu_event + i / args.nDIS)]
+        proton_xsec, neutron_xsec = final_xsec[int(first_mu_event + i / args.nDIS)]
+        # mu[9] is the isProton flag: apply the converged cross-section of the
+        # matching target rather than the last (neutron) value to every entry.
+        mu[10] = proton_xsec if int(mu[9]) == 1 else neutron_xsec
         updated_tree.Fill()
 
     updated_tree.Write("DIS", r.TObject.kOverwrite)
@@ -213,6 +216,10 @@ def makeMuonDIS() -> None:
 
         isProton = 1
         xsec = 0
+        # Converged (final) Pythia cross-section for each target; the proton and
+        # neutron halves use separate Pythia runs with different cross-sections.
+        proton_xsec = 0.0
+        neutron_xsec = 0.0
 
         mu = array(
             "d",
@@ -246,14 +253,26 @@ def makeMuonDIS() -> None:
             dPartDIS.Clear()
             iMuon.Clear()
             muPart[9] = isProton
-            iMuon[0] = muPart
             myPythia.GenerateEvent()
             myPythia.Pyedit(1)
+            # Cross-section of this DIS event (constant per event). Store it in the
+            # muon vector BEFORE copying it into the output, so each entry keeps
+            # its own cross-section instead of the previous event's.
+            xsec = myPythia.GetPARI(1)
+            muPart[10] = xsec
+            # Remember the latest (converged) cross-section for each target so the
+            # proton half is not later overwritten with the neutron value.
+            if isProton:
+                proton_xsec = xsec
+            else:
+                neutron_xsec = xsec
+            # TClonesArray item assignment (arr[i] = obj) raises in ROOT >= 6.32;
+            # construct the slot and copy-assign into it instead.
+            iMuon_slot = iMuon.ConstructedAt(0)
+            iMuon_slot.ResizeTo(muPart)
+            iMuon_slot.__assign__(muPart)
 
             for itrk in range(1, myPythia.GetN() + 1):
-                xsec = myPythia.GetPARI(1)
-
-                muPart[10] = xsec
                 did = myPythia.GetK(itrk, 2)
                 dpx, dpy, dpz = rotate(
                     myPythia.GetP(itrk, 1),
@@ -272,8 +291,9 @@ def makeMuonDIS() -> None:
                 nPart = len(dPartDIS)
                 if dPartDIS.GetSize() == nPart:
                     dPartDIS.Expand(nPart + 10)
-                # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
-                dPartDIS[nPart] = part
+                dPartDIS_slot = dPartDIS.ConstructedAt(nPart)
+                dPartDIS_slot.ResizeTo(part)
+                dPartDIS_slot.__assign__(part)
 
             cross_sections.append(xsec)
 
@@ -302,8 +322,9 @@ def makeMuonDIS() -> None:
                 nPart = len(dPartSoft)
                 if dPartSoft.GetSize() == nPart:
                     dPartSoft.Expand(nPart + 10)
-                # dPartSoft.ConstructedAt(nPart).Use(part) #to be adapted later
-                dPartSoft[nPart] = part
+                dPartSoft_slot = dPartSoft.ConstructedAt(nPart)
+                dPartSoft_slot.ResizeTo(part)
+                dPartSoft_slot.__assign__(part)
 
             muon_vetoPoints.Clear()
 
@@ -312,7 +333,7 @@ def makeMuonDIS() -> None:
                 if muon_vetoPoints.GetSize() == index:
                     muon_vetoPoints.Expand(index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_vetoPoints[index] = hit
+                muon_vetoPoints.ConstructedAt(index).__assign__(hit)
                 index += 1
 
             muon_UpstreamTaggerPoints.Clear()
@@ -322,7 +343,7 @@ def makeMuonDIS() -> None:
                 if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
                     muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
                 hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                muon_UpstreamTaggerPoints.ConstructedAt(ubt_index).__assign__(hit)
                 ubt_index += 1
 
             output_tree.Fill()
@@ -338,7 +359,7 @@ def makeMuonDIS() -> None:
                 ]
             )
 
-        final_xsec[k] = xsec
+        final_xsec[k] = (proton_xsec, neutron_xsec)
 
         nMade += 1
         logging.debug(
