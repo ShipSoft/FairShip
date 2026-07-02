@@ -59,8 +59,6 @@ endif()
 message(STATUS "FairShip version: ${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
-
-include(GNUInstallDirs)
 # aliBuild modulefile expects libraries in lib/, not lib64/
 set(CMAKE_INSTALL_LIBDIR lib)
 
@@ -69,26 +67,15 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_path(
-    FAIRBASE
-    NAMES FairRun.h
-    PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}
-    NO_DEFAULT_PATH
-)
-
-if(FAIRBASE)
-    message(STATUS "Found FAIRBASE")
-    set(FAIRBASE ${FAIRBASE})
-else()
-    message(STATUS "NOT Found FAIRBASE")
-    if(NOT DEFINED ENV{FAIRROOTPATH})
-        message(
-            FATAL_ERROR
-            "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
-        )
-    endif()
-    set(FAIRROOTPATH $ENV{FAIRROOTPATH})
+# FairRoot is always provided externally (there is no in-tree base/steer), so
+# FairRoot is located solely via the FAIRROOTPATH environment variable.
+if(NOT DEFINED ENV{FAIRROOTPATH})
+    message(
+        FATAL_ERROR
+        "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
+    )
 endif()
+set(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
 # Where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 list(
