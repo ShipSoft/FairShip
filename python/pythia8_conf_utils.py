@@ -101,7 +101,7 @@ def parse_histograms(filepath):
         masses = np.linspace(min_mass, max_mass, npoints, endpoint=False)
         branching_ratios = np.zeros(npoints)
         # Now read the data lines (skipping the two header lines)
-        for line in lines[offset + 2 : offset + npoints + 1]:
+        for line in lines[offset + 2 : offset + npoints + 2]:
             md = data_exp.match(line)
             if md is None or len(md.groups()) != 2:
                 raise ValueError(f"Malformed data row encountered: {line}")
