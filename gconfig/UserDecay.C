@@ -9,12 +9,21 @@ void UserDecayConfig() {
 
   Int_t mode[6][3];
   Float_t bratio[6];
-  Int_t AlphaPDG, He5PDG;
+  Int_t AlphaPDG = 0, He5PDG = 0;
   p = db->GetParticle("Alpha");
   if (p) AlphaPDG = p->PdgCode();
   p = db->GetParticle("He5");
 
   if (p) He5PDG = p->PdgCode();
+
+  // Skip the decay configuration if either PDG lookup failed, otherwise we
+  // would configure a decay for an invalid particle type.
+  if (AlphaPDG == 0 || He5PDG == 0) {
+    cout << "UserDecayConfig: could not find Alpha and/or He5 in TDatabasePDG, "
+            "skipping decay configuration"
+         << endl;
+    return;
+  }
   for (Int_t kz = 0; kz < 6; kz++) {
     bratio[kz] = 0.;
     mode[kz][0] = 0;
