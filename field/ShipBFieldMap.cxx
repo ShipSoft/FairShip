@@ -130,12 +130,13 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B) {
   Float_t z = localCoords[2];
 
   // Now check to see if we have x-y quadrant symmetry (z has no symmetry):
-  // Bx is antisymmetric in x and y, By is symmetric and Bz has no symmetry
-  // so only Bx can change sign. This can happen if either x < 0 or y < 0:
-  // 1. x > 0, y > 0: Bx = Bx
-  // 2. x > 0, y < 0: Bx = -Bx
-  // 3. x < 0, y > 0: Bx = -Bx
-  // 4. x < 0, y < 0: Bx = Bx
+  // Bx is antisymmetric in both x and y, By is symmetric in both, while Bz is
+  // symmetric in x but antisymmetric in y (dipole physics). So Bx can change
+  // sign for x < 0 or y < 0, and Bz can change sign for y < 0:
+  // 1. x > 0, y > 0: Bx = +Bx, Bz = +Bz
+  // 2. x > 0, y < 0: Bx = -Bx, Bz = -Bz
+  // 3. x < 0, y > 0: Bx = -Bx, Bz = +Bz
+  // 4. x < 0, y < 0: Bx = +Bx, Bz = -Bz
 
   Float_t BxSign(1.0);
   Float_t BzSign = 1;
@@ -421,7 +422,8 @@ void ShipBFieldMap::setLimits() {
 
 ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(
     Float_t u, ShipBFieldMap::CoordAxis theAxis) {
-  Float_t du(0.0), uMin(0.0), Nu(0);
+  Float_t du(0.0), uMin(0.0);
+  Int_t Nu(0);
 
   if (theAxis == ShipBFieldMap::xAxis) {
     du = dx_;
@@ -455,6 +457,14 @@ ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(
   if (iBin < 0 || iBin >= Nu) {
     iBin = -1;
     fracL = 0.0;
+  } else if (iBin >= Nu - 1) {
+    // The point lies in the last bin along this axis. The trilinear
+    // interpolation uses the iBin+1 neighbour, which would fall outside the
+    // axis here, so clamp to the last valid cell (Nu-2) and use a fractional
+    // weight of 1 so the upper-edge (last valid) slice is used without reading
+    // the next, non-existent slice.
+    iBin = Nu - 2;
+    fracL = 1.0;
   }
 
   // Return the bin number and fractional distance of the point from the
