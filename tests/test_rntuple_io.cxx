@@ -8,15 +8,36 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <iostream>
 #include <memory>
+#include <typeinfo>
 #include <vector>
 
 #include "ROOT/RNTuple.hxx"
 #include "ROOT/RNTupleModel.hxx"
 #include "ROOT/RNTupleReader.hxx"
 #include "ROOT/RNTupleWriter.hxx"
+#include "TBufferFile.h"
+#include "TClass.h"
 #include "TFile.h"
+
+// Compare two objects field-by-field via their ROOT streamer: if the round-trip
+// preserved every persisted member the serialised buffers are identical. This
+// verifies value preservation generically for any dictionary-backed class.
+template <typename T>
+bool objects_equal(const T& a, const T& b) {
+  TClass* cls = TClass::GetClass(typeid(T));
+  if (!cls) {
+    return false;
+  }
+  TBufferFile buf_a(TBuffer::kWrite);
+  TBufferFile buf_b(TBuffer::kWrite);
+  buf_a.WriteObjectAny(&a, cls);
+  buf_b.WriteObjectAny(&b, cls);
+  return buf_a.Length() == buf_b.Length() &&
+         std::memcmp(buf_a.Buffer(), buf_b.Buffer(), buf_a.Length()) == 0;
+}
 
 // Include data class headers
 #include "DetectorHit.h"
@@ -99,6 +120,13 @@ bool test_rntuple_io(const char* class_name, std::vector<T>& test_objects) {
                   << test_objects.size() << ", got " << read_vec1.size()
                   << std::endl;
         return false;
+      }
+      for (std::size_t i = 0; i < test_objects.size(); ++i) {
+        if (!objects_equal(read_vec1[i], test_objects[i])) {
+          std::cout << "FAIL: Entry 0 element " << i
+                    << " differs after round-trip" << std::endl;
+          return false;
+        }
       }
 
       // Check second entry (should be empty)
