@@ -13,14 +13,6 @@ concurrency:
 permissions:
   contents: read
 jobs:
-  generate-matrix:
-    name: Generate test matrix
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - id: set-matrix
-        run: echo 'matrix={"vessel":["vacuums","helium"],"snd_design":["all"],"muon_shield":["TRY_2025"]}' >> "$GITHUB_OUTPUT"
   build:
     name: Build & unit tests
     runs-on: ubuntu-latest
@@ -33,15 +25,16 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-      - uses: hendrikmuhs/ccache-action@v1
-      - name: Route compilation through ccache
-        # CMake picks these up at configure time; ccache stays on the host
-        # PATH inside `pixi run`.
-        run: |
-          echo "CMAKE_C_COMPILER_LAUNCHER=ccache" >> "$GITHUB_ENV"
-          echo "CMAKE_CXX_COMPILER_LAUNCHER=ccache" >> "$GITHUB_ENV"
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: build-${{ runner.os }}
       - name: Configure
+        # CMake initialises CMAKE_CXX_COMPILER_LAUNCHER from this environment
+        # variable, so compiles are routed through ccache (installed above).
         run: pixi run --locked configure
+        env:
+          CMAKE_CXX_COMPILER_LAUNCHER: ccache
       - name: Build
         run: pixi run --locked build
       - name: Test
@@ -54,11 +47,14 @@ jobs:
           retention-days: 1
   run-sim-chain:
     name: Simulation chain (${{ matrix.vessel }})
-    needs: [generate-matrix, build]
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+      matrix:
+        vessel: [vacuums, helium]
+        snd_design: [all]
+        muon_shield: [TRY_2025]
     env:
       QT_QPA_PLATFORM: offscreen
     steps:
