@@ -176,9 +176,9 @@ global_variables.iEvent = 0
 import shipDigiReco
 
 SHiP = shipDigiReco.ShipDigiReco(options.inputFile, outFile, fgeo, validation=options.validation)
-options.nEvents = min(SHiP.sTree.GetEntries(), options.nEvents)
+nEntries = SHiP.sTree.GetEntries()
 # main loop
-for global_variables.iEvent in range(options.firstEvent, options.nEvents):
+for global_variables.iEvent in range(options.firstEvent, min(nEntries, options.firstEvent + options.nEvents)):
     if global_variables.iEvent % 1000 == 0 or global_variables.debug:
         print("event ", global_variables.iEvent)
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
