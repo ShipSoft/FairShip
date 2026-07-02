@@ -80,8 +80,6 @@ def createRootMap(inFileName, rootFileName) -> None:
 
     # mm to cm conversion
     mm2cm = 0.1
-    # m to cm conversion
-    m2cm = 100.0
 
     # Open text file and process the information
     iLine = 0
@@ -153,11 +151,6 @@ def createRootMap(inFileName, rootFileName) -> None:
             # Field data values start from line 3
             elif iLine > 2:
                 sLine = line.split()
-
-                # Bin centre coordinates (m to cm), with origin shift (cm)
-                dStruct.x = float(sLine[0]) * m2cm - x0
-                dStruct.y = float(sLine[1]) * m2cm - y0
-                dStruct.z = float(sLine[2]) * m2cm - z0
 
                 # B field components (Tesla)
                 dStruct.Bx = float(sLine[3])
