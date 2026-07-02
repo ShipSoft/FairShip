@@ -233,7 +233,7 @@ def copy2EOS() -> None:
         for run in range(0, 10):
             prefix = "muon" + str(prod + run)
             if prod in [610, 620] and run == 0:
-                prefix = "muon" + str(int(prod / 100))
+                prefix = "muon" + str(int(prod / 10))
             for i in range(1, 10):
                 # requires full path
                 cmd = (
@@ -260,7 +260,7 @@ def copyFromEOS() -> None:
         for run in range(0, 10):
             prefix = "muon" + str(prod + run)
             if prod in [610, 620] and run == 0:
-                prefix = "muon" + str(int(prod / 100))
+                prefix = "muon" + str(int(prod / 10))
             for i in range(1, 10):
                 # requires full path
                 cmd = (
