@@ -281,6 +281,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList) {
 
   if (fDetList == nullptr) {
     // Now iterate through all active detectors
+    fDetList = detList;
     fDetIter = detList->MakeIterator();
     fDetIter->Reset();
   } else {
