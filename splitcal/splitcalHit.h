@@ -86,10 +86,11 @@ class splitcalHit : public SHiP::DetectorHit {
 
  private:
   Bool_t flag{true};
-  double _x, _y, _z, _xError, _yError, _zError;
-  double _energy;
-  int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;
-  bool _isX, _isY;
+  double _x{0}, _y{0}, _z{0}, _xError{0}, _yError{0}, _zError{0};
+  double _energy{0};
+  int _isPrecisionLayer{0}, _nLayer{0}, _nModuleX{0}, _nModuleY{0}, _nStrip{0},
+      _isUsed{0};
+  bool _isX{false}, _isY{false};
 
   ClassDefOverride(splitcalHit, 6);
 };
