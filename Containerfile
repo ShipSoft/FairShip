@@ -10,7 +10,8 @@ RUN pixi install --locked && rm -rf ~/.cache/rattler
 COPY . /FairShip
 RUN pixi run --locked build
 
-RUN pixi shell-hook -s bash > /entrypoint.sh \
+RUN echo '#!/bin/bash' > /entrypoint.sh \
+    && pixi shell-hook -s bash >> /entrypoint.sh \
     && echo 'exec "$@"' >> /entrypoint.sh \
     && chmod +x /entrypoint.sh
 
