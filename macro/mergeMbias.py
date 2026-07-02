@@ -114,7 +114,7 @@ def TplotP(sTree) -> None:
                 h["T" + p + "-"].Draw("same")
             cv = h[">" + t].cd(k)
             cv.SetLogy(1)
-            h[hi].Draw()
+            h["T" + p + "_>E"].Draw()
             k += 1
         # plot different nu species:
         k = 3
