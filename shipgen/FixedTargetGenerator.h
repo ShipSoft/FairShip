@@ -115,7 +115,8 @@ class FixedTargetGenerator : public SHiP::Generator {
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fSeed, EMax, fBoost, chicc, chibb, wspill, nrpotspill;
-  Int_t nEvents, nEntry, pot, nDsprim, ntotprim;
+  Double_t pot;  // proton-on-target counter, incremented by 0.5 per signal
+  Int_t nEvents, nEntry, nDsprim, ntotprim;
   Bool_t tauOnly, JpsiMainly, DrellYan, PhotonCollision, G4only, setByHand,
       Debug, withEvtGen, OnlyMuons;
   FairLogger* fLogger;        //!   don't make it persistent, magic ROOT command
