@@ -28,10 +28,14 @@ class selection_check:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
                 _ = self.veto_geo.z0
-        if self.ship_geo.DecayVolumeMedium == "vacuums":
+        elif self.ship_geo.DecayVolumeMedium == "vacuums":
             with open(fairship + "/geometry/veto_config_vacuums.yaml") as file:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
+        else:
+            raise ValueError(
+                f"Unsupported DecayVolumeMedium {self.ship_geo.DecayVolumeMedium!r}: expected 'helium' or 'vacuums'."
+            )
 
     def access_event(self, tree) -> None:
         """Access event data."""
@@ -71,6 +75,9 @@ class selection_check:
 
             time_vtx_from_strawhits.append(t_vertex)
 
+        if not time_vtx_from_strawhits:
+            return float("nan")  # no matching straw hits, vertex time cannot be computed
+
         t_vtx = np.average(time_vtx_from_strawhits) + t0
 
         return t_vtx  # units in ns
@@ -100,7 +107,7 @@ class selection_check:
         return dist  # in cm
 
     def dist_to_innerwall(self, candidate) -> float | int:
-        """Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, or if distance > 100cm,Return 0."""
+        """Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, return 0."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
         position = (candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())
@@ -128,7 +135,7 @@ class selection_check:
             distance = self.geometry_manager.GetStep()
             min_distance = min(min_distance, distance)
 
-        return min_distance if min_distance < 100 * u.m else 0
+        return min_distance
 
     def dist_to_vesselentrance(self, candidate):
         """Calculate the distance of the candidate decay vertex to the entrance of the decay vessel."""

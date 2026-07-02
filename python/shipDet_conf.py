@@ -27,8 +27,8 @@ def configure_snd_old(yaml_file: str, emulsion_target_z_end, cave_floorHeightMuo
         nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm
     )  # endpieces (~2.9cm from previous geom)
     snd_nuTauTT_TTY = (
-        nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9
-    )  # u.cm  # endpieces (~2.9cm from previous geom)
+        nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm
+    )  # endpieces (~2.9cm from previous geom)
 
     snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z
 
