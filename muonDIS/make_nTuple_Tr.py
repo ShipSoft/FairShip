@@ -296,7 +296,7 @@ for inputFolder in os.listdir(path):
 
                 if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
                     muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
-                muon_UpstreamTaggerPoints[ubt_index] = hit
+                muon_UpstreamTaggerPoints.ConstructedAt(ubt_index).__assign__(hit)
 
                 ubt_index += 1
 
@@ -309,7 +309,12 @@ for inputFolder in os.listdir(path):
 
                 trackingstation_id = hit.GetStationNumber()
 
-                if abs(hit.PdgCode()) == 13 and trackingstation_id == 1 and P_threshold / u.GeV < P:
+                if (
+                    abs(hit.PdgCode()) == 13
+                    and track_id == muon_
+                    and trackingstation_id == 1
+                    and P_threshold / u.GeV < P
+                ):
                     if global_event_nr not in events_["Tr_noSBT"]:
                         events_["Tr_noSBT"][global_event_nr] = set()
 
