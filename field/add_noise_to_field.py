@@ -3,7 +3,6 @@
 
 import argparse
 import os
-import random
 
 import matplotlib.pylab as plt
 import numpy as np
@@ -38,11 +37,13 @@ def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, st
     else:
         field_new[["bx", "by", "bz"]] = 0
         index_range = np.random.choice(field_new.index, size=args.nCores)
-        field_new.loc[index_range, "by"] = random.uniform(-args.peak, args.peak)
+        # Draw an independent value per noise core so --peak sets the amplitude;
+        # a single scalar (assigned to every core) was cancelled by the
+        # self-normalisation below, leaving --peak with no effect but its sign.
+        field_new.loc[index_range, "by"] = np.random.uniform(-args.peak, args.peak, size=args.nCores)
         temp_by = np.array(field_new["by"]).reshape([xSpace, ySpace, zSpace])
         temp_by = gaussian_filter(temp_by, sigma=args.sigma)
         field_new["by"] = temp_by.reshape(-1)
-        field_new["by"] = field_new["by"] / (field_new["by"].abs().max())  # *field_mask['by']
         field_new["by"] = field_new["by"] * field_mask["by"]
         rezult = field.copy()
         rezult["by"] = rezult["by"] + rezult["by"] * field_new["by"] * args.fraction
