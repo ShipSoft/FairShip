@@ -10,10 +10,6 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-# Globals
-ReconstructibleMCTracks = []
-theTracks = []
-
 r_scale = 1.0
 max_x = global_variables.ShipGeo.strawtubes_geo.width  # == 200 * u.cm
 

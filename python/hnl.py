@@ -531,7 +531,7 @@ class HNLbranchings:
             print("findBranchingRatio ERROR: unknown decay %s" % decayString)
             quit()
 
-        if decayString == "N -> nu nu nu" or decayString == "N -> 3nu":
+        if decayString == "N -> nu nu nu":
             br = self.Width_3nu() / totalWidth  # inclusive
         if decayString == "N -> e- e+ nu_e":
             br = self.Width_nu_f_fbar(1, 1) / totalWidth
