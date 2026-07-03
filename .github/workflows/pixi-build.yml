@@ -79,6 +79,8 @@ jobs:
         run: pixi run --locked ci-ana
       - name: Analysis example
         run: pixi run --locked ci-analysis-example
+      - name: Extract metrics
+        run: pixi run --locked ci-extract-metrics ${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
       - name: Render plots
         run: pixi run --locked ci-render-plots-sim-chain ${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
       - name: Upload plot images
@@ -86,6 +88,11 @@ jobs:
         with:
           name: plots-sim-chain-${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
           path: plots/
+      - name: Upload metrics
+        uses: actions/upload-artifact@v7
+        with:
+          name: metrics-${{ matrix.vessel }}-${{ matrix.snd_design }}-${{ matrix.muon_shield }}
+          path: metrics-*.json
   run-tracking-benchmark:
     name: Tracking benchmark
     needs: build
@@ -250,6 +257,130 @@ jobs:
       - name: pyrefly
         continue-on-error: true
         run: pixi run --locked -- pyrefly check --output-format=github python macro
+  store-metrics:
+    name: Store metrics reference
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: run-sim-chain
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: metrics-*
+          path: metrics/
+          merge-multiple: true
+      - name: Store metrics in git notes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in metrics/metrics-*.json; do
+            config=$(basename "$f" .json)
+            config=${config#metrics-}
+            ref="refs/notes/ci/physics-metrics/$config"
+            stored=false
+            for attempt in 1 2 3 4 5; do
+              git fetch origin "+$ref:$ref" || true
+              git notes --ref="$ref" add -f -F "$f" "$GITHUB_SHA"
+              if git push origin "$ref"; then
+                stored=true
+                break
+              fi
+              echo "Push failed (attempt $attempt), retrying..."
+              sleep $((attempt * 5))
+            done
+            if ! $stored; then
+              echo "::error::Failed to store metrics for $config after 5 attempts"
+              exit 1
+            fi
+          done
+  compare-metrics:
+    name: Compare physics metrics
+    if: github.event_name == 'pull_request'
+    needs: run-sim-chain
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@v0.10.0
+        with:
+          cache: true
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: metrics-*
+          path: metrics/
+          merge-multiple: true
+      - name: Fetch metrics references
+        run: git fetch origin '+refs/notes/ci/physics-metrics/*:refs/notes/ci/physics-metrics/*' || true
+      - name: Compare against reference
+        run: |
+          mkdir -p comparisons
+          for f in metrics/metrics-*.json; do
+            config=$(basename "$f" .json)
+            config=${config#metrics-}
+            ref="ci/physics-metrics/$config"
+            # The tip of master may not have a note yet (its CI run might
+            # still be going), so walk back to the newest commit that has one.
+            reference=""
+            for commit in $(git rev-list --first-parent -n 50 origin/master); do
+              if git notes --ref="$ref" show "$commit" > "reference-$config.json" 2>/dev/null; then
+                reference="$commit"
+                break
+              fi
+            done
+            {
+              echo "Configuration: $config"
+              if [ -n "$reference" ]; then
+                echo "Reference commit: $reference"
+                pixi run --locked ci-compare-metrics "reference-$config.json" "$f"
+              else
+                echo "No reference metrics found for $config"
+              fi
+            } | tee "comparisons/comparison_$config.txt"
+          done
+      - name: Generate summary
+        run: |
+          python3 .github/scripts/generate_pr_comment.py comparisons/ -o comment-body.md
+          {
+            echo '<!-- physics-metrics-comment -->'
+            cat comment-body.md
+          } > comment.md
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Post PR comment
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- physics-metrics-comment -->';
+            const body = fs.readFileSync('comment.md', 'utf8');
+            const {data: comments} = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
   deploy-plots:
     name: Deploy plots
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
