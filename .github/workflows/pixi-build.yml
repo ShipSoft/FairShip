@@ -353,7 +353,7 @@ jobs:
           done
       - name: Generate summary
         run: |
-          python3 .github/scripts/generate_pr_comment.py comparisons/ -o comment-body.md
+          pixi run --locked -- ship-metrics-pr-comment comparisons/ -o comment-body.md
           {
             echo '<!-- physics-metrics-comment -->'
             cat comment-body.md
