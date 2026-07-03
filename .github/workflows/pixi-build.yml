@@ -33,6 +33,13 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
+      - uses: hendrikmuhs/ccache-action@v1
+      - name: Route compilation through ccache
+        # CMake picks these up at configure time; ccache stays on the host
+        # PATH inside `pixi run`.
+        run: |
+          echo "CMAKE_C_COMPILER_LAUNCHER=ccache" >> "$GITHUB_ENV"
+          echo "CMAKE_CXX_COMPILER_LAUNCHER=ccache" >> "$GITHUB_ENV"
       - name: Configure
         run: pixi run --locked configure
       - name: Build
