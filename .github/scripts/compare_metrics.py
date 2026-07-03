@@ -283,7 +283,7 @@ def main() -> int:
         if args.fail_on_diff:
             return 1
     else:
-        print("\nNo differences found")
+        print("\nNo significant differences found")
         print("=" * 80)
 
     return 0
