@@ -99,7 +99,7 @@ def generate_comment(comparison_dir) -> str:
             target = parts[-1]
             config = f"{vessel}-{snd}-{shield}-{target}"
         else:
-            config = comp_file.stem
+            config = comp_file.stem.replace("comparison_", "")
 
         results[config] = parse_comparison_file(comp_file)
 
