@@ -125,6 +125,19 @@ cmd = "python .github/scripts/render_plots.py tracking_benchmark_histos.root --o
 [tasks.ci-render-plots-fixed-target]
 cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
 
+# --- CI physics-metrics tasks ---
+# Extract per-configuration physics metrics from the sim-chain outputs and
+# compare them against a reference (stored in git notes by the CI workflow,
+# see .github/scripts/README.md).
+
+[tasks.ci-extract-metrics]
+args = [{ arg = "config", default = "pixi-default" }]
+cmd = "python .github/scripts/extract_physics_metrics.py . -o metrics-{{ config }}.json --pretty"
+
+[tasks.ci-compare-metrics]
+args = [{ arg = "reference" }, { arg = "new" }]
+cmd = "python .github/scripts/compare_metrics.py {{ reference }} {{ new }}"
+
 # --- CI static analysis tasks ---
 # clang-tidy and pyrefly take file lists via the CPP_FILES / PY_FILES env vars
 # so the workflow can pass them in without fighting pixi's positional-args
