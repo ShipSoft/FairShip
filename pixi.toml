@@ -175,9 +175,8 @@ lint = "prek run --all-files"
 install-hooks = '''
 prek install --hook-type pre-commit --hook-type commit-msg
 hooks=$(git rev-parse --git-path hooks)
-for h in pre-commit commit-msg; do
-  sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/$h"
-done
+sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/pre-commit"
+sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/commit-msg"
 '''
 
 [environments]
