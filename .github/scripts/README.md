@@ -71,71 +71,31 @@ comparison:
 - Adjust `max_histogram_depth` to control how deep into directory structures to search
 - Change default comparison tolerances in `comparison` section
 
-## Scripts
+## Tools
 
-### `extract_physics_metrics.py`
+The extraction, comparison, plot-rendering and PR-comment tools live in the
+[ship-ci-metrics](https://github.com/ShipSoft/ship-ci-metrics) package
+(available on the ship conda channel and part of the default pixi
+environment). The pixi tasks `ci-extract-metrics`, `ci-compare-metrics` and
+`ci-render-plots-*` wrap its `ship-metrics-*` commands with this repo's
+`metrics_config.yaml`:
 
-Extracts lightweight physics metrics from ROOT files with comparison modes and uncertainties.
-
-**Usage:**
 ```bash
-python extract_physics_metrics.py <config_dir> [-o OUTPUT] [--pretty]
+# Extract metrics from current directory
+pixi run ci-extract-metrics my-config     # -> metrics-my-config.json
+
+# Compare against a reference (tolerances from metrics_config.yaml)
+pixi run ci-compare-metrics reference.json new.json
+
+# Or call the CLIs directly for the full option set (--float-tolerance,
+# --n-sigma, --fail-on-diff, ...)
+ship-metrics-compare reference.json new.json --config .github/scripts/metrics_config.yaml --fail-on-diff
 ```
-
-**Extracts:**
-- Tree information: entries (exact), branches (exact)
-- Histogram statistics: entries, mean, RMS (statistical with uncertainties), integral (float)
-- Fit parameters: values with uncertainties (statistical)
-- File sizes for reference
-
-**Example:**
-```bash
-# Extract metrics from current directory using default config
-python extract_physics_metrics.py . -o metrics.json --pretty
-
-# Extract from specific configuration
-python extract_physics_metrics.py test_output/ -o test_metrics.json
-
-# Use custom config file
-python extract_physics_metrics.py . -o metrics.json --config custom_config.yaml
-```
-
-### `compare_metrics.py`
-
-Compares two metrics JSON files respecting the comparison mode specified for each metric.
-
-**Usage:**
-```bash
-python compare_metrics.py <reference.json> <new.json> [options]
-```
-
-**Options:**
-- `--float-tolerance FLOAT`: Relative tolerance for float comparisons (default: 1e-9)
-- `--n-sigma FLOAT`: Number of sigma for statistical comparisons (default: 3.0)
-- `--fail-on-diff`: Exit with code 1 if differences found
 
 **Comparison logic:**
 - **exact mode**: Values must match exactly
 - **float mode**: Relative difference $|\frac{v_{\text{new}} - v_{\text{ref}}}{v_{\text{ref}}}| <$ `--float-tolerance`
 - **statistical mode**: Deviation $\frac{|v_{\text{new}} - v_{\text{ref}}|}{\sqrt{\sigma_{\text{ref}}^2 + \sigma_{\text{new}}^2}} <$ `--n-sigma`
-
-**Example:**
-```bash
-# Default comparison (uses tolerances from metrics_config.yaml)
-python compare_metrics.py reference.json new.json
-
-# Override float tolerance
-python compare_metrics.py reference.json new.json --float-tolerance 1e-6
-
-# Override statistical threshold
-python compare_metrics.py reference.json new.json --n-sigma 2.0
-
-# Use custom config file
-python compare_metrics.py reference.json new.json --config custom_config.yaml
-
-# Fail CI if differences found
-python compare_metrics.py reference.json new.json --fail-on-diff
-```
 
 ## CI Integration
 
@@ -189,13 +149,13 @@ COMMIT=abc123def
 CONFIG=vacuums-all-New_HA_Design-old
 
 # Extract current metrics
-python .github/scripts/extract_physics_metrics.py . -o current.json
+pixi run ci-extract-metrics current   # -> metrics-current.json
 
 # Get reference metrics
 git notes --ref=ci/physics-metrics/$CONFIG show $COMMIT > reference.json
 
 # Compare
-python .github/scripts/compare_metrics.py reference.json current.json
+pixi run ci-compare-metrics reference.json metrics-current.json
 ```
 
 ## Customising Metrics
@@ -213,7 +173,8 @@ These changes take effect immediately without modifying Python code.
 
 ### Adding New Metric Types (Code Changes)
 
-To extract entirely new types of metrics, edit `extract_physics_metrics.py`:
+To extract entirely new types of metrics, contribute to `extract.py` in
+[ship-ci-metrics](https://github.com/ShipSoft/ship-ci-metrics):
 
 1. Modify `extract_histogram_stats()` to add new histogram-based metrics
 2. Modify `extract_tree_info()` to add new tree-based metrics

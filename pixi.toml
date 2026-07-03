@@ -41,6 +41,8 @@ genfit = ">=2.3"
 rootegpythia6 = "*"
 # SHiP fork of ACTS; used at reco time via `import acts` (python/ACTSReco.py).
 acts-ship = "*"
+# Physics-metrics extraction/comparison CLIs used by the ci-* tasks.
+ship-ci-metrics = "*"
 # tauolapp and photospp are runtime-only (not needed for build)
 # They will be added to a runtime environment later
 
@@ -111,32 +113,33 @@ cmd = "python macro/run_fixedTarget.py -n 10 -e 10.0 -r 1"
 cmd = "python macro/run_simScript.py -n 5 -i 100 -f tests/data/muonback_smoke.root -S 42 -s 42 --MuonBack --FollowMuon --FastMuon --tag ci-muonback"
 
 # --- CI plot rendering tasks ---
-# Wrap .github/scripts/render_plots.py for each per-job output set. The
+# Wrap ship-metrics-render (ship-ci-metrics) for each per-job output set. The
 # CI workflow invokes these after the corresponding sim/reco step. The
 # `config` arg gives the per-matrix subdirectory under plots/.
 
 [tasks.ci-render-plots-sim-chain]
 args = [{ arg = "config", default = "pixi-default" }]
-cmd = "python .github/scripts/render_plots.py recohists.root sim_ci-test_ana.root --output-dir plots/sim-chain/{{ config }} --job sim-chain --config {{ config }}"
+cmd = "ship-metrics-render recohists.root sim_ci-test_ana.root --output-dir plots/sim-chain/{{ config }} --job sim-chain --config {{ config }}"
 
 [tasks.ci-render-plots-tracking-benchmark]
-cmd = "python .github/scripts/render_plots.py tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/pixi --job tracking-benchmark --config pixi"
+cmd = "ship-metrics-render tracking_benchmark_histos.root --output-dir plots/tracking-benchmark/pixi --job tracking-benchmark --config pixi"
 
 [tasks.ci-render-plots-fixed-target]
-cmd = "python .github/scripts/render_plots.py *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
+cmd = "ship-metrics-render *_run_fixedTarget_1/*.root --output-dir plots/fixed-target/pixi --job fixed-target --config pixi"
 
 # --- CI physics-metrics tasks ---
 # Extract per-configuration physics metrics from the sim-chain outputs and
 # compare them against a reference (stored in git notes by the CI workflow,
-# see .github/scripts/README.md).
+# see .github/scripts/README.md). The CLIs come from the ship-ci-metrics
+# package; what gets extracted is configured in .github/scripts/metrics_config.yaml.
 
 [tasks.ci-extract-metrics]
 args = [{ arg = "config", default = "pixi-default" }]
-cmd = "python .github/scripts/extract_physics_metrics.py . -o metrics-{{ config }}.json --pretty"
+cmd = "ship-metrics-extract . -o metrics-{{ config }}.json --pretty --config .github/scripts/metrics_config.yaml"
 
 [tasks.ci-compare-metrics]
 args = [{ arg = "reference" }, { arg = "new" }]
-cmd = "python .github/scripts/compare_metrics.py {{ reference }} {{ new }}"
+cmd = "ship-metrics-compare {{ reference }} {{ new }} --config .github/scripts/metrics_config.yaml"
 
 # --- CI static analysis tasks ---
 # clang-tidy and pyrefly take file lists via the CPP_FILES / PY_FILES env vars

@@ -411,6 +411,7 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_9.conda
       - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_8.conda
+      - conda: https://prefix.dev/ship/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
       - pypi: https://files.pythonhosted.org/packages/b6/e7/30e085b31fed978ecb675bdbb54df566673ab550469e5af2d350f6af0be6/pyrefly-1.1.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   lint:
     channels:
@@ -835,6 +836,7 @@ environments:
       - conda: https://prefix.dev/ship/linux-64/genfit-2.3.0-hb0f4dca_9.conda
       - conda: https://prefix.dev/ship/linux-64/pythia6-6.4.28-hb0f4dca_6.conda
       - conda: https://prefix.dev/ship/linux-64/rootegpythia6-0.1-hb0f4dca_8.conda
+      - conda: https://prefix.dev/ship/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
       - pypi: https://files.pythonhosted.org/packages/06/a2/c01db32be2ae7d6a1689972f3c492b149ee4e164b12fdfd9f64b50888215/types_pyyaml-6.0.12.20260518-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/62/c1/c455be45ee4d3a886d2353d8c6af5071536d35fee7adf2c4fdf56713fbf9/gersemi-0.27.7-cp313-cp313-manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/66/65/08d3a5039b565231c501b31d1a973d4222e9803c03b2c31a9c08bdec3e30/cpplint-2.0.2-py3-none-any.whl
@@ -8054,6 +8056,17 @@ packages:
     - rootegpythia6 >=0.1,<0.2.0a0
   size: 78194
   timestamp: 1782460390867
+- conda: https://prefix.dev/ship/noarch/ship-ci-metrics-0.1.0-pyh4616a5c_0.conda
+  sha256: a47f03ad1b40ed0fce43685ec3dcd3616bc722346dac74ac37e9532c421cc5ce
+  md5: c8eba8490e606a2e2e814ae334f7dc6f
+  depends:
+  - python >=3.11
+  - pyyaml
+  - python
+  license: LGPL-3.0-or-later
+  run_exports: {}
+  size: 22612
+  timestamp: 1783114107455
 - pypi: https://files.pythonhosted.org/packages/06/a2/c01db32be2ae7d6a1689972f3c492b149ee4e164b12fdfd9f64b50888215/types_pyyaml-6.0.12.20260518-py3-none-any.whl
   name: types-pyyaml
   version: 6.0.12.20260518
