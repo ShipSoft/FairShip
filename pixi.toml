@@ -86,7 +86,7 @@ args = [
   { arg = "snd_design", default = "all" },
   { arg = "muon_shield", default = "TRY_2025" },
 ]
-cmd = "python macro/run_simScript.py --test --debug 2 --{{ vessel }} --SND --SND_design={{ snd_design }} --shieldName {{ muon_shield }} --EvtGenDecayer --tag ci-test"
+cmd = "python macro/run_simScript.py --test --debug 2 --{{ vessel }} --SND --SND_design={{ snd_design }} --shieldName {{ muon_shield }} --EvtGenDecayer --seed 42 --tag ci-test"
 
 [tasks.ci-overlap-check]
 cmd = "python python/experimental/check_overlaps.py --geofile geo_ci-test.root | tee overlap.log && ! grep -q Overlap overlap.log"
