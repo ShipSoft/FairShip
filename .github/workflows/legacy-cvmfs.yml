@@ -1,14 +1,13 @@
 name: Legacy CVMFS CI
 on:
-  pull_request:
-    branches: [master]
   push:
     branches: [master]
     tags: ['v*']
   workflow_dispatch:
-  merge_group:
+  schedule:
+    - cron: 30 2 * * *
 concurrency:
-  group: legacy-cvmfs-${{ github.event.pull_request.number || github.ref }}
+  group: legacy-cvmfs-${{ github.ref }}
   cancel-in-progress: true
 permissions:
   contents: read
