@@ -69,7 +69,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # FairRoot is always provided externally (there is no in-tree base/steer), so
 # FairRoot is located solely via the FAIRROOTPATH environment variable.
-if(NOT DEFINED ENV{FAIRROOTPATH})
+if(NOT DEFINED ENV{FAIRROOTPATH} OR "$ENV{FAIRROOTPATH}" STREQUAL "")
     message(
         FATAL_ERROR
         "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again."
@@ -85,11 +85,7 @@ list(
     "${CMAKE_SOURCE_DIR}/cmake/modules"
 )
 
-if(FAIRROOTPATH)
-    set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-else()
-    set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-endif()
+set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 
 # Load some basic macros which are needed later on
 include(FairMacros)
