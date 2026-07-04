@@ -319,10 +319,11 @@ class TrackingBenchmark:
                 n_matched_reco += 1
 
                 if mc_id in reconstructible_ids:
-                    if mc_id not in matched_mc_this_event:
-                        matched_mc_this_event.add(mc_id)
-                    else:
+                    if mc_id in matched_mc_this_event:
+                        # Clone: don't fill resolution / charge-ID / residuals
                         n_clone_reco += 1
+                        continue
+                    matched_mc_this_event.add(mc_id)
 
                     # Resolution histograms (use first match only for resolution)
                     p_truth, _, _, _ = self._get_ptruth_first(mc_id)
