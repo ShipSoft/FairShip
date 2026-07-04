@@ -7,6 +7,7 @@ on:
 # docs deploy cannot race a plot push to the gh-pages branch.
 concurrency:
   group: gh-pages-deploy
+  cancel-in-progress: false
 jobs:
   deploy:
     name: Deploy docs
