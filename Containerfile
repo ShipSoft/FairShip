@@ -1,4 +1,4 @@
-FROM ghcr.io/prefix-dev/pixi:0.71.3-noble
+FROM ghcr.io/prefix-dev/pixi:0.72.0-noble
 
 WORKDIR /FairShip
 
