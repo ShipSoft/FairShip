@@ -241,7 +241,7 @@ f_out = ROOT.TFile.Open(summary_root, "recreate")
 
 for metric in metric_names:
     for n_tr, points in sorted(by_nTracks.items()):
-        points.sort()
+        points.sort(key=lambda p: p[0])
         valid = [(x, m) for x, m in points if m[metric]["value"] is not None]
         if not valid:
             continue
@@ -254,7 +254,7 @@ for metric in metric_names:
         gr.Write()
 
     for theta_label, points in sorted(by_theta.items()):
-        points.sort()
+        points.sort(key=lambda p: p[0])
         valid = [(x, m) for x, m in points if m[metric]["value"] is not None]
         if not valid:
             continue
