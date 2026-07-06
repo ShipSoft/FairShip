@@ -21,9 +21,8 @@ using std::setw;
 constexpr Double_t kilogauss = 1.;
 constexpr Double_t tesla = 10 * kilogauss;
 
-constexpr Double_t cm = 1;         // cm
-constexpr Double_t m = 100 * cm;   //  m
-constexpr Double_t mm = 0.1 * cm;  //  mm
+constexpr Double_t cm = 1;        // cm
+constexpr Double_t m = 100 * cm;  //  m
 
 // -----   Default constructor   -------------------------------------------
 ShipBellField::ShipBellField()
