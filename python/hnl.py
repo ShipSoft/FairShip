@@ -331,7 +331,10 @@ class HNLbranchings:
         xi = mi/MN
         """
         if self._integrand_tf1 is None:
-            self._integrand_tf1 = ROOT.TF1("hnl_integrand", self.Integrand, 0, 1, 3)
+            # ROOT registers TF1s globally by name and WrappedTF1 resolves them
+            # by that name, so give each instance a unique name to avoid
+            # collisions when several HNLbranchings objects are alive at once.
+            self._integrand_tf1 = ROOT.TF1(f"hnl_integrand_{id(self):x}", self.Integrand, 0, 1, 3)
         func = self._integrand_tf1
         func.SetParameters(x1, x2, x3)
         xmin = (x1 + x3) ** 2
