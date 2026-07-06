@@ -431,7 +431,13 @@ if options.inputFile:
         inputFile = list(dict.fromkeys(inputFile))
         if options.nFiles > 0:
             inputFile = inputFile[: options.nFiles]
-        defaultInputFile = False
+        # Only disable the default-input fallback when at least one path
+        # actually resolved; an explicit --inputFile that globs to nothing is a
+        # mistake and would otherwise run downstream setup with no input files.
+        if inputFile:
+            defaultInputFile = False
+        else:
+            parser.error(f"--inputFile {options.inputFile} matched no files")
 if options.RPVSUSY:
     HNL = False
 if options.DarkPhoton:
