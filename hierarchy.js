@@ -85,17 +85,17 @@ var hierarchy =
       [ "ShipGeoCave", "classShipGeoCave.html", null ]
     ] ],
     [ "FairMCPoint", null, [
-      [ "MTCDetPoint", "classMTCDetPoint.html", null ],
       [ "SHiP::DetectorPoint", "classSHiP_1_1DetectorPoint.html", [
+        [ "MTCDetPoint", "classMTCDetPoint.html", null ],
+        [ "SiliconTargetPoint", "classSiliconTargetPoint.html", null ],
+        [ "TTPoint", "classTTPoint.html", null ],
+        [ "TargetPoint", "classTargetPoint.html", null ],
         [ "TimeDetPoint", "classTimeDetPoint.html", null ],
         [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", null ],
         [ "splitcalPoint", "classsplitcalPoint.html", null ],
         [ "strawtubesPoint", "classstrawtubesPoint.html", null ],
         [ "vetoPoint", "classvetoPoint.html", null ]
-      ] ],
-      [ "SiliconTargetPoint", "classSiliconTargetPoint.html", null ],
-      [ "TTPoint", "classTTPoint.html", null ],
-      [ "TargetPoint", "classTargetPoint.html", null ]
+      ] ]
     ] ],
     [ "FairModule", null, [
       [ "ShipCave", "classShipCave.html", null ],

@@ -1,9 +1,12 @@
 <map id="SND/EmulsionTarget/TTPoint.h" name="SND/EmulsionTarget/TTPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="105,5,259,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,116,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,48,91,88,89,84,151,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="140,93,224,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,46,185,79,179,79,179,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="249,93,339,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="211,43,268,83,265,87,208,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="127,5,281,45"/>
+<area shape="rect" id="Node000002" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,93,216,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,47,171,83,167,80,190,44"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="221,167,312,192"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="214,45,259,153,254,155,209,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,61,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,121,66,162,63,157,134,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="86,167,197,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="155,119,149,154,143,153,150,119"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="174,116,238,157,235,161,171,121"/>
 </map>

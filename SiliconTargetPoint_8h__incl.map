@@ -1,9 +1,14 @@
 <map id="SND/SiliconTarget/SiliconTargetPoint.h" name="SND/SiliconTarget/SiliconTargetPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="90,5,274,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,116,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,48,91,88,89,84,151,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="140,93,224,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,46,185,79,179,79,179,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="249,93,339,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="211,43,268,83,265,87,208,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="62,5,246,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,48,67,88,64,84,124,43"/>
+<area shape="rect" id="Node000003" href="$DetectorPoint_8h.html" title=" " alt="" coords="93,93,215,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,46,157,79,151,79,151,46"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="227,167,318,192"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="181,44,205,65,229,92,250,123,265,152,260,155,245,125,225,95,202,69,177,48"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="11,167,67,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="137,121,71,162,68,157,134,116"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="92,167,203,192"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="156,119,152,153,147,153,150,119"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="174,116,243,157,240,162,172,121"/>
 </map>
