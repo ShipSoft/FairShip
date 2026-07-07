@@ -58,8 +58,7 @@ class ShipDigiReco:
         self.fTrackletsArray = ROOT.std.vector("Tracklet")()
         self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
         #
-        self.has_strawtubes = "strawtubes" in global_variables.modules
-        if self.has_strawtubes:
+        if "strawtubes" in global_variables.modules:
             self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
 
         if self.sTree.GetBranch("MTCDetPoint"):
@@ -78,7 +77,7 @@ class ShipDigiReco:
             self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
         # for the digitizing step
-        if self.has_strawtubes:
+        if hasattr(self, "strawtubes"):
             self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
             self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
         # optional if present, splitcalCluster
@@ -121,7 +120,7 @@ class ShipDigiReco:
         shipPatRec.initialize(fgeo)
 
     def reconstruct(self) -> None:
-        if not self.has_strawtubes:
+        if not hasattr(self, "strawtubes"):
             return
         n_tracks = self.findTracks()
         n_good_tracks = self.findGoodTracks()
@@ -154,7 +153,7 @@ class ShipDigiReco:
         self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
         if hasattr(self, "digiSBT"):
             self.digiSBT.process()
-        if self.has_strawtubes:
+        if hasattr(self, "strawtubes"):
             self.strawtubes.process()
         if hasattr(self, "timeDetector"):
             self.timeDetector.process()
