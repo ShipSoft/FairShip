@@ -318,6 +318,7 @@ void MTCDetector::ConstructGeometry() {
   ShipGeo::InitMedium("SciFiMat");
   ShipGeo::InitMedium("Epoxy");
   ShipGeo::InitMedium("air");
+  ShipGeo::InitMedium("iron");
   TGeoMedium* air = gGeoManager->GetMedium("air");
   TGeoMedium* ironMed = gGeoManager->GetMedium("iron");
   // For the scintillator, you may use the same medium as SciFiMat or another if
