@@ -761,7 +761,6 @@ if options.command == "Genie":
 
     GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
     Geniegen.SetGenerationOption(GenieOptions[options.GenieOption])  # 0 standard, 3 GENIE geometry driver
-    Geniegen.Init(inputFile, options.firstEvent)
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
     if GenieOptions[options.GenieOption] == 0:
