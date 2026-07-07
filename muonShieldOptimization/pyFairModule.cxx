@@ -9,13 +9,13 @@
 
 void call_python_method(PyObject* self, const char* method) {
   // check arguments
-  if (0 == self || 0 == method) {
+  if (nullptr == self || nullptr == method) {
     throw std::runtime_error("Invalid Python object and method");
   }
   // call Python
   PyObject* r = PyObject_CallMethod(self, const_cast<char*>(method),
                                     const_cast<char*>(""));
-  if (0 == r) {
+  if (nullptr == r) {
     PyErr_Print();
     return;
   }

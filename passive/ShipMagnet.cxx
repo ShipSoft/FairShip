@@ -28,7 +28,7 @@
 #include "TObjArray.h"  // for TObjArray
 #include "TString.h"    // for TString
 
-ShipMagnet::~ShipMagnet() {}
+ShipMagnet::~ShipMagnet() = default;
 ShipMagnet::ShipMagnet() : FairModule("ShipMagnet", "") {}
 
 ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c,

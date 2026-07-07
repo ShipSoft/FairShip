@@ -71,9 +71,7 @@ NUPDGLIST = [16, -16, 14, -14, 12, -12]
 
 def extract_nu_over_nubar(neutrino_flux: Path, particles: Sequence[int]) -> dict[int, float]:
     """Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms."""
-    f = ROOT.TFile(str(neutrino_flux), "READ")
-    if not f or f.IsZombie():
-        raise FileNotFoundError(f"Cannot open flux file: {neutrino_flux}")
+    f = ROOT.TFile.Open(str(neutrino_flux), "READ")
     try:
         ratios: dict[int, float] = {}
         for pdg in particles:

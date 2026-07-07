@@ -45,7 +45,7 @@ def runTracking():
             volumeLogLevel=customLogLevel(),
         )
 
-    if global_variables.detector == "MTC":
+    elif global_variables.detector == "MTC":
         # MTC setup to be updated.
         field = acts.ConstantBField(acts.Vector3(0.0, -1.2, 0.0 * u.T))
         simHitTree = "mtcHits"
@@ -57,7 +57,7 @@ def runTracking():
             volumeLogLevel=customLogLevel(),
         )
 
-    if global_variables.detector == "StrawTracker":
+    elif global_variables.detector == "StrawTracker":
         # Bfield x/y non-zero, offsets manually set to zero.
         field = acts.examples.MagneticFieldMapXyz(
             file=str(sourcePath + "/" + ShipGeo.Bfield.fieldMap),
@@ -76,6 +76,9 @@ def runTracking():
             layerLogLevel=customLogLevel(),
             volumeLogLevel=customLogLevel(),
         )
+
+    else:
+        raise ValueError(f"Unknown ACTS detector: {global_variables.detector!r}")
 
     trackingGeometry = detector.trackingGeometry()
 

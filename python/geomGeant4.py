@@ -176,8 +176,8 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
         fieldMaker.readInputFile(controlFile)
 
     # Set the main spectrometer field map as a global field
+    fieldsList: list[str] = []
     if hasattr(shipGeo, "Bfield"):
-        fieldsList = []
         fieldMaker.defineFieldMap("MainSpecMap", shipGeo.Bfield.fieldMap, ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
         fieldsList.append("MainSpecMap")
 
@@ -210,6 +210,7 @@ def addVMCFields(shipGeo, controlFile: str = "", verbose: bool = False, withVirt
         geom = ROOT.TG4GeometryManager.Instance()
         # Let the geometry know about the fieldMaker object
         geom.SetUserPostDetConstruction(fieldMaker)
+        ROOT.SetOwnership(fieldMaker, False)  # C++ TG4GeometryManager takes ownership
         # Update the fields via the overridden ShipFieldMaker::Construct() function
         geom.ConstructSDandField()
 

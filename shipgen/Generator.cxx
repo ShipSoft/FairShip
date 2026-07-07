@@ -3,4 +3,4 @@
 // Collaboration
 
 #include "Generator.h"
-SHiP::Generator::~Generator() {}
+SHiP::Generator::~Generator() = default;

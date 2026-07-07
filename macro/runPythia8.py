@@ -259,6 +259,7 @@ def muflux() -> None:
     Z_Mo = 96.0
     P_Mo = 42
     fraction = {}
+    sigma = 0.0
     for g in generators:
         processes = generators[g].info.codesHard()
         name = generators[g].info.nameProc(processes[0])

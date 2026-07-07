@@ -135,7 +135,7 @@ class Task:
                 # ignore this for background studies
                 if PosDirCharge[t2]["charge"] == c1:
                     continue
-                newPos, doca = self.VertexError(t1, t2, PosDirCharge)
+                newPos, _covX, doca = self.VertexError(t1, t2, PosDirCharge)
                 # Extrapolate both tracks toward the initial vertex
                 # estimate in steps to avoid long backward extrapolation
                 # through the magnetic field which causes RK failures.
@@ -164,7 +164,7 @@ class Task:
                 if not rc:
                     continue
                 # Recompute DOCA from the extrapolated positions
-                newPos, doca = self.VertexError(t1, t2, extrapolatedPosDir)
+                newPos, _covX, doca = self.VertexError(t1, t2, extrapolatedPosDir)
                 # as we have learned, need iterative procedure
                 dz = 99999.0
                 step = 0
@@ -185,7 +185,7 @@ class Task:
                         }
                     if not rc:
                         break
-                    newPos, doca = self.VertexError(t1, t2, self.newPosDir)
+                    newPos, _covX, doca = self.VertexError(t1, t2, self.newPosDir)
                     dz = abs(zBefore - newPos[2])
                     step += 1
                     if step > 10:
@@ -384,8 +384,12 @@ class Task:
                     doca = (delta - d1u * delta.Dot(d1u)).Mag()
 
                 # fixme: mass from track reconstraction needed
-                m1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"]).Mass()
-                m2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"]).Mass()
+                p1 = self.PDG.GetParticle(PosDirCharge[t1]["pdgCode"])
+                p2 = self.PDG.GetParticle(PosDirCharge[t2]["pdgCode"])
+                assert p1 is not None, f"Unknown PDG: {PosDirCharge[t1]['pdgCode']}"
+                assert p2 is not None, f"Unknown PDG: {PosDirCharge[t2]['pdgCode']}"
+                m1 = p1.Mass()
+                m2 = p2.Mass()
 
                 # self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
                 # self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )
@@ -512,7 +516,8 @@ class Task:
         # self.h['N_Vtx'].Fill(hasVertex)
 
     def VertexError(self, t1, t2, PosDir, CovMat=None, scalFac=None):
-        # with improved Vx x,y resolution
+        # with improved Vx x,y resolution. Returns (X, covX, dist) where covX is
+        # None when no track covariance was supplied.
         a, u = PosDir[t1]["position"], PosDir[t1]["direction"]
         c, v = PosDir[t2]["position"], PosDir[t2]["direction"]
         Vsq = v.Dot(v)
@@ -528,7 +533,8 @@ class Task:
         l1 = a - X + u * Va  # l2 = c - X + v*Vb
         dist = 2.0 * ROOT.TMath.Sqrt(l1.Dot(l1))
         if not CovMat:
-            return X, dist
+            return X, None, dist
+        assert scalFac is not None, "VertexError requires scalFac when CovMat is set"
         T = ROOT.TMatrixD(3, 12)
         for i in range(3):
             for k in range(4):

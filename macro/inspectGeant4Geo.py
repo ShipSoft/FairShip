@@ -22,7 +22,11 @@ ShipGeo = load_from_root_file(fgeo, "ShipGeo")
 modules = shipDet_conf.configure(run, ShipGeo)
 run.SetUserConfig("g4Config.C")
 run.SetName("TGeant4")
-run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
+import tempfile
+
+sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 run.Init()
 run.Run(0)
 import geomGeant4

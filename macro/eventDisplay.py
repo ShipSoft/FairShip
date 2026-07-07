@@ -209,6 +209,8 @@ def printParticles() -> None:
 class DrawVetoDigi(ROOT.FairTask):
     "My Fair Task"
 
+    Targetz: float = 0.0  # set externally by the owning EventLoop after geometry init
+
     def InitTask(self) -> None:
         self.comp = ROOT.TEveCompound("Veto Digis")
         gEve.AddElement(self.comp)
@@ -588,7 +590,7 @@ class IO:
         else:
             a.set(0)
         self.lbut[x] = tkinter.Checkbutton(self.master, text="with MC Tracks", compound=tkinter.LEFT, variable=a)
-        self.lbut[x].var = a
+        self.lbut[x].var = a  # pyrefly: ignore  # dynamic attribute, read back by toggleMCTracks / toggle
         self.lbut[x]["command"] = self.toggleMCTracks
         self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
@@ -660,16 +662,18 @@ class IO:
         SHiPDisplay.NextEvent(self.n)
 
     def toggleMCTracks(self) -> None:
+        if fRun is None:
+            raise RuntimeError("toggleMCTracks called before fRun was initialised")
         tl = fRun.GetMainTask().GetListOfTasks()
         geoTask = tl.FindObject("GeoTracks")
         if globals()["withMCTracks"]:
             globals()["withMCTracks"] = False
-            self.lbut["withMC"].var.set(1)
+            self.lbut["withMC"].var.set(0)
             if geoTask:
                 geoTask.SetActive(0)
         else:
             globals()["withMCTracks"] = True
-            self.lbut["withMC"].var.set(0)
+            self.lbut["withMC"].var.set(1)
             if geoTask:
                 geoTask.SetActive(1)
 
@@ -722,6 +726,8 @@ class EventLoop(ROOT.FairTask):
         t0.SetText(ROOT.TGString("3D"))
 
     def NextEvent(self, i: int = -1) -> None:
+        if fRun is None:
+            raise RuntimeError("NextEvent called before fRun was initialised")
         if i < 0:
             self.n += 1
         else:
@@ -1172,9 +1178,14 @@ if options.geoFile:
 
 inFile = ROOT.FairFileSource(options.InputFile)
 fRun.SetSource(inFile)
+ROOT.SetOwnership(inFile, False)  # C++ FairRun takes ownership
 if options.OutputFile is None:
-    options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
-fRun.SetSink(ROOT.FairRootFileSink(options.OutputFile))
+    import tempfile
+
+    options.OutputFile = tempfile.mktemp(suffix=".root")
+sink = ROOT.FairRootFileSink(options.OutputFile)
+fRun.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 
 if options.ParFile:
     rtdb = fRun.GetRuntimeDb()
@@ -1244,7 +1255,6 @@ gEve = ROOT.gEve
 
 if hasattr(ShipGeo, "Bfield"):
     if hasattr(ShipGeo.Bfield, "fieldMap"):
-        ROOT.gSystem.Load("libG4clhep.so")
         ROOT.gSystem.Load("libgeant4vmc.so")
         import geomGeant4
 
@@ -1304,7 +1314,7 @@ def DrawCharmTracks() -> None:
             continue
         if aTrack.GetMotherId() == 1:
             pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())
-            if pa.Lifetime() > 1.0e-12:
+            if pa is not None and pa.Lifetime() > 1.0e-12:
                 print(sTree.MCTrack[i])
                 SHiPDisplay.tracks.DrawMCTrack(i)
 

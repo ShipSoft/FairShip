@@ -14,7 +14,7 @@ class MTCDetector(BaseDetector):
         # make SiPM to fibre mapping
         if intree.GetBranch("MTCDetPoint"):
             lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-            if global_variables.modules["MTC"] not in lsOfGlobals:
+            if not lsOfGlobals.FindObject("MTC"):
                 lsOfGlobals.Add(global_variables.modules["MTC"])
             mapping = SciFiMapping.SciFiMapping(global_variables.modules)
             mapping.make_mapping()

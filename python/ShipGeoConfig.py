@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import os
 import pickle
+from typing import TYPE_CHECKING, Any
 
 
 class AttrDict(dict):
@@ -14,6 +15,13 @@ class AttrDict(dict):
     d['key'] = 1
     assert d.key == 1
     """
+
+    if TYPE_CHECKING:
+        # Attributes are populated dynamically from dict keys via
+        # `self.__dict__ = self`. Declare them as Any for the type checker
+        # so geometry-config field access (`ShipGeo.target.z` etc.) checks.
+        def __getattr__(self, name: str) -> Any: ...
+        def __setattr__(self, name: str, value: Any) -> None: ...
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

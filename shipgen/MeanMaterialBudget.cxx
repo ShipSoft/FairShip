@@ -80,7 +80,7 @@ double MeanMaterialBudget(std::span<const double, 3> start,
   dir[2] = (end[2] - start[2]) * invlen;
 
   // Initialise start point and direction
-  TGeoNode* currentnode = 0;
+  TGeoNode* currentnode = nullptr;
   TGeoNode* startnode = gGeoManager->InitTrack(start.data(), dir);
   if (!startnode) {
     LOG(error) << "MeanMaterialBudget: start point out of geometry: x "

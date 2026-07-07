@@ -61,7 +61,7 @@ ShipBellField::ShipBellField(ShipFieldPar* fieldPar)
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-ShipBellField::~ShipBellField() {}
+ShipBellField::~ShipBellField() = default;
 // -------------------------------------------------------------------------
 
 // -----   Get x component of field   --------------------------------------

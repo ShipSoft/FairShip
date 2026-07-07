@@ -17,8 +17,8 @@ class ShipPassiveContFact : public FairContFact {
 
  public:
   ShipPassiveContFact();
-  ~ShipPassiveContFact() {}
-  FairParSet* createContainer(FairContainer*);
+  ~ShipPassiveContFact() override = default;
+  FairParSet* createContainer(FairContainer*) override;
   ClassDefOverride(ShipPassiveContFact,
                    0)  // Factory for all Passive parameter containers
 };

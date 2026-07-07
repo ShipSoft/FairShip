@@ -18,7 +18,7 @@ class FairField;
 
 class ShipFieldCreator : public FairFieldFactory {
  public:
-  ShipFieldCreator();
+  ShipFieldCreator() noexcept;
   ~ShipFieldCreator() override;
   FairField* createFairField() override;
   void SetParm() override;

@@ -84,7 +84,7 @@ Bool_t exitHadronAbsorber::ProcessHits(FairVolume* vol) {
 }
 
 void exitHadronAbsorber::Initialize() {
-  FairDetector::Initialize();
+  SHiP::Detector<vetoPoint>::Initialize();
   TSeqCollection* fileList = gROOT->GetListOfFiles();
   fout = dynamic_cast<TFile*>(fileList->At(0));
   // book hists for Genie neutrino momentum distribution

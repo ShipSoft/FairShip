@@ -29,10 +29,9 @@ ShipCompField::ShipCompField(const std::string& label,
                              const std::vector<TVirtualMagField*>& theFields)
     : TVirtualMagField(label.c_str()), theFields_(theFields) {}
 
-ShipCompField::~ShipCompField() {
-  // The destructor does nothing since this class does not own
-  // the various TVirtualMagField pointers
-}
+// Default destructor: the TVirtualMagField pointers are not owned by this
+// class.
+ShipCompField::~ShipCompField() = default;
 
 void ShipCompField::Field(const Double_t* position, Double_t* B) {
   // Loop over the fields and do a simple linear superposition

@@ -33,7 +33,7 @@ Tracklet::Tracklet(Int_t fl, const std::vector<strawtubesHit>& hits,
 }
 
 // -----   Destructor   ----------------------------------------------------
-Tracklet::~Tracklet() {}
+Tracklet::~Tracklet() = default;
 // -------------------------------------------------------------------------
 
 Int_t Tracklet::link2MCTrack(std::vector<strawtubesPoint>* strawPoints,

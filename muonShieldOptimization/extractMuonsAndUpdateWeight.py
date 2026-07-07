@@ -22,6 +22,10 @@ weightCharm = 489.24 * 2.0 / 3.0
 # for 10GeV charm Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
+# Active weight, set by the per-source entry points (Mbias/Charm/Beauty)
+# before they call muonUpdateWeight.
+weight: float = weightMbias
+
 
 def muonUpdateWeight(sTree, diMuboost: float, xSecboost: float, noCharm=True) -> int:
     nMu = 0

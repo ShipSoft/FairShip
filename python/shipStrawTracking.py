@@ -4,6 +4,7 @@
 """Script to run and test tracking in the straw tubes"""
 
 from argparse import ArgumentParser
+from typing import Any
 
 import geometry_config
 import global_variables
@@ -72,7 +73,11 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
     run.SetName("TGeant4")  # Transport engine
     # Create dummy output file as the  input file is updated directly and
     # histograms are written to output file (hists.root by default)
-    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))
+    import tempfile
+
+    sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+    run.SetSink(sink)
+    ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for the mag field
     run.GetRuntimeDb()
 
@@ -117,8 +122,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     ########################################## Start Track Pattern Recognition #########################################
 
-    # Init book of hists for the quality measurements
-    metrics = {
+    # Init book of hists for the quality measurements.
+    # Mixed counter/list values, so type as dict[str, Any].
+    metrics: dict[str, Any] = {
         "n_hits": [],
         "reconstructible": 0,
         "passed_y12": 0,
@@ -227,8 +233,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 hits["Pdg"] += [ahit.PdgCode()]
 
             # List to numpy arrays
-            for key in hits:
-                hits[key] = numpy.array(hits[key])
+            hits = {key: numpy.array(values) for key, values in hits.items()}
 
             # Decoding
             decode = global_variables.modules["strawtubes"].StrawDecode(hits["DetID"])
@@ -470,22 +475,29 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                 Z_fit = []
                 X_fit = []
                 Y_fit = []
-                for az in Z_true:
+                X_true_matched = []
+                Y_true_matched = []
+                for az, ax_true, ay_true in zip(Z_true, X_true, Y_true):
                     _rc, pos, _mom = extrapolateToPlane(thetrack, az)
+                    if pos is None:
+                        continue
                     Z_fit.append(pos.Z())
                     X_fit.append(pos.X())
                     Y_fit.append(pos.Y())
+                    X_true_matched.append(ax_true)
+                    Y_true_matched.append(ay_true)
 
-                for i in range(len(Z_true)):
-                    xerr = abs(X_fit[i] - X_true[i])
-                    yerr = abs(Y_fit[i] - Y_true[i])
+                for i in range(len(Z_fit)):
+                    xerr = abs(X_fit[i] - X_true_matched[i])
+                    yerr = abs(Y_fit[i] - Y_true_matched[i])
                     h["abs(x - x-true)"].Fill(xerr)
                     h["abs(y - y-true)"].Fill(yerr)
 
-                rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true)) ** 2))
-                rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true)) ** 2))
-                h["rmse_x"].Fill(rmse_x)
-                h["rmse_y"].Fill(rmse_y)
+                if Z_fit:
+                    rmse_x = numpy.sqrt(numpy.mean((numpy.array(X_fit) - numpy.array(X_true_matched)) ** 2))
+                    rmse_y = numpy.sqrt(numpy.mean((numpy.array(Y_fit) - numpy.array(Y_true_matched)) ** 2))
+                    h["rmse_x"].Fill(rmse_x)
+                    h["rmse_y"].Fill(rmse_y)
 
             except Exception:
                 print("Problem with fitted state.")
@@ -570,7 +582,7 @@ def fracMCsame(trackids):
 
     # now get track with largest number of hits
     if track != {}:
-        tmax = max(track, key=track.get)
+        tmax = max(track, key=lambda k: track[k])
     else:
         track = {-999: 0}
         tmax = -999

@@ -35,6 +35,8 @@ def main(arguments):
 
     # Load the geometry config module
     spec = importlib.util.spec_from_file_location("geometry_config", arguments.config_file)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load geometry config from {arguments.config_file}")
     geometry_config = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(geometry_config)
 

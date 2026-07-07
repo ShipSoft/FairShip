@@ -23,7 +23,8 @@
 #include "FairVolume.h"
 #include "TVirtualMC.h"
 
-using namespace ShipUnit;
+using ShipUnit::mm;
+using ShipUnit::um;
 
 SiliconTarget::SiliconTarget()
     : Detector("SiliconTarget", kTRUE, kSiliconTarget) {}

@@ -33,7 +33,6 @@ class MuonBackGenerator : public SHiP::Generator {
   Bool_t Init(const std::vector<std::string>&) override;
 
   Int_t GetNevents();
-  void CloseFile();
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };
@@ -52,9 +51,8 @@ class MuonBackGenerator : public SHiP::Generator {
   TClonesArray* vetoPoints;                //!
   std::vector<ShipMCTrack>* MCTrack_vec;   //!
   std::vector<vetoPoint>* vetoPoints_vec;  //!
-  Bool_t fUseSTL;     //! flag to indicate if using STL vectors
-  TFile* fInputFile;  //!
-  TChain* fTree;      //!
+  Bool_t fUseSTL;  //! flag to indicate if using STL vectors
+  TChain* fTree;   //!
   int fNevents;
   float f_zOffset;  //!
   int fn;

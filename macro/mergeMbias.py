@@ -11,6 +11,7 @@ import rootUtils as ut
 
 pdg = ROOT.TDatabasePDG()
 mu = pdg.GetParticle(13)
+assert mu is not None, "Standard PDG code missing: 13 (mu-)"
 Mmu = mu.Mass()
 Mmu2 = Mmu * Mmu
 rnr = ROOT.TRandom()
@@ -413,7 +414,9 @@ def mergeWithCharm(splitOnly: bool = False, ramOnly: bool = False) -> None:
         tuples = ""
         # add histograms
         for idnu in [16, -16, 14, -14, 12, -12]:
-            name = pdg.GetParticle(idnu).GetName()
+            _p = pdg.GetParticle(idnu)
+            assert _p is not None, f"Unknown PDG: {idnu}"
+            name = _p.GetName()
             idhnu = 1000 + idnu
             if idnu < 0:
                 idhnu = 2000 + abs(idnu)

@@ -29,6 +29,7 @@ def PDGcode(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return int(tPart.PdgCode())
 
 

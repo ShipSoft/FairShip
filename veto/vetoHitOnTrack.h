@@ -32,7 +32,7 @@ class vetoHitOnTrack : public TObject {
   void SetHitID(Int_t hitID) { fHitID = hitID; }
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = "") const { ; }
+  void Print(const Option_t* opt = "") const override { ; }
 
  protected:
   Float_t fDist;  ///< distance to closest veto hit

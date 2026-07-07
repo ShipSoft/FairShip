@@ -11,6 +11,7 @@
 #ifndef SHIPGEN_COSMICSGENERATOR_H_
 #define SHIPGEN_COSMICSGENERATOR_H_
 
+#include "FairLogger.h"
 #include "Generator.h"
 #include "TF1.h"
 #include "TH1.h"
@@ -47,7 +48,7 @@ class Co3Rng {
 class CosmicsGenerator : public SHiP::Generator {
  public:
   /** constructor,destructor **/
-  CosmicsGenerator() {};
+  CosmicsGenerator() = default;
   ~CosmicsGenerator() override {
     delete fRandomEngine;
     std::cout << nInside << " events have been generated." << std::endl;

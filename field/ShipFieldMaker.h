@@ -68,7 +68,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction {
   };
 
   //! Set-up all local and regional fields and assign them to volumes
-  virtual void Construct();
+  void Construct() override;
 
   //! Read an input file to define fields and associated volumes
   /*!
@@ -282,7 +282,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction {
   void plotField(Int_t type, const TVector3& xAxis, const TVector3& yAxis,
                  const std::string& plotFile) const;
 
-  void generateFieldMap(TString fileName, const float step = 2.5,
+  void generateFieldMap(const TString& fileName, const float step = 2.5,
                         const float xRange = 179, const float yRange = 317,
                         const float zRange = 1515.5,
                         const float zShift = -4996);

@@ -14,15 +14,16 @@ namespace SHiP {
 class DetectorPoint : public FairMCPoint {
  public:
   DetectorPoint() = default;
-  ~DetectorPoint() = default;
+  ~DetectorPoint() override = default;
 
-  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
-                Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
+  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, const TVector3& pos,
+                const TVector3& mom, Double_t tof, Double_t length,
+                Double_t eLoss, Int_t pdgCode, const TVector3& Lpos,
+                const TVector3& Lmom);
 
-  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, TVector3 pos,
-                TVector3 mom, Double_t tof, Double_t length, Double_t eLoss,
-                Int_t pdgCode);
+  DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID, const TVector3& pos,
+                const TVector3& mom, Double_t tof, Double_t length,
+                Double_t eLoss, Int_t pdgCode);
 
   /** Copy constructor **/
   DetectorPoint(const DetectorPoint& point) = default;

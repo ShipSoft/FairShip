@@ -15,8 +15,8 @@ class strawtubesContFact : public FairContFact {
 
  public:
   strawtubesContFact();
-  ~strawtubesContFact() {}
-  FairParSet* createContainer(FairContainer*);
+  ~strawtubesContFact() override = default;
+  FairParSet* createContainer(FairContainer*) override;
   ClassDefOverride(strawtubesContFact,
                    0)  // Factory for all strawtubes parameter containers
 };

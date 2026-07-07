@@ -27,9 +27,9 @@ class FairShipFields : public AbsBField {
   inline void setField(ShipCompField* gField) { gField_ = gField; }
 
   //! return value at position
-  TVector3 get(const TVector3& pos) const;
+  TVector3 get(const TVector3& pos) const override;
   void get(const double& posX, const double& posY, const double& posZ,
-           double& Bx, double& By, double& Bz) const;
+           double& Bx, double& By, double& Bz) const override;
 
  private:
   ShipCompField* gField_{nullptr};

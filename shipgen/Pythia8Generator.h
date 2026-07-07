@@ -6,6 +6,7 @@
 #define SHIPGEN_PYTHIA8GENERATOR_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
@@ -53,7 +54,7 @@ class Pythia8Generator : public SHiP::Generator {
 
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x, Double_t y) {
-    targetName = s;
+    targetName = std::move(s);
     xOff = x;
     yOff = y;
   };

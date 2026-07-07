@@ -77,7 +77,7 @@ ShipParticle::ShipParticle(Int_t pdg, Int_t status, Int_t mother1,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-ShipParticle::~ShipParticle() {}
+ShipParticle::~ShipParticle() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method SetCovP   -----------------------------------------

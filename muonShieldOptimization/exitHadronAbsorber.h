@@ -5,6 +5,8 @@
 #ifndef MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 #define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
+#include <utility>
+
 #include "Detector.h"
 #include "TFile.h"
 #include "TNtuple.h"
@@ -33,7 +35,7 @@ class exitHadronAbsorber : public SHiP::Detector<vetoPoint> {
   inline void SetOpt4DP() { withNtuple = kTRUE; }
   inline void SkipNeutrinos() { fSkipNeutrinos = kTRUE; }
   inline void SetZposition(Float_t x) { fzPos = x; }
-  inline void SetVetoPointName(TString name) { fVetoName = name; }
+  inline void SetVetoPointName(TString name) { fVetoName = std::move(name); }
   inline void SetCylindricalPlane() { fCylindricalPlane = kTRUE; }
   inline void SetUseCaveCoordinates() { fUseCaveCoordinates = kTRUE; }
 

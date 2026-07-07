@@ -58,7 +58,9 @@ timer.Start()
 gFairBaseContFact = ROOT.FairBaseContFact()  # required by change to FairBaseContFact to avoid TList::Clear errors
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
 run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
@@ -137,7 +139,9 @@ for n in range(sTree.GetEntries()):
     rc = sTree.GetEvent(n)
     for aHit in sTree.vetoPoint:
         oTrack = sTree.MCTrack[aHit.GetTrackID()]
-        M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()
+        _p = pdg.GetParticle(oTrack.GetPdgCode())
+        assert _p is not None, f"Unknown PDG: {oTrack.GetPdgCode()}"
+        M = _p.Mass()
         Ekin = ROOT.TMath.Sqrt(aHit.GetPx() ** 2 + aHit.GetPy() ** 2 + aHit.GetPz() ** 2 + M**2) - M
         rc = h["Ekin"].Fill(Ekin)
         rc = h["EkinLow"].Fill(Ekin)

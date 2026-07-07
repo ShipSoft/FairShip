@@ -9,7 +9,7 @@
 #include <map>
 
 // -----   Default constructor   -------------------------------------------
-splitcalCluster::splitcalCluster() {}
+splitcalCluster::splitcalCluster() = default;
 
 void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
   // Compute energy weighted average for hits in the same layer
@@ -90,7 +90,7 @@ void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits) {
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-splitcalCluster::~splitcalCluster() {}
+splitcalCluster::~splitcalCluster() = default;
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

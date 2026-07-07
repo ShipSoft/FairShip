@@ -169,3 +169,27 @@ def checkFileExists(x) -> str:
     else:
         print("ERROR FileCheck: File must be either a string or list of files")
         os._exit(1)
+
+
+def checkForBranch(inFile, branchName) -> bool:
+    if isinstance(inFile, str):
+        fileList = [inFile]
+    else:
+        fileList = inFile
+    if isinstance(fileList, (list, tuple)):
+        hasIt = None
+        for _f in fileList:
+            with ROOT.TFile.Open(_f) as test:
+                if not test:
+                    raise FileNotFoundError(f"ERROR FileCheck: input file {_f} does not exist. Missing authentication?")
+                current_has_branch = bool(test.FindObjectAny("cbmsim") and test["cbmsim"].FindBranch(branchName))
+                if hasIt is None:
+                    hasIt = current_has_branch
+                elif current_has_branch != hasIt:
+                    raise ValueError(
+                        f"ERROR CheckForBranch: Mixed input files (some have branch {branchName} and some do not)."
+                    )
+        return bool(hasIt)
+    else:
+        print("ERROR CheckForBranch: File must be either a string or list of files")
+        os._exit(1)

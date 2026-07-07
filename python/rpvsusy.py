@@ -79,6 +79,7 @@ def PDGcode(particle: str) -> int:
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return int(tPart.PdgCode())
 
 
@@ -88,6 +89,7 @@ def mass(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Mass()
 
 
@@ -97,6 +99,7 @@ def width(particle):
     """
     particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Width()
 
 
@@ -117,6 +120,7 @@ def lifetime(particle):
     elif particle == "B+" or particle == "B-":
         return 1.6e-12
 
+    assert tPart is not None, f"Unknown particle: {particle}"
     return tPart.Lifetime()
 
 
@@ -398,7 +402,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino decay width
         """
         declist = self.decays[self.bench]
-        hadlist = [re.search(r"->\ (.+?)\ ", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist if (m := re.search(r"->\ (.+?)\ ", dec))]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         print(leplist, hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
@@ -409,7 +413,7 @@ class RPVSUSYbranchings:
         Returns the total SUSYRPV neutralino production width
         """
         declist = self.prods[self.bench]
-        hadlist = [re.search(r"(.+?)\ ->", dec).group(1) for dec in declist]
+        hadlist = [m.group(1) for dec in declist if (m := re.search(r"(.+?)\ ->", dec))]
         leplist = [dlist[1].strip() for dlist in [re.findall(r"\ \w+", dec) for dec in declist]]
         totalwidth = sum([self.Width_N_L(hadlist[i], leplist[i]) for i in range(0, len(hadlist))])
         return totalwidth
@@ -423,6 +427,7 @@ class RPVSUSYbranchings:
         """
         had = re.search(r"->\ (.+?)\ ", decayString).group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split
@@ -462,6 +467,7 @@ class RPVSUSYbranchings:
         """
         had = re.search(r"(.+?)\ ->", decayString).group(1)
         decaysplit = decayString.split(" ")
+        lep = ""
         for split in decaysplit:
             if split.find("mu") > -1 or split.find("e") > -1 or split.find("tau") > -1:
                 lep = split

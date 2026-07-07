@@ -28,5 +28,7 @@ def Initialize(p8):
                     dl.append(ROOT.G4String(""))
             mode = ROOT.G4PhaseSpaceDecayChannel(particleG4.GetParticleName(), bR, mul, dl[0], dl[1], dl[2], dl[3])
             decayTable.Insert(mode)
+            ROOT.SetOwnership(mode, False)  # G4DecayTable takes ownership
         particleG4.SetDecayTable(decayTable)
+        ROOT.SetOwnership(decayTable, False)  # G4ParticleDefinition takes ownership
         particleG4.DumpTable()

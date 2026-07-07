@@ -147,12 +147,12 @@ def YandexProd(startDate, endDate) -> None:
         + endDate.__str__().split(" ")[0]
         + ".pkl"
     )
-    with open(pName, "w") as fpi:
+    with open(pName, "wb") as fpi:
         database = {}
         database["goodruns"] = goodRuns
         database["badRuns"] = badRuns
         pickle.dump(database, fpi)
-    with open(pName) as fpi:
+    with open(pName, "rb") as fpi:
         database = pickle.load(fpi)
     addRuns(database["goodruns"], 20000)  # next cycle
 
@@ -309,7 +309,9 @@ def makeHistos(rfile: str) -> None:
                 mother = t.GetMotherId()
                 if not mother < 0:
                     moPid = sTree.MCTrack[mother].GetPdgCode()
-                    name = pdg.GetParticle(moPid).GetName()
+                    _mo = pdg.GetParticle(moPid)
+                    assert _mo is not None, f"Unknown PDG: {moPid}"
+                    name = _mo.GetName()
                     name = procID + " " + name
                     if name not in h:
                         h[name] = h["test"].Clone(name)
@@ -349,7 +351,9 @@ def makePrintout() -> None:
 
     sorted_p = sorted(p.items(), key=operator.itemgetter(1))
     for p in sorted_p:
-        print("%25s : %5.2G" % (pdg.GetParticle(p[0]).GetName(), float(p[1])))
+        _p_pdg = pdg.GetParticle(p[0])
+        assert _p_pdg is not None, f"Unknown PDG: {p[0]}"
+        print("%25s : %5.2G" % (_p_pdg.GetName(), float(p[1])))
     sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))
     print("origin of muons")
     for p in sorted_pr:
@@ -421,16 +425,16 @@ def check4DoubleRuns() -> None:
     ]
     Nruns = 0
     for x in allRuns:
-        with open(x) as fn:
+        with open(x, "rb") as fn:
             dn = pickle.load(fn)
         Nruns += len(dn["goodruns"])
     print("Total number of runs:", Nruns)
 
     for n in range(len(allRuns) - 1):
-        with open(allRuns[n]) as fn:
+        with open(allRuns[n], "rb") as fn:
             dn = pickle.load(fn)
         for m in range(n + 1, len(allRuns)):
-            with open(allRuns[m]) as fm:
+            with open(allRuns[m], "rb") as fm:
                 dm = pickle.load(fm)
             for rn in dn["goodruns"]:
                 for rm in dm["goodruns"]:

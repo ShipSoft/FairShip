@@ -8,9 +8,10 @@
 
 // -----   Standard constructor  ----------------
 SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
-                                   TVector3 pos, TVector3 mom, Double_t tof,
-                                   Double_t length, Double_t eLoss,
-                                   Int_t pdgcode, TVector3 Lpos, TVector3 Lmom)
+                                   const TVector3& pos, const TVector3& mom,
+                                   Double_t tof, Double_t length,
+                                   Double_t eLoss, Int_t pdgcode,
+                                   const TVector3& Lpos, const TVector3& Lmom)
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID),
       fPdgCode(pdgcode),
       fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()},
@@ -18,9 +19,9 @@ SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
 
 // -----   Standard constructor  ----------------
 SHiP::DetectorPoint::DetectorPoint(Int_t eventID, Int_t trackID, Int_t detID,
-                                   TVector3 pos, TVector3 mom, Double_t tof,
-                                   Double_t length, Double_t eLoss,
-                                   Int_t pdgcode)
+                                   const TVector3& pos, const TVector3& mom,
+                                   Double_t tof, Double_t length,
+                                   Double_t eLoss, Int_t pdgcode)
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID),
       fPdgCode(pdgcode),
       fLpos{pos.X(), pos.Y(), pos.Z()},

@@ -1,5 +1,5 @@
 ---
-HeaderFilterRegex: '.*'
+HeaderFilterRegex: '^(?!.*/(\.pixi|\.direnv|build|cmake)/).*\.(h|hpp|hxx)$'
 # disable clang-analyzer-core.UndefinedBinaryOperatorResult
 #   ROOT throws lots of them in their headers
 # Bugprone:

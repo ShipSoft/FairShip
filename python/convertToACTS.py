@@ -29,7 +29,11 @@ def main():
     ShipGeo = load_from_root_file(fgeo, "ShipGeo")
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Dummy output file
+    import tempfile
+
+    sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
+    run.SetSink(sink)
+    ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
     run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for creating VMC field
     run.GetRuntimeDb()
     shipDet_conf.configure(run, ShipGeo)
@@ -494,7 +498,9 @@ def main():
                 pz.push_back(-part.GetPx())
                 pp.push_back(part.GetP())
                 m.push_back(part.GetMass())
-                charge = PDG.GetParticle(part.GetPdgCode()).Charge()
+                pdg_particle = PDG.GetParticle(part.GetPdgCode())
+                assert pdg_particle is not None, f"Unknown PDG: {part.GetPdgCode()}"
+                charge = pdg_particle.Charge()
                 q.push_back(np.sign(charge))
                 eta.push_back(fourVec.Eta())
                 phi.push_back(fourVec.Phi())
