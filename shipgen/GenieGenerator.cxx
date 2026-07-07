@@ -476,8 +476,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           // rho(Pt)
           prob2int = mat->GetDensity() / mparam[7];
           if (prob2int > 1.)
-            LOG(warning) << " GenieGenerator: prob2int > Maximum "
-                    "density????"
+            LOG(warning) << " GenieGenerator: prob2int > Maximum density????"
                  << prob2int << " maxrho:" << mparam[7]
                  << " material: " << mat->GetName() << endl;
         } else {
