@@ -20,6 +20,7 @@ enum DetectorId {
   ktauHpt,
   kMTC,
   kSiliconTarget,
+  kSiWCalo,
   ktauTT,
   ktauTarget,
   kStraw,
