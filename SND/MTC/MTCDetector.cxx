@@ -412,6 +412,7 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol) {
     TLorentzVector Mom;
     gMC->TrackMomentum(Mom);
     Double_t x, y, z;
+    // 0 and 1 are for SciFi planes, 2 is for scintillating tiles
     if ((fVolumeID / 100000) % 10 == 2) {
       x = (fPos.X() + Pos.X()) / 2.;
       y = (fPos.Y() + Pos.Y()) / 2.;
