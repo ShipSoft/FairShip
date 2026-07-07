@@ -412,7 +412,7 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol) {
     TLorentzVector Mom;
     gMC->TrackMomentum(Mom);
     Double_t x, y, z;
-    if (fVolumeID / 100000 == 3) {
+    if ((fVolumeID / 100000) % 10 == 2) {
       x = (fPos.X() + Pos.X()) / 2.;
       y = (fPos.Y() + Pos.Y()) / 2.;
       z = (fPos.Z() + Pos.Z()) / 2.;
