@@ -54,7 +54,7 @@ jobs:
       matrix:
         vessel: [vacuums, helium]
         snd_design: [all]
-        muon_shield: [TRY_2025]
+        muon_shield: [TRY_2026]
     env:
       QT_QPA_PLATFORM: offscreen
     steps:
