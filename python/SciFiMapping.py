@@ -142,7 +142,7 @@ class SciFiMapping:
         """
         return self.fibre_to_simp_map_U, self.fibre_to_simp_map_V
 
-    def draw_channel(self, sGeo, channel: int) -> None:
+    def draw_channel(self, sGeo, channel: int, channel_size: float = 0.1) -> None:
         """Draw a single channel mapping showing fibre positions and the SiPM sensor.
 
         Parameters
@@ -151,6 +151,8 @@ class SciFiMapping:
             The geometry manager for the detector setup.
         channel : int
             Global channel identifier encoding plane type, SiPM unit, and channel index.
+        channel_size : float, optional
+            SiPM channel width in cm used to size the drawn sensor. Default 0.1.
 
         Side Effects
         ------------
@@ -163,7 +165,7 @@ class SciFiMapping:
         locChannel = channel % 1000000
         fibreVol = sGeo.FindVolumeFast("FiberVol")
         R = fibreVol.GetShape().GetDX()
-        DX = 0.025
+        DX = channel_size / 2
         DZ = 0.135
         xmin = 999.0
         xmax = -999.0
@@ -224,10 +226,11 @@ class SciFiMapping:
     def draw_many_channels(
         self,
         sGeo,
-        number_of_channels=20,
+        channel_size=0.1,
+        number_of_channels=10,
         output_file="scifi_mapping_many_channels.pdf",
-        labeling=True,
-        figsize=(16, 16),
+        labeling=False,
+        figsize=(16, 8),
         dpi=300,
         cmap_name="tab20",
         alpha_fibre=0.4,
@@ -236,18 +239,20 @@ class SciFiMapping:
 
         Parameters
         ----------
-        number_of_channels : int, optional
-            Total number of channels to display (split evenly between U and V planes).
-            Default is 20.
         sGeo : ROOT.TGeoManager
             The geometry manager for the detector setup.
+        channel_size : float, optional
+            SiPM channel width in cm used to size the drawn sensors. Default 0.1.
+        number_of_channels : int, optional
+            Total number of channels to display (split evenly between U and V planes).
+            Default is 10.
         output_file : str, optional
             Filename for the saved PDF plot. Default: 'scifi_mapping_all_channels.pdf'.
         labeling : bool, optional
             If True, annotate each SiPM rectangle with channel information.
-            Default is True.
+            Default is False.
         figsize : tuple of float, optional
-            Figure size in inches. Default is (16, 16).
+            Figure size in inches. Default is (16, 8).
         dpi : int, optional
             Resolution of the figure in dots per inch. Default is 300.
         cmap_name : str, optional
@@ -266,7 +271,7 @@ class SciFiMapping:
         # Geometry constants
         fibreVol = sGeo.FindVolumeFast("FiberVol")
         R = fibreVol.GetShape().GetDX()
-        DX, DZ = 0.025, 0.135 / 2
+        DX, DZ = channel_size / 2, 0.135 / 2
 
         # Select your channels. Hardcoded range for demonstration
         # channelsU = sorted(self.fibre_to_simp_map_U.keys())[:10]
@@ -327,8 +332,11 @@ class SciFiMapping:
         AF = ROOT.TVector3()
         BF = ROOT.TVector3()
 
+        cmap = plt.get_cmap(cmap_name)
+        colors = [cmap(i / (n_chan - 1)) for i in range(n_chan)]
         # Loop through all channels
-        for chan in channels:
+        for idx, chan in enumerate(channels):
+            col = colors[idx]
             isU = chan in channelsU
             # decode local channel
             locChan = chan % 1_000_000
@@ -344,7 +352,7 @@ class SciFiMapping:
                 self.scifi.GetPosition(globfiberID, AF, BF)
                 loc = self.scifi.GetLocalPos(fibreID, BF)
                 xs.append(loc[0])
-                ys.append(loc[2])
+                ys.append(loc[2] - 7.47)
 
             # draw fibres (still orange)
             for x, y in zip(xs, ys):
@@ -352,8 +360,9 @@ class SciFiMapping:
                     (x, y),
                     2 * R,
                     2 * R,
-                    fill=False,
-                    edgecolor="black",
+                    # fill=False,
+                    color="orange",
+                    # edgecolor="black",
                     linewidth=1,
                     alpha=alpha_fibre,
                 )
@@ -362,14 +371,15 @@ class SciFiMapping:
             # draw SiPM rect in its unique shade
             self.scifi.GetSiPMPosition(chan, BF, AF)
             loc_siPM = self.scifi.GetLocalPos(fibreID, BF)
-            rx, ry = loc_siPM[0], loc_siPM[2]
+            rx, ry = loc_siPM[0], loc_siPM[2] - 7.47
             rect = patches.Rectangle(
                 (rx - DX, ry - DZ),
                 2 * DX,
                 2 * DZ,
                 linewidth=1,
                 edgecolor="black",
-                facecolor="blue" if isU else "red",  # override with solid colors for clarity,
+                facecolor=col,
+                # facecolor="blue" if isU else "red",  # override with solid colors for clarity,
                 alpha=alpha_fibre * 0.8,
                 hatch="//" if isU else "\\\\",
             )
@@ -386,7 +396,8 @@ class SciFiMapping:
                 fontsize = max(2, min(12, pts * 0.8))
 
                 # label above the rect
-                text = f"SiPM: {(chan // 1000) % 10} \n ch: {chan % 1000}"
+                # text = f"SiPM: {(chan // 1000) % 10} \n ch: {chan % 1000}"
+                text = f"ch: {chan % 1000}"
                 ax.text(
                     rx - DX / 2,
                     ry + DZ + R * 0.1,
@@ -409,7 +420,7 @@ class SciFiMapping:
         ax.set_title("SiPM-Channel Mappings Overlaid", fontsize=24)
         ax.grid(True)
 
-        plt.tight_layout()
+        # plt.tight_layout()
         plt.savefig(output_file)
         plt.close(fig)
         print(f"Saved overlay plot of {n_chan} channels to {output_file}")
@@ -872,10 +883,10 @@ if __name__ == "__main__":
     mapping.make_mapping()
 
     if args.mode == "draw_channel":
-        test_channel = 1000000  # Example channel
-        mapping.draw_channel(sGeo, test_channel)
+        test_channel = 1000010  # Example channel
+        mapping.draw_channel(sGeo, test_channel, channel_size=0.1 / 4)
     elif args.mode == "draw_many_channels":
-        mapping.draw_many_channels(sGeo, number_of_channels=20)
+        mapping.draw_many_channels(sGeo, channel_size=0.1 / 4, number_of_channels=20)
     elif args.mode == "draw_channel_XY":
         mapping.draw_channel_XY(number_of_channels=20, real_event=False)
     elif args.mode == "draw_combined_scifi_views":
