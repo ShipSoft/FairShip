@@ -84,7 +84,7 @@ test = { cmd = "ctest --test-dir build --output-on-failure", depends-on = ["buil
 args = [
   { arg = "vessel", default = "vacuums" },
   { arg = "snd_design", default = "all" },
-  { arg = "muon_shield", default = "TRY_2025" },
+  { arg = "muon_shield", default = "TRY_2026" },
 ]
 cmd = "python macro/run_simScript.py --test --debug 2 --{{ vessel }} --SND --SND_design={{ snd_design }} --shieldName {{ muon_shield }} --EvtGenDecayer --seed 42 --tag ci-test"
 

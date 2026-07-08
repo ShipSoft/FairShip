@@ -133,8 +133,8 @@ ap.add_argument(
 ap.add_argument(
     "--shieldName",
     help="Name of the shield in the database.",
-    default="TRY_2025",
-    choices=["TRY_2025"],
+    default="TRY_2026",
+    choices=["TRY_2025", "TRY_2026"],
 )
 ap.add_argument(
     "--AddMuonShield",

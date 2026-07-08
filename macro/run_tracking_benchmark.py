@@ -88,7 +88,7 @@ sim_cmd = [
     "--SND_design",
     "2",
     "--shieldName",
-    "TRY_2025",
+    "TRY_2026",
     "--tag",
     tag,
     "-o",

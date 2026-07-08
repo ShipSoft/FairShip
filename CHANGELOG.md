@@ -15,6 +15,8 @@ it in future.
 ### Added
 * Add option to split kaons and pions right before they decay, to increase the number of muons
 
+* Added TRY_2026 MS version.
+
 ### Changed
 
 ### Fixed

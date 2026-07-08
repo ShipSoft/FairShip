@@ -17,6 +17,20 @@ from ShipGeoConfig import AttrDict, Config
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
+    "TRY_2026": {
+        "hybrid": False,
+        "WithConstField": False,
+        "params": [
+            [0.0, 115.0, 40.0, 40.0, 119.0, 119.0, 61.5, 61.5, 1.5375, 1.5375, 50.0, 50.0, 0.0, 0.0, 2.05],
+            [15, 150, 62, 62, 11, 11, 12, 12, 1, 1.0, 69, 69, 0, 0, 1.87],
+            [15, 225, 70, 70, 12, 12, 9, 9, 1, 1.0, 77, 77, 0, 0, 1.865],
+            [16, 225, 64, 64, 14, 14, 8, 8, 1.3, 1.3, 71, 71, 0, 0, 1.92],
+            [15, 225, 42, 42, 13, 13, 8, 8, 2.6, 2.6, 47, 47, 0, 0, 1.89],
+            [16, 131, 20, 20, 30, 30, 0, 0, 5.5, 5.5, 22, 22, 0, 0, 0],
+            [15, 168, 20, 30, 20, 30, 22, 12, 5.4, 3.6, 33, 33, 0, 0, -1.42],
+            [19, 200, 38, 69, 51, 51, 8, 8, 3.2894736842105265, 1.36231884057971, 76, 76, 0, 0, -2.035],
+        ],
+    },
     "TRY_2025": {
         "hybrid": False,
         "WithConstField": False,
