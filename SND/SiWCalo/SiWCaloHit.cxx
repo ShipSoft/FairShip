@@ -10,7 +10,7 @@
 #include <iostream>
 
 SiWCaloHit::SiWCaloHit()
-    : ShipHit()
+  : SHiP::DetectorHit()
 {
     flag = true;
 }

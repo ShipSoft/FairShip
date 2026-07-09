@@ -158,10 +158,11 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
         # Get the the center of the next to last magnet (temporary placement)
         # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
-        # 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.
+        # 120 layers at 132 cm will fit, with 140 cm offset final layer of SiWCalo within 10 cm of MTC.
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
+        SiWCalo_total_length = ship_geo.SiWCalo_geo.targetSpacing * ship_geo.SiWCalo_geo.nLayers
         ship_geo.SiliconTarget_geo.zPosition = (
-            ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiliconTarget_total_length / 2
+            ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiWCalo_total_length - SiliconTarget_total_length / 2
         )
         print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)
     SiliconTarget = ROOT.SiliconTarget("SiliconTarget", ROOT.kTRUE)
@@ -185,9 +186,11 @@ def configure_snd_SiWCalo(yaml_file, ship_geo):
     ship_geo.SiWCalo_geo = AttrDict(config['SiWCalo'])
     # Initialize detector
     if ship_geo.SiWCalo_geo.zPosition == "auto":
-        z_shift = ship_geo.SiliconTarget_geo.zPosition + 0.5*(ship_geo.SiliconTarget_geo.nLayers*ship_geo.SiliconTarget_geo.targetThickness+ship_geo.SiliconTarget_geo.targetSpacing) + 3
-        ship_geo.SiWCalo_geo.zPosition = 2840
-        print("SiWCalo zPosition set to ", ship_geo.SiWCalo_geo.zPosition)
+        # Just a bit after the SiW strip detector
+        z_shift_prev = 0.5*( ship_geo.SiliconTarget_geo.nLayers*ship_geo.SiliconTarget_geo.targetSpacing)
+        z_shift_this = 0.5*( ship_geo.SiWCalo_geo.nLayers*ship_geo.SiWCalo_geo.targetSpacing)
+        ship_geo.SiWCalo_geo.zPosition = ship_geo.SiliconTarget_geo.zPosition + z_shift_prev + z_shift_this 
+        print("SiWCalo zPosition set to ", ship_geo.SiWCalo_geo.zPosition)        
     SiWCalo = ROOT.SiWCalo("SiWCalo", ROOT.kTRUE)
     SiWCalo.SetSiWCaloParameters(
         ship_geo.SiWCalo_geo.targetWidth,
@@ -197,6 +200,7 @@ def configure_snd_SiWCalo(yaml_file, ship_geo):
         ship_geo.SiWCalo_geo.nLayers,
         ship_geo.SiWCalo_geo.zPosition,
         ship_geo.SiWCalo_geo.targetThickness,
+        ship_geo.SiWCalo_geo.NPixels,
         ship_geo.SiWCalo_geo.targetSpacing,
         ship_geo.SiWCalo_geo.moduleOffset
     )

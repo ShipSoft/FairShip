@@ -1,16 +1,20 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
+
 #ifndef SND_SIWCALO_SIWCALOPOINT_H_
 #define SND_SIWCALO_SIWCALOPOINT_H_ 1
+#include <cmath>
 
-#include "FairMCPoint.h"
-#include "TObject.h"
+#include "DetectorPoint.h"
 #include "TVector3.h"
 
-class SiWCaloPoint : public FairMCPoint
+class SiWCaloPoint : public SHiP::DetectorPoint
 {
 
   public:
     /** Default constructor **/
-    SiWCaloPoint();
+    SiWCaloPoint() = default;
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -23,21 +27,16 @@ class SiWCaloPoint : public FairMCPoint
      *@param pdgcode  PDG code of MCTrack
      **/
 
-    SiWCaloPoint(Int_t trackID,
-                       Int_t detID,
-                       TVector3 pos,
-                       TVector3 mom,
-                       Double_t tof,
-                       Double_t length,
-                       Double_t eLoss,
-                       Int_t pdgcode);
-
-    /** Destructor **/
-    virtual ~SiWCaloPoint();
-
-    /** Output to screen **/
-    virtual void Print() const;
-    Int_t PdgCode() const { return fPdgCode; }
+  SiWCaloPoint(Int_t trackID,
+	       Int_t detID,
+	       TVector3 pos,
+	       TVector3 mom,
+	       Double_t tof,
+	       Double_t length,
+	       Double_t eLoss,
+	       Int_t pdgcode)
+    : SHiP::DetectorPoint(0, trackID, detID, pos, mom, tof, length, eLoss,
+			  pdgcode) {}
 
     int constexpr GetLayer() { return fDetectorID >> 17;}
     int constexpr GetColumn() { return (fDetectorID >> 14) & 0x3;}
@@ -47,13 +46,7 @@ class SiWCaloPoint : public FairMCPoint
     // Helpers
     int constexpr GetPixelID() { return GetPixelX() + 32 * GetPixelY();} // 0-1023
   
-  private:
-    Int_t fPdgCode;
-
-    SiWCaloPoint(const SiWCaloPoint& point);
-    SiWCaloPoint operator=(const SiWCaloPoint& point);
-
-    ClassDef(SiWCaloPoint, 1)
+    ClassDefOverride(SiWCaloPoint, 2)
 };
 
 #endif   // SND_SIWCALO_SIWCALOPOINT_H_

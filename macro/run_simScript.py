@@ -361,7 +361,7 @@ parser.add_argument(
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action="store_true")
 parser.add_argument(
     "--SND_design",
-    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC + SiliconTarget",
+    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC + SiliconTarget,  3: MTC + SiliconTarget + SiW Pixels",
     nargs="+",
     default=[2],
 )
@@ -479,13 +479,13 @@ if options.reproducible and options.debug == 0:
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
 elif options.debug == 1:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 2:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 elif options.debug == 3:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,

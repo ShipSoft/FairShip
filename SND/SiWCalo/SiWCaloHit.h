@@ -1,12 +1,12 @@
 #ifndef SND_SIWCALO_SIWCALOHIT_H_
 #define SND_SIWCALO_SIWCALOHIT_H_ 1
 
-#include "ShipHit.h"
+#include "DetectorHit.h"
 #include "SiWCaloPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
 
-class SiWCaloHit : public ShipHit
+class SiWCaloHit : public SHiP::DetectorHit
 {
   public:
     /** Default constructor **/
@@ -20,6 +20,7 @@ class SiWCaloHit : public ShipHit
     virtual ~SiWCaloHit();
 
     /** Output to screen **/
+    using SHiP::DetectorHit::Print;
     void Print();
     // void Print() const;
     Float_t GetSignal() { return fSignal; };

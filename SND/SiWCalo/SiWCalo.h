@@ -23,6 +23,7 @@ class SiWCalo : public FairDetector
                                     Int_t nLayers,
                                     Double_t zPosition,
                                     Double_t targetThickness,
+			            Double_t NPixels,
                                     Double_t targetSpacing,
                                     Double_t moduleOffset);
 
@@ -30,7 +31,8 @@ class SiWCalo : public FairDetector
                                     Double_t sensorWidth,
                                     Double_t sensorLength,
                                     Double_t planeSpacing,
-                                    TGeoMedium* material,
+				    Double_t NPixels,
+				    TGeoMedium* material,
                                     Int_t layerId);
 
     virtual void ConstructGeometry();
@@ -75,6 +77,7 @@ class SiWCalo : public FairDetector
     Int_t fLayers;
     Double_t fZPosition;
     Double_t fTargetThickness;
+    Double_t fNPixels;
     Double_t fTargetSpacing;
     Double_t fModuleOffset;
 

@@ -102,6 +102,7 @@ void SiWCalo::SetSiWCaloParameters(Double_t targetWidth,
                                                Int_t nLayers,
                                                Double_t zPosition,
                                                Double_t targetThickness,
+				               Double_t NPixels,
                                                Double_t targetSpacing,
                                                Double_t moduleOffset)
 {
@@ -113,6 +114,7 @@ void SiWCalo::SetSiWCaloParameters(Double_t targetWidth,
     fLayers = nLayers;
     fZPosition = zPosition;
     fTargetThickness = targetThickness;
+    fNPixels = NPixels;
     fTargetSpacing = targetSpacing;
     fModuleOffset = moduleOffset;
 }
@@ -121,14 +123,16 @@ TGeoVolume* SiWCalo::CreateSiliconPlanes(const char* name,
                                                Double_t width,
                                                Double_t length,
                                                Double_t spacing,
-                                               TGeoMedium* silicon,
+					       Double_t NPixels,
+					       TGeoMedium* silicon,
                                                Int_t layerId)
 {
     // ------------------------------------------------------------
     // Pixel segmentation
     // ------------------------------------------------------------
-    const Int_t nPixX = 32; // In one line there are 4 asics with 8 pixels each => 32 pixels
-    const Int_t nPixY = 32; // 32X32=1024 pixels
+    // Factor 2 because now we're considering 2x2 ASUS array
+    const Int_t nPixX = NPixels; // In one line there are 4 asics with 8 pixels each => 32 pixels
+    const Int_t nPixY = NPixels; // 32X32=1024 pixels
 
     Double_t pixX = width  / nPixX;
     Double_t pixY = length / nPixY;
@@ -236,7 +240,8 @@ void SiWCalo::ConstructGeometry()
                                                         fSensorWidth,
                                                         fSensorLength,
                                                         fTargetSpacing - fTargetThickness - 2. * fModuleOffset,
-                                                        Silicon,
+                                                        fNPixels,
+							Silicon,
                                                         i);
         envVol->AddNode(siliconPlanes, i, new TGeoTranslation(0, 0, zPos + fTargetThickness + fModuleOffset));
     }

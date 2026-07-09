@@ -124,7 +124,7 @@ def main():
     parser.add_argument("-f", "--file", required=True, help="Geometry ROOT file")
     parser.add_argument("--start", type=float, nargs=3, required=True, help="Start x y z (cm)")
     parser.add_argument("--end",   type=float, nargs=3, required=True, help="End x y z (cm)")
-    parser.add_argument("--step",  type=float, default=1.0, help="Step size in cm (default: 0.001 cm)")
+    parser.add_argument("--step",  type=float, default=0.001, help="Step size in cm (default: 0.001 cm)")
     args = parser.parse_args()
 
     ROOT.gROOT.SetBatch(True)

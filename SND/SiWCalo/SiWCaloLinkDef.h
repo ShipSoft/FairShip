@@ -7,5 +7,7 @@
 #pragma link C++ class SiWCalo+;
 #pragma link C++ class SiWCaloPoint+;
 #pragma link C++ class SiWCaloHit+;
+#pragma link C++ class SHiP::Detector<SiWCaloPoint>-;
+#pragma link C++ class std::vector<SiWCaloPoint>+;
 
 #endif
