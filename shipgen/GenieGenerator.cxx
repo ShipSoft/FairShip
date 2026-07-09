@@ -8,6 +8,7 @@
 
 #include "FairPrimaryGenerator.h"
 #include "MeanMaterialBudget.h"
+#include "ShipUnit.h"
 #include "TFile.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoEltu.h"
@@ -18,6 +19,8 @@
 #include "TROOT.h"
 #include "TRandom.h"
 #include "TSystem.h"
+
+using ShipUnit::m;
 
 using std::cout;
 using std::endl;
@@ -34,6 +37,12 @@ GenieGenerator::GenieGenerator() = default;
 Bool_t GenieGenerator::Init(const char* fileName) { return Init(fileName, 0); }
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int startEvent) {
+  if (fGenOption != 0 && fGenOption != 3) {
+    LOG(fatal) << "Invalid GenieGen Option: " << fGenOption
+               << " Please check the option provided with --GenieOption "
+               << endl;
+    return kFALSE;
+  }
   fNuOnly = false;
   LOG(info) << "Opening input file " << fileName;
   if (startEvent < 0) {
@@ -288,8 +297,55 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg) {
   return kTRUE;
 }
 
+Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
+  // Use GENIE geometry driver.
+  // Get event from GENIE TTree. If we reach the end of the file, return
+  // false.
+  if (fTree->GetEntry(fn) == 0) return kFALSE;
+
+  if (fn % 100 == 0) {
+    cout << "Info GenieGenerator: neutrino event-nr " << fn << endl;
+  }
+
+  fn++;
+
+  // Add the neutrino to the MCTrack stack:
+  cpg->AddTrack(neu,            // Neutrino PDG
+                pxv, pyv, pzv,  // Neutrino momentum
+                vtxx * m, vtxy * m,
+                vtxz * m,  // Event vertex [in cm!]
+                -1,        // Parent
+                false);    // Don't track this particle
+  IncrementCounter("generated_events");
+  if (cc) IncrementCounter("cc_events");
+  if (nuel) IncrementCounter("nue_elastic_events");
+  // Add the outgoing lepton and hadrons, if not in nu-only mode
+  if (!fNuOnly) {
+    // Add final state lepton to the MCTrack stack:
+    int outgoing_lepton_pdg = neu;
+    if (cc) outgoing_lepton_pdg = copysign(TMath::Abs(neu) - 1, neu);
+    if (nuel) outgoing_lepton_pdg = 11;
+
+    bool track_outgoing_lepton = (cc || nuel);
+    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * m, vtxy * m,
+                  vtxz * m, 0, track_outgoing_lepton);
+    IncrementCounter("outgoing_leptons_stored");
+
+    // Add final state hadrons to the MCTrack stack
+    for (int i_hadron = 0; i_hadron < nf; i_hadron++) {
+      cpg->AddTrack(pdgf[i_hadron], pxf[i_hadron], pyf[i_hadron], pzf[i_hadron],
+                    vtxx * m, vtxy * m, vtxz * m, 0, true);
+      IncrementCounter("outgoing_hadrons_stored");
+    }
+  }
+  return kTRUE;
+}
+
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  if (fGenOption == 3) return this->ReadEventGeometryDriver(cpg);
+  // Read simple event format from GENIE. Vertex positions need to be
+  // generated here
   // some start/end positions in z (emulsion to Tracker 1)
   Double_t start[3] = {0., 0., startZ};
   Double_t end[3] = {0., 0., endZ};
@@ -350,33 +406,22 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   fTree->GetEntry(fn % fNevents);
   fn++;
   if (fn % 100 == 0) {
-    cout << "Info GenieGenerator: neutrino event-nr " << fn << endl;
+    LOG(info) << "Info GenieGenerator: neutrino event-nr " << fn << endl;
   }
 
   // Incoming neutrino, get a random px,py
-  // cout << "Info GenieGenerator: neutrino " << neu << "p-in "<< pzv << " nf
-  // "<< nf << endl; cout << "Info GenieGenerator: ztarget " << ztarget << endl;
   Double_t mparam[10];
   Double_t pout[3] = {0., 0., -1.};
   Double_t txnu = 0;
   Double_t tynu = 0;
   // Does this neutrino fly through material? Otherwise draw another pt..
-  // cout << "Info GenieGenerator Start bparam while loop" << endl;
   while (pout[2] < 0.) {
-    //***OLD**** Keep for comparison maybe??
-    // generate pt of ~0.3 GeV
-    // pout[0] = gRandom->Exp(0.2);
-    // pout[1] = gRandom->Exp(0.2);
-    // pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
-
-    //**NEW** get pt of this neutrino from 2D hists.
+    // get pt of this neutrino from 2D hists.
     Int_t idhnu = TMath::Abs(neu) + idbase;
     if (neu < 0) idhnu += 1000;
     Int_t nbinmx = pxhist[idhnu]->GetNbinsX();
     Double_t pl10 = log10(pzv);
     Int_t nbx = pxhist[idhnu]->FindBin(pl10);
-    // printf("idhnu %d, p %f log10(p) %f bin,binmx %d %d
-    // \n",idhnu,pzv,pl10,nbx,nbinmx);
     if (nbx < 1) nbx = 1;
     if (nbx > nbinmx) nbx = nbinmx;
     Double_t ptlog10 = pyslice[idhnu][nbx]->GetRandom();
@@ -387,29 +432,19 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     pout[0] = cos(phi) * pt;
     pout[1] = sin(phi) * pt;
     pout[2] = pzv * pzv - pt * pt;
-    // printf("p= %f pt=%f
-    // px,py,pz**2=%f,%f,%f\n",pzv,pt,pout[0],pout[1],pout[2]);
 
     if (pout[2] >= 0.) {
       pout[2] = TMath::Sqrt(pout[2]);
       if (gRandom->Uniform(-1., 1.) < 0.) pout[0] = -pout[0];
       if (gRandom->Uniform(-1., 1.) < 0.) pout[1] = -pout[1];
-      // cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " <<
-      // pout[1] << ", " << pout[2] << endl;
       //  xyz at start and end
       start[0] = (pout[0] / pout[2]) * (start[2] - ztarget);
       start[1] = (pout[1] / pout[2]) * (start[2] - ztarget);
-      // cout << "Info GenieGenerator: neutrino xyz-start " << start[0] << "-"
-      // << start[1] << "-" << start[2] << endl;
       txnu = pout[0] / pout[2];
       tynu = pout[1] / pout[2];
       end[0] = txnu * (end[2] - ztarget);
       end[1] = tynu * (end[2] - ztarget);
-      // cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" <<
-      // end[1] << "-" << end[2] << endl; get material density between these two
-      // points
       shipgen::MeanMaterialBudget(start, end, mparam);
-      // printf("param %e %e %e \n",bparam,mparam[6],mparam[7]);
     }
   }
   // loop over trajectory between start and end to pick an interaction point
@@ -434,21 +469,18 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       TGeoMaterial* mat = nullptr;
       if (node && !gGeoManager->IsOutside()) {
         mat = node->GetVolume()->GetMaterial();
-        // cout << "Info GenieGenerator: mat " <<  count << ", " <<
-        // mat->GetName() << ", " << mat->GetDensity() << endl; density relative
-        // to Prob largest density along this trajectory, i.e. use rho(Pt)
+        // relative to Prob largest density along this trajectory, i.e. use
+        // rho(Pt)
         prob2int = mat->GetDensity() / mparam[7];
         if (prob2int > 1.)
-          LOG(warning) << "GenieGenerator: prob2int > Maximum density???? "
+          LOG(warning) << " GenieGenerator: prob2int > Maximum density????"
                        << prob2int << " maxrho:" << mparam[7]
-                       << " material: " << mat->GetName();
+                       << " material: " << mat->GetName() << endl;
       } else {
         prob2int = 0.;
       }
     }
   }
-  // cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count <<
-  // endl;
 
   Double_t zrelative = z - ztarget;
   Double_t tof = TMath::Sqrt(x * x + y * y + zrelative * zrelative) /
