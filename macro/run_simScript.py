@@ -760,10 +760,11 @@ if options.command == "Genie":
     Geniegen = ROOT.GenieGenerator()
 
     GenieOptions = {"simple_gevgen": 0, "genie_geometry": 3}
-    Geniegen.SetGenerationOption(GenieOptions[options.GenieOption])  # 0 standard, 3 GENIE geometry driver
+    genie_option = GenieOptions[options.GenieOption]  # 0 standard, 3 GENIE geometry driver
+    Geniegen.SetGenerationOption(genie_option)
     if not Geniegen.Init(inputFile, options.firstEvent):
         raise RuntimeError(f"Failed to initialize GenieGenerator from input: {inputFile}")
-    if GenieOptions[options.GenieOption] == 0:
+    if genie_option == 0:
         Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
     primGen.AddGenerator(Geniegen)
     ROOT.SetOwnership(Geniegen, False)  # C++ FairPrimaryGenerator takes ownership
