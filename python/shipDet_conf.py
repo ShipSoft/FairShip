@@ -156,6 +156,12 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
+        # SiliconTarget sits just upstream of the SiWCalo, so its auto-placement
+        # needs the SiWCalo length, which lives in a sibling config file
+        # (SiWCalo is configured after SiliconTarget, so it isn't in ship_geo yet).
+        siwcalo_yaml = os.path.join(os.path.dirname(yaml_file), "SiWCalo_config.yaml")
+        with open(siwcalo_yaml) as siwcalo_file:
+            ship_geo.SiWCalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
         # Get the the center of the next to last magnet (temporary placement)
         # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
         # 120 layers at 132 cm will fit, with 140 cm offset final layer of SiWCalo within 10 cm of MTC.
@@ -184,6 +190,8 @@ def configure_snd_SiWCalo(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
     ship_geo.SiWCalo_geo = AttrDict(config['SiWCalo'])
+    # ship_geo.SiliconTarget_geo is already populated (with its resolved
+    # zPosition) by configure_snd_siliconTarget, which runs first in the dispatch.
     # Initialize detector
     if ship_geo.SiWCalo_geo.zPosition == "auto":
         # Just a bit after the SiW strip detector
@@ -348,20 +356,20 @@ def configure(run, ship_geo):
                     - 5 * u.cm,  # 16 cm width of UpstreamTagger (8 cm half-width)
                     ship_geo.cave.floorHeightMuonShield,
                 )
-           elif design == 3:
+            elif design == 3:
                 # SND design 3 -- MTC/SiliconTarget/SiWCalo
-                configure_snd_mtc(
-                    os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
-                    ship_geo
-                )
-                configure_snd_siliconTarget(
-                    os.path.join(os.environ["FAIRSHIP"], "geometry", "SiliconTarget_config.yaml"),
-                    ship_geo
-                )
-                configure_snd_SiWCalo(
-                    os.path.join(os.environ["FAIRSHIP"], "geometry", "SiWCalo_config.yaml"),
-                    ship_geo
-                )
+                detector_configs = {
+                    "MTC_config": configure_snd_mtc,
+                    "SiliconTarget_config": configure_snd_siliconTarget,
+                    "SiWCalo_config": configure_snd_SiWCalo
+                    }
+                for config in detector_configs:
+                    detector_configs[config](
+                        os.path.join(os.environ["FAIRSHIP"], "geometry", config + ".yaml"),
+                        ship_geo
+                    )
+
+
             else:
                 print(f"Warning: SND design {design} is not recognized.")
 
