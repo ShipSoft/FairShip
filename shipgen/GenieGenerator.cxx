@@ -8,6 +8,7 @@
 
 #include "FairPrimaryGenerator.h"
 #include "MeanMaterialBudget.h"
+#include "ShipUnit.h"
 #include "TFile.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoEltu.h"
@@ -18,7 +19,6 @@
 #include "TROOT.h"
 #include "TRandom.h"
 #include "TSystem.h"
-#include "ShipUnit.h"
 
 using ShipUnit::m;
 
@@ -314,8 +314,8 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
                 pxv, pyv, pzv,  // Neutrino momentum
                 vtxx * m, vtxy * m,
                 vtxz * m,  // Event vertex [in cm!]
-                -1,            // Parent
-                false);        // Don't track this particle
+                -1,        // Parent
+                false);    // Don't track this particle
   IncrementCounter("generated_events");
   if (cc) IncrementCounter("cc_events");
   if (nuel) IncrementCounter("nue_elastic_events");
@@ -327,8 +327,8 @@ Bool_t GenieGenerator::ReadEventGeometryDriver(FairPrimaryGenerator* cpg) {
     if (nuel) outgoing_lepton_pdg = 11;
 
     bool track_outgoing_lepton = (cc || nuel);
-    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * m,
-                  vtxy * m, vtxz * m, 0, track_outgoing_lepton);
+    cpg->AddTrack(outgoing_lepton_pdg, pxl, pyl, pzl, vtxx * m, vtxy * m,
+                  vtxz * m, 0, track_outgoing_lepton);
     IncrementCounter("outgoing_leptons_stored");
 
     // Add final state hadrons to the MCTrack stack
@@ -416,8 +416,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   Double_t tynu = 0;
   // Does this neutrino fly through material? Otherwise draw another pt..
   while (pout[2] < 0.) {
-
-    //get pt of this neutrino from 2D hists.
+    // get pt of this neutrino from 2D hists.
     Int_t idhnu = TMath::Abs(neu) + idbase;
     if (neu < 0) idhnu += 1000;
     Int_t nbinmx = pxhist[idhnu]->GetNbinsX();
@@ -475,8 +474,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         prob2int = mat->GetDensity() / mparam[7];
         if (prob2int > 1.)
           LOG(warning) << " GenieGenerator: prob2int > Maximum density????"
-                << prob2int << " maxrho:" << mparam[7]
-                << " material: " << mat->GetName() << endl;
+                       << prob2int << " maxrho:" << mparam[7]
+                       << " material: " << mat->GetName() << endl;
       } else {
         prob2int = 0.;
       }
@@ -509,7 +508,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     // last, all others
     for (int i = 0; i < nf; i++) {
       pp = Rotate(x, y, zrelative, pxf[i], pyf[i], pzf[i]);
-      cpg->AddTrack(pdgf[i], pp[0], pp[1], pp[2], x, y, z, 0, true, Ef[i], tof, 
+      cpg->AddTrack(pdgf[i], pp[0], pp[1], pp[2], x, y, z, 0, true, Ef[i], tof,
                     mparam[0] * mparam[4]);
       IncrementCounter("outgoing_hadrons_stored");
       // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
