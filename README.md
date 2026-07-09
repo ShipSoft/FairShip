@@ -96,7 +96,7 @@ PS: no need to source the environment from cvmfs with this...
     ```bash
     pixi shell
     cd <path_to_your_workdir>
-    python <path_to_your_>/FairShip/macro/run_simScript.py --tag my-simulation
+    python <path_to_FairShip>/macro/run_simScript.py --tag my-simulation
     ```
 
 ### Using the pre-built package

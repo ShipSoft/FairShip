@@ -694,7 +694,10 @@ if options.command == "PG":
         sys.exit(0)
     myPgun.SetPRange(options.Estart, options.Eend)
     myPgun.SetPhiRange(0, 360)  # // Azimuth angle range [degree]
-    myPgun.SetThetaRange(options.thetamin, options.thetamax)  # // Polar angle in lab system range [degree]
+    if (options.thetamin>=0 and options.thetamax<=90 and options.thetamin <= options.thetamax):
+        myPgun.SetThetaRange(options.thetamin, options.thetamax)  # // Polar angle in lab system range [degree]
+    else:
+        myPgun.SetThetaRange(0,90)  # // Polar angle in lab system range [degree]
     if options.bothCharges:
         myPgun.SetBothCharges(True, options.chargeFraction)
     if options.multiplePG:

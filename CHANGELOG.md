@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add classes in muonDIS/ to track muon path in material and generate DIS vertices in different materials.
+
 ### Changed
 
 ### Fixed

@@ -13,10 +13,8 @@ This folder contains the necessary processors to create DIS events from input mu
   - The separate volumes are:
     - muon shied "MS"
     - UBT detector "UBT" (now just a dummy plane)
-    - SBT detector "SBT"
-      - to do: separate into different materials
-    - SST straws and gas for tracker station 1 only
-      - to do : add frame, not there in latest FairShip master as of Jun8th 2026
+    - SBT detector "SBTsens" for liquid scintillator and "SBTfr" for frame material
+    - SST detector "SSTsens" for liquid scintillator and "SSTfr" for frame material
     - Helium "He"
     - Air "Air" from before and after UBT, after balloon, cavern, SST.
     - The rest "REST" anything not taken into account in the previous categories.

@@ -45,12 +45,14 @@ logging.info(f"Path to MuonBackground : {args.inputfile}")
 theseed = int(time.time())
 print(theseed)
 
-fgeo = r.TFile.Open(args.geoFile)
-# Read geometry
-geo = fgeo.Get("FAIRGeom")
+# Read geofile to get gGeoManager
+r.TGeoManager.Import(args.geoFile)
 
-# Make it the global geometry manager
-r.gGeoManager = geo
+if not r.gGeoManager:
+    logging.error("Failed to load geometry from '%s'", args.geoFile)
+    sys.exit(1)
+
+logging.info("Geometry successfully loaded.")
 
 # Check
 r.gGeoManager.Print()  # Read geometry
