@@ -42,6 +42,12 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
                                  Double_t width, Double_t height,
                                  Double_t thickness, Int_t LayerId);
   void ConstructGeometry() override;
+  Int_t GetNLayersPerBlock() const { return fnLayPerBlock; }
+  /** Map a global layer index (0..fLayers-1) to its block index (0..fnB-1) **/
+  Int_t BlockForLayer(Int_t layer) const {
+    Int_t b = (fnLayPerBlock > 0) ? layer / fnLayPerBlock : 0;
+    return (b < fnB) ? b : fnB - 1;
+  }
   /** Get position of single fibre in global coordinate system**/
   void GetPosition(Int_t fDetectorID, TVector3& vLeft,
                    TVector3& vRight);  // or top and bottom
@@ -101,6 +107,9 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
   Int_t fNSiPMChan;          // Number of SiPM channels
   Int_t fChannelAggregated;  // Number of SiPM channels to be aggregated
   Int_t fNSiPMs = 1;         // Default number of SiPMs
+  static constexpr Int_t fnB = 3;             // Number of blocks (segments) for MTC
+  Int_t fnLayPerBlock = 0;
+  Double_t ironPlateSizes[fnB] = {40., 50., 60.}; // strictly fixed by the Muon Shield Design
   static constexpr Int_t kMaxChannelsPerSiPM = 1000;
   // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
   Int_t fNMats = 1;

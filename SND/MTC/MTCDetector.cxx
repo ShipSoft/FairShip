@@ -164,6 +164,7 @@ void MTCDetector::SetMTCParameters(
   fFieldY = field_strength;
   fSciFiActiveX = fWidth - fWidth * tan(fSciFiBendingAngle * TMath::DegToRad());
   fSciFiActiveY = fHeight;
+  fnLayPerBlock = fLayers / fnB;
 }
 
 // Updated SciFi module builder with fiber placements
@@ -341,13 +342,20 @@ void MTCDetector::ConstructGeometry() {
   envVol->SetTransparency(50);
 
   // --- Outer Iron Layer (gray) ---
-  auto ironBox =
-      new TGeoBBox("MTC_iron", fWidth / 2, fHeight / 2, fIronThick / 2);
-  auto ironVol = new TGeoVolume("MTC_iron", ironBox, ironMed);
-  ironVol->SetLineColor(kGray + 1);
-  ironVol->SetTransparency(20);
-  // Enable the field in the iron volume
-  if (fFieldY != 0) ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
+  // Create a segment-like structure for the iron passive blocks:
+  //  n // 3 layers with 40x40, n // 3 layers with 50x50, n // 3 layers with 60x60
+  // Fixed by the Muon Shield construction
+  TGeoBBox* ironBoxes[fnB];
+  TGeoVolume* ironVols[fnB];
+  for (int i{0}; i < fnB; i++){
+    std::string iron_label = Form("MTC_iron_%d", i);
+    ironBoxes[i] = new TGeoBBox(iron_label.c_str(), ironPlateSizes[i] / 2, ironPlateSizes[i] / 2, fIronThick / 2);
+    ironVols[i] = new TGeoVolume(iron_label.c_str(), ironBoxes[i], ironMed);
+    ironVols[i]->SetLineColor(kGray + 1);
+    ironVols[i]->SetTransparency(20);
+    // Enable the field in the iron volume
+    if (fFieldY != 0) ironVols[i]->SetField(new TGeoUniformMagField(0, fFieldY, 0));
+  }
 
   // --- Assemble the layers into the envelope ---
   TGeoVolumeAssembly* sensitiveModule = new TGeoVolumeAssembly("MTC_layer");
@@ -363,7 +371,8 @@ void MTCDetector::ConstructGeometry() {
 
     // Place the Outer Iron layer (shifted down by half the SciFi+scint
     // thickness)
-    envVol->AddNode(ironVol, i,
+    int blockNumber = BlockForLayer(i);
+    envVol->AddNode(ironVols[blockNumber], i,
                     new TGeoTranslation(0, 0, zPos + fIronThick / 2));
     // Place the sensitive module (SciFi + Scintillator) at the correct z
     // position
