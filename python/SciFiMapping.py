@@ -350,9 +350,9 @@ class SciFiMapping:
                     else fibreID + 100000000 + 1000000 + 1 * 100000
                 )
                 self.scifi.GetPosition(globfiberID, AF, BF)
-                loc = self.scifi.GetLocalPos(fibreID, BF)
+                loc = self.scifi.GetLocalPos(globfiberID, BF)
                 xs.append(loc[0])
-                ys.append(loc[2] - 7.47)
+                ys.append(loc[2])
 
             # draw fibres (still orange)
             for x, y in zip(xs, ys):
@@ -370,8 +370,8 @@ class SciFiMapping:
 
             # draw SiPM rect in its unique shade
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc_siPM = self.scifi.GetLocalPos(fibreID, BF)
-            rx, ry = loc_siPM[0], loc_siPM[2] - 7.47
+            loc_siPM = self.scifi.GetLocalPos(globfiberID, BF)
+            rx, ry = loc_siPM[0], loc_siPM[2]
             rect = patches.Rectangle(
                 (rx - DX, ry - DZ),
                 2 * DX,
@@ -437,7 +437,7 @@ class SciFiMapping:
         """Plot SciFi channel ribbons and SiPM boxes in X–Y view.
 
         Simplified X–Y view: one ribbon per channel (no per-fiber loops).
-        Ribbons span Y from -25 to +25 (length=50 cm), thickness equal
+        Ribbons span Y from -25 to +25 (length=60 cm), thickness equal
         to channel height = 2*DZ, tilted +5° for U-plane channels, -5° for
         V-plane. SiPM boxes sit on top at y=25→25+2*DZ.
 
@@ -463,7 +463,7 @@ class SciFiMapping:
         # 2) Geometry constants
         DZ = 0.135 / 2  # SiPM half-height [cm]
         DX = 0.025  # SiPM half-width [cm]
-        L = 50.0  # ribbon length (full Y-span) [cm]
+        L = 60.0  # ribbon length (full Y-span) [cm]
         angle_U = -5.0  # tilt for U
         angle_V = +5.0  # tilt for V
 
@@ -738,7 +738,7 @@ class SciFiMapping:
 
         DZ = 0.135 / 2
         DX = 0.025
-        L = 50.0
+        L = 60.0
         angleU = 5.0
         angleV = -5.0
         centerU = [c for c, x in self.sipm_pos_U.items() if abs(x) < DX][0]

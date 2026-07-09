@@ -560,7 +560,9 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B) {
                          : "/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011");
   path += sID(4, 5);
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-  nav->cd(path);
+  if (!nav->cd(path)) {
+    LOG(fatal) << "MTCDetector::GetPosition: geometry path not found: " << path;
+  }
   TGeoNode* W = nav->GetCurrentNode();
   TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
 
@@ -586,7 +588,9 @@ TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob) {
   TString path = "/cave/MTC_1/MTC_layer_" + stationID +
                  ((plane_type == 0) ? "/MTC_scifi_U_0" : "/MTC_scifi_V_0");
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-  nav->cd(path);
+  if (!nav->cd(path)) {
+    LOG(fatal) << "MTCDetector::GetLocalPos: geometry path not found: " << path;
+  }
   Double_t aglob[3];
   Double_t aloc[3];
   glob->GetXYZ(aglob);
@@ -631,16 +635,18 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) {
                                     : "/MTC_scifi_V_0/MTC_epoxyMat_0");
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
   Double_t glob[3] = {0, 0, 0};
+  if (!nav->cd(path)) {
+    LOG(fatal) << "MTCDetector::GetSiPMPosition: geometry path not found: "
+               << path;
+  }
   loc[0] = locPosition;
   loc[1] = -fFiberLength / 2;
-  loc[2] = 7.47;
-  nav->cd(path);
+  loc[2] = 0;  // SiPM sits at the epoxy-mat centre in local z
   nav->LocalToMaster(loc, glob);
   A.SetXYZ(glob[0], glob[1], glob[2]);
   loc[0] = locPosition;
   loc[1] = fFiberLength / 2;
-  loc[2] = 7.47;  // hardcoded for now, for some reason required to get the
-                  // correct local position
+  loc[2] = 0;  // SiPM sits at the epoxy-mat centre in local z
   nav->LocalToMaster(loc, glob);
   B.SetXYZ(glob[0], glob[1], glob[2]);
 }
