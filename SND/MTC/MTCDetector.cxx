@@ -343,13 +343,13 @@ void MTCDetector::ConstructGeometry() {
 
   // --- Outer Iron Layer (gray) ---
   // Create a segment-like structure for the iron passive blocks:
-  //  n // 3 layers with 40x40, n // 3 layers with 50x50, n // 3 layers with 60x60
+  //  n // 3 layers with 40x60, n // 3 layers with 50x60, n // 3 layers with 60x60
   // Fixed by the Muon Shield construction
   TGeoBBox* ironBoxes[fnB];
   TGeoVolume* ironVols[fnB];
   for (int i{0}; i < fnB; i++){
     std::string iron_label = Form("MTC_iron_%d", i);
-    ironBoxes[i] = new TGeoBBox(iron_label.c_str(), ironPlateSizes[i] / 2, ironPlateSizes[i] / 2, fIronThick / 2);
+    ironBoxes[i] = new TGeoBBox(iron_label.c_str(), ironPlateSizes[i] / 2, fHeight / 2, fIronThick / 2);
     ironVols[i] = new TGeoVolume(iron_label.c_str(), ironBoxes[i], ironMed);
     ironVols[i]->SetLineColor(kGray + 1);
     ironVols[i]->SetTransparency(20);
