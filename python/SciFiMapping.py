@@ -177,10 +177,12 @@ class SciFiMapping:
             return
         globfiberID = 0
         for fibre in fibresSiPM[locChannel]:
+            station = (channel // 1_000_000) % 100
             globfiberID = (
-                fibre + 100000000 + 1000000 + 0 * 100000
-                if plane_type == 0
-                else fibre + 100000000 + 1000000 + 1 * 100000
+                fibre
+                + 100_000_000
+                + station * 1_000_000
+                + (0 if plane_type == 0 else 1) * 100_000
             )
             self.scifi.GetPosition(globfiberID, AF, BF)
             loc = self.scifi.GetLocalPos(globfiberID, BF)
@@ -202,7 +204,7 @@ class SciFiMapping:
         for i, (x, y) in enumerate(fibre_positions):
             ellipse = patches.Ellipse((x, y), width=2 * R, height=2 * R, color="orange", alpha=0.6)
             ax.add_patch(ellipse)
-        self.scifi.GetSiPMPosition(locChannel, AF, BF)
+        self.scifi.GetSiPMPosition(channel, AF, BF)
         loc = self.scifi.GetLocalPos(globfiberID, BF)
         print(f"SiPM position for channel {channel}: {loc[0]}, {loc[1]}, {loc[2]}")
         rect = patches.Rectangle(
@@ -334,6 +336,7 @@ class SciFiMapping:
 
         cmap = plt.get_cmap(cmap_name)
         colors = [cmap(i / (n_chan - 1)) for i in range(n_chan)]
+        labels = []  # channel-label text artists, used to size the top margin
         # Loop through all channels
         for idx, chan in enumerate(channels):
             col = colors[idx]
@@ -344,10 +347,15 @@ class SciFiMapping:
             # collect fibre positions
             xs, ys = [], []
             for fibreID in (self.fibre_to_simp_map_U if chan in channelsU else self.fibre_to_simp_map_V)[locChan]:
+                # Use the channel's actual station (not a hardcoded 1) so the
+                # fibres are looked up in the same layer the SiPM lives in;
+                # otherwise the two are one module (~7.47 cm) apart in z.
+                station = (chan // 1_000_000) % 100
                 globfiberID = (
-                    fibreID + 100000000 + 1000000 + 0 * 100000
-                    if chan in channelsU
-                    else fibreID + 100000000 + 1000000 + 1 * 100000
+                    fibreID
+                    + 100_000_000
+                    + station * 1_000_000
+                    + (0 if chan in channelsU else 1) * 100_000
                 )
                 self.scifi.GetPosition(globfiberID, AF, BF)
                 loc = self.scifi.GetLocalPos(globfiberID, BF)
@@ -396,17 +404,18 @@ class SciFiMapping:
                 fontsize = max(2, min(12, pts * 0.8))
 
                 # label above the rect
-                # text = f"SiPM: {(chan // 1000) % 10} \n ch: {chan % 1000}"
-                text = f"ch: {chan % 1000}"
-                ax.text(
-                    rx - DX / 2,
-                    ry + DZ + R * 0.1,
-                    text,
-                    ha="left",
-                    va="bottom",
-                    fontsize=fontsize,
-                    color="black",
-                    clip_on=True,
+                text = f"{chan % 1000}"
+                labels.append(
+                    ax.text(
+                        rx - DX / 2,
+                        ry + DZ + R * 0.1,
+                        text,
+                        ha="left",
+                        va="bottom",
+                        fontsize=fontsize,
+                        color="black",
+                        clip_on=True,
+                    )
                 )
 
         # finalize plot
@@ -420,7 +429,20 @@ class SciFiMapping:
         ax.set_title("SiPM-Channel Mappings Overlaid", fontsize=24)
         ax.grid(True)
 
-        # plt.tight_layout()
+        # autoscale ignores text artists, so channel labels above the upper
+        # plane get clipped -- extend the top y-limit to enclose them.
+        if labels:
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+            inv = ax.transData.inverted()
+            y0, y1 = ax.get_ylim()
+            top = y1
+            for label in labels:
+                bbox = label.get_window_extent(renderer)
+                top = max(top, inv.transform((bbox.x0, bbox.y1))[1])
+            ax.set_ylim(y0, top + 0.03 * (y1 - y0))
+
+        plt.tight_layout()
         plt.savefig(output_file)
         plt.close(fig)
         print(f"Saved overlay plot of {n_chan} channels to {output_file}")
@@ -707,17 +729,18 @@ class SciFiMapping:
             locChan = chan % 1000000
             fmap = self.fibre_to_simp_map_U if chan in chansU else self.fibre_to_simp_map_V
             xs, zs = [], []
+            station = (chan // 1_000_000) % 100
             for fid in fmap[locChan]:
-                gid = fid + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
+                gid = fid + int(1e8 + station * 1e6 + (0 if chan in chansU else 1) * 1e5)
                 self.scifi.GetPosition(gid, AF, BF)
-                loc = self.scifi.GetLocalPos(fid, BF)
+                loc = self.scifi.GetLocalPos(gid, BF)
                 xs.append(loc[0])
                 zs.append(loc[2])
             for x, z in zip(xs, zs):
                 ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc = self.scifi.GetLocalPos(fid, BF)
+            loc = self.scifi.GetLocalPos(gid, BF)
             rx, rz = loc[0], loc[2]
             rect = patches.Rectangle(
                 (rx - DX, rz - DZ),
@@ -871,12 +894,14 @@ if __name__ == "__main__":
     sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
     run.SetSink(sink)
     ROOT.SetOwnership(sink, False)  # C++ FairRun takes ownership
-    run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used
+    run.SetUserConfig("g4Config.C")  # geant4 transport not used
     rtdb = run.GetRuntimeDb()
     modules = shipDet_conf.configure(run, ship_geo)
     run.Init()
     print("configured geofile")
-    sGeo = fgeo.FAIRGeom
+    # After run.Init() the geometry is live in gGeoManager; re-reading FAIRGeom
+    # from the file would conflict with the TGeoManager singleton and return null.
+    sGeo = ROOT.gGeoManager
     top = sGeo.GetTopVolume()
     # -----Create SciFiMapping instance--------------------------------
     mapping = SciFiMapping(modules)
@@ -884,9 +909,11 @@ if __name__ == "__main__":
 
     if args.mode == "draw_channel":
         test_channel = 1000010  # Example channel
-        mapping.draw_channel(sGeo, test_channel, channel_size=0.1 / 4)
+        mapping.draw_channel(sGeo, test_channel, channel_size=0.1)
     elif args.mode == "draw_many_channels":
-        mapping.draw_many_channels(sGeo, channel_size=0.1 / 4, number_of_channels=20)
+        mapping.draw_many_channels(sGeo, channel_size=0.1,
+                                   labeling = True,
+                                   number_of_channels=20)
     elif args.mode == "draw_channel_XY":
         mapping.draw_channel_XY(number_of_channels=20, real_event=False)
     elif args.mode == "draw_combined_scifi_views":
