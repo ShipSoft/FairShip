@@ -105,16 +105,18 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
   static constexpr Double_t zFiberMat2 = 1.175 / 10;
   static constexpr Double_t zUpperIronInt = 3.35 / 10;
   static constexpr Double_t fFiberRadius = 0.01125;
-  static constexpr Int_t numFiberLayers = 6;  // number of fiber layers in epoxy block
-  Int_t fNSiPMChan;          // Number of SiPM channels
-  Int_t fChannelAggregated;  // Number of SiPM channels to be aggregated
-  Int_t fNSiPMs = 1;         // Default number of SiPMs
-  static constexpr Int_t fnB = 3;             // Number of blocks (segments) for MTC
+  static constexpr Int_t numFiberLayers =
+      6;                           // number of fiber layers in epoxy block
+  Int_t fNSiPMChan;                // Number of SiPM channels
+  Int_t fChannelAggregated;        // Number of SiPM channels to be aggregated
+  Int_t fNSiPMs = 1;               // Default number of SiPMs
+  static constexpr Int_t fnB = 3;  // Number of blocks (segments) for MTC
   Int_t fnLayPerBlock = 0;
-  static constexpr Double_t ironPlateSizes[fnB] = {40., 50., 60.}; // strictly fixed by the Muon Shield Design
+  static constexpr Double_t ironPlateSizes[fnB] = {
+      40., 50., 60.};  // strictly fixed by the Muon Shield Design
   static constexpr Int_t kMaxChannelsPerSiPM = 1000;
   // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
-  Int_t fNMats = 1;         // left for the detailed description
+  Int_t fNMats = 1;  // left for the detailed description
   std::map<Int_t, std::map<Int_t, std::array<float, 2>>>
       fibresSiPM_U;  //! mapping of fibres to SiPM channels
   std::map<Int_t, std::map<Int_t, std::array<float, 2>>>

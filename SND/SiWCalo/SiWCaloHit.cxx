@@ -1,4 +1,7 @@
 #include "SiWCaloHit.h"
+
+#include <iostream>
+
 #include "FairRunSim.h"
 #include "ShipUnit.h"
 #include "SiWCalo.h"
@@ -7,45 +10,35 @@
 #include "TGeoNavigator.h"
 #include "TROOT.h"
 
-#include <iostream>
+SiWCaloHit::SiWCaloHit() : SHiP::DetectorHit() { flag = true; }
 
-SiWCaloHit::SiWCaloHit()
-  : SHiP::DetectorHit()
-{
-    flag = true;
-}
+SiWCaloHit::SiWCaloHit(Int_t detID, const std::vector<SiWCaloPoint*>& V) {
+  // Sum up signal from all points within the hit
+  std::vector<double> _signals;
+  double totalSig = 0;
 
-SiWCaloHit::SiWCaloHit(Int_t detID, const std::vector<SiWCaloPoint*>& V)
-{
-    // Sum up signal from all points within the hit
-    std::vector<double> _signals;
-    double totalSig = 0;
+  for (auto* point : V) {
+    _signals.push_back(point->GetEnergyLoss());
+    fX = point->GetX();
+    fY = point->GetY();
+    fZ = point->GetZ();
+  }
 
-    for (auto* point : V) {
-        _signals.push_back(point->GetEnergyLoss());
-        fX = point->GetX();
-        fY = point->GetY();
-        fZ = point->GetZ();
-    }
+  for (unsigned i = 0; i < _signals.size(); i++) {
+    totalSig += _signals[i];
+  }
 
-    for (unsigned i = 0; i < _signals.size(); i++) {
-        totalSig += _signals[i];
-    }
-
-    fSignal = totalSig;
+  fSignal = totalSig;
 }
 // -----   Destructor   ----------------------------------------------------
 SiWCaloHit::~SiWCaloHit() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void SiWCaloHit::Print()
-{
-    std::cout << Form("SiWCaloHit: Detector ID %d, Layer %d, Pixel X %d, Pixel Y %d, Pixel ID %d, Signal %.2f \n",
-                      fDetectorID,
-                      GetLayer(),
-		      GetPixelX(),
-		      GetPixelY(),
-		      GetPixelID(),
-                      GetSignal());
+void SiWCaloHit::Print() {
+  std::cout << Form(
+      "SiWCaloHit: Detector ID %d, Layer %d, Pixel X %d, Pixel Y %d, Pixel ID "
+      "%d, Signal %.2f \n",
+      fDetectorID, GetLayer(), GetPixelX(), GetPixelY(), GetPixelID(),
+      GetSignal());
 }

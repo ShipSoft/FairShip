@@ -178,12 +178,7 @@ class SciFiMapping:
         globfiberID = 0
         for fibre in fibresSiPM[locChannel]:
             station = (channel // 1_000_000) % 100
-            globfiberID = (
-                fibre
-                + 100_000_000
-                + station * 1_000_000
-                + (0 if plane_type == 0 else 1) * 100_000
-            )
+            globfiberID = fibre + 100_000_000 + station * 1_000_000 + (0 if plane_type == 0 else 1) * 100_000
             self.scifi.GetPosition(globfiberID, AF, BF)
             loc = self.scifi.GetLocalPos(globfiberID, BF)
             print(f"Position for fibre {globfiberID} A: {BF.X()}, {BF.Y()}, {BF.Z()}")
@@ -351,12 +346,7 @@ class SciFiMapping:
                 # fibres are looked up in the same layer the SiPM lives in;
                 # otherwise the two are one module (~7.47 cm) apart in z.
                 station = (chan // 1_000_000) % 100
-                globfiberID = (
-                    fibreID
-                    + 100_000_000
-                    + station * 1_000_000
-                    + (0 if chan in channelsU else 1) * 100_000
-                )
+                globfiberID = fibreID + 100_000_000 + station * 1_000_000 + (0 if chan in channelsU else 1) * 100_000
                 self.scifi.GetPosition(globfiberID, AF, BF)
                 loc = self.scifi.GetLocalPos(globfiberID, BF)
                 xs.append(loc[0])
@@ -736,7 +726,7 @@ class SciFiMapping:
                 loc = self.scifi.GetLocalPos(gid, BF)
                 xs.append(loc[0])
                 zs.append(loc[2])
-            for x, z in zip(xs, zs, strict = True):
+            for x, z in zip(xs, zs, strict=True):
                 ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)
@@ -911,9 +901,7 @@ if __name__ == "__main__":
         test_channel = 1000010  # Example channel
         mapping.draw_channel(sGeo, test_channel, channel_size=0.1)
     elif args.mode == "draw_many_channels":
-        mapping.draw_many_channels(sGeo, channel_size=0.1,
-                                   labeling = True,
-                                   number_of_channels=20)
+        mapping.draw_many_channels(sGeo, channel_size=0.1, labeling=True, number_of_channels=20)
     elif args.mode == "draw_channel_XY":
         mapping.draw_channel_XY(number_of_channels=20, real_event=False)
     elif args.mode == "draw_combined_scifi_views":
