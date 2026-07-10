@@ -96,10 +96,14 @@ class MTCDetector : public SHiP::Detector<MTCDetPoint> {
   // These values mimic the GEANT4 setup:
   static constexpr Double_t lowerIronThick = 0.3;  // 3 mm
   static constexpr Double_t upperIronThick = 0.3;  // 3 mm
-  static constexpr Double_t zLowerIronInt = -3.5 / 10;
-  static constexpr Double_t zFiberMat1 = -1.325 / 10;
-  static constexpr Double_t zFiberMat2 = 1.025 / 10;
-  static constexpr Double_t zUpperIronInt = 3.2 / 10;
+  // Internal SciFi stack z-positions, symmetric about the module-local origin
+  // so the 0.97 cm stack spans [-0.485, +0.485]. The former values carried a
+  // common -0.15 mm datum offset that pushed the lowerIron 0.015 cm into the
+  // outer iron plate below (overlap) and left an equal gap to the scint above.
+  static constexpr Double_t zLowerIronInt = -3.35 / 10;
+  static constexpr Double_t zFiberMat1 = -1.175 / 10;
+  static constexpr Double_t zFiberMat2 = 1.175 / 10;
+  static constexpr Double_t zUpperIronInt = 3.35 / 10;
   static constexpr Double_t fFiberRadius = 0.01125;
   static constexpr Int_t numFiberLayers = 6;  // number of fiber layers in epoxy block
   Int_t fNSiPMChan;          // Number of SiPM channels
