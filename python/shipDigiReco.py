@@ -4,6 +4,7 @@
 import logging
 import os
 from array import array
+from collections import Counter
 
 import acts
 import acts.examples
@@ -49,11 +50,19 @@ class ShipDigiReco:
         self.header = ROOT.FairEventHeader()
         self.eventHeader = self.recoTree.Branch("ShipEventHeader", self.header, 32000, -1)
 
+        #Particle creation from vertices
+        self.fPartArray = ROOT.std.vector("ShipParticle")()
+        self.Particles = self.recoTree.Branch("Particles", self.fPartArray, 32000, -1)
+
         # fitted tracks
         self.fACTSArray = ROOT.std.vector("ActsExamples::RecoTrack")()
         self.fitACTSTracks = self.recoTree.Branch("RecoTracks", self.fACTSArray, 32000, -1)
         self.fACTSVertexArray = ROOT.std.vector("ActsExamples::RecoVertex")()
         self.fitACTSVertices = self.recoTree.Branch("RecoVertices", self.fACTSVertexArray, 32000, -1)
+        self.fitTrack2MC = ROOT.std.vector("int")()
+        self.mcLink = self.recoTree.Branch("fitTrack2MC", self.fitTrack2MC, 32000, -1)
+        self.fTrackletsArray = ROOT.std.vector("Tracklet")()
+        self.Tracklets = self.recoTree.Branch("Tracklets", self.fTrackletsArray, 32000, -1)
 
         #
         if "strawtubes" in global_variables.modules:
@@ -109,23 +118,130 @@ class ShipDigiReco:
         uu = acts.UnitConstants
         self.actsFieldMap = acts.createShipFieldProvider(field_map_path, uu.T)
 
+    def fracMCsame(self, trackids):
+         #Finds the majority MC track ID and its purity fraction
+        if not trackids:
+            return 0.0, -999
+
+        counts = Counter(trackids)
+        tmax, max_count = counts.most_common(1)[0]
+        frac = float(max_count) / len(trackids)
+        
+        return frac, tmax
+
     def reconstruct(self) -> None:
 
 
-        output_tracks, vertices = self.actsTracks()
-
+        geo_ctx = acts.GeometryContext()
         self.fACTSArray.clear()
         self.fACTSVertexArray.clear()
-        geo_ctx = acts.GeometryContext()
+        self.fitTrack2MC.clear()
+        self.fPartArray.clear()
+
+        if hasattr(self, "vetoHitOnTrackArray"):
+            self.vetoHitOnTrackArray.clear()
+
+        output_tracks, vertices, track_hit_indices = self.actsTracks()
 
         vector_ptr = ROOT.addressof(self.fACTSArray)
         vertex_vector_ptr = ROOT.addressof(self.fACTSVertexArray)
 
-        for track in output_tracks:
-            acts.pushRecoTrack(vector_ptr, track, geo_ctx)
+        for track, hit_indices in zip(output_tracks, track_hit_indices):
+            acts.examples.pushRecoTrack(vector_ptr, track, geo_ctx)
+
+            track_ids = []
+            for index in hit_indices:
+                if 0 <= index < len(self.strawHits):
+                    ahit = self.strawHits[index]
+                    track_ids.append(int(ahit[5]))
+
+            _frac, tmax = self.fracMCsame(track_ids)
+            self.fitTrack2MC.push_back(tmax)
+
+            indices_vector = ROOT.std.vector("unsigned int")()
+            for index in hit_indices:
+                if 0 <= index < len(self.strawHits):
+                    ahit = self.strawHits[index]
+                    raw_sim_index = int(ahit[0])
+
+                    indices_vector.push_back(raw_sim_index)
+
+            aTracklet = ROOT.Tracklet(1, indices_vector)
+            self.fTrackletsArray.push_back(aTracklet)
 
         for vtx in vertices:
+
             acts.pushRecoVertex(vertex_vector_ptr, vtx)
+            
+            vtx_tracks = vtx.tracks()
+
+            #Create a ShipParticle from the vertex fit from 2 track vertices
+            if len(vtx_tracks) > 2:
+                continue
+
+            vertex_pos = vtx.position()
+
+            vx = ROOT.TVector3(vertex_pos[2] / 10.0, vertex_pos[1] / 10.0, -vertex_pos[0] / 10.0) #Scale units to cm and rotate
+
+            t1 = int(vtx_tracks[0].trackIndex)
+            t2 = int(vtx_tracks[1].trackIndex)
+
+            mom_daughter1 = vtx_tracks[0].fittedParams.momentum()
+            mom_daughter2 = vtx_tracks[1].fittedParams.momentum()
+            px_mother = mom_daughter1[0] + mom_daughter2[0]
+            py_mother = mom_daughter1[1] + mom_daughter2[1]
+            pz_mother = mom_daughter1[2] + mom_daughter2[2]
+            P = ROOT.TLorentzVector4(px_mother, py_mother, pz_mother, 0)
+
+            acts_covV = vtx.covariance() # 3x3 Eigen matrix in mm^2 (ACTS reco frame)
+            covV = ROOT.TMatrixDSym(3)
+
+            # mm^2 -> cm^2 conversion factor (0.01)
+            s = 0.01
+
+            covV[0][0] = acts_covV(2, 2) * s  
+            covV[1][1] = acts_covV(1, 1) * s  
+            covV[2][2] = acts_covV(0, 0) * s  
+
+            covV[0][1] = -acts_covV(1, 2) * s
+            covV[1][0] = covV[0][1]
+
+            covV[0][2] = -acts_covV(0, 2) * s
+            covV[2][0] = covV[0][2]
+
+            covV[1][2] =  acts_covV(0, 1) * s
+            covV[2][1] = covV[1][2]
+
+            cov_daughter1 = vtx_tracks[0].fittedParams.covariance()
+            cov_daughter2 = vtx_tracks[1].fittedParams.covariance()
+            raw_covP = ROOT.TMatrixDSym(3)
+            for i in range(3):
+                for j in range(3):
+                    raw_covP[i][j] = cov_daughter1(i + 3, j + 3) + cov_daughter2(i + 3, j + 3)
+
+            covP = ROOT.TMatrixDSym(3)
+            covP[0][0] = raw_covP[2][2]
+            covP[1][1] = raw_covP[1][1]
+            covP[2][2] = raw_covP[0][0]
+
+            covP[0][1] = -raw_covP[1][2]
+            covP[1][0] = covP[0][1]
+
+            covP[0][2] = -raw_covP[0][2]
+            covP[2][0] = covP[0][2]
+
+            covP[1][2] =  raw_covP[0][1]
+            covP[2][1] = covP[1][2]
+
+            pos1 = vtx_tracks[0].fittedParams.position()
+            pos2 = vtx_tracks[1].fittedParams.position()
+            doca = math.sqrt((pos1.x() - pos2.x())**2 + (pos1.y() - pos2.y())**2 + (pos1.z() - pos2.z())**2) / 10.0
+
+            particle = ROOT.ShipParticle(9900015, 0, -1, -1, t1, t2, P, vx)
+            particle.SetCovV(covV)
+            particle.SetCovP(covP)
+            particle.SetDoca(doca)
+            self.fPartArray.push_back(particle)
 
         if hasattr(self, "digiSBT"):
             veto_results = calculateSBTDOCA(output_tracks, self.digiSBT.det, self.trackingGeometry, self.actsFieldMap)
@@ -133,7 +249,7 @@ class ShipDigiReco:
             for hitID, distMin in veto_results:
                 self.vetoHitOnTrackArray.push_back(ROOT.vetoHitOnTrack(hitID, distMin))
 
-    def actsTracks(self) -> list:
+    def actsTracks(self) -> tuple:
         self.strawHits.clear()
 
         if global_variables.withT0:
@@ -210,9 +326,9 @@ class ShipDigiReco:
 
                 candidates.append({"pos": pos, "mom": mom, "indices": unique_indices, "charge": charge})
 
-        output_tracks = runTracking(candidates, self.trackingGeometry, self.actsFieldMap, self.strawHits)
+        return runTracking(candidates, self.trackingGeometry, self.actsFieldMap, self.strawHits)
 
-        return output_tracks
+
 
     def digitize(self) -> None:
         self.sTree.t0 = self.random.Rndm() * 1 * u.microsecond

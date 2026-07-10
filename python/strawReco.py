@@ -65,6 +65,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
     acts_index_map = build_acts_index_map(measurements, len(strawHits))
     # Setup output containers
     output_tracks = acts.examples.makeTrackContainer()
+    track_hit_indices_list = []
 
     # Loop over seeds (e.g., from PatRec or Truth)
     for cand in candidates:
@@ -95,10 +96,15 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
             logger.warning("Could not find surface for GeoID: %s", geo_id)
             continue
 
-        # Call the make_seed function to get the required BoundTrackParameters
         initial_params = make_seed(cand["pos"], cand["mom"], cand["charge"], target_surface, geo_ctx, len(strawHits))
 
+        tracks_before_fit = sum(1 for _ in output_tracks)
+
         acts.fitTrack(measurements, filtered_indices, initial_params, output_tracks, trackingGeometry, fieldMap)
+
+        tracks_after_fit = sum(1 for _ in output_tracks)
+        if tracks_after_fit > tracks_before_fit:
+           track_hit_indices_list.append(list(filtered_indices))
 
     vertices = []
     # Define vertex cuts
@@ -127,7 +133,7 @@ def runTracking(candidates, trackingGeometry, fieldMap, strawHits):
         for vtx in vertices:
             print(f"Vertex found at: {vtx.position()}")
 
-    return output_tracks, vertices
+    return output_tracks, vertices, track_hit_indices_list
 
 
 def calculateSBTDOCA(output_tracks, sbt_digis, trackingGeometry, fieldMap):
