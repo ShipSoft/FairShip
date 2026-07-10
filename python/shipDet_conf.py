@@ -388,7 +388,7 @@ def configure(run, ship_geo):
     )
 
     if ship_geo.SND:
-        # If any SND design is 2 (MTC), set SNDSpace for MuonShield
+        # set SNDSpace for MuonShield for any design containing MTC (2 or 3)
         if any(x in getattr(ship_geo, "SND_design", []) for x in (2, 3)):
             MuonShield.SetSNDSpace(
                 hole=True,
