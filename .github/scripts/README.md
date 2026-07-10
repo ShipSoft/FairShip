@@ -9,7 +9,7 @@ The metrics tracking system provides lightweight monitoring of simulation and re
 - **Metrics extraction** (~8KB JSON per configuration vs 10MB+ ROOT files)
 - **Git notes storage** (metrics attached to commits, don't clutter history)
 - **Self-documenting comparison** (each metric specifies its comparison mode)
-- **Automated CI integration** (runs on every PR and master commit)
+- **Automated CI integration** (runs on every PR and main commit)
 
 ## JSON Format
 
@@ -107,7 +107,7 @@ The CI workflow has three jobs for metrics tracking:
    - Runs for all matrix configurations
    - Uploads metrics as artifacts
 
-2. **`store-metrics`**: Stores metrics in git notes (master branch only)
+2. **`store-metrics`**: Stores metrics in git notes (main branch only)
    - Downloads metrics artifacts
    - Stores in `refs/notes/ci/physics-metrics/<config>`
    - Pushes to remote

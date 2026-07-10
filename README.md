@@ -30,7 +30,7 @@ documentation.
 ### Branches
 
 <dl>
-  <dt><code>master</code></dt>
+  <dt><code>main</code></dt>
   <dd>Main development branch.
       All python code is <b>required to be python 3</b>. Python 2 is no longer supported.</dd>
   <dt><code>charmdet</code></dt>

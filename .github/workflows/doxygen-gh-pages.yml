@@ -1,7 +1,7 @@
 name: Deploy Doxygen Docs
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 # Share the gh-pages deploy lock with the plot push jobs in pixi-build.yml so a
 # docs deploy cannot race a plot push to the gh-pages branch.
