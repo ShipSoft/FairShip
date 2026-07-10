@@ -3,11 +3,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-# Share the gh-pages deploy lock with the plot push jobs in pixi-build.yml so a
-# docs deploy cannot race a plot push to the gh-pages branch.
-concurrency:
-  group: gh-pages-deploy
-  cancel-in-progress: false
+# The reusable deploy job below already serializes on the gh-pages-deploy
+# concurrency group (shared with the plot push jobs in pixi-build.yml), so a
+# docs deploy cannot race a plot push. Declaring the same group at the caller
+# run level would deadlock against the job-level one and fail before any step.
 jobs:
   deploy:
     name: Deploy docs
