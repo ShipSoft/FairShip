@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx.html',''); ini
 
 <div class="header">
   <div class="summary">
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">exitHadronAbsorber.cxx File Reference</div></div>
 </div><!--header-->
@@ -102,10 +103,12 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx.html',''); ini
 <code>#include &quot;FairGeoMedia.h&quot;</code><br />
 <code>#include &quot;FairGeoNode.h&quot;</code><br />
 <code>#include &quot;FairGeoVolume.h&quot;</code><br />
+<code>#include &quot;FairLogger.h&quot;</code><br />
 <code>#include &quot;FairRootManager.h&quot;</code><br />
 <code>#include &quot;FairVolume.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipDetectorList_8h_source.html">ShipDetectorList.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipStack_8h_source.html">ShipStack.h</a>&quot;</code><br />
+<code>#include &quot;TArrayI.h&quot;</code><br />
 <code>#include &quot;TDatabasePDG.h&quot;</code><br />
 <code>#include &quot;TGeoBBox.h&quot;</code><br />
 <code>#include &quot;TGeoBoolNode.h&quot;</code><br />
@@ -114,171 +117,264 @@ $(document).ready(function(){initNavTree('exitHadronAbsorber_8cxx.html',''); ini
 <code>#include &quot;TGeoMaterial.h&quot;</code><br />
 <code>#include &quot;TH1D.h&quot;</code><br />
 <code>#include &quot;TH2D.h&quot;</code><br />
+<code>#include &quot;TLorentzVector.h&quot;</code><br />
+<code>#include &quot;TMCProcess.h&quot;</code><br />
 <code>#include &quot;TParticle.h&quot;</code><br />
 <code>#include &quot;TROOT.h&quot;</code><br />
 <code>#include &quot;TVirtualMC.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for exitHadronAbsorber.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="exitHadronAbsorber_8cxx__incl.png" border="0" usemap="#amuonShieldOptimization_2exitHadronAbsorber_8cxx" alt=""/></div>
 <map name="amuonShieldOptimization_2exitHadronAbsorber_8cxx" id="amuonShieldOptimization_2exitHadronAbsorber_8cxx">
-<area shape="rect" title=" " alt="" coords="2219,5,2402,45"/>
-<area shape="rect" href="exitHadronAbsorber_8h.html" title=" " alt="" coords="963,93,1125,119"/>
-<area shape="poly" title=" " alt="" coords="2219,34,1773,59,1183,96,1139,99,1139,94,1182,91,1773,53,2219,29"/>
-<area shape="rect" title=" " alt="" coords="1405,240,1547,265"/>
-<area shape="poly" title=" " alt="" coords="2219,32,1961,39,1640,53,1360,72,1269,83,1241,89,1228,95,1215,119,1214,130,1218,140,1234,160,1261,179,1295,196,1334,211,1411,234,1410,239,1333,216,1293,201,1258,184,1230,164,1213,142,1209,130,1210,117,1225,91,1240,84,1268,78,1360,66,1640,48,1961,34,2219,26"/>
-<area shape="rect" title=" " alt="" coords="1239,93,1319,119"/>
-<area shape="poly" title=" " alt="" coords="2219,31,2055,36,1836,48,1587,67,1333,96,1332,91,1587,62,1836,42,2055,31,2219,26"/>
-<area shape="rect" title=" " alt="" coords="1343,93,1471,119"/>
-<area shape="poly" title=" " alt="" coords="2219,35,1899,57,1694,74,1485,96,1484,91,1694,69,1898,52,2219,29"/>
-<area shape="rect" title=" " alt="" coords="1495,93,1636,119"/>
-<area shape="poly" title=" " alt="" coords="2219,38,1967,62,1650,96,1649,91,1967,56,2219,32"/>
-<area shape="rect" title=" " alt="" coords="1661,93,1787,119"/>
-<area shape="poly" title=" " alt="" coords="2220,41,1801,96,1801,91,2219,35"/>
-<area shape="rect" title=" " alt="" coords="1812,93,1935,119"/>
-<area shape="poly" title=" " alt="" coords="2219,46,1949,94,1948,89,2219,40"/>
-<area shape="rect" title=" " alt="" coords="1959,93,2076,119"/>
-<area shape="poly" title=" " alt="" coords="2241,48,2074,92,2073,87,2240,43"/>
-<area shape="rect" title=" " alt="" coords="2101,93,2233,119"/>
-<area shape="poly" title=" " alt="" coords="2277,48,2201,89,2199,84,2275,43"/>
-<area shape="rect" title=" " alt="" coords="2257,93,2364,119"/>
-<area shape="poly" title=" " alt="" coords="2313,46,2313,79,2308,79,2308,46"/>
-<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="5,240,147,265"/>
-<area shape="poly" title=" " alt="" coords="2219,31,1501,53,1089,72,917,83,787,96,690,111,616,127,446,169,139,239,137,234,445,164,614,122,689,106,786,91,917,78,1088,66,1501,47,2219,26"/>
-<area shape="rect" href="ShipStack_8h.html" title=" " alt="" coords="457,167,556,192"/>
-<area shape="poly" title=" " alt="" coords="2219,29,1995,32,1681,42,1319,62,1133,77,951,96,845,111,740,130,568,166,567,161,739,125,844,106,950,91,1132,72,1318,57,1681,37,1995,27,2219,24"/>
-<area shape="rect" title=" " alt="" coords="2389,93,2521,119"/>
-<area shape="poly" title=" " alt="" coords="2346,43,2423,84,2420,89,2344,48"/>
-<area shape="rect" title=" " alt="" coords="2545,93,2647,119"/>
-<area shape="poly" title=" " alt="" coords="2380,43,2542,87,2541,92,2378,48"/>
-<area shape="rect" title=" " alt="" coords="2672,93,2803,119"/>
-<area shape="poly" title=" " alt="" coords="2403,41,2662,88,2661,93,2402,46"/>
-<area shape="rect" title=" " alt="" coords="2827,93,2920,119"/>
-<area shape="poly" title=" " alt="" coords="2403,34,2588,58,2814,91,2813,96,2588,63,2402,40"/>
-<area shape="rect" title=" " alt="" coords="2945,93,3069,119"/>
-<area shape="poly" title=" " alt="" coords="2403,33,2638,56,2931,91,2931,96,2637,62,2402,38"/>
-<area shape="rect" title=" " alt="" coords="3093,93,3216,119"/>
-<area shape="poly" title=" " alt="" coords="2402,30,2699,53,3080,91,3079,96,2699,58,2402,35"/>
-<area shape="rect" title=" " alt="" coords="3241,93,3311,119"/>
-<area shape="poly" title=" " alt="" coords="2402,26,2557,31,2760,43,2991,62,3228,91,3227,96,2991,67,2760,48,2557,37,2402,31"/>
-<area shape="rect" title=" " alt="" coords="3335,93,3406,119"/>
-<area shape="poly" title=" " alt="" coords="2402,25,2572,29,2799,39,3057,59,3322,91,3322,96,3057,64,2798,45,2571,34,2402,30"/>
-<area shape="rect" title=" " alt="" coords="3431,93,3521,119"/>
-<area shape="poly" title=" " alt="" coords="2402,25,2586,30,2836,41,3123,61,3417,91,3417,96,3123,66,2836,47,2586,36,2402,31"/>
-<area shape="rect" title=" " alt="" coords="3546,93,3625,119"/>
-<area shape="poly" title=" " alt="" coords="2402,24,2603,27,2882,36,3203,56,3369,72,3533,91,3532,96,3369,77,3203,62,2882,42,2603,32,2402,29"/>
-<area shape="rect" title=" " alt="" coords="3649,93,3756,119"/>
-<area shape="poly" title=" " alt="" coords="2402,25,2619,29,2923,39,3274,59,3636,91,3635,96,3274,64,2922,45,2619,34,2402,30"/>
-<area shape="rect" title=" " alt="" coords="798,240,858,265"/>
-<area shape="poly" title=" " alt="" coords="963,121,910,138,885,152,863,168,844,196,834,227,829,225,840,194,859,165,882,147,908,133,962,115"/>
-<area shape="rect" href="Detector_8h.html" title=" " alt="" coords="1074,167,1163,192"/>
-<area shape="poly" title=" " alt="" coords="1058,117,1098,155,1095,159,1054,121"/>
-<area shape="rect" title=" " alt="" coords="874,167,939,192"/>
-<area shape="poly" title=" " alt="" coords="1023,121,942,163,940,158,1021,116"/>
-<area shape="rect" title=" " alt="" coords="964,167,1049,192"/>
-<area shape="poly" title=" " alt="" coords="1040,120,1021,156,1017,153,1035,118"/>
-<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="1636,167,1732,192"/>
-<area shape="poly" title=" " alt="" coords="1126,114,1623,169,1622,174,1125,119"/>
-<area shape="poly" title=" " alt="" coords="1075,193,872,242,871,237,1073,188"/>
-<area shape="rect" title=" " alt="" coords="711,240,774,265"/>
-<area shape="poly" title=" " alt="" coords="1074,192,1062,195,926,217,788,242,787,237,925,212,1061,189,1073,187"/>
-<area shape="rect" href="DetectorPoint_8h.html" title=" " alt="" coords="1623,240,1745,265"/>
-<area shape="poly" title=" " alt="" coords="1164,184,1609,239,1609,245,1163,189"/>
-<area shape="rect" title=" " alt="" coords="1508,313,1599,339"/>
-<area shape="poly" title=" " alt="" coords="1164,187,1248,208,1342,238,1394,263,1508,306,1506,311,1392,268,1340,242,1246,213,1163,193"/>
-<area shape="rect" title=" " alt="" coords="1063,240,1175,265"/>
-<area shape="poly" title=" " alt="" coords="1121,192,1121,226,1116,226,1116,192"/>
-<area shape="poly" title=" " alt="" coords="1164,187,1406,235,1405,240,1163,192"/>
-<area shape="rect" href="ISTLPointContainer_8h.html" title=" " alt="" coords="882,240,1038,265"/>
-<area shape="poly" title=" " alt="" coords="1094,194,999,237,997,232,1092,190"/>
-<area shape="rect" title=" " alt="" coords="1199,240,1329,265"/>
-<area shape="poly" title=" " alt="" coords="1143,190,1229,232,1227,236,1141,194"/>
-<area shape="rect" title=" " alt="" coords="1759,313,1815,339"/>
-<area shape="poly" title=" " alt="" coords="1702,263,1760,303,1757,307,1699,268"/>
-<area shape="rect" title=" " alt="" coords="1623,313,1734,339"/>
-<area shape="poly" title=" " alt="" coords="1686,266,1683,300,1678,300,1680,265"/>
-<area shape="poly" title=" " alt="" coords="1664,268,1588,309,1585,304,1662,263"/>
-<area shape="rect" title=" " alt="" coords="656,313,707,339"/>
-<area shape="poly" title=" " alt="" coords="916,268,721,317,719,312,915,263"/>
-<area shape="rect" title=" " alt="" coords="905,313,1015,339"/>
-<area shape="poly" title=" " alt="" coords="963,266,963,300,957,300,957,266"/>
-<area shape="poly" title=" " alt="" coords="1687,192,1687,226,1681,226,1681,192"/>
-<area shape="poly" title=" " alt="" coords="1706,190,1733,211,1760,238,1775,269,1784,299,1779,300,1770,271,1755,242,1730,215,1702,195"/>
-<area shape="poly" title=" " alt="" coords="1669,194,1641,215,1613,242,1588,273,1569,303,1564,300,1584,270,1609,238,1638,211,1665,190"/>
-<area shape="rect" title=" " alt="" coords="1821,240,1905,265"/>
-<area shape="poly" title=" " alt="" coords="1714,190,1822,232,1820,237,1712,195"/>
-<area shape="poly" title=" " alt="" coords="557,188,785,237,784,243,556,193"/>
-<area shape="poly" title=" " alt="" coords="545,189,699,235,698,241,544,195"/>
-<area shape="poly" title=" " alt="" coords="510,192,515,227,523,246,534,264,558,284,586,299,643,316,642,321,584,304,555,288,530,267,518,249,510,228,504,192"/>
-<area shape="poly" title=" " alt="" coords="458,191,159,240,158,235,457,186"/>
-<area shape="rect" title=" " alt="" coords="411,240,469,265"/>
-<area shape="poly" title=" " alt="" coords="498,194,462,232,458,228,494,191"/>
-<area shape="rect" title=" " alt="" coords="545,240,687,265"/>
-<area shape="poly" title=" " alt="" coords="526,190,588,230,585,235,523,194"/>
-<area shape="rect" title=" " alt="" coords="171,240,250,265"/>
-<area shape="poly" title=" " alt="" coords="460,195,264,241,262,236,458,189"/>
-<area shape="rect" title=" " alt="" coords="274,240,387,265"/>
-<area shape="poly" title=" " alt="" coords="479,194,373,237,371,232,477,190"/>
+<area shape="rect" title=" " alt="" coords="2301,5,2484,45"/>
+<area shape="rect" href="exitHadronAbsorber_8h.html" title=" " alt="" coords="195,93,358,119"/>
+<area shape="poly" title=" " alt="" coords="2301,33,563,96,372,104,372,98,563,91,2301,27"/>
+<area shape="rect" title=" " alt="" coords="1011,240,1153,265"/>
+<area shape="poly" title=" " alt="" coords="2301,32,2062,39,1762,52,1492,71,1395,83,1339,96,1305,117,1284,141,1264,167,1231,194,1183,220,1135,238,1133,233,1181,215,1229,190,1260,164,1280,138,1302,113,1337,91,1394,78,1491,66,1762,47,2062,34,2301,26"/>
+<area shape="rect" title=" " alt="" coords="1178,240,1309,265"/>
+<area shape="poly" title=" " alt="" coords="2301,31,2068,38,1779,50,1518,69,1426,81,1373,96,1347,117,1316,153,1261,230,1256,227,1312,150,1343,113,1370,91,1424,76,1518,64,1778,44,2068,32,2301,26"/>
+<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="1371,167,1467,192"/>
+<area shape="poly" title=" " alt="" coords="2301,28,2066,29,1777,37,1639,45,1520,57,1432,74,1402,84,1385,95,1379,108,1381,124,1400,155,1396,158,1376,125,1374,108,1381,92,1400,79,1430,69,1519,52,1638,40,1776,32,2066,24,2301,23"/>
+<area shape="rect" title=" " alt="" coords="1395,93,1475,119"/>
+<area shape="poly" title=" " alt="" coords="2301,32,1949,50,1722,68,1489,96,1489,91,1721,63,1948,44,2301,26"/>
+<area shape="rect" title=" " alt="" coords="1499,93,1627,119"/>
+<area shape="poly" title=" " alt="" coords="2301,36,2011,59,1641,96,1641,91,2011,53,2301,30"/>
+<area shape="rect" title=" " alt="" coords="1651,93,1793,119"/>
+<area shape="poly" title=" " alt="" coords="2301,39,1807,96,1806,91,2301,34"/>
+<area shape="rect" title=" " alt="" coords="1817,93,1944,119"/>
+<area shape="poly" title=" " alt="" coords="2302,43,1958,96,1958,90,2301,38"/>
+<area shape="rect" title=" " alt="" coords="1969,93,2091,119"/>
+<area shape="poly" title=" " alt="" coords="2306,48,2097,93,2096,88,2305,43"/>
+<area shape="rect" title=" " alt="" coords="2115,93,2233,119"/>
+<area shape="poly" title=" " alt="" coords="2341,48,2220,91,2218,86,2339,43"/>
+<area shape="rect" title=" " alt="" coords="2257,93,2389,119"/>
+<area shape="poly" title=" " alt="" coords="2378,47,2345,84,2341,81,2374,44"/>
+<area shape="rect" title=" " alt="" coords="2413,93,2513,119"/>
+<area shape="poly" title=" " alt="" coords="2412,44,2446,81,2442,85,2408,47"/>
+<area shape="rect" title=" " alt="" coords="2538,93,2645,119"/>
+<area shape="poly" title=" " alt="" coords="2441,43,2551,86,2549,91,2439,48"/>
+<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="322,167,463,192"/>
+<area shape="poly" title=" " alt="" coords="2301,31,1548,52,1113,71,932,83,794,96,699,111,604,129,449,166,448,161,603,124,698,105,794,91,931,78,1112,66,1548,47,2301,26"/>
+<area shape="rect" href="ShipStack_8h.html" title=" " alt="" coords="806,93,905,119"/>
+<area shape="poly" title=" " alt="" coords="2301,34,919,104,918,99,2301,29"/>
+<area shape="rect" title=" " alt="" coords="1105,167,1219,192"/>
+<area shape="poly" title=" " alt="" coords="2301,31,2040,36,1709,48,1408,67,1301,80,1239,96,1220,108,1203,123,1178,156,1173,153,1199,120,1217,104,1237,91,1300,75,1408,62,1709,42,2040,31,2301,25"/>
+<area shape="rect" title=" " alt="" coords="2669,93,2749,119"/>
+<area shape="poly" title=" " alt="" coords="2469,43,2656,89,2655,94,2468,48"/>
+<area shape="rect" title=" " alt="" coords="2773,93,2905,119"/>
+<area shape="poly" title=" " alt="" coords="2485,40,2761,88,2760,94,2484,45"/>
+<area shape="rect" title=" " alt="" coords="2929,93,3032,119"/>
+<area shape="poly" title=" " alt="" coords="2485,34,2679,58,2916,90,2915,96,2678,63,2484,39"/>
+<area shape="rect" title=" " alt="" coords="3057,93,3187,119"/>
+<area shape="poly" title=" " alt="" coords="2484,32,2732,56,3043,91,3043,96,2732,61,2484,37"/>
+<area shape="rect" title=" " alt="" coords="3211,93,3305,119"/>
+<area shape="poly" title=" " alt="" coords="2485,28,2797,49,2995,67,3198,91,3198,96,2994,72,2796,54,2484,34"/>
+<area shape="rect" title=" " alt="" coords="3329,93,3453,119"/>
+<area shape="poly" title=" " alt="" coords="2484,28,2844,50,3077,67,3316,91,3315,96,3076,73,2844,55,2484,34"/>
+<area shape="rect" title=" " alt="" coords="3478,93,3601,119"/>
+<area shape="poly" title=" " alt="" coords="2484,27,2904,46,3180,65,3464,91,3464,96,3180,70,2904,52,2484,32"/>
+<area shape="rect" title=" " alt="" coords="3625,93,3696,119"/>
+<area shape="poly" title=" " alt="" coords="2484,23,2685,26,2963,34,3284,55,3449,71,3612,91,3612,96,3449,76,3283,60,2963,40,2685,31,2484,29"/>
+<area shape="rect" title=" " alt="" coords="3720,93,3791,119"/>
+<area shape="poly" title=" " alt="" coords="2484,26,3093,48,3441,67,3590,78,3707,91,3706,96,3589,83,3441,72,3093,53,2484,32"/>
+<area shape="rect" title=" " alt="" coords="3815,93,3906,119"/>
+<area shape="poly" title=" " alt="" coords="2484,24,2713,26,3038,35,3415,55,3610,71,3802,91,3801,96,3609,76,3415,60,3038,40,2713,31,2484,29"/>
+<area shape="rect" title=" " alt="" coords="3931,93,4009,119"/>
+<area shape="poly" title=" " alt="" coords="2484,26,3191,47,3604,66,3779,78,3917,91,3916,96,3779,83,3604,71,3191,52,2484,31"/>
+<area shape="rect" title=" " alt="" coords="4034,93,4141,119"/>
+<area shape="poly" title=" " alt="" coords="2484,24,2745,25,3123,34,3565,54,3795,70,4021,91,4020,96,3794,75,3565,59,3123,39,2745,30,2484,29"/>
+<area shape="rect" title=" " alt="" coords="255,167,298,192"/>
+<area shape="poly" title=" " alt="" coords="279,119,279,153,274,153,274,119"/>
+<area shape="rect" title=" " alt="" coords="420,240,480,265"/>
+<area shape="poly" title=" " alt="" coords="268,120,245,154,240,173,245,190,271,208,312,222,407,242,406,248,311,227,268,212,241,194,235,173,240,152,263,117"/>
+<area shape="rect" href="Detector_8h.html" title=" " alt="" coords="589,167,679,192"/>
+<area shape="poly" title=" " alt="" coords="335,116,577,164,576,169,334,121"/>
+<area shape="rect" title=" " alt="" coords="5,167,71,192"/>
+<area shape="poly" title=" " alt="" coords="239,121,85,167,83,162,238,116"/>
+<area shape="rect" title=" " alt="" coords="95,167,181,192"/>
+<area shape="poly" title=" " alt="" coords="256,121,174,163,172,158,253,116"/>
+<area shape="poly" title=" " alt="" coords="359,110,1357,171,1357,177,358,115"/>
+<area shape="poly" title=" " alt="" coords="605,195,494,237,492,232,603,190"/>
+<area shape="rect" title=" " alt="" coords="924,240,987,265"/>
+<area shape="poly" title=" " alt="" coords="680,188,905,237,911,239,910,244,904,243,678,193"/>
+<area shape="rect" href="DetectorPoint_8h.html" title=" " alt="" coords="1383,240,1506,265"/>
+<area shape="poly" title=" " alt="" coords="680,188,690,189,867,210,1005,219,1143,225,1321,237,1370,242,1369,247,1320,243,1143,231,1005,224,866,215,690,195,679,193"/>
+<area shape="rect" title=" " alt="" coords="1269,313,1359,339"/>
+<area shape="poly" title=" " alt="" coords="679,189,779,213,862,238,887,251,912,263,1004,287,1098,303,1255,319,1254,324,1097,308,1003,292,910,268,885,256,860,242,778,219,678,194"/>
+<area shape="rect" title=" " alt="" coords="737,240,849,265"/>
+<area shape="poly" title=" " alt="" coords="661,190,755,232,753,237,658,194"/>
+<area shape="poly" title=" " alt="" coords="680,187,690,189,998,237,997,242,690,195,679,193"/>
+<area shape="rect" href="ISTLPointContainer_8h.html" title=" " alt="" coords="556,240,712,265"/>
+<area shape="poly" title=" " alt="" coords="637,192,637,226,631,226,631,192"/>
+<area shape="poly" title=" " alt="" coords="680,188,690,189,821,206,925,215,1030,224,1164,237,1164,243,1029,229,924,221,821,212,690,195,679,193"/>
+<area shape="rect" title=" " alt="" coords="1519,313,1575,339"/>
+<area shape="poly" title=" " alt="" coords="1463,263,1521,303,1518,307,1460,268"/>
+<area shape="rect" title=" " alt="" coords="1384,313,1495,339"/>
+<area shape="poly" title=" " alt="" coords="1446,266,1444,300,1439,300,1441,265"/>
+<area shape="poly" title=" " alt="" coords="1425,268,1348,309,1346,304,1422,263"/>
+<area shape="rect" title=" " alt="" coords="499,313,550,339"/>
+<area shape="poly" title=" " alt="" coords="618,268,556,308,553,303,615,263"/>
+<area shape="rect" title=" " alt="" coords="579,313,689,339"/>
+<area shape="poly" title=" " alt="" coords="637,266,637,300,631,300,631,266"/>
+<area shape="poly" title=" " alt="" coords="1426,191,1439,226,1434,228,1421,193"/>
+<area shape="poly" title=" " alt="" coords="1451,190,1487,209,1520,238,1537,268,1546,299,1541,300,1532,270,1516,242,1484,214,1448,195"/>
+<area shape="poly" title=" " alt="" coords="1412,194,1373,242,1331,303,1327,300,1369,238,1407,191"/>
+<area shape="rect" title=" " alt="" coords="1581,240,1665,265"/>
+<area shape="poly" title=" " alt="" coords="1453,190,1578,233,1577,238,1451,195"/>
+<area shape="poly" title=" " alt="" coords="806,110,748,113,678,123,604,140,534,169,496,198,468,231,464,227,492,194,531,164,602,135,677,117,747,108,806,105"/>
+<area shape="poly" title=" " alt="" coords="905,105,941,110,978,120,1014,138,1043,165,1048,176,1048,186,1038,205,1019,222,996,236,993,231,1016,218,1034,202,1043,185,1043,177,1039,168,1011,142,977,125,940,115,904,111"/>
+<area shape="poly" title=" " alt="" coords="806,115,679,135,618,150,578,169,554,197,539,233,531,269,528,300,522,299,526,268,534,231,550,195,575,165,616,145,677,130,806,110"/>
+<area shape="poly" title=" " alt="" coords="806,118,478,168,477,162,805,112"/>
+<area shape="rect" title=" " alt="" coords="703,167,760,192"/>
+<area shape="poly" title=" " alt="" coords="837,121,765,162,762,157,834,116"/>
+<area shape="rect" title=" " alt="" coords="784,167,927,192"/>
+<area shape="poly" title=" " alt="" coords="858,119,858,153,853,153,853,119"/>
+<area shape="rect" title=" " alt="" coords="951,167,1029,192"/>
+<area shape="poly" title=" " alt="" coords="878,116,957,158,955,162,876,121"/>
+<area shape="poly" title=" " alt="" coords="905,116,1100,161,1098,166,904,121"/>
 </map>
 </div>
 </div>
 <p><a href="exitHadronAbsorber_8cxx_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ac2e3ff00583568b65089520fa8f3cbfa" id="r_ac2e3ff00583568b65089520fa8f3cbfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a> (TGeoVolume *volume, <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> *detector)</td></tr>
+<tr class="separator:ac2e3ff00583568b65089520fa8f3cbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a36fc4b47251281f99efceaa80c7877f0" id="r_a36fc4b47251281f99efceaa80c7877f0"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a> = 1</td></tr>
-<tr class="separator:a36fc4b47251281f99efceaa80c7877f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42d42dd2c682d42f11de58e34c89f895" id="r_a42d42dd2c682d42f11de58e34c89f895"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 100 * cm</td></tr>
-<tr class="separator:a42d42dd2c682d42f11de58e34c89f895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab05e85c22fe0c2c6ed701c357bbf1512" id="r_ab05e85c22fe0c2c6ed701c357bbf1512"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a> = 0.1 * cm</td></tr>
-<tr class="separator:ab05e85c22fe0c2c6ed701c357bbf1512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9842927f33236414d34831f59ed1c28f" id="r_a9842927f33236414d34831f59ed1c28f"><td class="memItemLeft" align="right" valign="top">constexpr Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#a9842927f33236414d34831f59ed1c28f">cm</a> = 1</td></tr>
+<tr class="separator:a9842927f33236414d34831f59ed1c28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0699ca79e23818d99b9ee18334a9325" id="r_ae0699ca79e23818d99b9ee18334a9325"><td class="memItemLeft" align="right" valign="top">constexpr Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a> = 100 * cm</td></tr>
+<tr class="separator:ae0699ca79e23818d99b9ee18334a9325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a567bfbaee880f55a40bacfbb4bd3c" id="r_ab2a567bfbaee880f55a40bacfbb4bd3c"><td class="memItemLeft" align="right" valign="top">constexpr Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a> = 0.1 * cm</td></tr>
+<tr class="separator:ab2a567bfbaee880f55a40bacfbb4bd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ac2e3ff00583568b65089520fa8f3cbfa" name="ac2e3ff00583568b65089520fa8f3cbfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2e3ff00583568b65089520fa8f3cbfa">&#9670;&#160;</a></span>RegisterDaughtersRecursively()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RegisterDaughtersRecursively </td>
+          <td>(</td>
+          <td class="paramtype">TGeoVolume *&#160;</td>
+          <td class="paramname"><em>volume</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> *&#160;</td>
+          <td class="paramname"><em>detector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00454">454</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  455</span>                                                                {</div>
+<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">if</span> (!volume) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  457</span>  Int_t nDaughters = volume-&gt;GetNdaughters();</div>
+<div class="line"><span class="lineno">  458</span>  <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nDaughters; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
+<div class="line"><span class="lineno">  459</span>    TGeoNode* daughterNode = volume-&gt;GetNode(i);</div>
+<div class="line"><span class="lineno">  460</span>    <span class="keywordflow">if</span> (daughterNode) {</div>
+<div class="line"><span class="lineno">  461</span>      TGeoVolume* daughterVol = daughterNode-&gt;GetVolume();</div>
+<div class="line"><span class="lineno">  462</span>      <span class="keywordflow">if</span> (daughterVol) {</div>
+<div class="line"><span class="lineno">  463</span>        <span class="comment">// register daughter volume</span></div>
+<div class="line"><span class="lineno">  464</span>        <a class="code hl_variable" href="namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67">detector</a>-&gt;AddSensitiveVolume(daughterVol);</div>
+<div class="line"><span class="lineno">  465</span>        LOG(info) &lt;&lt; <span class="stringliteral">&quot;[exitHadronAbsorber] Registered subvolume: &quot;</span></div>
+<div class="line"><span class="lineno">  466</span>                  &lt;&lt; daughterVol-&gt;GetName();</div>
+<div class="line"><span class="lineno">  467</span>        <span class="comment">// call function recursively</span></div>
+<div class="line"><span class="lineno">  468</span>        <a class="code hl_function" href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a>(daughterVol, detector);</div>
+<div class="line"><span class="lineno">  469</span>      }</div>
+<div class="line"><span class="lineno">  470</span>    }</div>
+<div class="line"><span class="lineno">  471</span>  }</div>
+<div class="line"><span class="lineno">  472</span>}</div>
+<div class="ttc" id="aexitHadronAbsorber_8cxx_html_ac2e3ff00583568b65089520fa8f3cbfa"><div class="ttname"><a href="exitHadronAbsorber_8cxx.html#ac2e3ff00583568b65089520fa8f3cbfa">RegisterDaughtersRecursively</a></div><div class="ttdeci">void RegisterDaughtersRecursively(TGeoVolume *volume, exitHadronAbsorber *detector)</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00454">exitHadronAbsorber.cxx:454</a></div></div>
+<div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
+<div class="ttc" id="anamespacerun__ACTSTracking_html_a704b24a2f1434d8e701691b181f73a67"><div class="ttname"><a href="namespacerun__ACTSTracking.html#a704b24a2f1434d8e701691b181f73a67">run_ACTSTracking.detector</a></div><div class="ttdeci">detector</div><div class="ttdef"><b>Definition</b> <a href="run__ACTSTracking_8py_source.html#l00051">run_ACTSTracking.py:51</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a36fc4b47251281f99efceaa80c7877f0" name="a36fc4b47251281f99efceaa80c7877f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36fc4b47251281f99efceaa80c7877f0">&#9670;&#160;</a></span>cm</h2>
+<a id="a9842927f33236414d34831f59ed1c28f" name="a9842927f33236414d34831f59ed1c28f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9842927f33236414d34831f59ed1c28f">&#9670;&#160;</a></span>cm</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t cm = 1</td>
+          <td class="memname">constexpr Double_t cm = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00033">33</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00039">39</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
 
 </div>
 </div>
-<a id="a42d42dd2c682d42f11de58e34c89f895" name="a42d42dd2c682d42f11de58e34c89f895"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42d42dd2c682d42f11de58e34c89f895">&#9670;&#160;</a></span>m</h2>
+<a id="ae0699ca79e23818d99b9ee18334a9325" name="ae0699ca79e23818d99b9ee18334a9325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0699ca79e23818d99b9ee18334a9325">&#9670;&#160;</a></span>m</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t m = 100 * cm</td>
+          <td class="memname">constexpr Double_t m = 100 * cm</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00034">34</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00040">40</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
 
 </div>
 </div>
-<a id="ab05e85c22fe0c2c6ed701c357bbf1512" name="ab05e85c22fe0c2c6ed701c357bbf1512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab05e85c22fe0c2c6ed701c357bbf1512">&#9670;&#160;</a></span>mm</h2>
+<a id="ab2a567bfbaee880f55a40bacfbb4bd3c" name="ab2a567bfbaee880f55a40bacfbb4bd3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a567bfbaee880f55a40bacfbb4bd3c">&#9670;&#160;</a></span>mm</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t mm = 0.1 * cm</td>
+          <td class="memname">constexpr Double_t mm = 0.1 * cm</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00035">35</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exitHadronAbsorber_8cxx_source.html#l00041">41</a> of file <a class="el" href="exitHadronAbsorber_8cxx_source.html">exitHadronAbsorber.cxx</a>.</p>
 
 </div>
 </div>

@@ -1437,20 +1437,20 @@ SiPM channels, weights, and x-positions for both mapping directions.</pre>
 <div class="line"><span class="lineno">  805</span>        fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()</div>
 <div class="line"><span class="lineno">  806</span> </div>
 <div class="line"><span class="lineno">  807</span>        print(<span class="stringliteral">&quot;Validating U plane mapping:&quot;</span>)</div>
-<div class="line"><span class="lineno">  808</span>        <span class="keywordflow">for</span> fiber_id, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
-<div class="line"><span class="lineno">  809</span>            <span class="keywordflow">for</span> sipm_chan, chan_info <span class="keywordflow">in</span> fibers.items():</div>
+<div class="line"><span class="lineno">  808</span>        <span class="keywordflow">for</span> sipm_chan, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
+<div class="line"><span class="lineno">  809</span>            <span class="keywordflow">for</span> fiber_id, chan_info <span class="keywordflow">in</span> fibers.items():</div>
 <div class="line"><span class="lineno">  810</span>                weight = chan_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
 <div class="line"><span class="lineno">  811</span>                xpos = chan_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
 <div class="line"><span class="lineno">  812</span>                print(</div>
-<div class="line"><span class="lineno">  813</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
+<div class="line"><span class="lineno">  813</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
 <div class="line"><span class="lineno">  814</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  815</span>                )</div>
-<div class="line"><span class="lineno">  816</span>        <span class="keywordflow">for</span> sipm_chan, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
-<div class="line"><span class="lineno">  817</span>            <span class="keywordflow">for</span> fiber_id, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
+<div class="line"><span class="lineno">  816</span>        <span class="keywordflow">for</span> fiber_id, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
+<div class="line"><span class="lineno">  817</span>            <span class="keywordflow">for</span> sipm_chan, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
 <div class="line"><span class="lineno">  818</span>                weight = fiber_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
 <div class="line"><span class="lineno">  819</span>                xpos = fiber_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
 <div class="line"><span class="lineno">  820</span>                print(</div>
-<div class="line"><span class="lineno">  821</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
+<div class="line"><span class="lineno">  821</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
 <div class="line"><span class="lineno">  822</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  823</span>                )</div>
 <div class="line"><span class="lineno">  824</span> </div>

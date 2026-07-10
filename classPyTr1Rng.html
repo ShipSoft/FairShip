@@ -130,12 +130,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aa220f54b0c1ee99ff1a3b1199610384d" id="r_aa220f54b0c1ee99ff1a3b1199610384d"><td class="memItemLeft" align="right" valign="top">TRandom1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d">rng</a></td></tr>
-<tr class="separator:aa220f54b0c1ee99ff1a3b1199610384d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fa34ce1dd4b6d6b28e826595650e07f" id="r_a8fa34ce1dd4b6d6b28e826595650e07f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TRandom1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPyTr1Rng.html#a8fa34ce1dd4b6d6b28e826595650e07f">rng</a></td></tr>
+<tr class="separator:a8fa34ce1dd4b6d6b28e826595650e07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00020">20</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00022">22</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae5b31b74b581da42c9d446268d8ed011" name="ae5b31b74b581da42c9d446268d8ed011"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5b31b74b581da42c9d446268d8ed011">&#9670;&#160;</a></span>PyTr1Rng()</h2>
@@ -160,9 +160,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00022">22</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>{ <a class="code hl_variable" href="classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d">rng</a> = <span class="keyword">new</span> TRandom1(gRandom-&gt;GetSeed()); };</div>
-<div class="ttc" id="aclassPyTr1Rng_html_aa220f54b0c1ee99ff1a3b1199610384d"><div class="ttname"><a href="classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d">PyTr1Rng::rng</a></div><div class="ttdeci">TRandom1 * rng</div><div class="ttdef"><b>Definition</b> <a href="HNLPythia8Generator_8h_source.html#l00028">HNLPythia8Generator.h:28</a></div></div>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00024">24</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>: <a class="code hl_variable" href="classPyTr1Rng.html#a8fa34ce1dd4b6d6b28e826595650e07f">rng</a>(std::make_unique&lt;TRandom1&gt;(gRandom-&gt;GetSeed())) {}</div>
+<div class="ttc" id="aclassPyTr1Rng_html_a8fa34ce1dd4b6d6b28e826595650e07f"><div class="ttname"><a href="classPyTr1Rng.html#a8fa34ce1dd4b6d6b28e826595650e07f">PyTr1Rng::rng</a></div><div class="ttdeci">std::unique_ptr&lt; TRandom1 &gt; rng</div><div class="ttdef"><b>Definition</b> <a href="HNLPythia8Generator_8h_source.html#l00030">HNLPythia8Generator.h:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -215,14 +215,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00025">25</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d">rng</a>-&gt;Rndm(); };</div>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00027">27</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classPyTr1Rng.html#a8fa34ce1dd4b6d6b28e826595650e07f">rng</a>-&gt;Rndm(); };</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa220f54b0c1ee99ff1a3b1199610384d" name="aa220f54b0c1ee99ff1a3b1199610384d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa220f54b0c1ee99ff1a3b1199610384d">&#9670;&#160;</a></span>rng</h2>
+<a id="a8fa34ce1dd4b6d6b28e826595650e07f" name="a8fa34ce1dd4b6d6b28e826595650e07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fa34ce1dd4b6d6b28e826595650e07f">&#9670;&#160;</a></span>rng</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +231,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TRandom1* PyTr1Rng::rng</td>
+          <td class="memname">std::unique_ptr&lt;TRandom1&gt; PyTr1Rng::rng</td>
         </tr>
       </table>
   </td>
@@ -241,7 +241,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00028">28</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="HNLPythia8Generator_8h_source.html#l00030">30</a> of file <a class="el" href="HNLPythia8Generator_8h_source.html">HNLPythia8Generator.h</a>.</p>
 
 </div>
 </div>

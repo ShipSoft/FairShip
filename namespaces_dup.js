@@ -1169,8 +1169,10 @@ var namespaces_dup =
       [ "fSink", "namespacerun__simScript.html#a93ba36fd021df754186946c4f0364058", null ],
       [ "fStack", "namespacerun__simScript.html#abe0f6f27c11e27c01a9ffffa37571906", null ],
       [ "generator", "namespacerun__simScript.html#a02102a7960adc8fef03efc124ebd545d", null ],
+      [ "genie_option", "namespacerun__simScript.html#ad36962bb60aefe26f420fedd9887dd3c", null ],
       [ "genie_parser", "namespacerun__simScript.html#a893491cd4d054b1dc81038ab02105345", null ],
       [ "Geniegen", "namespacerun__simScript.html#a398412a7d37ba1709a08e7da785209eb", null ],
+      [ "GenieOptions", "namespacerun__simScript.html#abb5c7a5b05a93048a8e607f187efb37a", null ],
       [ "geofile_name", "namespacerun__simScript.html#a71febbcacc1bfb3c737de2f3599e1817", null ],
       [ "gErrorIgnoreLevel", "namespacerun__simScript.html#a4a2c7d62cdeabab2c2a9e10cc0301312", null ],
       [ "gMC", "namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051", null ],
@@ -1529,6 +1531,7 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a561928bad4973c63197de654cd92f007", null ],
       [ "ampere", "namespaceshipunit.html#a899bfcfc1e198fac90b788905bcf91b3", null ],
@@ -1675,9 +1678,9 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a86f9ba53297f60184e521655c576baaf", null ],
       [ "weber", "namespaceshipunit.html#a0ef5d6a33e15f4c4fa62fb17c0bce1b2", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
+    [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", "namespaceSiliconTargetDetector" ],
     [ "skim_muonback_smoke", "namespaceskim__muonback__smoke.html", [
       [ "main", "namespaceskim__muonback__smoke.html#acd265e66314c1a63a4f8d835f99a00f0", null ]
     ] ],

@@ -65,6 +65,9 @@ var annotated_dup =
     [ "shipVeto", "namespaceshipVeto.html", [
       [ "Task", "classshipVeto_1_1Task.html", "classshipVeto_1_1Task" ]
     ] ],
+    [ "SiliconTargetDetector", "namespaceSiliconTargetDetector.html", [
+      [ "SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", "classSiliconTargetDetector_1_1SiliconTargetDetector" ]
+    ] ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", [
       [ "splitcalDetector", "classsplitcalDetector_1_1splitcalDetector.html", "classsplitcalDetector_1_1splitcalDetector" ]
     ] ],
@@ -148,6 +151,7 @@ var annotated_dup =
     [ "TimeDetHit", "classTimeDetHit.html", "classTimeDetHit" ],
     [ "TimeDetPoint", "classTimeDetPoint.html", "classTimeDetPoint" ],
     [ "tPythia6Generator", "classtPythia6Generator.html", "classtPythia6Generator" ],
+    [ "TrackBuffer", "structTrackBuffer.html", "structTrackBuffer" ],
     [ "TrackInfo", "classTrackInfo.html", "classTrackInfo" ],
     [ "Tracklet", "classTracklet.html", "classTracklet" ],
     [ "TTPoint", "classTTPoint.html", "classTTPoint" ],
@@ -155,8 +159,8 @@ var annotated_dup =
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
     [ "VectorMCPointSource", "classVectorMCPointSource.html", "classVectorMCPointSource" ],
-    [ "veto", "classveto.html", "classveto" ],
     [ "Veto", "classVeto.html", null ],
+    [ "veto", "classveto.html", "classveto" ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

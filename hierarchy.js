@@ -172,6 +172,7 @@ var hierarchy =
       [ "splitcalCluster", "classsplitcalCluster.html", null ],
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
     ] ],
+    [ "TrackBuffer", "structTrackBuffer.html", null ],
     [ "tracking_benchmark.TrackingBenchmark", "classtracking__benchmark_1_1TrackingBenchmark.html", null ],
     [ "ShipFieldMaker::transformInfo", "structShipFieldMaker_1_1transformInfo.html", null ],
     [ "TVirtualMagField", null, [
@@ -186,6 +187,7 @@ var hierarchy =
       [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
         [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
         [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
+        [ "SiliconTargetDetector.SiliconTargetDetector", "classSiliconTargetDetector_1_1SiliconTargetDetector.html", null ],
         [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
         [ "splitcalDetector.splitcalDetector", "classsplitcalDetector_1_1splitcalDetector.html", null ],
         [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],

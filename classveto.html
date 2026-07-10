@@ -1325,7 +1325,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  321</span>  T-&gt;AddNode(T2v, 2, <span class="keyword">new</span> TGeoTranslation(0, 0, 0));</div>
 <div class="line"><span class="lineno">  322</span>  <span class="keywordflow">return</span> T;</div>
 <div class="line"><span class="lineno">  323</span>}</div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a045016c4a394a8cdd58a6cef4292de46"><div class="ttname"><a href="namespacerun__fixedTarget.html#a045016c4a394a8cdd58a6cef4292de46">run_fixedTarget.d</a></div><div class="ttdeci">d</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00295">run_fixedTarget.py:295</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a045016c4a394a8cdd58a6cef4292de46"><div class="ttname"><a href="namespacerun__fixedTarget.html#a045016c4a394a8cdd58a6cef4292de46">run_fixedTarget.d</a></div><div class="ttdeci">d</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00312">run_fixedTarget.py:312</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a3112a5faf6aba672ca6db63ae2691c5c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a3112a5faf6aba672ca6db63ae2691c5c">run_fixedTarget.dy</a></div><div class="ttdeci">float dy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00017">run_fixedTarget.py:17</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1881,7 +1881,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  335</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(Z) * 1000000 + <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(r) * 1000 +</div>
 <div class="line"><span class="lineno">  336</span>         <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(phi);</div>
 <div class="line"><span class="lineno">  337</span>}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00677">run_simScript.py:677</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00684">run_simScript.py:684</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1913,9 +1913,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  670</span>  TGeoVolumeAssembly* tTankVol = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;T2&quot;</span>);</div>
 <div class="line"><span class="lineno">  671</span> </div>
 <div class="line"><span class="lineno">  672</span>  Double_t cell_thickness_z0 =</div>
-<div class="line"><span class="lineno">  673</span>      800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the first cell along z (800mm) 2024 version</span></div>
+<div class="line"><span class="lineno">  673</span>      800 * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>;  <span class="comment">// length of the first cell along z (800mm) 2024 version</span></div>
 <div class="line"><span class="lineno">  674</span>  Double_t cell_thickness_z =</div>
-<div class="line"><span class="lineno">  675</span>      820 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;  <span class="comment">// length of the cell along z (820mm) 2024 version</span></div>
+<div class="line"><span class="lineno">  675</span>      820 * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>;  <span class="comment">// length of the cell along z (820mm) 2024 version</span></div>
 <div class="line"><span class="lineno">  676</span> </div>
 <div class="line"><span class="lineno">  677</span>  TString nameInnerWall = <span class="stringliteral">&quot;VetoInnerWall&quot;</span>;</div>
 <div class="line"><span class="lineno">  678</span>  TGeoVolumeAssembly* tInnerWall = <span class="keyword">new</span> TGeoVolumeAssembly(nameInnerWall);</div>
@@ -1945,8 +1945,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  702</span> </div>
 <div class="line"><span class="lineno">  703</span>  <span class="comment">//******************************** Block1</span></div>
 <div class="line"><span class="lineno">  704</span>  <span class="comment">//**************************************</span></div>
-<div class="line"><span class="lineno">  705</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  706</span>  <span class="keywordtype">double</span> z2 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
+<div class="line"><span class="lineno">  705</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
+<div class="line"><span class="lineno">  706</span>  <span class="keywordtype">double</span> z2 = 800 * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>;</div>
 <div class="line"><span class="lineno">  707</span>  <span class="keywordtype">double</span> wz = (z2 - z1);</div>
 <div class="line"><span class="lineno">  708</span> </div>
 <div class="line"><span class="lineno">  709</span>  <span class="keywordtype">double</span> Zshift = wz / 2;  <span class="comment">// calibration of Z position</span></div>
@@ -1960,8 +1960,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  717</span> </div>
 <div class="line"><span class="lineno">  718</span>  Zshift += wz / 2;</div>
 <div class="line"><span class="lineno">  719</span> </div>
-<div class="line"><span class="lineno">  720</span>  z1 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><span class="lineno">  721</span>  z2 = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  720</span>  z1 = 800 * <a class="code hl_variable" href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a>;</div>
+<div class="line"><span class="lineno">  721</span>  z2 = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
 <div class="line"><span class="lineno">  722</span>  wz = (z2 - z1);</div>
 <div class="line"><span class="lineno">  723</span> </div>
 <div class="line"><span class="lineno">  724</span>  Zshift += wz / 2;</div>
@@ -1991,12 +1991,12 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  748</span> </div>
 <div class="line"><span class="lineno">  749</span>  <span class="keywordflow">return</span> tTankVol;</div>
 <div class="line"><span class="lineno">  750</span>}</div>
-<div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
-<div class="ttc" id="aShipBellField_8cxx_html_ab05e85c22fe0c2c6ed701c357bbf1512"><div class="ttname"><a href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a></div><div class="ttdeci">Double_t mm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00026">ShipBellField.cxx:26</a></div></div>
+<div class="ttc" id="aShipBellField_8cxx_html_ae0699ca79e23818d99b9ee18334a9325"><div class="ttname"><a href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a></div><div class="ttdeci">constexpr Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aclassveto_html_a815212dc35b35ef1745d8063bc728f73"><div class="ttname"><a href="classveto.html#a815212dc35b35ef1745d8063bc728f73">veto::f_VetoThickness</a></div><div class="ttdeci">Float_t f_VetoThickness</div><div class="ttdoc">Thickness of the liquid scintillator along z(Default = 20cm).</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00098">veto.h:98</a></div></div>
 <div class="ttc" id="aclassveto_html_a8933d77df311eb11a42831beaf55be70"><div class="ttname"><a href="classveto.html#a8933d77df311eb11a42831beaf55be70">veto::AddBlock</a></div><div class="ttdeci">void AddBlock(TGeoVolumeAssembly *tInnerWall, TGeoVolumeAssembly *tDecayVacuum, TGeoVolumeAssembly *tOuterWall, TGeoVolumeAssembly *tLongitRib, TGeoVolumeAssembly *tVerticalRib, TGeoVolumeAssembly *ttLiSc, int &amp;liScCounter, int blockNr, int nx, int ny, double z1, double z2, double Zshift, double dist, double wallThick, double liscThick1, double liscThick2, double ribThick)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00366">veto.cxx:366</a></div></div>
 <div class="ttc" id="aclassveto_html_ab5b2a57ab78e8faf307971f155d96fd6"><div class="ttname"><a href="classveto.html#ab5b2a57ab78e8faf307971f155d96fd6">veto::f_InnerSupportThickness</a></div><div class="ttdeci">Float_t f_InnerSupportThickness</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00092">veto.h:92</a></div></div>
 <div class="ttc" id="aclassveto_html_ad7a86d62096353655a67eaf0f1d5846b"><div class="ttname"><a href="classveto.html#ad7a86d62096353655a67eaf0f1d5846b">veto::f_RibThickness</a></div><div class="ttdeci">Float_t f_RibThickness</div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00099">veto.h:99</a></div></div>
+<div class="ttc" id="aexitHadronAbsorber_8cxx_html_ab2a567bfbaee880f55a40bacfbb4bd3c"><div class="ttname"><a href="exitHadronAbsorber_8cxx.html#ab2a567bfbaee880f55a40bacfbb4bd3c">mm</a></div><div class="ttdeci">constexpr Double_t mm</div><div class="ttdef"><b>Definition</b> <a href="exitHadronAbsorber_8cxx_source.html#l00041">exitHadronAbsorber.cxx:41</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2059,7 +2059,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  817</span>    <a class="code hl_variable" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">gMC</a>-&gt;StopTrack();</div>
 <div class="line"><span class="lineno">  818</span>  }</div>
 <div class="line"><span class="lineno">  819</span>}</div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00421">run_fixedTarget.py:421</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a8849978ebdda515280cb5b90b4d173a5"><div class="ttname"><a href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">run_fixedTarget.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00441">run_fixedTarget.py:441</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2471,8 +2471,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  152</span> </div>
 <div class="line"><span class="lineno">  153</span>  <span class="keywordtype">double</span> wx1 = <a class="code hl_variable" href="classveto.html#a62521a6e7c1048f80df39c6a1ed58459">VetoStartInnerX</a>;</div>
 <div class="line"><span class="lineno">  154</span>  <span class="keywordtype">double</span> wx2 = <a class="code hl_variable" href="classveto.html#a6d6cc35b0463f6f444ce45d362d33941">VetoEndInnerX</a>;</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  156</span>  <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  155</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
+<div class="line"><span class="lineno">  156</span>  <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
 <div class="line"><span class="lineno">  157</span> </div>
 <div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> (wx1 + (z - z1) * (wx2 - wx1) / (z2 - z1));</div>
 <div class="line"><span class="lineno">  159</span>}</div>
@@ -2510,8 +2510,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  162</span> </div>
 <div class="line"><span class="lineno">  163</span>  <span class="keywordtype">double</span> wy1 = <a class="code hl_variable" href="classveto.html#aed67f4fe5d5e5b8c4a16a90e69e1ee17">VetoStartInnerY</a>;</div>
 <div class="line"><span class="lineno">  164</span>  <span class="keywordtype">double</span> wy2 = <a class="code hl_variable" href="classveto.html#a946270b903c1a1809619d422eef53040">VetoEndInnerY</a>;</div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  166</span>  <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ae0699ca79e23818d99b9ee18334a9325">m</a>;</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>  <span class="keywordflow">return</span> (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));</div>
 <div class="line"><span class="lineno">  169</span>}</div>

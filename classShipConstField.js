@@ -11,6 +11,7 @@ var classShipConstField =
     [ "GetBy", "classShipConstField.html#aea0f9999d48b7c6aa389f0d3b3c59514", null ],
     [ "GetBz", "classShipConstField.html#a18973e5a69446433d5fce4beb3a98fb6", null ],
     [ "GetBz", "classShipConstField.html#a2c02528d55173839412f8339b01391af", null ],
+    [ "GetFieldValue", "classShipConstField.html#a96dee79815de92c96945545096bc0033", null ],
     [ "GetXmax", "classShipConstField.html#adb530b5351fafd1edca81941af826e59", null ],
     [ "GetXmin", "classShipConstField.html#a13a59fde8fa8933bffc63072fdce9cae", null ],
     [ "GetYmax", "classShipConstField.html#a509f57db6395f1a5edbfcef1ff107480", null ],

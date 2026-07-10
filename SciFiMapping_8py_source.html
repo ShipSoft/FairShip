@@ -928,20 +928,20 @@ $(document).ready(function(){initNavTree('SciFiMapping_8py_source.html',''); ini
 <div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        fiber_to_sipm_map_U, _ = self.<a class="code hl_function" href="classSciFiMapping_1_1SciFiMapping.html#a5480fa98a3a3047af83ebf35f6e40c55">get_fibre_to_simp_map</a>()</div>
 <div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span> </div>
 <div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>        print(<span class="stringliteral">&quot;Validating U plane mapping:&quot;</span>)</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        <span class="keywordflow">for</span> fiber_id, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            <span class="keywordflow">for</span> sipm_chan, chan_info <span class="keywordflow">in</span> fibers.items():</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        <span class="keywordflow">for</span> sipm_chan, fibers <span class="keywordflow">in</span> sipm_to_fiber_map_U.items():</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            <span class="keywordflow">for</span> fiber_id, chan_info <span class="keywordflow">in</span> fibers.items():</div>
 <div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>                weight = chan_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
 <div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>                xpos = chan_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>                print(</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>                    f<span class="stringliteral">&quot;&quot;&quot;---- SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>                )</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        <span class="keywordflow">for</span> sipm_chan, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>            <span class="keywordflow">for</span> fiber_id, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        <span class="keywordflow">for</span> fiber_id, sipm_fibers <span class="keywordflow">in</span> fiber_to_sipm_map_U.items():</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>            <span class="keywordflow">for</span> sipm_chan, fiber_info <span class="keywordflow">in</span> sipm_fibers.items():</div>
 <div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>                weight = fiber_info[<span class="stringliteral">&quot;weight&quot;</span>]</div>
 <div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>                xpos = fiber_info[<span class="stringliteral">&quot;xpos&quot;</span>]</div>
 <div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>                print(</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},</span></div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>                    f<span class="stringliteral">&quot;&quot;&quot;++++ Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},</span></div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span><span class="stringliteral">                    Weight: {weight}, X Position: {xpos}&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>                )</div>
 <div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span> </div>

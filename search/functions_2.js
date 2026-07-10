@@ -1,7 +1,7 @@
 var searchData=
 [
   ['backview_0',['backView',['../classeventDisplay_1_1EventLoop.html#a64664b1343be8e6c9fc9df5c4cefef00',1,'eventDisplay::EventLoop']]],
-  ['beginevent_1',['BeginEvent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector']]],
+  ['beginevent_1',['beginevent',['../classSHiP_1_1Detector.html#a94e52e645171521d81764edbac5d5524',1,'SHiP::Detector::BeginEvent()'],['../classexitHadronAbsorber.html#a94288a58f58c1a7028b166d40bbf290f',1,'exitHadronAbsorber::BeginEvent()']]],
   ['beginprimary_2',['BeginPrimary',['../classSHiP_1_1Detector.html#a03d8c93853fa437a2adc466863c6b39e',1,'SHiP::Detector']]],
   ['bigeventloop_3',['BigEventLoop',['../namespaceana__ShipMuon.html#a7261d9119dc8f042df0977eaee773b8d',1,'ana_ShipMuon']]],
   ['bintercalc_4',['BInterCalc',['../classShipBFieldMap.html#a352c01b50449bd888308ffe0cc52b860',1,'ShipBFieldMap']]],

@@ -99,6 +99,10 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
+<ul>
+<li>Add option to split kaons and pions right before they decay, to increase the number of muons</li>
+<li>Added TRY_2026 MS version.</li>
+</ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -120,6 +124,7 @@ Removed</h2>
 Added</h2>
 <ul>
 <li>Add experimental script to import Muons and Matter pkl files</li>
+<li>Added GenieOption to read simulations with the GENIE Geometry Driver (i.e. gevgen_fnal)</li>
 <li>Add <code>TTreeGenerator</code> to read events from ROOT TTrees (including the converted M&amp;M ntuples)</li>
 <li>Add <code>--ttree</code> option to <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> for ROOT TTree input</li>
 <li>Add <code>--target_composition</code> option to <code><a class="el" href="namespacemakeDecay.html">makeDecay</a></code>, defaulting to Tungsten and mirroring the <code><a class="el" href="makeCascade_8py.html">makeCascade.py</a></code> flag</li>
@@ -637,7 +642,7 @@ MTC and SND</h3>
 <li>Fix the condition in the sipm channel &lt;-&gt; fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.</li>
 <li>Add flags for <code>python/ScifiMapping.py</code></li>
 <li>Fixed <a class="el" href="classSiliconTarget.html">SiliconTarget</a> detector identifier.</li>
-<li>Fix the wrong methods in <a class="el" href="MTCDetPoint_8cxx.html">SND/MTC/MTCDetPoint.cxx</a> to extract layer_id and layer_type for the MCPoint.</li>
+<li>Fix the wrong methods in SND/MTC/MTCDetPoint.cxx to extract layer_id and layer_type for the MCPoint.</li>
 <li>Use GetLayerType instead of GetStationType in <a class="el" href="classMTCDetector.html">MTCDetector</a></li>
 </ul>
 <h3><a class="anchor" id="autotoc_md54"></a>
