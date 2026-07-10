@@ -54,11 +54,11 @@ jobs:
                 console.log(`Skipping ${prNum}: ${e.message}`);
               }
             }
-      - name: Keep only last 10 master plot directories
+      - name: Keep only last 10 main plot directories
         run: |
-          if [ -d plots/master ]; then
-            ls -1 plots/master | sort -r | tail -n +11 | while read dir; do
-              rm -rf "plots/master/$dir"
+          if [ -d plots/main ]; then
+            ls -1 plots/main | sort -r | tail -n +11 | while read dir; do
+              rm -rf "plots/main/$dir"
             done
           fi
       - name: Push cleanup

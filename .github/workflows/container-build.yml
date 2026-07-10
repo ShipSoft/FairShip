@@ -6,7 +6,7 @@ on:
     inputs:
       ref:
         description: 'Git ref to build'
-        default: 'master'
+        default: 'main'
 concurrency:
   group: container-${{ inputs.ref || github.ref }}
   cancel-in-progress: false

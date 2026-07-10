@@ -8,4 +8,4 @@ jobs:
     name: Update pixi lock
     uses: ShipSoft/.github/.github/workflows/pixi-lock-update.yml@main
     with:
-      base: master
+      base: main

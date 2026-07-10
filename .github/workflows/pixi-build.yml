@@ -1,9 +1,9 @@
 name: CI
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
   push:
-    branches: [master]
+    branches: [main]
     tags: ['v*']
   workflow_dispatch:
   merge_group:
@@ -262,7 +262,7 @@ jobs:
         run: pixi run --locked -- pyrefly check --output-format=github python macro
   store-metrics:
     name: Store metrics reference
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: run-sim-chain
     runs-on: ubuntu-latest
     permissions:
@@ -328,10 +328,10 @@ jobs:
             config=$(basename "$f" .json)
             config=${config#metrics-}
             ref="ci/physics-metrics/$config"
-            # The tip of master may not have a note yet (its CI run might
+            # The tip of main may not have a note yet (its CI run might
             # still be going), so walk back to the newest commit that has one.
             reference=""
-            for commit in $(git rev-list --first-parent -n 50 origin/master); do
+            for commit in $(git rev-list --first-parent -n 50 origin/main); do
               if git notes --ref="$ref" show "$commit" > "reference-$config.json" 2>/dev/null; then
                 reference="$commit"
                 break
@@ -386,7 +386,7 @@ jobs:
             }
   deploy-plots:
     name: Deploy plots
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [run-tracking-benchmark, run-sim-chain, run-fixed-target]
     concurrency:
@@ -414,7 +414,7 @@ jobs:
           else
             SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-8)
             TITLE="CI Plots for $SHORT_SHA"
-            BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/plots/master/${{ github.run_id }}-$SHORT_SHA"
+            BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/plots/main/${{ github.run_id }}-$SHORT_SHA"
           fi
           python3 .github/scripts/generate_plot_index.py all-plots/ \
             --title "$TITLE" --base-url "$BASE_URL"
@@ -429,7 +429,7 @@ jobs:
             DEST="gh-pages-checkout/plots/pr/${{ github.event.pull_request.number }}/${{ github.run_id }}"
           else
             SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-8)
-            DEST="gh-pages-checkout/plots/master/${{ github.run_id }}-$SHORT_SHA"
+            DEST="gh-pages-checkout/plots/main/${{ github.run_id }}-$SHORT_SHA"
           fi
           mkdir -p "$DEST"
           cp -r all-plots/* "$DEST/"
