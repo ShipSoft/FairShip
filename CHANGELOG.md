@@ -28,7 +28,7 @@ it in future.
 * Restore `tPythia6Generator` instantiation from Python — broken since 26.02 by the `SHiP::Generator` base-class refactor leaving the file-based `Init` overloads pure virtual without a stub override (#1272)
 * Fix call to next Pythia event generation
 
-* fix eliminate redundant hadron absorber field map
+* Eliminate redundant hadron absorber field map
 
 ### Removed
 
