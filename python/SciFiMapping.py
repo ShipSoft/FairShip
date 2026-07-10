@@ -736,7 +736,7 @@ class SciFiMapping:
                 loc = self.scifi.GetLocalPos(gid, BF)
                 xs.append(loc[0])
                 zs.append(loc[2])
-            for x, z in zip(xs, zs):
+            for x, z in zip(xs, zs, strict = True):
                 ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)

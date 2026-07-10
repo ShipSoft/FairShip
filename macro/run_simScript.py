@@ -386,7 +386,7 @@ parser.add_argument(
 
 options = parser.parse_args()
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
-available_snd_designs = [1, 2]  # Extend this list as new designs are added
+available_snd_designs = [1, 2, 3]  # Extend this list as new designs are added
 if any(str(x).lower() == "all" for x in options.SND_design):
     options.SND_design = available_snd_designs
 else:

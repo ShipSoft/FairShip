@@ -156,17 +156,20 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     ship_geo.SiliconTarget_geo = AttrDict(config["SiliconTarget"])
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
-        # SiliconTarget sits just upstream of the SiWCalo, so its auto-placement
-        # needs the SiWCalo length, which lives in a sibling config file
-        # (SiWCalo is configured after SiliconTarget, so it isn't in ship_geo yet).
-        siwcalo_yaml = os.path.join(os.path.dirname(yaml_file), "SiWCalo_config.yaml")
-        with open(siwcalo_yaml) as siwcalo_file:
-            ship_geo.SiWCalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
-        # Get the the center of the next to last magnet (temporary placement)
-        # Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,
-        # 120 layers at 132 cm will fit, with 140 cm offset final layer of SiWCalo within 10 cm of MTC.
+        # Auto-placement anchors the SiliconTarget to the downstream end of the
+        # last muon-shield gap. In Design 3 the SiWCalo sits between that anchor
+        # and the SiliconTarget, so the target is pushed further upstream by the
+        # full SiWCalo length; Design 2 has no SiWCalo and applies no such offset.
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
-        SiWCalo_total_length = ship_geo.SiWCalo_geo.targetSpacing * ship_geo.SiWCalo_geo.nLayers
+        if 3 in getattr(ship_geo, "SND_design", []):
+            # SiWCalo is configured after SiliconTarget, so its length isn't in
+            # ship_geo yet — read it from the sibling config file.
+            siwcalo_yaml = os.path.join(os.path.dirname(yaml_file), "SiWCalo_config.yaml")
+            with open(siwcalo_yaml) as siwcalo_file:
+                ship_geo.SiWCalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
+            SiWCalo_total_length = ship_geo.SiWCalo_geo.targetSpacing * ship_geo.SiWCalo_geo.nLayers
+        else:
+            SiWCalo_total_length = 0.0
         ship_geo.SiliconTarget_geo.zPosition = (
             ship_geo.muShield.Entrance[-1] - ship_geo.muShield.Zgap[-1] - SiWCalo_total_length - SiliconTarget_total_length / 2
         )
@@ -186,7 +189,7 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
     detectorList.append(SiliconTarget)
 
 
-def configure_snd_SiWCalo(yaml_file, ship_geo):
+def configure_snd_SiWCalo(yaml_file: str, ship_geo) -> None:
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
     ship_geo.SiWCalo_geo = AttrDict(config['SiWCalo'])
