@@ -278,22 +278,19 @@ class TrackingBenchmark:
             n_reconstructible += len(reconstructible_ids)
 
             # Match reco tracks to MC
-            n_reco = self.reco_tree.FitTracks.size()
+            n_reco = self.reco_tree.RecoTracks.size()
             n_total_reco += n_reco
 
             # Track which MC particles have been matched in this event
             matched_mc_this_event: set[int] = set()
 
             for i_reco in range(n_reco):
-                track = self.reco_tree.FitTracks[i_reco]
-                fit_status = track.getFitStatus()
-                if not fit_status.isFitConverged():
-                    continue
+                track = self.reco_tree.RecoTracks[i_reco]
 
-                ndf = fit_status.getNdf()
+                ndf = track.nDoF()
                 if ndf <= 0:
                     continue
-                chi2 = fit_status.getChi2() / ndf
+                chi2 = track.chi2() / ndf
                 h_chi2ndf.Fill(chi2)
 
                 # Use fitTrack2MC for the MC link (already computed by fracMCsame)
@@ -321,22 +318,19 @@ class TrackingBenchmark:
 
                     if p_truth > 0:
                         try:
-                            fitted_state = track.getFittedState()
-                            p_reco = fitted_state.getMomMag()
-                            mom = fitted_state.getMom()
-                            pos = fitted_state.getPos()
+                            p_reco = math.hypot(track.px(), track.py(), track.pz())
 
                             dp_over_p = (p_reco - p_truth) / p_truth
                             h_dp_over_p.Fill(dp_over_p)
                             h_dp_vs_p.Fill(p_truth, dp_over_p)
 
-                            h_dx.Fill(pos.X() - x_t)
-                            h_dy.Fill(pos.Y() - y_t)
+                            h_dx.Fill(track.x() - x_t)
+                            h_dy.Fill(track.y() - y_t)
 
-                            pz_reco = mom.Z()
+                            pz_reco = track.pz()
                             if abs(pz_reco) > 1e-10:
-                                tx_reco = mom.X() / pz_reco
-                                ty_reco = mom.Y() / pz_reco
+                                tx_reco = track.px() / pz_reco
+                                ty_reco = track.py() / pz_reco
                                 h_dtx.Fill(tx_reco - tx_t)
                                 h_dty.Fill(ty_reco - ty_t)
 
@@ -345,23 +339,17 @@ class TrackingBenchmark:
                             pass
 
                     # Per-hit unbiased residuals and pulls
-                    n_meas = track.getNumPointsWithMeasurement()
-                    for i_hit in range(n_meas):
-                        try:
-                            tp = track.getPointWithMeasurement(i_hit)
-                            fitter_info = tp.getFitterInfo()
-                            if fitter_info is None:
-                                continue
-                            res = fitter_info.getResidual()
-                            # Index 0: 1D residual (straw drift-distance measurement)
-                            res_val = res.getState()(0)
-                            res_cov = res.getCov()(0, 0)
-                            h_hit_residual.Fill(res_val)
-                            if res_cov > 0:
-                                h_hit_pull.Fill(res_val / math.sqrt(res_cov))
-                        except (ROOT.genfit.Exception, AttributeError, IndexError) as e:
-                            logger.debug("Skipping hit %d: %s", i_hit, e)
-                            continue
+
+                    residuals = track.GetResiduals()
+                    pulls = track.GetPulls()
+
+                    for res_val in residuals:
+                        h_hit_residual.Fill(res_val)
+
+                    for pull_val in pulls:
+
+                        if pull_val != -999.0:
+                            h_hit_pull.Fill(pull_val)
 
             n_matched_mc += len(matched_mc_this_event)
 
