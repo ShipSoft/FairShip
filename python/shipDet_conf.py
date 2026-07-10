@@ -163,11 +163,12 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
         SiliconTarget_total_length = ship_geo.SiliconTarget_geo.targetSpacing * ship_geo.SiliconTarget_geo.nLayers
         if 3 in getattr(ship_geo, "SND_design", []):
             # SiWCalo is configured after SiliconTarget, so its length isn't in
-            # ship_geo yet — read it from the sibling config file.
+            # ship_geo yet — read it from the sibling config file into a local
+            # only; ship_geo.SiWCalo_geo stays owned by configure_snd_SiWCalo.
             siwcalo_yaml = os.path.join(os.path.dirname(yaml_file), "SiWCalo_config.yaml")
             with open(siwcalo_yaml) as siwcalo_file:
-                ship_geo.SiWCalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
-            SiWCalo_total_length = ship_geo.SiWCalo_geo.targetSpacing * ship_geo.SiWCalo_geo.nLayers
+                siwcalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
+            SiWCalo_total_length = siwcalo_geo.targetSpacing * siwcalo_geo.nLayers
         else:
             SiWCalo_total_length = 0.0
         ship_geo.SiliconTarget_geo.zPosition = (
