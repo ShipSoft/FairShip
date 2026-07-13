@@ -106,4 +106,69 @@ struct CBMSimBranches {
   };
 };
 
+//For reading back the tree
+struct MuonDISInBranches {
+  int* nDISevts = nullptr;                 // per input muon per volume
+  double* wDIS = nullptr;                  // per input muon per volume
+  std::vector<double>* DISxsec = nullptr;  // per input muon per DIS
+  std::vector<bool>* DIStarget = nullptr;  // per input muon per DIS, p=true, n=false
+  std::vector<double>* DISvx = nullptr;
+  std::vector<double>* DISvy = nullptr;
+  std::vector<double>* DISvz = nullptr;
+  std::vector<double>* DISvt = nullptr;
+  std::vector<int>* nDISdau = nullptr;               // per DIS event muon
+  std::vector<DISparticle>* DISparticles = nullptr;  // all DIS events together.
+
+  bool SetupTree(TTree*& t, TString label) {
+    bool ok = true;
+    ok &= (t->SetBranchAddress("muon_nDISevt_" + label, &nDISevts) >= 0);
+    ok &= (t->SetBranchAddress("muon_wDIS_" + label, &wDIS) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISxsec_" + label, &DISxsec) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DIStarget_" + label, &DIStarget) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISvx_" + label, &DISvx) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISvy_" + label, &DISvy) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISvz_" + label, &DISvz) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISvt_" + label, &DISvt) >= 0);
+    ok &= (t->SetBranchAddress("mudis_nDISdaughters_" + label, &nDISdau) >= 0);
+    ok &= (t->SetBranchAddress("mudis_DISproducts_" + label, &DISparticles) >= 0);
+    return ok;
+  };
+
+};
+
+struct MuonInBranches {
+  std::vector<ShipMCTrack>* mcTrks = nullptr;
+  std::vector<vetoPoint>* sbtPt = nullptr;
+  std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
+  std::vector<strawtubesPoint>* sstPt = nullptr;
+  MuonDISInBranches* brMS = nullptr;
+  MuonDISInBranches* brUBT = nullptr;
+  MuonDISInBranches* brSBTsens = nullptr;  // sensitive
+  MuonDISInBranches* brSBTfr = nullptr;    // frame
+  MuonDISInBranches* brSSTsens = nullptr;
+  MuonDISInBranches* brSSTfr = nullptr;
+  MuonDISInBranches* brHE = nullptr;
+  MuonDISInBranches* brAIR = nullptr;
+  MuonDISInBranches* brREST = nullptr;
+  bool Setup(TTree*& t) {
+    bool ok = true;
+    ok &= (t->SetBranchAddress("muon_MCTracks", &mcTrks) >= 0);
+    ok &= (t->SetBranchAddress("muon_SBTPoints", &sbtPt) >= 0);
+    ok &= (t->SetBranchAddress("muon_SSTPoints", &sstPt) >= 0);
+    ok &= (t->SetBranchAddress("muon_UBTPoints", &ubtPt) >= 0);
+    ok &= brMS->SetupTree(t, "MS");
+    ok &= brUBT->SetupTree(t, "UBT");
+    ok &= brSBTsens->SetupTree(t, "SBTsens");
+    ok &= brSBTfr->SetupTree(t, "SBTfr");
+    ok &= brSSTsens->SetupTree(t, "SSTsens");
+    ok &= brSSTfr->SetupTree(t, "SSTfr");
+    ok &= brHE->SetupTree(t, "HE");
+    ok &= brAIR->SetupTree(t, "AIR");
+    ok &= brREST->SetupTree(t, "REST");
+    return ok;
+  };
+};
+
+
+
 #endif

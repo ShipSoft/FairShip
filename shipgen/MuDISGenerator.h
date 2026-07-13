@@ -14,6 +14,8 @@
 #include "TVector3.h"
 #include "vector"
 
+#include "MuDISDefs.h"
+
 class FairPrimaryGenerator;
 
 class MuDISGenerator : public SHiP::Generator {
@@ -27,25 +29,19 @@ class MuDISGenerator : public SHiP::Generator {
   /** public method ReadEvent **/
   using SHiP::Generator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
-  Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
   Int_t GetNevents();
 
-  void SetPositions(Double_t z_start, Double_t z_end) {
-    startZ = z_start;
-    endZ = z_end;
-  }
-
  protected:
-  Double_t startZ, endZ;
-  TClonesArray* iMuon;
-  TClonesArray* dPart;
-  TClonesArray* dPartSoft;
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
   int fNevents;
-  int fn;
-  bool fFirst;
+  MuonInBranches finEv;
+  int fnmu;//counter of original input muons
+  int fnmuDis;//counter of DIS event per input muon
+  int fnmuDisDau;//counter of daughter particles per input muon
+
+  
 };
 #endif  // SHIPGEN_MUDISGENERATOR_H_
