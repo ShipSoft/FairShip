@@ -1,62 +1,60 @@
 <map id="shipgen/Generator.h" name="shipgen/Generator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1552,5,1705,31"/>
-<area shape="rect" id="Node000002" href="$CosmicsGenerator_8h.html" title=" " alt="" coords="142,79,350,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1539,26,1061,48,421,81,351,86,350,80,421,76,1061,43,1538,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1571,5,1724,31"/>
+<area shape="rect" id="Node000002" href="$CosmicsGenerator_8h.html" title=" " alt="" coords="117,79,325,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1557,26,1062,48,395,81,325,86,325,80,395,76,1062,42,1557,20"/>
 <area shape="rect" id="Node000004" href="$DPPythia8Generator_8h.html" title=" " alt="" coords="252,152,472,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1538,23,1314,26,1027,35,746,53,631,65,544,81,497,97,451,116,381,154,379,150,449,112,495,92,543,76,630,60,746,47,1027,30,1314,21,1538,17"/>
-<area shape="rect" id="Node000006" href="$EvtCalcGenerator_8h.html" title=" " alt="" coords="1423,79,1626,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1602,41,1543,81,1540,76,1599,36"/>
-<area shape="rect" id="Node000008" href="$FixedTargetGenerator_8h.html" title=" " alt="" coords="867,152,1094,177"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1538,22,1450,26,1347,35,1237,53,1130,81,1090,97,1053,117,997,154,994,150,1051,112,1088,92,1128,76,1236,48,1346,30,1450,21,1538,17"/>
-<area shape="rect" id="Node000010" href="$Generator_8cxx.html" title=" " alt="" coords="1650,79,1818,104"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1659,36,1718,76,1715,81,1656,41"/>
-<area shape="rect" id="Node000011" href="$GenieGenerator_8h.html" title=" " alt="" coords="1141,79,1332,104"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1553,36,1301,81,1300,76,1552,30"/>
-<area shape="rect" id="Node000013" href="$Pythia8Generator_8h.html" title=" " alt="" coords="1350,152,1553,177"/>
-<area shape="poly" id="edge28_Node000001_Node000013" title=" " alt="" coords="1539,35,1462,54,1432,66,1414,80,1408,97,1414,116,1426,135,1440,150,1436,153,1422,138,1409,119,1403,97,1409,77,1429,62,1460,49,1538,30"/>
-<area shape="rect" id="Node000015" href="$HNLPythia8Generator_8h.html" title=" " alt="" coords="555,79,785,104"/>
-<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="1538,29,785,84,784,79,1538,23"/>
-<area shape="rect" id="Node000017" href="$MuDISGenerator_8h.html" title=" " alt="" coords="1842,79,2037,104"/>
-<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="1692,31,1890,76,1888,81,1691,36"/>
-<area shape="rect" id="Node000019" href="$MuonBackGenerator_8h.html" title=" " alt="" coords="2061,79,2282,104"/>
-<area shape="poly" id="edge22_Node000001_Node000019" title=" " alt="" coords="1719,28,2084,76,2084,81,1719,34"/>
-<area shape="rect" id="Node000021" href="$NtupleGenerator_8h.html" title=" " alt="" coords="2313,79,2509,104"/>
-<area shape="poly" id="edge24_Node000001_Node000021" title=" " alt="" coords="1719,25,2294,76,2313,78,2313,83,2294,81,1719,30"/>
-<area shape="rect" id="Node000023" href="$ParticleGunGenerator_8h.html" title=" " alt="" coords="2545,79,2771,104"/>
-<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="1719,22,2521,76,2545,78,2544,83,2520,81,1719,28"/>
-<area shape="rect" id="Node000025" href="$TTreeGenerator_8h.html" title=" " alt="" coords="2808,79,2996,104"/>
-<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="1719,20,2176,40,2477,56,2784,76,2808,78,2807,83,2783,81,2477,61,2175,45,1719,25"/>
-<area shape="rect" id="Node000027" href="$tPythia6Generator_8h.html" title=" " alt="" coords="3035,79,3241,104"/>
-<area shape="poly" id="edge31_Node000001_Node000027" title=" " alt="" coords="1719,19,2264,38,2633,55,3009,76,3035,78,3034,83,3008,81,2633,60,2264,43,1719,24"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1557,24,967,43,666,60,557,70,493,81,458,96,425,116,376,154,373,150,422,112,456,92,492,76,556,65,665,54,967,37,1557,19"/>
+<area shape="rect" id="Node000006" href="$EvtCalcGenerator_8h.html" title=" " alt="" coords="1235,79,1438,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1585,36,1388,81,1386,76,1584,31"/>
+<area shape="rect" id="Node000008" href="$FixedTargetGenerator_8h.html" title=" " alt="" coords="505,79,731,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1557,27,1201,49,744,81,732,82,731,77,743,76,1200,44,1557,22"/>
+<area shape="rect" id="Node000010" href="$Generator_8cxx.html" title=" " alt="" coords="1462,79,1630,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1621,41,1564,81,1561,76,1618,36"/>
+<area shape="rect" id="Node000011" href="$GenieGenerator_8h.html" title=" " alt="" coords="1655,79,1845,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1677,36,1735,76,1732,81,1674,41"/>
+<area shape="rect" id="Node000013" href="$HNLPythia8Generator_8h.html" title=" " alt="" coords="755,79,985,104"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1557,30,985,82,984,77,1557,25"/>
+<area shape="rect" id="Node000016" href="$MuDISGenerator_8h.html" title=" " alt="" coords="1870,79,2065,104"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="1712,31,1916,76,1915,81,1711,36"/>
+<area shape="rect" id="Node000018" href="$MuonBackGenerator_8h.html" title=" " alt="" coords="2089,79,2310,104"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="1738,28,2111,76,2110,81,1737,34"/>
+<area shape="rect" id="Node000020" href="$NtupleGenerator_8h.html" title=" " alt="" coords="2335,79,2531,104"/>
+<area shape="poly" id="edge21_Node000001_Node000020" title=" " alt="" coords="1738,24,2322,76,2335,77,2334,83,2322,81,1737,30"/>
+<area shape="rect" id="Node000022" href="$ParticleGunGenerator_8h.html" title=" " alt="" coords="2562,79,2789,104"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="1738,22,2542,76,2562,78,2562,83,2542,81,1738,27"/>
+<area shape="rect" id="Node000024" href="$Pythia8Generator_8h.html" title=" " alt="" coords="1009,79,1211,104"/>
+<area shape="poly" id="edge25_Node000001_Node000024" title=" " alt="" coords="1557,34,1197,81,1196,76,1556,29"/>
+<area shape="rect" id="Node000025" href="$TTreeGenerator_8h.html" title=" " alt="" coords="2824,79,3012,104"/>
+<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="1738,20,2194,40,2495,56,2801,76,2824,78,2824,83,2800,81,2495,61,2194,45,1738,25"/>
+<area shape="rect" id="Node000027" href="$tPythia6Generator_8h.html" title=" " alt="" coords="3049,79,3256,104"/>
+<area shape="poly" id="edge29_Node000001_Node000027" title=" " alt="" coords="1738,19,2282,38,2650,55,3025,76,3049,78,3049,83,3024,81,2650,60,2282,43,1738,24"/>
 <area shape="rect" id="Node000003" href="$CosmicsGenerator_8cxx.html" title=" " alt="" coords="5,152,228,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,113,139,154,137,149,212,108"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="194,114,135,154,132,150,191,110"/>
 <area shape="rect" id="Node000005" href="$DPPythia8Generator_8cxx.html" title=" " alt="" coords="245,225,479,251"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="365,191,365,225,359,225,359,191"/>
-<area shape="rect" id="Node000007" href="$EvtCalcGenerator_8cxx.html" title=" " alt="" coords="1577,152,1795,177"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1564,107,1661,149,1659,154,1562,112"/>
-<area shape="rect" id="Node000009" href="$FixedTargetGenerator_8cxx.html" title=" " alt="" coords="681,225,923,251"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="940,185,832,228,830,223,939,180"/>
-<area shape="poly" id="edge11_Node000011_Node000008" title=" " alt="" coords="1183,110,1023,154,1021,149,1182,105"/>
-<area shape="rect" id="Node000012" href="$GenieGenerator_8cxx.html" title=" " alt="" coords="1119,152,1325,177"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="1234,118,1227,152,1222,151,1229,117"/>
-<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="1285,106,1417,149,1416,154,1283,111"/>
-<area shape="rect" id="Node000014" href="$Pythia8Generator_8cxx.html" title=" " alt="" coords="1145,225,1363,251"/>
-<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1408,184,1287,228,1285,223,1406,179"/>
-<area shape="poly" id="edge16_Node000015_Node000004" title=" " alt="" coords="608,110,412,154,411,149,607,104"/>
-<area shape="poly" id="edge17_Node000015_Node000009" title=" " alt="" coords="607,110,573,122,545,138,536,146,532,155,532,165,537,176,560,191,595,205,687,223,686,228,594,210,557,196,533,179,526,166,526,154,532,143,542,134,571,118,605,105"/>
-<area shape="poly" id="edge19_Node000015_Node000014" title=" " alt="" coords="710,107,805,150,830,163,856,175,930,194,1006,209,1145,227,1145,232,1005,214,929,199,854,180,828,168,802,154,708,112"/>
-<area shape="rect" id="Node000016" href="$HNLPythia8Generator_8cxx.html" title=" " alt="" coords="548,152,792,177"/>
-<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="673,118,673,152,667,152,667,118"/>
-<area shape="rect" id="Node000018" href="$MuDISGenerator_8cxx.html" title=" " alt="" coords="1819,152,2030,177"/>
-<area shape="poly" id="edge21_Node000017_Node000018" title=" " alt="" coords="1937,118,1930,152,1924,151,1932,117"/>
-<area shape="rect" id="Node000020" href="$MuonBackGenerator_8cxx.html" title=" " alt="" coords="2053,152,2289,177"/>
-<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="2174,118,2174,152,2169,152,2169,118"/>
-<area shape="rect" id="Node000022" href="$NtupleGenerator_8cxx.html" title=" " alt="" coords="2313,152,2523,177"/>
-<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="2416,118,2420,152,2414,152,2411,118"/>
-<area shape="rect" id="Node000024" href="$ParticleGunGenerator_8cxx.html" title=" " alt="" coords="2547,152,2790,177"/>
-<area shape="poly" id="edge27_Node000023_Node000024" title=" " alt="" coords="2664,117,2670,151,2664,152,2659,118"/>
-<area shape="rect" id="Node000026" href="$TTreeGenerator_8cxx.html" title=" " alt="" coords="2814,152,3017,177"/>
-<area shape="poly" id="edge30_Node000025_Node000026" title=" " alt="" coords="2909,117,2916,151,2911,152,2904,118"/>
-<area shape="rect" id="Node000028" href="$tPythia6Generator_8cxx.html" title=" " alt="" coords="3041,152,3264,177"/>
-<area shape="poly" id="edge32_Node000027_Node000028" title=" " alt="" coords="3146,117,3153,151,3148,152,3141,118"/>
+<area shape="rect" id="Node000007" href="$EvtCalcGenerator_8cxx.html" title=" " alt="" coords="1273,152,1491,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1354,114,1377,150,1372,153,1349,117"/>
+<area shape="rect" id="Node000009" href="$FixedTargetGenerator_8cxx.html" title=" " alt="" coords="497,152,739,177"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="621,118,621,152,615,152,615,118"/>
+<area shape="rect" id="Node000012" href="$GenieGenerator_8cxx.html" title=" " alt="" coords="1603,152,1809,177"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1738,117,1715,153,1711,150,1733,114"/>
+<area shape="poly" id="edge13_Node000013_Node000004" title=" " alt="" coords="775,109,444,155,443,149,774,103"/>
+<area shape="poly" id="edge14_Node000013_Node000009" title=" " alt="" coords="817,110,660,154,658,149,815,105"/>
+<area shape="rect" id="Node000014" href="$HNLPythia8Generator_8cxx.html" title=" " alt="" coords="764,152,1008,177"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="878,117,886,151,881,152,873,118"/>
+<area shape="rect" id="Node000015" href="$Pythia8Generator_8cxx.html" title=" " alt="" coords="1032,152,1249,177"/>
+<area shape="poly" id="edge16_Node000013_Node000015" title=" " alt="" coords="927,105,1098,149,1096,154,926,110"/>
+<area shape="rect" id="Node000017" href="$MuDISGenerator_8cxx.html" title=" " alt="" coords="1834,152,2045,177"/>
+<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="1960,118,1946,153,1941,151,1955,116"/>
+<area shape="rect" id="Node000019" href="$MuonBackGenerator_8cxx.html" title=" " alt="" coords="2068,152,2304,177"/>
+<area shape="poly" id="edge20_Node000018_Node000019" title=" " alt="" coords="2197,118,2191,152,2186,151,2192,117"/>
+<area shape="rect" id="Node000021" href="$NtupleGenerator_8cxx.html" title=" " alt="" coords="2327,152,2538,177"/>
+<area shape="poly" id="edge22_Node000020_Node000021" title=" " alt="" coords="2435,118,2435,152,2430,152,2430,118"/>
+<area shape="rect" id="Node000023" href="$ParticleGunGenerator_8cxx.html" title=" " alt="" coords="2562,152,2805,177"/>
+<area shape="poly" id="edge24_Node000022_Node000023" title=" " alt="" coords="2681,117,2685,152,2679,152,2676,118"/>
+<area shape="poly" id="edge26_Node000024_Node000015" title=" " alt="" coords="1123,116,1138,151,1133,153,1118,118"/>
+<area shape="rect" id="Node000026" href="$TTreeGenerator_8cxx.html" title=" " alt="" coords="2829,152,3031,177"/>
+<area shape="poly" id="edge28_Node000025_Node000026" title=" " alt="" coords="2925,117,2931,151,2925,152,2920,118"/>
+<area shape="rect" id="Node000028" href="$tPythia6Generator_8cxx.html" title=" " alt="" coords="3056,152,3279,177"/>
+<area shape="poly" id="edge30_Node000027_Node000028" title=" " alt="" coords="3160,117,3168,151,3162,152,3155,118"/>
 </map>

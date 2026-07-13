@@ -9,8 +9,6 @@ var classUpstreamTagger =
     [ "SetBoxDimensions", "classUpstreamTagger.html#aaabe2638167e3521f0cf988c4a903275", null ],
     [ "SetZposition", "classUpstreamTagger.html#aad4dba52a94dcb89523e540d44327955", null ],
     [ "det_zPos", "classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8", null ],
-    [ "module", "classUpstreamTagger.html#a57f7a0bf92cdcea3ec03ceb5e5053560", null ],
-    [ "scoringPlaneUBText", "classUpstreamTagger.html#a903dbb19ee331c6e3027dcac0c5595b0", null ],
     [ "UpstreamTagger_fulldet", "classUpstreamTagger.html#ace5dfc966f197ffd412ca998dac78ec1", null ],
     [ "xbox_fulldet", "classUpstreamTagger.html#a93f65d5b6f13b18386f645c749cc7c1c", null ],
     [ "ybox_fulldet", "classUpstreamTagger.html#a8ce3b317da08c7f52ff60792de4a04ae", null ],

@@ -7,7 +7,6 @@ var classGenieGenerator =
     [ "Init", "classGenieGenerator.html#ac0648a1ec1c2fde5c0f1c09ddc2915e4", null ],
     [ "Init", "classGenieGenerator.html#ab66c865624935e26f323ed644f7814c4", null ],
     [ "NuOnly", "classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416", null ],
-    [ "OldReadEvent", "classGenieGenerator.html#ab1c2f02b4fe0e6cfc28c2bfef6919744", null ],
     [ "ReadEvent", "classGenieGenerator.html#a76d001e6e62c10c3ae670913a8781e6d", null ],
     [ "ReadEventGeometryDriver", "classGenieGenerator.html#a0d76f31b4a472cce3ebe05d2eb0c8cc4", null ],
     [ "Rotate", "classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902", null ],

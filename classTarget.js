@@ -20,7 +20,6 @@ var classTarget =
     [ "SetDetectorDimension", "classTarget.html#aa281d14b66a417a7c336dac151b45f09", null ],
     [ "SetEmulsionParam", "classTarget.html#ab196cf1cdb37e9466b473673f4422951", null ],
     [ "SetHpTParam", "classTarget.html#a0728ea1649f0c716f74292f93ef9afbc", null ],
-    [ "SetMagnetConfiguration", "classTarget.html#ad506f138c2ed7262d2b261b8dde9c5a6", null ],
     [ "SetMagnetHeight", "classTarget.html#a04466bcc5048bbce0aa0479dae0a4ce6", null ],
     [ "SetMagneticField", "classTarget.html#afa4d910ed7f87b3ad72a45a5ba08dc5c", null ],
     [ "SetNumberBricks", "classTarget.html#a3f3757520e20da1dde5add59c99b284b", null ],

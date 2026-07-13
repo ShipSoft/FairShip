@@ -117,9 +117,8 @@ var NAVTREEINDEX0 =
 "ParticleGunGenerator_8h.html":[7,0,12,27],
 "ParticleGunGenerator_8h_source.html":[7,0,12,27],
 "Pythia8Generator_8cxx.html":[7,0,12,28],
-"Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a":[7,0,12,28,2],
 "Pythia8Generator_8cxx.html#a20066c2dc15c8a3bac6f429aacdb4c30":[7,0,12,28,1],
-"Pythia8Generator_8cxx.html#a357b34ec460558c0942628e20a171eef":[7,0,12,28,3],
+"Pythia8Generator_8cxx.html#a357b34ec460558c0942628e20a171eef":[7,0,12,28,2],
 "Pythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d":[7,0,12,28,0],
 "Pythia8Generator_8cxx_source.html":[7,0,12,28],
 "Pythia8Generator_8h.html":[7,0,12,29],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a62cf4a744fec236a91e51893814a99df":[7,0,11,2,0,19],
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd":[7,0,11,2,0,8],
 "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2":[7,0,11,2,0,0],
-"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7":[7,0,11,2,0,2]
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7":[7,0,11,2,0,2],
+"ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ab07911a8c48f7d5ce44b746b52c8f860":[7,0,11,2,0,16]
 };

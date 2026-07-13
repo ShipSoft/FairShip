@@ -942,7 +942,6 @@ var namespaces_dup =
       [ "addDPtoROOT", "namespacepythia8darkphoton__conf.html#a2d210c1850611efa3f2d94cfed4a549d", null ],
       [ "configure", "namespacepythia8darkphoton__conf.html#acd520394960a5dfa80c744de77b559f4", null ],
       [ "manipulatePhysics", "namespacepythia8darkphoton__conf.html#a7aa8f7540430e7572460a9e92b5082e3", null ],
-      [ "readFromAscii", "namespacepythia8darkphoton__conf.html#a3eec5e259d85af3772c0465e4785a1f9", null ],
       [ "eta1mass", "namespacepythia8darkphoton__conf.html#a7ce8c8aa53e93dfe5afaa43e2f0901b6", null ],
       [ "etamass", "namespacepythia8darkphoton__conf.html#a4e665f9019e795ebc2533973bbe5a2a1", null ],
       [ "omegamass", "namespacepythia8darkphoton__conf.html#abf09dd3a8d5afdafed0abf06741d1fed", null ],
@@ -1151,7 +1150,6 @@ var namespaces_dup =
       [ "defaultInputFile", "namespacerun__simScript.html#a084eb019e806aaaf7f1bc12e43fd1278", null ],
       [ "dest", "namespacerun__simScript.html#a062839d13d7651da60d82a6f989e6abd", null ],
       [ "DISgen", "namespacerun__simScript.html#ab02ac339520a773cfdfb02a5a3f7e325", null ],
-      [ "DownScaleDiMuon", "namespacerun__simScript.html#a15624f0bd4a3bb51eea01d1a12c81122", null ],
       [ "empty", "namespacerun__simScript.html#ae9cb26d82672ec852f43e2d668b3a7cf", null ],
       [ "EnergyCut", "namespacerun__simScript.html#a25a12c56a31e27776669952116892e5d", null ],
       [ "EvtCalcGen", "namespacerun__simScript.html#a985c7f9cdec3fe87f40f8e765625a822", null ],
@@ -1247,7 +1245,6 @@ var namespaces_dup =
       [ "target", "namespacerun__simScript.html#a07e3cd2615f8c9e4695a4961c17b2ccd", null ],
       [ "temp_filename", "namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40", null ],
       [ "test", "namespacerun__simScript.html#aeb48497c16acd583fcd0904bbd20e1e5", null ],
-      [ "testf", "namespacerun__simScript.html#a1ea8d63e503c3d3ec966f4bc4aff471e", null ],
       [ "theCouplings", "namespacerun__simScript.html#ad937cb1c59f43fc66c3e887dd5f0be6f", null ],
       [ "theDecayCouplings", "namespacerun__simScript.html#a3aa0b86013751d051d25e6bba245707e", null ],
       [ "theDPmass", "namespacerun__simScript.html#accda339f17ef6a9ca8465a8221c5dae0", null ],
@@ -1464,9 +1461,7 @@ var namespaces_dup =
       [ "__author__", "namespaceshipPatRec.html#a887d7c79ae760b2046f2430639b9310d", null ],
       [ "logger", "namespaceshipPatRec.html#a9308302671ea7bd5ccdf623c274fbdaa", null ],
       [ "max_x", "namespaceshipPatRec.html#a14630232c258b560f832ed72fb3f9138", null ],
-      [ "r_scale", "namespaceshipPatRec.html#aa601776ac34cd1fd3d2473441566ee86", null ],
-      [ "ReconstructibleMCTracks", "namespaceshipPatRec.html#a1b2eef17cc3ac04669d2fa4c73c11257", null ],
-      [ "theTracks", "namespaceshipPatRec.html#afa3471624029a285169b4908bafeaa02", null ]
+      [ "r_scale", "namespaceshipPatRec.html#aa601776ac34cd1fd3d2473441566ee86", null ]
     ] ],
     [ "ShipReco", "namespaceShipReco.html", [
       [ "mem_monitor", "namespaceShipReco.html#abef5d8b1901b0297e8a03041a63b8d7d", null ],
