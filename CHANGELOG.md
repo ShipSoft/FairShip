@@ -17,6 +17,8 @@ it in future.
 
 * Added TRY_2026 MS version.
 
+* Add classes in muonDIS/ to track muon path in material and generate DIS vertices in different materials.
+
 ### Changed
 
 ### Fixed
