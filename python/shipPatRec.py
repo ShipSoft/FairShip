@@ -914,28 +914,30 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
 
     for i_12 in range(len(recognized_tracks_12)):
         if i_12 not in used_y12:
-            atrack = {}
-            atrack["hits_y12"] = recognized_tracks_12[i_12]["hits_y"]
-            atrack["hits_stereo12"] = recognized_tracks_12[i_12]["hits_stereo"]
-            atrack["hits_y34"] = []
-            atrack["hits_stereo34"] = []
-            atrack["k_y12"] = recognized_tracks_12[i_12]["k_y"]
-            atrack["b_y12"] = recognized_tracks_12[i_12]["b_y"]
-            atrack["k_y34"] = None
-            atrack["b_y34"] = None
+            atrack = {
+                "hits_y12": recognized_tracks_12[i_12]["hits_y"],
+                "hits_stereo12": recognized_tracks_12[i_12]["hits_stereo"],
+                "hits_y34": [],
+                "hits_stereo34": [],
+                "k_y12": recognized_tracks_12[i_12]["k_y"],
+                "b_y12": recognized_tracks_12[i_12]["b_y"],
+                "k_y34": None,
+                "b_y34": None,
+            }
             recognized_tracks_combo.append(atrack)
 
     for i_34 in range(len(recognized_tracks_34)):
         if i_34 not in used_y34:
-            atrack = {}
-            atrack["hits_y12"] = []
-            atrack["hits_stereo12"] = []
-            atrack["hits_y34"] = recognized_tracks_34[i_34]["hits_y"]
-            atrack["hits_stereo34"] = recognized_tracks_34[i_34]["hits_stereo"]
-            atrack["k_y12"] = None
-            atrack["b_y12"] = None
-            atrack["k_y34"] = recognized_tracks_34[i_34]["k_y"]
-            atrack["b_y34"] = recognized_tracks_34[i_34]["b_y"]
+            atrack = {
+                "hits_y12": [],
+                "hits_stereo12": [],
+                "hits_y34": recognized_tracks_34[i_34]["hits_y"],
+                "hits_stereo34": recognized_tracks_34[i_34]["hits_stereo"],
+                "k_y12": None,
+                "b_y12": None,
+                "k_y34": recognized_tracks_34[i_34]["k_y"],
+                "b_y34": recognized_tracks_34[i_34]["b_y"],
+            }
             recognized_tracks_combo.append(atrack)
 
     logger.debug(
