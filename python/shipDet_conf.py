@@ -168,7 +168,7 @@ def configure_snd_siliconTarget(yaml_file: str, ship_geo) -> None:
             siwcalo_yaml = os.path.join(os.path.dirname(yaml_file), "SiWCalo_config.yaml")
             with open(siwcalo_yaml) as siwcalo_file:
                 siwcalo_geo = AttrDict(yaml.safe_load(siwcalo_file)["SiWCalo"])
-            SiWCalo_total_length = siwcalo_geo.targetSpacing * siwcalo_geo.nLayers
+            SiWCalo_total_length = siwcalo_geo.absSpacing * siwcalo_geo.nLayers
         else:
             SiWCalo_total_length = 0.0
         ship_geo.SiliconTarget_geo.zPosition = (
@@ -203,20 +203,21 @@ def configure_snd_SiWCalo(yaml_file: str, ship_geo) -> None:
     if ship_geo.SiWCalo_geo.zPosition == "auto":
         # Just a bit after the SiW strip detector
         z_shift_prev = 0.5 * (ship_geo.SiliconTarget_geo.nLayers * ship_geo.SiliconTarget_geo.targetSpacing)
-        z_shift_this = 0.5 * (ship_geo.SiWCalo_geo.nLayers * ship_geo.SiWCalo_geo.targetSpacing)
+        z_shift_this = 0.5 * (ship_geo.SiWCalo_geo.nLayers * ship_geo.SiWCalo_geo.absSpacing)
         ship_geo.SiWCalo_geo.zPosition = ship_geo.SiliconTarget_geo.zPosition + z_shift_prev + z_shift_this
         print("SiWCalo zPosition set to ", ship_geo.SiWCalo_geo.zPosition)
     SiWCalo = ROOT.SiWCalo("SiWCalo", ROOT.kTRUE)
     SiWCalo.SetSiWCaloParameters(
-        ship_geo.SiWCalo_geo.targetWidth,
-        ship_geo.SiWCalo_geo.targetHeight,
+        ship_geo.SiWCalo_geo.absWidth,
+        ship_geo.SiWCalo_geo.absHeight,
         ship_geo.SiWCalo_geo.sensorWidth,
         ship_geo.SiWCalo_geo.sensorLength,
         ship_geo.SiWCalo_geo.nLayers,
         ship_geo.SiWCalo_geo.zPosition,
-        ship_geo.SiWCalo_geo.targetThickness,
+        ship_geo.SiWCalo_geo.absThickness,
+        ship_geo.SiWCalo_geo.sensorThickness,
         ship_geo.SiWCalo_geo.NPixels,
-        ship_geo.SiWCalo_geo.targetSpacing,
+        ship_geo.SiWCalo_geo.absSpacing,
         ship_geo.SiWCalo_geo.moduleOffset,
     )
     detectorList.append(SiWCalo)

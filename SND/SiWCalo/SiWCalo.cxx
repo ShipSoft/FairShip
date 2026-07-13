@@ -1,7 +1,12 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
+
 #include "SiWCalo.h"
 
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
+#include "ShipGeoUtil.h"
 #include "ShipUnit.h"
 #include "SiWCaloPoint.h"
 
@@ -30,186 +35,123 @@
 #include "FairVolume.h"
 
 // Additional standard headers
-#include "TClonesArray.h"
 #include "TString.h"  // for TString
 #include "TVirtualMC.h"
 
 using namespace ShipUnit;
 
 SiWCalo::SiWCalo()
-    : FairDetector("SiWCalo", kTRUE, kSiWCalo),
-      fTrackID(-1),
-      fPdgCode(),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fSiWCaloPointCollection(new TClonesArray("SiWCaloPoint")) {}
+    : Detector("SiWCalo", kTRUE, kSiWCalo) {}
 
-SiWCalo::SiWCalo(const char* name, Bool_t Active, const char* Title)
-    : FairDetector(name, Active, kSiWCalo),
-      fTrackID(-1),
-      fPdgCode(),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      fSiWCaloPointCollection(new TClonesArray("SiWCaloPoint")) {}
+SiWCalo::SiWCalo(const char* name, Bool_t Active, const char* /*Title*/,
+                         Int_t /*DetId*/)
+    : Detector(name, Active, kSiWCalo) {}
 
-SiWCalo::~SiWCalo() {
-  if (fSiWCaloPointCollection) {
-    fSiWCaloPointCollection->Delete();
-    delete fSiWCaloPointCollection;
-  }
-}
 
-void SiWCalo::Initialize() { FairDetector::Initialize(); }
-
-// -----   Private method InitMedium
-Int_t SiWCalo::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-  return geoBuild->createMedium(ShipMedium);
-}
-
-void SiWCalo::SetSiWCaloParameters(Double_t targetWidth, Double_t targetHeight,
+void SiWCalo::SetSiWCaloParameters(Double_t absWidth, Double_t absHeight,
                                    Double_t sensorWidth, Double_t sensorLength,
                                    Int_t nLayers, Double_t zPosition,
-                                   Double_t targetThickness, Double_t NPixels,
-                                   Double_t targetSpacing,
+                                   Double_t absThickness,
+				   Double_t sensorThickness,
+				   Double_t NPixels,
+                                   Double_t absSpacing,
                                    Double_t moduleOffset) {
-  fTargetWidth = targetWidth;
-  fTargetHeight = targetHeight;
+  fAbsWidth = absWidth;
+  fAbsHeight = absHeight;
   fSensorWidth = sensorWidth;
   fSensorLength = sensorLength;
   fLayers = nLayers;
   fZPosition = zPosition;
-  fTargetThickness = targetThickness;
+  fAbsThickness = absThickness;
+  fSensorThickness = sensorThickness;
   fNPixels = NPixels;
-  fTargetSpacing = targetSpacing;
+  fAbsSpacing = absSpacing;
   fModuleOffset = moduleOffset;
 }
 
-TGeoVolume* SiWCalo::CreateSiliconPlanes(const char* name, Double_t width,
-                                         Double_t length, Double_t spacing,
-                                         Double_t NPixels, TGeoMedium* silicon,
-                                         Int_t layerId) {
+void SiWCalo::CreateSiliconPlane(const char* name,
+				 TGeoVolumeAssembly* modMotherVol,
+				 Double_t width,
+				 Double_t length,
+				 Double_t thickness,
+				 Double_t NPixels,
+				 TGeoMedium* silicon,
+				 Int_t layerId) {
   // ------------------------------------------------------------
   // Pixel segmentation
   // ------------------------------------------------------------
-  // Factor 2 because now we're considering 2x2 ASUS array
-  const Int_t nPixX =
-      NPixels;  // In one line there are 4 asics with 8 pixels each => 32 pixels
-  const Int_t nPixY = NPixels;  // 32X32=1024 pixels
+  
+  Double_t pixX = width / NPixels;
+  Double_t pixY = length / NPixels;
+  
+  auto si_volume = new TGeoVolumeAssembly(Form("%s_sipad", name));
+  modMotherVol->AddNode(si_volume, 0, new TGeoTranslation(0, 0, 0));
+  auto si_plane = new TGeoVolumeAssembly(Form("%s_sipad_plane", name));
+  si_volume->AddNode(si_plane, 0, new TGeoTranslation(0, 0, 0));
+  auto pixel = new TGeoBBox(Form("%s_pixel", name), pixX / 2, pixY / 2,
+                           thickness / 2);
+  auto pixelVol = new TGeoVolume(Form("%s_pixelVol", name), pixel, silicon);
+  pixelVol->SetLineColor(kRed);
+  pixelVol->SetTransparency(40);
+  AddSensitiveVolume(pixelVol);
 
-  Double_t pixX = width / nPixX;
-  Double_t pixY = length / nPixY;
+  for (Int_t i = 0; i < NPixels; i++) {
+    for (Int_t j = 0; j < NPixels; j++) {
+      Double_t x = -width / 2 + pixX * (i + 0.5);
+      Double_t y = -length / 2 + pixY * (j + 0.5);
+      si_plane->AddNode(pixelVol, 1e8 + 1e6 + i * NPixels + j,
+			new TGeoTranslation(x, y, 0));
+    }
+  }                
 
-  // ------------------------------------------------------------
-  // Sensor shape and logical volume
-  // ------------------------------------------------------------
-  TGeoBBox* SensorShape =
-      new TGeoBBox("SensorShape", width / 2.0, length / 2.0,
-                   0.65 * mm / 2.0);  // This is the Si sensor thickness!
-
-  TGeoVolume* SensorVolume =
-      new TGeoVolume("SensorVolume", SensorShape, silicon);
-
-  SensorVolume->SetLineColor(kRed);
-  SensorVolume->SetTransparency(40);
-
-  // ------------------------------------------------------------
-  // Pixel segmentation: X then Y
-  // ------------------------------------------------------------
-  auto* XCells = SensorVolume->Divide("PIXELX",
-                                      1,  // X axis
-                                      nPixX, -width / 2.0, pixX);
-
-  auto* Pixels = XCells->Divide("PIXELY",
-                                2,  // Y axis
-                                nPixY, -length / 2.0, pixY);
-
-  // Only the deepest volume is sensitive
-  AddSensitiveVolume(Pixels);
-
-  // ------------------------------------------------------------
-  // Tracking station (top-level container)
-  // ------------------------------------------------------------
-  TGeoVolumeAssembly* trackingStation = new TGeoVolumeAssembly(name);
-
-  // ------------------------------------------------------------
-  // Single pixel layer
-  // ------------------------------------------------------------
-  TGeoVolumeAssembly* layer = new TGeoVolumeAssembly("PixelLayer");
-
-  Int_t sensor_id = layerId << 5;  // keep ID scheme compatible
-
-  layer->AddNode(SensorVolume, sensor_id, new TGeoTranslation(0, 0, 0));
-
-  trackingStation->AddNode(layer, 0);
-
-  // ------------------------------------------------------------
-  // Return top-level object
-  // ------------------------------------------------------------
-  return trackingStation;
 }
 
 void SiWCalo::ConstructGeometry() {
-  InitMedium("tungstenalloySND");
+  ShipGeo::InitMedium("tungstenalloySND");
   TGeoMedium* tungsten = gGeoManager->GetMedium("tungstenalloySND");
-  InitMedium("air");
+  ShipGeo::InitMedium("air");
   TGeoMedium* air = gGeoManager->GetMedium("air");
-  InitMedium("silicon");
+  ShipGeo::InitMedium("silicon");
   TGeoMedium* Silicon = gGeoManager->GetMedium("silicon");
 
   // TODO: Add full real material sandwich
 
-  Double_t totalLength = fLayers * fTargetSpacing;
+  Double_t totalLength = fLayers * fAbsSpacing;
 
   // --- Create an envelope volume for the detector (green, semi-transparent)
   // ---
-  auto envBox = new TGeoBBox("SiWCalo_env", fTargetWidth / 2.,
-                             fTargetHeight / 2., totalLength / 2.);
+  auto envBox = new TGeoBBox("SiWCalo_env", fAbsWidth / 2.,
+                             fAbsHeight / 2., totalLength / 2.);
   auto envVol = new TGeoVolume("SiWCalo", envBox, air);
   envVol->SetLineColor(kGreen);
   envVol->SetTransparency(50);
 
-  auto target = new TGeoBBox("Target", fTargetWidth / 2., fTargetHeight / 2.,
-                             fTargetThickness / 2.);
-  auto targetVol = new TGeoVolume("TargetVol", target, tungsten);
-  targetVol->SetLineColor(kGray);
-  targetVol->SetTransparency(40);
+  auto absorber = new TGeoBBox("Absorber", fAbsWidth / 2., fAbsHeight / 2.,
+                             fAbsThickness / 2.);
+  auto absVol = new TGeoVolume("AbsorberVol", absorber, tungsten);
+  absVol->SetLineColor(kGray);
+  absVol->SetTransparency(40);
 
+  // Define a layer for the SciFi module
+  TGeoVolumeAssembly* sensitiveModule = new TGeoVolumeAssembly("SiPad_layer");
+  CreateSiliconPlane("SiPadPlane",sensitiveModule,
+		     fSensorWidth, fSensorLength,fSensorThickness,
+		     fNPixels,
+		     Silicon, 1);
+
+  // --- Assemble the layers into the envelope ---
+  
   for (Int_t i = 0; i < fLayers; i++) {
     // Compute the center position (z) for the current W layer
-    Double_t zPos = -totalLength / 2 + i * fTargetSpacing;
-
+    Double_t zPos = -totalLength / 2 + i * fAbsSpacing;
+    
     // Place the tungsten layer
-    envVol->AddNode(targetVol, i,
-                    new TGeoTranslation(0, 0, zPos + fTargetThickness / 2.));
-
-    TGeoVolume* siliconPlanes = CreateSiliconPlanes(
-        "TrackerPlane", fSensorWidth, fSensorLength,
-        fTargetSpacing - fTargetThickness - 2. * fModuleOffset, fNPixels,
-        Silicon, i);
-    envVol->AddNode(
-        siliconPlanes, i,
-        new TGeoTranslation(0, 0, zPos + fTargetThickness + fModuleOffset));
+    envVol->AddNode(absVol, i,
+                    new TGeoTranslation(0, 0, zPos + fAbsThickness / 2.));
+    // Place the sensitive module (SciFi + Scintillator) at the correct z
+    // position
+    envVol->AddNode(sensitiveModule, i,
+		    new TGeoTranslation(0, 0, zPos + fAbsThickness + fModuleOffset + fSensorThickness / 2.));
   }
 
   // Finally, add the envelope to the top volume with the global z offset
@@ -227,6 +169,13 @@ Bool_t SiWCalo::ProcessHits(FairVolume* vol) {
     fLength = gMC->TrackLength();
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+    Int_t vol_local_id = nav->GetCurrentNode()->GetNumber() %
+      1000000;  // Local ID within the mat or scint.
+    Int_t layer_id = nav->GetMother(3)->GetNumber();  // Get layer ID.
+    fVolumeID = 100000000 + layer_id * 1000000 +
+                vol_local_id;  // 1e8 + layer_id * 1e6 + pixel_local_id;
+ 
   }
 
   // Sum energy loss for all steps in the active volume
@@ -261,32 +210,3 @@ Bool_t SiWCalo::ProcessHits(FairVolume* vol) {
   return kTRUE;
 }
 
-void SiWCalo::EndOfEvent() { fSiWCaloPointCollection->Clear(); }
-
-void SiWCalo::Register() {
-  TString name = "SiWCaloPoint";
-  TString title = "SiWCalo";
-  FairRootManager::Instance()->Register(name, title, fSiWCaloPointCollection,
-                                        kTRUE);
-  LOG(debug) << this->GetName() << ", Register() says: registered " << name
-             << " collection";
-}
-
-TClonesArray* SiWCalo::GetCollection(Int_t iColl) const {
-  if (iColl == 0) {
-    return fSiWCaloPointCollection;
-  } else {
-    return NULL;
-  }
-}
-
-void SiWCalo::Reset() { fSiWCaloPointCollection->Clear(); }
-
-SiWCaloPoint* SiWCalo::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
-                              TVector3 mom, Double_t time, Double_t length,
-                              Double_t eLoss, Int_t pdgCode) {
-  TClonesArray& clref = *fSiWCaloPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  return new (clref[size])
-      SiWCaloPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
-}
