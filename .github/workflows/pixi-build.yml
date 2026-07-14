@@ -6,7 +6,7 @@ on:
     branches: [main]
     # Releases use unprefixed CalVer tags (e.g. 26.06, 26.05.1), not v-prefixed
     # (matches the container-build workflow's trigger).
-    tags: ['[0-9]*']
+    tags: ['[0-9][0-9].[0-9]*']
   workflow_dispatch:
   merge_group:
 concurrency:

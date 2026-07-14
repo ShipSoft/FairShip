@@ -1,7 +1,10 @@
 name: Container Build
 on:
   push:
-    tags: ['[0-9]*']
+    # Releases use unprefixed CalVer tags: YY.MM (26.06) and YY.MM.patch
+    # (26.05.1). The explicit two-digit month keeps out non-release tags such as
+    # 26-debug or 2026-rc1, and suffixed tags like 26.6 or 26.06-debug.
+    tags: ['[0-9][0-9].[0-9][0-9]', '[0-9][0-9].[0-9][0-9].[0-9]*']
   workflow_dispatch:
     inputs:
       ref:

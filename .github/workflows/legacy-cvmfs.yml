@@ -3,8 +3,9 @@ on:
   push:
     branches: [main]
     # Releases use unprefixed CalVer tags (e.g. 26.06, 26.05.1), not v-prefixed
-    # (matches the container-build workflow's trigger).
-    tags: ['[0-9]*']
+    # (matches the container-build workflow's trigger). The YY.MM[.patch] shape
+    # keeps out non-release tags such as 26-debug or 2026-rc1.
+    tags: ['[0-9][0-9].[0-9]*']
   workflow_dispatch:
   schedule:
     - cron: 30 2 * * *
