@@ -117,8 +117,12 @@ ap.add_argument(
     help="enable ntuple production",
 )
 # for charm production
-ap.add_argument("-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)")
-ap.add_argument("-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)")
+ap.add_argument(
+    "-cc", "--chicc", type=float, default=None, help="ccbar over mbias cross section (overrides target-derived value)"
+)
+ap.add_argument(
+    "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
+)
 ap.add_argument(
     "--target_composition",
     default="W",
