@@ -104,8 +104,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a43d849a9d7aa8a659be88622a393b1f2" id="r_a43d849a9d7aa8a659be88622a393b1f2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetracking__benchmark.html#a43d849a9d7aa8a659be88622a393b1f2">wilson_interval</a> (int k, int n)</td></tr>
-<tr class="separator:a43d849a9d7aa8a659be88622a393b1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e5805f3b5b1b02502a4509caa350b1" id="r_a13e5805f3b5b1b02502a4509caa350b1"><td class="memItemLeft" align="right" valign="top">float|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetracking__benchmark.html#a13e5805f3b5b1b02502a4509caa350b1">wilson_interval</a> (int k, int n)</td></tr>
+<tr class="separator:a13e5805f3b5b1b02502a4509caa350b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9a8e0fc97227c70cddbcf984dc2709c" id="r_af9a8e0fc97227c70cddbcf984dc2709c"><td class="memItemLeft" align="right" valign="top">float|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetracking__benchmark.html#af9a8e0fc97227c70cddbcf984dc2709c">_round_or_none</a> (float|None value, int ndigits=6)</td></tr>
+<tr class="separator:af9a8e0fc97227c70cddbcf984dc2709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -119,14 +121,57 @@ Computes track finding efficiency, clone rate, ghost rate, and resolution
 metrics by comparing MC truth with reconstructed tracks. Designed to
 establish a GenFit baseline and later measure ACTS performance.
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a43d849a9d7aa8a659be88622a393b1f2" name="a43d849a9d7aa8a659be88622a393b1f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43d849a9d7aa8a659be88622a393b1f2">&#9670;&#160;</a></span>wilson_interval()</h2>
+<a id="af9a8e0fc97227c70cddbcf984dc2709c" name="af9a8e0fc97227c70cddbcf984dc2709c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9a8e0fc97227c70cddbcf984dc2709c">&#9670;&#160;</a></span>_round_or_none()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"> float | None tracking_benchmark._round_or_none </td>
+          <td>(</td>
+          <td class="paramtype">float | None&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &#160;</td>
+          <td class="paramname"><em>ndigits</em> = <code>6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Round a value, passing through None unchanged.</pre> 
+<p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00051">51</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span><span class="keyword">def </span>_round_or_none(value: float | <span class="keywordtype">None</span>, ndigits: int = 6) -&gt; float | <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   52</span>    <span class="stringliteral">&quot;&quot;&quot;Round a value, passing through None unchanged.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> round(value, ndigits) <span class="keywordflow">if</span> value <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a13e5805f3b5b1b02502a4509caa350b1" name="a13e5805f3b5b1b02502a4509caa350b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e5805f3b5b1b02502a4509caa350b1">&#9670;&#160;</a></span>wilson_interval()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> float tracking_benchmark.wilson_interval </td>
+          <td class="memname"> float | None tracking_benchmark.wilson_interval </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>k</em>, </td>
@@ -155,11 +200,12 @@ n : int
 
 Returns
 -------
-float
-    Half-width of the 68% Wilson score interval (~1 sigma).
+float or None
+    Half-width of the 68% Wilson score interval (~1 sigma),
+    or None if n == 0 (undefined proportion).
 </pre> 
 <p class="definition">Definition at line <a class="el" href="tracking__benchmark_8py_source.html#l00026">26</a> of file <a class="el" href="tracking__benchmark_8py_source.html">tracking_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span><span class="keyword">def </span>wilson_interval(k: int, n: int) -&gt; float:</div>
+<div class="fragment"><div class="line"><span class="lineno">   26</span><span class="keyword">def </span>wilson_interval(k: int, n: int) -&gt; float | <span class="keywordtype">None</span>:</div>
 <div class="line"><span class="lineno">   27</span>    <span class="stringliteral">&quot;&quot;&quot;Wilson score interval half-width for a binomial proportion.</span></div>
 <div class="line"><span class="lineno">   28</span><span class="stringliteral"></span> </div>
 <div class="line"><span class="lineno">   29</span><span class="stringliteral">    Parameters</span></div>
@@ -171,18 +217,19 @@ float
 <div class="line"><span class="lineno">   35</span><span class="stringliteral"></span> </div>
 <div class="line"><span class="lineno">   36</span><span class="stringliteral">    Returns</span></div>
 <div class="line"><span class="lineno">   37</span><span class="stringliteral">    -------</span></div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral">    float</span></div>
-<div class="line"><span class="lineno">   39</span><span class="stringliteral">        Half-width of the 68% Wilson score interval (~1 sigma).</span></div>
-<div class="line"><span class="lineno">   40</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> n == 0:</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> 0.0</div>
-<div class="line"><span class="lineno">   43</span>    z = 1.0  <span class="comment"># 1-sigma</span></div>
-<div class="line"><span class="lineno">   44</span>    p = k / n</div>
-<div class="line"><span class="lineno">   45</span>    denom = 1 + z**2 / n</div>
-<div class="line"><span class="lineno">   46</span>    spread = z * math.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> spread</div>
-<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   38</span><span class="stringliteral">    float or None</span></div>
+<div class="line"><span class="lineno">   39</span><span class="stringliteral">        Half-width of the 68% Wilson score interval (~1 sigma),</span></div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral">        or None if n == 0 (undefined proportion).</span></div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> n == 0:</div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   44</span>    z = 1.0  <span class="comment"># 1-sigma</span></div>
+<div class="line"><span class="lineno">   45</span>    p = k / n</div>
+<div class="line"><span class="lineno">   46</span>    denom = 1 + z**2 / n</div>
+<div class="line"><span class="lineno">   47</span>    spread = z * math.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> spread</div>
 <div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

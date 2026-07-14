@@ -180,7 +180,7 @@ var searchData=
   ['setymax_177',['SetYMax',['../classsplitcal.html#a78674eb3af9e402400fe905726c65f23',1,'splitcal']]],
   ['setyoffset_178',['setyoffset',['../classShipBFieldMap.html#a729b3a8deda9f39b0ca6c68d0f8d9930',1,'ShipBFieldMap::SetYOffset()'],['../classFixedTargetGenerator.html#a815ffdb4cf11d2fa202ee28ea614d649',1,'FixedTargetGenerator::SetYoffset()']]],
   ['setyrange_179',['SetYRange',['../classParticleGunGenerator.html#ac8f58659dd5ecee64d44600cebc54496',1,'ParticleGunGenerator']]],
-  ['setzoffset_180',['setzoffset',['../classShipBFieldMap.html#a028f3fb4bb5375cdf499c2458bab7ae9',1,'ShipBFieldMap::SetZOffset()'],['../classFixedTargetGenerator.html#ac08eb75875586d6458e03eb6d1c7028d',1,'FixedTargetGenerator::SetZoffset()']]],
+  ['setzoffset_180',['setzoffset',['../classFixedTargetGenerator.html#ac08eb75875586d6458e03eb6d1c7028d',1,'FixedTargetGenerator::SetZoffset()'],['../classShipBFieldMap.html#a028f3fb4bb5375cdf499c2458bab7ae9',1,'ShipBFieldMap::SetZOffset()']]],
   ['setzposition_181',['setzposition',['../classUpstreamTagger.html#aad4dba52a94dcb89523e540d44327955',1,'UpstreamTagger::SetZposition()'],['../classTimeDet.html#a3e70984dbbc0e37dbbb416b824f0755d',1,'TimeDet::SetZposition()'],['../classexitHadronAbsorber.html#aff42c4fe303d55b7dab5a1e218806d49',1,'exitHadronAbsorber::SetZposition()']]],
   ['setzpositions_182',['SetzPositions',['../classstrawtubes.html#a4dcefa576e08fdb969972bea8a3f8005',1,'strawtubes']]],
   ['setzstart_183',['SetZStart',['../classsplitcal.html#a5f5ad05943784033ceb6be4153714b9b',1,'splitcal']]],

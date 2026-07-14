@@ -150,12 +150,12 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">   *   the circle of radius R centered at (a, 0). If the line does not intersect</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">   *   (i.e., (x-a)^2 &gt; R^2), returns -1 as a flag.</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = -1;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  Double_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = -1;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  Double_t <a class="code hl_variable" href="namespacemakeDecay.html#a234f721ed0ca83b4e18faedb52e5ca8e">A</a> = R * R - (<a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> - a) * (x - a);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">if</span> (!(A &lt; 0)) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = TMath::Sqrt(A);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = TMath::Sqrt(A);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>Double_t integralSqrt(Double_t ynorm) {</div>
@@ -165,9 +165,9 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">   *   = ½ [ ynorm * sqrt(1 - ynorm^2) + arcsin(ynorm) ].</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">   *   This is used for normalizing the circular segment area.</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> =</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  Double_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> =</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm) + TMath::ASin(ynorm));</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>Double_t fraction(Double_t R, Double_t x, Double_t y) {</div>
@@ -181,9 +181,9 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">   *     result = F / (π R^2)</span></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  Double_t F = 2 * R * R * (integralSqrt(y / R));</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  F -= (2 * <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> * <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  Double_t result = F / (R * R * TMath::Pi());</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  F -= (2 * <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> * <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  Double_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a> = F / (R * R * TMath::Pi());</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">result</a>;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>Double_t area(Double_t a, Double_t R, Double_t xL, Double_t xR) {</div>
@@ -927,8 +927,9 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00048">ShipStack.h:48</a></div></div>
 <div class="ttc" id="anamespaceShipGeo_html_a41fa6e1cd4e92f644524675c6850e934"><div class="ttname"><a href="namespaceShipGeo.html#a41fa6e1cd4e92f644524675c6850e934">ShipGeo::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="ShipGeoUtil_8h_source.html#l00022">ShipGeoUtil.h:22</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a234f721ed0ca83b4e18faedb52e5ca8e"><div class="ttname"><a href="namespacemakeDecay.html#a234f721ed0ca83b4e18faedb52e5ca8e">makeDecay.A</a></div><div class="ttdeci">dict A</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00060">makeDecay.py:60</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00399">make_nTuple_SBT.py:399</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00538">run_fixedTarget.py:538</a></div></div>
+<div class="ttc" id="anamespacerun__tracking__scan_html_a60149f5e9c7fe53ba27d5ee50faa64de"><div class="ttname"><a href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">run_tracking_scan.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00327">run_tracking_scan.py:327</a></div></div>
+<div class="ttc" id="anamespacerun__tracking__scan_html_aefd0a105108077accad31b51b4f0647e"><div class="ttname"><a href="namespacerun__tracking__scan.html#aefd0a105108077accad31b51b4f0647e">run_tracking_scan.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00156">run_tracking_scan.py:156</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

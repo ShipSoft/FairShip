@@ -10,6 +10,7 @@ var searchData=
   ['run_5freco_7',['run_reco',['../namespacerun__reco.html',1,'']]],
   ['run_5fsimscript_8',['run_simScript',['../namespacerun__simScript.html',1,'']]],
   ['run_5ftracking_5fbenchmark_9',['run_tracking_benchmark',['../namespacerun__tracking__benchmark.html',1,'']]],
-  ['runcharmhadprod_10',['runCharmHadProd',['../namespacerunCharmHadProd.html',1,'']]],
-  ['runpythia8_11',['runPythia8',['../namespacerunPythia8.html',1,'']]]
+  ['run_5ftracking_5fscan_10',['run_tracking_scan',['../namespacerun__tracking__scan.html',1,'']]],
+  ['runcharmhadprod_11',['runCharmHadProd',['../namespacerunCharmHadProd.html',1,'']]],
+  ['runpythia8_12',['runPythia8',['../namespacerunPythia8.html',1,'']]]
 ];

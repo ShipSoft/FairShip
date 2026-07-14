@@ -569,7 +569,7 @@ Private Attributes</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="ShipBFieldMap_8cxx_source.html#l00021">21</a> of file <a class="el" href="ShipBFieldMap_8cxx_source.html">ShipBFieldMap.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>    : TVirtualMagField(label.c_str()),</div>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>    : TVirtualMagField(<a class="code hl_variable" href="namespacerun__tracking__scan.html#a434570b7fcb72a64c71ba94b87ab0178">label</a>.c_str()),</div>
 <div class="line"><span class="lineno">   27</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>(<span class="keyword">new</span> <a class="code hl_typedef" href="classShipBFieldMap.html#ac09386960df586f494427ede649eae7a">floatArray</a>()),</div>
 <div class="line"><span class="lineno">   28</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a484e859a4b353e0e66b53f8b1e54cc98">mapFileName_</a>(mapFileName),</div>
 <div class="line"><span class="lineno">   29</span>      <a class="code hl_variable" href="classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd">initialised_</a>(kFALSE),</div>
@@ -634,6 +634,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipBFieldMap_html_ae84cc55fdd680b200bbab5ea720b2b19"><div class="ttname"><a href="classShipBFieldMap.html#ae84cc55fdd680b200bbab5ea720b2b19">ShipBFieldMap::dx_</a></div><div class="ttdeci">Float_t dx_</div><div class="ttdoc">The bin width along x.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00402">ShipBFieldMap.h:402</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_aeab0b9e6d133106e4ae70efec21b32c5"><div class="ttname"><a href="classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5">ShipBFieldMap::isSymmetric_</a></div><div class="ttdeci">Bool_t isSymmetric_</div><div class="ttdoc">The boolean specifying if we have quadrant symmetry.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00453">ShipBFieldMap.h:453</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_aef8ad7f3ddb52b6aeea3e6dc4a8ce339"><div class="ttname"><a href="classShipBFieldMap.html#aef8ad7f3ddb52b6aeea3e6dc4a8ce339">ShipBFieldMap::xOffset_</a></div><div class="ttdeci">Float_t xOffset_</div><div class="ttdoc">The x value of the positional offset for the map.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00432">ShipBFieldMap.h:432</a></div></div>
+<div class="ttc" id="anamespacerun__tracking__scan_html_a434570b7fcb72a64c71ba94b87ab0178"><div class="ttname"><a href="namespacerun__tracking__scan.html#a434570b7fcb72a64c71ba94b87ab0178">run_tracking_scan.label</a></div><div class="ttdeci">label</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00337">run_tracking_scan.py:337</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -918,7 +919,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  126</span> </div>
 <div class="line"><span class="lineno">  127</span>  <span class="comment">// The local position coordinates</span></div>
 <div class="line"><span class="lineno">  128</span>  Float_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">x</a> = localCoords[0];</div>
-<div class="line"><span class="lineno">  129</span>  Float_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = localCoords[1];</div>
+<div class="line"><span class="lineno">  129</span>  Float_t <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = localCoords[1];</div>
 <div class="line"><span class="lineno">  130</span>  Float_t <a class="code hl_variable" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">z</a> = localCoords[2];</div>
 <div class="line"><span class="lineno">  131</span> </div>
 <div class="line"><span class="lineno">  132</span>  <span class="comment">// Now check to see if we have x-y quadrant symmetry (z has no symmetry):</span></div>
@@ -943,7 +944,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  151</span>    }</div>
 <div class="line"><span class="lineno">  152</span> </div>
 <div class="line"><span class="lineno">  153</span>    <span class="keywordflow">if</span> (y &lt; 0.0) {</div>
-<div class="line"><span class="lineno">  154</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a> = -<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">y</a>;</div>
+<div class="line"><span class="lineno">  154</span>      <a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a> = -<a class="code hl_variable" href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">y</a>;</div>
 <div class="line"><span class="lineno">  155</span>      BxSign *= -1.0;</div>
 <div class="line"><span class="lineno">  156</span>      BzSign = -1.0;</div>
 <div class="line"><span class="lineno">  157</span>    }</div>
@@ -1029,9 +1030,9 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipBFieldMap_html_ac066904278e00e14789f6287e6422f18"><div class="ttname"><a href="classShipBFieldMap.html#ac066904278e00e14789f6287e6422f18">ShipBFieldMap::insideRange</a></div><div class="ttdeci">Bool_t insideRange(Float_t x, Float_t y, Float_t z)</div><div class="ttdoc">Check to see if a point is within the map validity range.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00394">ShipBFieldMap.cxx:394</a></div></div>
 <div class="ttc" id="aclassShipBFieldMap_html_ad89fd4e71cf67011e40940c6293a2ffe"><div class="ttname"><a href="classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe">ShipBFieldMap::getMapBin</a></div><div class="ttdeci">Int_t getMapBin(Int_t iX, Int_t iY, Int_t iZ)</div><div class="ttdoc">Find the vector entry of the field map data given the bins iX, iY and iZ.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00486">ShipBFieldMap.cxx:486</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00102">ShipAna.py:102</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00399">make_nTuple_SBT.py:399</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00538">run_fixedTarget.py:538</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00682">run_simScript.py:682</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00684">run_simScript.py:684</a></div></div>
+<div class="ttc" id="anamespacerun__tracking__scan_html_a60149f5e9c7fe53ba27d5ee50faa64de"><div class="ttname"><a href="namespacerun__tracking__scan.html#a60149f5e9c7fe53ba27d5ee50faa64de">run_tracking_scan.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="run__tracking__scan_8py_source.html#l00327">run_tracking_scan.py:327</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
