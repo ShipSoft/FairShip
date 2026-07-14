@@ -25,6 +25,8 @@ it in future.
 
 ### Fixed
 
+* Update charm and beauty over mbias cross sections in run_fixedTarget
+
 * Fix pot branch in Decay tree from makeDecay
 
 * Fix check of existing particle pdg in makeCascade
