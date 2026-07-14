@@ -19,10 +19,25 @@ import ROOT
 
 parser = ArgumentParser()
 
-parser.add_argument("-f", "--file", dest="inputfilename", help="Input file name (FairShip fixedTarget production)", required=True)
-parser.add_argument("-o", "--output", dest="out", help="Output file name, will use nu_flux_inputfilename if not provided", required=False)
+parser.add_argument(
+    "-f", "--file", dest="inputfilename", help="Input file name (FairShip fixedTarget production)", required=True
+)
+parser.add_argument(
+    "-o",
+    "--output",
+    dest="out",
+    help="Output file name, will use nu_flux_inputfilename if not provided",
+    required=False,
+)
 parser.add_argument("-p", "--pot", dest="pot_number", help="Number of PoT for the input file", required=True, type=int)
-parser.add_argument("-nc","--nocharm", dest="noCharm", help="If True, do not store neutrinos from charmed hadrons and tau leptons", action="store_true", default=False)
+parser.add_argument(
+    "-nc",
+    "--nocharm",
+    dest="noCharm",
+    help="If True, do not store neutrinos from charmed hadrons and tau leptons",
+    action="store_true",
+    default=False,
+)
 
 options = parser.parse_args()
 
@@ -61,53 +76,53 @@ writer = ROOT.RNTupleWriter.Recreate(model, "nu_flux", out)
 entry = writer.CreateEntry()
 emax = 0.0
 
-charmExtern = [4332, 4232, 4132, 4232, 4122, 431, 411, 421, 15] #exclude charmed hadrons and tau leptons
+charmExtern = [4332, 4232, 4132, 4232, 4122, 431, 411, 421, 15]  # exclude charmed hadrons and tau leptons
 neutrinos = [-12, 12, -14, 14, -16, 16]
 
-cm2mm = 10.
+cm2mm = 10.0
 nentries = 0
 
 
-f = ROOT.TFile.Open(os.environ["EOSSHIP"] + inputfilename, "READ")  
+f = ROOT.TFile.Open(os.environ["EOSSHIP"] + inputfilename, "READ")
 print("opened file ", inputfilename)
 sTree = f.Get("cbmsim")
 if not sTree:
     print("Error: cbmsim tree not found in file ", inputfilename)
     sys.exit(1)
 for n in range(sTree.GetEntries()):
-   sTree.GetEntry(n)
-   header = sTree.MCEventHeader
-   for v in sTree.PlaneHAPoint:
-    nu = v.GetTrackID()
-    t = sTree.MCTrack[nu]
-    pdg = t.GetPdgCode()
-    if abs(pdg) not in neutrinos:
-        continue  # story only neutrinos
-    momt = sTree.MCTrack[t.GetMotherId()]
-    mompdg = momt.GetPdgCode()
-    if abs(mompdg) in charmExtern and noCharm:
-        continue  # take heavy flavours from separate production
-    e = t.GetEnergy()
-    nentries += 1 #all check passed, we store the neutrino
-    emax = max(emax, e)
-    entry["pdg"] = pdg
-    entry["vx"] = v.GetX() * cm2mm  # mm
-    entry["vy"] = v.GetY() * cm2mm  # mm
-    entry["vz"] = v.GetZ() * cm2mm  # mm
-    entry["t"] = v.GetTime()  # ns
-    entry["px"] = t.GetPx() # GeV
-    entry["py"] = t.GetPy()
-    entry["pz"] = t.GetPz()
-    entry["weight"] = 1.0
-    entry["parent_pdg"] = mompdg
-    entry["parent_px"] = momt.GetPx()
-    entry["parent_py"] = momt.GetPy()
-    entry["parent_pz"] = momt.GetPz()
-    entry["process_id"] = momt.GetProcID()
-    #taking the header values, we may also prefer the ttree entry number
-    entry["origin_run"] = header.GetRunID()
-    entry["origin_event"] = header.GetEventID()
-    writer.Fill(entry)
+    sTree.GetEntry(n)
+    header = sTree.MCEventHeader
+    for v in sTree.PlaneHAPoint:
+        nu = v.GetTrackID()
+        t = sTree.MCTrack[nu]
+        pdg = t.GetPdgCode()
+        if abs(pdg) not in neutrinos:
+            continue  # story only neutrinos
+        momt = sTree.MCTrack[t.GetMotherId()]
+        mompdg = momt.GetPdgCode()
+        if abs(mompdg) in charmExtern and noCharm:
+            continue  # take heavy flavours from separate production
+        e = t.GetEnergy()
+        nentries += 1  # all check passed, we store the neutrino
+        emax = max(emax, e)
+        entry["pdg"] = pdg
+        entry["vx"] = v.GetX() * cm2mm  # mm
+        entry["vy"] = v.GetY() * cm2mm  # mm
+        entry["vz"] = v.GetZ() * cm2mm  # mm
+        entry["t"] = v.GetTime()  # ns
+        entry["px"] = t.GetPx()  # GeV
+        entry["py"] = t.GetPy()
+        entry["pz"] = t.GetPz()
+        entry["weight"] = 1.0
+        entry["parent_pdg"] = mompdg
+        entry["parent_px"] = momt.GetPx()
+        entry["parent_py"] = momt.GetPy()
+        entry["parent_pz"] = momt.GetPz()
+        entry["process_id"] = momt.GetProcID()
+        # taking the header values, we may also prefer the ttree entry number
+        entry["origin_run"] = header.GetRunID()
+        entry["origin_event"] = header.GetEventID()
+        writer.Fill(entry)
 del writer
 
 meta = ROOT.RNTupleModel.Create()
