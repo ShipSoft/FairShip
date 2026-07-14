@@ -13,6 +13,9 @@ it in future.
 ## Unreleased
 
 ### Added
+
+* Add converter of neutrino flux to the aegir-genie format
+
 * Add option to split kaons and pions right before they decay, to increase the number of muons
 
 * Added TRY_2026 MS version.
