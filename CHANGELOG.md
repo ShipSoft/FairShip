@@ -16,6 +16,9 @@ it in future.
 
 * Add `--pythia8-tune` (`default`, `FTFT`) to `run_fixedTarget.py` and `FixedTargetGenerator::SetPythiaTune` to select the FTFT Pythia8 tune for open charm and beauty production in fixed-target collisions (arXiv:2608.29076) in the Pythia8 primary interaction. The Pythia8 default (Monash 2013) remains the default. Charm and beauty read from cascade input files are unaffected.
 
+* Add converter of neutrino flux to the aegir-genie format
+
+
 ### Changed
 
 ### Fixed
