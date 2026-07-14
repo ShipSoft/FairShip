@@ -2,15 +2,13 @@
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-"""Write a synthetic SHiP neutrino flux file (schema v1).
+"""Write a SHiP neutrino flux file (schema v1) from FairShip run_fixedTarget simulation.
 
 Produces the two RNTuples the GENIE flux driver reads — ``nu_flux`` (one
 entry per neutrino ray) and ``flux_meta`` (POT equivalent, maximum energy) —
-filled with a plausible toy spectrum. Useful for exercising the flux driver
-and the genie source without a real production; for real flux files convert
-FairShip productions with aegir's ``scripts/convert_fairship_nu_flux.py``.
+filled with neutrinos from the PlaneHAPoint hits.
 
-Usage: python make_flux_ntuple.py [output.root] [n_entries]
+Usage: python make_flux_ntuple.py -f inputfile.root  -p pot_number [-o outputfile] [--nocharm]
 """
 
 import os
@@ -122,7 +120,7 @@ mentry["schema_version"] = 1
 mentry["pot"] = pot_number
 mentry["max_energy"] = emax
 mentry["description"] = "flux from FairShip production (schema v1)"
-mentry["software"] = "aegir-genie convert_flux_ntuple.py"
+mentry["software"] = "convert_nu_flux_ntuple.py"
 mwriter.Fill(mentry)
 del mwriter
 f.Close()
