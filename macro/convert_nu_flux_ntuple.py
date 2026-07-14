@@ -8,7 +8,7 @@ Produces the two RNTuples the GENIE flux driver reads — ``nu_flux`` (one
 entry per neutrino ray) and ``flux_meta`` (POT equivalent, maximum energy) —
 filled with neutrinos from the PlaneHAPoint hits.
 
-Usage: python make_flux_ntuple.py -f inputfile.root  -p pot_number [-o outputfile] [--nocharm]
+Usage: python convert_flux_ntuple.py -f inputfile.root  -p pot_number [-o outputfile] [--nocharm]
 """
 
 import os
@@ -71,6 +71,9 @@ nentries = 0
 f = ROOT.TFile.Open(os.environ["EOSSHIP"] + inputfilename, "READ")  
 print("opened file ", inputfilename)
 sTree = f.Get("cbmsim")
+if not sTree:
+    print("Error: cbmsim tree not found in file ", inputfilename)
+    sys.exit(1)
 for n in range(sTree.GetEntries()):
    sTree.GetEntry(n)
    header = sTree.MCEventHeader
@@ -78,11 +81,11 @@ for n in range(sTree.GetEntries()):
     nu = v.GetTrackID()
     t = sTree.MCTrack[nu]
     pdg = t.GetPdgCode()
-    if abs(pdg) not in neutrinos and noCharm:
+    if abs(pdg) not in neutrinos:
         continue  # story only neutrinos
     momt = sTree.MCTrack[t.GetMotherId()]
     mompdg = momt.GetPdgCode()
-    if abs(mompdg) in charmExtern:
+    if abs(mompdg) in charmExtern and noCharm:
         continue  # take heavy flavours from separate production
     e = t.GetEnergy()
     nentries += 1 #all check passed, we store the neutrino
