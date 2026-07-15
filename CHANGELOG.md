@@ -34,6 +34,7 @@ it in future.
 
 * Eliminate redundant hadron absorber field map
 
+* Fix Magnet MS5 and MS6 to store new SND conceptual design
 ### Removed
 
 * Remove unused legacy `Pythia6Generator` (custom text-format event-record reader from 2008, zero callsites anywhere in the tree). `tPythia6Generator` is unaffected.
