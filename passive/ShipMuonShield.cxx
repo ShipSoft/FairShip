@@ -325,8 +325,8 @@ void ShipMuonShield::Initialize(
 
   fieldDirection = {FieldDirection::up,   FieldDirection::up,
                     FieldDirection::up,   FieldDirection::up,
-                    FieldDirection::down, FieldDirection::down,
-                    FieldDirection::down};
+                    FieldDirection::up,   FieldDirection::down,
+                    FieldDirection::down, FieldDirection::down};
 
   std::vector<Double_t> params;
   params = shield_params;
