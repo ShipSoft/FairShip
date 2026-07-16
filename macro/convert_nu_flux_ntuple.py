@@ -98,10 +98,23 @@ for n in range(sTree.GetEntries()):
         pdg = t.GetPdgCode()
         if abs(pdg) not in neutrinos:
             continue  # story only neutrinos
-        momt = sTree.MCTrack[t.GetMotherId()]
-        mompdg = momt.GetPdgCode()
-        if abs(mompdg) in charmExtern and noCharm:
-            continue  # take heavy flavours from separate production
+        if t.GetMotherId() < 0: # no saved mother id, we fill the parent info with dummy values
+            parent_px = -999
+            parent_py = -999
+            parent_pz = -999
+            parent_pdg = -999
+            parent_process_id = -999
+        else:
+            momt = sTree.MCTrack[t.GetMotherId()]
+            mompdg = momt.GetPdgCode()
+            if abs(mompdg) in charmExtern and noCharm:
+                continue  # take heavy flavours from separate production
+            parent_px = momt.GetPx()
+            parent_py = momt.GetPy()
+            parent_pz = momt.GetPz()
+            parent_pdg = mompdg
+            parent_process_id = momt.GetProcID()
+
         e = t.GetEnergy()
         nentries += 1  # all check passed, we store the neutrino
         emax = max(emax, e)
@@ -114,11 +127,11 @@ for n in range(sTree.GetEntries()):
         entry["py"] = t.GetPy()
         entry["pz"] = t.GetPz()
         entry["weight"] = 1.0
-        entry["parent_pdg"] = mompdg
-        entry["parent_px"] = momt.GetPx()
-        entry["parent_py"] = momt.GetPy()
-        entry["parent_pz"] = momt.GetPz()
-        entry["process_id"] = momt.GetProcID()
+        entry["parent_pdg"] = parent_pdg
+        entry["parent_px"] = parent_px
+        entry["parent_py"] = parent_py
+        entry["parent_pz"] = parent_pz
+        entry["process_id"] = parent_process_id
         # taking the header values, we may also prefer the ttree entry number
         entry["origin_run"] = header.GetRunID()
         entry["origin_event"] = header.GetEventID()
