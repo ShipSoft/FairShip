@@ -82,8 +82,10 @@ neutrinos = [12, 14, 16]
 cm2mm = 10.0
 nentries = 0
 
+if (inputfilename[0:4] == "/eos"):
+    inputfilename = os.environ["EOSSHIP"] + inputfilename
 
-f = ROOT.TFile.Open(os.environ["EOSSHIP"] + inputfilename, "READ")
+f = ROOT.TFile.Open(inputfilename, "READ")
 print("opened file ", inputfilename)
 sTree = f.Get("cbmsim")
 if not sTree:
