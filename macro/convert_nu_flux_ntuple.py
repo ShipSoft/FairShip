@@ -137,6 +137,7 @@ for n in range(sTree.GetEntries()):
         entry["origin_event"] = header.GetEventID()
         writer.Fill(entry)
 del writer
+f.Close() #close input file after loop
 
 meta = ROOT.RNTupleModel.Create()
 meta.MakeField["std::int32_t"]("schema_version")
