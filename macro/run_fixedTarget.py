@@ -464,10 +464,8 @@ if args.charm or args.beauty:
 
     if args.chicc is not None:
         chicc = args.chicc
-        setByHand = True
     else:
         chicc = CHICC_REF * scale
-        setByHand = False
 
     chibb = args.chibb if args.chibb is not None else CHIBB_REF * scale
     P8gen.SetChicc(chicc)
