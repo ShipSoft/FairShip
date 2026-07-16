@@ -458,7 +458,7 @@ P8gen.SetSeed(seed)
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
     A = args.A if args.A is not None else TARGET_A[args.target_composition]
-    if (A <= 0):
+    if A <= 0:
         raise ValueError(f"Invalid target mass number A={A}. Must be > 0.")
     scale = (A / A_REF) ** (heavyflavour_Ascale - mbias_Ascale)
 
