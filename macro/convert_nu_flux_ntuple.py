@@ -41,14 +41,14 @@ parser.add_argument(
 
 options = parser.parse_args()
 
-inputfilename = str(options.inputfilename)
+inputfilename = options.inputfilename
 if options.out:
-    out = str(options.out)
+    out = options.out
 else:
     out = "nu_flux_" + os.path.basename(inputfilename)
-pot_number = int(options.pot_number)
+pot_number = options.pot_number
 
-noCharm = bool(options.noCharm)
+noCharm = options.noCharm
 
 
 model = ROOT.RNTupleModel.Create()
