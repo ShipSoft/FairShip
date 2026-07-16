@@ -124,7 +124,7 @@ ap.add_argument(
     "-bb", "--chibb", type=float, default=None, help="bbbar over mbias cross section (overrides target-derived value)"
 )
 ap.add_argument(
-    "--target_composition",
+    "--target-composition",
     default="W",
     choices=["W", "Mo"],
     help="Target composition. Default is Tungsten (W); Molybdenum (Mo) is the other preset.",
@@ -134,7 +134,7 @@ ap.add_argument(
     type=float,
     default=None,
     help=(
-        "Target mass number; overrides --target_composition preset. "
+        "Target mass number; overrides --target-composition preset. "
         "Used to scale chicc/chibb as (A/A_Mo)^(heavyflavour_Ascale-mbias_Ascale) "
         "(default exponent: 0.29)."
     ),
