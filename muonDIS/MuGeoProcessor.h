@@ -15,6 +15,8 @@
 #include "TMath.h"
 #include "TVector3.h"
 
+using namespace ShipMuDIS;
+
 class MuGeoProcessor {
  public:
   /** default constructor **/

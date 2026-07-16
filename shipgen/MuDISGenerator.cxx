@@ -20,115 +20,235 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
-// -----   Default constructor   -------------------------------------------
-MuDISGenerator::MuDISGenerator() = default;
-// -------------------------------------------------------------------------
-// -----   Default constructor   -------------------------------------------
-Bool_t MuDISGenerator::Init(const char* fileName) {
-  LOGF(info, "Opening input file %s", fileName);
-  fInputFile = TFile::Open(fileName, "READ");
-  if (!fInputFile || fInputFile->IsZombie()) {
-    LOG(error) << "MuDISGenerator: error opening input file " << fileName;
-    delete fInputFile;
-    fInputFile = nullptr;
-    return kFALSE;
-  }
-  fTree = fInputFile->Get<TTree>("MuonDIS");
-  if (!fTree) {
-    LOG(error) << "MuDISGenerator: cannot find tree MuonDIS in file " << fileName;
-    fInputFile->Close();
-    delete fInputFile;
-    fInputFile = nullptr;
-    return kFALSE;
-  }
-  fNevents = fTree->GetEntries();
+MuDISGenerator::MuDISGenerator() : SHiP::Generator(){
+  fTree = nullptr;
+  fNevents = -1;
+  fn = 0;
   fnmu = 0;
+  fMat = 0;
   fnmuDis = 0;
-  fnmuDisDau = 0;
+  fnmuDisDau = 0;  
+}
 
-  bool ok = finEv.Setup(fTree);
+Bool_t MuDISGenerator::Init(const char* fileName) {
+  return Init(fileName,0);
+}
+
+Bool_t MuDISGenerator::Init(const std::vector<std::string>& fileNames) {
+  return Init(fileNames, 0);
+}
+
+Bool_t MuDISGenerator::Init(const std::vector<std::string>& fileNames,
+			    const int startEvent) {
   
-  if (!ok) {
-    LOG(error)
-        << "MuDISGenerator: failed to bind one or more required branches";
-    fInputFile->Close();
-    delete fInputFile;
-    fInputFile = nullptr;
-    fTree = nullptr;
+  if (fileNames.empty()) {
+    LOG(error) << "MuDISGenerator: no input files provided. "
+               << "Check the -f/--inputFile argument or input file glob.";
     return kFALSE;
   }
-  LOG(info) << "MuDISGenerator: Initialization successful.";
-  return kTRUE;
+  for (const auto& fileName : fileNames) {
+    if (fileName.empty()) {
+      LOG(error) << "MuDISGenerator: received an empty input file name. "
+                 << "Check the -f/--inputFile argument.";
+      return kFALSE;
+    }
+  }
+
+  LOG(info) << "Opening input file to find keys " << fileNames.at(0);
+  TFile* testFile = TFile::Open(fileNames.at(0).c_str(), "READ");
+  auto testKeys = testFile ? testFile->GetListOfKeys() : nullptr;
+  if (testKeys == nullptr) {
+    delete testFile;
+    LOG(error) << "MuDISGenerator: Error opening input file "
+               << fileNames.at(0)
+               << ". Check that the path is correct and the file is a readable "
+                  "ROOT file.";
+    return kFALSE;
+  }  
+  const bool hasDIStree =
+    testKeys->FindObject("MuonDIS") != nullptr;
+  testFile->Close();
+  delete testFile;
+
+  if (hasDIStree) {
+    fTree = new TChain("MuonDIS");
+    for (auto& f : fileNames) {
+      LOG(info) << "Opening input file " << f;
+      fTree->Add(f.c_str());
+    }
+    int treeEvts = fTree->GetEntries();
+    LOG(info) << "Reading " << treeEvts << " entries.";
+    fn = 0;
+    fnmu = 0;
+    fMat = 0;
+    fnmuDis = 0;
+    fnmuDisDau = 0;
+    
+    bool ok = finEv.Setup(fTree);
+    
+    if (!ok) {
+      LOG(error)
+        << "MuDISGenerator: failed to bind one or more required branches";
+      return kFALSE;
+    }
+    SetNevents();
+    LOG(info) << "MuDISGenerator: Initialization successful.";
+    return kTRUE;
+  }
+  return kFALSE;
 }
 
-// -----   Destructor   ----------------------------------------------------
-MuDISGenerator::~MuDISGenerator() {
-  if (fInputFile) {
-    fInputFile->Close();
-    fInputFile->Delete();
-    delete fInputFile;
-  }
+// -----   Default constructor   -------------------------------------------
+Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
+  std::vector<std::string> fileNames = {fileName};
+  return Init(fileNames, startEvent);
 }
+
 // -----   Passing the event   ---------------------------------------------
 Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
-  if (fn>=fNevents) fTree->GetEntry(fn);
-  if (fn % 10 == 0) {
-    LOG(info) << "Info MuDISGenerator: MuDIS muon event #" << fn;
+  if (fn>=fNevents) {
+    LOG(error) << " Reached total number of DIS events: counter " << fn << " nTot=" << fNevents;
+    return kFALSE;
   }
+  LOG(debug) << " - Processing input muon " << fnmu
+	     << " fMat " << fMat << " fnmuDis " << fnmuDis
+	     << " fnmuDisDau " << fnmuDisDau;
+  
+  if (fTree->GetEntry(fnmu) <= 0){
+    LOG(error) << " Error reading event " << fnmu ;
+    return kFALSE;
+  }
+  
+  if (fnmu % 10 == 0 && fMat==0 && fnmuDis == 0) {
+    LOG(info) << "Info MuDISGenerator: MuDIS original muon event #" << fnmu << " final event #" << fn;
+  }
+ 
+  //access the different materials in turn
+  MuonDISInBranches & lBr = finEv.br[fMat];
+  
+  int nDIS = lBr.nDISevts;
+  int nDISdau = 0;
+  if (lBr.DISparticles!=nullptr) nDISdau = lBr.DISparticles->size();
+  LOG(debug) << " nDIS " << nDIS << " nDISdau " << nDISdau << " fMat " << fMat << " local evtNumber " << fn ;
 
-  cpg->AddTrack(static_cast<int>((*mu)[0]),  // incoming muon track ()
-                (*mu)[1], (*mu)[2], (*mu)[3], xmu, ymu, zmu, -1,
-                false,  // tracking disabled
-                (*mu)[4],
-                t_DIS,  // shift time of the incoming muon track wrt t_muon from
-                        // the input file.
-                w * DIS_multiplicity);  // muon weight associated with a spill*
-                                        // DISmultiplicity
-
-  // outgoing DIS particles, [did,dpx,dpy,dpz,E], put density along trajectory
-  // as weight, g/cm^2
-
-  w = mparam[0] * mparam[4];  // modify weight, by multiplying with average
-                              // density * track length
-  int index = 0;
-  for (auto&& particle : *dPart) {
-    TVectorD* Part = dynamic_cast<TVectorD*>(particle);
-
-    if (index == 0) {
-      cpg->AddTrack(static_cast<int>((*Part)[0]), (*Part)[1], (*Part)[2],
-                    (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS,
-                    cross_sec);  // save DIS cross section in MCTrack[1]
-    } else {
-      cpg->AddTrack(static_cast<int>((*Part)[0]), (*Part)[1], (*Part)[2],
-                    (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
+  while (nDIS==0) {
+    //if fMat branch has no element, go to the next one already...
+    fMat++;
+    fnmuDis = 0;
+    fnmuDisDau = 0;
+    LOG(debug) << " -- switching material" << fMat;
+    if (fMat >= nMats) {
+      fMat = 0;
+      fnmu++;
+      LOG(debug) << " -- switching input muon " << fnmu ;
+      LOG(debug) << " - Processing input muon " << fnmu
+		 << " fMat " << fMat << " fnmuDis " << fnmuDis
+		 << " fnmuDisDau " << fnmuDisDau;
     }
-    IncrementCounter("dis_particles_stored");
-    index += 1;
+    if (fTree->GetEntry(fnmu) <= 0){
+      LOG(error) << " Error reading event " << fnmu ;
+      return kFALSE;
+    }
+    lBr = finEv.br[fMat];
+    nDIS = lBr.nDISevts;
+    nDISdau = 0;
+    if (lBr.DISparticles!=nullptr) nDISdau = lBr.DISparticles->size();
+    LOG(debug) << " nDIS " << nDIS << " nDISdau " << nDISdau << " fMat " << fMat << " local evtNumber " << fn ;
+  
+  }
+  
+  if (nDIS>0){//if fMat branch has elements
+    //add also soft tracks up to z_interaction
+    //first particle is the original muon with startZ necessarily before vtx_z...
+    bool doTracking = false;
+    int idxMum = -1;
+    int nAdded = 0;
+    //LOG(debug) << " --- n soft tracks: " << finEv.mcTrks->size();
+    for (auto&& mcTrk : *(finEv.mcTrks)) {
+      ShipMCTrack & softP = static_cast<ShipMCTrack&>(mcTrk);
+      //LOG(debug) << " ---- start z=" << softP.GetStartZ() << " DIS vtx z=" << (*lBr.DISvz)[fnmuDis];
+      if (softP.GetStartZ()<=(*lBr.DISvz)[fnmuDis]) {
+	cpg->AddTrack(softP.GetPdgCode(),
+		      softP.GetPx(),softP.GetPy(),softP.GetPz(),
+		      softP.GetStartX(), softP.GetStartY(), softP.GetStartZ(), 
+		      idxMum,
+		      doTracking,
+		      softP.GetEnergy(),
+		      softP.GetStartT(),
+		      softP.GetWeight());
+	nAdded++;
+      }
+      if (!doTracking){
+	//passed the first track, we want to track the soft particles and they all stem from first one.
+	doTracking = true;
+	idxMum = 0;
+      }
+    }
+    LOG(debug) << " --- n soft tracks " << finEv.mcTrks->size() << ", added: " << nAdded;
+    int nDaughters = (*lBr.nDISdau)[fnmuDis];
+    int nDISparts = lBr.DISparticles->size();
+    LOG(debug) << " --- Processing dis muon " << fnmuDis << " with " << nDaughters << " daughters and " << nDISparts << " total DIS particles";
+    LOG(debug) << " ---- index dau start " << fnmuDisDau;
+    //access the independent DIS events
+    for (int iD(0);iD<nDaughters;++iD){
+      if (fnmuDisDau+iD >= nDISparts) {
+	LOG(error) << " -- Error, trying to fetch more daughters than existing in event: size = " << nDISparts << " querying index " << fnmuDisDau+iD << ". Skipping those...";
+	continue;
+      }
+      DISparticle & lDau = (*lBr.DISparticles)[fnmuDisDau+iD];
+      cpg->AddTrack(lDau.pid,lDau.px,lDau.py,lDau.pz,
+		    (*lBr.DISvx)[fnmuDis],(*lBr.DISvy)[fnmuDis],(*lBr.DISvz)[fnmuDis],
+		    0,true, lDau.E,
+		    (*lBr.DISvt)[fnmuDis], lBr.wDIS);
+    }
+    fnmuDisDau += nDaughters;
+    LOG(debug) << " ---- index dau end " << fnmuDisDau;
+    fnmuDis++;
+    LOG(debug) << " --- increment DIS event " << fnmuDis ;
+    fn++;
+  }//if fMat branch has elements
+  else {
+    LOG(error) << " Failed to process input muon " << fnmu
+	       << " fMat " << fMat << " fnmuDis " << fnmuDis
+	       << " fnmuDisDau " << fnmuDisDau << " local event " << fn;
+    return kFALSE;
+  }
+  
+  if (fnmuDis >= nDIS){
+    fMat++;
+    fnmuDis = 0;
+    fnmuDisDau = 0;
+    LOG(debug) << " -- switching material" << fMat;
+    if (fMat >= nMats) {
+      fMat = 0;
+      fnmu++;
+      LOG(debug) << " -- switching input muon " << fnmu ;
+    }
   }
 
-  // Soft interaction tracks
-  bool lfirst = true;  // will skip propagating the first track which is the
-                       // input muon that gave the incoming muon
-
-  for (auto&& softParticle : *dPartSoft) {
-    TVectorD* SoftPart = dynamic_cast<TVectorD*>(softParticle);
-    if ((*SoftPart)[7] > zmu) {
-      lfirst = false;
-      IncrementCounter("soft_particles_skipped");
-      continue;
-    }  // Soft interactions after the DIS point are not saved
-    Double_t t_soft = (*SoftPart)[8] / 1e9;  // Time in seconds
-    cpg->AddTrack(static_cast<int>((*SoftPart)[0]), (*SoftPart)[1],
-                  (*SoftPart)[2], (*SoftPart)[3], (*SoftPart)[5],
-                  (*SoftPart)[6], (*SoftPart)[7], lfirst ? -1 : 0,
-                  lfirst ? false : true, (*SoftPart)[4], t_soft, w);
-    lfirst = false;
-    IncrementCounter("soft_particles_stored");
+  if (fn == fNevents-1) {
+    LOG(info) << "-- Reached total number of DIS events: counter " << fn << " nTot=" << fNevents;
   }
-
-  IncrementCounter("generated_events");
 
   return kTRUE;
 }
+
 // -------------------------------------------------------------------------
-Int_t MuDISGenerator::GetNevents() { return fNevents; }
+Int_t MuDISGenerator::GetNevents() {
+  return fNevents;
+}
+
+void MuDISGenerator::SetNevents() {
+  fNevents = 0;
+  int treeEvts = fTree->GetEntries();
+  LOG(debug) << "fTree has " << treeEvts << " entries.";  
+  for (int iEv(0); iEv<treeEvts;++iEv){
+    fTree->GetEntry(iEv);
+    for (unsigned iM(0);iM<nMats;++iM){
+      MuonDISInBranches & lBr = finEv.br[iM];
+      fNevents+=lBr.nDISevts;
+      LOG(debug) << "-- Adding " << lBr.nDISevts;
+    }
+  }
+  
+}

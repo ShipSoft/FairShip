@@ -7,14 +7,15 @@
 
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
 #include "Generator.h"
-#include "TClonesArray.h"
-#include "TF1.h"  // for TF1
+#include "TF1.h"
 #include "TROOT.h"
-#include "TTree.h"  // for TTree
+#include "TChain.h"
 #include "TVector3.h"
 #include "vector"
 
 #include "MuDISDefs.h"
+
+using namespace ShipMuDIS;
 
 class FairPrimaryGenerator;
 
@@ -24,23 +25,28 @@ class MuDISGenerator : public SHiP::Generator {
   MuDISGenerator();
 
   /** destructor **/
-  ~MuDISGenerator() override;
+  ~MuDISGenerator() = default;
 
   /** public method ReadEvent **/
   using SHiP::Generator::Init;
   Bool_t ReadEvent(FairPrimaryGenerator*) override;
+  Bool_t Init(const char*, int) override;
   Bool_t Init(const char*) override;
+  Bool_t Init(const std::vector<std::string>&, int) override;
+  Bool_t Init(const std::vector<std::string>&) override;
   Int_t GetNevents();
+  void SetNevents();
 
  protected:
   FairLogger* fLogger;  //!   don't make it persistent, magic ROOT command
-  TFile* fInputFile;
-  TTree* fTree;
+  TChain* fTree;
   int fNevents;
   MuonInBranches finEv;
+  int fn;//counter of final output events
   int fnmu;//counter of original input muons
-  int fnmuDis;//counter of DIS event per input muon
-  int fnmuDisDau;//counter of daughter particles per input muon
+  unsigned fMat;//index of material
+  int fnmuDis;//counter of DIS event per input muon per material
+  int fnmuDisDau;//counter of daughter particles per input muon per material
 
   
 };

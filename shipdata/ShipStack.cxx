@@ -83,8 +83,8 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polx, Double_t poly, Double_t polz,
                           TMCProcess proc, Int_t& ntr, Double_t weight,
                           Int_t is, Int_t secondparentID) {
-  // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
-  // <<    " " << secondparentID<<" "<<proc<< endl;
+  LOG(debug2) << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId
+	     <<    " " << secondparentID<<" "<<proc<< endl;
 
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
@@ -215,7 +215,7 @@ void ShipStack::FillTrackArray() {
 
   // --> Check tracks for selection criteria
   SelectTracks();
-
+  
   if (fNParticles > 0) evtNo = gMC->CurrentEvent();
 
   // --> Loop over fParticles array and copy selected tracks
@@ -247,7 +247,7 @@ void ShipStack::FillTrackArray() {
   fIndexMap[-1] = -1;
 
   // --> Screen output
-  // Print(1);
+  //Print(1);
 }
 // -------------------------------------------------------------------------
 
@@ -443,12 +443,19 @@ void ShipStack::SelectTracks() {
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
     for (Int_t i = 0; i < fNParticles; i++) {
+  
       if (fStoreMap[i]) {
         Int_t iMother = GetParticle(i)->GetMother(0);
         {
+	  int safeCount = 0;
           while (iMother >= 0) {
             fStoreMap[iMother] = kTRUE;
             iMother = GetParticle(iMother)->GetMother(0);
+	    safeCount++;
+	    if (safeCount > 10000) {
+	      LOG(error) << " -- error, not finding mother with index -1, stuck in infinite while loop..." ;
+	      break;
+	    }
           }
         }
       }

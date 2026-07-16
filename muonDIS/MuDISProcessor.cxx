@@ -13,6 +13,8 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
+using namespace ShipMuDIS;
+
 // -----   Default constructor   -------------------------------------------
 MuDISProcessor::MuDISProcessor() {
   ftree = 0;
@@ -115,15 +117,8 @@ void MuDISProcessor::initEvent() {
   foutEv.sstPt.clear();
   foutEv.sstPt.reserve(32);
   // Number of DIS events generated per volume.
-  foutEv.brMS.initEvent(fnDIS);
-  foutEv.brUBT.initEvent(fnDIS);
-  foutEv.brSBTsens.initEvent(fnDIS);
-  foutEv.brSBTfr.initEvent(fnDIS);
-  foutEv.brSSTsens.initEvent(fnDIS);
-  foutEv.brSSTfr.initEvent(fnDIS);
-  foutEv.brHE.initEvent(fnDIS);
-  foutEv.brAIR.initEvent(fnDIS);
-  foutEv.brREST.initEvent(fnDIS);
+  for (unsigned i(0);i<nMats;++i) foutEv.br[i].initEvent(fnDIS);
+ 
 }
 
 void MuDISProcessor::fillMCTracks(const Int_t aIdx) {
@@ -325,36 +320,16 @@ void MuDISProcessor::ProcessMuons() {
     // length*density. That way, do only once the calculation of the path, and
     // plenty of DIS in each material. fill a branch with weight = path
     // length*density.
-    if (lPathMap.find("MS") != lPathMap.end())
-      generateDISevents(targetType, "MS", lPathMap.find("MS")->second,
-                        foutEv.brMS);
-    if (lPathMap.find("UBT") != lPathMap.end())
-      generateDISevents(targetType, "UBT", lPathMap.find("UBT")->second,
-                        foutEv.brUBT);
-    if (lPathMap.find("SBTsens") != lPathMap.end())
-      generateDISevents(targetType, "SBTsens", lPathMap.find("SBTsens")->second,
-                        foutEv.brSBTsens);
-    if (lPathMap.find("SBTfr") != lPathMap.end())
-      generateDISevents(targetType, "SBTfr", lPathMap.find("SBTfr")->second,
-                        foutEv.brSBTfr);
-    if (lPathMap.find("SSTsens") != lPathMap.end())
-      generateDISevents(targetType, "SSTsens", lPathMap.find("SSTsens")->second,
-                        foutEv.brSSTsens);
-    if (lPathMap.find("SSTfr") != lPathMap.end())
-      generateDISevents(targetType, "SSTfr", lPathMap.find("SSTfr")->second,
-                        foutEv.brSSTfr);
-    if (lPathMap.find("HE") != lPathMap.end())
-      generateDISevents(targetType, "HE", lPathMap.find("HE")->second,
-                        foutEv.brHE);
-    if (lPathMap.find("AIR") != lPathMap.end())
-      generateDISevents(targetType, "AIR", lPathMap.find("AIR")->second,
-                        foutEv.brAIR);
-    if (lPathMap.find("REST") != lPathMap.end())
-      generateDISevents(targetType, "REST", lPathMap.find("REST")->second,
-                        foutEv.brREST);
+    for (unsigned i(0);i<nMats;++i){
+      if (lPathMap.find(MatTypeStr[i].Data()) != lPathMap.end())
+	generateDISevents(targetType,
+			  MatTypeStr[i].Data(),
+			  lPathMap.find(MatTypeStr[i].Data())->second,
+			  foutEv.br[i]);
+    }
 
     fouttree->Fill();
-
+    
   }  // loop on events
 
   LOG(info) << "Found " << nplus << " mu+ and " << nminus << " mu-."

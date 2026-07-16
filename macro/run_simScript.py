@@ -484,13 +484,13 @@ if options.reproducible and options.debug == 0:
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
-    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("warn");')
-elif options.debug == 1:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
-elif options.debug == 2:
+elif options.debug == 1:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
-elif options.debug == 3:
+elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+elif options.debug == 3:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
 ship_geo = geometry_config.create_config(
     Yheight=options.dy,
     strawDesign=options.strawDesign,
@@ -738,19 +738,12 @@ if options.mudis:
     ut.checkFileExists(inputFile)
     primGen.SetTarget(0.0, 0.0)
     DISgen = ROOT.MuDISGenerator()
-    # from nu_tau detector to tracking station 2
-    # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
-    #
-    # in front of UVT up to tracking station 1
-    mu_start, mu_end = ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - 10.0 * u.cm, ship_geo.TrackStation1.z
-    print("MuDIS position info input=", mu_start, mu_end)
-    DISgen.SetPositions(mu_start, mu_end)
-    if not DISgen.Init(inputFile, options.firstEvent):
+    if not DISgen.Init(inputFile):
         raise RuntimeError(f"Failed to initialize MuDISGenerator from input: {inputFile}")
     primGen.AddGenerator(DISgen)
     ROOT.SetOwnership(DISgen, False)  # C++ FairPrimaryGenerator takes ownership
     options.nEvents = DISgen.GetNevents() if options.nEvents == -1 else min(options.nEvents, DISgen.GetNevents())
-    print("Generate ", options.nEvents, " with DIS input", " first event", options.firstEvent)
+    print("Generate ", options.nEvents, " events with DIS input")
 # -----Neutrino Background------------------------
 if options.command == "Genie":
     # Genie
@@ -1075,31 +1068,19 @@ if options.muonback:
     fin.SetWritable(False)  # bpyass flush error
 
 if options.mudis:
-    temp_filename = outFile.replace(".root", "_tmp.root")
+   # temp_filename = outFile.replace(".root", "_tmp.root")
 
-    with (
-        ROOT.TFile.Open(outFile, "read") as f_outputfile,
-        ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
-    ):
-        output_tree = f_outputfile["cbmsim"]
-        muondis_tree = ROOT.TChain("DIS")
-        for _f in inputFile:
-            muondis_tree.Add(_f)
+   # with (
+    #    ROOT.TFile.Open(outFile, "read") as f_outputfile,
+     #   ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
+    #):
+    #    output_tree = f_outputfile["cbmsim"]
+    #    muondis_tree = ROOT.TChain("MuonDIS")
+    #    for _f in inputFile:
+    #        muondis_tree.Add(_f)
 
-        new_tree = output_tree.CloneTree(0)
-
-        cross_section = array("f", [0.0])
-        cross_section_leaf = new_tree.Branch("CrossSection", cross_section, "CrossSection/F")
-
-        for output_event, muondis_event in zip(output_tree, muondis_tree):
-            mu = muondis_event.InMuon[0]
-            cross_section[0] = mu[10]
-            new_tree.Fill()
-
-        new_tree.Write("", ROOT.TObject.kOverwrite)
-
-    os.replace(temp_filename, outFile)
-    print("Successfully added DISCrossSection to the output file:", outFile)
+    #os.replace(temp_filename, outFile)
+    print("Need to add input muon to the output file:", outFile)
 
 if options.command == "Genie":
     # breakpoint()

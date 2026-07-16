@@ -13,6 +13,8 @@
 #include "TVector3.h"
 #include "vector"
 
+using namespace ShipMuDIS;
+
 class MuDISProcessor {
  public:
   /** default constructor **/

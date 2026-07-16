@@ -10,8 +10,7 @@ ship_add_library(
           TEvtGenDecayer.cxx BeamSmearingUtils.cxx MeanMaterialBudget.cxx
           ParticleGunGenerator.cxx
   LINKDEF LinkDef.h
-  DEPENDENCIES Base ShipData veto EvtGen::EvtGen EvtGen::EvtGenExternal
-               FairLogger::FairLogger ROOT::EGPythia6
+  DEPENDENCIES Base ShipData ShipMuDIS veto EvtGen::EvtGen EvtGen::EvtGenExternal FairLogger::FairLogger ROOT::EGPythia6
   INCLUDE_DIRECTORIES ${ROOTEGPythia6_INCLUDE_DIR}
   SYSTEM_INCLUDE_DIRECTORIES ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/..
                              ${EVTGEN_INCLUDE_DIR} ${EVTGEN_INCLUDE_DIR}/..
