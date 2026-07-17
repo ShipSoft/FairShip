@@ -29,13 +29,21 @@ TVector3 FairShipFields::get(const TVector3& pos) const {
 void FairShipFields::get(const double& x, const double& y, const double& z,
                          double& Bx, double& By, double& Bz) const {
   Double_t X[3] = {x, y, z};
-  Double_t B[3] = {Bx, By, Bz};
+  Double_t B[3] = {0., 0., 0.};
+  Bx = 0.;
+  By = 0.;
+  Bz = 0.;
   if (!gMC && !gField_) {
     cout << "no Field Manager instantiated" << endl;
     return;
   }
   if (gMC) {
-    gMC->GetMagField()->Field(X, B);
+    TVirtualMagField* magField = gMC->GetMagField();
+    if (!magField) {
+      cout << "no magnetic field set in the Virtual MC" << endl;
+      return;
+    }
+    magField->Field(X, B);
   } else {
     gField_->Field(X, B);
   }
