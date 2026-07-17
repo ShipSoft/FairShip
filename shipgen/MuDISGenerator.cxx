@@ -124,12 +124,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   }
  
   //access the different materials in turn
-  MuonDISInBranches & lBr = finEv.br[fMat];
-  
-  int nDIS = lBr.nDISevts;
-  int nDISdau = 0;
-  if (lBr.DISparticles!=nullptr) nDISdau = lBr.DISparticles->size();
-  LOG(debug) << " nDIS " << nDIS << " nDISdau " << nDISdau << " fMat " << fMat << " local evtNumber " << fn ;
+  //accessing by reference leads to sometimes vectors inside branch being reset
+  MuonDISInBranches* lBr = &finEv.br[fMat];
+  LOG(debug) << "First: " << lBr->Print(fn,MatTypeStr[fMat]).str();
+  int nDIS = lBr->nDISevts;
+  int nDISdaucheck = 0;
+  LOG(debug) << " Pointer to DISparticles branch: " << lBr->DISparticles;
+  if (lBr->DISparticles!=nullptr) nDISdaucheck = (lBr->DISparticles)->size();
+  LOG(debug) << " nDIS " << nDIS << " nDISdaucheck " << nDISdaucheck << " or with obj ref " <<(*lBr->DISparticles).size()  << " fMat " << fMat << " local evtNumber " << fn ;
 
   while (nDIS==0) {
     //if fMat branch has no element, go to the next one already...
@@ -144,16 +146,19 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       LOG(debug) << " - Processing input muon " << fnmu
 		 << " fMat " << fMat << " fnmuDis " << fnmuDis
 		 << " fnmuDisDau " << fnmuDisDau;
+      if (fTree->GetEntry(fnmu) <= 0){
+	LOG(error) << " Error reading event " << fnmu ;
+	return kFALSE;
+      } else {
+	LOG(debug) << " Updated tree entry: " << fnmu;
+      }
     }
-    if (fTree->GetEntry(fnmu) <= 0){
-      LOG(error) << " Error reading event " << fnmu ;
-      return kFALSE;
-    }
-    lBr = finEv.br[fMat];
-    nDIS = lBr.nDISevts;
-    nDISdau = 0;
-    if (lBr.DISparticles!=nullptr) nDISdau = lBr.DISparticles->size();
-    LOG(debug) << " nDIS " << nDIS << " nDISdau " << nDISdau << " fMat " << fMat << " local evtNumber " << fn ;
+    lBr = &finEv.br[fMat];
+    LOG(debug) << "Second: " << lBr->Print(fn,MatTypeStr[fMat]).str();
+    nDIS = lBr->nDISevts;
+    nDISdaucheck = 0;
+    if (lBr->DISparticles!=nullptr) nDISdaucheck = lBr->DISparticles->size();
+    LOG(debug) << " nDIS " << nDIS << " nDISdaucheck " << nDISdaucheck << " fMat " << fMat << " local evtNumber " << fn ;
   
   }
   
@@ -166,8 +171,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     //LOG(debug) << " --- n soft tracks: " << finEv.mcTrks->size();
     for (auto&& mcTrk : *(finEv.mcTrks)) {
       ShipMCTrack & softP = static_cast<ShipMCTrack&>(mcTrk);
-      //LOG(debug) << " ---- start z=" << softP.GetStartZ() << " DIS vtx z=" << (*lBr.DISvz)[fnmuDis];
-      if (softP.GetStartZ()<=(*lBr.DISvz)[fnmuDis]) {
+      //LOG(debug) << " ---- start z=" << softP.GetStartZ() << " DIS vtx z=" << (*lBr->DISvz)[fnmuDis];
+      if (softP.GetStartZ()<=(*lBr->DISvz)[fnmuDis]) {
 	cpg->AddTrack(softP.GetPdgCode(),
 		      softP.GetPx(),softP.GetPy(),softP.GetPz(),
 		      softP.GetStartX(), softP.GetStartY(), softP.GetStartZ(), 
@@ -185,21 +190,21 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
       }
     }
     LOG(debug) << " --- n soft tracks " << finEv.mcTrks->size() << ", added: " << nAdded;
-    int nDaughters = (*lBr.nDISdau)[fnmuDis];
-    int nDISparts = lBr.DISparticles->size();
+    int nDaughters = (*lBr->nDISdau)[fnmuDis];
+    unsigned nDISparts = (*lBr->DISparticles).size();
     LOG(debug) << " --- Processing dis muon " << fnmuDis << " with " << nDaughters << " daughters and " << nDISparts << " total DIS particles";
     LOG(debug) << " ---- index dau start " << fnmuDisDau;
     //access the independent DIS events
     for (int iD(0);iD<nDaughters;++iD){
-      if (fnmuDisDau+iD >= nDISparts) {
+      if (fnmuDisDau+iD >= static_cast<int>(nDISparts)) {
 	LOG(error) << " -- Error, trying to fetch more daughters than existing in event: size = " << nDISparts << " querying index " << fnmuDisDau+iD << ". Skipping those...";
 	continue;
       }
-      DISparticle & lDau = (*lBr.DISparticles)[fnmuDisDau+iD];
+      DISparticle & lDau = (*lBr->DISparticles)[fnmuDisDau+iD];
       cpg->AddTrack(lDau.pid,lDau.px,lDau.py,lDau.pz,
-		    (*lBr.DISvx)[fnmuDis],(*lBr.DISvy)[fnmuDis],(*lBr.DISvz)[fnmuDis],
+		    (*lBr->DISvx)[fnmuDis],(*lBr->DISvy)[fnmuDis],(*lBr->DISvz)[fnmuDis],
 		    0,true, lDau.E,
-		    (*lBr.DISvt)[fnmuDis], lBr.wDIS);
+		    (*lBr->DISvt)[fnmuDis], lBr->wDIS);
     }
     fnmuDisDau += nDaughters;
     LOG(debug) << " ---- index dau end " << fnmuDisDau;
@@ -246,6 +251,7 @@ void MuDISGenerator::SetNevents() {
     fTree->GetEntry(iEv);
     for (unsigned iM(0);iM<nMats;++iM){
       MuonDISInBranches & lBr = finEv.br[iM];
+      LOG(debug) << lBr.Print(iEv,MatTypeStr[iM]).str();
       fNevents+=lBr.nDISevts;
       LOG(debug) << "-- Adding " << lBr.nDISevts;
     }

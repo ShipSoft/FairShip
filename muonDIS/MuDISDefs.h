@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iostream>
 
 #include "DISparticle.h"
 #include "FairLogger.h"  // for FairLogger, MESSAGE_ORIGIN
@@ -142,6 +144,35 @@ namespace ShipMuDIS {
       ok &= (t->SetBranchAddress("mudis_DISproducts_" + label, &DISparticles) >= 0);
       return ok;
     };
+
+    template<class T>
+    std::string Print(const std::vector<T>& aVec, const TString & aName){
+      std::ostringstream lOut;
+      lOut << " - " << aName << " size " << aVec.size() << " pointer " << &aVec << ": ";
+      for (const auto& value : aVec) {
+	lOut << value << " ";
+      }
+      lOut << std::endl;
+      return lOut.str();
+    };    
+
+    std::ostringstream Print(const unsigned & evt, const TString & label){
+      std::ostringstream lOut;
+      lOut << "------------ print evt " << evt << " branch " << label << " -------------" << std::endl
+	   << " - nDISevts = " << nDISevts  << std::endl
+	   << " - wDIS = " << wDIS  << std::endl;
+      lOut << Print(*DISxsec,"DISxsec");
+      lOut << Print(*DIStarget,"DIStarget");
+      lOut << Print(*DISvx,"DISvx");
+      lOut << Print(*DISvy,"DISvy");
+      lOut << Print(*DISvz,"DISvz");
+      lOut << Print(*DISvt,"DISvt");
+      lOut << Print(*nDISdau,"nDISdau");
+      lOut << DISparticles << " " << Print(*DISparticles,"DISparticles");
+
+      return lOut;
+    };
+
     
   };
   
@@ -152,6 +183,7 @@ namespace ShipMuDIS {
     std::vector<UpstreamTaggerPoint>* ubtPt = nullptr;
     std::vector<strawtubesPoint>* sstPt = nullptr;
     MuonDISInBranches br[nMats];
+
     bool Setup(TTree* t) {
       bool ok = true;
       ok &= (t->SetBranchAddress("muon_MCTracks", &mcTrks) >= 0);

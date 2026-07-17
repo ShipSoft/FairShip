@@ -15,7 +15,20 @@ class DISparticle : public TObject {
   double pz;
   double E;
 
+
   ClassDefOverride(DISparticle, 1);
 };
+
+inline std::ostream& operator<<(std::ostream& os,
+				const DISparticle& p)
+{
+  os << "[" << p.pid
+     << "," << p.px
+     << "," << p.py
+     << "," << p.pz
+     << "," << p.E
+     << "]";
+  return os;
+}
 
 #endif
