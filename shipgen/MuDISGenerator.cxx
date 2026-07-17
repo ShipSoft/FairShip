@@ -119,8 +119,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return kFALSE;
   }
   
-  if (fnmu % 10 == 0 && fMat==0 && fnmuDis == 0) {
-    LOG(info) << "Info MuDISGenerator: MuDIS original muon event #" << fnmu << " final event #" << fn;
+  if (fnmu % 1 == 0 && fnmuDis == 0) {
+    LOG(info) << "Info MuDISGenerator: MuDIS original muon event #" << fnmu << " material " << fMat << " final event #" << fn;
   }
  
   //access the different materials in turn
