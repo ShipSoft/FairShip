@@ -14,7 +14,7 @@ class Task:
         self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
         self.UBTefficiency = 0.9  # Upstream background tagger
         self.random = ROOT.TRandom()
-        ROOT.gRandom.SetSeed(13)
+        self.random.SetSeed(13)
         self.detList = self.detMap()
         self.sTree = t
 
@@ -27,11 +27,11 @@ class Task:
             detList[i] = nm
         return detList
 
-    def SBT_plastic_decision(self, mcParticle=None) -> None:
-        self.SBT_decision(mcParticle, detector="plastic")
+    def SBT_plastic_decision(self, mcParticle=None) -> tuple[bool, float, int]:
+        return self.SBT_decision(mcParticle, detector="plastic")
 
-    def SBT_liquid_decision(self, mcParticle=None) -> None:
-        self.SBT_decision(mcParticle, detector="liquid")
+    def SBT_liquid_decision(self, mcParticle=None) -> tuple[bool, float, int]:
+        return self.SBT_decision(mcParticle, detector="liquid")
 
     def SBT_decision(self, mcParticle=None, detector="liquid") -> tuple[bool, float, int]:
         # if mcParticle >0, only count hits with this particle
@@ -47,14 +47,15 @@ class Task:
             if not fdetector and not detID > 999999:
                 continue
             if mcParticle:
-                found = False
-                for mcP in self.sTree.digiSBT2MC[index]:
-                    if mcParticle > 0 and mcParticle != mcP:
-                        found = True
-                    if mcParticle < 0 and abs(mcParticle) == mcP:
-                        found = True
-                if found:
-                    continue
+                contributors = list(self.sTree.digiSBT2MC[index])
+                if mcParticle > 0:
+                    # only count hits from this particle: skip if it is absent
+                    if mcParticle not in contributors:
+                        continue
+                elif mcParticle < 0:
+                    # do not count hits from this particle: skip if it is present
+                    if abs(mcParticle) in contributors:
+                        continue
             aDigi.GetXYZ()
             aDigi.GetEloss()
             if aDigi.isValid():
@@ -158,6 +159,8 @@ class Task:
             master = array("d", [0, 0, 0])
             nav.LocalToMaster(origin, master)
             dist = aPoint.z() - master[2]
+            if dist < distmin:
+                distmin = dist
         return distmin
 
 

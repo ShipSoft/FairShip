@@ -227,8 +227,8 @@ class RPVSUSYbranchings:
         if debug:
             print("RPVSUSYbranchings instance initialized with couplings:")
             print("\t benchmark scenario   = %d" % self.bench)
-            print("\t decay coupling       = %s" % self.U[0])
-            print("\t production coupling  = %s" % self.U[1])
+            print("\t production coupling  = %s" % self.U[0])
+            print("\t decay coupling       = %s" % self.U[1])
             print("\t sfermion mass        = %s" % self.sfmass)
             print("\t total prod coupling  = %s" % (self.U[0] / self.sfmass**2))
             print("\t total decay coupling = %s" % (self.U[1] / self.sfmass**2))
@@ -382,7 +382,7 @@ class RPVSUSYbranchings:
                     / (self.sfmass**4 * 3 * u.pi * mass(H) ** 3)
                     * c.GST2["tneutrino"]
                     * c.decayConstant[H] ** 2
-                    * (mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2 - 2 * (self.MN**2 - mass(L) ** 2) ** 2))
+                    * (2 * (self.MN**2 - mass(L) ** 2) ** 2 - mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2))
                 )
             else:
                 tmp_width = (
@@ -390,7 +390,7 @@ class RPVSUSYbranchings:
                     / (self.sfmass**4 * 3 * u.pi * mass(H) ** 3)
                     * c.GST2["tlepton"]
                     * c.decayConstant[H] ** 2
-                    * (mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2 - 2 * (self.MN**2 - mass(L) ** 2) ** 2))
+                    * (2 * (self.MN**2 - mass(L) ** 2) ** 2 - mass(H) ** 2 * (mass(H) ** 2 + self.MN**2 + mass(L) ** 2))
                 )
 
         width = self.U2[0] * tmp_width

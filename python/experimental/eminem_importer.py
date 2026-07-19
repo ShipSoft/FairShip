@@ -359,8 +359,11 @@ def apply_column_transformation(data_column, config):
                 # Only offset has units
                 result = result + offset * config["offset_unit"]
         else:
-            # No units for offset
-            result = result + offset
+            # No units for offset; still apply the column unit if one is set
+            if config.get("unit") is not None:
+                result = result * config["unit"] + offset
+            else:
+                result = result + offset
 
     # Apply units (if not already applied above)
     if config.get("unit") is not None and "offset" not in config:

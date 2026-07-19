@@ -342,7 +342,7 @@ class SciFiMapping:
                     else fibreID + 100000000 + 1000000 + 1 * 100000
                 )
                 self.scifi.GetPosition(globfiberID, AF, BF)
-                loc = self.scifi.GetLocalPos(fibreID, BF)
+                loc = self.scifi.GetLocalPos(globfiberID, BF)
                 xs.append(loc[0])
                 ys.append(loc[2])
 
@@ -361,7 +361,11 @@ class SciFiMapping:
 
             # draw SiPM rect in its unique shade
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc_siPM = self.scifi.GetLocalPos(fibreID, BF)
+            # GetLocalPos needs the global detector id (station/plane encoded);
+            # build it from the channel so it does not depend on the (now stale)
+            # fibre loop variable, which is also unbound if the fibre list is empty.
+            globSiPMID = locChan + 100000000 + 1000000 + (0 if isU else 1) * 100000
+            loc_siPM = self.scifi.GetLocalPos(globSiPMID, BF)
             rx, ry = loc_siPM[0], loc_siPM[2]
             rect = patches.Rectangle(
                 (rx - DX, ry - DZ),
@@ -699,14 +703,18 @@ class SciFiMapping:
             for fid in fmap[locChan]:
                 gid = fid + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
                 self.scifi.GetPosition(gid, AF, BF)
-                loc = self.scifi.GetLocalPos(fid, BF)
+                loc = self.scifi.GetLocalPos(gid, BF)
                 xs.append(loc[0])
                 zs.append(loc[2])
             for x, z in zip(xs, zs):
                 ell = patches.Ellipse((x, z), 2 * R, 2 * R, color="orange", alpha=alpha_fibre)
                 ax1.add_patch(ell)
             self.scifi.GetSiPMPosition(chan, BF, AF)
-            loc = self.scifi.GetLocalPos(fid, BF)
+            # Build the global detector id from the channel so it does not depend
+            # on the (now stale) fibre loop variable, which is also unbound if the
+            # fibre list is empty.
+            gidSiPM = locChan + int(1e8 + 1e6 + (0 if chan in chansU else 1) * 1e5)
+            loc = self.scifi.GetLocalPos(gidSiPM, BF)
             rx, rz = loc[0], loc[2]
             rect = patches.Rectangle(
                 (rx - DX, rz - DZ),

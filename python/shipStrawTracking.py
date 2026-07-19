@@ -44,6 +44,15 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
         Name of a track pattern recognition method.
     """
 
+    # This quality-plot step analyses the already-reconstructed Tracklets/
+    # FitTracks branches, so the method argument does not influence the result.
+    # Warn rather than silently ignore a non-default selection.
+    if method != "Baseline":
+        print(
+            f"Warning: pattern-recognition method '{method}' has no effect here; "
+            "this script only produces quality plots from existing reconstruction."
+        )
+
     ############################################# Load SHiP geometry ###################################################
 
     # Check geo file
@@ -71,8 +80,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    # Create dummy output file as the  input file is updated directly and
-    # histograms are written to output file (hists.root by default)
+    # Create dummy output file for FairRunSim; the quality-plot histograms are
+    # written to the separate output file (hists.root by default).
     import tempfile
 
     sink = ROOT.FairRootFileSink(tempfile.mktemp(suffix=".root"))
@@ -106,15 +115,17 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
 
     ############################################# Load inpur data file #################################################
 
-    # Check input file
+    # Check input file. This is a read-only QA step: it reads the existing
+    # branches and writes quality plots to the separate output file, so open the
+    # input read-only rather than "update" (which rewrote a duplicate key cycle
+    # of the unmodified tree into the user's file on every invocation).
     try:
-        fn = ROOT.TFile(input_file, "update")
+        fn = ROOT.TFile(input_file, "read")
     except Exception:
         print("An error with opening the input data file.")
         raise
 
     sTree = fn.Get("cbmsim")
-    sTree.Write()
 
     ############################################# Create hists #########################################################
 
@@ -499,8 +510,12 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method, dy=
                     h["rmse_x"].Fill(rmse_x)
                     h["rmse_y"].Fill(rmse_y)
 
-            except Exception:
-                print("Problem with fitted state.")
+            except Exception as e:
+                # Report the actual exception: this block also performs momentum
+                # divisions (possible ZeroDivisionError) and histogram lookups
+                # (possible KeyError), which should not be silently mislabelled
+                # as a fitted-state problem.
+                print(f"Problem with fitted state: {e!r}")
 
         h["Reco_tracks"].Fill("N total", n_tracks)
         h["Reco_tracks"].Fill("N recognized tracks", n_recognized)

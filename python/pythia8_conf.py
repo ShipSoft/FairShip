@@ -46,6 +46,9 @@ def configurerpvsusy(
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)
 
+    if inclusive is True:  # For backward compatibility with a boolean argument
+        inclusive = "True"
+
     if inclusive == "True":
         setup_pythia_inclusive(P8gen)
 
@@ -157,6 +160,7 @@ def configurerpvsusy(
                     getbr_rpvsusy(h, "b0_nu_tau", mass, couplings[1]) / maxsumBR
                 )
             )
+            sumBR += float(getbr_rpvsusy(h, "b0_nu_tau", mass, couplings[1]) / maxsumBR)
         if sumBR < 1.0 and sumBR > 0.0:
             P8gen.SetParameters(f"511:addChannel      1   {1.0 - sumBR:.12}    0       22      22")
 
