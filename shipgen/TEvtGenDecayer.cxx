@@ -165,8 +165,8 @@ Bool_t TEvtGenDecayer::UseEvtGenForParticle(Int_t pdg) {
     }
   }
 
-  LOG(warning) << "UseEvtGenForParticle: PDG " << pdg
-               << " not in EvtGen particle list, falling back to Pythia8";
+  LOG(debug) << "UseEvtGenForParticle: PDG " << pdg
+             << " not in EvtGen particle list, falling back to Pythia8";
   return kFALSE;
 }
 

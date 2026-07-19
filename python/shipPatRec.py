@@ -327,7 +327,7 @@ def fast_hough_pat_rec_y_view(SmearedHits, min_hits: int):
 def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
-    used_hits = []
+    used_hits = set()
     n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
@@ -409,7 +409,7 @@ def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min
             atrack["hits_stereo"] = max_track["hits_stereo"]
             n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
-                used_hits.append(ahit["digiHit"])
+                used_hits.add(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
 
@@ -595,7 +595,7 @@ def artificial_retina_pat_rec_y_view(SmearedHits, min_hits: int):
 def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
-    used_hits = []
+    used_hits = set()
     n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
@@ -678,7 +678,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
             atrack["hits_stereo"] = max_track["hits_stereo"]
             n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
-                used_hits.append(ahit["digiHit"])
+                used_hits.add(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
 
@@ -848,7 +848,7 @@ def reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits: int = 3):
         Minimal number of hits per track.
     """
 
-    used_hits = []
+    used_hits = set()
     tracks_no_clones = []
     n_hits = [len(atrack["hits_y"]) for atrack in recognized_tracks]
 
@@ -865,7 +865,7 @@ def reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits: int = 3):
         if len(new_track["hits_y"]) >= min_hits:
             tracks_no_clones.append(new_track)
             for ahit in new_track["hits_y"]:
-                used_hits.append(ahit["digiHit"])
+                used_hits.add(ahit["digiHit"])
 
     return tracks_no_clones
 
@@ -1073,7 +1073,7 @@ def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
 def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int):
     ### PatRec in stereo
     recognized_tracks_stereo = []
-    used_hits = []
+    used_hits = set()
     n_y_tracks_with_stereo = 0
 
     for atrack_y in recognized_tracks_y:
@@ -1150,7 +1150,7 @@ def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits: int)
             atrack["hits_stereo"] = max_track["hits_stereo"]
             n_y_tracks_with_stereo += 1
             for ahit in max_track["hits_stereo"]:
-                used_hits.append(ahit["digiHit"])
+                used_hits.add(ahit["digiHit"])
 
         recognized_tracks_stereo.append(atrack)
 

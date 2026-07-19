@@ -6,6 +6,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <string>
+#include <unordered_map>
 
 #include "FairLogger.h"
 #include "FairRun.h"
@@ -70,7 +72,16 @@ splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
 
   SetIDs(isPrec, nL, nMx, nMy, nS);
 
-  TGeoNode* strip = caloVolume->GetNode(stripName.c_str());
+  // GetNode(name) is a linear scan over all strip nodes (up to O(10^5)); the
+  // geometry is fixed, so cache the node pointer per strip name.
+  static std::unordered_map<std::string, TGeoNode*> stripNodeCache;
+  TGeoNode* strip = nullptr;
+  if (auto it = stripNodeCache.find(stripName); it != stripNodeCache.end()) {
+    strip = it->second;
+  } else {
+    strip = caloVolume->GetNode(stripName.c_str());
+    stripNodeCache.emplace(stripName, strip);
+  }
 
   const Double_t* stripCoordinatesLocal = strip->GetMatrix()->GetTranslation();
   Double_t stripCoordinatesMaster[3] = {0., 0., 0.};

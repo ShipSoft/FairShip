@@ -369,6 +369,17 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   // Calculate beam smearing and painting
   auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
 
+  if (G4only) {
+    // Geant4 determines the primary interaction point, so skip the expensive
+    // interaction-point sampling below (it would only be discarded).
+    IncrementCounter("generated_events");
+    IncrementCounter("g4only_events");
+    IncrementCounter("stored_tracks");
+    cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
+                  start[2], -1, kTRUE, -1., 0., 1.);
+    return kTRUE;
+  }
+
   Double_t zinter = 0;
   Double_t ZoverA = 1.;
   if (!targetName.IsNull()) {
@@ -414,14 +425,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     zinter = zinter * cm;
   }
   Pythia8::Pythia* fPythia;
-  if (G4only) {
-    IncrementCounter("generated_events");
-    IncrementCounter("g4only_events");
-    IncrementCounter("stored_tracks");
-    cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm,
-                  start[2], -1, kTRUE, -1., 0., 1.);
-    return kTRUE;
-  } else if (Option == "Primary") {
+  if (Option == "Primary") {
     constexpr int kMaxPythiaRetries = 100;
     if (gRandom->Uniform(0., 1.) < ZoverA) {
       int retries = 0;

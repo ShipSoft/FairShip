@@ -11,6 +11,7 @@
 #include <array>
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
 #include <utility>
 
 #include "FairGeoBuilder.h"
@@ -445,6 +446,15 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
                                 TVector3& vtop)
 // method to get end points from TGeoNavigator
 {
+  // The endpoints depend only on the (fixed) geometry, so cache them per detID:
+  // rebuilding the volume path and re-navigating on every hit is a significant
+  // cost in the stepping and digitisation hot paths.
+  static std::unordered_map<Int_t, std::pair<TVector3, TVector3>> endPointCache;
+  if (auto it = endPointCache.find(fDetectorID); it != endPointCache.end()) {
+    vbot = it->second.first;
+    vtop = it->second.second;
+    return;
+  }
   const auto [statnb, vnb, lnb, snb] = StrawDecode(fDetectorID);
   TString stat = "Tr";
   stat += statnb;
@@ -496,4 +506,5 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3& vbot,
   nav->LocalToMaster(bot, Gbot);
   vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
   vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
+  endPointCache.emplace(fDetectorID, std::make_pair(vbot, vtop));
 }

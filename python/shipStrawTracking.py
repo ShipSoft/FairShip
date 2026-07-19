@@ -677,7 +677,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     # 4. Find straws that have multiple hits
     nHits = sTree.strawtubesPoint.GetEntriesFast()
     hitstraws = {}
-    duplicatestrawhit = []
+    duplicatestrawhit = set()
 
     for i in range(nHits):
         ahit = sTree.strawtubesPoint[i]
@@ -687,10 +687,10 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
             # straw was already hit
             if ahit.GetX() > hitstraws[strawname][1]:
                 # this hit has higher x, discard it
-                duplicatestrawhit.append(i)
+                duplicatestrawhit.add(i)
             else:
                 # del hitstraws[strawname]
-                duplicatestrawhit.append(hitstraws[strawname][0])
+                duplicatestrawhit.add(hitstraws[strawname][0])
                 hitstraws[strawname] = [i, ahit.GetX()]
         else:
             hitstraws[strawname] = [i, ahit.GetX()]
@@ -700,7 +700,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
     hits2 = {}
     hits3 = {}
     hits4 = {}
-    trackoutsidestations = []
+    trackoutsidestations = set()
 
     margin = 5.0 * u.cm
     x_bound = ShipGeo.strawtubes_geo.width - margin
@@ -714,8 +714,7 @@ def getReconstructibleTracks(iEvent: int, sTree, sGeo, ShipGeo):
 
         # is hit inside acceptance (width/height minus margin)?
         if abs(ahit.GetX()) >= x_bound or abs(ahit.GetY()) >= y_bound:
-            if ahit.GetTrackID() not in trackoutsidestations:
-                trackoutsidestations.append(ahit.GetTrackID())
+            trackoutsidestations.add(ahit.GetTrackID())
 
         if ahit.GetTrackID() not in MCTrackIDs:
             # hit on not reconstructible track
