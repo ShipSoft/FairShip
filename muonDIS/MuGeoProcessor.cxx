@@ -74,13 +74,36 @@ TVector3 MuGeoProcessor::GetVertex(const TVector3& r1, const TVector3& p1,
   double d = u1 * w0;
   double e = u2 * w0;
 
-  double t = (b * e - c * d) / (a * c - b * b);
-  double s = (a * e - b * d) / (a * c - b * b);
+  double denom = a * c - b * b;
+
+  // Protect against nearly parallel tracks
+  if (std::abs(denom) < 1e-12) {
+    LOG(warning) << "GetVertex(): nearly parallel tracks (denominator = "
+                 << denom << "). Returning first measurement.";
+    return r1;
+  }
+
+  double t = (b * e - c * d) / denom;
+  double s = (a * e - b * d) / denom;
 
   TVector3 poca1 = r1 + t * u1;
   TVector3 poca2 = r2 + s * u2;
 
-  return 0.5 * (poca1 + poca2);
+  TVector3 vertex = 0.5 * (poca1 + poca2);
+
+  double zmin = std::min(r1.Z(), r2.Z());
+  double zmax = std::max(r1.Z(), r2.Z());
+
+  // Clamp the POCA to the measured interval
+  if (vertex.Z() < zmin) {
+    return (r1.Z() < r2.Z()) ? r1 : r2;
+  }
+
+  if (vertex.Z() > zmax) {
+    return (r1.Z() > r2.Z()) ? r1 : r2;
+  }
+
+  return vertex;
 }
 
 void MuGeoProcessor::CheckAllVolumes() {
