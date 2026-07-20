@@ -144,6 +144,7 @@ it in future.
 * `nrOfRetries()` in HNL and DP generators now counts only production failures; geometric acceptance rejections are tracked separately via `nrOfGeoRejections()`
 * Read vessel end dimensions from veto YAML config instead of hardcoding in `geometry_config.py`
 * Replace uproot with PyROOT in compare_histograms
+* GenFit replaced with ACTS in shipDigiReco.py
 
 ### Fixed
 
