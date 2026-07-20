@@ -59,7 +59,7 @@ pyrefly = "*"
 
 [activation]
 scripts = ["activate.sh"]
-env = { FAIRROOTPATH = "$CONDA_PREFIX", ROOT_INCLUDE_PATH = "$CONDA_PREFIX/include:$CONDA_PREFIX/include/geant4vmc:$CONDA_PREFIX/include/Geant4:$CONDA_PREFIX/include/vmc" }
+env = { FAIRROOTPATH = "$CONDA_PREFIX", ROOT_INCLUDE_PATH = "$CONDA_PREFIX/include:$CONDA_PREFIX/include/geant4vmc:$CONDA_PREFIX/include/Geant4:$CONDA_PREFIX/include/vmc:$CONDA_PREFIX/include/GENIE" }
 
 [tasks]
 configure = { cmd = """cmake -S . -B build -G Ninja \
