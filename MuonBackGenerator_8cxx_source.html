@@ -407,7 +407,7 @@ $(document).ready(function(){initNavTree('MuonBackGenerator_8cxx_source.html',''
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; list.size(); i++) {</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keyword">auto</span>* v = getVetoPoint(list.at(i));</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            Int_t muIndex = v-&gt;GetTrackID();</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            muList.insert({muIndex, i});</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            muList.insert({muIndex, list.at(i)});</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>          }</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        }</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>      }</div>

@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('ParticleGunGenerator_8cxx_source.html'
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        [](<a class="code hl_struct" href="structParticleGunParticle.html">ParticleGunParticle</a>&amp; <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>, <span class="keyword">const</span> std::vector&lt;Double32_t&gt;&amp; pars) {</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>          <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.X = (pars[1] &gt; 0) ? gRandom-&gt;Uniform(pars[0] - pars[1] / 2.,</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                                 pars[0] + pars[1] / 2.)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                              : pars[1];</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                              : pars[0];</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>          <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.Y = (pars[3] &gt; 0) ? gRandom-&gt;Uniform(pars[2] - pars[3] / 2.,</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                                 pars[2] + pars[3] / 2.)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                              : pars[2];</div>

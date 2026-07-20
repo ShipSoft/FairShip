@@ -84,7 +84,7 @@ var classFixedTargetGenerator =
     [ "OnlyMuons", "classFixedTargetGenerator.html#aaf32fade9f283dc8f731bedee010153f", null ],
     [ "Option", "classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb", null ],
     [ "PhotonCollision", "classFixedTargetGenerator.html#a3c8a1ece10b7c2aa4af76842eb19cbce", null ],
-    [ "pot", "classFixedTargetGenerator.html#a8a68a86b2e6469e38554d104a6957256", null ],
+    [ "pot", "classFixedTargetGenerator.html#ac9af49bea67fc1f5e1c2a9b60446dc16", null ],
     [ "setByHand", "classFixedTargetGenerator.html#ad721c71c06c401ecd32b8646b144d559", null ],
     [ "start", "classFixedTargetGenerator.html#a8552803d031ff4799c32c0c330f75f46", null ],
     [ "startZ", "classFixedTargetGenerator.html#a588c731c0eb44dc2127dda5630a2408b", null ],

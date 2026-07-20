@@ -247,7 +247,7 @@ Protected Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a5630621f5a2636fc83ee24aeae4fe3ce" id="r_a5630621f5a2636fc83ee24aeae4fe3ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCo3Rng.html">Co3Rng</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCosmicsGenerator.html#a5630621f5a2636fc83ee24aeae4fe3ce">fRandomEngine</a></td></tr>
+<tr class="memitem:a5630621f5a2636fc83ee24aeae4fe3ce" id="r_a5630621f5a2636fc83ee24aeae4fe3ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCo3Rng.html">Co3Rng</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCosmicsGenerator.html#a5630621f5a2636fc83ee24aeae4fe3ce">fRandomEngine</a> = nullptr</td></tr>
 <tr class="separator:a5630621f5a2636fc83ee24aeae4fe3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -662,7 +662,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  186</span>  cpg-&gt;AddTrack(</div>
 <div class="line"><span class="lineno">  187</span>      <a class="code hl_variable" href="classCosmicsGenerator.html#a202904efe730d08d5d03a1e636979e74">PID</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a0918d43e5154b4e3fe0502fd0c9db450">px</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a8c18083401f79ddf0ef8e0d8519798da">py</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a02d81c8e3760289459dc86d1ec8e06b2">pz</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d">x</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a6be8f1021db23a5cffe07bdef2a9f49e">y</a>, <a class="code hl_variable" href="classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816">z</a>, -1, <span class="keyword">true</span>, TMath::Sqrt(<a class="code hl_variable" href="classCosmicsGenerator.html#abe53b44331dd5a76c6ab8bda91d9935b">P</a> * <a class="code hl_variable" href="classCosmicsGenerator.html#abe53b44331dd5a76c6ab8bda91d9935b">P</a> + <a class="code hl_variable" href="classCosmicsGenerator.html#a761ed1889592414d0aeaafb329fcfa61">mass</a> * <a class="code hl_variable" href="classCosmicsGenerator.html#a761ed1889592414d0aeaafb329fcfa61">mass</a>), 0,</div>
 <div class="line"><span class="lineno">  188</span>      <a class="code hl_variable" href="classCosmicsGenerator.html#a5f21b44c11bb8b2b8701e4a501dc4def">weight</a>);  <span class="comment">// -1 = Mother ID, true = tracking, SQRT(x) = Energy, 0 = t</span></div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classCosmicsGenerator.html#ae1acbbd5958aaab299e25a33155d6f9c">nInside</a> % 10000) {</div>
+<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCosmicsGenerator.html#ae1acbbd5958aaab299e25a33155d6f9c">nInside</a> % 10000 == 0) {</div>
 <div class="line"><span class="lineno">  190</span>    cout &lt;&lt; <a class="code hl_variable" href="classCosmicsGenerator.html#ae1acbbd5958aaab299e25a33155d6f9c">nInside</a> / 10000 &lt;&lt; <span class="stringliteral">&quot;10k events have been simulated&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">  191</span>  }</div>
 <div class="line"><span class="lineno">  192</span>  <span class="keywordflow">return</span> kTRUE;</div>
@@ -707,7 +707,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classCo3Rng.html">Co3Rng</a>* CosmicsGenerator::fRandomEngine</td>
+          <td class="memname"><a class="el" href="classCo3Rng.html">Co3Rng</a>* CosmicsGenerator::fRandomEngine = nullptr</td>
         </tr>
       </table>
   </td>

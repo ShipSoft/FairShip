@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['n_0',['n',['../classTrackInfo.html#a6cf99efb2f2012badae4bbff00a83500',1,'TrackInfo::N()'],['../classeventDisplay_1_1IO.html#a8e156007b0f68e9796ca7969a2362ca4',1,'eventDisplay.IO.n'],['../classeventDisplay_1_1EventLoop.html#afd394b0902b31831d24db81cee5ab585',1,'eventDisplay.EventLoop.n'],['../namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39',1,'makeDecay.n']]],
+  ['n_0',['n',['../classeventDisplay_1_1IO.html#a8e156007b0f68e9796ca7969a2362ca4',1,'eventDisplay.IO.n'],['../classeventDisplay_1_1EventLoop.html#afd394b0902b31831d24db81cee5ab585',1,'eventDisplay.EventLoop.n'],['../classTrackInfo.html#a6cf99efb2f2012badae4bbff00a83500',1,'TrackInfo::N()'],['../namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39',1,'makeDecay.n']]],
   ['n_5f_1',['N_',['../classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256',1,'ShipBFieldMap']]],
   ['n_5fcurves_5fmult_2',['n_curves_mult',['../namespacerun__tracking__scan.html#a03e13ccb07c88c0d82a69d92298d587e',1,'run_tracking_scan']]],
   ['n_5fcurves_5ftheta_3',['n_curves_theta',['../namespacerun__tracking__scan.html#a1aae3c21759e8e7766d2f1eb7ffe358c',1,'run_tracking_scan']]],
@@ -36,7 +36,7 @@ var searchData=
   ['ncores_33',['ncores',['../namespacerun__reco.html#a73cbd0f6d7d8add2128f07b538176260',1,'run_reco']]],
   ['ncpus_34',['ncpus',['../namespacerunCharmHadProd.html#a73723768be756b5d2011a4324d357eeb',1,'runCharmHadProd']]],
   ['ndau_35',['Ndau',['../classEvtCalcGenerator.html#a47f0a9cc2b8176263e6c803f43f0bf7b',1,'EvtCalcGenerator']]],
-  ['ndecaywidth_36',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
+  ['ndecaywidth_36',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
   ['ndof_37',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['ndsprim_38',['ndsprim',['../namespacemakeDecay.html#ad982d83e907e8531920183500c345a9d',1,'makeDecay.nDsprim'],['../classFixedTargetGenerator.html#abe57fd9e95ce8a0d9941e89437a2fe4c',1,'FixedTargetGenerator::nDsprim']]],
   ['nel_39',['nEl',['../namespacestudy__GammaConv.html#a3c26c243703135de75534de37178e554',1,'study_GammaConv']]],

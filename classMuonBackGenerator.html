@@ -821,7 +821,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  293</span>          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; list.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">  294</span>            <span class="keyword">auto</span>* <a class="code hl_variable" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">v</a> = getVetoPoint(list.at(i));</div>
 <div class="line"><span class="lineno">  295</span>            Int_t muIndex = <a class="code hl_variable" href="namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457">v</a>-&gt;GetTrackID();</div>
-<div class="line"><span class="lineno">  296</span>            muList.insert({muIndex, <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>});</div>
+<div class="line"><span class="lineno">  296</span>            muList.insert({muIndex, list.at(i)});</div>
 <div class="line"><span class="lineno">  297</span>          }</div>
 <div class="line"><span class="lineno">  298</span>        }</div>
 <div class="line"><span class="lineno">  299</span>      }</div>
