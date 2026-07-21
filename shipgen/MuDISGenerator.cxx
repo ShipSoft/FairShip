@@ -106,6 +106,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int startEvent) {
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
+  static bool firstEvt = true;
   if (fn>=fNevents) {
     LOG(error) << " Reached total number of DIS events: counter " << fn << " nTot=" << fNevents;
     return kFALSE;
@@ -113,53 +114,52 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
   LOG(debug) << " - Processing input muon " << fnmu
 	     << " fMat " << fMat << " fnmuDis " << fnmuDis
 	     << " fnmuDisDau " << fnmuDisDau;
-  
-  if (fTree->GetEntry(fnmu) <= 0){
-    LOG(error) << " Error reading event " << fnmu ;
-    return kFALSE;
+
+  if (firstEvt){
+    if (fTree->GetEntry(fnmu) <= 0){
+      LOG(error) << " Error reading event " << fnmu ;
+      return kFALSE;
+    } else {
+      LOG(info) << " Updated tree entry: " << fnmu;
+    }
+    firstEvt=false; 
   }
   
-  if (fnmu % 1 == 0 && fnmuDis == 0) {
-    LOG(info) << "Info MuDISGenerator: MuDIS original muon event #" << fnmu << " material " << fMat << " final event #" << fn;
-  }
  
   //access the different materials in turn
   //accessing by reference leads to sometimes vectors inside branch being reset
   MuonDISInBranches* lBr = &finEv.br[fMat];
-  LOG(debug) << "First: " << lBr->Print(fn,MatTypeStr[fMat]).str();
+  LOG(debug) << "Initial branch: " << lBr->Print(fn,MatTypeStr[fMat]).str();
   int nDIS = lBr->nDISevts;
-  int nDISdaucheck = 0;
-  LOG(debug) << " Pointer to DISparticles branch: " << lBr->DISparticles;
-  if (lBr->DISparticles!=nullptr) nDISdaucheck = (lBr->DISparticles)->size();
-  LOG(debug) << " nDIS " << nDIS << " nDISdaucheck " << nDISdaucheck << " or with obj ref " <<(*lBr->DISparticles).size()  << " fMat " << fMat << " local evtNumber " << fn ;
+  LOG(debug) << " nDIS " << nDIS << " DISparticles size " <<(*lBr->DISparticles).size()  << " fMat " << fMat << " local evtNumber " << fn ;
 
   while (nDIS==0) {
     //if fMat branch has no element, go to the next one already...
     fMat++;
     fnmuDis = 0;
     fnmuDisDau = 0;
-    LOG(debug) << " -- switching material" << fMat;
+    LOG(info) << " -- switching material" << fMat;
     if (fMat >= nMats) {
       fMat = 0;
       fnmu++;
-      LOG(debug) << " -- switching input muon " << fnmu ;
-      LOG(debug) << " - Processing input muon " << fnmu
-		 << " fMat " << fMat << " fnmuDis " << fnmuDis
-		 << " fnmuDisDau " << fnmuDisDau;
+      LOG(info) << " -- switching input muon " << fnmu ;
+      LOG(info) << " - Processing input muon " << fnmu
+		<< " fMat " << fMat << " fnmuDis " << fnmuDis
+		<< " fnmuDisDau " << fnmuDisDau;
       if (fTree->GetEntry(fnmu) <= 0){
 	LOG(error) << " Error reading event " << fnmu ;
 	return kFALSE;
       } else {
-	LOG(debug) << " Updated tree entry: " << fnmu;
+	LOG(info) << " Updated tree entry: " << fnmu;
       }
     }
     lBr = &finEv.br[fMat];
-    LOG(debug) << "Second: " << lBr->Print(fn,MatTypeStr[fMat]).str();
+    LOG(debug) << "Updating branch: " << lBr->Print(fn,MatTypeStr[fMat]).str();
     nDIS = lBr->nDISevts;
-    nDISdaucheck = 0;
-    if (lBr->DISparticles!=nullptr) nDISdaucheck = lBr->DISparticles->size();
-    LOG(debug) << " nDIS " << nDIS << " nDISdaucheck " << nDISdaucheck << " fMat " << fMat << " local evtNumber " << fn ;
+  }
   
+  if (fnmu % 1 == 0 && fnmuDis == 0) {
+    LOG(info) << "Info MuDISGenerator: MuDIS original muon event #" << fnmu << " material " << fMat << " final event #" << fn;
   }
   
   if (nDIS>0){//if fMat branch has elements
@@ -167,11 +167,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     //first particle is the original muon with startZ necessarily before vtx_z...
     bool doTracking = false;
     int idxMum = -1;
-    int nAdded = 0;
-    //LOG(debug) << " --- n soft tracks: " << finEv.mcTrks->size();
     for (auto&& mcTrk : *(finEv.mcTrks)) {
       ShipMCTrack & softP = static_cast<ShipMCTrack&>(mcTrk);
-      //LOG(debug) << " ---- start z=" << softP.GetStartZ() << " DIS vtx z=" << (*lBr->DISvz)[fnmuDis];
       if (softP.GetStartZ()<=(*lBr->DISvz)[fnmuDis]) {
 	cpg->AddTrack(softP.GetPdgCode(),
 		      softP.GetPx(),softP.GetPy(),softP.GetPz(),
@@ -181,7 +178,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 		      softP.GetEnergy(),
 		      softP.GetStartT(),
 		      softP.GetWeight());
-	nAdded++;
       }
       if (!doTracking){
 	//passed the first track, we want to track the soft particles and they all stem from first one.
@@ -189,7 +185,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 	idxMum = 0;
       }
     }
-    LOG(debug) << " --- n soft tracks " << finEv.mcTrks->size() << ", added: " << nAdded;
     int nDaughters = (*lBr->nDISdau)[fnmuDis];
     unsigned nDISparts = (*lBr->DISparticles).size();
     LOG(debug) << " --- Processing dis muon " << fnmuDis << " with " << nDaughters << " daughters and " << nDISparts << " total DIS particles";
@@ -218,19 +213,27 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
 	       << " fnmuDisDau " << fnmuDisDau << " local event " << fn;
     return kFALSE;
   }
-  
+
   if (fnmuDis >= nDIS){
     fMat++;
     fnmuDis = 0;
     fnmuDisDau = 0;
-    LOG(debug) << " -- switching material" << fMat;
+    LOG(info) << " -- switching material" << fMat;
     if (fMat >= nMats) {
       fMat = 0;
       fnmu++;
-      LOG(debug) << " -- switching input muon " << fnmu ;
+      LOG(info) << " -- switching input muon " << fnmu ;
+      if (fTree->GetEntry(fnmu) <= 0){
+	LOG(error) << " Error reading event " << fnmu ;
+	return kFALSE;
+      } else {
+	LOG(info) << " Updated tree entry: " << fnmu;
+      }
     }
+    lBr = &finEv.br[fMat];
   }
 
+  
   if (fn == fNevents-1) {
     LOG(info) << "-- Reached total number of DIS events: counter " << fn << " nTot=" << fNevents;
   }
