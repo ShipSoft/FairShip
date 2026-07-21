@@ -527,14 +527,14 @@ Phase 3: Benchmark Metrics
   Efficiency:       1.0000 +/- 0.0005
   Clone rate:       0.0000 +/- 0.0005
   Ghost rate:       0.0000 +/- 0.0005
-  dp/p sigma:       0.013352 +/- 0.000373
-  dx RMS:           0.1448 +/- 0.0032 cm
-  dy RMS:           0.0053 +/- 0.0001 cm
-  dtx RMS:          0.000379 +/- 0.000008
-  dty RMS:          0.000076 +/- 0.000002
-  Hit resid RMS:    0.037466 +/- 0.000201 cm
-  Hit pull mean:    -0.0567 +/- 0.0092
-  Hit pull sigma:   1.1532 +/- 0.0071
+  dp/p sigma:       0.012854 +/- 0.000364
+  dx RMS:           0.1327 +/- 0.0030 cm
+  dy RMS:           0.0054 +/- 0.0001 cm
+  dtx RMS:          0.000381 +/- 0.000009
+  dty RMS:          0.000081 +/- 0.000002
+  Hit resid RMS:    0.037075 +/- 0.000199 cm
+  Hit pull mean:    -0.0543 +/- 0.0092
+  Hit pull sigma:   1.1589 +/- 0.0073
   Charge-ID eff:    1.0000 +/- 0.0005
   Correct/wrong:    1000/0
 ==================================
